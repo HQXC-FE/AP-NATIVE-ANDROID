@@ -435,7 +435,7 @@ class FastestTopDomainUtil private constructor() {
      * 获取
      */
     private fun setThirdFasterDomain() {
-        val urls = Utils.getContext().getString(R.string.domain_url_list_third)
+        val urls = DomainUtil.getDomainUrlListThirdString()
         val list = listOf(*urls.split(";".toRegex()).dropLastWhile { it.isEmpty() }
             .toTypedArray())
         addThirdDomainList(list)
