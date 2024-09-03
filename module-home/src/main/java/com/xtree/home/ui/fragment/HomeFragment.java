@@ -122,6 +122,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             CfLog.i("******");
             viewModel.getProfile();
             //checkRedPocket();
+            viewModel.getMessagePersonList();//获取站内信未读数量
         }
     }
 
@@ -285,6 +286,16 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             //} else {
             //    binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member, 0, 0);
             //}
+        });
+        viewModel.liveDataMsgUnread.observe(getViewLifecycleOwner(), vo -> {
+            if (vo == 0) {
+                binding.ivNotice.setVisibility(View.GONE);
+                binding.tvNoticeNum.setVisibility(View.GONE);
+            } else {
+                binding.ivNotice.setVisibility(View.VISIBLE);
+                binding.tvNoticeNum.setVisibility(View.VISIBLE);
+                binding.tvNoticeNum.setText("+" + vo);
+            }
         });
     }
 
@@ -514,6 +525,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 smoothToPosition(pid);
             });
         }
+        binding.ivNotice.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt("isMsgPerson", 1);
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_MSG, bundle);
+        });
 
     }
 
