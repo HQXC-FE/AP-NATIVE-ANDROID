@@ -14,6 +14,8 @@ public interface HttpDataSource {
 
     ApiService getApiService();
 
+    ApiService getLiveService();
+
     void setLive(LiveTokenResponse liveData);
 
     Flowable<BaseResponse<LiveTokenResponse>> getLiveToken(LiveTokenRequest request);

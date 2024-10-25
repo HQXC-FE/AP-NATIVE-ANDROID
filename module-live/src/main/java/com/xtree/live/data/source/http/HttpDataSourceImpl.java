@@ -51,6 +51,11 @@ public class HttpDataSourceImpl implements HttpDataSource {
 
     @Override
     public ApiService getApiService() {
+        return apiService;
+    }
+
+    @Override
+    public ApiService getLiveService() {
         return liveService;
     }
 
