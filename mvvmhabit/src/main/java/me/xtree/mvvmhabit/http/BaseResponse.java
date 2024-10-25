@@ -8,7 +8,9 @@ import com.google.gson.annotations.SerializedName;
  */
 public class BaseResponse<T> {
     private int status = -1;
-    private int code = -1;
+    @SerializedName(value = "code")
+    @Expose
+    private int code=-1;
     private boolean success;
     @SerializedName(value = "message", alternate = {"msg", "sMsg"})
     @Expose

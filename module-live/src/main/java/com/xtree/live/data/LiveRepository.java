@@ -21,6 +21,8 @@ import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
 
+import java.util.List;
+
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.base.BaseModel;
 import me.xtree.mvvmhabit.http.BaseResponse;
@@ -97,7 +99,7 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     }
 
     @Override
-    public Flowable<BaseResponse<FrontLivesResponse>> getFrontLives(FrontLivesRequest request) {
+    public Flowable<BaseResponse<List<FrontLivesResponse>>> getFrontLives(FrontLivesRequest request) {
         return mHttpDataSource.getFrontLives(request);
     }
 

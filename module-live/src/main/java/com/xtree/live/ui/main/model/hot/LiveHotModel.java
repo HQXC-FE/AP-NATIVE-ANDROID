@@ -16,6 +16,7 @@ import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.ui.main.listener.FetchListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -39,7 +40,7 @@ public class LiveHotModel extends BindModel {
     public ObservableBoolean enableLoadMore = new ObservableBoolean(true);
     public ObservableField<Object> finishRefresh = new ObservableField<Object>();
     public ObservableField<Object> autoRefresh = new ObservableField<Object>();
-    public FetchListener<FrontLivesResponse> frontLivesResponseFetchListener;
+    public FetchListener<List<FrontLivesResponse>> frontLivesResponseFetchListener;
     public BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
 
         @Override
@@ -93,7 +94,7 @@ public class LiveHotModel extends BindModel {
         datas.set(bindModels);
     }
 
-    private void _fetchFrontLives(int page, int limit, boolean isRefresh, FrontLivesResponse result) {
+    private void _fetchFrontLives(int page, int limit, boolean isRefresh, List<FrontLivesResponse> result) {
         finishRefresh.set(new Object());
 
         LiveHotItemModel itemModel = new LiveHotItemModel();

@@ -11,6 +11,8 @@ import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
 
+import java.util.List;
+
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.http.BaseResponse;
 
@@ -28,7 +30,7 @@ public interface HttpDataSource {
     //获取直播令牌
     Flowable<BaseResponse<LiveTokenResponse>> getLiveToken(LiveTokenRequest request);
 
-    Flowable<BaseResponse<FrontLivesResponse>> getFrontLives(FrontLivesRequest request);
+    Flowable<BaseResponse<List<FrontLivesResponse>>> getFrontLives(FrontLivesRequest request);
 
     Flowable<BaseResponse<AttentionListModel>> getAttention(AttentionRequest request);
 

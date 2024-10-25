@@ -16,6 +16,7 @@ import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.ui.main.listener.FetchListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -49,7 +50,7 @@ public class LiveAnchorModel extends BindModel {
 
         }
     };
-    public FetchListener<FrontLivesResponse> frontLivesResponseFetchListener;
+    public FetchListener<List<FrontLivesResponse>> frontLivesResponseFetchListener;
 
     public ObservableBoolean enableLoadMore = new ObservableBoolean(true);
     public ObservableField<Object> finishRefresh = new ObservableField<Object>(null);
@@ -66,7 +67,6 @@ public class LiveAnchorModel extends BindModel {
                 frontLivesResponseFetchListener.fetch(currentPage, limit, frontLivesResponse -> {
                     _fetchFrontLives(currentPage, limit, true, frontLivesResponse);
                 }, error -> {
-                    _fetchFrontLives(currentPage, limit, false, null);
                     finishRefresh.set(new Object());
                 });
             }
@@ -79,7 +79,6 @@ public class LiveAnchorModel extends BindModel {
                 frontLivesResponseFetchListener.fetch(currentPage, limit, frontLivesResponse -> {
                     _fetchFrontLives(currentPage, limit, false, frontLivesResponse);
                 }, error -> {
-                    _fetchFrontLives(currentPage, limit, false, null);
                     finishRefresh.set(new Object());
                 });
             }
@@ -92,18 +91,22 @@ public class LiveAnchorModel extends BindModel {
         datas.set(bindModels);
     }
 
-    private void _fetchFrontLives(int page, int limit, boolean isRefresh, FrontLivesResponse result) {
+    private void _fetchFrontLives(int page, int limit, boolean isRefresh, List<FrontLivesResponse> result) {
         finishRefresh.set(new Object());
-        LiveAnchorItemModel itemModel = new LiveAnchorItemModel();
-        itemModel.setText("直播TXT");
-        bindModels.add(itemModel);
-        bindModels.add(itemModel);
-        bindModels.add(itemModel);
-        bindModels.add(itemModel);
-        bindModels.add(itemModel);
-        bindModels.add(itemModel);
-        bindModels.add(itemModel);
-        bindModels.add(itemModel);
+        if (isRefresh) {
+            bindModels.clear();
+        }
+        for (FrontLivesResponse response :
+                result) {
+            LiveAnchorItemModel itemModel = new LiveAnchorItemModel();
+            itemModel.setThumb(response.getThumb());
+            itemModel.setIsLive(response.getIsLive());
+            itemModel.setTitle(response.getTitle());
+            itemModel.setAvatar(response.getAvatar());
+            itemModel.setUserNickname(response.getUserNickname());
+            itemModel.setHeat("" + response.getHeat());
+            bindModels.add(itemModel);
+        }
         datas.set(bindModels);
         notifyChange();
     }

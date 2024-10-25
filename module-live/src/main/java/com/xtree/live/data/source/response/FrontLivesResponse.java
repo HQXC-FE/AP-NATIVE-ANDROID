@@ -1,80 +1,136 @@
 package com.xtree.live.data.source.response;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
-
 /**
  * Created by KAKA on 2024/10/23.
  * Describe:
  */
 public class FrontLivesResponse {
 
-    //{"status":10000,"message":"\u767b\u5f55\u6210\u529f","data":{"xLiveToken":"d7beb01fb0937ded02f3ca73afdf332eb8d1af5d13469b66c946106203a2ee996e94fd33bf593e304dabc7fa5e68a221","visitor_id":11,"channel_code":"xt","web_api":["https:\/\/zhibo-apis.oxldkm.com"],"app_api":["https:\/\/zhibo-apps.oxldkm.com"]},"timestamp":1729674155}
+    private int id;
+    private String vid;
+    private int uid;
+    private int type;
+    private int isLive;
+    private int loadingBar;
+    private String pull;
+    private int matchId;
+    private String title;
+    private String thumb;
+    private boolean isLoop;
+    private String avatar;
+    private String userNickname;
+    private int heat;
 
-    /**
-     * xLiveToken
-     */
-    @SerializedName("xLiveToken")
-    private String xLiveToken;
-    /**
-     * visitorId
-     */
-    @SerializedName("visitor_id")
-    private String visitorId;
-    /**
-     * channelCode
-     */
-    @SerializedName("channel_code")
-    private String channelCode;
-    /**
-     * webApi
-     */
-    @SerializedName("web_api")
-    private List<String> webApi;
-    /**
-     * appApi
-     */
-    @SerializedName("app_api")
-    private List<String> appApi;
-
-    public String getXLiveToken() {
-        return xLiveToken;
+    // Getters and Setters
+    public int getId() {
+        return id;
     }
 
-    public void setXLiveToken(String xLiveToken) {
-        this.xLiveToken = xLiveToken;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getVisitorId() {
-        return visitorId;
+    public String getVid() {
+        return vid;
     }
 
-    public void setVisitorId(String visitorId) {
-        this.visitorId = visitorId;
+    public void setVid(String vid) {
+        this.vid = vid;
     }
 
-    public String getChannelCode() {
-        return channelCode;
+    public int getUid() {
+        return uid;
     }
 
-    public void setChannelCode(String channelCode) {
-        this.channelCode = channelCode;
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
-    public List<String> getWebApi() {
-        return webApi;
+    public int getType() {
+        return type;
     }
 
-    public void setWebApi(List<String> webApi) {
-        this.webApi = webApi;
+    public void setType(int type) {
+        this.type = type;
     }
 
-    public List<String> getAppApi() {
-        return appApi;
+    public int getIsLive() {
+        return isLive;
     }
 
-    public void setAppApi(List<String> appApi) {
-        this.appApi = appApi;
+    public void setIsLive(int isLive) {
+        this.isLive = isLive;
+    }
+
+    public int getLoadingBar() {
+        return loadingBar;
+    }
+
+    public void setLoadingBar(int loadingBar) {
+        this.loadingBar = loadingBar;
+    }
+
+    public String getPull() {
+        return pull;
+    }
+
+    public void setPull(String pull) {
+        this.pull = pull;
+    }
+
+    public int getMatchId() {
+        return matchId;
+    }
+
+    public void setMatchId(int matchId) {
+        this.matchId = matchId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getThumb() {
+        return thumb;
+    }
+
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
+    }
+
+    public boolean isLoop() {
+        return isLoop;
+    }
+
+    public void setLoop(boolean isLoop) {
+        this.isLoop = isLoop;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getUserNickname() {
+        return userNickname;
+    }
+
+    public void setUserNickname(String userNickname) {
+        this.userNickname = userNickname;
+    }
+
+    public int getHeat() {
+        return heat;
+    }
+
+    public void setHeat(int heat) {
+        this.heat = heat;
     }
 }
