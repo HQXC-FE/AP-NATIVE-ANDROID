@@ -3,6 +3,7 @@ package com.xtree.mine.data.source.http.service;
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.BalanceVo;
 import com.xtree.base.vo.FBService;
+import com.xtree.base.vo.MsgPersonListVo;
 import com.xtree.base.vo.PMService;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.vo.PromotionCodeVo;
@@ -28,7 +29,7 @@ import com.xtree.mine.vo.LotteryReportVo;
 import com.xtree.mine.vo.MsgInfoVo;
 import com.xtree.mine.vo.MsgListVo;
 import com.xtree.mine.vo.MsgPersonInfoVo;
-import com.xtree.base.vo.MsgPersonListVo;
+import com.xtree.mine.vo.OfferVo;
 import com.xtree.mine.vo.OtherWebWithdrawVo;
 import com.xtree.mine.vo.PlatWithdrawConfirmVo;
 import com.xtree.mine.vo.PlatWithdrawVo;
@@ -36,6 +37,7 @@ import com.xtree.mine.vo.ProfitLossReportVo;
 import com.xtree.mine.vo.QuestionVo;
 import com.xtree.mine.vo.RebateReportVo;
 import com.xtree.mine.vo.RechargeReportVo;
+import com.xtree.mine.vo.RegisterVerificationCodeVo;
 import com.xtree.mine.vo.RewardVo;
 import com.xtree.mine.vo.SettingsVo;
 import com.xtree.mine.vo.SpiltDetailVo;
@@ -50,7 +52,6 @@ import com.xtree.mine.vo.UserBankProvinceVo;
 import com.xtree.mine.vo.UserBindBaseVo;
 import com.xtree.mine.vo.UserUsdtConfirmVo;
 import com.xtree.mine.vo.UserUsdtTypeVo;
-import com.xtree.mine.vo.RegisterVerificationCodeVo;
 import com.xtree.mine.vo.VerificationCodeVo;
 import com.xtree.mine.vo.VerifyVo;
 import com.xtree.mine.vo.VipUpgradeInfoVo;
@@ -102,6 +103,7 @@ public interface HttpApiService {
 
     /**
      * 验证码登录
+     *
      * @param map
      * @return
      */
@@ -109,18 +111,21 @@ public interface HttpApiService {
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<LoginResultVo>> loginAndVer(@Body Map<String, String> map);
 
-/*  *//**
-   * 绑定
-   * client=m&controller=security&action=adduserusdt
-   *//*
+    /*  */
+
+    /**
+     * 绑定
+     * client=m&controller=security&action=adduserusdt
+     *//*
   @POST("/user/user{key}info?")
   @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
   Flowable<UserUsdtConfirmVo> doBindUsdt(@Path("key") String key, @QueryMap Map<String, String> queryMap, @Body Map<String, String> map);*/
     @POST("/api/register/{key}")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<LoginResultVo>> register(@Path("key") String key,@Body Map<String, Object> map);
+    Flowable<BaseResponse<LoginResultVo>> register(@Path("key") String key, @Body Map<String, Object> map);
+
     /**
-    *获取注册验证码
+     * 获取注册验证码
      */
     @GET("/api/captcha")
     Flowable<BaseResponse<RegisterVerificationCodeVo>> getCaptcha();
@@ -150,10 +155,7 @@ public interface HttpApiService {
      * 发送 短信/邮箱 验证码 (首次绑)
      */
     @GET("/api/verify/singlesend")
-    Flowable<BaseResponse<VerificationCodeVo>> singleSend(
-            @Query("flag") String flag,
-            @Query("sendtype") String sendtype,
-            @Query("num") String num);
+    Flowable<BaseResponse<VerificationCodeVo>> singleSend(@Query("flag") String flag, @Query("sendtype") String sendtype, @Query("num") String num);
 
     /**
      * 验证 短信/邮箱 验证码 (首次绑)
@@ -658,4 +660,16 @@ public interface HttpApiService {
     @POST("/api/withdrawal/submit")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse3<WithdrawalSubmitVo>> postWithdrawalSubmit(@Body Map<String, Object> map);
+
+    /**
+     * 优惠中心列表
+     */
+    @GET("/api/activity/reward?")
+    Flowable<BaseResponse3<OfferVo>> getOfferList(@QueryMap Map<String, String> map);
+
+    /**
+     * 取得优惠
+     */
+    @GET("/api/activity/reward/{key}")
+    Flowable<HashMap<String, String>> getOffer(@Path("key") String key, @QueryMap Map<String, String> map);
 }

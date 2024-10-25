@@ -199,10 +199,12 @@
     <color name="clr_txt_grey_08">#585959</color>
     <color name="clr_txt_grey_09">#5B5B6A</color>
     <color name="clr_txt_grey_10">#979797</color>
+    <color name="clr_txt_grey_11">#0C0319</color>
     <color name="clr_grey_03">#E9E9E9</color>
     <color name="clr_grey_05">#D1D1D1</color>
     <color name="clr_grey_07">#F7F7F7</color>
     <color name="clr_grey_09">#A9A9A9</color>
+    <color name="clr_grey_01_a50">#80000000</color>
 
     <color name="clr_grey_22">#38D9D9D9</color>
     <color name="clr_grey_080">#CCD9D9D9</color>
@@ -234,6 +236,7 @@
     <color name="clr_grey_1">#6C757D</color>
     <color name="clr_grey_58">#58FAFAFF</color>
     <color name="clr_grey_2">#C6C6C6</color>
+    <color name="clr_grey_3">#F8F8F8</color>
 
     <color name="clr_grey_00_a20">#332F2747</color>
     <color name="clr_grey_00_a50">#802F2747</color>
@@ -250,6 +253,7 @@
     <color name="clr_main_32">#B5A9FF</color>
     <color name="clr_main_33">#FFF1ED</color>
     <color name="clr_main_34">#F9F4FF</color>
+    <color name="clr_main_35">#FAF6FD</color>
 
     <color name="clr_purple_f0">#A797F0</color>
 
@@ -284,6 +288,11 @@
     <color name="clr_purple_13">#BB74AE</color>
     <color name="clr_purple_14">#98628E</color>
     <color name="clr_purple_15">#C3B8C2</color>
+    <color name="clr_purple_16">#EED4FF</color>
+    <color name="clr_purple_17">#C292ED</color>
+    <color name="clr_purple_18">#8167E2</color>
+    <color name="clr_purple_19">#F6EFFF</color>
+    <color name="clr_purple_20">#A17DF5</color>
 
     <color name="clr_orange_01">#FF804B</color>
     <color name="clr_orange_02">#FF8A00</color>
