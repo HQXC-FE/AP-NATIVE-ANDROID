@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * 已关注主播列表  api/user/attentionList
  */
 
-public class AttentionListModel extends BindModel {
+public class AttentionListModel  {
     /*"uid": 7952,
         "followed_id": 24630,
         "attention": 42920,

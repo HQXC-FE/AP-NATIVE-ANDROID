@@ -40,7 +40,7 @@
                      layout="@layout/item_live_broadcaster_header"
                      />
                  <TextView
-                     android:id="@+id/tv_live_broadcaster_name"
+                     android:id="@+id/tvLiveBroadcasterName"
                      android:text=""
                      android:textColor="@color/clr_txt_share"
                      android:textSize="14sp"
@@ -52,7 +52,7 @@
                      tools:text="123123123"
                      />
                  <TextView
-                     android:id="@+id/tv_live_broadcaster_followers"
+                     android:id="@+id/tvLiveBroadcasterFollowers"
                      android:text=" "
                      android:textColor="@color/clr_txt_followers"
                      android:textSize="12sp"
@@ -64,7 +64,7 @@
                      tools:text=" 0000"
                      />
                  <ImageView
-                     android:id="@+id/iv_live_attention_status"
+                     android:id="@+id/ivLiveAttentionStatus"
                      android:layout_width="54dp"
                      android:layout_height="24dp"
                      android:background="@mipmap/lv_attention_status_off"
