@@ -8,14 +8,19 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.live.BR;
 import com.xtree.live.R;
+import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.factory.AppViewModelFactory;
+import com.xtree.live.data.source.request.LiveTokenRequest;
+import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.databinding.FragmentLiveBinding;
 import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
+import me.xtree.mvvmhabit.utils.RxUtils;
 
 /**
  * Created by KAKA on 2024/9/9.
@@ -50,5 +55,23 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
         super.initData();
 
         viewModel.initData(requireActivity());
+    }
+
+    public LiveFragment() {
+        LiveRepository.getInstance().getLiveToken(new LiveTokenRequest())
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<LiveTokenResponse>() {
+                    @Override
+                    public void onResult(LiveTokenResponse data) {
+                        if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                            LiveRepository.getInstance().setLive(data);
+                        }
+                    }
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
+                });
     }
 }
