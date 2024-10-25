@@ -43,6 +43,7 @@ public class LiveHeaderInterceptor implements Interceptor {
         String uriPathRevKey = getUriPathRevKey(request);
 
         builder.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        builder.addHeader("x-live-Brand", "Android");
         builder.addHeader("x-live-Token", X9LiveInfo.INSTANCE.getToken());
         builder.addHeader("x-live-Visitor", X9LiveInfo.INSTANCE.getVisitor());
         builder.addHeader("x-live-Oaid", X9LiveInfo.INSTANCE.getOaid());

@@ -6,17 +6,24 @@ package com.xtree.live.data.source;
  */
 public class APIManager {
 
-    public static final String FRONT_LIVES = "/api/front/lives";
-    //直播
+    //直播API
     private static final String X9_API = "/api/x9/";
-    //获取直播token
-    public static final String X9_TOKEN_URL = X9_API + "getXLiveToken";
+    //加密配置API
+    private static final String SECRET_API = "/api/secret/";
+
+    public static final String FRONT_LIVES = "/api/front/lives";
     //聊天房列表
     public static final String CHATROOMLIST_API = "/api/chat/getChatRoomList";
-
     // 已关注主播列表
     public static final String ATTENTION_API="/api/user/attentionList";
     //获取主播排序列表
     public static final String ANCHOR_SORT_API="/api/anchor/sort";
+
+
+    //获取直播token
+    public static final String X9_TOKEN_URL = X9_API + "getXLiveToken";
+
+    //获取直播配置文件
+    public static final String ReviseHot_URL = SECRET_API + "getReviseHot";
 
 }

@@ -18,6 +18,7 @@ import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
+import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
 
 import io.reactivex.Flowable;
@@ -108,6 +109,11 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     @Override
     public Flowable<BaseResponse<AnchorSortResponse>> getAnchorSort(AnchorSortRequest request) {
         return mHttpDataSource.getAnchorSort(request);
+    }
+
+    @Override
+    public Flowable<BaseResponse<ReviseHotResponse>> getReviseHot() {
+        return mHttpDataSource.getReviseHot();
     }
 
 }

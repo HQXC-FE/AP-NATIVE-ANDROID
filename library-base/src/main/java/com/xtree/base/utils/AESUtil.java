@@ -10,6 +10,9 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class AESUtil {
+
+    private static final String ALGORITHM = "AES/ECB/NoPadding";
+
     public static SecretKey getRSAKeyPair() throws Exception {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(256);
@@ -49,5 +52,30 @@ public class AESUtil {
 
         CfLog.d(new String(decryptedBytes, StandardCharsets.UTF_8));
         return new String(decryptedBytes);
+    }
+
+    public static String decryptLiveData(String encryptedData, String decryptKey) throws Exception {
+        // 检查 encryptedData
+        if (encryptedData == null || encryptedData.isEmpty()) {
+            throw new IllegalArgumentException("Encrypted data cannot be null or empty.");
+        }
+
+        // 去除空白字符
+        encryptedData = encryptedData.trim().replaceAll("\\s+", "");
+
+        // 将密钥转换为字节数组
+        byte[] keyBytes = decryptKey.getBytes("UTF-8");
+        SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
+
+        // 创建 AES 解密器
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.DECRYPT_MODE, keySpec);
+
+        // 解密
+        byte[] decodedData = Base64.decode(encryptedData, Base64.DEFAULT);
+        byte[] decryptedBytes = cipher.doFinal(decodedData);
+
+        // 将解密后的字节数组转换为字符串
+        return new String(decryptedBytes, "UTF-8").trim();
     }
 }
