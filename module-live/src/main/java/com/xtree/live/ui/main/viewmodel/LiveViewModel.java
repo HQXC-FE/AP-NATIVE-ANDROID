@@ -12,7 +12,9 @@ import androidx.lifecycle.Observer;
 import com.google.android.material.tabs.TabLayout;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.live.R;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.request.FrontLivesRequest;
@@ -84,22 +86,27 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     public void initData(FragmentActivity mActivity) {
         setActivity(mActivity);
 
-        model.getLiveToken(new LiveTokenRequest())
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribe(new HttpCallBack<LiveTokenResponse>() {
-                    @Override
-                    public void onResult(LiveTokenResponse data) {
-                        if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
-                            initData(data);
+        if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
+            model.getLiveToken(new LiveTokenRequest())
+                    .compose(RxUtils.schedulersTransformer())
+                    .compose(RxUtils.exceptionTransformer())
+                    .subscribe(new HttpCallBack<LiveTokenResponse>() {
+                        @Override
+                        public void onResult(LiveTokenResponse data) {
+                            if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                                model.setLive(data);
+                                initData();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
-                });
+                        @Override
+                        public void onError(Throwable t) {
+                            super.onError(t);
+                        }
+                    });
+        } else {
+            initData();
+        }
     }
 
     public void setActivity(FragmentActivity mActivity) {
@@ -137,8 +144,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
     }
 
-    private void initData(LiveTokenResponse data) {
-        model.setLive(data);
+    private void initData() {
         itemType.setValue(typeList);
         datas.setValue(bindModels);
     }

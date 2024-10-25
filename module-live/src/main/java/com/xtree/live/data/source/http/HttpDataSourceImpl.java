@@ -7,10 +7,14 @@ import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.live.data.source.APIManager;
 import com.xtree.live.data.source.ApiService;
 import com.xtree.live.data.source.HttpDataSource;
+import com.xtree.live.data.source.request.AnchorSortRequest;
+import com.xtree.live.data.source.request.AttentionRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
+import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
+import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
 
 import java.util.Map;
 
@@ -53,6 +57,11 @@ public class HttpDataSourceImpl implements HttpDataSource {
 
     @Override
     public ApiService getApiService() {
+        return apiService;
+    }
+
+    @Override
+    public ApiService getLiveService() {
         return liveService;
     }
 
@@ -70,7 +79,7 @@ public class HttpDataSourceImpl implements HttpDataSource {
     @Override
     public Flowable<BaseResponse<LiveTokenResponse>> getLiveToken(LiveTokenRequest request) {
         Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
-        return apiService.get(APIManager.X9_TOKEN_URL, map).map(new Function<ResponseBody, BaseResponse<LiveTokenResponse>>() {
+        return apiService.get(APIManager.X9_TOKEN_URL,map).map(new Function<ResponseBody, BaseResponse<LiveTokenResponse>>() {
             @Override
             public BaseResponse<LiveTokenResponse> apply(ResponseBody responseBody) throws Exception {
                 return JSON.parseObject(responseBody.string(),
@@ -87,4 +96,38 @@ public class HttpDataSourceImpl implements HttpDataSource {
                 new TypeReference<BaseResponse<FrontLivesResponse>>() {
                 }));
     }
+
+    @Override
+    public Flowable<BaseResponse<AttentionListModel>> getAttention(AttentionRequest request) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return liveService.get(APIManager.ATTENTION_API , map).map(new Function<ResponseBody, BaseResponse<AttentionListModel>>() {
+            @Override
+            public BaseResponse<AttentionListModel> apply(ResponseBody responseBody) throws Exception {
+                return JSON.parseObject(responseBody.string(),
+                        new TypeReference<BaseResponse<AttentionListModel>>(){
+
+                        });
+            }
+        });
+    }
+
+    /**
+     * 获取主播列表
+     * @param request
+     * @return
+     */
+    @Override
+    public Flowable<BaseResponse<AnchorSortResponse>> getAnchorSort(AnchorSortRequest request) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return liveService.get(APIManager.ANCHOR_SORT_API , map).map(new Function<ResponseBody, BaseResponse<AnchorSortResponse>>() {
+            @Override
+            public BaseResponse<AnchorSortResponse> apply(ResponseBody responseBody) throws Exception {
+                return JSON.parseObject(responseBody.string(),
+                        new TypeReference<BaseResponse<AnchorSortResponse>>(){
+
+                        });
+            }
+        });
+    }
+
 }

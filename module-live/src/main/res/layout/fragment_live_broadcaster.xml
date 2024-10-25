@@ -50,12 +50,12 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/ivw_focus"
+                    android:id="@+id/ivwFocus"
                     style="@style/style_ic_title_right"
                     android:src="@mipmap/lv_broadcaster_top_focus" />
 
                 <ImageView
-                    android:id="@+id/ivw_share"
+                    android:id="@+id/ivwShare"
                     style="@style/style_ic_title_right"
                     android:src="@mipmap/lv_broadcaster_top_share" />
 
@@ -63,7 +63,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_mian"
+            android:id="@+id/rv_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

@@ -51,11 +51,14 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="3dp"
                 android:background="@mipmap/lv_broadcaster_header_default_on"/>
+
             <ImageView
-                android:layout_centerInParent="true"
+                android:id="@+id/ivIsLive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/lv_broadcaster_header_default"/>
+                android:layout_centerInParent="true"
+                android:background="@mipmap/lv_broadcaster_header_default"
+                android:visibility="gone"/>
         </RelativeLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
