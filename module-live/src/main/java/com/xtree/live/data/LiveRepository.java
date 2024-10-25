@@ -75,6 +75,11 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     }
 
     @Override
+    public ApiService getLiveService() {
+        return mHttpDataSource.getLiveService();
+    }
+
+    @Override
     public void setLive(LiveTokenResponse liveData) {
         mHttpDataSource.setLive(liveData);
     }
