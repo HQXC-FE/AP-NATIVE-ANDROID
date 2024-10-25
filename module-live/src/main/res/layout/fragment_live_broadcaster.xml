@@ -5,9 +5,9 @@
 
     <data>
 
-        <variable
+        <!--<variable
             name="viewModel"
-            type="com.xtree.live.ui.main.model.anchorList.AnchorListModel" />
+            type="com.xtree.live.ui.main.model.anchorList.AnchorListModel" />-->
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
