@@ -50,7 +50,7 @@ import kotlin.random.Random
  */
 
 @BindingAdapter(
-    value = ["layoutManager", "itemData", "itemViewType", "onBindListener", "dividerDrawableId", "viewPool","spanCount","gridSpace"],
+    value = ["layoutManager", "itemData", "itemViewType", "onBindListener", "dividerDrawableId", "viewPool", "spanCount", "gridSpace"],
     requireAll = false
 )
 fun RecyclerView.init(
@@ -83,7 +83,9 @@ fun RecyclerView.init(
         }
     } ?: run {
         when (layoutManager) {
-            null -> if (this.layoutManager == null) spanCount?.run { grid(spanCount) } ?: run { linear() }
+            null -> if (this.layoutManager == null) spanCount?.run { grid(spanCount) }
+                ?: run { linear() }
+
             else -> this.layoutManager = layoutManager
         }
 
@@ -95,8 +97,8 @@ fun RecyclerView.init(
             }
         }
         gridSpace?.let {
-            dividerSpace (it.toInt(), DividerOrientation.VERTICAL)
-            dividerSpace (it.toInt(), DividerOrientation.HORIZONTAL)
+            dividerSpace(it.toInt(), DividerOrientation.VERTICAL)
+            dividerSpace(it.toInt(), DividerOrientation.HORIZONTAL)
 //            divider {
 //                startVisible = true
 //                endVisible = true
@@ -153,12 +155,21 @@ fun TabLayout.init(setSelectedListener: OnTabSelectedListener?, tabs: List<Strin
 }
 
 @BindingAdapter(
-    value = ["onRefreshLoadMoreListener", "onLoadMoreListener"],
+    value = ["onRefreshLoadMoreListener", "onLoadMoreListener", "srlEnableLoadMore", "srlFinishRefresh","srlAutoRefresh"],
     requireAll = false
 )
-fun SmartRefreshLayout.init(onRefreshLoadMoreListener: OnRefreshLoadMoreListener?, onLoadMoreListener: OnLoadMoreListener?) {
+fun SmartRefreshLayout.init(
+    onRefreshLoadMoreListener: OnRefreshLoadMoreListener?,
+    onLoadMoreListener: OnLoadMoreListener?,
+    srlEnableLoadMore: Boolean?,
+    srlFinishRefresh: Any?,
+    srlAutoRefresh: Any?
+) {
     onRefreshLoadMoreListener?.let { setOnRefreshListener(it) }
     onLoadMoreListener?.let { setOnLoadMoreListener(it) }
+    srlEnableLoadMore?.let { setEnableLoadMore(srlEnableLoadMore) }
+    srlFinishRefresh?.let { finishRefresh() }
+    srlAutoRefresh?.let { autoRefresh() }
 }
 
 @BindingAdapter(
@@ -188,9 +199,11 @@ fun setImageUrl(
     val widthSize = (if ((width ?: 0) > 0) width else view.width) ?: -1
     val heightSize = (if ((height ?: 0) > 0) height else view.height) ?: -1
     // 根据定义的 cacheEnable 参数来决定是否缓存
-    val diskCacheStrategy = if (cacheEnable == true) DiskCacheStrategy.AUTOMATIC else DiskCacheStrategy.NONE
+    val diskCacheStrategy =
+        if (cacheEnable == true) DiskCacheStrategy.AUTOMATIC else DiskCacheStrategy.NONE
     // 设置编码格式，在Android 11(R)上面使用高清无损压缩格式 WEBP_LOSSLESS ， Android 11 以下使用PNG格式，PNG格式时会忽略设置的 quality 参数。
-    val encodeFormat = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) Bitmap.CompressFormat.WEBP_LOSSLESS else Bitmap.CompressFormat.PNG
+    val encodeFormat =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) Bitmap.CompressFormat.WEBP_LOSSLESS else Bitmap.CompressFormat.PNG
     val glide = Glide.with(view.context)
         .asDrawable()
         .load(source)
@@ -276,7 +289,9 @@ fun ViewPager2.init(
         if (it is TabLayout) {
             TabLayoutMediator(
                 it, this
-            ) { tab: TabLayout.Tab?, position: Int -> tab?.text = itemData[position].tag.toString()}.attach()
+            ) { tab: TabLayout.Tab?, position: Int ->
+                tab?.text = itemData[position].tag.toString()
+            }.attach()
         }
     }
 }
