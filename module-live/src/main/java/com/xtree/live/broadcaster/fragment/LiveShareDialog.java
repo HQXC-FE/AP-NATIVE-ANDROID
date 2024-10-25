@@ -28,7 +28,7 @@ public class LiveShareDialog extends CenterPopupView {
 
     public interface ILiveShareCallback {
 
-        void onClickShare(); //分享复制
+        void onClickShare(final String sharUrl); //分享复制
     }
     private DialogLiveShareBinding binding;
     private String shareUrl ;//分享url
@@ -62,7 +62,7 @@ public class LiveShareDialog extends CenterPopupView {
         binding.tvShareBt.setOnClickListener(v -> {
             ToastUtils.showError("点击复制按钮");
             if (this.iLiveShareCallback != null){
-                this.iLiveShareCallback.onClickShare();
+                this.iLiveShareCallback.onClickShare(shareUrl);
             }
         });
         if (!this.shareUrl.isEmpty()){

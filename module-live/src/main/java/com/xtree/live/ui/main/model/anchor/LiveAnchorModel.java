@@ -48,6 +48,7 @@ public class LiveAnchorModel extends BindModel {
         add(itemModel);
         add(itemModel);
         add(itemModel);
+
     }};
 
     public BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
