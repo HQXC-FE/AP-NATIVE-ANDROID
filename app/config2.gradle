@@ -5,8 +5,8 @@ android {
         // 测试环境 测试用
         xingCai_pre {
             applicationId "com.${name.toLowerCase()}.app" //
-            versionName "1.3.5"
-            versionCode 135
+            versionName "1.3.6"
+            versionCode 136
             resValue "string", "app_name", "杏彩T${versionCode}"
             resValue "string", "domain_api", "https://ap3sport.oxldkm.com"
             resValue "string", "domain_url", "https://ap3sport.oxldkm.com"
@@ -47,8 +47,8 @@ android {
         // 生产环境 发布用
         xingCai_OL {
             applicationId "com.sptxc.app" // xcsport
-            versionName "1.3.5"
-            versionCode 135
+            versionName "1.3.6"
+            versionCode 136
             resValue "string", "app_name", "XC Sports"
             resValue "string", "domain_api", "http://175.27.143.79:16803"
             resValue "string", "domain_url", "https://h11.i2n5wp.xyz"
@@ -86,14 +86,17 @@ android {
             resValue "string", "domain_url_list", "https://h11.i2n5wp.xyz" +
                     ";https://h11.y7e8nr.xyz" +
                     ";https://h11.h8h8pm.xyz" +
-                    ";https://h21.k2a5dg.xyz" +
-                    ";https://h21.k2h9ae.xyz" +
-                    ";https://h21.l3q2ur.xyz" +
-                    ";https://h31.f9o4qf.xyz" +
-                    ";https://h31.r3v9ve.xyz" +
-                    ";https://h31.p7l9lh.xyz" +
-                    ";https://h41.q7s1iu.xyz" +
-                    ";https://h51.s4z9il.xyz" +
+                    ";https://h12.i2n5wp.xyz" +
+                    ";https://h12.y7e8nr.xyz" +
+                    ";https://h12.h8h8pm.xyz" +
+                    ";https://h22.k2a5dg.xyz" +
+                    ";https://h22.k2h9ae.xyz" +
+                    ";https://h22.l3q2ur.xyz" +
+                    ";https://h32.f9o4qf.xyz" +
+                    ";https://h32.r3v9ve.xyz" +
+                    ";https://h32.p7l9lh.xyz" +
+                    ";https://h42.q7s1iu.xyz" +
+                    ";https://h52.s4z9il.xyz" +
                     ";https://h61.saaen.com:16801" +
                     ";https://h61.caaau.com:16801" +
                     ";https://h61.baafj.com:16801" +
@@ -101,14 +104,14 @@ android {
                     ";https://h61.xuanwujx.com:16801" +
                     ";https://h61.yhlims.com:16801" +
                     ";https://h61.bfangwang.com:16801"
-            resValue "string", "domain_url_list_third", "https://cn2app.e2f9f5.com/xc/app_config.json" +
-                    ";https://cn2app.q5o4v3.com/xc/app_config.json" +
-                    ";https://cn2app.e9f6s7.com/xc/app_config.json" +
-                    ";https://cn2app.v2a1c6.com/xc/app_config.json" +
-                    ";https://scdnapp.i2q9r4.com/xc/app_config.json" +
-                    ";https://scdnapp.o6j6r6.com/xc/app_config.json" +
-                    ";https://aliapp.v9u4a4.com/xc/app_config.json" +
-                    ";https://aliapp.l2r1l7.com/xc/app_config.json"
+            resValue "string", "domain_url_list_third", "https://cn2app.y4k6sj.xyz/xc/app_config.json" +
+                    ";https://cn2app.q4e9qn.xyz/xc/app_config.json" +
+                    ";https://cn2app.x1e5qk.xyz/xc/app_config.json" +
+                    ";https://cn2app.v1e9qj.xyz/xc/app_config.json" +
+                    ";https://scdnapp.n4h7ot.xyz/xc/app_config.json" +
+                    ";https://scdnapp.e3z6uo.xyz/xc/app_config.json" +
+                    ";https://aliapp.x8d8zi.xyz/xc/app_config.json" +
+                    ";https://aliapp.r2z5zy.xyz/xc/app_config.json"
             multiDexEnabled true
             dimension "channelName"
         }

@@ -52,6 +52,7 @@ import com.xtree.recharge.ui.fragment.extransfer.ExTransferCommitFragment;
 import com.xtree.recharge.ui.fragment.extransfer.ExTransferConfirmFragment;
 import com.xtree.recharge.ui.fragment.extransfer.ExTransferFailFragment;
 import com.xtree.recharge.ui.fragment.extransfer.ExTransferPayeeFragment;
+import com.xtree.recharge.ui.fragment.extransfer.ExTransferSuccessFragment;
 import com.xtree.recharge.ui.fragment.extransfer.ExTransferVoucherFragment;
 import com.xtree.recharge.ui.model.BankPickModel;
 import com.xtree.recharge.ui.widget.Comm100ChatWindows;
@@ -85,14 +86,6 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
  * Describe: 极速转账viewModel
  */
 public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
-    public ExTransferViewModel(@NonNull Application application) {
-        super(application);
-    }
-
-    public ExTransferViewModel(@NonNull Application application, RechargeRepository model) {
-        super(application, model);
-    }
-
     //倒计时 剩余时间
     public MutableLiveData<String> leftTimeData = new MutableLiveData<>();
     //截止時間
@@ -105,7 +98,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     //是否可以取消订单 true 可以
     public MutableLiveData<Boolean> cancleOrderStatus = new MutableLiveData<>(false);
     //是否可以取消匹配 true 可以
-    public MutableLiveData<Boolean> cancleOrderWaitStatus = new MutableLiveData<>(false);
+    public MutableLiveData<Boolean> cancleOrderWaitStatus = new MutableLiveData<>(true);
     //凭证图片
     public MutableLiveData<Uri> voucher = new MutableLiveData<>();
     //订单生成信息
@@ -124,14 +117,20 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     //充值提示
     public MutableLiveData<SpannableString> tip1 = new MutableLiveData<>();
     public MutableLiveData<SpannableString> tip2 = new MutableLiveData<>();
-    private WeakReference<FragmentActivity> mActivity = null;
     public String canonicalName;
-    private BasePopupView loadingDialog = null;
     public MutableLiveData<RechargeViewModel> rechargeLiveData = new MutableLiveData<>();
     //标题
     public MutableLiveData<String> titleLiveData = new MutableLiveData<>("小额网银");
+    private WeakReference<FragmentActivity> mActivity = null;
+    private BasePopupView loadingDialog = null;
     @SuppressLint("StaticFieldLeak")
     private Comm100ChatWindows serviceChatFlow = null;
+    public ExTransferViewModel(@NonNull Application application) {
+        super(application);
+    }
+    public ExTransferViewModel(@NonNull Application application, RechargeRepository model) {
+        super(application, model);
+    }
 
     public void initData(FragmentActivity mActivity, ExCreateOrderRequest createOrderInfo) {
         setActivity(mActivity);
@@ -218,18 +217,20 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         checkCancleWaitState();
         checkOrderStatus();
 
-        ExBankInfoResponse bankInfo = new ExBankInfoResponse();
-        bankInfo.setBankAccount(data.getBankAccount());
-        bankInfo.setBankArea(data.getBankArea());
-        bankInfo.setBankCode(data.getBankCode());
-        bankInfo.setBankName(data.getBankName());
-        bankInfo.setBankAccountName(data.getBankAccountName());
-        bankInfo.setMerchantOrder(data.getMerchantOrder());
-        bankInfo.setPayAmount(data.getPayAmount());
-        bankInfo.setAllowCancel(data.getAllowCancel());
-        bankInfo.setAllowCancelTime(data.getAllowCancelTime());
-        bankInfo.setExpireTime(data.getExpireTime());
-        bankInfoData.setValue(bankInfo);
+        if (!TextUtils.isEmpty(data.getBankAccount())) {
+            ExBankInfoResponse bankInfo = new ExBankInfoResponse();
+            bankInfo.setBankAccount(data.getBankAccount());
+            bankInfo.setBankArea(data.getBankArea());
+            bankInfo.setBankCode(data.getBankCode());
+            bankInfo.setBankName(data.getBankName());
+            bankInfo.setBankAccountName(data.getBankAccountName());
+            bankInfo.setMerchantOrder(data.getMerchantOrder());
+            bankInfo.setPayAmount(data.getPayAmount());
+            bankInfo.setAllowCancel(data.getAllowCancel());
+            bankInfo.setAllowCancelTime(data.getAllowCancelTime());
+            bankInfo.setExpireTime(data.getExpireTime());
+            bankInfoData.setValue(bankInfo);
+        }
 
         deadlinesData.setValue("请于 " + data.getExpireTime() + " 内完成支付");
         cancleWaitTimeKeeping();
@@ -508,9 +509,9 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         }
         if (pvalue.getStatus().equals("13") && pvalue.getAllowCancelWait() == 1) {
             if (getDifferenceTimeByNow(pvalue.getCancelWaitTime()) > 0) {
-                cancleOrderStatus.setValue(true);
+                cancleOrderWaitStatus.setValue(true);
             } else {
-                cancleOrderStatus.setValue(false);
+                cancleOrderWaitStatus.setValue(false);
             }
         } else {
             cancleOrderWaitStatus.setValue(false);
@@ -697,6 +698,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                             loadingDialog.dismiss();
                         }
                     }
+
                     @Override
                     public void onFail(BusinessException t) {
                         super.onFail(t);
@@ -753,6 +755,8 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                             loadingDialog.dismiss();
                         }
 
+                        showBankEdit.setValue(true);
+
                         if (response != null) {
                             bankCodeOfPayment.setValue(null);
                             bankNameOfPayment.setValue(null);
@@ -769,8 +773,8 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                             ToastUtils.show("图片无法识别，请重选", ToastUtils.ShowType.Default);
                         }
 
-                        showBankEdit.setValue(true);
                     }
+
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
@@ -806,17 +810,26 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
      */
     private String getBankNameByCode(String bankCode) {
         ExRechargeOrderCheckResponse.DataDTO pvalue = payOrderData.getValue();
-        if (pvalue == null) {
+        if (pvalue == null || pvalue.getOpBankList() == null) {
             return "";
         }
 
         String bankName = "";
         ExRechargeOrderCheckResponse.DataDTO.OpBankListDTO opBankList = pvalue.getOpBankList();
         ArrayList<RechargeVo.OpBankListDTO.BankInfoDTO> bankInfoDTOS = new ArrayList<>();
-        bankInfoDTOS.addAll(opBankList.getHot());
-        bankInfoDTOS.addAll(opBankList.getOthers());
-        bankInfoDTOS.addAll(opBankList.getUsed());
-        bankInfoDTOS.addAll(opBankList.getTop());
+        if (opBankList.getHot() != null) {
+            bankInfoDTOS.addAll(opBankList.getHot());
+        }
+        if (opBankList.getOthers() != null) {
+            bankInfoDTOS.addAll(opBankList.getOthers());
+        }
+        if (opBankList.getUsed() != null) {
+            bankInfoDTOS.addAll(opBankList.getUsed());
+        }
+        if (opBankList.getTop() != null) {
+            bankInfoDTOS.addAll(opBankList.getTop());
+        }
+
 
         for (RechargeVo.OpBankListDTO.BankInfoDTO b : bankInfoDTOS) {
             if (b.getBankCode().equals(bankCode)) {
@@ -1046,18 +1059,19 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     public void setRechargeViewModel(RechargeViewModel rechargeViewModel) {
         rechargeLiveData.setValue(rechargeViewModel);
 
+        //外部传入的极速渠道名称
+        String expTitleValue = rechargeViewModel.liveDataExpTitle.getValue();
+        if (!TextUtils.isEmpty(expTitleValue)) {
+            titleLiveData.setValue(expTitleValue);
+            rechargeViewModel.liveDataExpTitle.setValue(null);
+            return;
+        }
+
         //充值页当前选择的渠道
         RechargeVo rechargeVo = rechargeViewModel.curRechargeLiveData.getValue();
         if (rechargeVo != null) {
             //设置标题
             titleLiveData.setValue(rechargeVo.title);
-            return;
-        }
-
-        //外部传入的极速渠道名称
-        String expTitleValue = rechargeViewModel.liveDataExpTitle.getValue();
-        if (!TextUtils.isEmpty(expTitleValue)) {
-            titleLiveData.setValue(expTitleValue);
         }
     }
 
@@ -1095,7 +1109,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
 
         canonicalName = null;
         showBankEdit.setValue(false);
-        cancleOrderWaitStatus.setValue(false);
+        cancleOrderWaitStatus.setValue(true);
         cancleOrderStatus.setValue(false);
         bankNumberOfPayment.setValue(null);
         bankNameOfPayment.setValue(null);
@@ -1135,6 +1149,9 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                 if (fragment.getClass().getCanonicalName().equals(ExTransferFailFragment.class.getCanonicalName())) {
                     fa.finish();
                 }
+                if (fragment.getClass().getCanonicalName().equals(ExTransferSuccessFragment.class.getCanonicalName())) {
+                    fa.finish();
+                }
                 if (fragment.getClass().getCanonicalName().equals(ExTransferConfirmFragment.class.getCanonicalName())) {
                     fa.finish();
                 }
@@ -1151,7 +1168,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     /**
      * 跳过极速引导引导
      */
-    public void skipGuide(){
+    public void skipGuide() {
         Disposable disposable = (Disposable) model.skipGuide()
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
