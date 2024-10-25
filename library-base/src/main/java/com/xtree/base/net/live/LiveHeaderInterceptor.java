@@ -42,6 +42,7 @@ public class LiveHeaderInterceptor implements Interceptor {
         String reqStr = formatParams(request);
         String uriPathRevKey = getUriPathRevKey(request);
 
+        builder.addHeader("Content-Type", "application/x-www-form-urlencoded");
         builder.addHeader("x-live-Token", X9LiveInfo.INSTANCE.getToken());
         builder.addHeader("x-live-Visitor", X9LiveInfo.INSTANCE.getVisitor());
         builder.addHeader("x-live-Oaid", X9LiveInfo.INSTANCE.getOaid());
@@ -104,7 +105,7 @@ public class LiveHeaderInterceptor implements Interceptor {
             }
         }
         if (!reqStr.isEmpty()) {
-            return "channel_code=" + X9LiveInfo.INSTANCE.getChannel() + "&" + reqStr;
+            return reqStr + "&";
         }
         return reqStr;
     }
