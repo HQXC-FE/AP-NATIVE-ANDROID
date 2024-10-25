@@ -14,7 +14,6 @@ import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.CfLog;
-import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.live.R;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.request.FrontLivesRequest;
@@ -27,7 +26,9 @@ import com.xtree.live.ui.main.model.hot.LiveHotModel;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
+import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
@@ -174,17 +175,17 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         }
     }
 
-    private void getFrontLives(String type, int page, int limit, Observer<FrontLivesResponse> success, Observer<Object> error) {
+    private void getFrontLives(String type, int page, int limit, Observer<List<FrontLivesResponse>> success, Observer<Object> error) {
         FrontLivesRequest request = new FrontLivesRequest();
         request.setLimit(limit);
         request.setType(type);
         request.setPage(page);
-        model.getFrontLives(request)
+        Disposable disposable = (Disposable) model.getFrontLives(request)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribe(new HttpCallBack<FrontLivesResponse>() {
+                .subscribeWith(new HttpCallBack<List<FrontLivesResponse>>() {
                     @Override
-                    public void onResult(FrontLivesResponse data) {
+                    public void onResult(List<FrontLivesResponse> data) {
                         success.onChanged(data);
                     }
 
@@ -200,6 +201,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         error.onChanged(t);
                     }
                 });
+        addSubscribe(disposable);
 
     }
 }

@@ -12,7 +12,6 @@ import com.xtree.base.mvvm.recyclerview.BindModel;
  * Describe: 直播TAB列表数据模型
  */
 public class LiveAnchorItemModel extends BindModel {
-    private String text;
     private String title;//	直播间标题
     private String thumb;//	直播间封面
     private String matchId;//	比赛id
@@ -21,14 +20,6 @@ public class LiveAnchorItemModel extends BindModel {
     private String heat;//		主播热度（后台-设置-网站信息-默认热度值 +（主播的v_user_count*v_user_multiple））
     private Integer isLive;//		直播状态：-1创建 0未直播 1正常 2取消，只返回返回状态为1的数据
     private ObservableBoolean playing = new ObservableBoolean(true);// 动画播放中
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 
     public String getTitle() {
         return title;
@@ -89,7 +80,7 @@ public class LiveAnchorItemModel extends BindModel {
     @Override
     public void onViewAttachedToWindow(@NonNull BindingAdapter.BindingViewHolder bindingViewHolder) {
         super.onViewAttachedToWindow(bindingViewHolder);
-        setPlaying(true);
+        setPlaying(isLive==1);
     }
 
     public ObservableBoolean getPlaying() {

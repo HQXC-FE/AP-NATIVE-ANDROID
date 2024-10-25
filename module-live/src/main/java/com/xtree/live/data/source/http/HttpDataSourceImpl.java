@@ -16,6 +16,7 @@ import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
@@ -72,7 +73,7 @@ public class HttpDataSourceImpl implements HttpDataSource {
         X9LiveInfo.INSTANCE.setToken(liveData.getXLiveToken());
         X9LiveInfo.INSTANCE.setVisitor(liveData.getVisitorId());
 
-        LiveClient.setApi(liveData.getAppApi().get(0));
+        LiveClient.setApi(liveData.getAppApi().get(0).replace("https","http"));
         liveService = LiveClient.getInstance().create(ApiService.class);
     }
 
@@ -90,10 +91,10 @@ public class HttpDataSourceImpl implements HttpDataSource {
     }
 
     @Override
-    public Flowable<BaseResponse<FrontLivesResponse>> getFrontLives(FrontLivesRequest request) {
+    public Flowable<BaseResponse<List<FrontLivesResponse>>> getFrontLives(FrontLivesRequest request) {
         Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
-        return liveService.post(APIManager.FRONT_LIVES, map).map(responseBody -> JSON.parseObject(responseBody.string(),
-                new TypeReference<BaseResponse<FrontLivesResponse>>() {
+        return liveService.get(APIManager.FRONT_LIVES, map).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<List<FrontLivesResponse>>>() {
                 }));
     }
 
