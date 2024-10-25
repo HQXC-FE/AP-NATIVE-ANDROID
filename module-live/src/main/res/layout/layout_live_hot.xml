@@ -11,12 +11,13 @@
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
-        onLoadMoreListener="@{m.onLoadMoreListener}"
+        srlEnableLoadMore="@{m.enableLoadMore}"
+        srlFinishRefresh="@{m.finishRefresh}"
+        srlAutoRefresh="@{m.autoRefresh}"
+        onRefreshLoadMoreListener="@{m.onRefreshLoadMoreListener}"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srlEnableAutoLoadMore="true"
-        app:srlEnableLoadMore="true"
-        app:srlEnableRefresh="false"
         android:background="@color/clr_main_01">
 
         <androidx.recyclerview.widget.RecyclerView

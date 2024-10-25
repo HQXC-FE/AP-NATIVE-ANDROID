@@ -1,7 +1,9 @@
 package com.xtree.live.data.source;
 
 
+import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
+import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 
 import io.reactivex.Flowable;
@@ -17,4 +19,6 @@ public interface HttpDataSource {
     void setLive(LiveTokenResponse liveData);
 
     Flowable<BaseResponse<LiveTokenResponse>> getLiveToken(LiveTokenRequest request);
+
+    Flowable<BaseResponse<FrontLivesResponse>> getFrontLives(FrontLivesRequest request);
 }

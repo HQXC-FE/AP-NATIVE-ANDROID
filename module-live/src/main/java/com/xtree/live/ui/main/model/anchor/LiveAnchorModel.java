@@ -3,12 +3,17 @@ package com.xtree.live.ui.main.model.anchor;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 
 import com.drake.brv.BindingAdapter;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xtree.base.mvvm.recyclerview.BaseDatabindingAdapter;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.live.R;
+import com.xtree.live.data.source.response.FrontLivesResponse;
+import com.xtree.live.ui.main.listener.FetchListener;
 
 import java.util.ArrayList;
 
@@ -20,13 +25,10 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
  */
 public class LiveAnchorModel extends BindModel {
 
-    public LiveAnchorModel() {
-        //设置标签，用于显示TAB标题
-        setTag("直播");
+    private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
 
-        datas.set(bindModels);
-    }
-
+    }};
+    private final int limit = 10;
     public ObservableField<ArrayList<BindModel>> datas = new ObservableField<>(new ArrayList<>());
     public ObservableField<ArrayList<Integer>> itemTypeList = new ObservableField<>(
             new ArrayList<Integer>() {
@@ -34,28 +36,12 @@ public class LiveAnchorModel extends BindModel {
                     add(R.layout.item_live_anchor);
                 }
             });
-
-
-    private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
-        LiveAnchorItemModel itemModel = new LiveAnchorItemModel();
-        itemModel.setText("直播TXT");
-
-        add(itemModel);
-        add(itemModel);
-        add(itemModel);
-        add(itemModel);
-        add(itemModel);
-        add(itemModel);
-        add(itemModel);
-        add(itemModel);
-    }};
-
     public BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
 
         @Override
         public void onItemClick(int modelPosition, int layoutPosition, int itemViewType) {
 
-            ToastUtils.show(""+modelPosition, ToastUtils.ShowType.Default);
+            ToastUtils.show("" + modelPosition, ToastUtils.ShowType.Default);
         }
 
         @Override
@@ -63,5 +49,63 @@ public class LiveAnchorModel extends BindModel {
 
         }
     };
+    public FetchListener<FrontLivesResponse> frontLivesResponseFetchListener;
+
+    public ObservableBoolean enableLoadMore = new ObservableBoolean(true);
+    public ObservableField<Object> finishRefresh = new ObservableField<Object>(null);
+    public ObservableField<Object> autoRefresh = new ObservableField<Object>(null);
+    private int currentPage = 1;
+    public OnRefreshLoadMoreListener onRefreshLoadMoreListener = new OnRefreshLoadMoreListener() {
+
+
+        @Override
+        public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+
+            currentPage = 1;
+            if (frontLivesResponseFetchListener != null) {
+                frontLivesResponseFetchListener.fetch(currentPage, limit, frontLivesResponse -> {
+                    _fetchFrontLives(currentPage, limit, true, frontLivesResponse);
+                }, error -> {
+                    _fetchFrontLives(currentPage, limit, false, null);
+                    finishRefresh.set(new Object());
+                });
+            }
+        }
+
+        @Override
+        public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+            currentPage++;
+            if (frontLivesResponseFetchListener != null) {
+                frontLivesResponseFetchListener.fetch(currentPage, limit, frontLivesResponse -> {
+                    _fetchFrontLives(currentPage, limit, false, frontLivesResponse);
+                }, error -> {
+                    _fetchFrontLives(currentPage, limit, false, null);
+                    finishRefresh.set(new Object());
+                });
+            }
+        }
+    };
+
+    public LiveAnchorModel(String tag) {
+        //设置标签，用于显示TAB标题
+        setTag(tag);
+        datas.set(bindModels);
+    }
+
+    private void _fetchFrontLives(int page, int limit, boolean isRefresh, FrontLivesResponse result) {
+        finishRefresh.set(new Object());
+        LiveAnchorItemModel itemModel = new LiveAnchorItemModel();
+        itemModel.setText("直播TXT");
+        bindModels.add(itemModel);
+        bindModels.add(itemModel);
+        bindModels.add(itemModel);
+        bindModels.add(itemModel);
+        bindModels.add(itemModel);
+        bindModels.add(itemModel);
+        bindModels.add(itemModel);
+        bindModels.add(itemModel);
+        datas.set(bindModels);
+        notifyChange();
+    }
 
 }

@@ -11,7 +11,9 @@ import com.xtree.live.data.source.HttpDataSource;
 import com.xtree.live.data.source.LocalDataSource;
 import com.xtree.live.data.source.http.HttpDataSourceImpl;
 import com.xtree.live.data.source.local.LocalDataSourceImpl;
+import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
+import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 
 import io.reactivex.Flowable;
@@ -82,5 +84,10 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     @Override
     public Flowable<BaseResponse<LiveTokenResponse>> getLiveToken(LiveTokenRequest request) {
         return mHttpDataSource.getLiveToken(request);
+    }
+
+    @Override
+    public Flowable<BaseResponse<FrontLivesResponse>> getFrontLives(FrontLivesRequest request) {
+        return mHttpDataSource.getFrontLives(request);
     }
 }

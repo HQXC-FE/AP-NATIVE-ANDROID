@@ -13,20 +13,37 @@
         android:layout_height="match_parent"
         android:background="@color/clr_main_01">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
+            onRefreshLoadMoreListener="@{m.onRefreshLoadMoreListener}"
+            srlEnableLoadMore="@{m.enableLoadMore}"
+            srlFinishRefresh="@{m.finishRefresh}"
+            srlAutoRefresh="@{m.autoRefresh}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/grid_space"
-            android:paddingBottom="100dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:clipToPadding="false"
-            app:itemData="@{m.datas}"
-            itemViewType="@{m.itemTypeList}"
-            onBindListener="@{m.onBindListener}"
-            app:spanCount="2"
-            app:gridSpace="@{@dimen/grid_space}"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+            app:srlEnableAutoLoadMore="true">
+
+            <com.scwang.smart.refresh.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                itemViewType="@{m.itemTypeList}"
+                onBindListener="@{m.onBindListener}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/grid_space"
+                android:clipToPadding="false"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="100dp"
+                app:gridSpace="@{@dimen/grid_space}"
+                app:itemData="@{m.datas}"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2" />
+
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -7,7 +7,9 @@ import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.live.data.source.APIManager;
 import com.xtree.live.data.source.ApiService;
 import com.xtree.live.data.source.HttpDataSource;
+import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
+import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 
 import java.util.Map;
@@ -23,9 +25,14 @@ import okhttp3.ResponseBody;
 public class HttpDataSourceImpl implements HttpDataSource {
 
     private static TypeReference<Map<String, Object>> type;
+    private volatile static HttpDataSourceImpl INSTANCE = null;
     private ApiService apiService;
     private ApiService liveService;
-    private volatile static HttpDataSourceImpl INSTANCE = null;
+
+    private HttpDataSourceImpl(ApiService apiService, ApiService liveService) {
+        this.apiService = apiService;
+        this.liveService = liveService;
+    }
 
     public static HttpDataSourceImpl getInstance(ApiService apiService, ApiService liveService) {
         if (INSTANCE == null) {
@@ -42,11 +49,6 @@ public class HttpDataSourceImpl implements HttpDataSource {
 
     public static void destroyInstance() {
         INSTANCE = null;
-    }
-
-    private HttpDataSourceImpl(ApiService apiService, ApiService liveService) {
-        this.apiService = apiService;
-        this.liveService = liveService;
     }
 
     @Override
@@ -68,7 +70,7 @@ public class HttpDataSourceImpl implements HttpDataSource {
     @Override
     public Flowable<BaseResponse<LiveTokenResponse>> getLiveToken(LiveTokenRequest request) {
         Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
-        return apiService.get(APIManager.X9_TOKEN_URL,map).map(new Function<ResponseBody, BaseResponse<LiveTokenResponse>>() {
+        return apiService.get(APIManager.X9_TOKEN_URL, map).map(new Function<ResponseBody, BaseResponse<LiveTokenResponse>>() {
             @Override
             public BaseResponse<LiveTokenResponse> apply(ResponseBody responseBody) throws Exception {
                 return JSON.parseObject(responseBody.string(),
@@ -76,5 +78,13 @@ public class HttpDataSourceImpl implements HttpDataSource {
                         });
             }
         });
+    }
+
+    @Override
+    public Flowable<BaseResponse<FrontLivesResponse>> getFrontLives(FrontLivesRequest request) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return liveService.post(APIManager.FRONT_LIVES, map).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<FrontLivesResponse>>() {
+                }));
     }
 }
