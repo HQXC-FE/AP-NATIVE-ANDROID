@@ -35,6 +35,7 @@ import com.xtree.mine.vo.request.AdduserRequest;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
@@ -66,6 +67,7 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
     public MutableLiveData<AppUpdateVo> liveDataUpdate = new MutableLiveData<>();//更新
     public SingleLiveData<List<LotteryItemVo>> liveDataLotteryAll = new SingleLiveData<>();
     public SingleLiveData<EasterReportVo> liveDataEasterReport = new SingleLiveData<>();
+    public SingleLiveData<Boolean> liveDataSetPoint = new SingleLiveData<>(); // 设置返点
 
     public MineViewModel(@NonNull Application application, MineRepository repository) {
         super(application, repository);
@@ -458,6 +460,32 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onError(Throwable t) {
                         //super.onError(t);
+                        CfLog.e("error, " + t.toString());
+
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    /**
+     * 返点设定
+     */
+    public void setPoint(Map<String, String> map) {
+        Disposable disposable = (Disposable) model.getApiService().updateReturnPoint(map)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<HashMap<String, String>>() {
+                    @Override
+                    public void onResult(HashMap<String, String> map) {
+                        if (map.get("status").equals("10000")) {
+                            liveDataSetPoint.setValue(true);
+                        } else {
+                            ToastUtils.showError(map.get("message"));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
                         CfLog.e("error, " + t.toString());
 
                     }

@@ -13,6 +13,7 @@
     <string name="me_my_pocket">我的钱包</string>
     <string name="me_transfer">转账</string>
     <string name="me_betting_record">投注记录</string>
+    <string name="me_set_point">返点设定</string>
     <string name="me_account_record">账变记录</string>
     <string name="me_account_safety">账户安全</string>
     <string name="me_more_service">更多服务</string>
@@ -514,4 +515,10 @@
     <string name="txt_cancel_lottery">已撤回</string>
     <string name="txt_lottery_all_kind">所有彩种</string>
 
+    <string name="txt_set_point">设置返点</string>
+    <string name="txt_username_title">用户名：</string>
+    <string name="txt_current_point">当前返点：</string>
+    <string name="txt_lottery_point">彩票返点：</string>
+    <string name="txt_lottery_point_warning">自身保留返点： %s</string>
+    <string name="txt_set_success">设置成功</string>
 </resources>

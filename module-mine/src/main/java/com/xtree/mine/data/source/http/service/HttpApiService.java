@@ -774,4 +774,11 @@ public interface HttpApiService {
     @GET("/api/report/easteregg?")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<EasterReportVo>> getEasterReport(@QueryMap Map<String, Object> qMap);
+
+    /**
+     * 返点设定
+     */
+    @PUT("/api/user/set-child-point")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<HashMap<String, String>> updateReturnPoint(@Body Map<String, String> map);
 }
