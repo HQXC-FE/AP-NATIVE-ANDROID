@@ -700,7 +700,9 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                     public void onResult(List<PMResultBean> list) {
                         List<SportTypeItem> list1 = new ArrayList<>();
                         for (PMResultBean i : list) {
-                            if (PMConstants.getMatchGames().get(i.getMenuType()) == null) {
+                            if (PMConstants.getMatchGames().get(i.getMenuType()) == null
+                                    || i.getMenuType() == 3001 || i.getMenuType() == 3002 || i.getMenuType() == 3003) {
+                                //体育赛果隐藏英雄联盟、DOTA2、王者荣耀
                                 continue;
                             }
                             SportTypeItem item = new SportTypeItem();
