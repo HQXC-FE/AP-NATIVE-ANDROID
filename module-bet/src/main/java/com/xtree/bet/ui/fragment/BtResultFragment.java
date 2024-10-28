@@ -203,7 +203,7 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
 
     @Override
     public void initViewObservable() {
-        //只会执行一次
+        //只会在初始化执行一次
         viewModel.resultData.observe(this, result -> {
             mResult = result;
             if (playMethodPos == 0) {
