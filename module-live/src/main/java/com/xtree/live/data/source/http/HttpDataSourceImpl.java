@@ -33,36 +33,6 @@ import okhttp3.ResponseBody;
 /**
  * Created by goldze on 2019/3/26.
  */
-@Override
-public Flowable<BaseResponse<FBService>> getFBGameTokenApi() {
-    return apiService.post(APIManager.FB_GET_TOKEN, new HashMap<>()).map(responseBody -> JSON.parseObject(responseBody.string(),
-            new TypeReference<BaseResponse<FBService>>() {
-
-            }));
-}
-
-@Override
-public Flowable<BaseResponse<FBService>> getFBXCGameTokenApi() {
-    return apiService.post(APIManager.FBXC_GET_TOKEN, new HashMap<>()).map(responseBody -> JSON.parseObject(responseBody.string(),
-            new TypeReference<BaseResponse<FBService>>() {
-
-            }));
-}
-
-/**
- * 获取赛事详情
- *
- * @param request
- * @return
- */
-@Override
-public Flowable<BaseResponse<MatchInfo>> getMatchDetail(MatchDetailRequest request) {
-    Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
-    return fbService.postJson(APIManager.GET_MATCHDETAIL, map).map(responseBody -> JSON.parseObject(responseBody.string(),
-            new TypeReference<BaseResponse<MatchInfo>>() {
-            }));
-}
-
 public class HttpDataSourceImpl implements HttpDataSource {
 
     private static TypeReference<Map<String, Object>> type;
@@ -199,6 +169,35 @@ public class HttpDataSourceImpl implements HttpDataSource {
         });
     }
 
-}
+    @Override
+    public Flowable<BaseResponse<FBService>> getFBGameTokenApi() {
+        return apiService.post(APIManager.FB_GET_TOKEN, new HashMap<>()).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<FBService>>() {
+
+                }));
+    }
+
+    @Override
+    public Flowable<BaseResponse<FBService>> getFBXCGameTokenApi() {
+        return apiService.post(APIManager.FBXC_GET_TOKEN, new HashMap<>()).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<FBService>>() {
+
+                }));
+    }
+
+    /**
+     * 获取赛事详情
+     *
+     * @param request
+     * @return
+     */
+    @Override
+    public Flowable<BaseResponse<MatchInfo>> getMatchDetail(MatchDetailRequest request) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return fbService.postJson(APIManager.GET_MATCHDETAIL, map).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<MatchInfo>>() {
+                }));
+    }
+
 
 }

@@ -20,7 +20,6 @@ public class APIManager {
     //加密配置API
     private static final String SECRET_API = "/api/secret/";
 
-    public static final String FRONT_LIVES = "/api/front/lives";
     //聊天房列表
     public static final String CHATROOMLIST_API = "/api/chat/getChatRoomList";
     // 已关注主播列表
