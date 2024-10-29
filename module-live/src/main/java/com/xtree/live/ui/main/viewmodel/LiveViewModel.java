@@ -265,7 +265,11 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                     @Override
                     public void onFail(BusinessException t) {
                         super.onFail(t);
-                        error.onChanged(t);
+                        if (t.code == CODE_14010) {
+                            getGameTokenApi(matchId, success, error);
+                        } else {
+                            error.onChanged(t);
+                        }
                     }
                 });
         addSubscribe(disposable);

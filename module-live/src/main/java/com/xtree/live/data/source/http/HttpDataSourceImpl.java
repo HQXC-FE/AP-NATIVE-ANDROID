@@ -85,7 +85,7 @@ public class HttpDataSourceImpl implements HttpDataSource {
         X9LiveInfo.INSTANCE.setVisitor(liveData.getVisitorId());
 
         //抓包可去掉证书replace("https", "http")
-        LiveClient.setApi(liveData.getAppApi().get(0).replace("https","http"));
+        LiveClient.setApi(liveData.getAppApi().get(0));
         /*LiveClient.setApi("http://zhibo-apps.oxldkm.com");*/
         CfLog.e("setLive ---> " + liveData.toString());
         liveService = LiveClient.getInstance().create(ApiService.class);
@@ -163,7 +163,9 @@ public class HttpDataSourceImpl implements HttpDataSource {
 
     @Override
     public Flowable<BaseResponse<FBService>> getFBGameTokenApi() {
-        return apiService.post(APIManager.FB_GET_TOKEN, new HashMap<>()).map(responseBody -> JSON.parseObject(responseBody.string(),
+        return apiService.post(APIManager.FB_GET_TOKEN, new HashMap<String, Object>() {{
+            put("cachedToken", 0);
+        }}).map(responseBody -> JSON.parseObject(responseBody.string(),
                 new TypeReference<BaseResponse<FBService>>() {
 
                 }));
@@ -171,7 +173,9 @@ public class HttpDataSourceImpl implements HttpDataSource {
 
     @Override
     public Flowable<BaseResponse<FBService>> getFBXCGameTokenApi() {
-        return apiService.post(APIManager.FBXC_GET_TOKEN, new HashMap<>()).map(responseBody -> JSON.parseObject(responseBody.string(),
+        return apiService.post(APIManager.FBXC_GET_TOKEN, new HashMap<String, Object>() {{
+            put("cachedToken", 0);
+        }}).map(responseBody -> JSON.parseObject(responseBody.string(),
                 new TypeReference<BaseResponse<FBService>>() {
 
                 }));
@@ -194,9 +198,9 @@ public class HttpDataSourceImpl implements HttpDataSource {
                     new TypeReference<BaseResponse<MatchInfo>>() {
                     }));
         } else {
-            return apiService.post(APIManager.NO_AUTH_FORWARD,new HashMap<String,Object>(){{
-                put("api",APIManager.NO_AUth_GET_MATCH_DETAIL);
-            }},map).map(responseBody -> JSON.parseObject(responseBody.string(),
+            return apiService.post(APIManager.NO_AUTH_FORWARD, new HashMap<String, Object>() {{
+                put("api", APIManager.NO_AUth_GET_MATCH_DETAIL);
+            }}, map).map(responseBody -> JSON.parseObject(responseBody.string(),
                     new TypeReference<BaseResponse<MatchInfo>>() {
 
                     }));
