@@ -45,17 +45,16 @@ public class HttpDataSourceImpl implements HttpDataSource {
     private ApiService liveService;
     private ApiService fbService;
 
-    private HttpDataSourceImpl(ApiService apiService, ApiService liveService, ApiService fbService) {
+    private HttpDataSourceImpl(ApiService apiService, ApiService liveService) {
         this.apiService = apiService;
         this.liveService = liveService;
-        this.fbService = fbService;
     }
 
-    public static HttpDataSourceImpl getInstance(ApiService apiService, ApiService liveService, ApiService fbService) {
+    public static HttpDataSourceImpl getInstance(ApiService apiService, ApiService liveService) {
         if (INSTANCE == null) {
             synchronized (HttpDataSourceImpl.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new HttpDataSourceImpl(apiService, liveService, fbService);
+                    INSTANCE = new HttpDataSourceImpl(apiService, liveService);
                     type = new TypeReference<Map<String, Object>>() {
                     };
                 }

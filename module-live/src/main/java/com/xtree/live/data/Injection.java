@@ -18,9 +18,8 @@ public class Injection {
         //网络API服务
         ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
         ApiService liveService = LiveClient.getInstance().create(ApiService.class);
-        ApiService fbService = FBRetrofitClient.getInstance().create(ApiService.class);
         //网络数据源
-        HttpDataSource httpDataSource = HttpDataSourceImpl.getInstance(apiService, liveService, fbService);
+        HttpDataSource httpDataSource = HttpDataSourceImpl.getInstance(apiService, liveService);
         //本地数据源
         LocalDataSource localDataSource = LocalDataSourceImpl.getInstance();
         //两条分支组成一个数据仓库
