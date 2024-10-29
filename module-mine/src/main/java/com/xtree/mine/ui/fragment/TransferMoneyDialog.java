@@ -4,14 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
+import com.xtree.base.adapter.CacheViewHolder;
+import com.xtree.base.adapter.CachedAutoRefreshAdapter;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.UuidUtil;
+import com.xtree.base.widget.ListDialog;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.mine.BR;
@@ -20,10 +24,12 @@ import com.xtree.mine.databinding.DialogTransferMoneyBinding;
 import com.xtree.mine.ui.viewmodel.MineViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.utils.ToastUtils;
+import project.tqyb.com.library_res.databinding.ItemTextBinding;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_MEMBER_TRANSFER)
 public class TransferMoneyDialog extends BaseFragment<DialogTransferMoneyBinding, MineViewModel> {
@@ -37,6 +43,8 @@ public class TransferMoneyDialog extends BaseFragment<DialogTransferMoneyBinding
     String username;
     String userid;
     BasePopupView ppw = null;
+
+    ItemTextBinding binding2;
 
     @Override
     public void initViewObservable() {
@@ -70,6 +78,8 @@ public class TransferMoneyDialog extends BaseFragment<DialogTransferMoneyBinding
         }
 
         binding.tvwUserAccount.setText(username);
+
+        binding.tvwTransfer.setOnClickListener(v -> showChooseDialog());
 
         binding.ivwClose.setOnClickListener(v -> getActivity().finish());
         binding.btnCancel.setOnClickListener(v -> getActivity().finish());
@@ -114,6 +124,61 @@ public class TransferMoneyDialog extends BaseFragment<DialogTransferMoneyBinding
         return new ViewModelProvider(this, factory).get(MineViewModel.class);
     }
 
+    private void showChooseDialog() {
+        CachedAutoRefreshAdapter adapter = new CachedAutoRefreshAdapter<String>() {
+
+            @NonNull
+            @Override
+            public CacheViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                CacheViewHolder holder = new CacheViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.item_text, parent, false));
+                return holder;
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull CacheViewHolder holder, int position) {
+                binding2 = ItemTextBinding.bind(holder.itemView);
+                String txt = get(position);
+                binding2.tvwTitle.setText(txt);
+                binding2.tvwTitle.setOnClickListener(v -> {
+                    binding.tvwTransfer.setText(txt);
+                    ppw.dismiss();
+                });
+            }
+        };
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add(getString(R.string.txt_input_output_transfer));
+        list.add(getString(R.string.txt_lottery_bonus));
+        list.add(getString(R.string.txt_lottery_active_money));
+        list.add(getString(R.string.txt_day_money));
+        list.add(getString(R.string.txt_real_bonus));
+        list.add(getString(R.string.txt_agent_money));
+        list.add(getString(R.string.txt_third_active_money));
+        adapter.addAll(list);
+        ppw = new XPopup.Builder(getContext()).asCustom(new ListDialog(getContext(), "", adapter));
+        ppw.show();
+    }
+
+    private void checkOrderType(HashMap<String, String> map) {
+        if (binding.tvwTransfer.getText().toString().equals(getString(R.string.txt_input_output_transfer))) {
+            map.put("ordertype", "1");
+        } else if (binding.tvwTransfer.getText().toString().equals(getString(R.string.txt_lottery_bonus))) {
+            map.put("ordertype", "42");
+        } else if (binding.tvwTransfer.getText().toString().equals(getString(R.string.txt_lottery_active_money))) {
+            map.put("ordertype", "52");
+        } else if (binding.tvwTransfer.getText().toString().equals(getString(R.string.txt_day_money))) {
+            map.put("ordertype", "72");
+        } else if (binding.tvwTransfer.getText().toString().equals(getString(R.string.txt_real_bonus))) {
+            map.put("ordertype", "204");
+        } else if (binding.tvwTransfer.getText().toString().equals(getString(R.string.txt_agent_money))) {
+            map.put("ordertype", "323");
+        } else if (binding.tvwTransfer.getText().toString().equals(getString(R.string.txt_third_active_money))) {
+            map.put("ordertype", "383");
+        } else {
+            map.put("ordertype", "1");
+        }
+    }
+
     private void checkPassword() {
         String money = binding.etUserMoney.getText().toString();
 
@@ -125,6 +190,7 @@ public class TransferMoneyDialog extends BaseFragment<DialogTransferMoneyBinding
         map.put("money", money);
         map.put("uid", userid);
         map.put("nonce", UuidUtil.getID16());
+        checkOrderType(map);
         viewModel.sendMoney(map);
     }
 }
