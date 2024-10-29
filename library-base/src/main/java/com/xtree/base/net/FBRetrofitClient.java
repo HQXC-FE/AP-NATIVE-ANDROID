@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.DomainUtil;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -53,22 +54,17 @@ public class FBRetrofitClient {
         private static FBRetrofitClient INSTANCE = new FBRetrofitClient();
     }*/
 
-    public static FBRetrofitClient getInstance() {
-        return new FBRetrofitClient();
-    }
-
-    /*public static void init() {
-        SingletonHolder.INSTANCE = new FBRetrofitClient();
-    }*/
-
     private FBRetrofitClient() {
         baseUrl = SPUtils.getInstance().getString(SPKeyGlobal.FB_API_SERVICE_URL);
 
         String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
-        if(TextUtils.equals(platform, PLATFORM_FBXC)) {
+        if (TextUtils.equals(platform, PLATFORM_FBXC)) {
             baseUrl = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_API_SERVICE_URL);
         } else {
             baseUrl = SPUtils.getInstance().getString(SPKeyGlobal.FB_API_SERVICE_URL);
+        }
+        if (TextUtils.isEmpty(baseUrl)) {
+            baseUrl = DomainUtil.getApiUrl();
         }
 
         if (httpCacheDirectory == null) {
@@ -105,7 +101,7 @@ public class FBRetrofitClient {
                 .connectionPool(new ConnectionPool(8, 15, TimeUnit.SECONDS))
                 // 这里你可以根据自己的机型设置同时连接的个数和时间，我这里8个，和每个保持时间为10s
                 .build();
-                CfLog.e("baseUrl ===== " + baseUrl);
+        CfLog.e("baseUrl ===== " + baseUrl);
         retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -115,15 +111,12 @@ public class FBRetrofitClient {
 
     }
 
-    /**
-     * create you ApiService
-     * Create an implementation of the API endpoints defined by the {@code service} interface.
-     */
-    public <T> T create(final Class<T> service) {
-        if (service == null) {
-            throw new RuntimeException("Api service is null!");
-        }
-        return retrofit.create(service);
+    /*public static void init() {
+        SingletonHolder.INSTANCE = new FBRetrofitClient();
+    }*/
+
+    public static FBRetrofitClient getInstance() {
+        return new FBRetrofitClient();
     }
 
     /**
@@ -145,5 +138,16 @@ public class FBRetrofitClient {
                 .subscribe(subscriber);
 
         return null;
+    }
+
+    /**
+     * create you ApiService
+     * Create an implementation of the API endpoints defined by the {@code service} interface.
+     */
+    public <T> T create(final Class<T> service) {
+        if (service == null) {
+            throw new RuntimeException("Api service is null!");
+        }
+        return retrofit.create(service);
     }
 }
