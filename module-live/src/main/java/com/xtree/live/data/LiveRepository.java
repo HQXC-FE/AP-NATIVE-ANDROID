@@ -1,6 +1,5 @@
 package com.xtree.live.data;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
@@ -14,16 +13,14 @@ import com.xtree.live.data.source.LocalDataSource;
 import com.xtree.live.data.source.http.HttpDataSourceImpl;
 import com.xtree.live.data.source.local.LocalDataSourceImpl;
 import com.xtree.live.data.source.request.AnchorSortRequest;
-import com.xtree.live.data.source.request.AttentionRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
-import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.data.source.response.ReviseHotResponse;
-import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
+import com.xtree.live.data.source.response.fb.MatchInfo;
 
 import java.util.List;
 
@@ -106,11 +103,6 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     @Override
     public Flowable<BaseResponse<List<FrontLivesResponse>>> getFrontLives(FrontLivesRequest request) {
         return mHttpDataSource.getFrontLives(request);
-    }
-
-    @Override
-    public Flowable<BaseResponse<AttentionListModel>> getAttention(AttentionRequest request) {
-        return mHttpDataSource.getAttention(request);
     }
 
     @Override

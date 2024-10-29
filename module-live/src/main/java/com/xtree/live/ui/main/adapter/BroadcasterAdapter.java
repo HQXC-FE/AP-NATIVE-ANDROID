@@ -2,22 +2,20 @@ package com.xtree.live.ui.main.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.bumptech.glide.Glide;
 import com.xtree.base.adapter.CacheViewHolder;
 import com.xtree.base.adapter.CachedAutoRefreshAdapter;
 import com.xtree.live.R;
+import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.databinding.ItemLiveBroadcasterBinding;
-import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
 
 /**
  * 主播列表Adapter
  */
-public class BroadcasterAdapter extends CachedAutoRefreshAdapter<AttentionListModel> {
+public class BroadcasterAdapter extends CachedAutoRefreshAdapter<AnchorSortResponse> {
     Context ctx;
     ItemLiveBroadcasterBinding binding;
     public BroadcasterAdapter(Context ctx) {
@@ -34,9 +32,10 @@ public class BroadcasterAdapter extends CachedAutoRefreshAdapter<AttentionListMo
     @Override
     public void onBindViewHolder(@NonNull CacheViewHolder holder, int position) {
 
-        AttentionListModel vo =  get(position);
+        AnchorSortResponse vo =  get(position);
 
         binding = ItemLiveBroadcasterBinding.bind(holder.itemView);
+/*
 
         Glide.with(ctx).load(vo.avatar).placeholder(R.mipmap.lv_broadcaster_header_default_off).into(binding.ivLiveBroadcasterHeader.ivLiveOnHeader);
         binding.tvLiveBroadcasterName.setText(vo.user_nickname);
@@ -47,6 +46,7 @@ public class BroadcasterAdapter extends CachedAutoRefreshAdapter<AttentionListMo
         }else{
             binding.ivLiveBroadcasterHeader.ivIsLive.setVisibility(View.GONE);
         }
+*/
 
 
     }

@@ -527,6 +527,39 @@
                             android:text="@string/me_bangzhu_zhongxin" />
 
                     </LinearLayout>
+                    <LinearLayout style="@style/style_ll_row_2">
+
+                        <TextView
+                            android:id="@+id/tvwZhiBo"
+                            style="@style/style_menu_black"
+                            android:drawableTop="@mipmap/me_tiyu_guize"
+                            android:text="@string/txt_live" />
+
+                        <TextView style="@style/style_wallet_space" />
+
+                      <!--  <TextView
+                            android:id="@+id/tvw_upgrade"
+                            style="@style/style_menu_black"
+                            android:drawableTop="@mipmap/me_gr_upgrade"
+                            android:text="@string/txt_upgrade" />
+
+                        <TextView style="@style/style_wallet_space" />
+
+                        <TextView
+                            android:id="@+id/tvw_usdt_jiaocheng"
+                            style="@style/style_menu_black"
+                            android:drawableTop="@mipmap/me_usdt_jiaocheng"
+                            android:text="@string/me_usdt_jiaocheng" />
+
+                        <TextView style="@style/style_wallet_space" />
+
+                        <TextView
+                            android:id="@+id/tvw_bangzhu_zhongxin"
+                            style="@style/style_menu_black"
+                            android:drawableTop="@mipmap/me_ic_help"
+                            android:text="@string/me_bangzhu_zhongxin" />-->
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

@@ -1,9 +1,7 @@
 package com.xtree.live.data.source;
 
-
 import com.xtree.base.vo.FBService;
 import com.xtree.live.data.source.request.AnchorSortRequest;
-import com.xtree.live.data.source.request.AttentionRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
@@ -12,7 +10,6 @@ import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.fb.MatchInfo;
-import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
 
 import java.util.List;
 
@@ -43,8 +40,16 @@ public interface HttpDataSource {
      */
     Flowable<BaseResponse<List<FrontLivesResponse>>> getFrontLives(FrontLivesRequest request);
 
-    Flowable<BaseResponse<AttentionListModel>> getAttention(AttentionRequest request);
 
+    /**
+     * 获取主播列表
+     * @param request   type ;//1：热门， 2：推荐
+     *    platform ;//终端类型 	1： PC; 2：H5；3：android；4：ios；
+     *     side;//投放位置 	1：足球；2：篮球；3：电竞；4：首页；5：直播间；6：其它；
+     *    listRows ;//每页数量,默认6
+     *     page;//页码默认1
+     * @return
+     */
     Flowable<BaseResponse<AnchorSortResponse>> getAnchorSort(AnchorSortRequest request);
     //获取直播配置信息
     Flowable<BaseResponse<ReviseHotResponse>> getReviseHot();

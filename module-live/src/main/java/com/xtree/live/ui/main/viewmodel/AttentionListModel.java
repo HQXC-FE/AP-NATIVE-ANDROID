@@ -1,0 +1,97 @@
+package com.xtree.live.ui.main.viewmodel;
+
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+
+import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.net.live.X9LiveInfo;
+import com.xtree.base.utils.CfLog;
+import com.xtree.live.data.LiveRepository;
+import com.xtree.live.data.source.request.AnchorSortRequest;
+import com.xtree.live.data.source.request.LiveTokenRequest;
+import com.xtree.live.data.source.response.AnchorSortResponse;
+import com.xtree.live.data.source.response.LiveTokenResponse;
+
+import java.lang.ref.WeakReference;
+
+import me.xtree.mvvmhabit.base.BaseViewModel;
+import me.xtree.mvvmhabit.utils.RxUtils;
+
+public class AttentionListModel extends BaseViewModel<LiveRepository> {
+    public  interface ICallBack{
+        void  callback();
+    }
+    private WeakReference<FragmentActivity> mActivity = null;
+    public AttentionListModel(@NonNull Application application) {
+        super(application);
+    }
+    public AttentionListModel(@NonNull Application application, LiveRepository model) {
+        super(application, model);
+    }
+    public ICallBack callBack ;
+
+    public void setCallBack(ICallBack callBack) {
+        CfLog.e("setCallBack --- >" +callBack.toString());
+        this.callBack = callBack;
+    }
+
+
+    public void initData(FragmentActivity mActivity) {
+        setActivity(mActivity);
+
+        if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
+            model.getLiveToken(new LiveTokenRequest())
+                    .compose(RxUtils.schedulersTransformer())
+                    .compose(RxUtils.exceptionTransformer())
+                    .subscribe(new HttpCallBack<LiveTokenResponse>() {
+                        @Override
+                        public void onResult(LiveTokenResponse data) {
+                            if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                                model.setLive(data);
+                                initData();
+                                if (callBack != null){
+                                    CfLog.e("initData ------------->allBack != null");
+                                    callBack.callback();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+
+                            super.onError(t);
+                        }
+                    });
+        } else {
+            initData();
+        }
+    }
+
+    public void getAnchorSort(){
+        LiveRepository.getInstance().getAnchorSort(new AnchorSortRequest())
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<AnchorSortResponse>() {
+                    @Override
+                    public void onResult(AnchorSortResponse data) {
+
+                        if (data !=null){
+                            CfLog.e("getAnchorSort ---->" + data.toString());
+                        }
+                    }
+
+                });
+    }
+
+
+    public void setActivity(FragmentActivity mActivity) {
+        this.mActivity = new WeakReference<>(mActivity);
+    }
+    private void initData() {
+        /*itemType.setValue(typeList);
+        datas.setValue(bindModels);*/
+        getAnchorSort();
+    }
+}

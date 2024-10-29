@@ -23,9 +23,11 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
 import com.xtree.live.R;
 import com.xtree.live.data.LiveRepository;
+import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
+import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.fb.Match;
@@ -299,5 +301,23 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                 });
         addSubscribe(disposable);
     }
+
+    public void  getAnchorSort(){
+        LiveRepository.getInstance().getAnchorSort(new AnchorSortRequest())
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<AnchorSortResponse>() {
+                    @Override
+                    public void onResult(AnchorSortResponse data) {
+
+                        if (data !=null){
+                            CfLog.e("getAnchorSort ---->" + data.toString());
+                        }
+                    }
+
+                });
+    }
+
+
 }
 

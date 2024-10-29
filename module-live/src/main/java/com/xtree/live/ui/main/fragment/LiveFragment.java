@@ -10,11 +10,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.router.RouterFragmentPath;
+import com.xtree.base.utils.CfLog;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.factory.AppViewModelFactory;
+import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
+import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.databinding.FragmentLiveBinding;
 import com.xtree.live.ui.main.viewmodel.LiveViewModel;
@@ -46,7 +49,9 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
                         super.onError(t);
                     }
                 });
+
     }
+
 
     @Override
     public void initView() {

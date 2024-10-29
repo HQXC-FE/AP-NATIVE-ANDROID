@@ -7,27 +7,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.router.RouterFragmentPath;
-import com.xtree.base.widget.MsgDialog;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.broadcaster.fragment.LiveShareDialog;
 import com.xtree.live.data.factory.AppViewModelFactory;
-import com.xtree.live.databinding.FragmentChatBinding;
 import com.xtree.live.databinding.FragmentLiveBroadcasterBinding;
 import com.xtree.live.ui.main.adapter.BroadcasterAdapter;
-import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
-import com.xtree.live.ui.main.viewmodel.LiveViewModel;
+import com.xtree.live.ui.main.viewmodel.AttentionListModel;
 
 import java.util.ArrayList;
 
@@ -37,17 +31,17 @@ import me.xtree.mvvmhabit.base.BaseFragment;
  * 主播列表
  */
 @Route(path = RouterFragmentPath.Live.PAGER_LIVE_ATTENTION)
-public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterBinding, LiveViewModel> {
+public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterBinding, AttentionListModel> implements AttentionListModel.ICallBack {
     private ArrayList<Fragment> fragmentList = new ArrayList<>();
     private ArrayList<String> tabList = new ArrayList<>();
     private BroadcasterAdapter mAdapter;
-    private  ArrayList<AttentionListModel> attentionListModels = new ArrayList<AttentionListModel>();
     private BasePopupView shareView;
     private LiveShareDialog liveShareDialog ;
 
+
+
     @Override
     public void initView() {
-
         mAdapter = new BroadcasterAdapter(getContext());
         binding.rvMain.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
@@ -73,6 +67,26 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
             }
 
         });
+        binding.ivwBack.setOnClickListener(v -> {
+            getActivity().finish();
+        });
+/*
+        LiveRepository.getInstance().getLiveToken(new LiveTokenRequest())
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<LiveTokenResponse>() {
+                    @Override
+                    public void onResult(LiveTokenResponse data) {
+                        if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                            LiveRepository.getInstance().setLive(data);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
+                });*/
     }
 
     @Override
@@ -86,8 +100,20 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
     }
 
     @Override
-    public LiveViewModel initViewModel() {
+    public AttentionListModel initViewModel() {
         AppViewModelFactory factory = AppViewModelFactory.getInstance(getActivity().getApplication());
-        return new ViewModelProvider(this, factory).get(LiveViewModel.class);
+        return new ViewModelProvider(this, factory).get(AttentionListModel.class);
+    }
+    @Override
+    public void initData() {
+        super.initData();
+        viewModel.setCallBack(this);
+        viewModel.initData(requireActivity());
+    }
+
+    @Override
+    public void callback() {
+        viewModel.getAnchorSort();
+
     }
 }

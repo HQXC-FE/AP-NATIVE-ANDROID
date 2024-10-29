@@ -266,6 +266,18 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             }
         });
 
+        binding.tvwZhiBo.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(token)) {
+                Intent toLogin = new Intent(getContext(), LoginRegisterActivity.class);
+                toLogin.putExtra(LoginRegisterActivity.ENTER_TYPE, LoginRegisterActivity.LOGIN_TYPE);
+                startActivity(toLogin);
+            }else{
+                ToastUtils.showError("跳转 主播列表");
+                startContainerFragment(RouterFragmentPath.Live.PAGER_LIVE_ATTENTION);
+            }
+
+        });
+
     }
 
     private void goWebView(View v, String path, boolean isContainTitle) {

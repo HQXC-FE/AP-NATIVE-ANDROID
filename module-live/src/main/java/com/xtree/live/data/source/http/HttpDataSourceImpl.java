@@ -9,12 +9,12 @@ import com.xtree.base.net.FBRetrofitClient;
 import com.xtree.base.net.live.LiveClient;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.AESUtil;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
 import com.xtree.live.data.source.APIManager;
 import com.xtree.live.data.source.ApiService;
 import com.xtree.live.data.source.HttpDataSource;
 import com.xtree.live.data.source.request.AnchorSortRequest;
-import com.xtree.live.data.source.request.AttentionRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
@@ -23,7 +23,6 @@ import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.fb.MatchInfo;
-import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +86,9 @@ public class HttpDataSourceImpl implements HttpDataSource {
         X9LiveInfo.INSTANCE.setVisitor(liveData.getVisitorId());
 
         //抓包可去掉证书replace("https", "http")
-        LiveClient.setApi(liveData.getAppApi().get(0));
+        LiveClient.setApi(liveData.getAppApi().get(0).replace("https","http"));
+        /*LiveClient.setApi("http://zhibo-apps.oxldkm.com");*/
+        CfLog.e("setLive ---> " + liveData.toString());
         liveService = LiveClient.getInstance().create(ApiService.class);
     }
 
@@ -118,19 +119,6 @@ public class HttpDataSourceImpl implements HttpDataSource {
                 }));
     }
 
-    @Override
-    public Flowable<BaseResponse<AttentionListModel>> getAttention(AttentionRequest request) {
-        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
-        return liveService.get(APIManager.ATTENTION_API, map).map(new Function<ResponseBody, BaseResponse<AttentionListModel>>() {
-            @Override
-            public BaseResponse<AttentionListModel> apply(ResponseBody responseBody) throws Exception {
-                return JSON.parseObject(responseBody.string(),
-                        new TypeReference<BaseResponse<AttentionListModel>>() {
-
-                        });
-            }
-        });
-    }
 
     /**
      * 获取主播列表

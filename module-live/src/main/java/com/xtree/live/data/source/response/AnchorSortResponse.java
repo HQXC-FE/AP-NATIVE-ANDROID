@@ -6,6 +6,24 @@ import java.util.ArrayList;
  * /api/anchor/sort 来自于该接口
  */
 public class AnchorSortResponse {
+    @Override
+    public String toString() {
+        return "AnchorSortResponse{" +
+                "user=" + user +
+                ", total='" + total + '\'' +
+                ", per_page='" + per_page + '\'' +
+                ", current_page='" + current_page + '\'' +
+                ", last_page='" + last_page + '\'' +
+                ", anchor_id='" + anchor_id + '\'' +
+                ", platform='" + platform + '\'' +
+                ", side='" + side + '\'' +
+                ", listRows='" + listRows + '\'' +
+                ", type='" + type + '\'' +
+                ", description='" + description + '\'' +
+                ", heat='" + heat + '\'' +
+                ", is_live='" + is_live + '\'' +
+                '}';
+    }
 
     public ArrayList<User> user ;//主播信息列表
     public String total;// 	总数居量

@@ -145,7 +145,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
     @Override
     public void onError(Throwable t) {
         LoadingDialog.finish();
-        KLog.e("error: " + t.toString());
+        KLog.e("----------------->error: " + t.toString());
         Sentry.captureException(t);
         //t.printStackTrace();
         if (t instanceof ResponseThrowable) {
