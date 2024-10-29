@@ -30,6 +30,7 @@ import com.xtree.live.data.source.request.MatchDetailRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
+import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.fb.Match;
 import com.xtree.live.data.source.response.fb.MatchFb;
 import com.xtree.live.data.source.response.fb.MatchInfo;
@@ -168,6 +169,17 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     private void initData() {
         itemType.setValue(typeList);
         datas.setValue(bindModels);
+
+        //获取直播配置文件
+        model.getReviseHot()
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<ReviseHotResponse>() {
+                    @Override
+                    public void onResult(ReviseHotResponse o) {
+
+                    }
+                });
     }
 
     public void refresh(String tag) {

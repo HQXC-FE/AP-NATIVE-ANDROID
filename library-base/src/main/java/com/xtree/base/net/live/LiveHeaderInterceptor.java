@@ -9,6 +9,7 @@ import com.xtree.base.utils.MD5Util;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -79,7 +80,22 @@ public class LiveHeaderInterceptor implements Interceptor {
             // URL 中的查询参数
             String query = request.url().query();
             if (query != null) {
-                reqStr = query;
+                // 将查询字符串按 '&' 分割
+                String[] pairs = query.split("&");
+
+                // 对键值对进行排序
+                Arrays.sort(pairs);
+
+                // 使用 StringBuilder 构建排序后的结果字符串
+                StringBuilder sortedQueryString = new StringBuilder();
+                for (int i = 0; i < pairs.length; i++) {
+                    if (i > 0) {
+                        sortedQueryString.append("&");
+                    }
+                    sortedQueryString.append(pairs[i]);
+                }
+
+                reqStr = sortedQueryString.toString();
             }
         }
         // 处理 POST 请求参数
