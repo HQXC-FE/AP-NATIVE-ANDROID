@@ -22,6 +22,7 @@ import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.fb.MatchInfo;
+import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
 
 import java.util.List;
@@ -130,6 +131,11 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     @Override
     public Flowable<BaseResponse<MatchInfo>> getMatchDetail(MatchDetailRequest request) {
         return mHttpDataSource.getMatchDetail(request);
+    }
+
+    @Override
+    public Flowable<BaseResponse<ReviseHotResponse>> getReviseHot() {
+        return mHttpDataSource.getReviseHot();
     }
 
 }

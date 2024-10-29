@@ -8,8 +8,7 @@ import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
-import com.xtree.live.data.source.response.FrontLivesResponse;
-import com.xtree.live.data.source.response.LiveTokenResponse;
+import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
 
@@ -17,7 +16,6 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.http.BaseResponse;
-import retrofit2.http.Headers;
 
 /**
  * Created by goldze on 2019/3/26.
@@ -30,6 +28,7 @@ public interface HttpDataSource {
 
     void setLive(LiveTokenResponse liveData);
 
+    //获取直播令牌
     Flowable<BaseResponse<LiveTokenResponse>> getLiveToken(LiveTokenRequest request);
 
     /**
@@ -45,6 +44,8 @@ public interface HttpDataSource {
     Flowable<BaseResponse<AttentionListModel>> getAttention(AttentionRequest request);
 
     Flowable<BaseResponse<AnchorSortResponse>> getAnchorSort(AnchorSortRequest request);
+    //获取直播配置信息
+    Flowable<BaseResponse<ReviseHotResponse>> getReviseHot();
 
     /**
      * 获取 FB体育请求服务地址
