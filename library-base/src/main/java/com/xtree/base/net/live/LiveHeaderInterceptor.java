@@ -1,5 +1,7 @@
 package com.xtree.base.net.live;
 
+import android.os.Build;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.xtree.base.utils.MD5Util;
@@ -50,6 +52,12 @@ public class LiveHeaderInterceptor implements Interceptor {
         builder.addHeader("x-live-Channel", X9LiveInfo.INSTANCE.getChannel());
         builder.addHeader("x-live-Time", time);
         builder.addHeader("x-live-Version", version);
+        //手机品牌
+        builder.addHeader("x-live-Brand", Build.BRAND);
+        //手机型号
+        builder.addHeader("x-live-Model", Build.MODEL);
+        //手机版本
+        builder.addHeader("x-live-Version-OS", "Android_" + Build.VERSION.RELEASE);
 
         // xLiveSign加密
         String signStr = reqStr + "key=" + clientSpecialKey + "/" + uriPathRevKey + "/"
