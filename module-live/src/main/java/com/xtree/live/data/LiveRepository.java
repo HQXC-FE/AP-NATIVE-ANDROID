@@ -4,8 +4,10 @@ package com.xtree.live.data;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
-import com.xtree.base.net.live.LiveClient;
+import com.xtree.base.net.FBRetrofitClient;
 import com.xtree.base.net.RetrofitClient;
+import com.xtree.base.net.live.LiveClient;
+import com.xtree.base.vo.FBService;
 import com.xtree.live.data.source.ApiService;
 import com.xtree.live.data.source.HttpDataSource;
 import com.xtree.live.data.source.LocalDataSource;
@@ -15,9 +17,11 @@ import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.AttentionRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
+import com.xtree.live.data.source.request.MatchDetailRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
+import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.ui.main.model.anchorList.AttentionListModel;
 
 import java.util.List;
@@ -60,8 +64,9 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
                     //网络API服务
                     ApiService apiService = RetrofitClient.getInstance().create(ApiService.class);
                     ApiService liveService = LiveClient.getInstance().create(ApiService.class);
+                    ApiService fbService = FBRetrofitClient.getInstance().create(ApiService.class);
                     //网络数据源
-                    HttpDataSource httpDataSource = HttpDataSourceImpl.getInstance(apiService, liveService);
+                    HttpDataSource httpDataSource = HttpDataSourceImpl.getInstance(apiService, liveService,fbService);
                     //本地数据源
                     LocalDataSource localDataSource = LocalDataSourceImpl.getInstance();
 
@@ -110,6 +115,21 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     @Override
     public Flowable<BaseResponse<AnchorSortResponse>> getAnchorSort(AnchorSortRequest request) {
         return mHttpDataSource.getAnchorSort(request);
+    }
+
+    @Override
+    public Flowable<BaseResponse<FBService>> getFBGameTokenApi() {
+        return mHttpDataSource.getFBGameTokenApi();
+    }
+
+    @Override
+    public Flowable<BaseResponse<FBService>> getFBXCGameTokenApi() {
+        return mHttpDataSource.getFBGameTokenApi();
+    }
+
+    @Override
+    public Flowable<BaseResponse<MatchInfo>> getMatchDetail(MatchDetailRequest request) {
+        return mHttpDataSource.getMatchDetail(request);
     }
 
 }

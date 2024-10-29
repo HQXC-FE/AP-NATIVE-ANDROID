@@ -29,6 +29,25 @@ import me.xtree.mvvmhabit.utils.RxUtils;
 @Route(path = RouterFragmentPath.Live.PAGER_LIVE_MAIN)
 public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewModel> {
 
+    public LiveFragment() {
+        LiveRepository.getInstance().getLiveToken(new LiveTokenRequest())
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<LiveTokenResponse>() {
+                    @Override
+                    public void onResult(LiveTokenResponse data) {
+                        if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                            LiveRepository.getInstance().setLive(data);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
+                });
+    }
+
     @Override
     public void initView() {
 
@@ -53,31 +72,19 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
     @Override
     public void initData() {
         super.initData();
-
         viewModel.initData(requireActivity());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        viewModel.refresh("");
-    }
-
-    public LiveFragment() {
-        LiveRepository.getInstance().getLiveToken(new LiveTokenRequest())
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribe(new HttpCallBack<LiveTokenResponse>() {
-                    @Override
-                    public void onResult(LiveTokenResponse data) {
-                        if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
-                            LiveRepository.getInstance().setLive(data);
-                        }
-                    }
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
-                });
+        try {
+            //刷新数据
+            if (binding.tabLayout.getSelectedTabPosition() != -1) {
+                viewModel.refresh(binding.tabLayout.getTabAt(binding.tabLayout.getSelectedTabPosition()).getText().toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

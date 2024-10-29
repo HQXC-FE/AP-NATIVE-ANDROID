@@ -2,8 +2,8 @@ package com.xtree.live.ui.main.listener;
 
 import androidx.lifecycle.Observer;
 
-import com.xtree.live.data.source.response.FrontLivesResponse;
+import java.util.Map;
 
 public interface FetchListener<T> {
-    void fetch(int page, int limit, Observer<T> success,Observer<Object> error);
+    void fetch(int page, int limit, Map<String, Object> params, Observer<T> success, Observer<Object> error);
 }

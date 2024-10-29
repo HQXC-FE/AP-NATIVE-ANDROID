@@ -6,7 +6,15 @@ package com.xtree.live.data.source;
  */
 public class APIManager {
 
+    //直播列表
     public static final String FRONT_LIVES = "/api/front/lives";
+    //获取赛事详情、比分
+    public static final String GET_MATCHDETAIL="/v1/match/getMatchDetail";
+    //获取 FB杏彩体育请求服务地址
+    public static final String FBXC_GET_TOKEN="/api/sports/fbxc/getToken?cachedToken=0";
+    //获取 FB杏彩体育请求服务地址
+    public static final String FB_GET_TOKEN="/api/sports/fb/getToken?cachedToken=0";
+
     //直播
     private static final String X9_API = "/api/x9/";
     //获取直播token
@@ -18,5 +26,6 @@ public class APIManager {
     public static final String ATTENTION_API="/api/user/attentionList";
     //获取主播排序列表
     public static final String ANCHOR_SORT_API="/api/anchor/sort";
+
 
 }

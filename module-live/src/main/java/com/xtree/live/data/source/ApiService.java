@@ -43,6 +43,10 @@ public interface ApiService {
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<ResponseBody> post(@Path(value = "url", encoded = true) String url, @Body Map<String, Object> map);
 
+    @POST("{url}")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<ResponseBody> postJson(@Path(value = "url", encoded = true) String url, @Body Map<String, Object> map);
+
     /**
      * POST
      *

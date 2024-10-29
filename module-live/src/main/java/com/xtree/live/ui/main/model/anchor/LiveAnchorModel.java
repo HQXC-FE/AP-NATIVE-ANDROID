@@ -64,7 +64,7 @@ public class LiveAnchorModel extends BindModel {
 
             currentPage = 1;
             if (frontLivesResponseFetchListener != null) {
-                frontLivesResponseFetchListener.fetch(currentPage, limit, frontLivesResponse -> {
+                frontLivesResponseFetchListener.fetch(currentPage, limit, null, frontLivesResponse -> {
                     _fetchFrontLives(currentPage, limit, true, frontLivesResponse);
                 }, error -> {
                     finishRefresh.set(new Object());
@@ -76,7 +76,7 @@ public class LiveAnchorModel extends BindModel {
         public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
             currentPage++;
             if (frontLivesResponseFetchListener != null) {
-                frontLivesResponseFetchListener.fetch(currentPage, limit, frontLivesResponse -> {
+                frontLivesResponseFetchListener.fetch(currentPage, limit, null, frontLivesResponse -> {
                     _fetchFrontLives(currentPage, limit, false, frontLivesResponse);
                 }, error -> {
                     finishRefresh.set(new Object());

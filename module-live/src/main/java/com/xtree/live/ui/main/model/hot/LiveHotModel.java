@@ -1,5 +1,6 @@
 package com.xtree.live.ui.main.model.hot;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -13,9 +14,12 @@ import com.xtree.base.mvvm.recyclerview.BaseDatabindingAdapter;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.live.R;
 import com.xtree.live.data.source.response.FrontLivesResponse;
+import com.xtree.live.data.source.response.fb.Constants;
+import com.xtree.live.data.source.response.fb.Match;
 import com.xtree.live.ui.main.listener.FetchListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -41,6 +45,7 @@ public class LiveHotModel extends BindModel {
     public ObservableField<Object> finishRefresh = new ObservableField<Object>();
     public ObservableField<Object> autoRefresh = new ObservableField<Object>();
     public FetchListener<List<FrontLivesResponse>> frontLivesResponseFetchListener;
+    public FetchListener<Match> matchInfoResponseFetchListener;
     public BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
 
         @Override
@@ -63,10 +68,9 @@ public class LiveHotModel extends BindModel {
 
             currentPage = 1;
             if (frontLivesResponseFetchListener != null) {
-                frontLivesResponseFetchListener.fetch(currentPage, limit, frontLivesResponse -> {
+                frontLivesResponseFetchListener.fetch(currentPage, limit, null, frontLivesResponse -> {
                     _fetchFrontLives(currentPage, limit, true, frontLivesResponse);
                 }, error -> {
-                    _fetchFrontLives(currentPage, limit, false, null);
                     finishRefresh.set(new Object());
                 });
             }
@@ -76,10 +80,9 @@ public class LiveHotModel extends BindModel {
         public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
             currentPage++;
             if (frontLivesResponseFetchListener != null) {
-                frontLivesResponseFetchListener.fetch(currentPage, limit, frontLivesResponse -> {
+                frontLivesResponseFetchListener.fetch(currentPage, limit, null, frontLivesResponse -> {
                     _fetchFrontLives(currentPage, limit, false, frontLivesResponse);
                 }, error -> {
-                    _fetchFrontLives(currentPage, limit, false, null);
                     finishRefresh.set(new Object());
                 });
             }
@@ -97,17 +100,63 @@ public class LiveHotModel extends BindModel {
     private void _fetchFrontLives(int page, int limit, boolean isRefresh, List<FrontLivesResponse> result) {
         finishRefresh.set(new Object());
 
-        LiveHotItemModel itemModel = new LiveHotItemModel();
-        itemModel.setText("热门TXT");
-
-        bindModels.add(itemModel);
-        bindModels.add(itemModel);
-        bindModels.add(itemModel);
-        bindModels.add(itemModel);
-        bindModels.add(itemModel);
-        bindModels.add(itemModel);
+        if (isRefresh) {
+            bindModels.clear();
+        }
+        for (FrontLivesResponse response :
+                result) {
+            LiveHotItemModel itemModel = new LiveHotItemModel();
+            itemModel.setUserNickname(response.getUserNickname());
+            itemModel.setMatchId("" + response.getMatchId());
+            bindModels.add(itemModel);
+            if (matchInfoResponseFetchListener != null) {
+                //matchId：787632
+                if (response.getMatchId() > 0) {
+                    matchInfoResponseFetchListener.fetch(-1, -1, new HashMap() {{
+                        put("matchId", response.getMatchId());
+                    }}, match -> {
+                        _fetchMatchInfo(itemModel, match);
+                    }, error -> {
+                    });
+                }
+            }
+        }
         datas.set(bindModels);
         notifyChange();
     }
 
+    private void _fetchMatchInfo(LiveHotItemModel itemModel, Match match) {
+        List<Integer> scoreList = match.getScore(Constants.getScoreType());
+        if (scoreList != null && scoreList.size() > 1) {
+            String scoreMain = String.valueOf(scoreList.get(0));
+            String scoreVisitor = String.valueOf(scoreList.get(1));
+            itemModel.mainScore.set(scoreMain);
+            itemModel.visitorScore.set(scoreVisitor);
+        }
+
+        String teamMain = match.getTeamMain();
+        String teamTeamVistor = match.getTeamVistor();
+        if (!TextUtils.isEmpty(teamMain)) {
+            itemModel.mainTeamName.set(teamMain);
+        }
+        if (!TextUtils.isEmpty(teamTeamVistor)) {
+            itemModel.visitorTeamName.set(teamTeamVistor);
+        }
+
+        String leagueName = match.getLeague().getLeagueName();
+        if (!TextUtils.isEmpty(leagueName)) {
+            itemModel.leagueName.set(leagueName);
+        }
+
+        String iconMain = match.getIconMain();
+        String iconVisitor = match.getIconVisitor();
+
+        if (!TextUtils.isEmpty(iconMain)) {
+            itemModel.mainTeamIcon.set(iconMain);
+        }
+
+        if (!TextUtils.isEmpty(iconVisitor)) {
+            itemModel.visitorTeamIcon.set(iconVisitor);
+        }
+    }
 }

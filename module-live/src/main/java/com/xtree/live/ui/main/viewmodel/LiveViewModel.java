@@ -1,5 +1,9 @@
 package com.xtree.live.ui.main.viewmodel;
 
+import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
+import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
+
 import android.app.Application;
 import android.text.TextUtils;
 
@@ -10,16 +14,23 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.google.android.material.tabs.TabLayout;
+import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.live.X9LiveInfo;
+import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.vo.FBService;
 import com.xtree.live.R;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
+import com.xtree.live.data.source.request.MatchDetailRequest;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
+import com.xtree.live.data.source.response.fb.Match;
+import com.xtree.live.data.source.response.fb.MatchFb;
+import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.ui.main.model.anchor.LiveAnchorModel;
 import com.xtree.live.ui.main.model.constant.FrontLivesType;
 import com.xtree.live.ui.main.model.hot.LiveHotModel;
@@ -28,10 +39,14 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
+import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
+import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
+import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
  * Created by KAKA on 2024/9/9.
@@ -42,20 +57,23 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
     private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
         LiveAnchorModel liveAnchorModel = new LiveAnchorModel(FrontLivesType.ALL.getLabel());
-        liveAnchorModel.frontLivesResponseFetchListener = (page, limit, success, error) -> getFrontLives(FrontLivesType.ALL.getValue(), page, limit, success, error);
+        liveAnchorModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.ALL.getValue(), page, limit, success, error);
         liveAnchorModel.setItemType(0);
 
 
         LiveHotModel liveFootBallModel = new LiveHotModel(FrontLivesType.FOOTBALL.getLabel());
-        liveFootBallModel.frontLivesResponseFetchListener = (page, limit, success, error) -> getFrontLives(FrontLivesType.FOOTBALL.getValue(), page, limit, success, error);
+        liveFootBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.FOOTBALL.getValue(), page, limit, success, error);
+        liveFootBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
         liveFootBallModel.setItemType(1);
 
         LiveHotModel liveBasketBallModel = new LiveHotModel(FrontLivesType.BASKETBALL.getLabel());
-        liveBasketBallModel.frontLivesResponseFetchListener = (page, limit, success, error) -> getFrontLives(FrontLivesType.BASKETBALL.getValue(), page, limit, success, error);
+        liveBasketBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.BASKETBALL.getValue(), page, limit, success, error);
+        liveBasketBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
         liveBasketBallModel.setItemType(1);
 
         LiveHotModel liveOtherModel = new LiveHotModel(FrontLivesType.OTHER.getLabel());
-        liveOtherModel.frontLivesResponseFetchListener = (page, limit, success, error) -> getFrontLives(FrontLivesType.BASKETBALL.getValue(), page, limit, success, error);
+        liveOtherModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.OTHER.getValue(), page, limit, success, error);
+        liveOtherModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
         liveOtherModel.setItemType(1);
 
         add(liveAnchorModel);
@@ -202,7 +220,80 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                     }
                 });
         addSubscribe(disposable);
+    }
 
+    private void getMatchDetail(String matchId, Observer<Match> success, Observer<Object> error) {
+        MatchDetailRequest request = new MatchDetailRequest();
+        request.setMatchId("787632");
+        Disposable disposable = (Disposable) model.getMatchDetail(request)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<MatchInfo>() {
+                    @Override
+                    public void onResult(MatchInfo data) {
+                        success.onChanged(new MatchFb(data));
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if ((t instanceof ResponseThrowable) && ((ResponseThrowable) t).code == CODE_14010) {
+                            getGameTokenApi(matchId, success, error);
+                        } else {
+                            error.onChanged(t);
+                        }
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        super.onFail(t);
+                        error.onChanged(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    public void getGameTokenApi(String matchId, Observer<Match> success, Observer<Object> error) {
+        Flowable<BaseResponse<FBService>> flowable;
+        String mPlatform = SPUtils.getInstance().getString(KEY_PLATFORM);
+        if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
+            flowable = model.getFBXCGameTokenApi();
+        } else {
+            flowable = model.getFBGameTokenApi();
+        }
+        Disposable disposable = (Disposable) flowable
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<FBService>() {
+                    @Override
+                    public void onResult(FBService fbService) {
+                        if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
+                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, fbService.getToken());
+                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
+                            BtDomainUtil.setDefaultFbxcDomainUrl(fbService.getForward().getApiServerAddress());
+                            BtDomainUtil.addFbxcDomainUrl(fbService.getForward().getApiServerAddress());
+                            BtDomainUtil.setFbxcDomainUrl(fbService.getDomains());
+                        } else {
+                            SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, fbService.getToken());
+                            SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
+                            BtDomainUtil.setDefaultFbDomainUrl(fbService.getForward().getApiServerAddress());
+                            BtDomainUtil.addFbDomainUrl(fbService.getForward().getApiServerAddress());
+                            BtDomainUtil.setFbDomainUrl(fbService.getDomains());
+                        }
+                        getMatchDetail(matchId, success, error);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        error.onChanged(t);
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        error.onChanged(t);
+                    }
+                });
+        addSubscribe(disposable);
     }
 }
 

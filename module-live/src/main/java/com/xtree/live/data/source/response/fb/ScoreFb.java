@@ -1,0 +1,28 @@
+package com.xtree.live.data.source.response.fb;
+
+import java.util.List;
+
+public class ScoreFb implements Score{
+    private ScoreInfo scoreInfo;
+    public ScoreFb(ScoreInfo scoreInfo){
+        this.scoreInfo = scoreInfo;
+    }
+
+    /**
+     * 获取玩法
+     * @return
+     */
+    @Override
+    public String getPeriod() {
+        return String.valueOf(scoreInfo.pe);
+    }
+
+    /**
+     * 获取比分
+     * @return
+     */
+    @Override
+    public List<Integer> getScores() {
+        return scoreInfo.sc;
+    }
+}

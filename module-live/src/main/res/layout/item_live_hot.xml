@@ -36,7 +36,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
-            android:text="世界杯"
+            android:text="@{m.leagueName}"
             android:textColor="@color/clr_txt_01"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -53,11 +53,12 @@
 
         <ImageView
             android:id="@+id/ivTeamA"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginStart="6dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/bt_match_item_zq_selector"
+            imageUrl="@{m.mainTeamIcon}"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
@@ -69,7 +70,7 @@
             android:layout_marginEnd="20dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="曼城"
+            android:text="@{m.mainTeamName}"
             android:textColor="@color/clr_rc_txt_hi"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -85,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="20dp"
-            android:text="0"
+            android:text="@{m.mainScore}"
             android:textColor="@color/clr_txt_01"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -95,11 +96,12 @@
 
         <ImageView
             android:id="@+id/ivTeamB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginTop="9dp"
             android:src="@drawable/bt_match_item_zq_selector"
             app:layout_constraintStart_toStartOf="@+id/ivTeamA"
+            imageUrl="@{m.visitorTeamIcon}"
             app:layout_constraintTop_toBottomOf="@+id/ivTeamA" />
 
         <TextView
@@ -110,7 +112,7 @@
             android:layout_marginEnd="20dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="切尔西"
+            android:text="@{m.visitorTeamName}"
             android:textColor="@color/clr_rc_txt_hi"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -126,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="20dp"
-            android:text="0"
+            android:text="@{m.visitorScore}"
             android:textColor="@color/clr_txt_01"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -150,7 +152,7 @@
             android:paddingEnd="10dp"
             android:paddingBottom="4dp"
             android:singleLine="true"
-            android:text="捷克老师"
+            android:text="@{m.userNickname}"
             android:textColor="@color/clr_txt_01"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
