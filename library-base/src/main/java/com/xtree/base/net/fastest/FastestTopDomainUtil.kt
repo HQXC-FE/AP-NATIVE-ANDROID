@@ -3,6 +3,7 @@ package com.xtree.base.net.fastest
 import com.alibaba.android.arouter.utils.TextUtils
 import com.drake.net.Get
 import com.drake.net.Net
+import com.drake.net.Post
 import com.drake.net.scope.AndroidScope
 import com.drake.net.utils.runMain
 import com.drake.net.utils.scopeNet
@@ -205,6 +206,13 @@ class FastestTopDomainUtil private constructor() {
                     EventBus.getDefault()
                         .post(EventVo(EventConstant.EVENT_TOP_SPEED_FAILED, ""))
                 }
+
+                val list = mutableListOf<MutableList<String>>()
+
+                Post<String>( "https://ap3sport.oxldkm.com/api/sports/speedmonitor"){
+                    // 只支持基础类型的值, 如果值为对象或者包含对象的集合/数组会导致其值为null
+                    json("device_type" to "9", "data" to list)
+                }.await()
 
             } catch (e: Exception) {
                 CfLog.e(e.toString())
