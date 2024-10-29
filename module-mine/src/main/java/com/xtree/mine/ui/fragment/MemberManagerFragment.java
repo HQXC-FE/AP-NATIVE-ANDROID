@@ -165,6 +165,15 @@ public class MemberManagerFragment extends BaseFragment<FragmentMemberManageBind
             binding.refreshLayout.finishRefresh();
             binding.refreshLayout.finishLoadMore();
 
+            if (null == vo.users) {
+                ToastUtils.showLong(vo.msg_detail);
+                binding.tvwBread.setText("");
+                binding.refreshLayout.setEnableLoadMore(false);
+                binding.refreshLayout.setEnableRefresh(false);
+                binding.tvwNoData.setVisibility(View.VISIBLE);
+                return;
+            }
+
             binding.refreshLayout.setEnableLoadMore(!vo.mobile_page.p.equals(vo.mobile_page.total_page));
 
             if (vo.users != null && !vo.users.isEmpty()) {
