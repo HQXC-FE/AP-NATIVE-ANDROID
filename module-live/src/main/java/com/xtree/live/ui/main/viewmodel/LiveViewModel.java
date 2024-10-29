@@ -224,14 +224,18 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
     private void getMatchDetail(String matchId, Observer<Match> success, Observer<Object> error) {
         MatchDetailRequest request = new MatchDetailRequest();
-        request.setMatchId("787632");
+        request.setMatchId(matchId);
         Disposable disposable = (Disposable) model.getMatchDetail(request)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<MatchInfo>() {
                     @Override
                     public void onResult(MatchInfo data) {
-                        success.onChanged(new MatchFb(data));
+                        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
+                            success.onChanged(new MatchFb(data.data));
+                        } else {
+                            success.onChanged(new MatchFb(data));
+                        }
                     }
 
                     @Override

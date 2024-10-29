@@ -1,7 +1,11 @@
 package com.xtree.live.data.source.http;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.FBRetrofitClient;
 import com.xtree.base.net.live.LiveClient;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.AESUtil;
@@ -28,6 +32,7 @@ import java.util.Map;
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
 import me.xtree.mvvmhabit.http.BaseResponse;
+import me.xtree.mvvmhabit.utils.SPUtils;
 import okhttp3.ResponseBody;
 
 /**
@@ -194,9 +199,22 @@ public class HttpDataSourceImpl implements HttpDataSource {
     @Override
     public Flowable<BaseResponse<MatchInfo>> getMatchDetail(MatchDetailRequest request) {
         Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
-        return fbService.postJson(APIManager.GET_MATCHDETAIL, map).map(responseBody -> JSON.parseObject(responseBody.string(),
-                new TypeReference<BaseResponse<MatchInfo>>() {
-                }));
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.FBXC_API_SERVICE_URL)) && !TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
+            if (TextUtils.isEmpty(FBRetrofitClient.baseUrl)) {
+                fbService = FBRetrofitClient.getInstance().create(ApiService.class);
+            }
+            return fbService.postJson(APIManager.GET_MATCH_DETAIL, map).map(responseBody -> JSON.parseObject(responseBody.string(),
+                    new TypeReference<BaseResponse<MatchInfo>>() {
+                    }));
+        } else {
+            return apiService.post(APIManager.NO_AUTH_FORWARD,new HashMap<String,Object>(){{
+                put("api",APIManager.NO_AUth_GET_MATCH_DETAIL);
+            }},map).map(responseBody -> JSON.parseObject(responseBody.string(),
+                    new TypeReference<BaseResponse<MatchInfo>>() {
+
+                    }));
+        }
+
     }
 
 

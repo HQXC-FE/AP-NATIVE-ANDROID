@@ -7,6 +7,21 @@ import com.xtree.base.vo.BaseBean;
 import java.util.List;
 
 public class MatchInfo implements BaseBean {
+
+    public static final Creator<MatchInfo> CREATOR = new Creator<MatchInfo>() {
+        @Override
+        public MatchInfo createFromParcel(Parcel source) {
+            return new MatchInfo(source);
+        }
+
+        @Override
+        public MatchInfo[] newArray(int size) {
+            return new MatchInfo[size];
+        }
+    };
+    //这是未登录返回的data
+    public MatchInfo data;
+
     public int id;
     public List<ScoreInfo> nsg;
     /**
@@ -22,11 +37,11 @@ public class MatchInfo implements BaseBean {
      */
     public List<String> tps;
     /**
-     *  联赛信息
+     * 联赛信息
      */
     public LeagueInfo lg;
     /**
-     *  球队信息
+     * 球队信息
      */
     public List<TeamInfo> ts;
     /**
@@ -98,6 +113,36 @@ public class MatchInfo implements BaseBean {
      */
     public ScoreboardInfo sb;
 
+    public MatchInfo() {
+    }
+
+    protected MatchInfo(Parcel in) {
+        this.id = in.readInt();
+        this.nsg = in.createTypedArrayList(ScoreInfo.CREATOR);
+        this.mg = in.createTypedArrayList(PlayTypeInfo.CREATOR);
+        this.tms = in.readInt();
+        this.tps = in.createStringArrayList();
+        this.lg = in.readParcelable(LeagueInfo.class.getClassLoader());
+        this.ts = in.createTypedArrayList(TeamInfo.CREATOR);
+        this.mc = in.readParcelable(MatchTimeInfo.class.getClassLoader());
+        this.bt = in.readLong();
+        this.ms = in.readInt();
+        this.fid = in.readInt();
+        this.fmt = in.readInt();
+        this.ss = in.readInt();
+        this.ne = in.readInt();
+        this.vs = in.readParcelable(VideoInfo.class.getClassLoader());
+        this.as = in.createStringArrayList();
+        this.sid = in.readInt();
+        this.ssi = in.readInt();
+        this.mp = in.readString();
+        this.smt = in.readInt();
+        this.ty = in.readInt();
+        this.ye = in.readString();
+        this.nm = in.readString();
+        this.sb = in.readParcelable(ScoreboardInfo.class.getClassLoader());
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -129,6 +174,7 @@ public class MatchInfo implements BaseBean {
         dest.writeString(this.ye);
         dest.writeString(this.nm);
         dest.writeParcelable(this.sb, flags);
+        dest.writeParcelable(this.data, flags);
     }
 
     public void readFromParcel(Parcel source) {
@@ -156,47 +202,6 @@ public class MatchInfo implements BaseBean {
         this.ye = source.readString();
         this.nm = source.readString();
         this.sb = source.readParcelable(ScoreboardInfo.class.getClassLoader());
+        this.data = source.readParcelable(MatchInfo.class.getClassLoader());
     }
-
-    public MatchInfo() {
-    }
-
-    protected MatchInfo(Parcel in) {
-        this.id = in.readInt();
-        this.nsg = in.createTypedArrayList(ScoreInfo.CREATOR);
-        this.mg = in.createTypedArrayList(PlayTypeInfo.CREATOR);
-        this.tms = in.readInt();
-        this.tps = in.createStringArrayList();
-        this.lg = in.readParcelable(LeagueInfo.class.getClassLoader());
-        this.ts = in.createTypedArrayList(TeamInfo.CREATOR);
-        this.mc = in.readParcelable(MatchTimeInfo.class.getClassLoader());
-        this.bt = in.readLong();
-        this.ms = in.readInt();
-        this.fid = in.readInt();
-        this.fmt = in.readInt();
-        this.ss = in.readInt();
-        this.ne = in.readInt();
-        this.vs = in.readParcelable(VideoInfo.class.getClassLoader());
-        this.as = in.createStringArrayList();
-        this.sid = in.readInt();
-        this.ssi = in.readInt();
-        this.mp = in.readString();
-        this.smt = in.readInt();
-        this.ty = in.readInt();
-        this.ye = in.readString();
-        this.nm = in.readString();
-        this.sb = in.readParcelable(ScoreboardInfo.class.getClassLoader());
-    }
-
-    public static final Creator<MatchInfo> CREATOR = new Creator<MatchInfo>() {
-        @Override
-        public MatchInfo createFromParcel(Parcel source) {
-            return new MatchInfo(source);
-        }
-
-        @Override
-        public MatchInfo[] newArray(int size) {
-            return new MatchInfo[size];
-        }
-    };
 }

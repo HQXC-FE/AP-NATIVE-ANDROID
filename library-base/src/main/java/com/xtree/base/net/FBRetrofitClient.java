@@ -63,8 +63,9 @@ public class FBRetrofitClient {
         } else {
             baseUrl = SPUtils.getInstance().getString(SPKeyGlobal.FB_API_SERVICE_URL);
         }
+        //用户还未登录
         if (TextUtils.isEmpty(baseUrl)) {
-            baseUrl = DomainUtil.getApiUrl();
+           return;
         }
 
         if (httpCacheDirectory == null) {

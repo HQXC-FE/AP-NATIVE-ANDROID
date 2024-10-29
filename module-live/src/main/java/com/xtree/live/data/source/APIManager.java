@@ -6,10 +6,14 @@ package com.xtree.live.data.source;
  */
 public class APIManager {
 
-    //直播列表
+    //未登录转发接口
+    public static final String NO_AUTH_FORWARD = "/api/sports/fbxc/forward";
+    //未登录获取赛事详情、比分
+    public static final String NO_AUth_GET_MATCH_DETAIL="/v1/match/getMatchDetail";
+
     public static final String FRONT_LIVES = "/api/front/lives";
     //获取赛事详情、比分
-    public static final String GET_MATCHDETAIL="/v1/match/getMatchDetail";
+    public static final String GET_MATCH_DETAIL="/v1/match/getMatchDetail";
     //获取 FB杏彩体育请求服务地址
     public static final String FBXC_GET_TOKEN="/api/sports/fbxc/getToken?cachedToken=0";
     //获取 FB杏彩体育请求服务地址
