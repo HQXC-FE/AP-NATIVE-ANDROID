@@ -6,7 +6,7 @@ import android.view.View;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.OptionPm;
-import com.xtree.bet.databinding.BtFbListItemPlayTypeItemOptionBinding;
+import com.xtree.bet.databinding.BtFbListItemPlayTypeItemOrBinding;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
@@ -22,12 +22,12 @@ public class OptionResultAdapter extends BaseAdapter<Option> {
 
     @Override
     public int layoutId() {
-        return R.layout.bt_fb_list_item_play_type_item_option;
+        return R.layout.bt_fb_list_item_play_type_item_or;
     }
 
     @Override
     protected void convert(ViewHolder holder, Option o, int position) {
-        BtFbListItemPlayTypeItemOptionBinding binding = BtFbListItemPlayTypeItemOptionBinding.bind(holder.itemView);
+        BtFbListItemPlayTypeItemOrBinding binding = BtFbListItemPlayTypeItemOrBinding.bind(holder.itemView);
         OptionPm option = (OptionPm) o;
         binding.tvOptionUnable.setVisibility(View.GONE);
         binding.tvOptionOdd.setVisibility(View.VISIBLE);
