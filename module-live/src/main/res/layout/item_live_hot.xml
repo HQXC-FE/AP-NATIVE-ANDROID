@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="m"
@@ -47,18 +50,20 @@
             android:id="@+id/ivStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_started_n"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="@{m.isGoingOn!=-1 ? View.VISIBLE:View.GONE}"
+            android:src='@{m.isGoingOn==1 ? @drawable/ic_started_y : @drawable/ic_started_n}'
+            tools:src="@drawable/ic_started_y" />
 
         <ImageView
             android:id="@+id/ivTeamA"
+            imageUrl="@{m.mainTeamIcon}"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginStart="6dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/bt_match_item_zq_selector"
-            imageUrl="@{m.mainTeamIcon}"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
@@ -78,7 +83,8 @@
             app:layout_constraintEnd_toEndOf="@+id/tvScoreA"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/ivTeamA"
-            app:layout_constraintTop_toTopOf="@+id/ivTeamA" />
+            app:layout_constraintTop_toTopOf="@+id/ivTeamA"
+            tools:text="曼城" />
 
         <TextView
             android:id="@+id/tvScoreA"
@@ -92,16 +98,17 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tvTeamA"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvTeamA" />
+            app:layout_constraintTop_toTopOf="@+id/tvTeamA"
+            tools:text="1" />
 
         <ImageView
             android:id="@+id/ivTeamB"
+            imageUrl="@{m.visitorTeamIcon}"
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginTop="9dp"
             android:src="@drawable/bt_match_item_zq_selector"
             app:layout_constraintStart_toStartOf="@+id/ivTeamA"
-            imageUrl="@{m.visitorTeamIcon}"
             app:layout_constraintTop_toBottomOf="@+id/ivTeamA" />
 
         <TextView
@@ -120,7 +127,8 @@
             app:layout_constraintEnd_toEndOf="@+id/tvScoreB"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@+id/ivTeamB"
-            app:layout_constraintTop_toTopOf="@+id/ivTeamB" />
+            app:layout_constraintTop_toTopOf="@+id/ivTeamB"
+            tools:text="切尔西" />
 
         <TextView
             android:id="@+id/tvScoreB"
@@ -134,7 +142,8 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tvTeamB"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvTeamB" />
+            app:layout_constraintTop_toTopOf="@+id/tvTeamB"
+            tools:text="1" />
 
         <TextView
             android:id="@+id/tvAnchorName"
@@ -157,18 +166,20 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivTeamB" />
+            app:layout_constraintTop_toBottomOf="@+id/ivTeamB"
+            tools:text="捷克老师" />
 
         <TextView
             android:id="@+id/tvSection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="第二节"
+            android:text="@{m.stage}"
             android:textColor="@color/clr_txt_02"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvAnchorName"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="第二节" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

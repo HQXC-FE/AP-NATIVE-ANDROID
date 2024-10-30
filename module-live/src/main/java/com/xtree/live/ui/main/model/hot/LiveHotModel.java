@@ -158,5 +158,18 @@ public class LiveHotModel extends BindModel {
         if (!TextUtils.isEmpty(iconVisitor)) {
             itemModel.visitorTeamIcon.set(iconVisitor);
         }
+
+        itemModel.isGoingOn.set(match.isGoingon() ? 1 : 0);
+
+        // 比赛未开始
+        if (!match.isGoingon()) {
+            itemModel.stage.set("");
+        } else {
+            if (TextUtils.equals(Constants.getFbSportId(), match.getSportId()) || TextUtils.equals(Constants.getBsbSportId(), match.getSportId())) { // 足球和篮球
+                itemModel.stage.set(match.getStage() + " " + match.getTime());
+            } else {
+                itemModel.stage.set(match.getStage());
+            }
+        }
     }
 }
