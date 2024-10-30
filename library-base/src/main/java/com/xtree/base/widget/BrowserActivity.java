@@ -20,6 +20,7 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -334,12 +335,11 @@ public class BrowserActivity extends AppCompatActivity {
                     // debug模式
                     //@Override
                     //public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                    //    Log.d("WebView", consoleMessage.message() + " -- From line "
+                    //    Cflog.e("Agent", consoleMessage.message() + " -- From line "
                     //            + consoleMessage.lineNumber() + " of "
                     //            + consoleMessage.sourceId());
                     //    return true;
                     //}
-
 
                     /**
                      * For Android >= 4.1
@@ -370,6 +370,22 @@ public class BrowserActivity extends AppCompatActivity {
                 .ready()
                 .go(url); // 加载网页
 
+        WebView webView = agentWeb.getWebCreator().getWebView();
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        //    webView.setRendererPriorityPolicy(WebView.RENDERER_PRIORITY_IMPORTANT, true);
+        //}
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setUserAgentString(WebSettings.getDefaultUserAgent(this) + " Chrome/100.0.4896.127 Mobile Safari/537.36");
+        //webSettings.setMediaPlaybackRequiresUserGesture(false);
+        //webSettings.setJavaScriptEnabled(true);
+        //webSettings.setLoadWithOverviewMode(true); // 加载页面时适应屏幕
+        //webSettings.setSupportZoom(true); // 允许缩放
+        //webSettings.setBuiltInZoomControls(true); // 显示缩放控制
+        //webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        //webSettings.setDomStorageEnabled(true);
+        //webSettings.setDatabaseEnabled(true);
+        //webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        //webSettings.setAllowFileAccess(true);
     }
 
     private void initRight() {
@@ -580,7 +596,6 @@ public class BrowserActivity extends AppCompatActivity {
 
         String js = "";
         js += "(function() {" + "\n";
-        js += "window.addEventListener('DOMContentLoaded', function() {" + "\n";
         js += "const d = new Date();" + "\n";
         js += "const style = document.createElement('style');" + "\n";
         js += "style.type = 'text/css';" + "\n";
@@ -607,7 +622,6 @@ public class BrowserActivity extends AppCompatActivity {
         js += "document.cookie = \"_sessionHandler=" + sessid + ";\" + expires + \";path=/\";" + "\n";
         js += "localStorage.setItem('USER-PROFILE', '" + userProfile + "');" + "\n";
         js += "localStorage.setItem('AUTH', '" + auth + "');" + "\n";
-        js += "});" + "\n";
         js += "})()" + "\n";
 
         CfLog.i(js.replace("\n", " \t"));
