@@ -61,7 +61,7 @@ android {
             resValue "string", "domain_api_list", "http://175.27.143.79:16803" +
                     ";http://111.231.12.228:16803" +
                     ";http://139.186.156.33:16803" +
-                    ";http://43.129.92.72:16803" +
+                    ";http://43.154.200.235:16803" +
                     ";http://119.28.19.124:16803" +
                     ";https://app1.n5p4jb.xyz" +
                     ";https://app1.z3g6ml.xyz" +
@@ -83,20 +83,17 @@ android {
                     ";https://app.hstxdl.com:16801" +
                     ";https://app.qiuchongyao.com:16801" +
                     ";https://app.tiantianwangluo.com:16801"
-            resValue "string", "domain_url_list", "https://h11.i2n5wp.xyz" +
-                    ";https://h11.y7e8nr.xyz" +
-                    ";https://h11.h8h8pm.xyz" +
-                    ";https://h12.i2n5wp.xyz" +
-                    ";https://h12.y7e8nr.xyz" +
-                    ";https://h12.h8h8pm.xyz" +
-                    ";https://h22.k2a5dg.xyz" +
-                    ";https://h22.k2h9ae.xyz" +
-                    ";https://h22.l3q2ur.xyz" +
-                    ";https://h32.f9o4qf.xyz" +
-                    ";https://h32.r3v9ve.xyz" +
-                    ";https://h32.p7l9lh.xyz" +
-                    ";https://h42.q7s1iu.xyz" +
-                    ";https://h52.s4z9il.xyz" +
+            resValue "string", "domain_url_list", "https://h13.i2n5wp.xyz" +
+                    ";https://h13.y7e8nr.xyz" +
+                    ";https://h13.h8h8pm.xyz" +
+                    ";https://h23.k2a5dg.xyz" +
+                    ";https://h23.k2h9ae.xyz" +
+                    ";https://h23.l3q2ur.xyz" +
+                    ";https://h33.f9o4qf.xyz" +
+                    ";https://h33.r3v9ve.xyz" +
+                    ";https://h33.p7l9lh.xyz" +
+                    ";https://h43.q7s1iu.xyz" +
+                    ";https://h53.s4z9il.xyz" +
                     ";https://h61.saaen.com:16801" +
                     ";https://h61.caaau.com:16801" +
                     ";https://h61.baafj.com:16801" +
