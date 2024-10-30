@@ -9,7 +9,9 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 import android.app.Application;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,8 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.BR;
 import com.xtree.bet.R;
+import com.xtree.bet.bean.ui.League;
+import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.constant.SportTypeItem;
 import com.xtree.bet.databinding.FragmentResultBinding;
 import com.xtree.bet.ui.adapter.LeagueResultAdapter;
@@ -40,9 +44,12 @@ import com.xtree.bet.ui.viewmodel.pm.PMMainViewModel;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
+import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
@@ -59,6 +66,7 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
     private int searchDatePos;
     private int sportTypePos = -1;
     private Map<String, List<SportTypeItem>> mResult;
+    private List<League> allLeagueList = new ArrayList<League>();
 
     public static BtResultFragment getInstance() {
         BtResultFragment btResultDialogFragment = new BtResultFragment();
@@ -125,6 +133,7 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
         tabSportAdapter.setOnItemClickListener((adapter, view, position) -> {
             CfLog.i("position   " + position);
             if (sportTypePos != position) {
+                hideSearchView();
                 tabSportAdapter.setSelectedPosition(position);
                 sportTypePos = position;
                 long startTime = dateResultList.get(searchDatePos).getTime();
@@ -177,6 +186,74 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
 
             }
         });
+
+        initSearch();
+    }
+
+    private void initSearch() {
+        binding.ivwGameSearch.setOnClickListener(v -> {
+            binding.clGameSearch.setVisibility(View.VISIBLE);
+            binding.ivwGameSearch.setVisibility(View.GONE);
+            binding.tabSearchDate.setVisibility(View.INVISIBLE);
+            String time;
+            if (binding.tabSearchDate.getSelectedTabPosition() == 0) {
+                time = "今日";
+            } else {
+                time = TimeUtils.getTime(dateResultList.get(binding.tabSearchDate.getSelectedTabPosition()), TimeUtils.FORMAT_MM_DD);
+            }
+            binding.tvTime.setText(time);
+        });
+        binding.tvwCancel.setOnClickListener(v -> {
+            hideSearchView();
+        });
+
+        binding.edtGameSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                search(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void search(String query) {
+        ArrayList<League> list = new ArrayList<League>();
+        String normalizedQuery = query.toLowerCase(Locale.getDefault()).trim();// 去除空格并转换为小写
+        if (query.isEmpty()) {
+            list.addAll(allLeagueList);
+        } else {
+            for (League league : allLeagueList) {
+                if (league.getLeagueName().contains(normalizedQuery)) {
+                    list.add(league);
+                } else {
+                    for (Match match : league.getMatchList()) {
+                        if (match.getTeamMain().contains(normalizedQuery) || match.getTeamVistor().contains(normalizedQuery)) {
+                            list.add(league);
+                        }
+                    }
+                }
+            }
+        }
+        resultAdapter.setData(list);
+        extractedLeague();
+    }
+
+    /**
+     * 隐藏搜索UI
+     */
+    private void hideSearchView() {
+        binding.clGameSearch.setVisibility(View.GONE);
+        binding.ivwGameSearch.setVisibility(View.VISIBLE);
+        binding.tabSearchDate.setVisibility(View.VISIBLE);
+        binding.edtGameSearch.setText("");
     }
 
     //private void autoClickItem(RecyclerView recyclerView, int position) {
@@ -215,6 +292,7 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
             viewModel.matchResultPage(String.valueOf(startTime), String.valueOf(startTime + 86400000L), playMethodPos, String.valueOf(getSportId()));
         });
         viewModel.resultLeagueData.observe(this, list -> {
+            allLeagueList = list;
             if (resultAdapter == null) {
                 resultAdapter = new LeagueResultAdapter(requireContext(), list);
                 binding.rvLeague.setAdapter(resultAdapter);

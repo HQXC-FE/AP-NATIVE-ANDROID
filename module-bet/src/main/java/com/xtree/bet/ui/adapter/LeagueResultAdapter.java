@@ -78,6 +78,10 @@ public class LeagueResultAdapter extends AnimatedExpandableListViewMax.AnimatedE
         notifyDataSetChanged();
     }
 
+    public List<League> getData() {
+        return mDatas;
+    }
+
     public LeagueResultAdapter(Context context, List<League> datas) {
         this.mDatas = datas;
         this.mContext = context;

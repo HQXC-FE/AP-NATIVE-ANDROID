@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -53,16 +54,6 @@
             app:layout_constraintStart_toEndOf="@+id/iv_back"
             app:layout_constraintTop_toTopOf="@+id/iv_back" />
 
-        <ImageView
-            android:id="@+id/ivw_game_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:padding="8dp"
-            android:src="@mipmap/ic_game_search"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_back"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_back" />
         <!-- 彩种-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tab_sport_type"
@@ -74,11 +65,13 @@
         <!-- 日期-->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_search_date"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="40dp"
             android:background="@color/clr_grey_07"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
+            app:layout_constraintEnd_toStartOf="@+id/ivw_game_search"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tab_sport_type"
             app:tabIndicatorHeight="0dp"
             app:tabMaxWidth="60dp"
@@ -90,12 +83,88 @@
             app:tabSelectedTextColor="@color/bt_tab_textcolor_selected"
             app:tabTextColor="@color/bt_text_color_primary" />
 
+        <ImageView
+            android:id="@+id/ivw_game_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:src="@mipmap/ic_game_search"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/tab_search_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tab_sport_type" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_game_search"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/tab_search_date"
+            app:layout_constraintTop_toTopOf="@+id/tab_search_date">
+
+            <EditText
+                android:id="@+id/edt_game_search"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_result_search"
+                android:drawableStart="@mipmap/ic_game_search"
+                android:drawablePadding="6dp"
+                android:hint="@string/txt_game_search"
+                android:lines="1"
+                android:paddingStart="66dp"
+                android:textSize="12sp"
+                android:maxLength="20"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvw_cancel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:gravity="center"
+                android:textSize="@dimen/bt_text_12sp"
+                android:textColor="@color/clr_txt_black_05"
+                app:layout_constraintBottom_toBottomOf="@+id/edt_game_search"
+                app:layout_constraintStart_toStartOf="@+id/edt_game_search"
+                app:layout_constraintTop_toTopOf="@+id/edt_game_search"
+                tools:text="10/27" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="|"
+                android:includeFontPadding="false"
+                android:textSize="13sp"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/clr_grey_2"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_time"
+                app:layout_constraintStart_toEndOf="@+id/tv_time"
+                app:layout_constraintTop_toTopOf="@+id/tv_time" />
+
+            <TextView
+                android:id="@+id/tvw_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/txt_cancel"
+                android:textColor="@color/clr_grey_13"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.xtree.bet.weight.AnimatedExpandableListViewMax
             android:id="@+id/rv_league"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
             android:background="@android:color/transparent"
             android:childIndicator="@null"
             android:defaultFocusHighlightEnabled="false"
