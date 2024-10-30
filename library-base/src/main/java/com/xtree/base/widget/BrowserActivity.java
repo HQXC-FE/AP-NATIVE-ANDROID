@@ -261,8 +261,20 @@ public class BrowserActivity extends AppCompatActivity {
                 .setAgentWebParent(findViewById(R.id.wv_main), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
                 .useDefaultIndicator() // 使用默认的加载进度条
                 .additionalHttpHeader(url, header)
-                .setWebViewClient(new CustomWebViewClient()) // 设置 WebViewClient
                 .addJavascriptInterface("android", new WebAppInterface(this, ivwBack, getCallBack()))
+                .setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                        //handler.proceed();
+                        //hideLoading();
+                        //if (sslErrorCount < 4) {
+                        //    sslErrorCount++;
+                        //    tipSsl(view, handler);
+                        //} else {
+                        handler.proceed();
+                        //}
+                    }
+                }) // 设置 WebViewClient
                 .setWebChromeClient(new WebChromeClient() {
                     @Override
                     public void onProgressChanged(WebView view, int newProgress) {
