@@ -22,6 +22,7 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -177,8 +178,8 @@ public class BrowserActivity extends AppCompatActivity {
             header.put("Cache-Control", "no-cache");
             header.put("Pragme", "no-cache");
         }
-//        header.put("Content-Type", "application/vnd.sc-api.v1.json");
-//        header.put("App-RNID", "87jumkljo"); //
+        //header.put("Content-Type", "application/vnd.sc-api.v1.json");
+        //header.put("App-RNID", "87jumkljo"); //
 
         //header.put("Source", "8");
         //header.put("UUID", TagUtils.getDeviceId(Utils.getContext()));
@@ -257,6 +258,9 @@ public class BrowserActivity extends AppCompatActivity {
         cookieManager.setCookie(url, "auth=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN) + ";" + "_sessionHandler=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID));
         cookieManager.flush();
 
+        // debug模式
+        //AgentWebConfig.debug();
+
         agentWeb = AgentWeb.with(this)
                 .setAgentWebParent(findViewById(R.id.wv_main), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
                 .useDefaultIndicator() // 使用默认的加载进度条
@@ -284,6 +288,16 @@ public class BrowserActivity extends AppCompatActivity {
                             LoadingDialog.finish();
                         }
                     }
+
+                    // debug模式
+                    //@Override
+                    //public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                    //    Log.d("WebView", consoleMessage.message() + " -- From line "
+                    //            + consoleMessage.lineNumber() + " of "
+                    //            + consoleMessage.sourceId());
+                    //    return true;
+                    //}
+
 
                     /**
                      * For Android >= 4.1
@@ -314,6 +328,22 @@ public class BrowserActivity extends AppCompatActivity {
                 .ready()
                 .go(url); // 加载网页
 
+        WebView webView = agentWeb.getWebCreator().getWebView();
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        //    webView.setRendererPriorityPolicy(WebView.RENDERER_PRIORITY_IMPORTANT, true);
+        //}
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setUserAgentString(WebSettings.getDefaultUserAgent(this) + " Chrome/100.0.4896.127 Mobile Safari/537.36");
+        //webSettings.setMediaPlaybackRequiresUserGesture(false);
+        //webSettings.setJavaScriptEnabled(true);
+        //webSettings.setLoadWithOverviewMode(true); // 加载页面时适应屏幕
+        //webSettings.setSupportZoom(true); // 允许缩放
+        //webSettings.setBuiltInZoomControls(true); // 显示缩放控制
+        //webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        //webSettings.setDomStorageEnabled(true);
+        //webSettings.setDatabaseEnabled(true);
+        //webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        //webSettings.setAllowFileAccess(true);
     }
 
     /**
@@ -656,36 +686,36 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
     public class CustomWebViewClient extends WebViewClient {
-//        private OkHttpClient client;
-//
-//        public CustomWebViewClient() throws UnknownHostException {
-//            // 初始化 OkHttpClient 并配置自定义的 DNS 解析
-//            client = new OkHttpClient.Builder()
-//                    .dns(new DnsOverHttps.Builder()
-//                            .client(new OkHttpClient())
-//                            .url(HttpUrl.get(ARG_SEARCH_DNS_URL))
-//                            .bootstrapDnsHosts(InetAddress.getByName("8.8.8.8"), InetAddress.getByName("114.114.114.114"))
-//                            .build())
-//                    .build();
-//        }
-//
-//        @Override
-//        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-//            String url = request.getUrl().toString();
-//            Request httpRequest = new Request.Builder().url(url).build();
-//
-//            try {
-//                Response response = client.newCall(httpRequest).execute();
-//                return new WebResourceResponse(
-//                        response.header("content-type"),
-//                        response.header("content-encoding"),
-//                        response.body().byteStream()
-//                );
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return super.shouldInterceptRequest(view, request);
-//            }
-//        }
+        //        private OkHttpClient client;
+        //
+        //        public CustomWebViewClient() throws UnknownHostException {
+        //            // 初始化 OkHttpClient 并配置自定义的 DNS 解析
+        //            client = new OkHttpClient.Builder()
+        //                    .dns(new DnsOverHttps.Builder()
+        //                            .client(new OkHttpClient())
+        //                            .url(HttpUrl.get(ARG_SEARCH_DNS_URL))
+        //                            .bootstrapDnsHosts(InetAddress.getByName("8.8.8.8"), InetAddress.getByName("114.114.114.114"))
+        //                            .build())
+        //                    .build();
+        //        }
+        //
+        //        @Override
+        //        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        //            String url = request.getUrl().toString();
+        //            Request httpRequest = new Request.Builder().url(url).build();
+        //
+        //            try {
+        //                Response response = client.newCall(httpRequest).execute();
+        //                return new WebResourceResponse(
+        //                        response.header("content-type"),
+        //                        response.header("content-encoding"),
+        //                        response.body().byteStream()
+        //                );
+        //            } catch (IOException e) {
+        //                e.printStackTrace();
+        //                return super.shouldInterceptRequest(view, request);
+        //            }
+        //        }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
