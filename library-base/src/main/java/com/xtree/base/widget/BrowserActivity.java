@@ -295,13 +295,13 @@ public class BrowserActivity extends AppCompatActivity {
                     @Override
                     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                         //handler.proceed();
-                        hideLoading();
-                        if (sslErrorCount < 4) {
-                            sslErrorCount++;
-                            tipSsl(view, handler);
-                        } else {
-                            handler.proceed();
-                        }
+                        //hideLoading();
+                        //if (sslErrorCount < 4) {
+                        //    sslErrorCount++;
+                        //    tipSsl(view, handler);
+                        //} else {
+                        handler.proceed();
+                        //}
                     }
 
                     @Override
