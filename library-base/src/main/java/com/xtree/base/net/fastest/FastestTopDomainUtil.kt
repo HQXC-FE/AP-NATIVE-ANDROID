@@ -3,13 +3,13 @@ package com.xtree.base.net.fastest
 import com.alibaba.android.arouter.utils.TextUtils
 import com.drake.net.Get
 import com.drake.net.Net
-import com.drake.net.Post
 import com.drake.net.scope.AndroidScope
 import com.drake.net.utils.runMain
 import com.drake.net.utils.scopeNet
 import com.google.gson.Gson
 import com.xtree.base.BuildConfig
 import com.xtree.base.R
+import com.xtree.base.net.RetrofitClient
 import com.xtree.base.utils.AESUtil
 import com.xtree.base.utils.CfLog
 import com.xtree.base.utils.DomainUtil
@@ -31,9 +31,17 @@ import me.xtree.mvvmhabit.bus.event.SingleLiveData
 import me.xtree.mvvmhabit.http.NetworkUtil
 import me.xtree.mvvmhabit.utils.ToastUtils
 import me.xtree.mvvmhabit.utils.Utils
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Request
 import okhttp3.Response
 import org.greenrobot.eventbus.EventBus
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import java.util.concurrent.CancellationException
+
 
 class FastestTopDomainUtil private constructor() {
     init {
@@ -75,6 +83,8 @@ class FastestTopDomainUtil private constructor() {
         }
         if (mIsFinish) {
             CfLog.e("=====开始线路测速========")
+
+            Net.cancelGroup(FASTEST_GOURP_NAME)
 
             if (::thirdApiScopeNet.isInitialized && thirdApiScopeNet.isActive) {
                 thirdApiScopeNet.cancel()
@@ -134,6 +144,9 @@ class FastestTopDomainUtil private constructor() {
     private fun getFastestApiDomain(isThird: Boolean) {
 
         apiScopeNet = scopeNet {
+
+            val allTest = mutableListOf<TopSpeedDomain>()
+
             // 并发请求本地配置的域名 命名参数 uid = "the fastest line" 用于库自动取消任务
             var curTime: Long = System.currentTimeMillis()
             val domainTasks = mCurApiDomainList.map { host ->
@@ -170,6 +183,8 @@ class FastestTopDomainUtil private constructor() {
                                 CfLog.e("域名：api------$url---${topSpeedDomain.speedSec}")
                                 mCurApiDomainList.remove(url)
 
+                                allTest.add(topSpeedDomain)
+
                                 //debug模式 显示所有测速线路 release模式 只显示4条
                                 if (mTopSpeedDomainList.size < 4 || BuildConfig.DEBUG) {
                                     mTopSpeedDomainList.add(topSpeedDomain)
@@ -182,7 +197,7 @@ class FastestTopDomainUtil private constructor() {
 
                                 if (!BuildConfig.DEBUG) {
                                     if (mTopSpeedDomainList.size >= 4 && !mIsFinish) {
-                                        Net.cancelGroup(FASTEST_GOURP_NAME)
+//                                        Net.cancelGroup(FASTEST_GOURP_NAME)
                                         mIsFinish = true
                                     }
                                 }
@@ -207,12 +222,34 @@ class FastestTopDomainUtil private constructor() {
                         .post(EventVo(EventConstant.EVENT_TOP_SPEED_FAILED, ""))
                 }
 
-                val list = mutableListOf<MutableList<String>>()
+                val highSpeedList = mutableListOf<List<String>>()
+                val dateFormat = SimpleDateFormat(
+                    "yyyy-MM-dd HH:mm:ss",
+                    Locale.getDefault()
+                ).format(Date(curTime))
 
-                Post<String>( "https://ap3sport.oxldkm.com/api/sports/speedmonitor"){
-                    // 只支持基础类型的值, 如果值为对象或者包含对象的集合/数组会导致其值为null
-                    json("device_type" to "9", "data" to list)
-                }.await()
+                allTest.forEach {
+                    if (it.speedSec > 1000) {
+                        val infoList =
+                            listOf<String>(it.url ?: "", it.speedSec.toString(), dateFormat)
+                        highSpeedList.add(infoList)
+                    }
+                }
+
+                if (highSpeedList.isNotEmpty()) {
+                    val request: Request = Request.Builder()
+                        .url(DomainUtil.getApiUrl() + FASTEST_MONITOR_API)
+                        .post(cjson("device_type" to "9", "data" to highSpeedList))
+                        .build()
+                    RetrofitClient.getInstance().okHttpClient.newCall(request).enqueue(object :
+                        Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                        }
+                    })
+                }
 
             } catch (e: Exception) {
                 CfLog.e(e.toString())
