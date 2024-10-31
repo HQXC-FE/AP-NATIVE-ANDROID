@@ -31,6 +31,8 @@ public class MessageCenterThread {
                 msg.what = MessageType.Socket.STOP.getCode(); // 发送停止消息
                 msg.obj = flag;
                 handler.sendMessage(msg);
+            } else {
+                handler.stop();
             }
         }
     }
@@ -43,8 +45,8 @@ public class MessageCenterThread {
         if (msg != null) {
             msg.what = MessageType.Socket.STOP.getCode(); // 发送停止消息
             handler.sendMessage(msg);
-            handler.stop();
         }
+        handler.stop();
 
     }
 
@@ -118,7 +120,7 @@ public class MessageCenterThread {
                         }
                         break;
                     case STOP: // 停止消息
-                        if (!(msg.obj instanceof Boolean)) {
+                        if (msg.obj instanceof Boolean && !((Boolean) msg.obj)) {
                             tryCloseWebsocket();
                         }
                         handler.stop();

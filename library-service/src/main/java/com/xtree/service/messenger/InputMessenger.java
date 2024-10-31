@@ -9,6 +9,8 @@ import android.os.Messenger;
 
 import androidx.annotation.NonNull;
 
+import com.xtree.base.utils.CfLog;
+import com.xtree.service.message.MessageData;
 import com.xtree.service.message.MessageType;
 
 import io.sentry.Sentry;
@@ -41,11 +43,17 @@ public abstract class InputMessenger implements IInputMessenger {
         }).getBinder();
     }
 
-    private void _sendMessage(MessageType.Output outputType, Bundle obj) {
+    private void _sendMessage(MessageType.Output outputType, MessageData obj) {
         try {
+
             Message msg = Message.obtain();
             msg.what = outputType.getCode(); // 将 enum 的 code 作为 what 值
-            msg.obj = obj;
+            if (obj != null) {
+                Bundle data = new Bundle();
+                data.putParcelable("data", obj);
+                msg.setData(data);
+                CfLog.i("Sending class: " + MessageData.class.getName());
+            }
             replyMessenger.send(msg);
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,7 +62,7 @@ public abstract class InputMessenger implements IInputMessenger {
     }
 
     @Override
-    public void sendMessage(MessageType.Output outputType, Bundle obj) {
+    public void sendMessage(MessageType.Output outputType, MessageData obj) {
         _sendMessage(outputType, obj);
     }
 

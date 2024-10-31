@@ -7,9 +7,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.xtree.base.utils.CfLog;
 import com.xtree.service.message.MessageCenterThread;
+import com.xtree.service.message.MessageType;
 import com.xtree.service.message.RemoteMessage;
+import com.xtree.service.message.RemoteMessageDeserializer;
+import com.xtree.service.messenger.IInputMessenger;
 
 import io.sentry.Sentry;
 import okhttp3.Response;
@@ -19,6 +23,13 @@ import okhttp3.WebSocketListener;
 public class PushClient implements IWebSocket {
 
     private MessageCenterThread messageCenter;
+
+    //应用内消息传递
+    private IInputMessenger inputMessenger;
+
+    public PushClient(IInputMessenger inputMessenger) {
+        this.inputMessenger = inputMessenger;
+    }
 
     @Override
     public void connectSocket(String url, long checkInterval) {
@@ -35,9 +46,11 @@ public class PushClient implements IWebSocket {
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        messageCenter.sendHeart();
+                        if (messageCenter != null) {
+                            messageCenter.sendHeart();
+                        }
                     }
-                },2000);
+                }, 2000);
 
             }
 
@@ -45,7 +58,10 @@ public class PushClient implements IWebSocket {
             public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
 
                 try {
-                    Gson gson = new Gson();
+//                    text="{\"type\":\"message\",\"fd\":9197,\"data\":{\"subject\":\"\\u5145\\u503c\\u7533\\u8bf7\",\"messageid\":41450873},\"timestamp\":1730360802}";
+                    Gson gson = new GsonBuilder()
+                            .registerTypeAdapter(RemoteMessage.class, new RemoteMessageDeserializer())
+                            .create();
                     RemoteMessage remoteMessage = gson.fromJson(text, RemoteMessage.class);
                     if (remoteMessage == null) {
                         CfLog.i("服务器返回空消息");
@@ -55,6 +71,11 @@ public class PushClient implements IWebSocket {
                     switch (remoteMessage.getType()) {
                         case "open":
                             CfLog.i("长链接消息确认成功" + text);
+                            break;
+                        case "message":
+                            if (inputMessenger != null && remoteMessage.getData() != null && remoteMessage.getData().size() > 0) {
+                                inputMessenger.sendMessage(MessageType.Output.REMOTE_MSG, remoteMessage.getData().get(0));
+                            }
                             break;
                         case "close"://服务端返回失败，主动断开
                             if (messageCenter != null) {
@@ -78,7 +99,7 @@ public class PushClient implements IWebSocket {
             @Override
             public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable Response response) {
                 messageCenter.stopThread(false);
-                CfLog.i(String.format("服务失败%s,%s", t,response));
+                CfLog.i(String.format("服务失败%s,%s", t, response));
             }
         });
     }

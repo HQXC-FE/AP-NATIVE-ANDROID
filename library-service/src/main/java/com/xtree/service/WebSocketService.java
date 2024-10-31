@@ -15,6 +15,7 @@ import com.xtree.service.messenger.InputMessenger;
 
 public class WebSocketService extends Service {
     private PushClient pushClient;
+    //应用内消息传递
     private IInputMessenger messenger;
     private long checkInterval = 30;
     private long retryNumber = 3;
@@ -53,7 +54,6 @@ public class WebSocketService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        pushClient = new PushClient();
         messenger = new InputMessenger() {
 
             @Override
@@ -87,6 +87,7 @@ public class WebSocketService extends Service {
                 }
             }
         };
+        pushClient = new PushClient(messenger);
         return messenger.getBinder();
     }
 
