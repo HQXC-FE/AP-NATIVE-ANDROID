@@ -3,8 +3,6 @@ package com.xtree.base.widget;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FAILED;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FINISH;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,8 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
@@ -37,12 +35,14 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.just.agentweb.AgentWeb;
+import com.just.agentweb.AgentWebConfig;
 import com.just.agentweb.WebChromeClient;
 import com.just.agentweb.WebViewClient;
 import com.luck.picture.lib.basic.PictureSelector;
 import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
+import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
@@ -259,26 +259,16 @@ public class BrowserActivity extends AppCompatActivity {
         cookieManager.flush();
 
         // debug模式
-        //AgentWebConfig.debug();
+        if (BuildConfig.DEBUG) {
+            AgentWebConfig.debug();
+        }
 
         agentWeb = AgentWeb.with(this)
                 .setAgentWebParent(findViewById(R.id.wv_main), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
                 .useDefaultIndicator() // 使用默认的加载进度条
                 .additionalHttpHeader(url, header)
+                .setWebViewClient(new CustomWebViewClient()) // 设置 WebViewClient
                 .addJavascriptInterface("android", new WebAppInterface(this, ivwBack, getCallBack()))
-                .setWebViewClient(new WebViewClient() {
-                    @Override
-                    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                        //handler.proceed();
-                        //hideLoading();
-                        //if (sslErrorCount < 4) {
-                        //    sslErrorCount++;
-                        //    tipSsl(view, handler);
-                        //} else {
-                        handler.proceed();
-                        //}
-                    }
-                }) // 设置 WebViewClient
                 .setWebChromeClient(new WebChromeClient() {
                     @Override
                     public void onProgressChanged(WebView view, int newProgress) {
@@ -290,13 +280,13 @@ public class BrowserActivity extends AppCompatActivity {
                     }
 
                     // debug模式
-                    //@Override
-                    //public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                    //    Log.d("WebView", consoleMessage.message() + " -- From line "
-                    //            + consoleMessage.lineNumber() + " of "
-                    //            + consoleMessage.sourceId());
-                    //    return true;
-                    //}
+                    @Override
+                    public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                        CfLog.d("AgentWeb", consoleMessage.message() + " -- From line "
+                                + consoleMessage.lineNumber() + " of "
+                                + consoleMessage.sourceId());
+                        return true;
+                    }
 
 
                     /**
@@ -329,28 +319,14 @@ public class BrowserActivity extends AppCompatActivity {
                 .go(url); // 加载网页
 
         WebView webView = agentWeb.getWebCreator().getWebView();
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        //    webView.setRendererPriorityPolicy(WebView.RENDERER_PRIORITY_IMPORTANT, true);
-        //}
         WebSettings webSettings = webView.getSettings();
         webSettings.setUserAgentString(WebSettings.getDefaultUserAgent(this) + " Chrome/100.0.4896.127 Mobile Safari/537.36");
-        //webSettings.setMediaPlaybackRequiresUserGesture(false);
-        //webSettings.setJavaScriptEnabled(true);
-        //webSettings.setLoadWithOverviewMode(true); // 加载页面时适应屏幕
-        //webSettings.setSupportZoom(true); // 允许缩放
-        //webSettings.setBuiltInZoomControls(true); // 显示缩放控制
-        //webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
-        //webSettings.setDomStorageEnabled(true);
-        //webSettings.setDatabaseEnabled(true);
-        //webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        //webSettings.setAllowFileAccess(true);
     }
 
     /**
      * 重新加载网页
      */
     public void reload() {
-        //mWebView.reload();
         agentWeb.getUrlLoader().reload();
     }
 
@@ -438,22 +414,6 @@ public class BrowserActivity extends AppCompatActivity {
         LoadingDialog.finish();
     }
 
-    private void tipSsl(WebView view, SslErrorHandler handler) {
-        Activity activity = (Activity) view.getContext();
-        activity.runOnUiThread(() -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setMessage(R.string.ssl_failed_will_u_continue); // SSL认证失败，是否继续访问？
-            builder.setPositiveButton(R.string.ok, (dialog, which) -> handler.proceed()); // 接受https所有网站的证书
-
-            builder.setNegativeButton(R.string.cancel, (dialog, which) -> handler.cancel());
-
-            AlertDialog dialog = builder.create();
-            if (!isFinishing()) {
-                dialog.show();
-            }
-        });
-    }
-
     /**
      * 图片选择
      */
@@ -492,31 +452,6 @@ public class BrowserActivity extends AppCompatActivity {
 
                     }
                 });
-    }
-
-    private void setCookie(String cookie, String url) {
-        CookieSyncManager.createInstance(this);
-        CookieManager cm = CookieManager.getInstance();
-        cm.removeSessionCookies(null);
-        cm.removeAllCookies(null);
-        cm.flush();
-        //cm.removeSessionCookie();
-        //CookieSyncManager.getInstance().sync();
-        cm.setAcceptCookie(true);
-        cm.setCookie(url, cookie);
-    }
-
-    private void setWebCookie() {
-        CfLog.i("******");
-        if (isLottery) {
-            setLotteryCookieInside();
-        } else if (is3rdLink) {
-            CfLog.d("not need cookie.");
-        } else {
-            if (!TextUtils.isEmpty(token)) {
-                setCookieInside();
-            }
-        }
     }
 
     private void setCookieInside() {
@@ -741,14 +676,7 @@ public class BrowserActivity extends AppCompatActivity {
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            //handler.proceed();
-            hideLoading();
-            if (sslErrorCount < 4) {
-                sslErrorCount++;
-                tipSsl(view, handler);
-            } else {
-                handler.proceed();
-            }
+            handler.proceed();
         }
 
         @Override
