@@ -12,11 +12,17 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.DomainUtil;
+import com.xtree.bet.bean.request.UploadExcetionReq;
 import com.xtree.bet.bean.request.pm.BtCashOutBetReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
 import com.xtree.bet.bean.response.pm.BtCashOutPriceInfo;
 import com.xtree.bet.bean.response.pm.BtCashOutStatusInfo;
+import com.xtree.bet.bean.response.pm.BtErrorBean;
 import com.xtree.bet.bean.response.pm.BtRecordRsp;
 import com.xtree.bet.bean.ui.BtRecordBeanPm;
 import com.xtree.bet.bean.ui.BtRecordTime;
@@ -25,12 +31,14 @@ import com.xtree.bet.ui.viewmodel.TemplateBtRecordModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
+import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
 public class PMBtRecordModel extends TemplateBtRecordModel {
@@ -48,7 +56,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
         BtRecordReq btRecordReq = new BtRecordReq();
         btRecordReq.setOrderStatus(isSettled ? 1 : 0);
         btRecordReq.setTimeType(isSettled ? 1 : 4);
-
+        long requestTime = System.currentTimeMillis();
         Disposable disposable = (Disposable) model.getPMApiService().betRecord(btRecordReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
@@ -77,6 +85,59 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                             btRecordTime.addBtResultList(new BtRecordBeanPm(recordsBean));
                         }
                         btRecordTimeDate.postValue(btRecordTimeList);
+
+
+
+                        //请求投注记录getOrderListV3PB接口时，如果是1分钟后，如果有注单是确认中，
+                        //就调用接口发送所有确认中注单日志，一小时内已发送过的禁止重复发送
+                        List<BtErrorBean> list = new ArrayList<>();
+                        long currentTime = System.currentTimeMillis();
+                        long overrunTime = currentTime + 60000;
+                        for (BtRecordRsp.RecordsBean bean : btRecordRsp.records) {
+                            if (bean.orderStatus.equals("3") && Long.parseLong(bean.betTime) < overrunTime) {//如果是1分钟后，如果有注单是确认中
+                                BtErrorBean newBean = new BtErrorBean(bean.betTime, bean.orderNo);
+                                list.add(newBean);
+                            }
+                        }
+                        //BtErrorBean newBean = new BtErrorBean("0","2");
+                        //list.add(newBean);
+                        //CfLog.i("msg1   " + gson.toJson(list));
+                        if (!list.isEmpty()) {
+                            Gson gson = new Gson();
+                            String json1 = SPUtils.getInstance().getString("PM_Error_Collection");
+                            CfLog.i("msg1   " + json1);
+                            if (!json1.isEmpty()) {
+                                List<BtErrorBean> errorList = gson.fromJson(json1, new TypeToken<List<BtErrorBean>>() {
+                                }.getType());
+                                for (BtErrorBean error : errorList) {
+                                    Iterator<BtErrorBean> iterator = list.iterator();
+                                    while (iterator.hasNext()) {
+                                        BtErrorBean item = iterator.next();
+                                        //订单号相同且 一小时内已发送过的禁止重复发送
+                                        if (TextUtils.equals(error.getOrderNo(), item.getOrderNo())) {
+                                            if (Long.parseLong(error.getBetTime()) + 3600000 < currentTime) {
+                                                iterator.remove(); // 安全地移除当前元素
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (!list.isEmpty()) {
+                                String orderList = gson.toJson(list);
+                                CfLog.i("msg1   " + orderList);
+                                SPUtils.getInstance().put("PM_Error_Collection", orderList);
+                                UploadExcetionReq uploadExcetionReq = new UploadExcetionReq();
+                                uploadExcetionReq.setLogTag("getOrderListV4PB");
+                                uploadExcetionReq.setApiUrl(DomainUtil.getApiUrl() + "/yewu13/v1/betOrder/client/getOrderListV4PB");
+                                uploadExcetionReq.setLogType("-");
+                                String msg = "orderList:" + orderList +
+                                        ";       request:" + gson.toJson(btRecordReq) + ";       return:" + gson.toJson(btRecordRsp) +
+                                        ";       requestTime:" + requestTime + ";       returnTime:" + btRecordRsp.ts;
+                                CfLog.i("msg1   " + msg);
+                                uploadExcetionReq.setMsg(msg);
+                                uploadException(uploadExcetionReq);
+                            }
+                        }
                     }
 
                     @Override
@@ -92,12 +153,14 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                         }
                     }
                 });
+
         addSubscribe(disposable);
+
     }
 
     @Override
     public void cashOutPrice() {
-        if(mOrderIdList.isEmpty()){
+        if (mOrderIdList.isEmpty()) {
             return;
         }
         Map<String, String> map = new HashMap<>();
@@ -105,7 +168,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
         for (String orderId : mOrderIdList) {
             orderNo += orderId + ",";
         }
-        if(!TextUtils.isEmpty(orderNo)) {
+        if (!TextUtils.isEmpty(orderNo)) {
             orderNo = orderNo.substring(0, orderNo.length() - 1);
         }
         map.put("orderNo", orderNo);
@@ -192,15 +255,15 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                 .subscribeWith(new PMHttpCallBack<List<BtCashOutStatusInfo>>() {
                     @Override
                     public void onResult(List<BtCashOutStatusInfo> btCashOutStatusInfoList) {
-                        if(btCashOutStatusInfoList != null && !btCashOutStatusInfoList.isEmpty()) {
+                        if (btCashOutStatusInfoList != null && !btCashOutStatusInfoList.isEmpty()) {
                             BtCashOutStatusInfo btCashOutStatusInfo = null;
                             for (BtCashOutStatusInfo info : btCashOutStatusInfoList) {
-                                if(TextUtils.equals(info.orderNo, id)){
+                                if (TextUtils.equals(info.orderNo, id)) {
                                     btCashOutStatusInfo = info;
                                     break;
                                 }
                             }
-                            if(btCashOutStatusInfo != null) {
+                            if (btCashOutStatusInfo != null) {
                                 if (btCashOutStatusInfo.preSettleOrderStatus == 2) {
                                     btUpdateCashOutStatus.postValue(false);
                                 } else if (btCashOutStatusInfo.preSettleOrderStatus == 1) {

@@ -35,10 +35,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 
-/**
- * Created by goldze on 2017/6/15.
- */
-
 public interface PMApiService {
     /**
      * 获取 PM赛事列表
