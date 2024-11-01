@@ -88,7 +88,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
 
 
 
-                        //请求投注记录getOrderListV3PB接口时，如果是1分钟后，如果有注单是确认中，
+                        //请求投注记录getOrderListV4PB接口时，如果有注单是确认中且是1分钟后，
                         //就调用接口发送所有确认中注单日志，一小时内已发送过的禁止重复发送
                         List<BtErrorBean> list = new ArrayList<>();
                         long currentTime = System.currentTimeMillis();
