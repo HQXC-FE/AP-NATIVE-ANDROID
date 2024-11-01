@@ -153,7 +153,7 @@ public class MsgPersonListFragment extends BaseFragment<FragmentMsgPersonListBin
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        viewModel.readCache();
+        viewModel.readCache();
         viewModel.getMessagePersonList(String.valueOf(1), String.valueOf(getArguments().getInt("category", 2)));
     }
 

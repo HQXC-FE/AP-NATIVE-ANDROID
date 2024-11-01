@@ -61,7 +61,7 @@ public class MsgFragment extends BaseFragment<FragmentMsgBinding, MsgViewModel> 
         MsgPersonListFragment bindMsgPersonFragment = new MsgPersonListFragment();
         MsgPersonListFragment bindMsgSysFragment = new MsgPersonListFragment();
 
-        //代表, 1:通知公告 2:推广活动 3:系统讯息
+        //代表, 1:通知公告 2:推广活动 3:系统讯息 (站内信UI先暂时改回之前的，后面可能会优化回来)
         Bundle argPerson = new Bundle();
         argPerson.putInt("category", 2);
         bindMsgPersonFragment.setArguments(argPerson);
@@ -76,11 +76,11 @@ public class MsgFragment extends BaseFragment<FragmentMsgBinding, MsgViewModel> 
         String txtMsgSys = getString(R.string.txt_msg_message_sys);
 
         fragmentList.add(bindMsgFragment);
-        fragmentList.add(bindMsgPersonFragment);
+//        fragmentList.add(bindMsgPersonFragment);
         fragmentList.add(bindMsgSysFragment);
         tabList.add(txtMsg);
-        tabList.add(txtMsgPromote);
-        tabList.add(txtMsgSys);
+//        tabList.add(txtMsgPromote);
+        tabList.add(txtMsgPerson);
 
         mAdapter.notifyDataSetChanged();
         int isMsgPerson = getArguments().getInt("isMsgPerson", 0);

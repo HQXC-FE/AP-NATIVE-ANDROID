@@ -106,7 +106,7 @@ public class MsgViewModel extends BaseViewModel<MineRepository> {
     public void getMessagePersonList(String page, String category) {
         HashMap<String, String> map = new HashMap<>();
         map.put("page", page);
-        map.put("category", category);
+//        map.put("category", category);
 
         Disposable disposable = (Disposable) model.getApiService().getMessagePersonList(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
