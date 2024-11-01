@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.MutableLiveData;
 
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.live.X9LiveInfo;
@@ -31,6 +32,8 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
         super(application, model);
     }
     public ICallBack callBack ;
+
+    public MutableLiveData<AnchorSortResponse> anchorSortResponseMutableLiveData = new MutableLiveData<>();
 
     public void setCallBack(ICallBack callBack) {
         CfLog.e("setCallBack --- >" +callBack.toString());
@@ -78,7 +81,8 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
                     public void onResult(AnchorSortResponse data) {
 
                         if (data !=null){
-                            CfLog.e("getAnchorSort ---->" + data.toString());
+                            CfLog.e("getAnchorSort ----------------> ");
+                            anchorSortResponseMutableLiveData.setValue(data);
                         }
                     }
 

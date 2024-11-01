@@ -7,10 +7,10 @@ package com.xtree.live.data.source.request;
 public class AnchorSortRequest {
     public AnchorSortRequest(){
         super();
-        this.type ="1";
-        this.platform = "1";
+        this.type ="2";
+        this.platform = "3";
         this.side = "1" ;
-        this.listRows = "6";
+        this.listRows = "200";
         this.page = "1";
     }
     private String type ;//1：热门， 2：推荐

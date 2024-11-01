@@ -15,15 +15,19 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.router.RouterFragmentPath;
+import com.xtree.base.utils.CfLog;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.broadcaster.fragment.LiveShareDialog;
 import com.xtree.live.data.factory.AppViewModelFactory;
+import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.databinding.FragmentLiveBroadcasterBinding;
-import com.xtree.live.ui.main.adapter.BroadcasterAdapter;
+import com.xtree.live.ui.main.adapter.AttentionListAdapter;
 import com.xtree.live.ui.main.viewmodel.AttentionListModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
 
@@ -34,17 +38,17 @@ import me.xtree.mvvmhabit.base.BaseFragment;
 public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterBinding, AttentionListModel> implements AttentionListModel.ICallBack {
     private ArrayList<Fragment> fragmentList = new ArrayList<>();
     private ArrayList<String> tabList = new ArrayList<>();
-    private BroadcasterAdapter mAdapter;
+    private AttentionListAdapter mAdapter;
     private BasePopupView shareView;
     private LiveShareDialog liveShareDialog ;
+
+    private AnchorSortResponse anchorSortResponse ;//直播列表数据
 
 
 
     @Override
     public void initView() {
-        mAdapter = new BroadcasterAdapter(getContext());
-        binding.rvMain.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
+
 
         binding.ivwShare.setOnClickListener(v -> {
             if (shareView == null) {
@@ -70,23 +74,6 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
         binding.ivwBack.setOnClickListener(v -> {
             getActivity().finish();
         });
-/*
-        LiveRepository.getInstance().getLiveToken(new LiveTokenRequest())
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribe(new HttpCallBack<LiveTokenResponse>() {
-                    @Override
-                    public void onResult(LiveTokenResponse data) {
-                        if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
-                            LiveRepository.getInstance().setLive(data);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
-                });*/
     }
 
     @Override
@@ -115,5 +102,20 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
     public void callback() {
         viewModel.getAnchorSort();
 
+    }
+
+    @Override
+    public void initViewObservable() {
+        super.initViewObservable();
+        viewModel.anchorSortResponseMutableLiveData.observe(getActivity() , vo->{
+            if (vo != null && vo.data.size() >0){
+                anchorSortResponse = vo;
+                Collections.sort(anchorSortResponse.data);
+                mAdapter = new AttentionListAdapter(getContext(),anchorSortResponse);
+                binding.rvMain.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+            }
+
+        });
     }
 }

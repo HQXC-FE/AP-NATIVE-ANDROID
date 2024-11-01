@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                android:id="@+id/iv_live_broadcaster_header"
+                android:id="@+id/iv_live_header"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_gravity="center"
@@ -58,7 +58,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:background="@mipmap/lv_broadcaster_header_default"
-                android:visibility="gone"/>
+
+                android:visibility="visible"/>
+            <!--  android:src="@drawable/anim_living" android:background="@mipmap/lv_broadcaster_header_default"-->
         </RelativeLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

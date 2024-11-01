@@ -6,15 +6,24 @@
     android:layout_height="wrap_content"
     android:background="@color/clr_transparent"
   >
+   <!-- -->
+    <View
+        android:id="@+id/topView"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
      <LinearLayout
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:layout_marginLeft="20dp"
          android:layout_marginRight="20dp"
-
-         android:background="@drawable/bg_live_broadcaster"
          android:orientation="vertical"
-         tools:ignore="MissingConstraints">
+
+         tools:ignore="MissingConstraints"
+         android:background="@drawable/anchor_item_bg"
+         app:layout_constraintTop_toBottomOf="@+id/topView">
          <LinearLayout
              android:layout_width="match_parent"
              android:layout_height="match_parent"
@@ -24,13 +33,6 @@
              <RelativeLayout
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content">
-              <!--   <ImageView
-                     android:id="@+id/iv_live_broadcaster_header"
-                     android:layout_width="48dp"
-                     android:layout_height="48dp"
-                     android:layout_marginTop="10dp"
-                     android:layout_marginLeft="10dp"
-                     android:background="@mipmap/lv_broadcaster_header_default"/>-->
                  <include
                      android:id="@+id/iv_live_broadcaster_header"
                      android:layout_width="48dp"
@@ -71,13 +73,14 @@
                      android:layout_alignTop="@id/iv_live_broadcaster_header"
                      android:layout_alignParentRight="true"
                      android:layout_marginRight="10dp"
+                     android:visibility="gone"
                      />
              </RelativeLayout>
 
          </LinearLayout>
          <LinearLayout
              android:layout_width="match_parent"
-             android:layout_height="match_parent"
+             android:layout_height="wrap_content"
              android:layout_weight="4"
              android:layout_marginTop="20dp"
              android:layout_marginLeft="10dp"
@@ -90,6 +93,7 @@
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"
                  tools:text="足够专业才能创造“梦”想，“稳”健才是成功基石！专注收米！"
+                 android:visibility="gone"
                  />
              <View
                  android:layout_width="match_parent"
