@@ -231,6 +231,7 @@
             <TextView
                 android:id="@+id/tvw_left"
                 style="@style/style_btn_short_cancel"
+                android:background="@drawable/bg_btn_rc_exp_short_cancel_selector"
                 android:text="@string/txt_cancel"
                 android:onClick="@{() -> model.cancleOrder()}"
                 android:enabled="@{model.cancleOrderStatus}"
