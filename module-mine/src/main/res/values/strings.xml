@@ -385,7 +385,7 @@
     <string name="txt_team_balance_desc">按团队余额-从高到低</string>
     <string name="txt_team_balance_asc">按团队余额-从低到高</string>
 
-    <string name="txt_input_output_transfer">充提转账</string>
+    <string name="txt_input_output_transfer">充值转账</string>
     <string name="txt_lottery_bonus">彩票分红</string>
     <string name="txt_lottery_active_money">彩票活动奖金</string>
     <string name="txt_day_money">日工资</string>
