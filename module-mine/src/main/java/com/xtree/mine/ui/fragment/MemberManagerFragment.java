@@ -24,11 +24,13 @@ import com.xtree.base.adapter.CachedAutoRefreshAdapter;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
+import com.xtree.base.utils.UuidUtil;
 import com.xtree.base.widget.ListDialog;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.FragmentMemberManageBinding;
+import com.xtree.mine.ui.dialog.SettingPointDialog;
 import com.xtree.mine.ui.viewmodel.MineViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.mine.vo.MemberManagerVo;
@@ -47,6 +49,7 @@ public class MemberManagerFragment extends BaseFragment<FragmentMemberManageBind
     ItemTextBinding binding2;
     MemberManagerAdapter adapter;
     int curPage = 1;
+    BasePopupView ppw2 = null;
 
     @Override
     public void initView() {
@@ -104,6 +107,8 @@ public class MemberManagerFragment extends BaseFragment<FragmentMemberManageBind
                 } else if (msg.equals(MemberManagerAdapter.TRANSFER_MEMBER)) {
                     bundle.putString("page", RouterFragmentPath.Mine.PAGER_MEMBER_TRANSFER);
                     startContainerFragment(RouterFragmentPath.Mine.PAGER_SECURITY_VERIFY_CHOOSE, bundle); // 下级转账
+                } else if (msg.equals(MemberManagerAdapter.SET_POINT)) {
+                    showSetDialog(vo);
                 }
             }
 
@@ -146,6 +151,15 @@ public class MemberManagerFragment extends BaseFragment<FragmentMemberManageBind
 
     @Override
     public void initViewObservable() {
+        viewModel.liveDataSetPoint.observe(this, vo -> {
+            if (vo) {
+                ToastUtils.showSuccess(getString(R.string.txt_set_success));
+                curPage = 1;
+                adapter.clear();
+                searchMember(curPage);
+            }
+        });
+
         viewModel.liveDataMemberManager.observe(this, vo -> {
             adapter.setIsShow(vo.isshow);
             binding.refreshLayout.finishRefresh();
@@ -287,5 +301,21 @@ public class MemberManagerFragment extends BaseFragment<FragmentMemberManageBind
             map.put("orderby", "children_num");
             map.put("sort", "desc");
         }
+    }
+
+    private void showSetDialog(MemberUserInfoVo vo) {
+        ppw2 = new XPopup.Builder(getContext()).asCustom(new SettingPointDialog(getContext(), vo, new SettingPointDialog.ICallback() {
+
+            @Override
+            public void onClick(String point) {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("point", point);
+                map.put("uid", vo.userid);
+                map.put("userId", vo.userid);
+                map.put("nonce", UuidUtil.getID16());
+                viewModel.setPoint(map);
+            }
+        }));
+        ppw2.show();
     }
 }
