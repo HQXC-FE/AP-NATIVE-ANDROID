@@ -73,6 +73,30 @@
             app:layout_constraintTop_toTopOf="@id/tvw_user_balance_title" />
 
         <TextView
+            android:id="@+id/tvw_transfer_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_transfer_kind"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvw_transfer"
+            app:layout_constraintStart_toStartOf="@id/btn_cancel"
+            app:layout_constraintTop_toTopOf="@id/tvw_transfer" />
+
+        <TextView
+            android:id="@+id/tvw_transfer"
+            style="@style/style_cm_edt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:inputType="number"
+            android:text="@string/txt_input_output_transfer"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvw_user_balance"
+            app:layout_constraintTop_toBottomOf="@id/tvw_user_balance" />
+
+        <TextView
             android:id="@+id/tvw_user_money_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -92,8 +116,8 @@
             android:inputType="number"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tvw_user_balance"
-            app:layout_constraintTop_toBottomOf="@id/tvw_user_balance" />
+            app:layout_constraintStart_toStartOf="@id/tvw_transfer"
+            app:layout_constraintTop_toBottomOf="@id/tvw_transfer" />
 
         <TextView
             android:id="@+id/tvw_user_money_warning"
