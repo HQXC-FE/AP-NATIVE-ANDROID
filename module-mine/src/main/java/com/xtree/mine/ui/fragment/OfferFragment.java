@@ -39,8 +39,8 @@ import me.xtree.mvvmhabit.base.BaseFragment;
 @Route(path = RouterFragmentPath.Mine.PAGER_OFFER)
 public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewModel> {
     String mStatus = "";
-    String mStartTime = CalenderUtil.searchToday() + "00:00:00";
-    String mEndTime = CalenderUtil.searchToday() + "23:59:59";
+    String mStartTime = CalenderUtil.searchToday() + " 00:00:00";
+    String mEndTime = CalenderUtil.searchToday() + " 23:59:59";
     CachedAutoRefreshAdapter<OfferItemVo> mAdapter;
     ItemOfferBinding binding2;
     TextView statusViews[];
@@ -129,12 +129,12 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
 
         binding.tvReceived.setOnClickListener(v -> {
             setStatus(binding.tvReceived);
-            mStatus = "2";
+            mStatus = "3";
         });
 
         binding.tvExpired.setOnClickListener(v -> {
             setStatus(binding.tvExpired);
-            mStatus = "3";
+            mStatus = "2";
         });
 
         binding.tvTime.setOnClickListener(v -> {
@@ -147,22 +147,22 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
 
         binding.tvToday.setOnClickListener(v -> {
             setTime(binding.tvToday);
-            mStartTime = CalenderUtil.searchToday() + "00:00:00";
+            mStartTime = CalenderUtil.searchToday() + " 00:00:00";
         });
 
         binding.tvYesterday.setOnClickListener(v -> {
             setTime(binding.tvYesterday);
-            mStartTime = CalenderUtil.cutDay(-1) + "00:00:00";
+            mStartTime = CalenderUtil.cutDay(-1) + " 00:00:00";
         });
 
         binding.tvLast7.setOnClickListener(v -> {
             setTime(binding.tvLast7);
-            mStartTime = CalenderUtil.cutDay(-7) + "00:00:00";
+            mStartTime = CalenderUtil.cutDay(-6) + " 00:00:00";
         });
 
         binding.tvLast30.setOnClickListener(v -> {
             setTime(binding.tvLast30);
-            mStartTime = CalenderUtil.cutDay(-30) + "00:00:00";
+            mStartTime = CalenderUtil.cutDay(-29) + " 00:00:00";
         });
 
         binding.tvSetting.setOnClickListener(v -> setTime(binding.tvSetting));
@@ -177,8 +177,8 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
             setStatus(binding.tvAll);
             setTime(binding.tvToday);
             mStatus = "";
-            mStartTime = CalenderUtil.searchToday() + "00:00:00";
-            mEndTime = CalenderUtil.searchToday() + "23:59:59";
+            mStartTime = CalenderUtil.searchToday() + " 00:00:00";
+            mEndTime = CalenderUtil.searchToday() + " 23:59:59";
             binding.tvStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_offer_right, 0);
             binding.tvTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.ic_offer_right, 0);
             binding.clMenu.setVisibility(View.GONE);
