@@ -46,10 +46,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
@@ -172,7 +170,9 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
                 if (searchDatePos != tab.getPosition()) {
                     searchDatePos = tab.getPosition();
                     long startTime = dateResultList.get(searchDatePos).getTime();
-                    viewModel.matchResultPage(String.valueOf(startTime), String.valueOf(startTime + 86400000L), playMethodPos, String.valueOf(getSportId()));
+                    if (!tabSportAdapter.getData().isEmpty()) {
+                        viewModel.matchResultPage(String.valueOf(startTime), String.valueOf(startTime + 86400000L), playMethodPos, String.valueOf(getSportId()));
+                    }
                 }
             }
 
@@ -253,7 +253,9 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
         binding.clGameSearch.setVisibility(View.GONE);
         binding.ivwGameSearch.setVisibility(View.VISIBLE);
         binding.tabSearchDate.setVisibility(View.VISIBLE);
-        binding.edtGameSearch.setText("");
+        if (!TextUtils.equals(binding.edtGameSearch.getText().toString(), "")) {
+            binding.edtGameSearch.setText("");
+        }
     }
 
     //private void autoClickItem(RecyclerView recyclerView, int position) {
