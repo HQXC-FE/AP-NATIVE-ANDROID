@@ -30,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
@@ -245,7 +244,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             mPlatformName = getString(R.string.bt_platform_name_pmxc);
             isDisabled = SPUtils.getInstance().getBoolean(SPKeyGlobal.PMXC_DISABLED);
         }
-        if(isDisabled){
+        if (isDisabled) {
             MsgDialog dialog = new MsgDialog(this, "温馨提示", "该场馆已被关闭，请切换至其它场馆进行游玩。感谢您的支持。", true, new MsgDialog.ICallBack() {
                 @Override
                 public void onClickLeft() {
@@ -508,8 +507,11 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                         searchDatePos = tab.getPosition();
                         viewModel.statistical(playMethodType);
                         initTimer();
-                        getMatchData(String.valueOf(getSportId()), mOrderBy, mLeagueIdList, null,
-                                playMethodType, searchDatePos, false, true);
+                        //彩种数据接口未加载时   禁止加载早盘列表接口
+                        if (!tabSportAdapter.getData().isEmpty()) {
+                            getMatchData(String.valueOf(getSportId()), mOrderBy, mLeagueIdList, null,
+                                    playMethodType, searchDatePos, false, true);
+                        }
                     }
                 }
             }
@@ -913,7 +915,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             btSettingDialogFragment.show(getSupportFragmentManager(), "BtSettingDialogFragment");
         } else if (index == 1) {
             startContainerFragment(RouterFragmentPath.Bet.PAGER_BET_AT);
-        }else if (index == 0) {
+        } else if (index == 0) {
             startContainerFragment(RouterFragmentPath.Bet.PAGER_BET_RESULT);
         }
     }
