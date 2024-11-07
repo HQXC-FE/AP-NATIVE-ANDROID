@@ -46,14 +46,19 @@ object FastestMonitorCache {
      */
     fun check(domain: TopSpeedDomain): Boolean {
         val currentTime = System.currentTimeMillis()
-        val con = getDomains().any {
-            it.url == domain.url
-        }
 
-        if (!con) {
+        domains.findLast {
+            it.url.equals(domain.url)
+        }?.let {
+            //如果最后一次上报小于1000，且最新数据》=1000，则重新上报
+            if (it.speedSec < 1000 && domain.speedSec >= 1000) {
+                return true
+            }
+
+            //如果距离最后一次上报超过一小时，重新上报
+            return currentTime - it.lastUploadMonitor >= MAX_UPLOAD_TIME
+        } ?: run {
             return true
         }
-
-        return getDomains().any { currentTime - it.lastUploadMonitor >= MAX_UPLOAD_TIME && it.url == domain.url }
     }
 }
