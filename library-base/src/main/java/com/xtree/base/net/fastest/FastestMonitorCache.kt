@@ -25,7 +25,7 @@ object FastestMonitorCache {
     }
 
     fun put(domain: TopSpeedDomain) {
-        domains.findLast {
+        getDomains().findLast {
             it.url.equals(domain.url)
         }?.let {
             domains.remove(it)
@@ -47,7 +47,7 @@ object FastestMonitorCache {
     fun check(domain: TopSpeedDomain): Boolean {
         val currentTime = System.currentTimeMillis()
 
-        domains.findLast {
+        getDomains().findLast {
             it.url.equals(domain.url)
         }?.let {
             //如果最后一次上报小于1000，且最新数据》=1000，则重新上报
