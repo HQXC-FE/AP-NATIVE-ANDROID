@@ -443,6 +443,36 @@
                         android:text="https://apptest.oxldkm.com" />
                 </LinearLayout>
 
+                <LinearLayout style="@style/style_item_ll_row_0">
+
+                    <CheckBox
+                        android:id="@+id/tvw_fastest_monitor_timeout"
+                        style="@style/style_item_report_value"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:layout_weight="2"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="配置测速超时上传时间"
+                        android:textColor="@color/clr_blue_03" />
+
+                    <EditText
+                        android:id="@+id/edt_fastest_monitor_timeout"
+                        style="@style/style_item_report_value"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:inputType="number"
+                        android:maxEms="14"
+                        android:hint="请输入时间(ms)"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="https://apptest.oxldkm.com" />
+                </LinearLayout>
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

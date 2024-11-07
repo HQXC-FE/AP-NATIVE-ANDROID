@@ -76,4 +76,6 @@ public class SPKeyGlobal {
     public static final String PROMOTION_CODE_REG ="PromotionCodeReg";//注册推广码
     //DEBUG
     public static final String DEBUG_APPLY_DOMAIN ="debug_apply_domain";//debug 设置指定域名
+    //测速超时上传时间
+    public static final String DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT ="debug_apply_fastest_monitor_timeout";//debug 设置指定域名
 }
