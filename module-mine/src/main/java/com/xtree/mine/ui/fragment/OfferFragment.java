@@ -148,21 +148,25 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
         binding.tvToday.setOnClickListener(v -> {
             setTime(binding.tvToday);
             mStartTime = CalenderUtil.searchToday() + " 00:00:00";
+            mEndTime = CalenderUtil.searchToday() + " 23:59:59";
         });
 
         binding.tvYesterday.setOnClickListener(v -> {
             setTime(binding.tvYesterday);
             mStartTime = CalenderUtil.cutDay(-1) + " 00:00:00";
+            mEndTime = CalenderUtil.searchToday() + " 23:59:59";
         });
 
         binding.tvLast7.setOnClickListener(v -> {
             setTime(binding.tvLast7);
             mStartTime = CalenderUtil.cutDay(-6) + " 00:00:00";
+            mEndTime = CalenderUtil.searchToday() + " 23:59:59";
         });
 
         binding.tvLast30.setOnClickListener(v -> {
             setTime(binding.tvLast30);
             mStartTime = CalenderUtil.cutDay(-29) + " 00:00:00";
+            mEndTime = CalenderUtil.searchToday() + " 23:59:59";
         });
 
         binding.tvSetting.setOnClickListener(v -> setTime(binding.tvSetting));
