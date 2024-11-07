@@ -89,6 +89,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private BasePopupView ppw = null; // 底部弹窗
     private BasePopupView ppw2 = null; // 底部弹窗
     private BasePopupView closePpw = null; // 禁止该用户玩当前游戏的弹窗
+    private BasePopupView freezePpw = null; // 冻结弹窗
     private BasePopupView updateView = null;
     private BasePopupView showUpdateErrorView ;//显示下载失败
 
@@ -304,6 +305,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         });
         viewModel.liveDataProfile.observe(getViewLifecycleOwner(), vo -> {
             CfLog.d("*** " + new Gson().toJson(vo));
+            if (vo.isFrozen != 0) {
+                showFreezePpw();
+            }
+
             mProfileVo = vo;
             binding.clLoginNot.setVisibility(View.GONE);
             binding.clLoginYet.setVisibility(View.VISIBLE);
@@ -629,6 +634,29 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     .asCustom(dialog);
         }
         closePpw.show();
+    }
+
+    /**
+     * 冻结弹窗
+     */
+    private void showFreezePpw() {
+        if (freezePpw == null) {
+            MsgDialog dialog = new MsgDialog(requireContext(), "温馨提示", "账户无法操作, 请联系平台客服\n\n", true, new MsgDialog.ICallBack() {
+                @Override
+                public void onClickLeft() {
+                }
+
+                @Override
+                public void onClickRight() {
+                    freezePpw.dismiss();
+                }
+            });
+            freezePpw = new XPopup.Builder(requireContext())
+                    .dismissOnTouchOutside(true)
+                    .dismissOnBackPressed(true)
+                    .asCustom(dialog);
+        }
+        freezePpw.show();
     }
 
     @Override
