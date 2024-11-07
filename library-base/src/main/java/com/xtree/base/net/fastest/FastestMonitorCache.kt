@@ -12,7 +12,9 @@ object FastestMonitorCache {
 
     private val domains = mutableListOf<TopSpeedDomain>()
 
-    var MAX_UPLOAD_TIME = 1000 * 60 * 60
+    const val TIME_OUT = 1000 * 60 * 60
+
+    var MAX_UPLOAD_TIME = TIME_OUT
 
     init {
         val fastest_monitor_timeout =
@@ -23,8 +25,8 @@ object FastestMonitorCache {
     }
 
     fun put(domain: TopSpeedDomain) {
-        getDomains().findLast {
-            it.url == domain.url
+        domains.findLast {
+            it.url.equals(domain.url)
         }?.let {
             domains.remove(it)
             domains.add(domain)

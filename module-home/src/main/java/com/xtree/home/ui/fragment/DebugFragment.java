@@ -156,6 +156,7 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
                     FastestMonitorCache.INSTANCE.setMAX_UPLOAD_TIME(i);
                 } else {
                     SPUtils.getInstance().remove(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT);
+                    FastestMonitorCache.INSTANCE.setMAX_UPLOAD_TIME(FastestMonitorCache.TIME_OUT);
                 }
             }
         });

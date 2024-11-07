@@ -229,15 +229,13 @@ class FastestTopDomainUtil private constructor() {
                 ).format(Date(curTime))
 
                 allTest.forEach {
-                    if (it.speedSec > 1000) {
-                        //如果符合上传规则加入上传信息集合
-                        val check = FastestMonitorCache.check(it)
-                        if (check) {
-                            val infoList =
-                                listOf<String>(it.url ?: "", it.speedSec.toString(), dateFormat)
-                            highSpeedList.add(infoList)
-                            FastestMonitorCache.put(it.apply { lastUploadMonitor = curTime })
-                        }
+                    //如果符合上传规则加入上传信息集合
+                    val check = FastestMonitorCache.check(it)
+                    if (check) {
+                        val infoList =
+                            listOf<String>(it.url ?: "", it.speedSec.toString(), dateFormat)
+                        highSpeedList.add(infoList)
+                        FastestMonitorCache.put(it.apply { lastUploadMonitor = curTime })
                     }
                 }
 
