@@ -10,21 +10,26 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.net.HttpWithdrawalCallBack;
 import com.xtree.base.net.RetrofitClient;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.AppUpdateVo;
+import com.xtree.base.vo.BalanceVo;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.mine.data.MineRepository;
-import com.xtree.base.vo.BalanceVo;
+import com.xtree.mine.vo.OfferVo;
 import com.xtree.mine.vo.QuestionVo;
 import com.xtree.mine.vo.RewardVo;
 import com.xtree.mine.vo.VipInfoVo;
 import com.xtree.mine.vo.VipUpgradeInfoVo;
 
+import java.util.HashMap;
+
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -41,6 +46,7 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
     public SingleLiveData<VipInfoVo> liveDataVipInfo = new SingleLiveData<>(); // Vip个人资讯
     public SingleLiveData<String> liveDataQuestionWeb = new SingleLiveData<>(); // 常见问题
     public SingleLiveData<RewardVo> liveDataReward = new SingleLiveData<>(); // 是否有优惠
+    public MutableLiveData<OfferVo> offerVoMutableLiveData = new MutableLiveData<>(); // 优惠中心列表
 
     public MutableLiveData<AppUpdateVo> liveDataUpdate = new MutableLiveData<>();//更新
 
@@ -285,6 +291,68 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
                         super.onError(t);
                         CfLog.e("error, " + t);
                     }
+                });
+        addSubscribe(disposable);
+    }
+
+
+    /**
+     * 优惠中心列表
+     *
+     * @param map
+     */
+    public void getOfferList(HashMap<String, String> map) {
+        Disposable disposable = (Disposable) model.getApiService().getOfferList(map)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpWithdrawalCallBack<OfferVo>() {
+                    @Override
+                    public void onResult(OfferVo vo) {
+                        if (vo != null) {
+                            offerVoMutableLiveData.setValue(vo);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        super.onFail(t);
+                    }
+
+                });
+        addSubscribe(disposable);
+    }
+
+    /**
+     * 取得优惠
+     *
+     * @param key
+     * @param map
+     */
+    public void getOffer(String key, HashMap<String, String> map) {
+        Disposable disposable = (Disposable) model.getApiService().getOffer(key, map)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpWithdrawalCallBack<HashMap<String, String>>() {
+                    @Override
+                    public void onResult(HashMap<String, String> map) {
+                        ToastUtils.showSuccess(map.get("message"));
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("onError message =  " + t.toString());
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        CfLog.e("onError message =  " + t.toString());
+                    }
+
                 });
         addSubscribe(disposable);
     }

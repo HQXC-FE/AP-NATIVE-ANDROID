@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="104dp"
+    android:background="@drawable/bg_main_c16">
+
+    <ImageView
+        android:id="@+id/iv_red_pocket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:src="@mipmap/ic_red_pocket"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="体育迎新，双重钜惠，双重福利，双重优惠"
+        android:textColor="@color/clr_filter_txt_black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/iv_red_pocket"
+        app:layout_constraintTop_toTopOf="@id/iv_red_pocket" />
+
+    <TextView
+        android:id="@+id/tv_multiple_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="流水倍数："
+        android:textColor="@color/clr_grey_13"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/iv_red_pocket"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <TextView
+        android:id="@+id/tv_multiple"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:textColor="@color/clr_grey_13"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_multiple_title"
+        app:layout_constraintStart_toEndOf="@id/tv_multiple_title"
+        app:layout_constraintTop_toTopOf="@id/tv_multiple_title" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="倍"
+        android:textColor="@color/clr_grey_13"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_multiple_title"
+        app:layout_constraintStart_toEndOf="@id/tv_multiple"
+        app:layout_constraintTop_toTopOf="@id/tv_multiple_title" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2020-10-16"
+        android:textColor="@color/clr_grey_13"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_time_end"
+        app:layout_constraintStart_toStartOf="@id/tv_title"
+        app:layout_constraintTop_toTopOf="@id/tv_time_end" />
+
+    <TextView
+        android:id="@+id/tv_time_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" 到期"
+        android:textColor="@color/clr_grey_13"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/tv_time"
+        app:layout_constraintTop_toBottomOf="@id/tv_multiple_title" />
+
+    <TextView
+        android:id="@+id/tv_active"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="活动规则"
+        android:textColor="@color/clr_grey_13"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/tv_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_end" />
+
+    <TextView
+        android:id="@+id/bt_get"
+        android:layout_width="80dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="6dp"
+        android:background="@drawable/bt_bg_main_c8"
+        android:gravity="center"
+        android:text="@string/txt_offer_receiving"
+        android:textColor="@color/clr_white"
+        app:layout_constraintBottom_toBottomOf="@id/iv_red_pocket"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

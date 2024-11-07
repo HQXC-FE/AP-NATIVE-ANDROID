@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ResourceName">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/clr_white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                style="@style/style_cm_title"
+                android:text="@string/txt_offer"
+                app:layout_constraintBaseline_toBaselineOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivw_back"
+                style="@style/style_ic_title_back"
+                android:src="@mipmap/cm_ic_back"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/bt_page_bg"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/iv_bg_offer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:src="@mipmap/bg_offer"
+            app:layout_constraintEnd_toEndOf="@id/cl_title"
+            app:layout_constraintStart_toStartOf="@id/cl_title"
+            app:layout_constraintTop_toBottomOf="@id/cl_title" />
+
+        <View
+            android:id="@+id/ll_line"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/clr_white"
+            app:layout_constraintBottom_toBottomOf="@id/tv_offer_wait_money"
+            app:layout_constraintEnd_toEndOf="@id/iv_bg_offer"
+            app:layout_constraintStart_toStartOf="@id/iv_bg_offer"
+            app:layout_constraintTop_toTopOf="@id/tv_offer_wait_money_title" />
+
+        <TextView
+            android:id="@+id/tv_offer_wait_money_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="@string/txt_offer_wait_money"
+            android:textColor="@color/clr_txt_grey_11"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/iv_bg_offer"
+            app:layout_constraintTop_toTopOf="@id/iv_bg_offer" />
+
+        <TextView
+            android:id="@+id/tv_offer_wait_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:text="0.0000"
+            android:textColor="@color/clr_txt_grey_11"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tv_offer_wait_money_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_offer_wait_money_title" />
+
+        <TextView
+            android:id="@+id/tv_offer_all_money_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/layout_margin"
+            android:text="@string/txt_offer_all_money"
+            android:textColor="@color/clr_txt_grey_11"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/ll_line"
+            app:layout_constraintTop_toTopOf="@id/ll_line" />
+
+        <TextView
+            android:id="@+id/tv_offer_all_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:text="0.0000"
+            android:textColor="@color/clr_txt_grey_11"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tv_offer_all_money_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_offer_all_money_title" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/layout_margin"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:drawableRight="@mipmap/ic_offer_right"
+            android:drawablePadding="3dp"
+            android:text="@string/txt_offer_all_status"
+            android:textColor="@color/clr_txt_grey_08"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/iv_bg_offer"
+            app:layout_constraintTop_toBottomOf="@id/iv_bg_offer" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:drawableRight="@mipmap/ic_offer_right"
+            android:drawablePadding="3dp"
+            android:text="@string/txt_offer_time"
+            android:textColor="@color/clr_txt_grey_08"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/tv_status"
+            app:layout_constraintTop_toTopOf="@id/tv_status" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_menu"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/clr_white"
+            android:elevation="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_status">
+
+            <LinearLayout
+                android:id="@+id/ll_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_all"
+                        android:layout_width="106dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:background="@drawable/bg_btn_offer_click"
+                        android:gravity="center"
+                        android:text="@string/txt_offer_all"
+                        android:textColor="@color/clr_purple_20"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@id/tv_receive"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_receive"
+                        android:layout_width="106dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:background="@drawable/bg_btn_offer_unclick"
+                        android:gravity="center"
+                        android:text="@string/txt_offer_receive"
+                        android:textColor="@color/clr_txt_grey_11"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@id/tv_received"
+                        app:layout_constraintStart_toEndOf="@id/tv_all"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_received"
+                        android:layout_width="106dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:background="@drawable/bg_btn_offer_unclick"
+                        android:gravity="center"
+                        android:text="@string/txt_offer_received"
+                        android:textColor="@color/clr_txt_grey_11"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_receive"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_expired"
+                        android:layout_width="106dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:background="@drawable/bg_btn_offer_unclick"
+                        android:gravity="center"
+                        android:text="@string/txt_offer_expired"
+                        android:textColor="@color/clr_txt_grey_11"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@id/tv_all"
+                        app:layout_constraintTop_toBottomOf="@id/tv_all" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_today"
+                        android:layout_width="106dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:background="@drawable/bg_btn_offer_click"
+                        android:gravity="center"
+                        android:text="@string/txt_offer_today"
+                        android:textColor="@color/clr_purple_20"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@id/tv_yesterday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_yesterday"
+                        android:layout_width="106dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:background="@drawable/bg_btn_offer_unclick"
+                        android:gravity="center"
+                        android:text="@string/txt_offer_yesterday"
+                        android:textColor="@color/clr_txt_grey_11"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@id/tv_last_7"
+                        app:layout_constraintStart_toEndOf="@id/tv_today"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_last_7"
+                        android:layout_width="106dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:background="@drawable/bg_btn_offer_unclick"
+                        android:gravity="center"
+                        android:text="@string/txt_offer_7_day"
+                        android:textColor="@color/clr_txt_grey_11"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_yesterday"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_last_30"
+                        android:layout_width="106dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:background="@drawable/bg_btn_offer_unclick"
+                        android:gravity="center"
+                        android:text="@string/txt_offer_30_day"
+                        android:textColor="@color/clr_txt_grey_11"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@id/tv_today"
+                        app:layout_constraintTop_toBottomOf="@id/tv_today" />
+
+                    <TextView
+                        android:id="@+id/tv_setting"
+                        android:layout_width="106dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:background="@drawable/bg_btn_offer_unclick"
+                        android:gravity="center"
+                        android:text="@string/txt_offer_setting"
+                        android:textColor="@color/clr_txt_grey_11"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="@id/tv_yesterday"
+                        app:layout_constraintTop_toBottomOf="@id/tv_yesterday" />
+
+                    <TextView
+                        android:id="@+id/tv_start_time"
+                        android:layout_width="156dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:background="@drawable/bg_btn_offer_unclick"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/layout_margin"
+                        android:paddingEnd="@dimen/layout_margin"
+                        android:text="2024-01-20"
+                        android:textColor="@color/clr_txt_grey_11"
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="@id/tv_last_30"
+                        app:layout_constraintTop_toBottomOf="@id/tv_last_30" />
+
+                    <TextView
+                        android:id="@+id/tv_symbol"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="~"
+                        android:textColor="@color/clr_grey_13"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_start_time"
+                        app:layout_constraintEnd_toEndOf="@id/tv_end_time"
+                        app:layout_constraintStart_toStartOf="@id/tv_start_time"
+                        app:layout_constraintTop_toTopOf="@id/tv_start_time" />
+
+                    <TextView
+                        android:id="@+id/tv_end_time"
+                        android:layout_width="156dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:background="@drawable/bg_btn_offer_unclick"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/layout_margin"
+                        android:paddingEnd="@dimen/layout_margin"
+                        android:text="2024-01-20"
+                        android:textColor="@color/clr_txt_grey_11"
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="@id/tv_last_7"
+                        app:layout_constraintTop_toBottomOf="@id/tv_last_30" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/layout_margin"
+                android:background="@color/bt_page_bg"
+                app:layout_constraintTop_toBottomOf="@id/ll_menu" />
+
+            <Button
+                android:id="@+id/bt_reset"
+                android:layout_width="102dp"
+                android:layout_height="47dp"
+                android:layout_marginTop="@dimen/layout_margin"
+                android:background="@drawable/bg_btn_offer_clear"
+                android:text="@string/txt_offer_reset"
+                android:textColor="@color/clr_purple_20"
+                app:layout_constraintEnd_toStartOf="@id/bt_ok"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/line" />
+
+            <Button
+                android:id="@+id/bt_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@mipmap/btn_offer_ok"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/bt_reset"
+                app:layout_constraintTop_toTopOf="@id/line" />
+
+            <Button
+                android:id="@+id/bt_space"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/clr_grey_01_a50"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bt_ok" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:drawableTop="@mipmap/ic_no_data"
+            android:elevation="-1dp"
+            android:gravity="center"
+            android:text="@string/txt_offer_no_data"
+            app:layout_constraintEnd_toEndOf="@id/iv_bg_offer"
+            app:layout_constraintStart_toStartOf="@id/iv_bg_offer"
+            app:layout_constraintTop_toBottomOf="@id/tv_status" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_main"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:elevation="-1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/iv_bg_offer"
+            app:layout_constraintStart_toStartOf="@id/iv_bg_offer"
+            app:layout_constraintTop_toBottomOf="@id/tv_status" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
