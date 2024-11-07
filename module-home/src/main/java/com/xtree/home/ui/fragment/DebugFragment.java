@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.fastest.FastestMonitorCache;
 import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
@@ -107,9 +108,13 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
         binding.tvwTag.setText(TagUtils.isTag() + "");
         binding.tvwApiList.setText(getString(R.string.domain_api_list).replace(";", "\n").trim());
         binding.tvwH5List.setText(getString(R.string.domain_url_list).replace(";", "\n").trim());
+        binding.edtFastestMonitorTimeout.setText(String.valueOf(FastestMonitorCache.INSTANCE.getMAX_UPLOAD_TIME()));
 
         String debugUrl = SPUtils.getInstance().getString(SPKeyGlobal.DEBUG_APPLY_DOMAIN);
         binding.tvwVfGlobe.setChecked(!TextUtils.isEmpty(debugUrl));
+
+        int fastest_monitor_timeout = SPUtils.getInstance().getInt(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT);
+        binding.tvwFastestMonitorTimeout.setChecked(fastest_monitor_timeout > 0);
     }
     @Override
     public void initView() {
@@ -136,6 +141,21 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
                     SPUtils.getInstance().put(SPKeyGlobal.DEBUG_APPLY_DOMAIN, url);
                 } else {
                     SPUtils.getInstance().remove(SPKeyGlobal.DEBUG_APPLY_DOMAIN);
+                }
+            }
+        });
+
+        binding.tvwFastestMonitorTimeout.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    String timeout = binding.edtFastestMonitorTimeout.getText().toString().trim();
+                    int i = Integer.parseInt(timeout);
+                    SPUtils.getInstance().put(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT, i);
+                    FastestMonitorCache.INSTANCE.setMAX_UPLOAD_TIME(i);
+                } else {
+                    SPUtils.getInstance().remove(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT);
                 }
             }
         });

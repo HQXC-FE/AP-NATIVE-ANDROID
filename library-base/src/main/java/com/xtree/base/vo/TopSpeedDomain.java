@@ -6,6 +6,8 @@ public class TopSpeedDomain implements BaseBean, Comparable<TopSpeedDomain> {
     public String url;
     public long speedSec;
     public long curCTSSec = 0;
+    //最后一次超时上传的时间
+    public long lastUploadMonitor = 0;
 
     @Override
     public int describeContents() {
@@ -17,12 +19,14 @@ public class TopSpeedDomain implements BaseBean, Comparable<TopSpeedDomain> {
         dest.writeString(this.url);
         dest.writeLong(this.speedSec);
         dest.writeLong(this.curCTSSec);
+        dest.writeLong(this.lastUploadMonitor);
     }
 
     public void readFromParcel(Parcel source) {
         this.url = source.readString();
         this.speedSec = source.readLong();
         this.curCTSSec = source.readLong();
+        this.lastUploadMonitor = source.readLong();
     }
 
     public TopSpeedDomain() {
@@ -32,6 +36,7 @@ public class TopSpeedDomain implements BaseBean, Comparable<TopSpeedDomain> {
         this.url = in.readString();
         this.speedSec = in.readLong();
         this.curCTSSec = in.readLong();
+        this.lastUploadMonitor = in.readLong();
     }
 
     public static final Creator<TopSpeedDomain> CREATOR = new Creator<TopSpeedDomain>() {
