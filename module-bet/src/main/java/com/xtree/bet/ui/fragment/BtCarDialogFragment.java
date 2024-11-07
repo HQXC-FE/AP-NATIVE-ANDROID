@@ -21,6 +21,7 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.NumberUtils;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.widget.MsgDialog;
@@ -134,7 +135,11 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
         keyboardView.setParent(binding.nsvOption);
         mBanlance = SPUtils.getInstance().getString(SPKeyGlobal.WLT_CENTRAL_BLC, "-1");
         binding.tvBalance.setText(NumberUtils.formatDown(Double.valueOf(mBanlance), 2));
-        binding.ivConfirm.setCallBack(() -> {
+        binding.btBet.setOnClickListener(v -> {
+            //4秒内禁止重复投注，防止弱网情况重复投注
+            if (ClickUtil.isFastClick(4000)) {
+                return;
+            }
             int acceptOdds = binding.cbAccept.isChecked() ? 1 : 2;
             if (TextUtils.equals(mBanlance, "-1")) {
                 ToastUtils.showLong("正在获取余额信息，请稍候");
@@ -271,12 +276,10 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
             }
 
             if (hasCloseOption) {
-                binding.ivConfirm.setEnabled(false);
-                binding.ivBtBg.setEnabled(false);
+                binding.btBet.setEnabled(false);
                 binding.ivBt.setEnabled(false);
             } else {
-                binding.ivConfirm.setEnabled(true);
-                binding.ivBtBg.setEnabled(true);
+                binding.btBet.setEnabled(true);
                 binding.ivBt.setEnabled(true);
             }
 
