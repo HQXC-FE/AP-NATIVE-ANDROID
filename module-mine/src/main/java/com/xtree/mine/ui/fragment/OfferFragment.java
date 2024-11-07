@@ -296,9 +296,9 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
                 .asCustom(DateTimePickerDialog.newInstance(getContext(), title, 1, date -> {
                     tvw.setText(date);
                     if (tvw == binding.tvStartTime) {
-                        mStartTime = date;
+                        mStartTime = date + " 00:00:00";
                     } else {
-                        mEndTime = date;
+                        mEndTime = date + " 23:59:59";
                     }
                 }))
                 .show();
