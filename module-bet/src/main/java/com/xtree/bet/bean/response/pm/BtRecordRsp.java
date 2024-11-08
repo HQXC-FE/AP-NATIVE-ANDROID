@@ -20,6 +20,7 @@ public class BtRecordRsp implements BaseBean {
     public boolean hasNext;
     public boolean hasPrevious;
     public boolean optimizeCountSql;
+    public long ts;
     /**
      * 总页数
      */
