@@ -122,7 +122,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             CfLog.i("******");
             viewModel.getProfile();
             //checkRedPocket();
-            viewModel.getMessagePersonList();//获取站内信未读数量
+            viewModel.getUnread();//获取 公告和上下级，站内信消息未读数
         }
     }
 

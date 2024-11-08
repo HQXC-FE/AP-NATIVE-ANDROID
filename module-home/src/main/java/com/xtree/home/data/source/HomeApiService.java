@@ -95,6 +95,12 @@ public interface HomeApiService {
     Flowable<BaseResponse<MsgPersonListVo>> getMessagePersonList();
 
     /**
+     * 获取 公告和上下级，站内信消息未读数
+     */
+    @GET("/api/chat/unread")
+    Flowable<BaseResponse<MsgPersonListVo>> unread();
+
+    /**
      * 获取 VIP信息
      */
     @GET("/api/account/vipinfo")

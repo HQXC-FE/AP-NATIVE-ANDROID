@@ -401,14 +401,14 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         addSubscribe(disposable);
     }
 
-    public void getMessagePersonList() {
-        Disposable disposable = (Disposable) model.getApiService().getMessagePersonList()
+    public void getUnread() {
+        Disposable disposable = (Disposable) model.getApiService().unread()
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<MsgPersonListVo>() {
                     @Override
                     public void onResult(MsgPersonListVo vo) {
-                        liveDataMsgUnread.setValue(vo.unread);
+                        liveDataMsgUnread.setValue(vo.count);
                     }
 
                     @Override
