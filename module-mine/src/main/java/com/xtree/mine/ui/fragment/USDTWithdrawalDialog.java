@@ -70,6 +70,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
     private WithdrawalInfoVo.UserBankInfo selectorBankInfo;//选中的支付地址
     private ArrayList<WithdrawalInfoVo.UserBankInfo> trc20BankInfoList;//只支持trc20提款地址
     private ArrayList<WithdrawalInfoVo.UserBankInfo> erc20ArbitrumBankInfoList;//只支持erc20 arb提款地址
+    private ArrayList<WithdrawalInfoVo.UserBankInfo> solanaBankInfoList;//只支持solana提款地址
     private ArrayList<WithdrawalListVo> listVo;
     private WithdrawalInfoVo infoVo;
     private WithdrawalVerifyVo verifyVo;
@@ -93,6 +94,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
         dialog.infoVo = infoVo;
         dialog.trc20BankInfoList = new ArrayList<>();
         dialog.erc20ArbitrumBankInfoList = new ArrayList<>();
+        dialog.solanaBankInfoList = new ArrayList<>();
         for (int i = 0; i < dialog.infoVo.user_bank_info.size(); i++) {
             WithdrawalInfoVo.UserBankInfo bankInfo = dialog.infoVo.user_bank_info.get(i);
             //将TRC20地址组装在一起
@@ -100,6 +102,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
                 dialog.trc20BankInfoList.add(bankInfo);
             } else if (bankInfo.usdt_type.toUpperCase().contains("ARBITRUM")) {
                 dialog.erc20ArbitrumBankInfoList.add(bankInfo);
+            }else if (bankInfo.usdt_type.toUpperCase().contains("SOLANA")) {
+                dialog.solanaBankInfoList.add(bankInfo);
             }
         }
         return dialog;
@@ -190,6 +194,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
             if (infoVo != null && !infoVo.user_bank_info.isEmpty()) {
                 trc20BankInfoList.clear();
                 erc20ArbitrumBankInfoList.clear();
+                solanaBankInfoList.clear();
                 for (int i = 0; i < infoVo.user_bank_info.size(); i++) {
                     WithdrawalInfoVo.UserBankInfo bankInfo = infoVo.user_bank_info.get(i);
                     //将TRC20地址组装在一起
@@ -197,6 +202,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
                         trc20BankInfoList.add(bankInfo);
                     } else if (bankInfo.usdt_type.toUpperCase().contains("ARBITRUM")) {
                         erc20ArbitrumBankInfoList.add(bankInfo);
+                    } else if (bankInfo.usdt_type.toUpperCase().contains("SOLANA")) {
+                        solanaBankInfoList.add(bankInfo);
                     }
                 }
                 //业务正常 刷新页面
@@ -308,6 +315,16 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
                 } else {
                     selectorBankInfo = null;
                 }
+            }else if (listVo.get(0).name.toUpperCase().contains("SOLANA")) {
+                if (!solanaBankInfoList.isEmpty()) {
+                    String showAddress = solanaBankInfoList.get(0).usdt_type + "--" + solanaBankInfoList.get(0).account;
+                    CfLog.e("设置默认选中的提币地址=" + showAddress);
+                    //设置默认选中的提币地址
+                    selectorBankInfo = solanaBankInfoList.get(0);
+                    binding.tvBindAddress.setText(showAddress);
+                } else {
+                    selectorBankInfo = null;
+                }
             } else {
                 //收款地址 设置默认数据
                 if (infoVo.user_bank_info != null && !infoVo.user_bank_info.isEmpty()) {
@@ -330,6 +347,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
                     showCollectionDialog(trc20BankInfoList);
                 } else if (listVo.get(0).name.toUpperCase().contains("ARBITRUM")) {
                     showCollectionDialog(erc20ArbitrumBankInfoList);
+                }else if (listVo.get(0).name.toUpperCase().contains("SOLANA")) {
+                    showCollectionDialog(solanaBankInfoList);
                 } else {
                     showCollectionDialog(infoVo.user_bank_info);
                 }
@@ -440,6 +459,17 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
                 selectorBankInfo = null;
                 binding.tvBindAddress.setText(" ");
             }
+        }else if (changVo.name.toUpperCase().contains("SOLANA")) {
+            if (!solanaBankInfoList.isEmpty()) {
+                String showAddress = solanaBankInfoList.get(0).usdt_type + "--" + solanaBankInfoList.get(0).account;
+                CfLog.e("设置默认选中的提币地址=" + showAddress);
+                //设置默认选中的提币地址
+                selectorBankInfo = solanaBankInfoList.get(0);
+                binding.tvBindAddress.setText(showAddress);
+            } else {
+                selectorBankInfo = null;
+                binding.tvBindAddress.setText(" ");
+            }
         } else {
             //收款地址 设置默认数据
             if (infoVo.user_bank_info != null && !infoVo.user_bank_info.isEmpty()) {
@@ -469,6 +499,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
                 showCollectionDialog(trc20BankInfoList);
             } else if (changVo.name.toUpperCase().contains("ARBITRUM")) {
                 showCollectionDialog(erc20ArbitrumBankInfoList);
+            } else if (changVo.name.toUpperCase().contains("SOLANA")) {
+                showCollectionDialog(solanaBankInfoList);
             } else {
                 showCollectionDialog(infoVo.user_bank_info);
             }
