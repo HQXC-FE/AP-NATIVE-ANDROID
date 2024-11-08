@@ -3,8 +3,6 @@ package com.xtree.base.widget;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FAILED;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FINISH;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,10 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,12 +35,14 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.just.agentweb.AgentWeb;
+import com.just.agentweb.AgentWebConfig;
 import com.just.agentweb.WebChromeClient;
 import com.just.agentweb.WebViewClient;
 import com.luck.picture.lib.basic.PictureSelector;
 import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
+import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
@@ -177,8 +178,8 @@ public class BrowserActivity extends AppCompatActivity {
             header.put("Cache-Control", "no-cache");
             header.put("Pragme", "no-cache");
         }
-//        header.put("Content-Type", "application/vnd.sc-api.v1.json");
-//        header.put("App-RNID", "87jumkljo"); //
+        //header.put("Content-Type", "application/vnd.sc-api.v1.json");
+        //header.put("App-RNID", "87jumkljo"); //
 
         //header.put("Source", "8");
         //header.put("UUID", TagUtils.getDeviceId(Utils.getContext()));
@@ -257,6 +258,11 @@ public class BrowserActivity extends AppCompatActivity {
         cookieManager.setCookie(url, "auth=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN) + ";" + "_sessionHandler=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID));
         cookieManager.flush();
 
+        // debug模式
+        if (BuildConfig.DEBUG) {
+            AgentWebConfig.debug();
+        }
+
         agentWeb = AgentWeb.with(this)
                 .setAgentWebParent(findViewById(R.id.wv_main), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
                 .useDefaultIndicator() // 使用默认的加载进度条
@@ -272,6 +278,16 @@ public class BrowserActivity extends AppCompatActivity {
                             LoadingDialog.finish();
                         }
                     }
+
+                    // debug模式
+                    @Override
+                    public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                        CfLog.d("AgentWeb", consoleMessage.message() + " -- From line "
+                                + consoleMessage.lineNumber() + " of "
+                                + consoleMessage.sourceId());
+                        return true;
+                    }
+
 
                     /**
                      * For Android >= 4.1
@@ -302,13 +318,15 @@ public class BrowserActivity extends AppCompatActivity {
                 .ready()
                 .go(url); // 加载网页
 
+        WebView webView = agentWeb.getWebCreator().getWebView();
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setUserAgentString(WebSettings.getDefaultUserAgent(this) + " Chrome/100.0.4896.127 Mobile Safari/537.36");
     }
 
     /**
      * 重新加载网页
      */
     public void reload() {
-        //mWebView.reload();
         agentWeb.getUrlLoader().reload();
     }
 
@@ -396,22 +414,6 @@ public class BrowserActivity extends AppCompatActivity {
         LoadingDialog.finish();
     }
 
-    private void tipSsl(WebView view, SslErrorHandler handler) {
-        Activity activity = (Activity) view.getContext();
-        activity.runOnUiThread(() -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setMessage(R.string.ssl_failed_will_u_continue); // SSL认证失败，是否继续访问？
-            builder.setPositiveButton(R.string.ok, (dialog, which) -> handler.proceed()); // 接受https所有网站的证书
-
-            builder.setNegativeButton(R.string.cancel, (dialog, which) -> handler.cancel());
-
-            AlertDialog dialog = builder.create();
-            if (!isFinishing()) {
-                dialog.show();
-            }
-        });
-    }
-
     /**
      * 图片选择
      */
@@ -450,31 +452,6 @@ public class BrowserActivity extends AppCompatActivity {
 
                     }
                 });
-    }
-
-    private void setCookie(String cookie, String url) {
-        CookieSyncManager.createInstance(this);
-        CookieManager cm = CookieManager.getInstance();
-        cm.removeSessionCookies(null);
-        cm.removeAllCookies(null);
-        cm.flush();
-        //cm.removeSessionCookie();
-        //CookieSyncManager.getInstance().sync();
-        cm.setAcceptCookie(true);
-        cm.setCookie(url, cookie);
-    }
-
-    private void setWebCookie() {
-        CfLog.i("******");
-        if (isLottery) {
-            setLotteryCookieInside();
-        } else if (is3rdLink) {
-            CfLog.d("not need cookie.");
-        } else {
-            if (!TextUtils.isEmpty(token)) {
-                setCookieInside();
-            }
-        }
     }
 
     private void setCookieInside() {
@@ -644,36 +621,36 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
     public class CustomWebViewClient extends WebViewClient {
-//        private OkHttpClient client;
-//
-//        public CustomWebViewClient() throws UnknownHostException {
-//            // 初始化 OkHttpClient 并配置自定义的 DNS 解析
-//            client = new OkHttpClient.Builder()
-//                    .dns(new DnsOverHttps.Builder()
-//                            .client(new OkHttpClient())
-//                            .url(HttpUrl.get(ARG_SEARCH_DNS_URL))
-//                            .bootstrapDnsHosts(InetAddress.getByName("8.8.8.8"), InetAddress.getByName("114.114.114.114"))
-//                            .build())
-//                    .build();
-//        }
-//
-//        @Override
-//        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-//            String url = request.getUrl().toString();
-//            Request httpRequest = new Request.Builder().url(url).build();
-//
-//            try {
-//                Response response = client.newCall(httpRequest).execute();
-//                return new WebResourceResponse(
-//                        response.header("content-type"),
-//                        response.header("content-encoding"),
-//                        response.body().byteStream()
-//                );
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return super.shouldInterceptRequest(view, request);
-//            }
-//        }
+        //        private OkHttpClient client;
+        //
+        //        public CustomWebViewClient() throws UnknownHostException {
+        //            // 初始化 OkHttpClient 并配置自定义的 DNS 解析
+        //            client = new OkHttpClient.Builder()
+        //                    .dns(new DnsOverHttps.Builder()
+        //                            .client(new OkHttpClient())
+        //                            .url(HttpUrl.get(ARG_SEARCH_DNS_URL))
+        //                            .bootstrapDnsHosts(InetAddress.getByName("8.8.8.8"), InetAddress.getByName("114.114.114.114"))
+        //                            .build())
+        //                    .build();
+        //        }
+        //
+        //        @Override
+        //        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        //            String url = request.getUrl().toString();
+        //            Request httpRequest = new Request.Builder().url(url).build();
+        //
+        //            try {
+        //                Response response = client.newCall(httpRequest).execute();
+        //                return new WebResourceResponse(
+        //                        response.header("content-type"),
+        //                        response.header("content-encoding"),
+        //                        response.body().byteStream()
+        //                );
+        //            } catch (IOException e) {
+        //                e.printStackTrace();
+        //                return super.shouldInterceptRequest(view, request);
+        //            }
+        //        }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -699,14 +676,7 @@ public class BrowserActivity extends AppCompatActivity {
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            //handler.proceed();
-            hideLoading();
-            if (sslErrorCount < 4) {
-                sslErrorCount++;
-                tipSsl(view, handler);
-            } else {
-                handler.proceed();
-            }
+            handler.proceed();
         }
 
         @Override
