@@ -1,12 +1,16 @@
 package com.xtree.main.data.source;
 
 import com.xtree.base.vo.FBService;
+import com.xtree.base.vo.MsgPersonInfoVo;
 import com.xtree.base.vo.PMService;
+import com.xtree.base.vo.WsToken;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.http.BaseResponse;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface MainApiService {
     /**
@@ -40,4 +44,15 @@ public interface MainApiService {
     @POST("/api/sports/obgzy/getToken?cachedToken=1")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<PMService>> getPMXCGameTokenApi();
+
+    //==========websocket=============
+    @GET("/api/ws/token")
+    Flowable<BaseResponse<WsToken>> getWsToken();
+
+    /**
+     * 获取 消息详情
+     */
+    @GET("/api/message/{key}")
+    Flowable<BaseResponse<MsgPersonInfoVo>> getMessagePerson(@Path("key") String key);
+    //==========websocket=============
 }
