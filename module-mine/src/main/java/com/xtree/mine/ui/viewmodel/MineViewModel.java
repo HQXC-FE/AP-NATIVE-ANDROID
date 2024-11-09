@@ -34,6 +34,7 @@ import java.util.HashMap;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -339,14 +340,15 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
      * @param key
      * @param map
      */
-    public void getOffer(String key, HashMap<String, String> map) {
+    public void getOffer(String key, HashMap<String, String> map, HashMap<String, String> offerListMap) {
         Disposable disposable = (Disposable) model.getApiService().getOffer(key, map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpWithdrawalCallBack<HashMap<String, String>>() {
+                .subscribeWith(new HttpCallBack<BaseResponse>() {
                     @Override
-                    public void onResult(HashMap<String, String> map) {
+                    public void onResult(BaseResponse response) {
                         ToastUtils.showSuccess(map.get("message"));
+                        getOfferList(offerListMap);
                     }
 
                     @Override

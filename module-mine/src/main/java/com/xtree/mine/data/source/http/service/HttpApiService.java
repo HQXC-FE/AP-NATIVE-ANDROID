@@ -81,6 +81,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -670,6 +671,7 @@ public interface HttpApiService {
     /**
      * 取得优惠
      */
-    @GET("/api/activity/reward/{key}")
-    Flowable<HashMap<String, String>> getOffer(@Path("key") String key, @QueryMap Map<String, String> map);
+    @PUT("/api/activity/reward/{key}")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse> getOffer(@Path("key") String key, @Body Map<String, String> map);
 }

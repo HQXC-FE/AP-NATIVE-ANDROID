@@ -89,7 +89,7 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
                         binding2.btGet.setBackground(getContext().getDrawable(R.drawable.bt_bg_main_c8));
 
                         binding2.btGet.setOnClickListener(v -> {
-                            getOffer(vo.activity_id);
+                            getOffer(vo.id);
                         });
                     } else if (vo.operation_status.equals("2")) {
                         binding2.btGet.setText(R.string.txt_offer_received);
@@ -291,7 +291,15 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
     private void getOffer(String key) {
         HashMap<String, String> map = new HashMap<>();
         map.put("nonce", UuidUtil.getID16());
-        viewModel.getOffer(key, map);
+
+        HashMap<String, String> offerListMap = new HashMap<>();
+        offerListMap.put("start", mStartTime);
+        offerListMap.put("end", mEndTime);
+        offerListMap.put("filter_rewards", mStatus);
+        offerListMap.put("page", "1");
+        offerListMap.put("per_page", "30");
+
+        viewModel.getOffer(key, map, offerListMap);
     }
 
     private void showDatePicker(TextView tvw, String title) {
