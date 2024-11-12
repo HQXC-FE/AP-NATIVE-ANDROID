@@ -17,8 +17,8 @@ import com.xtree.base.net.RetrofitClient;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.AppUpdateVo;
-import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.BalanceVo;
+import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.mine.data.MineRepository;
 import com.xtree.mine.vo.OfferVo;
@@ -34,6 +34,7 @@ import java.util.HashMap;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import me.xtree.mvvmhabit.http.BaseResponse3;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -339,14 +340,15 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
      * @param key
      * @param map
      */
-    public void getOffer(String key, HashMap<String, String> map) {
+    public void getOffer(String key, HashMap<String, String> map, HashMap<String, String> offerListMap) {
         Disposable disposable = (Disposable) model.getApiService().getOffer(key, map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpWithdrawalCallBack<HashMap<String, String>>() {
+                .subscribeWith(new HttpCallBack<BaseResponse3>() {
                     @Override
-                    public void onResult(HashMap<String, String> map) {
-                        ToastUtils.showSuccess(map.get("message"));
+                    public void onResult(BaseResponse3 response) {
+                        ToastUtils.showSuccess(response.getMessage());
+                        getOfferList(offerListMap);
                     }
 
                     @Override
@@ -357,8 +359,8 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onFail(BusinessException t) {
                         CfLog.e("onError message =  " + t.toString());
+                        ToastUtils.showError(t.getMessage());
                     }
-
                 });
         addSubscribe(disposable);
     }
