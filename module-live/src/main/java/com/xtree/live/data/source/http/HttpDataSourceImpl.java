@@ -19,6 +19,7 @@ import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
+import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
@@ -94,14 +95,18 @@ public class HttpDataSourceImpl implements HttpDataSource {
     @Override
     public Flowable<BaseResponse<LiveTokenResponse>> getLiveToken(LiveTokenRequest request) {
         Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
-        return apiService.get(APIManager.X9_TOKEN_URL, map).map(new Function<ResponseBody, BaseResponse<LiveTokenResponse>>() {
-            @Override
-            public BaseResponse<LiveTokenResponse> apply(ResponseBody responseBody) throws Exception {
-                return JSON.parseObject(responseBody.string(),
-                        new TypeReference<BaseResponse<LiveTokenResponse>>() {
-                        });
-            }
-        });
+        return apiService.get(APIManager.X9_TOKEN_URL, map).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<LiveTokenResponse>>() {
+                }));
+    }
+
+    @Override
+    public Flowable<BaseResponse<List<BannerResponse>>> getBannerList() {
+        return liveService.get(APIManager.GET_BANNERLIST, new HashMap<String, Object>() {{
+            put("banner_type", 3);
+        }}).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<List<BannerResponse>>>() {
+                }));
     }
 
     /**
@@ -164,7 +169,7 @@ public class HttpDataSourceImpl implements HttpDataSource {
     @Override
     public Flowable<BaseResponse<FBService>> getFBGameTokenApi() {
         return apiService.post(APIManager.FB_GET_TOKEN, new HashMap<String, Object>() {{
-            put("cachedToken", 0);
+            put("cachedToken", 1);
         }}).map(responseBody -> JSON.parseObject(responseBody.string(),
                 new TypeReference<BaseResponse<FBService>>() {
 
@@ -174,7 +179,7 @@ public class HttpDataSourceImpl implements HttpDataSource {
     @Override
     public Flowable<BaseResponse<FBService>> getFBXCGameTokenApi() {
         return apiService.post(APIManager.FBXC_GET_TOKEN, new HashMap<String, Object>() {{
-            put("cachedToken", 0);
+            put("cachedToken", 1);
         }}).map(responseBody -> JSON.parseObject(responseBody.string(),
                 new TypeReference<BaseResponse<FBService>>() {
 

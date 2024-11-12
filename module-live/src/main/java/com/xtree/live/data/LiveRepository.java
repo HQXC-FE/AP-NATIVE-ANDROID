@@ -3,7 +3,6 @@ package com.xtree.live.data;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
-import com.xtree.base.net.FBRetrofitClient;
 import com.xtree.base.net.RetrofitClient;
 import com.xtree.base.net.live.LiveClient;
 import com.xtree.base.vo.FBService;
@@ -17,6 +16,7 @@ import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
+import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
@@ -100,6 +100,11 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     }
 
     @Override
+    public Flowable<BaseResponse<List<BannerResponse>>> getBannerList() {
+        return mHttpDataSource.getBannerList();
+    }
+
+    @Override
     public Flowable<BaseResponse<List<FrontLivesResponse>>> getFrontLives(FrontLivesRequest request) {
         return mHttpDataSource.getFrontLives(request);
     }
@@ -116,7 +121,7 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
 
     @Override
     public Flowable<BaseResponse<FBService>> getFBXCGameTokenApi() {
-        return mHttpDataSource.getFBGameTokenApi();
+        return mHttpDataSource.getFBXCGameTokenApi();
     }
 
     @Override

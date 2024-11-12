@@ -23,6 +23,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.divider
@@ -37,8 +39,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
+import com.xtree.base.mvvm.banner.OnBannerViewListener
 import com.xtree.base.mvvm.recyclerview.BaseDatabindingAdapter
 import com.xtree.base.mvvm.recyclerview.BindModel
+import com.youth.banner.Banner
+import com.youth.banner.adapter.BannerImageAdapter
+import com.youth.banner.holder.BannerImageHolder
+import com.youth.banner.indicator.CircleIndicator
+import com.youth.banner.listener.OnPageChangeListener
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -155,7 +163,7 @@ fun TabLayout.init(setSelectedListener: OnTabSelectedListener?, tabs: List<Strin
 }
 
 @BindingAdapter(
-    value = ["onRefreshLoadMoreListener", "onLoadMoreListener", "srlEnableLoadMore", "srlFinishRefresh","srlAutoRefresh"],
+    value = ["onRefreshLoadMoreListener", "onLoadMoreListener", "srlEnableLoadMore", "srlFinishRefresh", "srlAutoRefresh"],
     requireAll = false
 )
 fun SmartRefreshLayout.init(
@@ -226,6 +234,49 @@ fun setImageUrl(
     glide.into(view)
 }
 
+@SuppressLint("CheckResult")
+@BindingAdapter(
+    value = ["imageUrl", "loadWidth", "loadHeight", "cacheEnable"],
+    requireAll = false
+)
+fun View.init(
+    imageUrl: Any? = null,
+    loadWidth: Int? = -1,
+    loadHeight: Int? = -1,
+    cacheEnable: Boolean? = true
+) {
+// 计算位图尺寸，如果位图尺寸固定，加载固定大小尺寸的图片，如果位图未设置尺寸，那就加载原图，Glide加载原图时，override参数设置 -1 即可。
+    val widthSize = (if ((loadWidth ?: 0) > 0) loadWidth else width) ?: -1
+    val heightSize = (if ((loadHeight ?: 0) > 0) loadHeight else height) ?: -1
+    // 根据定义的 cacheEnable 参数来决定是否缓存
+    val diskCacheStrategy =
+        if (cacheEnable == true) DiskCacheStrategy.AUTOMATIC else DiskCacheStrategy.NONE
+    // 设置编码格式，在Android 11(R)上面使用高清无损压缩格式 WEBP_LOSSLESS ， Android 11 以下使用PNG格式，PNG格式时会忽略设置的 quality 参数。
+    val encodeFormat =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) Bitmap.CompressFormat.WEBP_LOSSLESS else Bitmap.CompressFormat.PNG
+    val glide = Glide.with(context)
+        .asDrawable()
+        .load(imageUrl)
+        .thumbnail(0.33f)
+        .skipMemoryCache(false)
+        .sizeMultiplier(0.5f)
+        .format(DecodeFormat.PREFER_ARGB_8888)
+        .encodeFormat(encodeFormat)
+        .encodeQuality(80)
+        .diskCacheStrategy(diskCacheStrategy)
+        .transition(DrawableTransitionOptions.withCrossFade())
+//    loadWidth?.let {
+//        if (it > 0) {
+            glide.override(widthSize, heightSize)
+//        }
+//    }
+    glide.into(object : SimpleTarget<Drawable>() {
+        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+            background = resource  // 设置为背景
+        }
+    })
+}
+
 @BindingAdapter(
     value = ["adapter", "fm", "fragments", "offLimit"],
     requireAll = false
@@ -294,6 +345,73 @@ fun ViewPager2.init(
             }.attach()
         }
     }
+}
+
+@BindingAdapter(
+    value = ["itemData", "onBannerViewListener", "indicatorEnabled", "galleryEffect", "bannerRound"],
+    requireAll = false
+)
+fun Banner<BindModel, BannerImageAdapter<BindModel>>.initBanner(
+    itemData: List<BindModel>?,
+    onBannerViewListener: OnBannerViewListener?,
+    indicatorEnabled: Boolean = true,
+    galleryEffect: Boolean = false,
+    bannerRound: Float = 0f,
+) {
+    if (itemData == null) {
+        return
+    }
+    // 设置指示器
+    if (indicatorEnabled) {
+        setIndicator(CircleIndicator(context))
+    }
+
+    // 设置画廊效果
+    if (galleryEffect) {
+        setBannerGalleryEffect(20, 12, 0.8f)
+    }
+
+    // 设置圆角
+    if (bannerRound > 0) {
+        setBannerRound(bannerRound)
+    }
+
+    // 设置适配器并绑定数据
+    setAdapter(object : BannerImageAdapter<BindModel>(itemData) {
+        override fun onBindView(
+            holder: BannerImageHolder,
+            data: BindModel,
+            position: Int,
+            size: Int
+        ) {
+            onBannerViewListener?.onBindView(holder, data, position, size)
+        }
+    })
+
+    // 设置点击事件监听器
+    setOnBannerListener { data, position ->
+        if (data == null) return@setOnBannerListener
+        onBannerViewListener?.onBannerClick(data as BindModel, position)
+    }
+
+    addOnPageChangeListener(object : OnPageChangeListener {
+        override fun onPageSelected(position: Int) {
+            // 处理图片切换事件
+            onBannerViewListener?.onPageSelected(position)
+        }
+
+        override fun onPageScrollStateChanged(state: Int) {
+            // 状态变化的监听，可以根据需要处理
+        }
+
+        override fun onPageScrolled(
+            position: Int,
+            positionOffset: Float,
+            positionOffsetPixels: Int
+        ) {
+            // 滚动中的监听
+        }
+    })
 }
 
 @BindingAdapter("isAnimationRunning")

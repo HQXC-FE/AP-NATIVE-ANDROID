@@ -6,35 +6,32 @@ package com.xtree.live.data.source;
  */
 public class APIManager {
 
+    //获取轮播图
+    public static final String GET_BANNERLIST = "/api/banner/getBannerList";
     //未登录转发接口
     public static final String NO_AUTH_FORWARD = "/api/sports/fbxc/forward";
     //未登录获取赛事详情、比分
-    public static final String NO_AUth_GET_MATCH_DETAIL="/v1/match/getMatchDetail";
+    public static final String NO_AUth_GET_MATCH_DETAIL = "/v1/match/getMatchDetail";
 
     public static final String FRONT_LIVES = "/api/front/lives";
     //获取赛事详情、比分
-    public static final String GET_MATCH_DETAIL="/v1/match/getMatchDetail";
+    public static final String GET_MATCH_DETAIL = "/v1/match/getMatchDetail";
     //获取 FB杏彩体育请求服务地址
-    public static final String FBXC_GET_TOKEN="/api/sports/fbxc/getToken?cachedToken=0";
+    public static final String FBXC_GET_TOKEN = "/api/sports/fbxc/getToken";
     //获取 FB杏彩体育请求服务地址
-    public static final String FB_GET_TOKEN="/api/sports/fb/getToken?cachedToken=0";
-
-    //直播
-    private static final String X9_API = "/api/x9/";
-    //加密配置API
-    private static final String SECRET_API = "/api/secret/";
-
+    public static final String FB_GET_TOKEN = "/api/sports/fb/getToken";
     //聊天房列表
     public static final String CHATROOMLIST_API = "/api/chat/getChatRoomList";
     // 已关注主播列表
-    public static final String ATTENTION_API="/api/user/attentionList";
+    public static final String ATTENTION_API = "/api/user/attentionList";
     //获取主播排序列表
-    public static final String ANCHOR_SORT_API="/api/anchor/sort";
-
-
+    public static final String ANCHOR_SORT_API = "/api/anchor/sort";
+    //直播
+    private static final String X9_API = "/api/x9/";
     //获取直播token
     public static final String X9_TOKEN_URL = X9_API + "getXLiveToken";
-
+    //加密配置API
+    private static final String SECRET_API = "/api/secret/";
     //获取直播配置文件
     public static final String ReviseHot_URL = SECRET_API + "getReviseHot";
 

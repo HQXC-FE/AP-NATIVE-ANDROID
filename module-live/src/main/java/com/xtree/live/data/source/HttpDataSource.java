@@ -6,6 +6,7 @@ import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
+import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
@@ -30,6 +31,9 @@ public interface HttpDataSource {
     //获取直播令牌
     Flowable<BaseResponse<LiveTokenResponse>> getLiveToken(LiveTokenRequest request);
 
+    //获取轮播图
+    Flowable<BaseResponse<List<BannerResponse>>> getBannerList();
+
     /**
      * 获取首页直播列表type 1：获取全部，0：足球，1：篮球，2：其他，3：电竞，4：区块链。默认-1
      * page 1
@@ -43,14 +47,16 @@ public interface HttpDataSource {
 
     /**
      * 获取主播列表
-     * @param request   type ;//1：热门， 2：推荐
-     *    platform ;//终端类型 	1： PC; 2：H5；3：android；4：ios；
-     *     side;//投放位置 	1：足球；2：篮球；3：电竞；4：首页；5：直播间；6：其它；
-     *    listRows ;//每页数量,默认6
-     *     page;//页码默认1
+     *
+     * @param request type ;//1：热门， 2：推荐
+     *                platform ;//终端类型 	1： PC; 2：H5；3：android；4：ios；
+     *                side;//投放位置 	1：足球；2：篮球；3：电竞；4：首页；5：直播间；6：其它；
+     *                listRows ;//每页数量,默认6
+     *                page;//页码默认1
      * @return
      */
     Flowable<BaseResponse<AnchorSortResponse>> getAnchorSort(AnchorSortRequest request);
+
     //获取直播配置信息
     Flowable<BaseResponse<ReviseHotResponse>> getReviseHot();
 

@@ -23,11 +23,10 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
 import com.xtree.live.R;
 import com.xtree.live.data.LiveRepository;
-import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
-import com.xtree.live.data.source.response.AnchorSortResponse;
+import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
@@ -35,6 +34,8 @@ import com.xtree.live.data.source.response.fb.Match;
 import com.xtree.live.data.source.response.fb.MatchFb;
 import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.ui.main.model.anchor.LiveAnchorModel;
+import com.xtree.live.ui.main.model.banner.LiveBannerItemModel;
+import com.xtree.live.ui.main.model.banner.LiveBannerModel;
 import com.xtree.live.ui.main.model.constant.FrontLivesType;
 import com.xtree.live.ui.main.model.hot.LiveHotModel;
 
@@ -44,6 +45,7 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
+import io.sentry.Sentry;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
@@ -56,7 +58,6 @@ import me.xtree.mvvmhabit.utils.SPUtils;
  * Describe: 直播门户viewModel
  */
 public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabLayout.OnTabSelectedListener {
-
 
     private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
         LiveAnchorModel liveAnchorModel = new LiveAnchorModel(FrontLivesType.ALL.getLabel());
@@ -84,13 +85,13 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         add(liveBasketBallModel);
         add(liveOtherModel);
     }};
-
     private final ArrayList<Integer> typeList = new ArrayList() {
         {
             add(R.layout.layout_live_anchor);
             add(R.layout.layout_live_hot);
         }
     };
+    public LiveBannerModel bannerModel = new LiveBannerModel();
     public ObservableField<ArrayList<String>> tabs = new ObservableField<>(new ArrayList<>());
     public MutableLiveData<ArrayList<BindModel>> datas = new MutableLiveData<>(new ArrayList<>());
     public MutableLiveData<ArrayList<Integer>> itemType = new MutableLiveData<>();
@@ -196,6 +197,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                 }
             }
         }
+        getBannerList();
 
     }
 
@@ -231,6 +233,43 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                     public void onFail(BusinessException t) {
                         super.onFail(t);
                         error.onChanged(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    private void getBannerList() {
+
+        Disposable disposable = (Disposable) model.getBannerList()
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<List<BannerResponse>>() {
+                    @Override
+                    public void onResult(List<BannerResponse> data) {
+                        if (data == null || data.size() == 0) {
+                            Sentry.captureException(new Exception("直播轮播图数据为空"));
+                            return;
+                        }
+                        ArrayList<BindModel> bindModels = new ArrayList<BindModel>();
+                        for (BannerResponse bannerResponse : data) {
+                            LiveBannerItemModel itemModel = new LiveBannerItemModel();
+                            itemModel.backImg.set(bannerResponse.getBackImg());
+                            itemModel.foreImg.set(bannerResponse.getForeImg());
+                            bindModels.add(itemModel);
+                        }
+                        bannerModel.bannerBg.set(((LiveBannerItemModel) bindModels.get(0)).backImg.get());
+                        bannerModel.datas.setValue(new ArrayList<>(bindModels));
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        super.onFail(t);
                     }
                 });
         addSubscribe(disposable);
@@ -317,23 +356,6 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                 });
         addSubscribe(disposable);
     }
-
-    public void  getAnchorSort(){
-        LiveRepository.getInstance().getAnchorSort(new AnchorSortRequest())
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribe(new HttpCallBack<AnchorSortResponse>() {
-                    @Override
-                    public void onResult(AnchorSortResponse data) {
-
-                        if (data !=null){
-                            CfLog.e("getAnchorSort ---->" + data.toString());
-                        }
-                    }
-
-                });
-    }
-
 
 }
 

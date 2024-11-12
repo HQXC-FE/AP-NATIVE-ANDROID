@@ -17,8 +17,7 @@
         onRefreshLoadMoreListener="@{m.onRefreshLoadMoreListener}"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlEnableAutoLoadMore="true"
-        android:background="@color/clr_main_01">
+        app:srlEnableAutoLoadMore="true">
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
