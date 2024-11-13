@@ -36,10 +36,10 @@ android {
             resValue "string", "ms_secret_key", "efa54723-d17f-40a5-ba10-95f6a4ec7832"
             resValue "string", "sentry_dsn", "https://78cf4cf46e69206c1ddc741b9ab7edca@o4507447554539520.ingest.us.sentry.io/4507456764706816"
             resValue "bool", "is_tag", "true" // 是否开启统计
-            resValue "string", "domain_api_list", "https://app1.m4c4ir.xyz;" +
-                    "https://app1.n7m8xc.xyz;" +
-                    "https://app1.j9r6pt.xyz;" +
-                    "https://app1.x3p2bt.xyz;" +
+            resValue "string", "domain_api_list", "https://app1.b2t5di.xyz;" +
+                    "https://app1.x1l9ze.xyz;" +
+                    "https://app1.l4o7kr.xyz;" +
+                    "https://app1.h3t3md.xyz;" +
                     "https://app2.q5g7kb.xyz;" +
                     "https://app2.o8r7wu.xyz;" +
                     "https://app2.i4j1ln.xyz;" +
@@ -48,18 +48,18 @@ android {
                     "https://app3.w1h1jc.xyz;" +
                     "https://app3.g3e1fh.xyz;" +
                     "https://app3.t4h2rl.xyz;" +
-                    "https://app4.f7b6ak.xyz;" +
+                    "https://app4.z2h8st.xyz;" +
                     "http://175.27.143.79:16803;" +
                     "http://111.231.12.228:16803;" +
                     "http://139.186.156.33:16803;" +
-                    "http://43.154.200.235:16803;" +
+                    "http://43.129.64.206:16803;" +
                     "https://app.bdqnmanong.com:16801;" +
                     "https://app.queyushengwu.com:16801;" +
                     "https://app.yuechengbj.com:16801;" +
                     "https://app.hstxdl.com:16801;" +
                     "https://app.qiuchongyao.com:16801;" +
                     "https://app.tiantianwangluo.com:16801;" +
-                    "http://119.28.19.124:16803"
+                    "http://43.134.194.101:16803"
             resValue "string", "domain_url_list", "https://h12.i2n5wp.xyz;" +
                     "https://h12.y7e8nr.xyz;" +
                     "https://h12.h8h8pm.xyz;" +
