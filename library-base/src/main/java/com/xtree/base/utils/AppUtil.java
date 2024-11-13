@@ -127,6 +127,25 @@ public class AppUtil {
         return num.matches(regex);
     }
 
+    /**
+     * 是否是微信号
+     * @return
+     */
+    public static boolean isWechatAccount(String num){
+        String regex = "^[a-zA-Z_-][a-zA-Z0-9_-]{5,19}$"; //
+        return num.matches(regex);
+    }
+
+    /**
+     *是否是支付宝账号,和微信号同样
+     * @param ctx
+     * @param tvw
+     */
+    public static boolean isAlipayAccount(String num){
+        String regex = "^[a-zA-Z_-][a-zA-Z0-9_-]{5,19}$"; //
+        return num.matches(regex);
+    }
+
     public static void setTypeFaceDin(Context ctx, TextView tvw) {
         AssetManager am = ctx.getAssets();
         Typeface tf = Typeface.createFromAsset(am, "fonts/D-DIN-PRO-500-Medium.ttf");
