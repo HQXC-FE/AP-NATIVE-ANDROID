@@ -51,8 +51,8 @@ android {
                     "http://175.27.143.79:26803;" +
                     "http://111.231.12.228:26803;" +
                     "http://139.186.156.33:26803;" +
-                    "http://43.154.200.235:26803;" +
-                    "http://119.28.19.124:26803;"
+                    "http://43.134.194.101:26803;" +
+                    "http://43.129.64.206:26803"
             resValue "string", "domain_url_list", "https://www.alltm1s.com;" +
                     "https://www.ykusti.com;" +
                     "https://www.covgra.com;" +
