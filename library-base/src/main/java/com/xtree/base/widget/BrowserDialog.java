@@ -1,13 +1,12 @@
 package com.xtree.base.widget;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.view.View;
+import android.webkit.ConsoleMessage;
 import android.webkit.DownloadListener;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
@@ -29,6 +28,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
+import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.AppUtil;
@@ -116,7 +116,6 @@ public class BrowserDialog extends BottomPopupView {
 
         if (isContainTitle) {
             vTitle.setVisibility(View.GONE);
-            //llBackground.setBackground(getContext().getDrawable(R.drawable.bg_web_radius));
         }
 
         tvwTitle.setText(title);
@@ -151,12 +150,7 @@ public class BrowserDialog extends BottomPopupView {
         CfLog.d("header: " + header);
         mWebView.loadUrl(url, header);
 
-        ivwClose.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        ivwClose.setOnClickListener(v -> dismiss());
 
     }
 
@@ -164,11 +158,14 @@ public class BrowserDialog extends BottomPopupView {
         tvwTitle = findViewById(R.id.tvw_title);
         vTitle = findViewById(R.id.v_title);
         ivwClose = findViewById(R.id.ivw_close);
-        //llBackground = findViewById(R.id.ll_background);
 
         mWebView = findViewById(R.id.wv_main);
         ivwLoading = findViewById(R.id.ivw_loading);
         ivwLaunch = findViewById(R.id.ivw_launch);
+
+        if (BuildConfig.DEBUG) {
+            mWebView.setWebContentsDebuggingEnabled(true);
+        }
 
         mWebView.setFitsSystemWindows(true);
         setWebView(mWebView);
@@ -178,14 +175,6 @@ public class BrowserDialog extends BottomPopupView {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
                 CfLog.d("onDownloadStart url: " + url);
-                /*CfLog.i("url: " + url
-                        + ",\n contentLength: " + contentLength
-                        + " (" + contentLength / 1024 / 1024 + "." + 100 * (contentLength / 1024 % 1024) / 1024 + "M)"
-                        + ",\n mimetype: " + mimetype
-                        + ",\n contentDisposition: " + contentDisposition
-                        + ",\n userAgent: " + userAgent
-                );*/
-                //Log.d("---", "onDownloadStart url: " + url);
                 AppUtil.goBrowser(getContext(), url);
             }
         });
@@ -199,6 +188,15 @@ public class BrowserDialog extends BottomPopupView {
                 if (newProgress > 75) {
                     LoadingDialog.finish();
                 }
+            }
+
+            // debug模式
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                CfLog.d("Agent", consoleMessage.message() + " -- From line "
+                        + consoleMessage.lineNumber() + " of "
+                        + consoleMessage.sourceId());
+                return true;
             }
 
             /**
@@ -251,14 +249,7 @@ public class BrowserDialog extends BottomPopupView {
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                //handler.proceed();
-                hideLoading();
-                if (sslErrorCount < 4) {
-                    sslErrorCount++;
-                    tipSsl(view, handler);
-                } else {
-                    handler.proceed();
-                }
+                handler.proceed();
             }
 
             @Override
@@ -276,27 +267,6 @@ public class BrowserDialog extends BottomPopupView {
         ivwLoading.setVisibility(View.GONE);
         ivwLoading.clearAnimation();
         ivwLaunch.setVisibility(View.GONE);
-    }
-
-    private void tipSsl(WebView view, SslErrorHandler handler) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-        builder.setMessage(R.string.ssl_failed_will_u_continue); // SSL认证失败，是否继续访问？
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                handler.proceed();// 接受https所有网站的证书
-            }
-        });
-
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                handler.cancel();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     /**
@@ -344,14 +314,12 @@ public class BrowserDialog extends BottomPopupView {
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
-        //settings.setAppCacheEnabled(true);
         settings.setUseWideViewPort(true);
-        //settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        //settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         settings.setLoadWithOverviewMode(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setLoadsImagesAutomatically(true);
         settings.setSupportZoom(true);
+        settings.setUserAgentString(WebSettings.getDefaultUserAgent(mContext) + " Chrome/100.0.4896.127 Mobile Safari/537.36");
     }
 
     @Override
