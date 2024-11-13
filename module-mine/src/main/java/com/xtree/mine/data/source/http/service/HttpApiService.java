@@ -35,7 +35,7 @@ import com.xtree.mine.vo.MemberManagerVo;
 import com.xtree.mine.vo.MsgInfoVo;
 import com.xtree.mine.vo.MsgListVo;
 import com.xtree.mine.vo.MsgPersonInfoVo;
-import com.xtree.mine.vo.MsgPersonListVo;
+import com.xtree.base.vo.MsgPersonListVo;
 import com.xtree.mine.vo.OtherWebWithdrawVo;
 import com.xtree.mine.vo.PlatWithdrawConfirmVo;
 import com.xtree.mine.vo.PlatWithdrawVo;
