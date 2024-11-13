@@ -268,8 +268,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void getPlayUrl(String gameAlias, String gameId, String name) {
         if (TextUtils.isEmpty(gameId)) {
-            //如果是瓦力棋牌gameId为""
-            if (!TextUtils.equals(gameAlias, "wali")) {
+            //如果是瓦力棋牌，gameId为""
+            if (TextUtils.equals(gameAlias, "wali")) {
                 gameId = "";
             } else {
                 gameId = "1";
