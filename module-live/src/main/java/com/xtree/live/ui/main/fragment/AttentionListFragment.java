@@ -15,7 +15,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.router.RouterFragmentPath;
-import com.xtree.base.utils.CfLog;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.broadcaster.fragment.LiveShareDialog;
@@ -26,7 +25,6 @@ import com.xtree.live.ui.main.adapter.AttentionListAdapter;
 import com.xtree.live.ui.main.viewmodel.AttentionListModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
@@ -40,10 +38,9 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
     private ArrayList<String> tabList = new ArrayList<>();
     private AttentionListAdapter mAdapter;
     private BasePopupView shareView;
-    private LiveShareDialog liveShareDialog ;
+    private LiveShareDialog liveShareDialog;
 
-    private AnchorSortResponse anchorSortResponse ;//直播列表数据
-
+    private AnchorSortResponse anchorSortResponse;//直播列表数据
 
 
     @Override
@@ -60,8 +57,8 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
                             @Override
                             public void onClickShare(String sharUrl) {
                                 //辅助到剪切版
-                               ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                                ClipData clipData = ClipData.newPlainText("shareUrl",sharUrl);
+                                ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                                ClipData clipData = ClipData.newPlainText("shareUrl", sharUrl);
                                 clipboardManager.setPrimaryClip(clipData);
                                 shareView.dismiss();
                             }
@@ -91,6 +88,7 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
         AppViewModelFactory factory = AppViewModelFactory.getInstance(getActivity().getApplication());
         return new ViewModelProvider(this, factory).get(AttentionListModel.class);
     }
+
     @Override
     public void initData() {
         super.initData();
@@ -107,11 +105,11 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
     @Override
     public void initViewObservable() {
         super.initViewObservable();
-        viewModel.anchorSortResponseMutableLiveData.observe(getActivity() , vo->{
-            if (vo != null && vo.data.size() >0){
+        viewModel.anchorSortResponseMutableLiveData.observe(getActivity(), vo -> {
+            if (vo != null && vo.data.size() > 0) {
                 anchorSortResponse = vo;
                 Collections.sort(anchorSortResponse.data);
-                mAdapter = new AttentionListAdapter(getContext(),anchorSortResponse);
+                mAdapter = new AttentionListAdapter(getContext(), anchorSortResponse);
                 binding.rvMain.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
             }

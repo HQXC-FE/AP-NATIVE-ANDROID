@@ -70,4 +70,11 @@ public class SPKeyGlobal {
 
     //DEBUG
     public static final String DEBUG_APPLY_DOMAIN ="debug_apply_domain";//debug 设置指定域名
+
+    //websocket
+    public static final String WS_CHECK_INTERVAL ="ws_check_interval";
+    public static final String WS_RETRY_NUMBER ="ws_retry_number";
+    public static final String WS_RETRY_WAITING_TIME ="ws_retry_waiting_time";
+    public static final String WS_EXPIRE_TIME ="ws_expire_time";
+    //websocket
 }

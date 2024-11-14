@@ -18,6 +18,7 @@ import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
+import com.xtree.live.data.source.request.SubscriptionRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
@@ -211,6 +212,14 @@ public class HttpDataSourceImpl implements HttpDataSource {
                     }));
         }
 
+    }
+
+    @Override
+    public Flowable<Object> getWebsocket(SubscriptionRequest request) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return apiService.get(APIManager.LIVE_CHAT, map).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<MatchInfo>>() {
+                }));
     }
 
 

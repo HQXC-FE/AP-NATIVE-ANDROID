@@ -21,11 +21,14 @@ import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
+import com.xtree.base.vo.WsToken;
 import com.xtree.live.R;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
+import com.xtree.live.data.source.request.SubscriptionRequest;
+import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
@@ -47,6 +50,7 @@ import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.sentry.Sentry;
 import me.xtree.mvvmhabit.base.BaseViewModel;
+import me.xtree.mvvmhabit.bus.event.SingleLiveData;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
@@ -58,6 +62,8 @@ import me.xtree.mvvmhabit.utils.SPUtils;
  * Describe: 直播门户viewModel
  */
 public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabLayout.OnTabSelectedListener {
+    public SingleLiveData<Object> getWsTokenLiveData = new SingleLiveData<>();
+
 
     private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
         LiveAnchorModel liveAnchorModel = new LiveAnchorModel(FrontLivesType.ALL.getLabel());
@@ -352,6 +358,43 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                     @Override
                     public void onFail(BusinessException t) {
                         error.onChanged(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    public void  getAnchorSort(){
+        LiveRepository.getInstance().getAnchorSort(new AnchorSortRequest())
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<AnchorSortResponse>() {
+                    @Override
+                    public void onResult(AnchorSortResponse data) {
+
+                        if (data !=null){
+                            CfLog.e("getAnchorSort ---->" + data.toString());
+                        }
+                    }
+
+                });
+    }
+
+    public void getWebsocket() {
+        SubscriptionRequest request = new SubscriptionRequest();
+        request.action = "sub";
+        request.vid = "AAABBBCCC";
+        Disposable disposable = (Disposable) model.getWebsocket(request)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<Object>() {
+                    @Override
+                    public void onResult(Object object) {
+                        getWsTokenLiveData.setValue(object);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        //                        CfLog.e(t.toString());
                     }
                 });
         addSubscribe(disposable);

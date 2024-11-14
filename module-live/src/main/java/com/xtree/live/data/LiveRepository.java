@@ -15,6 +15,7 @@ import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
+import com.xtree.live.data.source.request.SubscriptionRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
@@ -130,8 +131,12 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     }
 
     @Override
+    public Flowable<Object> getWebsocket(SubscriptionRequest request) {
+        return mHttpDataSource.getWebsocket(request);
+    }
+
+    @Override
     public Flowable<BaseResponse<ReviseHotResponse>> getReviseHot() {
         return mHttpDataSource.getReviseHot();
     }
-
 }

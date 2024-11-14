@@ -35,4 +35,10 @@ public class APIManager {
     //获取直播配置文件
     public static final String ReviseHot_URL = SECRET_API + "getReviseHot";
 
+    //WebSocket设置
+    public static final String LIVE_CHAT = "/wss/?xLiveToken=";
+    //历史聊天记录
+    public static final String HISTORY_CHAT = "/api/chat/history";
+
+
 }

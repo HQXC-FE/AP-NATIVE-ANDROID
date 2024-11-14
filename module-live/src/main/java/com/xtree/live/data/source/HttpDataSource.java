@@ -5,6 +5,7 @@ import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
+import com.xtree.live.data.source.request.SubscriptionRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
@@ -82,4 +83,10 @@ public interface HttpDataSource {
      */
     Flowable<BaseResponse<MatchInfo>> getMatchDetail(MatchDetailRequest request);
 
+    /**
+     * 调整WsToken
+     *
+     * @return
+     */
+    Flowable<Object> getWebsocket(SubscriptionRequest request);
 }

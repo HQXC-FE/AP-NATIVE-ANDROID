@@ -273,7 +273,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                 startActivity(toLogin);
             }else{
                 ToastUtils.showError("跳转 主播列表");
-                startContainerFragment(RouterFragmentPath.Live.PAGER_LIVE_ATTENTION);
+                startContainerFragment(RouterFragmentPath.Live.PAGER_LIVE_CHAT);
             }
 
         });
