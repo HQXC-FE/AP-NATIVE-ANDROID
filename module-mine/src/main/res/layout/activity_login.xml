@@ -117,6 +117,7 @@
                             android:id="@+id/tvw_forget_pwd"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:visibility="gone"
                             android:text="@string/me_pwd_forget"
                             android:textColor="@color/clr_txt_link"
                             android:textSize="@dimen/me_test_size" />
