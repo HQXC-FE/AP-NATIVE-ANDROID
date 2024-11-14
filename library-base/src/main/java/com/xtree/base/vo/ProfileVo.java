@@ -80,6 +80,7 @@ public class ProfileVo {
     public String email_selfupdate; // "1"
     public String onepayzfb_count; // "1"
     public String onepaywx_count; // "1"
+    public String real_name; //
 
     @Override
     public String toString() {
