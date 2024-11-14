@@ -89,6 +89,7 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
     public SingleLiveData<Boolean> liveDataExpNoOrder = new SingleLiveData<>(); // 极速充值 没有未完成的订单 (显示银行/姓名/金额/下一步)
     public SingleLiveData<String> liveDataExpTitle = new SingleLiveData<>(); // 极速充值流程渠道标题
     public SingleLiveData<Object> liveSkipGuideData = new SingleLiveData<>();//跳过引导接口
+    public SingleLiveData<Object> liveRealNameData = new SingleLiveData<>();//实名填写
 
     public RechargeViewModel(@NonNull Application application) {
         super(application);
@@ -703,6 +704,34 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
                     @Override
                     public void onFail(BusinessException t) {
                         CfLog.e("error, " + t.toString());
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+
+    /**
+     * 实名保存
+     * 成功返回：
+     * <p>
+     * {"status":10000,"message":"success","data":null,"timestamp":1729759455}
+     * <p>
+     * 失败code：
+     * 30719 真实姓名格式不正确
+     * 30405 操作失败
+     */
+    public void setRealName(String realname) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("realname", realname);
+        map.put("nonce", UuidUtil.getID16());
+        Disposable disposable = (Disposable) model.getApiService().setRealName(map)
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<Object>() {
+                    @Override
+                    public void onResult(Object vo) {
+                        CfLog.d("********"); // RechargePayVo
+                        liveRealNameData.setValue(new Object());
                     }
                 });
         addSubscribe(disposable);
