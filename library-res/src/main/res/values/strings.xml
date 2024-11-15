@@ -46,8 +46,9 @@
     <string name="txt_wechat">微信</string>
 
     <string name="txt_remind_card">请认真校对银行卡号，卡号错误资金将无法到账</string>
-    <string name="txt_remind_usdt_trc20">TRC20_USDT地址以T开头的数字和字母组成的34位</string>
-    <string name="txt_remind_usdt_erc20">ERC20_USDT地址以0x开头的数字和字母组成的42位</string>
+    <string name="txt_remind_usdt_trc20">Tron(TRC20)地址以T开头的数字和字母组成的34位</string>
+    <string name="txt_remind_usdt_erc20">Ethereum(ERC20)地址以0x开头的数字和字母组成的42位</string>
+    <string name="txt_remind_usdt_arbitrum">Arbitrum地址以0x开头的数字和字母组成的42位</string>
     <string name="txt_remind_ebpay">EBPAY地址以eb开头的数字和字母组成的34位</string>
     <string name="txt_remind_topay">TOPAY地址以tp开头的18位 或字母开头的16位</string>
     <string name="txt_remind_gcnyt">地址以CNYT开头的20位英文或数字</string>
@@ -55,6 +56,7 @@
     <string name="txt_remind_gobao">地址以24位字母数字组成</string>
     <string name="txt_remind_gopay">地址以16位字母数字组成</string>
     <string name="txt_remind_okpay">地址以16位字母数字组成</string>
+    <string name="txt_remind_solana">Solana地址以44位字母数字组成</string>
 
     <string name="txt_enter_login_name">请输入账号</string>
     <string name="txt_enter_login_pwd">请输入密码</string>

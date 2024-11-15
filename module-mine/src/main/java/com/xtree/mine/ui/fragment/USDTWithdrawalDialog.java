@@ -69,6 +69,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
     private String wtype;
     private WithdrawalInfoVo.UserBankInfo selectorBankInfo;//选中的支付地址
     private ArrayList<WithdrawalInfoVo.UserBankInfo> trc20BankInfoList;//只支持trc20提款地址
+    private ArrayList<WithdrawalInfoVo.UserBankInfo> erc20BankInfoList;//只支持erc20提款地址
     private ArrayList<WithdrawalInfoVo.UserBankInfo> erc20ArbitrumBankInfoList;//只支持erc20 arb提款地址
     private ArrayList<WithdrawalInfoVo.UserBankInfo> solanaBankInfoList;//只支持solana提款地址
     private ArrayList<WithdrawalListVo> listVo;
@@ -93,16 +94,19 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
         dialog.listVo = listVo;
         dialog.infoVo = infoVo;
         dialog.trc20BankInfoList = new ArrayList<>();
+        dialog.erc20BankInfoList = new ArrayList<>();
         dialog.erc20ArbitrumBankInfoList = new ArrayList<>();
         dialog.solanaBankInfoList = new ArrayList<>();
         for (int i = 0; i < dialog.infoVo.user_bank_info.size(); i++) {
             WithdrawalInfoVo.UserBankInfo bankInfo = dialog.infoVo.user_bank_info.get(i);
             //将TRC20地址组装在一起
-            if (TextUtils.equals("TRC20_USDT", bankInfo.usdt_type)) {
+            if (bankInfo.usdt_type.toUpperCase().contains("TRC20")) {
                 dialog.trc20BankInfoList.add(bankInfo);
+            } else if (bankInfo.usdt_type.toUpperCase().contains("ERC20")) {
+                dialog.erc20BankInfoList.add(bankInfo);
             } else if (bankInfo.usdt_type.toUpperCase().contains("ARBITRUM")) {
                 dialog.erc20ArbitrumBankInfoList.add(bankInfo);
-            }else if (bankInfo.usdt_type.toUpperCase().contains("SOLANA")) {
+            } else if (bankInfo.usdt_type.toUpperCase().contains("SOLANA")) {
                 dialog.solanaBankInfoList.add(bankInfo);
             }
         }
@@ -193,13 +197,16 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
             } else*/
             if (infoVo != null && !infoVo.user_bank_info.isEmpty()) {
                 trc20BankInfoList.clear();
+                erc20BankInfoList.clear();
                 erc20ArbitrumBankInfoList.clear();
                 solanaBankInfoList.clear();
                 for (int i = 0; i < infoVo.user_bank_info.size(); i++) {
                     WithdrawalInfoVo.UserBankInfo bankInfo = infoVo.user_bank_info.get(i);
                     //将TRC20地址组装在一起
-                    if (TextUtils.equals("TRC20_USDT", bankInfo.usdt_type)) {
+                    if (bankInfo.usdt_type.toUpperCase().contains("TRC20")) {
                         trc20BankInfoList.add(bankInfo);
+                    } else if (bankInfo.usdt_type.toUpperCase().contains("ERC20")) {
+                        erc20BankInfoList.add(bankInfo);
                     } else if (bankInfo.usdt_type.toUpperCase().contains("ARBITRUM")) {
                         erc20ArbitrumBankInfoList.add(bankInfo);
                     } else if (bankInfo.usdt_type.toUpperCase().contains("SOLANA")) {
@@ -220,6 +227,22 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
             } else {
                 ToastUtils.showError(getContext().getString(R.string.txt_network_error));
             }
+        });
+
+        //获取当前渠道详情 错误信息
+        viewModel.withdrawalListErrorData.observe(owner, vo -> {
+            final String message = vo;
+            if (message != null && !TextUtils.isEmpty(message)) {
+                showErrorDialog(message);
+            } else {
+                ToastUtils.showError(getContext().getString(R.string.txt_network_error));
+            }
+            trc20BankInfoList.clear();
+            erc20BankInfoList.clear();
+            erc20ArbitrumBankInfoList.clear();
+            solanaBankInfoList.clear();
+            //业务正常 刷新页面
+            refreshChangeUI(changVo, infoVo);
         });
 
     }
@@ -291,16 +314,22 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
             //实际到账个数
             binding.tvInfoActualNumberShow.setText("0");
             //根据传入列表的地址数据判断提币数组数据 TRC情况下 只显示trc地址
-            if (TextUtils.equals("TRC20_USDT", listVo.get(0).name)
-                    || listVo.get(0).name.contains("TRC")
-                    || listVo.get(0).name.contains("TRC20")
-                    || listVo.get(0).name.contains("trc")
-                    || listVo.get(0).name.contains("trc20")) {
+            if (listVo.get(0).name.toUpperCase().contains("TRC20")) {
                 if (!trc20BankInfoList.isEmpty()) {
                     String showAddress = trc20BankInfoList.get(0).usdt_type + "--" + trc20BankInfoList.get(0).account;
                     CfLog.e("设置默认选中的提币地址=" + showAddress);
                     //设置默认选中的提币地址
                     selectorBankInfo = trc20BankInfoList.get(0);
+                    binding.tvBindAddress.setText(showAddress);
+                } else {
+                    selectorBankInfo = null;
+                }
+            }else if (listVo.get(0).name.toUpperCase().contains("ERC20")) {
+                if (!erc20BankInfoList.isEmpty()) {
+                    String showAddress = erc20BankInfoList.get(0).usdt_type + "--" + erc20BankInfoList.get(0).account;
+                    CfLog.e("设置默认选中的提币地址=" + showAddress);
+                    //设置默认选中的提币地址
+                    selectorBankInfo = erc20BankInfoList.get(0);
                     binding.tvBindAddress.setText(showAddress);
                 } else {
                     selectorBankInfo = null;
@@ -315,7 +344,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
                 } else {
                     selectorBankInfo = null;
                 }
-            }else if (listVo.get(0).name.toUpperCase().contains("SOLANA")) {
+            } else if (listVo.get(0).name.toUpperCase().contains("SOLANA")) {
                 if (!solanaBankInfoList.isEmpty()) {
                     String showAddress = solanaBankInfoList.get(0).usdt_type + "--" + solanaBankInfoList.get(0).account;
                     CfLog.e("设置默认选中的提币地址=" + showAddress);
@@ -339,15 +368,13 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
 
             //点击USDT收款地址
             binding.tvBindAddress.setOnClickListener(v -> {
-                if (TextUtils.equals("TRC20_USDT", listVo.get(0).name)
-                        || listVo.get(0).name.contains("TRC")
-                        || listVo.get(0).name.contains("TRC20")
-                        || listVo.get(0).name.contains("trc")
-                        || listVo.get(0).name.contains("trc20")) {
+                if (listVo.get(0).name.toUpperCase().contains("TRC20")) {
                     showCollectionDialog(trc20BankInfoList);
+                }else if (listVo.get(0).name.toUpperCase().contains("ERC20")) {
+                    showCollectionDialog(erc20BankInfoList);
                 } else if (listVo.get(0).name.toUpperCase().contains("ARBITRUM")) {
                     showCollectionDialog(erc20ArbitrumBankInfoList);
-                }else if (listVo.get(0).name.toUpperCase().contains("SOLANA")) {
+                } else if (listVo.get(0).name.toUpperCase().contains("SOLANA")) {
                     showCollectionDialog(solanaBankInfoList);
                 } else {
                     showCollectionDialog(infoVo.user_bank_info);
@@ -433,11 +460,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
      */
     private void refreshChangeUI(WithdrawalListVo changVo, WithdrawalInfoVo infoVo) {
         //根据传入列表的地址数据判断提币数组数据 TRC情况下 只显示trc地址
-        if (TextUtils.equals("TRC20_USDT", changVo.name)
-                || changVo.name.contains("TRC")
-                || changVo.name.contains("TRC20")
-                || changVo.name.contains("trc")
-                || changVo.name.contains("trc20")) {
+        if (changVo.name.toUpperCase().contains("TRC20")) {
             if (!trc20BankInfoList.isEmpty()) {
                 String showAddress = trc20BankInfoList.get(0).usdt_type + "--" + trc20BankInfoList.get(0).account;
                 CfLog.e("设置默认选中的提币地址=" + showAddress);
@@ -448,7 +471,18 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
                 selectorBankInfo = null;
                 binding.tvBindAddress.setText(" ");
             }
-        } else if (changVo.name.toUpperCase().contains("ARBITRUM")) {
+        } else if (changVo.name.toUpperCase().contains("ERC20")) {
+            if (!erc20BankInfoList.isEmpty()) {
+                String showAddress = erc20BankInfoList.get(0).usdt_type + "--" + erc20BankInfoList.get(0).account;
+                CfLog.e("设置默认选中的提币地址=" + showAddress);
+                //设置默认选中的提币地址
+                selectorBankInfo = erc20BankInfoList.get(0);
+                binding.tvBindAddress.setText(showAddress);
+            } else {
+                selectorBankInfo = null;
+                binding.tvBindAddress.setText(" ");
+            }
+        }else if (changVo.name.toUpperCase().contains("ARBITRUM")) {
             if (!erc20ArbitrumBankInfoList.isEmpty()) {
                 String showAddress = erc20ArbitrumBankInfoList.get(0).usdt_type + "--" + erc20ArbitrumBankInfoList.get(0).account;
                 CfLog.e("设置默认选中的提币地址=" + showAddress);
@@ -459,7 +493,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
                 selectorBankInfo = null;
                 binding.tvBindAddress.setText(" ");
             }
-        }else if (changVo.name.toUpperCase().contains("SOLANA")) {
+        } else if (changVo.name.toUpperCase().contains("SOLANA")) {
             if (!solanaBankInfoList.isEmpty()) {
                 String showAddress = solanaBankInfoList.get(0).usdt_type + "--" + solanaBankInfoList.get(0).account;
                 CfLog.e("设置默认选中的提币地址=" + showAddress);
@@ -491,12 +525,10 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
         }
         //点击USDT收款地址
         binding.tvBindAddress.setOnClickListener(v -> {
-            if (TextUtils.equals("TRC20_USDT", changVo.name)
-                    || changVo.name.contains("TRC")
-                    || changVo.name.contains("TRC20")
-                    || changVo.name.contains("trc")
-                    || changVo.name.contains("trc20")) {
+            if (changVo.name.toUpperCase().contains("TRC20")) {
                 showCollectionDialog(trc20BankInfoList);
+            } else if (changVo.name.toUpperCase().contains("ERC20")) {
+                showCollectionDialog(erc20BankInfoList);
             } else if (changVo.name.toUpperCase().contains("ARBITRUM")) {
                 showCollectionDialog(erc20ArbitrumBankInfoList);
             } else if (changVo.name.toUpperCase().contains("SOLANA")) {
