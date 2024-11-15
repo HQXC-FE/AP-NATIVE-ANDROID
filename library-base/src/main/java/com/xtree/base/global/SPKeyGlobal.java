@@ -77,13 +77,17 @@ public class SPKeyGlobal {
     //DEBUG
     public static final String DEBUG_APPLY_DOMAIN ="debug_apply_domain";//debug 设置指定域名
     //测速超时上传时间
-    public static final String DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT ="debug_apply_fastest_monitor_timeout";//debug 设置指定域名
+    public static final String DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT ="debug_apply_fastest_monitor_timeout";
+    //测速评分缓存
+    public static final String FASTEST_SCORE_CACHE = "fastest_score_cache";
 
     //websocket
     public static final String WS_CHECK_INTERVAL ="ws_check_interval";
     public static final String WS_RETRY_NUMBER ="ws_retry_number";
     public static final String WS_RETRY_WAITING_TIME ="ws_retry_waiting_time";
     public static final String WS_EXPIRE_TIME ="ws_expire_time";
+    // 测速扣除百分比
+    public static final String APP_RESPONSE_SPEED_CALCULATION ="app_response_speed_calculation";
     //websocket
 
 }
