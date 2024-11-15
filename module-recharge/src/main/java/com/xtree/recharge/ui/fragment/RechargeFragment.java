@@ -963,6 +963,9 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     }
 
     private void toRealName() {
+        if (ppw4 != null && ppw4.isShow()) {
+            ppw4.dismiss();
+        }
         ppw4 = new XPopup.Builder(getContext()).dismissOnTouchOutside(false)
                 .dismissOnBackPressed(false).asCustom(new RealNameDialog(getContext(), "", new RealNameDialog.ICallBack() {
                     @Override
@@ -1840,6 +1843,9 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             if (ppw4 != null && ppw4.isShow()) {
                 ppw4.dismiss();
             }
+            ToastUtils.showShort(R.string.txt_submitted_suc);
+            isNeedRefresh = true;
+            refresh();
         });
     }
 
