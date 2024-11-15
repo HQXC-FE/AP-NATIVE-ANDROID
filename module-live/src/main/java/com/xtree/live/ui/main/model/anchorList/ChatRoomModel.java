@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * 数据来源1：透過 主播私聊接口 与主播说一次话
  *
  * 数据来源2：使用 搜索主播助手 找查助手， 并用 助手私聊 与助手说一次话
+ * api/chat/getChatRoomList
  */
 public class ChatRoomModel extends BindModel {
     public String vid;//聊天室识别ID(与直播间VID不同)
@@ -45,7 +46,7 @@ public class ChatRoomModel extends BindModel {
         public String text;//消息内容
         public String pic;//消息图片路径
         public String pic_bnc;
-        public String is_batch;
+        public String is_batch;//是否后台批量发送的消息
 
     }
 
