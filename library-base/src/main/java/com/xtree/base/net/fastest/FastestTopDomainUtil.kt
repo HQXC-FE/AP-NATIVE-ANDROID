@@ -171,6 +171,8 @@ class FastestTopDomainUtil private constructor() {
                                 var topSpeedDomain = TopSpeedDomain()
                                 topSpeedDomain.url = url
                                 topSpeedDomain.speedSec = System.currentTimeMillis() - curTime
+                                topSpeedDomain.speedScore =
+                                    FastestMonitorCache.getFastestScore(topSpeedDomain)
 
                                 val response = Gson().fromJson(
                                     result.body?.string(),
@@ -221,6 +223,9 @@ class FastestTopDomainUtil private constructor() {
                     EventBus.getDefault()
                         .post(EventVo(EventConstant.EVENT_TOP_SPEED_FAILED, ""))
                 }
+
+                //保存测速结果
+                FastestMonitorCache.saveFastestScore()
 
                 val highSpeedList = mutableListOf<List<String>>()
                 val dateFormat = SimpleDateFormat(

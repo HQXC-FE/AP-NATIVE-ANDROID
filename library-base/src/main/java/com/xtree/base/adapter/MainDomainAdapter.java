@@ -71,14 +71,14 @@ public class MainDomainAdapter extends BaseAdapter<TopSpeedDomain> {
         } else {
             binding.tvAgentChange.setVisibility(!TextUtils.equals(domain.url, DomainUtil.getApiUrl()) ? View.VISIBLE : View.INVISIBLE);
             binding.tvRecomment.setText("推荐");
-            binding.tvSpeed.setText(domain.speedSec + "ms");
+            binding.tvSpeed.setText(domain.speedScore + "ms");
 
-            if (domain.speedSec < 200) {
+            if (domain.speedScore < 200) {
                 binding.tvAgentChange.setTextColor(mContext.getResources().getColor(R.color.clr_green_03));
                 binding.tvAgentChange.setBackground(mContext.getResources().getDrawable(R.drawable.bg_stroke_green));
                 binding.ivRedPoint.setBackground(mContext.getResources().getDrawable(R.drawable.ic_green_point));
                 binding.tvRecomment.setVisibility(View.VISIBLE);
-            } else if (domain.speedSec > 200 && domain.speedSec < 500) {
+            } else if (domain.speedScore > 200 && domain.speedScore < 500) {
                 binding.tvAgentChange.setTextColor(mContext.getResources().getColor(R.color.clr_orange_02));
                 binding.tvAgentChange.setBackground(mContext.getResources().getDrawable(R.drawable.bg_stroke_orange));
                 binding.ivRedPoint.setBackground(mContext.getResources().getDrawable(R.drawable.ic_orange_point));
