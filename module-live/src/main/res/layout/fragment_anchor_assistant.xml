@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <!--<variable
+            name="viewModel"
+            type="com.xtree.live.ui.main.model.anchorList.AnchorListModel" />-->
+    </data>
+
+    <LinearLayout
+        android:id="@+id/ll_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <RelativeLayout
+            android:id="@+id/rlAnchorTop"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:visibility="gone"
+            >
+            <TextView
+                android:id="@+id/tvSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_assistant_search"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:background="@mipmap/anchor_assistant_search_bg"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@id/tvSearch"
+                android:layout_toLeftOf="@id/tvSearch"
+                android:layout_alignBottom="@id/tvSearch"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/bg_custom_edittext">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <ImageView
+                        android:id="@+id/imageViewSearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@mipmap/anchor_assistant_search"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        />
+                    <EditText
+                        android:id="@+id/edSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toRightOf ="@id/imageViewSearch"
+                        android:layout_marginLeft="10dp"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/rv_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="@null"
+            android:background="@color/update_progress_bar_bg"
+            android:visibility="gone"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPrivateTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:background="@color/bt_page_up_bg"
+          >
+
+            <TextView
+                android:id="@+id/tvPrivateName"
+                style="@style/style_cm_title"
+                android:text="助理-溜溜"
+                android:textColor="@color/clr_txt_share"
+                android:textSize="@dimen/bt_text_14sp"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivwPrivateChatBack"
+                style="@style/style_ic_title_back"
+                android:src="@mipmap/cm_ic_back"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvPrivateState"
+                    style="@style/style_ic_title_right"
+                    android:src="@mipmap/lv_broadcaster_top_focus"
+                    android:text="在线"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/clr_txt_online"
+                    android:visibility="visible"/>
+
+                <ImageView
+                    android:id="@+id/ivwShare"
+                    style="@style/style_ic_title_right"
+                    android:src="@mipmap/lv_broadcaster_top_share"
+                    android:visibility="invisible"/>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ListView
+            android:id="@+id/lvPrivateChat"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:cacheColorHint="#00000000"
+            android:divider="@null"
+            android:background="@color/update_progress_bar_bg"
+            android:visibility="visible"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <TextView
+                    android:id="@+id/tvPrivateChatSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txt_assistant_private_chat_send"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:background="@mipmap/anchor_assistant_search_bg"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignTop="@id/tvPrivateChatSend"
+                    android:layout_toLeftOf="@id/tvPrivateChatSend"
+                    android:layout_alignBottom="@id/tvPrivateChatSend"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/bg_custom_edittext">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+                        <!--<ImageView
+                            android:id="@+id/imageViewSearch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/anchor_assistant_private_chat"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="20dp"
+                            />-->
+                        <EditText
+                            android:id="@+id/edPrivateChat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="@string/txt_assistant_private_chat_hint"
+                            android:textSize="12sp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="20dp"
+                            />
+                        <ImageView
+                            android:id="@+id/ivPrivateChat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/anchor_assistant_private_chat"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dp"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</layout>

@@ -325,5 +325,8 @@
     <string name="txt_assistant_send_msg_hint">请输入信息</string>
     <string name="txt_assistant_online_status">在线</string>
     <string name="txt_share_link">分享链接</string>
-
+    <string name="txt_assistant_search">搜索</string>
+    <string name="txt_assistant_search_name">搜索助理名称</string>
+    <string name="txt_assistant_private_chat_send">发送</string>
+    <string name="txt_assistant_private_chat_hint">请输入信息</string>
 </resources>
