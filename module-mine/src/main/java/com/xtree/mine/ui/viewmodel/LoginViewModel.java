@@ -415,8 +415,7 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
         /*map.put("fields", "customer_service_url,public_key,barrage_api_url," +
                 "x9_customer_service_url," + "promption_code,default_promption_code");*/
         map.put("fields", "customer_service_url,public_key,barrage_api_url," +
-                "x9_customer_service_url," + "promption_code,default_promption_code"+",register_captcha_switch");
-
+                "x9_customer_service_url," + "promption_code,default_promption_code,ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time,app_response_speed_calculation");
         CfLog.e("**************** MAP = " + map);
         Disposable disposable = (Disposable) model.getApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
