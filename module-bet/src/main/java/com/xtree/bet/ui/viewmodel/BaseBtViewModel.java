@@ -20,7 +20,7 @@ import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.BalanceVo;
 import com.xtree.base.vo.FBService;
 import com.xtree.base.vo.PMService;
-import com.xtree.bet.bean.request.UploadExcetionReq;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.bet.data.BetRepository;
 
 import java.util.HashMap;

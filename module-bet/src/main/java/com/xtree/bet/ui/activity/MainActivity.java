@@ -49,7 +49,7 @@ import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.TipDialog;
 import com.xtree.bet.BR;
 import com.xtree.bet.R;
-import com.xtree.bet.bean.request.UploadExcetionReq;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.fb.HotLeague;
 import com.xtree.bet.bean.ui.League;

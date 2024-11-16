@@ -193,4 +193,12 @@ public interface HomeApiService {
     @GET("/api/deposit/payments?")
     Flowable<BaseResponse<PaymentDataVo.RechargeVo>> getPayment(@Query("bid") String bid);
 
+    /**
+     * 异常日志上报
+     * @return
+     */
+    @POST("/api/sports/excaption")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<String>> uploadExcetion(@Body Map<String, String> map);
+
 }

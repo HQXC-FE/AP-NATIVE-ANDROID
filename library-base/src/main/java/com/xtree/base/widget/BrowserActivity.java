@@ -2,6 +2,7 @@ package com.xtree.base.widget;
 
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FAILED;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FINISH;
+import static com.xtree.base.utils.EventConstant.EVENT_UPLOAD_EXCEPTION;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,6 +23,9 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,6 +49,7 @@ import com.luck.picture.lib.interfaces.OnResultCallbackListener;
 import com.xtree.base.R;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
@@ -644,6 +649,8 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
     public class CustomWebViewClient extends WebViewClient {
+        private boolean isInitialUrl = true; // 是否是初始 URL 的标识
+        private final String initialUrl = url; // 替换为你的初始 URL
 //        private OkHttpClient client;
 //
 //        public CustomWebViewClient() throws UnknownHostException {
@@ -688,6 +695,11 @@ public class BrowserActivity extends AppCompatActivity {
                     setCookieInside();
                 }
             }
+            // 检测是否是初始 URL
+            if (isGame && isInitialUrl && url.equals(initialUrl)) {
+                // 当前加载的是初始 URL
+                isInitialUrl = false; // 初始 URL 加载过一次后更新状态
+            }
         }
 
         @Override
@@ -710,10 +722,66 @@ public class BrowserActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            CfLog.e("errorCode: " + errorCode + ", description: " + description + ", failingUrl: " + failingUrl);
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            super.onReceivedError(view, request, error);
+
             hideLoading();
             Toast.makeText(getBaseContext(), R.string.network_failed, Toast.LENGTH_SHORT).show();
+            // 仅处理初始 URL 的加载错误
+            if (request.getUrl().toString().equals(initialUrl)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    int errorCode = error.getErrorCode();
+                    String description = error.getDescription().toString();
+                    String failingUrl = request.getUrl().toString();
+
+                    //ERROR_AUTHENTICATION (-4): 用户身份验证失败，例如身份验证凭据不正确。
+                    //ERROR_BAD_URL (-12): URL 格式无效。
+                    //ERROR_CONNECT (-6): 连接到服务器失败。
+                    //ERROR_FAILED_SSL_HANDSHAKE (-11): SSL 握手失败。
+                    //ERROR_FILE (-13): 常规文件错误。
+                    //ERROR_FILE_NOT_FOUND (-14): 文件未找到。
+                    //ERROR_HOST_LOOKUP (-2): 主机名无法解析，通常是 DNS 错误。
+                    //ERROR_IO (-7): 读写错误。
+                    //ERROR_PROXY_AUTHENTICATION (-5): 代理服务器需要身份验证。
+                    //ERROR_REDIRECT_LOOP (-9): 遇到重定向循环。
+                    //ERROR_TIMEOUT (-8): 连接超时。
+                    //ERROR_TOO_MANY_REQUESTS (-15): 请求数量过多。
+                    //ERROR_UNKNOWN (-1): 未知错误。
+                    //ERROR_UNSUPPORTED_AUTH_SCHEME (-3): 不支持的身份验证方案。
+                    //ERROR_UNSUPPORTED_SCHEME (-10): 不支持的 URI 方案。
+                    String msg = "errorCode: " + errorCode + ", description: " + description + ", failingUrl: " + failingUrl;
+                    CfLog.e(msg);
+                    // 处理非 HTTP 错误，例如网络错误或 DNS 解析错误
+                    uploadH5Error(msg, failingUrl);
+                }
+            }
+        }
+
+        @Override
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            super.onReceivedHttpError(view, request, errorResponse);
+
+            int statusCode = errorResponse.getStatusCode(); // 获取状态码
+            String url = request.getUrl().toString(); // 获取请求的 URL
+
+            CfLog.d("HTTP Error", "URL: " + url + ", Status Code: " + statusCode);
+            // 仅处理初始 URL 的 HTTP 错误
+            if (request.getUrl().toString().equals(initialUrl)) {
+                String msg = "状态码:" + statusCode + "；加载链接：" + url;
+                //处理403 404 500 502等错误
+                uploadH5Error(msg, url);
+            }
+        }
+
+    }
+
+    private void uploadH5Error(String msg, String url) {
+        if (isGame) {
+            UploadExcetionReq req = new UploadExcetionReq();
+            req.setLogTag("thirdgame_domain_exception");
+            req.setApiUrl(url);
+            req.setMsg(msg);
+            EventBus.getDefault().post(new EventVo(EVENT_UPLOAD_EXCEPTION, req));
         }
     }
 
