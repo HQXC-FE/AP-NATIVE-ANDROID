@@ -265,6 +265,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
                     } else if (txt.contains("ERC")) {
                         binding.tvwTipAddress.setText(R.string.txt_remind_usdt_erc20);
                     } else {
+                        binding.tvwTipAddress.setVisibility(View.VISIBLE);
                         binding.tvwTipAddress.setText(mUserUsdtJumpVo.remind);
                     }
 
