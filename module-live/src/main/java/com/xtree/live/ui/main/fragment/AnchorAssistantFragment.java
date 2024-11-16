@@ -27,12 +27,15 @@ import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.widget.LoadingDialog;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.data.factory.AppViewModelFactory;
+import com.xtree.live.data.source.request.SearchAssistantRequest;
 import com.xtree.live.databinding.FragmentAnchorAssistantBinding;
 import com.xtree.live.databinding.FragmentChatBinding;
 import com.xtree.live.ui.main.adapter.AttentionListAdapter;
+import com.xtree.live.ui.main.viewmodel.AttentionListModel;
 import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 import com.xtree.service.WebSocketService;
 import com.xtree.service.message.MessageData;
@@ -51,7 +54,7 @@ import me.xtree.mvvmhabit.utils.SPUtils;
  * 主播助理
  */
 @Route(path = RouterFragmentPath.Live.PAGER_LIVE_CHAT_ANCHOR)
-public class AnchorAssistantFragment extends BaseFragment<FragmentAnchorAssistantBinding, LiveViewModel> {
+public class AnchorAssistantFragment extends BaseFragment<FragmentAnchorAssistantBinding, AttentionListModel>  implements AttentionListModel.ICallBack {
     private boolean isInput = false;
 
 
@@ -61,6 +64,12 @@ public class AnchorAssistantFragment extends BaseFragment<FragmentAnchorAssistan
       binding.tvSearch.setOnClickListener(v -> {
           if (isInput){
               //发送搜索请求
+              if ( binding.edSearch.getText().toString().trim().length() >0){
+                  SearchAssistantRequest request = new SearchAssistantRequest(binding.edSearch.getText().toString().trim());
+                  LoadingDialog.show(getActivity());
+                  viewModel.searchAssistant(request);
+              }
+
           }
 
       });
@@ -93,7 +102,15 @@ public class AnchorAssistantFragment extends BaseFragment<FragmentAnchorAssistan
     public void initData() {
         super.initData();
         //发送获取列表数据请求
+        viewModel.setCallBack(this);
+        viewModel.initData(requireActivity());
     }
+    @Override
+    public void callback() {
+        viewModel.getAnchorSort();
+
+    }
+
     @Override
     public void initViewObservable() {
         super.initViewObservable();
@@ -110,9 +127,9 @@ public class AnchorAssistantFragment extends BaseFragment<FragmentAnchorAssistan
     }
 
     @Override
-    public LiveViewModel initViewModel() {
+    public AttentionListModel initViewModel() {
         AppViewModelFactory factory = AppViewModelFactory.getInstance(getActivity().getApplication());
-        return new ViewModelProvider(this, factory).get(LiveViewModel.class);
+        return new ViewModelProvider(this, factory).get(AttentionListModel.class);
     }
 
 

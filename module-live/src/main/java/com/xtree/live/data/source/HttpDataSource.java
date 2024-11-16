@@ -2,15 +2,21 @@ package com.xtree.live.data.source;
 
 import com.xtree.base.vo.FBService;
 import com.xtree.live.data.source.request.AnchorSortRequest;
+import com.xtree.live.data.source.request.ChatRoomListRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
+import com.xtree.live.data.source.request.SearchAssistantRequest;
+import com.xtree.live.data.source.request.SendToAssistantRequest;
 import com.xtree.live.data.source.request.SubscriptionRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
+import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
+import com.xtree.live.data.source.response.SearchAssistantResponse;
+import com.xtree.live.data.source.response.SendToAssistantResponse;
 import com.xtree.live.data.source.response.fb.MatchInfo;
 
 import java.util.List;
@@ -57,6 +63,27 @@ public interface HttpDataSource {
      * @return
      */
     Flowable<BaseResponse<AnchorSortResponse>> getAnchorSort(AnchorSortRequest request);
+
+    /**
+     * 聊天房列表
+     * @param request
+     * @return
+     */
+    Flowable<BaseResponse<ChatRoomResponse>> getChatRoomList(ChatRoomListRequest request);
+
+    /***
+     * 搜索主播助手
+     * @param request
+     * @return
+     */
+    Flowable<BaseResponse<SearchAssistantResponse>> getSearchAssistant(SearchAssistantRequest request);
+
+    /***
+     * 助手私聊
+     * @param request
+     * @return
+     */
+    Flowable<BaseResponse<SendToAssistantResponse>> sendToAssistant(SendToAssistantRequest request);
 
     //获取直播配置信息
     Flowable<BaseResponse<ReviseHotResponse>> getReviseHot();

@@ -12,15 +12,21 @@ import com.xtree.live.data.source.LocalDataSource;
 import com.xtree.live.data.source.http.HttpDataSourceImpl;
 import com.xtree.live.data.source.local.LocalDataSourceImpl;
 import com.xtree.live.data.source.request.AnchorSortRequest;
+import com.xtree.live.data.source.request.ChatRoomListRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
+import com.xtree.live.data.source.request.SearchAssistantRequest;
+import com.xtree.live.data.source.request.SendToAssistantRequest;
 import com.xtree.live.data.source.request.SubscriptionRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
+import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
+import com.xtree.live.data.source.response.SearchAssistantResponse;
+import com.xtree.live.data.source.response.SendToAssistantResponse;
 import com.xtree.live.data.source.response.fb.MatchInfo;
 
 import java.util.List;
@@ -110,9 +116,42 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
         return mHttpDataSource.getFrontLives(request);
     }
 
+    /**
+     * 获取主播列表
+     * @param request type ;//1：热门， 2：推荐
+     *                platform ;//终端类型 	1： PC; 2：H5；3：android；4：ios；
+     *                side;//投放位置 	1：足球；2：篮球；3：电竞；4：首页；5：直播间；6：其它；
+     *                listRows ;//每页数量,默认6
+     *                page;//页码默认1
+     * @return
+     */
     @Override
     public Flowable<BaseResponse<AnchorSortResponse>> getAnchorSort(AnchorSortRequest request) {
         return mHttpDataSource.getAnchorSort(request);
+    }
+
+    /**
+     *聊天房列表
+     * @param request
+     * @return
+     */
+    @Override
+    public Flowable<BaseResponse<ChatRoomResponse>> getChatRoomList(ChatRoomListRequest request) {
+        return mHttpDataSource.getChatRoomList(request);
+    }
+    /**
+     *搜索主播助手
+     * @param request
+     * @return
+     */
+    @Override
+    public Flowable<BaseResponse<SearchAssistantResponse>> getSearchAssistant(SearchAssistantRequest request) {
+        return mHttpDataSource.getSearchAssistant(request);
+    }
+
+    @Override
+    public Flowable<BaseResponse<SendToAssistantResponse>> sendToAssistant(SendToAssistantRequest request) {
+        return mHttpDataSource.sendToAssistant(request);
     }
 
     @Override

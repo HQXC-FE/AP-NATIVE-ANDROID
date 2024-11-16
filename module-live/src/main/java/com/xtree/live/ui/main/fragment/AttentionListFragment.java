@@ -15,11 +15,14 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.router.RouterFragmentPath;
+import com.xtree.base.utils.CfLog;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.broadcaster.fragment.LiveShareDialog;
 import com.xtree.live.data.factory.AppViewModelFactory;
 import com.xtree.live.data.source.response.AnchorSortResponse;
+import com.xtree.live.data.source.response.ChatRoomResponse;
+import com.xtree.live.data.source.response.SearchAssistantResponse;
 import com.xtree.live.databinding.FragmentLiveBroadcasterBinding;
 import com.xtree.live.ui.main.adapter.AttentionListAdapter;
 import com.xtree.live.ui.main.viewmodel.AttentionListModel;
@@ -34,19 +37,17 @@ import me.xtree.mvvmhabit.base.BaseFragment;
  */
 @Route(path = RouterFragmentPath.Live.PAGER_LIVE_ATTENTION)
 public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterBinding, AttentionListModel> implements AttentionListModel.ICallBack {
-    private ArrayList<Fragment> fragmentList = new ArrayList<>();
-    private ArrayList<String> tabList = new ArrayList<>();
+
     private AttentionListAdapter mAdapter;
     private BasePopupView shareView;
     private LiveShareDialog liveShareDialog;
 
-    private AnchorSortResponse anchorSortResponse;//直播列表数据
+    private ChatRoomResponse chatRoomResponse;//聊天房列表
+    private SearchAssistantResponse searchAssistantResponse ;//搜索主播助理
 
 
     @Override
     public void initView() {
-
-
         binding.ivwShare.setOnClickListener(v -> {
             if (shareView == null) {
 
@@ -98,22 +99,30 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
 
     @Override
     public void callback() {
-        viewModel.getAnchorSort();
+        viewModel.getChatRoomList();
 
     }
 
     @Override
     public void initViewObservable() {
         super.initViewObservable();
-        viewModel.anchorSortResponseMutableLiveData.observe(getActivity(), vo -> {
-            if (vo != null && vo.data.size() > 0) {
-                anchorSortResponse = vo;
-                Collections.sort(anchorSortResponse.data);
+        viewModel.chatRoomResponseMutableLiveData.observe(getActivity(), vo -> {
+            if (vo != null ) {
+                chatRoomResponse = vo;
+                CfLog.e("initViewObservable = " + chatRoomResponse.toString());
+                /*Collections.sort(anchorSortResponse.data);
                 mAdapter = new AttentionListAdapter(getContext(), anchorSortResponse);
                 binding.rvMain.setAdapter(mAdapter);
-                mAdapter.notifyDataSetChanged();
+                mAdapter.notifyDataSetChanged();*/
             }
 
         });
+        //搜索主播助理
+        viewModel.searchAssistantResponseMutableLiveData.observe(getActivity() , vo->{
+            if (vo != null){
+                searchAssistantResponse = vo;
+            }
+        });
+
     }
 }

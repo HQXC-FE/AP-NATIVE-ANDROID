@@ -26,6 +26,13 @@ public class APIManager {
     public static final String ATTENTION_API = "/api/user/attentionList";
     //获取主播排序列表
     public static final String ANCHOR_SORT_API = "/api/anchor/sort";
+    //获取聊天房列表
+    public static final String CHAT_ROOM_LIST_API = "/api/chat/getChatRoomList";
+    //搜索主播助手
+    public static final String CHAT_SEARCH_ASSISTANT_API = "/api/chat/searchAssistant";
+    //助手私聊
+    public static final String CHAT_SEND_TO_ASSISTANT_API = "/api/chat/sendToAssistant";
+
     //直播
     private static final String X9_API = "/api/x9/";
     //获取直播token

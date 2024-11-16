@@ -11,9 +11,13 @@ import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.CfLog;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.request.AnchorSortRequest;
+import com.xtree.live.data.source.request.ChatRoomListRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
+import com.xtree.live.data.source.request.SearchAssistantRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
+import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
+import com.xtree.live.data.source.response.SearchAssistantResponse;
 
 import java.lang.ref.WeakReference;
 
@@ -34,6 +38,9 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
     public ICallBack callBack ;
 
     public MutableLiveData<AnchorSortResponse> anchorSortResponseMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<ChatRoomResponse> chatRoomResponseMutableLiveData = new MutableLiveData<>();//聊天房列表
+    public MutableLiveData<SearchAssistantResponse> searchAssistantResponseMutableLiveData = new MutableLiveData<>();//搜索主播助手
+
 
     public void setCallBack(ICallBack callBack) {
         CfLog.e("setCallBack --- >" +callBack.toString());
@@ -88,7 +95,43 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
 
                 });
     }
+    public void  getChatRoomList(){
+        LiveRepository.getInstance().getChatRoomList(new ChatRoomListRequest())
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<ChatRoomResponse>() {
+                    @Override
+                    public void onResult(ChatRoomResponse data) {
 
+                        if (data !=null){
+                            CfLog.e("getAnchorSort ----------------> ");
+                            chatRoomResponseMutableLiveData.setValue(data);
+                        }
+                    }
+
+                });
+    }
+
+    /***
+     * 搜索主播助手
+     * @param response
+     */
+    public  void searchAssistant(final SearchAssistantRequest response){
+        LiveRepository.getInstance().getSearchAssistant(response)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<SearchAssistantResponse>() {
+                    @Override
+                    public void onResult(SearchAssistantResponse data) {
+
+                        if (data !=null){
+                            CfLog.e("getAnchorSort ----------------> ");
+                            searchAssistantResponseMutableLiveData.setValue(data);
+                        }
+                    }
+
+                });
+    }
 
     public void setActivity(FragmentActivity mActivity) {
         this.mActivity = new WeakReference<>(mActivity);

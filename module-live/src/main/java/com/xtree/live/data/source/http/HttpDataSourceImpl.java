@@ -15,15 +15,21 @@ import com.xtree.live.data.source.APIManager;
 import com.xtree.live.data.source.ApiService;
 import com.xtree.live.data.source.HttpDataSource;
 import com.xtree.live.data.source.request.AnchorSortRequest;
+import com.xtree.live.data.source.request.ChatRoomListRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
+import com.xtree.live.data.source.request.SearchAssistantRequest;
+import com.xtree.live.data.source.request.SendToAssistantRequest;
 import com.xtree.live.data.source.request.SubscriptionRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
+import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
+import com.xtree.live.data.source.response.SearchAssistantResponse;
+import com.xtree.live.data.source.response.SendToAssistantResponse;
 import com.xtree.live.data.source.response.fb.MatchInfo;
 
 import java.util.HashMap;
@@ -139,6 +145,61 @@ public class HttpDataSourceImpl implements HttpDataSource {
             public BaseResponse<AnchorSortResponse> apply(ResponseBody responseBody) throws Exception {
                 return JSON.parseObject(responseBody.string(),
                         new TypeReference<BaseResponse<AnchorSortResponse>>() {
+
+                        });
+            }
+        });
+    }
+
+    /**
+     * 聊天房列表
+     * @param request
+     * @return
+     */
+    @Override
+    public Flowable<BaseResponse<ChatRoomResponse>> getChatRoomList(ChatRoomListRequest request) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return liveService.get(APIManager.CHAT_ROOM_LIST_API, map).map(new Function<ResponseBody, BaseResponse<ChatRoomResponse>>() {
+            @Override
+            public BaseResponse<ChatRoomResponse> apply(ResponseBody responseBody) throws Exception {
+                return  JSON.parseObject(responseBody.string(),
+                        new TypeReference<BaseResponse<ChatRoomResponse>>() {
+
+                        });
+            }
+        });
+    }
+    /**
+     * 搜索主播助手
+     * @param request
+     * @return
+     */
+    @Override
+    public Flowable<BaseResponse<SearchAssistantResponse>> getSearchAssistant(SearchAssistantRequest request) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return liveService.post(APIManager.CHAT_SEARCH_ASSISTANT_API , map).map(new Function<ResponseBody, BaseResponse<SearchAssistantResponse>>() {
+            @Override
+            public BaseResponse<SearchAssistantResponse> apply(ResponseBody responseBody) throws Exception {
+                return  JSON.parseObject(responseBody.string(),
+                        new TypeReference<BaseResponse<SearchAssistantResponse>>() {
+
+                        });
+            }
+        });
+    }
+    /**
+     * 助手私聊
+     * @param request
+     * @return
+     */
+    @Override
+    public Flowable<BaseResponse<SendToAssistantResponse>> sendToAssistant(SendToAssistantRequest request) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return  liveService.post(APIManager.CHAT_SEND_TO_ASSISTANT_API , map).map(new Function<ResponseBody, BaseResponse<SendToAssistantResponse>>() {
+            @Override
+            public BaseResponse<SendToAssistantResponse> apply(ResponseBody responseBody) throws Exception {
+                return JSON.parseObject(responseBody.string(),
+                        new TypeReference<BaseResponse<SendToAssistantResponse>>() {
 
                         });
             }
