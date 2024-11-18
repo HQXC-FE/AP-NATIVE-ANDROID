@@ -58,7 +58,7 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
         map.put("languageType", "CMN");
         map.put("matchId", String.valueOf(matchId));
 
-        Disposable disposable = (Disposable) model.getApiService().getMatchDetail(map)
+        Disposable disposable = (Disposable) model.getBaseApiService().getMatchDetail(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new FBHttpCallBack<MatchInfo>() {

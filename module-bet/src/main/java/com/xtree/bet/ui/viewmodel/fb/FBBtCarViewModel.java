@@ -63,7 +63,7 @@ public class FBBtCarViewModel extends TemplateBtCarViewModel {
         }
         btCarReq.setBetMatchMarketList(betMatchMarketList);
 
-        Disposable disposable = (Disposable) model.getApiService().batchBetMatchMarketOfJumpLine(btCarReq)
+        Disposable disposable = (Disposable) model.getBaseApiService().batchBetMatchMarketOfJumpLine(btCarReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new FBHttpCallBack<BtConfirmInfo>() {

@@ -1,6 +1,7 @@
 package com.xtree.bet.ui.viewmodel.fb;
 
 import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 
 import android.app.Application;
@@ -9,6 +10,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.FBHttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
@@ -183,6 +185,16 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         fBListReq.setType(6);
         fBListReq.setLeagueIds(leagueIds);
 
+        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
+        String token;
+        if(TextUtils.equals(platform, PLATFORM_FBXC)) {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_TOKEN);
+            fBListReq.setToken(token);
+        } else {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
+            fBListReq.setToken(token );
+        }
+        System.out.println("=============== getFBList 11111 ================");
         Disposable disposable = (Disposable) model.getApiService().getFBList(fBListReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
@@ -287,7 +299,18 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
                 orderBy, leagueIds, searchDatePos, oddType, matchids,
                 needSecondStep, finalType, isStepSecond);
 
-        Disposable disposable = (Disposable) model.getApiService().getFBList(fBListReq)
+        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
+        String token;
+        if(TextUtils.equals(platform, PLATFORM_FBXC)) {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_TOKEN);
+            fBListReq.setToken(token);
+        } else {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
+            fBListReq.setToken(token );
+        }
+        System.out.println("LeagueListCallBack");
+        System.out.println("============= getFBList 22222 ==============");
+        Disposable disposable = (Disposable) model.getBaseApiService().getFBList(fBListReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(mLeagueListCallBack);
@@ -341,15 +364,15 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
             showChampionCache(sportId, playMethodType);
         }
 
-        FBListReq FBListReq = new FBListReq();
-        FBListReq.setSportId(sportId);
-        FBListReq.setType(playMethodType);
-        FBListReq.setOrderBy(orderBy);
-        FBListReq.setLeagueIds(leagueIds);
-        FBListReq.setMatchIds(matchids);
-        FBListReq.setCurrent(mCurrentPage);
-        FBListReq.setSize(300);
-        FBListReq.setOddType(oddType);
+        FBListReq fbListReq = new FBListReq();
+        fbListReq.setSportId(sportId);
+        fbListReq.setType(playMethodType);
+        fbListReq.setOrderBy(orderBy);
+        fbListReq.setLeagueIds(leagueIds);
+        fbListReq.setMatchIds(matchids);
+        fbListReq.setCurrent(mCurrentPage);
+        fbListReq.setSize(300);
+        fbListReq.setOddType(oddType);
         //HashMap<Integer, SportTypeItem> matchGames = getMatchGames();
         //SportTypeItem item = matchGames.get(sportId);
         //if (TextUtils.equals(item.name, "热门") || TextUtils.equals(item.name, "全部")) {
@@ -359,8 +382,18 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         //    }
         //    FBListReq.setSportId(sportIds);
         //}
+        System.out.println("=============== getFBList 33333 ================");
+        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
+        String token;
+        if(TextUtils.equals(platform, PLATFORM_FBXC)) {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_TOKEN);
+            fbListReq.setToken(token);
+        } else {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
+            fbListReq.setToken(token);
+        }
 
-        Disposable disposable = (Disposable) model.getApiService().getFBList(FBListReq)
+        Disposable disposable = (Disposable) model.getBaseApiService().getFBList(fbListReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new FBHttpCallBack<MatchListRsp>() {
@@ -405,6 +438,7 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
                             searchMatch(mSearchWord, true);
                         }
                         if (mCurrentPage == 1) {
+                            System.out.println("================== FBMainViewModel getChampionList====================");
                             SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + playMethodType + sportId, new Gson().toJson(mChampionMatchList));
                         }
                         mHasCache = false;
@@ -432,14 +466,12 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         Map<String, String> map = new HashMap<>();
         map.put("languageType", "CMN");
-
-        Disposable disposable = (Disposable) model.getApiService().statistical(map)
+        Disposable disposable = (Disposable) model.getBaseApiService().statistical(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new FBHttpCallBack<StatisticalInfo>() {
                     @Override
                     public synchronized void onResult(StatisticalInfo statisticalInfo) {
-
                         mStatisticalInfo = statisticalInfo;
                         if (mMatchGames.isEmpty()) {
                             mMatchGames = FBConstants.getMatchGames();
@@ -482,6 +514,7 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
 
                     @Override
                     public void onError(Throwable t) {
+                        System.out.println("================== statistical onError ==================");
                         //super.onError(t);
                     }
                 });
