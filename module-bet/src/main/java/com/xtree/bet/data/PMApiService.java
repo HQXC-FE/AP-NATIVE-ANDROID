@@ -35,28 +35,28 @@ import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 
 public interface PMApiService {
-    /**
-     * 获取 PM赛事列表
-     * @return
-     */
-    @POST("/yewu11/v1/m/matchesPagePB")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<PMBaseResponse<MatchListRsp>> matchesPagePB(@Body PMListReq pmListReq);
-    /**
-     * 获取 PM赛事列表 分页获取非滚球赛事信息
-     * @return
-     */
-    @POST("/yewu11/v1/m/noLiveMatchesPagePB")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<PMBaseResponse<MatchListRsp>> noLiveMatchesPagePB(@Body PMListReq pmListReq);
-
-    /**
-     * 获取 PM赛事列表
-     * @return
-     */
-    @POST("/yewu11/v1/m/liveMatchesPB")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<PMBaseResponse<List<MatchInfo>>> liveMatchesPB(@Body PMListReq pmListReq);
+//    /**
+//     * 获取 PM赛事列表
+//     * @return
+//     */
+//    @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/matchesPagePB&method=post")
+//    @Headers({"Content-Type: application/json; charset=utf-8"})
+//    Flowable<PMBaseResponse<MatchListRsp>> matchesPagePB(@Body PMListReq pmListReq);
+//    /**
+//     * 获取 PM赛事列表 分页获取非滚球赛事信息
+//     * @return
+//     */
+//    @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/noLiveMatchesPagePB&method=post")
+//    @Headers({"Content-Type: application/json; charset=utf-8"})
+//    Flowable<PMBaseResponse<MatchListRsp>> noLiveMatchesPagePB(@Body PMListReq pmListReq);
+//
+//    /**
+//     * 获取 PM赛事列表
+//     * @return
+//     */
+//    @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/liveMatchesPB&method=post")
+//    @Headers({"Content-Type: application/json; charset=utf-8"})
+//    Flowable<PMBaseResponse<List<MatchInfo>>> liveMatchesPB(@Body PMListReq pmListReq);
 
     /**
      * 按运动、分类类型统计可投注的赛事个数

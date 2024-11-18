@@ -1726,7 +1726,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         //    newList.get(0).num = allCount;
         //}
         if (playMethodPos == 0 || playMethodPos == 3) {
-            if (list.get(0) != null) {
+            if (list != null && list.get(0) != null) {
                 list.get(0).num = mHotMatchCount;
             }
         }

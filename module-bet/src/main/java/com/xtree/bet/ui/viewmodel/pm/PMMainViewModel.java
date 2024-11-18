@@ -235,7 +235,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         pmListReq.setType(3);
         //CfLog.i("pmListReqHot   "+new Gson().toJson(pmListReq));
-        Flowable flowable = model.getPMApiService().matchesPagePB(pmListReq);
+        Flowable flowable = model.getBaseApiService().matchesPagePB(pmListReq);
         PMHttpCallBack pmHttpCallBack = new PMHttpCallBack<MatchListRsp>() {
 
             @Override
@@ -416,15 +416,15 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             }
         }
 
-        Flowable flowable = model.getPMApiService().matchesPagePB(pmListReq);
+        Flowable flowable = model.getBaseApiService().matchesPagePB(pmListReq);
         if (isStepSecond) {
-            flowable = model.getPMApiService().noLiveMatchesPagePB(pmListReq);
+            flowable = model.getBaseApiService().noLiveMatchesPagePB(pmListReq);
         }
         pmListReq.setCps(mPageSize);
         if (type == 1) {// 滚球
             if (needSecondStep) {
                 pmListReq.setCps(mGoingOnPageSize);
-                flowable = model.getPMApiService().liveMatchesPB(pmListReq);
+                flowable = model.getBaseApiService().liveMatchesPB(pmListReq);
             }
         }
 
@@ -516,7 +516,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             //}
         }//再试试断网情况 和弱网情况
 
-        Disposable disposable = (Disposable) model.getPMApiService().noLiveMatchesPagePB(pmListReq)
+        Disposable disposable = (Disposable) model.getBaseApiService().noLiveMatchesPagePB(pmListReq)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new PMHttpCallBack<MatchListRsp>() {
@@ -563,6 +563,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                             searchMatch(mSearchWord, true);
                         }
                         if (mCurrentPage == 1) {
+                            System.out.println("================== PMMainViewModel getChampionList====================");
                             SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + playMethodType + sportId, new Gson().toJson(mChampionMatchList));
                         }
                         mHasCache = false;
