@@ -59,6 +59,7 @@ import com.xtree.recharge.ui.fragment.guide.RechargeNameComponent;
 import com.xtree.recharge.ui.fragment.guide.RechargeNextComponent;
 import com.xtree.recharge.ui.viewmodel.RechargeViewModel;
 import com.xtree.recharge.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.recharge.ui.widget.OnePayNextDialog;
 import com.xtree.recharge.ui.widget.TipBindCardDialog;
 import com.xtree.recharge.ui.widget.TipOnePayNextDialog;
 import com.xtree.recharge.vo.BankCardVo;
@@ -112,6 +113,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     BasePopupView ppw2 = null; // 底部弹窗 (二层弹窗)
     BasePopupView ppw3 = null; // 极速充值绑定银行卡弹窗
     BasePopupView ppw5 = null; // 极速充值银行卡提示语弹窗
+    BasePopupView ppw6 = null; // 极速充值银行卡金额选项弹窗
     BasePopupView bindCardPPW = null;//绑定银行卡PopView
     String bankId = ""; // 用户绑定的银行卡ID
     String bankCode = ""; // 付款银行编号 (极速充值用) ABC
@@ -409,7 +411,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             if (curRechargeVo.paycode.equals(KEY_MANUAL)) {
                 goNextManual(); // 人工充值
             } else if (viewModel.isOnePayFix(curRechargeVo)) {
-                goNext2(); // 极速充值
+//                goNext2(); // 极速充值
+                showOnePayBankTip();
             } else if (curRechargeVo.paycode.contains("hiwallet")) {
                 goHiWallet(); // 嗨钱包
             } else {
@@ -731,7 +734,11 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             return;
         } else {
             binding.llName.setVisibility(View.VISIBLE);
-            binding.llAmount.setVisibility(View.VISIBLE);
+            if (viewModel.isOnePayFix(vo)) {
+                binding.llAmount.setVisibility(View.GONE);
+            } else {
+                binding.llAmount.setVisibility(View.VISIBLE);
+            }
             binding.llManual.setVisibility(View.GONE);
         }
 
@@ -1113,17 +1120,19 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             }
         }
 
-        String txt = binding.tvwRealAmount.getText().toString();
-        double amount = Double.parseDouble(0 + txt);
-        if (amount < loadMin || amount > loadMax) {
-            return;
-        }
-
-        if (curRechargeVo.fixedamount_channelshow && curRechargeVo.fixedamount_info.length > 0) {
-            // 固额 如果输入框的金额不是固额列表中的其中一个
-            if (!txt.isEmpty() && !Arrays.asList(curRechargeVo.fixedamount_info).contains(txt)) {
-                // "充值金额异常,请选择列表中的固定金额！",
+        if (!viewModel.isOnePayFix(curRechargeVo)) {
+            String txt = binding.tvwRealAmount.getText().toString();
+            double amount = Double.parseDouble(0 + txt);
+            if (amount < loadMin || amount > loadMax) {
                 return;
+            }
+
+            if (curRechargeVo.fixedamount_channelshow && curRechargeVo.fixedamount_info.length > 0) {
+                // 固额 如果输入框的金额不是固额列表中的其中一个
+                if (!txt.isEmpty() && !Arrays.asList(curRechargeVo.fixedamount_info).contains(txt)) {
+                    // "充值金额异常,请选择列表中的固定金额！",
+                    return;
+                }
             }
         }
 
@@ -1161,7 +1170,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     /**
      * 极速充值
      */
-    private void goNext2() {
+    private void goNext2(String realAmount) {
         TagUtils.tagEvent(getContext(), "rc", curRechargeVo.bid); // 打点
 //        LoadingDialog.show(getContext()); // Loading
 
@@ -1170,7 +1179,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
         Map<String, String> map = new HashMap<>();
         map.put("pid", curRechargeVo.bid); // 渠道ID
-        map.put("payAmount", txt); // 金额
+        map.put("payAmount", realAmount); // 金额
         if (TextUtils.isEmpty(bankCode)) {
             map.put("userBankId", bankId); // 用户绑定的银行卡id【可选】 1283086
         } else {
@@ -1644,6 +1653,10 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
         viewModel.liveDataRecharge.observe(getViewLifecycleOwner(), vo -> {
             CfLog.d(vo.toString());
+            //隐藏极速充值iframe弹窗
+            if (ppw6 != null && ppw6.isShow()) {
+                ppw6.dismiss();
+            }
 
             //工商银行显示处理
             if (vo.op_disable_bank_status && vo.userBankList != null && vo.userBankList.isEmpty()) {
@@ -1734,6 +1747,11 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
             RxBus.getDefault().postSticky(request);
             startContainerFragment(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_COMMIT);
+
+            //隐藏极速充值iframe弹窗
+            if (ppw6 != null && ppw6.isShow()) {
+                ppw6.dismiss();
+            }
         });
 
         //当前是否有极速订单
@@ -1778,6 +1796,11 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                 default:
                     CfLog.w("status: " + status);
                     break;
+            }
+
+            //隐藏极速充值iframe弹窗
+            if (ppw6 != null && ppw6.isShow()) {
+                ppw6.dismiss();
             }
         });
 
@@ -2180,10 +2203,26 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                 .dismissOnBackPressed(false).asCustom(new TipOnePayNextDialog(getContext(), new TipOnePayNextDialog.ICallBack() {
                     @Override
                     public void onClickConfirm() {
-
+                        showOnePayBankAmount();
                     }
                 }));
         ppw5.show();
+    }
+
+    private void showOnePayBankAmount() {
+        //隐藏极速充值iframe弹窗
+        if (ppw6 != null && ppw6.isShow()) {
+            ppw6.dismiss();
+        }
+        ppw6 = new XPopup.Builder(getContext()
+        ).dismissOnTouchOutside(false)
+                .moveUpToKeyboard(true)
+                .autoOpenSoftInput(true)
+                .autoFocusEditText(false)
+                .dismissOnBackPressed(false).asCustom(new OnePayNextDialog(getContext(), mAmountAdapter, loadMin, loadMax, binding.tvwTipBottom.getText(), curRechargeVo, (realAmount) -> {
+                    goNext2(realAmount);
+                }));
+        ppw6.show();
     }
 
     private void dismissBankGuide() {

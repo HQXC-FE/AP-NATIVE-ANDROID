@@ -397,7 +397,7 @@
                                 app:layout_constraintStart_toEndOf="@id/tvw_title_amount"
                                 app:layout_constraintTop_toTopOf="parent"
                                 tools:enabled="false"
-                                tools:visibility="gone" />
+                                tools:visibility="visible" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <TextView
