@@ -300,6 +300,9 @@
 -keepclassmembers class com.xtree.base.widget.BrowserActivity {
    public *;
 }
+-keepclassmembers class com.xtree.mine.ui.fragment.MsgChatFragment {
+   public *;
+}
 -keepclassmembers class * extends android.webkit.WebViewClient {
     public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
     public boolean *(android.webkit.WebView, java.lang.String);
@@ -307,6 +310,7 @@
 -keepclassmembers class * extends android.webkit.WebViewClient {
     public void *(android.webkit.WebView, java.lang.String);
 }
+
 #----------------------------------------------------------------------------
 
 #---------------------------------ARouter------------------------------------
