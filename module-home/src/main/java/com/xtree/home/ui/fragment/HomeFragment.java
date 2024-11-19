@@ -293,8 +293,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             } else {
                 binding.ivNotice.setVisibility(View.VISIBLE);
                 binding.tvNoticeNum.setVisibility(View.VISIBLE);
-                if (vo == 99) {
-                    binding.tvNoticeNum.setText(vo + "+");
+                if (vo > 99) {
+                    binding.tvNoticeNum.setText("99+");
                 } else {
                     binding.tvNoticeNum.setText(String.valueOf(vo));
                 }
