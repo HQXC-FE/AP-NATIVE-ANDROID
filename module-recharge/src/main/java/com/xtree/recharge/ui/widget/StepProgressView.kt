@@ -85,7 +85,7 @@ class StepProgressView @JvmOverloads constructor(
 
             // Draw lines
             if (i < stepCount - 1) {
-                paint.color = if (i < currentStep) activeColor else defaultColor
+                paint.color = if (i < currentStep - 1) activeColor else defaultColor
                 paint.strokeWidth = lineWidth
                 canvas.drawLine(cx, cy, cx + widthPerStep, cy, paint)
             }
