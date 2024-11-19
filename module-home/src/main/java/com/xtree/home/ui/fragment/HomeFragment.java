@@ -1,7 +1,6 @@
 package com.xtree.home.ui.fragment;
 
 import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_TO_ACT;
-
 import static com.xtree.home.ui.adapter.GameAdapter.PLATFORM_FB;
 import static com.xtree.home.ui.adapter.GameAdapter.PLATFORM_FBXC;
 
@@ -294,7 +293,12 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             } else {
                 binding.ivNotice.setVisibility(View.VISIBLE);
                 binding.tvNoticeNum.setVisibility(View.VISIBLE);
-                binding.tvNoticeNum.setText("+" + vo);
+                if (vo == 99) {
+                    binding.tvNoticeNum.setText(vo + "+");
+                } else {
+                    binding.tvNoticeNum.setText(String.valueOf(vo));
+                }
+
             }
         });
     }
