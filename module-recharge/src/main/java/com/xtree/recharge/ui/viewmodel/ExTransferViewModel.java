@@ -814,7 +814,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             return "";
         }
 
-        String bankName = "";
+        String bankName = pvalue.getPayBankName();
         ExRechargeOrderCheckResponse.DataDTO.OpBankListDTO opBankList = pvalue.getOpBankList();
         ArrayList<RechargeVo.OpBankListDTO.BankInfoDTO> bankInfoDTOS = new ArrayList<>();
         if (opBankList.getHot() != null) {
