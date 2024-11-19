@@ -75,8 +75,8 @@ public class RouterFragmentPath {
         public static final String PAGER_RECHARGE_WITHDRAW = MINE + "/RechargeWithdraw"; // 充提记录
         public static final String PAGER_BT_REPORT = MINE + "/BtReport"; // 投注记录
         public static final String PAGER_FORGET_PASSWORD = MINE + "/ForgetPassword"; // 忘记密码
-        public static final String PAGER_MSG = MINE + "/Msg"; // 忘记密码
-        public static final String PAGER_MSG_LIST = MINE + "/MsgList"; // 忘记密码
+        public static final String PAGER_MSG = MINE + "/Msg"; // 消息中心
+        public static final String PAGER_MSG_LIST = MINE + "/MsgList";
         public static final String PAGER_MSG_CHAT = MINE + "/MsgChat"; // 上下级聊天
         public static final String PAGER_MSG_PERSON_LIST = MINE + "/MsgPersonList"; // 忘记密码
         public static final String PAGER_VIP_UPGRADE = MINE + "/VipUpgrade"; // VIP升级资讯
