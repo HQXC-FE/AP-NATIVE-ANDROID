@@ -203,15 +203,18 @@ public class MatchPm implements Match {
      * @return
      */
     @Override
-    public List<Score> getScoreList(String... type) {
+    public List<Score> getScoreList(String... type) {//["S19","S20","S21","S22","S7"]
 
         List<Score> scoreInfos = new ArrayList<>();
         if (type == null) {
             return scoreInfos;
         }
+        //matchInfo.msc 在列表接口和详情接口返回的数据顺序不同  改为统一使用type的顺序
+        //列表["S3|23:24","S20|16:12","S22|15:10","S21|8:14","S1088|0.0:0.0","S108|0:0","S10607|0:0","S10904|0:0","S109|0:0","S10606|0:0","S10903|0:0","S106|0:0","S10902|0:0","S107|0:0","S10604|0:0","S10901|0:0","S10603|0:0","S10602|0:0","S10601|0:0","S191|0:0","S190|0:0","S111|0.0:0.0","S19|8:18","S110|0:0","S1111|47:54","S1|47:54","S1235|0.0:0.0","S2|24:30"]
+        //详情["S1|55:60","S2|24:30","S3|31:30","S19|8:18","S20|16:12","S21|8:14","S22|23:16","S106|0:0","S107|0:0","S108|0:0","S109|0:0","S110|0:0","S111|0.0:0.0","S190|0:0","S191|0:0","S1088|0.0:0.0","S1111|55:60","S1235|0.0:0.0","S10601|0:0","S10602|0:0","S10603|0:0","S10604|0:0","S10606|0:0","S10607|0:0","S10901|0:0","S10902|0:0","S10903|0:0","S10904|0:0"]
         if (matchInfo.msc != null && !matchInfo.msc.isEmpty()) {
-            for (String strScore : matchInfo.msc) {
-                for (int i = 0; i < type.length; i++) {
+            for (int i = 0; i < type.length; i++) {//改为按type的顺序排序
+                for (String strScore : matchInfo.msc) {
 
                     List<Integer> sc = new ArrayList<>();
                     if (!TextUtils.isEmpty(strScore) && strScore.contains("|") && strScore.startsWith(type[i] + "|")) {
