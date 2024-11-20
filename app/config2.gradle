@@ -125,12 +125,12 @@ androidJunkCode {
         debug config
         release config
 
-        hx5Debug config2
-        hx5Release config2
-        hx5_preDebug config2
-        hx5_preRelease config2
-        hx5_OLDebug config2
-        hx5_OLRelease config2
+        hx6Debug config2
+        hx6Release config2
+        hx6_preDebug config2
+        hx6_preRelease config2
+        hx6_OLDebug config2
+        hx6_OLRelease config2
     }
 
 }
