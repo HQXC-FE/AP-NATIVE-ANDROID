@@ -53,6 +53,7 @@ import com.xtree.recharge.ui.fragment.extransfer.ExTransferConfirmFragment;
 import com.xtree.recharge.ui.fragment.extransfer.ExTransferFailFragment;
 import com.xtree.recharge.ui.fragment.extransfer.ExTransferPayeeFragment;
 import com.xtree.recharge.ui.fragment.extransfer.ExTransferSuccessFragment;
+import com.xtree.recharge.ui.fragment.extransfer.ExTransferVoucherDialogFragment;
 import com.xtree.recharge.ui.fragment.extransfer.ExTransferVoucherFragment;
 import com.xtree.recharge.ui.model.BankPickModel;
 import com.xtree.recharge.ui.widget.Comm100ChatWindows;
@@ -125,9 +126,11 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     private BasePopupView loadingDialog = null;
     @SuppressLint("StaticFieldLeak")
     private Comm100ChatWindows serviceChatFlow = null;
+
     public ExTransferViewModel(@NonNull Application application) {
         super(application);
     }
+
     public ExTransferViewModel(@NonNull Application application, RechargeRepository model) {
         super(application, model);
     }
@@ -955,7 +958,11 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     }
 
     public void toVoucher() {
-        startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_VOUCHER);
+//        startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_VOUCHER);
+        if (isActivityNull()) {
+            return;
+        }
+        ExTransferVoucherDialogFragment.show(mActivity.get());
     }
 
     public void toFail() {

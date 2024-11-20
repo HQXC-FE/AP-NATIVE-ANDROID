@@ -299,11 +299,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/tvw_right"
                 style="@style/style_btn_short"
+                android:text=""
+                android:layout_width="wrap_content"
                 android:onClick="@{() -> model.toVoucher()}"
-                android:text="上传凭证"
+                android:src="@mipmap/cm_btn_mdium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tvw_left"
