@@ -10,16 +10,19 @@ import com.xtree.base.R
 import com.xtree.base.utils.AESUtil
 import com.xtree.base.utils.CfLog
 import com.xtree.base.utils.DomainUtil
+import com.xtree.base.utils.EventConstant
+import com.xtree.base.utils.FightFanZhaUtils
 import com.xtree.base.vo.Domain
+import com.xtree.base.vo.EventVo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.xtree.mvvmhabit.utils.Utils
 import okhttp3.Response
+import org.greenrobot.eventbus.EventBus
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.util.concurrent.CancellationException
@@ -41,12 +44,24 @@ class ChangeH5LineUtil private constructor() {
         lateinit var mCurH5DomainList: MutableList<String>
         lateinit var mThirdDomainList: MutableList<String>
         private var mIsRunning: Boolean = false
+        private var mIsFromFanZha: Boolean = false //是否来自h5反诈劫持后的测速任务
     }
 
     fun start() {
         if (!mIsRunning) {
             CfLog.e("=====H5开始切换线路========")
             mIsRunning = true
+            setThirdFasterDomain()
+            setFasterH5Domain()
+            getThirdFastestDomain(true)
+        }
+    }
+
+    fun start(isFanzha: Boolean) {
+        if (!mIsRunning) {
+            CfLog.e("=====H5开始切换线路========")
+            mIsRunning = true
+            mIsFromFanZha = isFanzha
             setThirdFasterDomain()
             setFasterH5Domain()
             getThirdFastestDomain(true)
@@ -103,6 +118,12 @@ class ChangeH5LineUtil private constructor() {
                                             Net.cancelGroup(FASTEST_GOURP_NAME_H5)
                                             DomainUtil.setH5Url(url)
                                             mIsRunning = false
+                                            if(mIsFromFanZha){
+                                                EventBus.getDefault()
+                                                    .post(EventVo(EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH, ""))
+                                                mIsFromFanZha = false
+                                                FightFanZhaUtils.reset()
+                                            }
                                         }
                                     }
                                 }
@@ -139,7 +160,7 @@ class ChangeH5LineUtil private constructor() {
     }
 
     /**
-     * 三方域名存储地址竞速
+     * 三方域名存储地址竞速  todo   修改
      */
     private fun getThirdFastestDomain(isH5: Boolean) {
         scopeNet {
@@ -159,7 +180,11 @@ class ChangeH5LineUtil private constructor() {
                             if (!domain.h5.isNullOrEmpty()) {
                                 mCurH5DomainList.clear()
                             }
-                            mCurH5DomainList.addAll(domain.h5)
+                            if(mIsFromFanZha){
+                                mCurH5DomainList.addAll(FightFanZhaUtils.filterDomains(domain.h5))
+                            }else{
+                                mCurH5DomainList.addAll(domain.h5)
+                            }
                             getFastestH5Domain(isThird = true)
                         } catch (e: Exception) {
                             mIsRunning = false

@@ -1,5 +1,9 @@
 package com.xtree.base.widget;
 
+import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH;
+import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FAILED;
+import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FINISH;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,6 +19,8 @@ import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -34,12 +40,19 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
+import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.TagUtils;
+import com.xtree.base.vo.EventVo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.net.UnknownHostException;
@@ -133,10 +146,13 @@ public class BrowserDialog extends BottomPopupView {
     @Override
     protected void onCreate() {
         super.onCreate();
+        EventBus.getDefault().register(this);
         token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
         isFirstOpenBrowser = SPUtils.getInstance().getBoolean(SPKeyGlobal.IS_FIRST_OPEN_BROWSER, true);
 
         initView();
+
+        FightFanZhaUtils.init();
 
         if (isContainTitle) {
             vTitle.setVisibility(View.GONE);
@@ -194,6 +210,11 @@ public class BrowserDialog extends BottomPopupView {
 
         ivwClose.setOnClickListener(v -> dismiss());
 
+        //todo
+        if(FightFanZhaUtils.isOpenTest && BuildConfig.DEBUG){
+            FightFanZhaUtils.mockJumpFanZha(agentWeb.getWebCreator().getWebView(),url);
+        }
+
     }
 
     private void initView() {
@@ -225,6 +246,13 @@ public class BrowserDialog extends BottomPopupView {
                 .setWebViewClient(new CustomWebViewClient()) // 设置 WebViewClient
                 .addJavascriptInterface("android", new WebAppInterface(mContext, ivwClose, getCallBack()))
                 .setWebChromeClient(new com.just.agentweb.WebChromeClient() {
+
+                    @Override
+                    public void onReceivedTitle(WebView webView, String s) {
+                        super.onReceivedTitle(webView, s);
+                        FightFanZhaUtils.checkHeadTitle(webView,s,is3rdLink,url);
+                    }
+
                     @Override
                     public void onProgressChanged(WebView view, int newProgress) {
                         super.onProgressChanged(view, newProgress);
@@ -458,6 +486,13 @@ public class BrowserDialog extends BottomPopupView {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        FightFanZhaUtils.reset();
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
     public class CustomWebViewClient extends WebViewClient {
 //        private OkHttpClient client;
 //
@@ -531,5 +566,49 @@ public class BrowserDialog extends BottomPopupView {
             hideLoading();
             Toast.makeText(getContext(), R.string.network_failed, Toast.LENGTH_SHORT).show();
         }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
+            if(FightFanZhaUtils.checkRequest(webResourceRequest,is3rdLink,url)){
+                return FightFanZhaUtils.replaceLoadingHtml();
+            }
+            return super.shouldInterceptRequest(webView, webResourceRequest);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
+            if(FightFanZhaUtils.checkRequest(webResourceRequest,is3rdLink,url)){
+                return false;
+            }
+            return super.shouldOverrideUrlLoading(webView, webResourceRequest);
+        }
+
+
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventVo event) {
+        switch (event.getEvent()) {
+            case EVENT_CHANGE_URL_FANZHA_FINSH:
+                if(!is3rdLink){
+                    //只有自己的h5域名站作更换域名，重新Load
+                    String newBaseUrl = DomainUtil.getH5Domain2();
+                    if(TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(url)){
+                        return;
+                    }
+                    String oldBaseUrl = FightFanZhaUtils.getDomain(url);
+                    if(!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)){
+                        return;
+                    }
+                    String goUrl = url.replace(oldBaseUrl,newBaseUrl);
+                    CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
+                    agentWeb.getUrlLoader().loadUrl(goUrl);
+                }
+                break;
+        }
+    }
+
+
+
 }

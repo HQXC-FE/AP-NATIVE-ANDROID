@@ -8,6 +8,8 @@ public class SPKeyGlobal {
     public static final String USER_CODE_MSG ="inviteCodeSourceMsg";
     public static final String KEY_API_URL = "key_api_url";
     public static final String KEY_H5_URL = "key_h5_url";
+    public static final String KEY_H5_URL_RECORD_BY_FANZHA = "KEY_H5_URL_RECORD_BY_FANZHA";
+    public static final String KEY_H5_URL_ALL = "KEY_H5_URL_ALL";
     public static final String USER_INFO = "user_info";
     public static final String USER_ID = "user_id";
     public static final String USER_NAME = "user_name";

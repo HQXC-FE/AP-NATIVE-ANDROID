@@ -1,5 +1,6 @@
 package com.xtree.base.widget;
 
+import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FAILED;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FINISH;
 
@@ -22,6 +23,8 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,6 +45,7 @@ import com.luck.picture.lib.basic.PictureSelector;
 import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
+import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
@@ -50,6 +54,7 @@ import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.EventVo;
 import com.xtree.weight.TopSpeedDomainFloatingWindows;
@@ -125,7 +130,7 @@ public class BrowserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browser);
 
         EventBus.getDefault().register(this);
-
+        FightFanZhaUtils.init();
         initView();
         title = getIntent().getStringExtra(ARG_TITLE);
         isContainTitle = getIntent().getBooleanExtra(ARG_IS_CONTAIN_TITLE, false);
@@ -226,6 +231,11 @@ public class BrowserActivity extends AppCompatActivity {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_loading);
         animation.setRepeatMode(Animation.RESTART);
         animation.setDuration(20 * 1000);
+
+        //todo test
+        if(BuildConfig.DEBUG && FightFanZhaUtils.isOpenTest){
+            FightFanZhaUtils.mockJumpFanZha(agentWeb.getWebCreator().getWebView(),url);
+        }
     }
 
     private void initView() {
@@ -264,6 +274,13 @@ public class BrowserActivity extends AppCompatActivity {
                 .setWebViewClient(new CustomWebViewClient()) // 设置 WebViewClient
                 .addJavascriptInterface("android", new WebAppInterface(this, ivwBack, getCallBack()))
                 .setWebChromeClient(new WebChromeClient() {
+
+                    @Override
+                    public void onReceivedTitle(WebView webView, String s) {
+                        super.onReceivedTitle(webView, s);
+                        FightFanZhaUtils.checkHeadTitle(webView,s,isGame,url);
+                    }
+
                     @Override
                     public void onProgressChanged(WebView view, int newProgress) {
                         super.onProgressChanged(view, newProgress);
@@ -624,6 +641,7 @@ public class BrowserActivity extends AppCompatActivity {
         }
         super.onDestroy();
 
+        FightFanZhaUtils.reset();
         EventBus.getDefault().unregister(this);
 
         if (mTopSpeedDomainFloatingWindows != null) {
@@ -639,6 +657,22 @@ public class BrowserActivity extends AppCompatActivity {
                 break;
             case EVENT_TOP_SPEED_FAILED:
                 mTopSpeedDomainFloatingWindows.onError();
+                break;
+            case EVENT_CHANGE_URL_FANZHA_FINSH:
+                if(!isGame && !is3rdLink){
+                    //只有自己的h5域名站作更换域名，重新Load
+                    String newBaseUrl = DomainUtil.getH5Domain2();
+                    if(TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(url)){
+                        return;
+                    }
+                    String oldBaseUrl = FightFanZhaUtils.getDomain(url);
+                    if(!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)){
+                        return;
+                    }
+                    String goUrl = url.replace(oldBaseUrl,newBaseUrl);
+                    CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
+                    agentWeb.getUrlLoader().loadUrl(goUrl);
+                }
                 break;
         }
     }
@@ -714,6 +748,22 @@ public class BrowserActivity extends AppCompatActivity {
             CfLog.e("errorCode: " + errorCode + ", description: " + description + ", failingUrl: " + failingUrl);
             hideLoading();
             Toast.makeText(getBaseContext(), R.string.network_failed, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
+            if(FightFanZhaUtils.checkRequest(webResourceRequest,isGame,url)){
+                return FightFanZhaUtils.replaceLoadingHtml();
+            }
+            return super.shouldInterceptRequest(webView, webResourceRequest);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
+            if(FightFanZhaUtils.checkRequest(webResourceRequest,isGame,url)){
+                return false;
+            }
+            return super.shouldOverrideUrlLoading(webView, webResourceRequest);
         }
     }
 

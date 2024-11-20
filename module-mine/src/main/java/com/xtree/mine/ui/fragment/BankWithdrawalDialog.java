@@ -1,5 +1,7 @@
 package com.xtree.mine.ui.fragment;
 
+import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH;
+
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -37,8 +41,10 @@ import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.StringUtils;
 import com.xtree.base.utils.UuidUtil;
+import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.widget.ListDialog;
 import com.xtree.base.widget.LoadingDialog;
@@ -54,6 +60,10 @@ import com.xtree.mine.vo.WithdrawVo.WithdrawalBankInfoVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalListVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalSubmitVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalVerifyVo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -142,7 +152,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     @Override
     protected void onCreate() {
         super.onCreate();
-
+        EventBus.getDefault().register(this);
         initData();
         initView();
         initViewObservable();
@@ -152,7 +162,14 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
 
         String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
         mProfileVo = new Gson().fromJson(json, ProfileVo.class);
+        FightFanZhaUtils.init();
+    }
 
+    @Override
+    public void onDestroy() {
+        FightFanZhaUtils.reset();
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void initView() {
@@ -730,11 +747,30 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
                 binding.nsH5View.loadUrl(url, getHeader());
                 initWebView();
                 binding.nsH5View.setWebViewClient(new WebViewClient() {
+
+                    @Override
+                    public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
+                        if(FightFanZhaUtils.checkRequest(webResourceRequest,false,jumpUrl)){
+                            return FightFanZhaUtils.replaceLoadingHtml();
+                        }
+                        return super.shouldInterceptRequest(webView, webResourceRequest);
+                    }
+
+
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
                         // LoadingDialog.show(getContext());
+
                         view.loadUrl(url);
                         return true;
+                    }
+
+                    @Override
+                    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                        if(FightFanZhaUtils.checkRequest(request,false,jumpUrl)){
+                            return false;
+                        }
+                        return super.shouldOverrideUrlLoading(view, request);
                     }
 
                     @Override
@@ -752,6 +788,14 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
 
                 //显示进度条
                 binding.nsH5View.setWebChromeClient(new WebChromeClient() {
+
+                    @Override
+                    public void onReceivedTitle(WebView webView, String s) {
+                        super.onReceivedTitle(webView, s);
+                       FightFanZhaUtils.checkHeadTitle(webView,s,false,jumpUrl);
+                    }
+
+
                     @Override
                     public void onProgressChanged(WebView view, int progress) {
                         //显示加载进度
@@ -894,6 +938,27 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         }*/
 
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventVo event) {
+        switch (event.getEvent()) {
+            case EVENT_CHANGE_URL_FANZHA_FINSH:
+                    //只有自己的h5域名站作更换域名，重新Load
+                    String newBaseUrl = DomainUtil.getH5Domain2();
+                    if(TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(jumpUrl)){
+                        return;
+                    }
+                    String oldBaseUrl = FightFanZhaUtils.getDomain(jumpUrl);
+                    if(!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)){
+                        return;
+                    }
+                    String goUrl = jumpUrl.replace(oldBaseUrl,newBaseUrl);
+                    CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
+                    binding.nsH5View.loadUrl(goUrl, getHeader());
+                break;
+        }
+    }
+
 
     private void initWebView() {
         WebSettings settings = binding.nsH5View.getSettings();
@@ -1377,6 +1442,11 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         settings.setLoadsImagesAutomatically(true);
         settings.setSupportZoom(true);
     }
+
+
+
+
+
 
     /*显示銀行卡提款loading */
     private void showMaskLoading() {
