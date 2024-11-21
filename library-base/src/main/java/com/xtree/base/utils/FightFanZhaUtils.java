@@ -21,11 +21,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import me.xtree.mvvmhabit.http.ExceptionHandle;
-import me.xtree.mvvmhabit.http.NetworkUtil;
+import me.xtree.mvvmhabit.utils.Utils;
 
 public class FightFanZhaUtils {
 
@@ -50,14 +48,20 @@ public class FightFanZhaUtils {
     public static String fzH5 = "https://wap.cq.10086.cn/mapp/activities/fanzha2021/html-phone-yd/index.html";
 
 
-    private static volatile boolean solveingFanZhaHack;//正在处理当前webview的反诈劫持；shouldInterceptRequest中存在异步线程
+    private static boolean solveingFanZhaHack;//正在处理当前webview的反诈劫持；shouldInterceptRequest中存在异步线程
     private static int retryCount = 0;
 
     // 静态 HTML 内容    感知到劫持后的 ui 填充
-    private static String htmlContent = "<html>" +
+    private static String loadingHtml = "<html>" +
             "<head><title>flag安全加载</title></head>" +
-            "<body><h1>为了保护您的浏览安全，正在为您匹配新的线路..</h1>" +
-            "<p>如果很久未响应，请切换到wifi并离开页面重进...</p>" +
+            "<body><h1>当前域名访问信号不佳，正在为您匹配新的线路..</h1>" +
+            "<p>如有疑问请洽客服...</p>" +
+            "</body></html>";
+
+    private static String tipsHtml = "<html>" +
+            "<head><title>flag安全加载</title></head>" +
+            "<body><h1>当前域名访问信号不佳，即将为您转至浏览器..</h1>" +
+            "<p>如有疑问请洽客服...</p>" +
             "</body></html>";
 
 
@@ -91,7 +95,7 @@ public class FightFanZhaUtils {
                     if (solveingFanZhaHack) {
                         return true;
                     }
-                    solveAfterCheck(webView, isThird, businessUrl);
+                    solveAfterCheck(webView, isThird, businessUrl,webView.getContext());
                     return true;
                 }
             }
@@ -100,12 +104,12 @@ public class FightFanZhaUtils {
     }
 
     //判断webResourceRequest
-    public static Boolean checkRequest(WebResourceRequest webResourceRequest, boolean isThird, String businessUrl) {
+    public static Boolean checkRequest(Context context,WebResourceRequest webResourceRequest, boolean isThird, String businessUrl) {
         if (checkRequestDetail(webResourceRequest)) {
             if (solveingFanZhaHack) {
                 return true;
             }
-            solveAfterCheck(null, isThird, businessUrl);
+            solveAfterCheck(null, isThird, businessUrl,context);
             return true;
         }
         return false;
@@ -145,13 +149,17 @@ public class FightFanZhaUtils {
 
 
 
-    public static WebResourceResponse replaceLoadingHtml() {
-        InputStream inputStream = new ByteArrayInputStream(htmlContent.getBytes(StandardCharsets.UTF_8));
+    public static WebResourceResponse replaceLoadingHtml(boolean isGame) {
+        String html = loadingHtml;
+        if(isGame){
+            html = tipsHtml;
+        }
+        InputStream inputStream = new ByteArrayInputStream(html.getBytes(StandardCharsets.UTF_8));
         return new WebResourceResponse("text/html", "UTF-8", inputStream);
     }
 
 
-    private static void solveAfterCheck(WebView webView, boolean isThird, String businessUrl) {
+    private static void solveAfterCheck(WebView webView, boolean isThird, String businessUrl,Context context) {
 
         if (!solveingFanZhaHack) {
             solveingFanZhaHack = true;
@@ -159,15 +167,13 @@ public class FightFanZhaUtils {
 
         CfLog.d("fanzha-begin solveAfterCheck  ");
 
-
-        if (webView != null) {
-            //先阻断反诈页面的加载  展示友好ui
-            webView.loadData(htmlContent, "text/html", "UTF-8");
-        }
-
         //非三方h5  作h5域名重测速，且移除被劫持h5域名
         if (!isThird) {
 
+            if (webView != null) {
+                //先阻断反诈页面的加载  展示友好ui
+                webView.loadData(loadingHtml, "text/html", "UTF-8");
+            }
             if (!TextUtils.isEmpty(businessUrl)) {
                 Set<String> stringSet = new HashSet<>();
                 HashSet<String> cacheDomains = (HashSet<String>) CacheManager.get()
@@ -188,18 +194,24 @@ public class FightFanZhaUtils {
 
             //异步重测速，方法内已过滤缓存的劫持域名
             //测速完成后，solveingFanZhaHack 重置
-            if(retryCount < 3){ //如果重新测速3次  当前重刷的webview还是被劫持，就不测速去换了，只填充一个默认ui
+            if(retryCount < 5){ //如果重新测速5次  当前重刷的webview还是被劫持，就不测速去换了，只填充一个默认ui
                 ChangeH5LineUtil.getInstance().start(true);
             }
 
             retryCount ++;
 
         } else {
-            //todo  三方网页暂时就展示ui提示用户自己更换网络重进 不作主动处理
+
+            TagUtils.tagEvent(Utils.getContext(), "event_hijacked", businessUrl);
+
+            if (context != null) {
+                AppUtil.goBrowser(context,DomainUtil.getH5Domain2());
+            }
+
+            //todo 上传到三方异常的接口  等3803上线
 
 
         }
-
 
     }
 

@@ -64,8 +64,8 @@ fun initNet() {
             .setLevel(Level.BASIC) //打印的等级  测速部分信息详细点
             .log(Platform.INFO) // 打印类型
             .ifFastRequest(true)
-            .request("RequestFast") // request的Tag  测速部分打自己的tag
-            .response("ResponseFast")// Response的Tag  测速部分打自己的tag
+            .request("ReqFast") // request的Tag  测速部分打自己的tag
+            .response("RepFast")// Response的Tag  测速部分打自己的tag
             .build()
     )
 //    okHttpClientBuilder.addInterceptor(Interceptor { chain ->

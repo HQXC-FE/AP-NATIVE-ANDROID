@@ -569,15 +569,15 @@ public class BrowserDialog extends BottomPopupView {
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
-            if(FightFanZhaUtils.checkRequest(webResourceRequest,is3rdLink,url)){
-                return FightFanZhaUtils.replaceLoadingHtml();
+            if(FightFanZhaUtils.checkRequest(getContext(),webResourceRequest,is3rdLink,url)){
+                return FightFanZhaUtils.replaceLoadingHtml(is3rdLink);
             }
             return super.shouldInterceptRequest(webView, webResourceRequest);
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
-            if(FightFanZhaUtils.checkRequest(webResourceRequest,is3rdLink,url)){
+            if(FightFanZhaUtils.checkRequest(getContext(),webResourceRequest,is3rdLink,url)){
                 return false;
             }
             return super.shouldOverrideUrlLoading(webView, webResourceRequest);

@@ -44,7 +44,9 @@ class ChangeH5LineUtil private constructor() {
         lateinit var mCurH5DomainList: MutableList<String>
         lateinit var mThirdDomainList: MutableList<String>
         private var mIsRunning: Boolean = false
-        private var mIsFromFanZha: Boolean = false //是否来自h5反诈劫持后的测速任务
+        @set:Synchronized
+        @get:Synchronized
+        private var mIsFromFanZha:  Boolean = false //是否来自h5反诈劫持后的测速任务
     }
 
     fun start() {
@@ -114,11 +116,12 @@ class ChangeH5LineUtil private constructor() {
                                     if (rootDiv != null) {
                                         val dataTargetValue = rootDiv.attr("data-target")
                                         if (dataTargetValue.equals("specialFeature-1691834599183")) {
-                                            CfLog.e("域名：H5------$")
                                             Net.cancelGroup(FASTEST_GOURP_NAME_H5)
+                                            CfLog.e("域名：H5------$ " + url )
                                             DomainUtil.setH5Url(url)
                                             mIsRunning = false
                                             if(mIsFromFanZha){
+                                                CfLog.e("域名：H5--发送重刷- $ " + url )
                                                 EventBus.getDefault()
                                                     .post(EventVo(EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH, ""))
                                                 mIsFromFanZha = false
@@ -126,6 +129,7 @@ class ChangeH5LineUtil private constructor() {
                                             }
                                         }
                                     }
+
                                 }
                             }
                         } catch (e: Exception) {
@@ -185,6 +189,9 @@ class ChangeH5LineUtil private constructor() {
                             }else{
                                 mCurH5DomainList.addAll(domain.h5)
                             }
+
+                            CfLog.e("域名：H5 cloud list ---$ + " + Gson().toJson(mCurH5DomainList))
+
                             getFastestH5Domain(isThird = true)
                         } catch (e: Exception) {
                             mIsRunning = false

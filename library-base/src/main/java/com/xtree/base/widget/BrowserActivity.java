@@ -752,15 +752,15 @@ public class BrowserActivity extends AppCompatActivity {
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
-            if(FightFanZhaUtils.checkRequest(webResourceRequest,isGame,url)){
-                return FightFanZhaUtils.replaceLoadingHtml();
+            if(FightFanZhaUtils.checkRequest(getBaseContext(),webResourceRequest,isGame,url)){
+                return FightFanZhaUtils.replaceLoadingHtml(isGame);
             }
             return super.shouldInterceptRequest(webView, webResourceRequest);
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
-            if(FightFanZhaUtils.checkRequest(webResourceRequest,isGame,url)){
+            if(FightFanZhaUtils.checkRequest(getBaseContext(),webResourceRequest,isGame,url)){
                 return false;
             }
             return super.shouldOverrideUrlLoading(webView, webResourceRequest);

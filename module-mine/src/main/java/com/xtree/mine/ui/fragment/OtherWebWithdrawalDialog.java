@@ -265,8 +265,8 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
 
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
-                if(FightFanZhaUtils.checkRequest(webResourceRequest,false,jumpUrl)){
-                    return FightFanZhaUtils.replaceLoadingHtml();
+                if(FightFanZhaUtils.checkRequest(getContext(),webResourceRequest,false,jumpUrl)){
+                    return FightFanZhaUtils.replaceLoadingHtml(false);
                 }
                 return super.shouldInterceptRequest(webView, webResourceRequest);
             }
@@ -274,7 +274,7 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                if(FightFanZhaUtils.checkRequest(request,false,jumpUrl)){
+                if(FightFanZhaUtils.checkRequest(getContext(),request,false,jumpUrl)){
                     return false;
                 }
                 return super.shouldOverrideUrlLoading(view, request);
