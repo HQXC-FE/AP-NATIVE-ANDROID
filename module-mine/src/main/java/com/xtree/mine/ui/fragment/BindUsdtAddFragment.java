@@ -41,18 +41,16 @@ import project.tqyb.com.library_res.databinding.ItemTextBinding;
 public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding, BindUsdtViewModel> {
 
     private final String controller = "security";
+    String type = ""; // ERC20_USDT,TRC20_USDT
+    UserUsdtJumpVo mUserUsdtJumpVo;
+    ItemTextBinding binding2;
+    BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
+    List<String> typeList = new ArrayList<>();
+    UserUsdtConfirmVo mConfirmVo;
     private String action = "adduserusdt"; // adduserusdt
     private String mark = "bindusdt"; // bindusdt
     private String tokenSign = ""; // 绑定手机邮箱后直接跳转过来会用到
     private String id = "";
-    String type = ""; // ERC20_USDT,TRC20_USDT
-    UserUsdtJumpVo mUserUsdtJumpVo;
-
-    ItemTextBinding binding2;
-    BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
-    List<String> typeList = new ArrayList<>();
-
-    UserUsdtConfirmVo mConfirmVo;
 
     public BindUsdtAddFragment() {
     }
@@ -62,8 +60,11 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         super.onViewCreated(view, savedInstanceState);
 
         binding.tvwTitle.setText(mUserUsdtJumpVo.title);
-        binding.tvwTipAddress.setText(mUserUsdtJumpVo.remind);
-
+        //非USDT的三方钱包只有一个协议选项
+        if (mUserUsdtJumpVo != null && !TextUtils.isEmpty(mUserUsdtJumpVo.type) && !mUserUsdtJumpVo.type.contains("USDT")) {
+            binding.tvwTipAddress.setText(mUserUsdtJumpVo.remind);
+            binding.tvwTipAddress.setVisibility(View.VISIBLE);
+        }
         if (mUserUsdtJumpVo != null && mUserUsdtJumpVo.isShowType) {
             binding.tvwChoose.setVisibility(View.VISIBLE);
             binding.tvwChooseTitle.setVisibility(View.VISIBLE);
