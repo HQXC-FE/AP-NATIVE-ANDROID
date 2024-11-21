@@ -54,12 +54,12 @@ public class TipOnePayNextDialog extends CenterPopupView {
             }
         });
 
-        binding.tvwLeft.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss(); // 关闭对话框
-            }
-        });
+//        binding.tvwLeft.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dismiss(); // 关闭对话框
+//            }
+//        });
 
     }
 
