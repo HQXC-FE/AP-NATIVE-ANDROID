@@ -412,7 +412,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                 goNextManual(); // 人工充值
             } else if (viewModel.isOnePayFix(curRechargeVo)) {
 //                goNext2(); // 极速充值
-                showOnePayBankTip();
+//                showOnePayBankTip();
+                showOnePayBankAmount();
             } else if (curRechargeVo.paycode.contains("hiwallet")) {
                 goHiWallet(); // 嗨钱包
             } else {
@@ -2195,7 +2196,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         bankGuide.setShouldCheckLocInWindow(false);
     }
 
-    private void showOnePayBankTip() {
+    private void showOnePayBankTip(String realAmount) {
         if (ppw5 != null && ppw5.isShow()) {
             ppw5.dismiss();
         }
@@ -2203,7 +2204,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                 .dismissOnBackPressed(false).asCustom(new TipOnePayNextDialog(getContext(), new TipOnePayNextDialog.ICallBack() {
                     @Override
                     public void onClickConfirm() {
-                        showOnePayBankAmount();
+                        goNext2(realAmount);
                     }
                 }));
         ppw5.show();
@@ -2220,7 +2221,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                 .autoOpenSoftInput(true)
                 .autoFocusEditText(false)
                 .dismissOnBackPressed(false).asCustom(new OnePayNextDialog(getContext(), mAmountAdapter, loadMin, loadMax, binding.tvwTipBottom.getText(), curRechargeVo, (realAmount) -> {
-                    goNext2(realAmount);
+                    showOnePayBankTip(realAmount);
                 }));
         ppw6.show();
     }
