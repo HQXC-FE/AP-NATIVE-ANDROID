@@ -205,6 +205,15 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         pmListReq.setCuid();
         pmListReq.setCpn(mCurrentPage);
         pmListReq.setCps(mGoingOnPageSize);
+        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
+        String token;
+
+        if(TextUtils.equals(platform, PLATFORM_PMXC)) {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN);
+        } else {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
+        }
+        pmListReq.setToken(token);
         String sportIds = "";
         //CfLog.i("pmListReqHot    "+mMenuInfoList.isEmpty() + "");
         if (mMenuInfoList.isEmpty()) {
@@ -245,7 +254,20 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
             @Override
             public void onError(Throwable t) {
+                getGameTokenApi();
+                getUC().getDismissDialogEvent().call();
+                if (t instanceof ResponseThrowable) {
+                    ResponseThrowable error = (ResponseThrowable) t;
+                    if (error.code == CODE_401026 || error.code == CODE_401013) {
+                        getGameTokenApi();
 
+                    } else if (error.code == CODE_401038) {
+                        super.onError(t);
+                        tooManyRequestsEvent.call();
+                    } else {
+
+                    }
+                }
             }
         };
 
@@ -415,21 +437,29 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                 pmListReq.setMd(String.valueOf(TimeUtils.strFormatDate(time, TimeUtils.FORMAT_YY_MM_DD_HH_MM_SS).getTime()));
             }
         }
+        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
+        String token;
 
+        if(TextUtils.equals(platform, PLATFORM_PMXC)) {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN);
+        } else {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
+        }
+        pmListReq.setToken(token);
         Flowable flowable = model.getBaseApiService().matchesPagePB(pmListReq);
         if (isStepSecond) {
-            flowable = model.getBaseApiService().noLiveMatchesPagePB(pmListReq);
+            //flowable = model.getBaseApiService().noLiveMatchesPagePB(pmListReq);
         }
         pmListReq.setCps(mPageSize);
         if (type == 1) {// 滚球
             if (needSecondStep) {
                 pmListReq.setCps(mGoingOnPageSize);
-                flowable = model.getBaseApiService().liveMatchesPB(pmListReq);
+                //flowable = model.getBaseApiService().liveMatchesPB(pmListReq);
             }
         }
 
         if (isTimerRefresh) {
-            flowable = model.getPMApiService().getMatchBaseInfoByMidsPB(pmListReq);
+            //flowable = model.getPMApiService().getMatchBaseInfoByMidsPB(pmListReq);
         }
 
         if (isRefresh) {
@@ -563,7 +593,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                             searchMatch(mSearchWord, true);
                         }
                         if (mCurrentPage == 1) {
-                            System.out.println("================== PMMainViewModel getChampionList====================");
                             SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + playMethodType + sportId, new Gson().toJson(mChampionMatchList));
                         }
                         mHasCache = false;

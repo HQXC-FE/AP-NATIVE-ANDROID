@@ -307,8 +307,6 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
             token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
             fBListReq.setToken(token );
         }
-        System.out.println("LeagueListCallBack");
-        System.out.println("============= getFBList 22222 ==============");
         Disposable disposable = (Disposable) model.getBaseApiService().getFBList(fBListReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
@@ -467,6 +465,15 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         Map<String, String> map = new HashMap<>();
         map.put("languageType", "CMN");
+        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
+        String token;
+        if(TextUtils.equals(platform, PLATFORM_FBXC)) {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_TOKEN);
+            map.put("_accessToken", token);
+        } else {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
+            map.put("_accessToken", token);
+        }
         Disposable disposable = (Disposable) model.getBaseApiService().statistical(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
