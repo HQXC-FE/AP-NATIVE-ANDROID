@@ -15,10 +15,13 @@ import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.RetrofitClient;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.net.fastest.FastestMonitorCache;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.SystemUtil;
+import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.FBService;
@@ -59,6 +62,7 @@ import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.Utils;
 
 /**
  * Created by marquis on 2023/11/24.
@@ -845,6 +849,32 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         }
 
         return sb.toString();
+    }
+
+    public void uploadException(UploadExcetionReq uploadExcetionReq) {
+        Map<String, String> map = new HashMap<>();
+        map.put("log_tag", uploadExcetionReq.getLogTag());
+        map.put("api_url", uploadExcetionReq.getApiUrl());
+        map.put("device_no", "android-app-" + TagUtils.getDeviceId(Utils.getContext()));
+        //map.put("device_no2", "log_tag");
+        map.put("log_type", uploadExcetionReq.getLogType());
+        map.put("device_type", "9");
+        map.put("device_detail", SystemUtil.getDeviceBrand() + " " + SystemUtil.getDeviceModel() + " " + "Android " + SystemUtil.getSystemVersion());
+        map.put("msg", uploadExcetionReq.getMsg());
+        Disposable disposable = (Disposable) model.getApiService().uploadExcetion(map)
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<String>() {
+                    @Override
+                    public void onResult(String result) {
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+                });
+        addSubscribe(disposable);
     }
 
 }

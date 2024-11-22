@@ -13,7 +13,7 @@ import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.FBHttpCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
-import com.xtree.bet.bean.request.UploadExcetionReq;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.bet.bean.response.fb.MatchInfo;
 import com.xtree.bet.bean.response.fb.MatchListRsp;
 import com.xtree.bet.bean.ui.League;
