@@ -1,6 +1,7 @@
 package com.xtree.mine.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -115,6 +116,7 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         binding.tvwForgetPwd.setOnClickListener(v -> goForgetPassword());
 
         //binding.tvwAgreement.setOnClickListener(v -> goMain());
+        binding.tvwSkipLogin.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
         binding.tvwSkipLogin.setOnClickListener(v -> goMain());
         binding.tvwCs.setOnClickListener(v -> AppUtil.goCustomerService(this));
         binding.btnLogin.setOnClickListener(v -> {

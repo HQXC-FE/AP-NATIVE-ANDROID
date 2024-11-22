@@ -405,6 +405,21 @@
         <item name="android:textColor">@color/clr_text_code_selector</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="style_login_agreement_btn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:background">@drawable/bt_bg_login_button</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minEms">5</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:text">@string/txt_submit</item>
+        <item name="android:textColor">@color/clr_txt_login_page</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
     <!-- 通用 按钮 背景为灰色,可变色(返回/取消等地方使用) -->
     <style name="style_btn_back" parent="style_btn">
         <item name="android:background">@drawable/bg_btn_grey_selector</item>
@@ -803,7 +818,6 @@
     <style name="style_cm_edt_account">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
-        <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:drawablePadding">8dp</item>
         <item name="android:drawableStart">@mipmap/cm_ic_login_user</item>
@@ -813,8 +827,8 @@
         <item name="android:hint">@string/txt_enter_login_name</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:lines">1</item>
-        <item name="android:textColor">@color/clr_black</item>
-        <item name="android:textColorHint">@color/clr_txt_grey_05</item>
+        <item name="android:textColor">@color/clr_txt_login_page</item>
+        <item name="android:textColorHint">#51463F</item>
     </style>
     <!-- 登录页 密码输入框 -->
     <style name="style_cm_edt_pwd" parent="style_cm_edt_account">
@@ -838,6 +852,17 @@
         <item name="colorAccent">@color/clr_main</item>
         <item name="colorControlNormal">@color/clr_main</item>
     </style>
+
+    <style name="style_login_ckb_normal">
+        <item name="colorAccent">@color/clr_txt_login_page</item>
+        <item name="colorControlNormal">@color/clr_txt_login_page</item>
+    </style>
+
+    <style name="style_cm_ckb2_normal">
+        <item name="colorAccent">@color/clr_login_txt_01</item>
+        <item name="colorControlNormal">@color/clr_login_txt_01</item>
+    </style>
+
 
     <!-- 我的-账户管理-绑定-新增页 标题 -->
     <style name="style_bind_title">
@@ -1185,7 +1210,7 @@
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/clr_txt_login_page</item>
         <item name="android:textSize">12sp</item>
     </style>
     <!-- 通用 筛选 标题 外框 -->

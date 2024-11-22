@@ -51,7 +51,7 @@
     <color name="clr_txt_mouse3">#5C5C5C</color>
     <color name="clr_txt_mouse4">#949292</color>
     <color name="clr_txt_mouse5">#1E1E1E</color>
-
+    <color name="clr_txt_login_page">#FFF8F8</color>
     <!-- 点缀色 -->
     <color name="clr_main_31">#FF6C00</color>
     <color name="clr_main_32">#FF1388</color>
@@ -356,7 +356,7 @@
 
     <color name="clr_white_14">#24FFFFFF</color>
 
-    <color name="clr_login_txt_01">@color/clr_main</color>
+    <color name="clr_login_txt_01">#D33D3F</color>
 
     <!-- 按钮背景 灰色 -->
     <color name="clr_btn_grey01">#F2F3F7</color>

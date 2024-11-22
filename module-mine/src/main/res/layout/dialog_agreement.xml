@@ -5,7 +5,7 @@
     android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_dialog_agreement">
+    android:background="@drawable/bg_login_dialog_agreement">
 
     <TextView
         android:id="@+id/title"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/me_agreement"
-        android:textColor="@color/textColor"
+        android:textColor="@color/clr_txt_login_page"
         android:textSize="@dimen/bt_text_14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,14 +27,14 @@
         android:layout_margin="18dp"
         android:scrollbars="vertical"
         android:text="@string/me_agreement_text"
-        android:textColor="@color/textColor"
+        android:textColor="@color/clr_txt_login_page"
         android:textSize="@dimen/bt_text_14sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_no_agree"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <TextView
         android:id="@+id/tv_no_agree"
-        style="@style/style_btn_back"
+        style="@style/style_login_agreement_btn"
         android:layout_width="120dp"
         android:layout_marginBottom="18dp"
         android:text="@string/text_no_agree"
@@ -44,7 +44,7 @@
 
     <TextView
         android:id="@+id/tv_agree"
-        style="@style/style_btn"
+        style="@style/style_login_agreement_btn"
         android:layout_width="120dp"
         android:text="@string/txt_agree"
         app:layout_constraintEnd_toEndOf="@+id/tvw_agreement"
