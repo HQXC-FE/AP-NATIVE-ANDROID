@@ -202,6 +202,10 @@ public class FightFanZhaUtils {
 
         } else {
 
+            if (webView != null) {
+                webView.loadData(tipsHtml, "text/html", "UTF-8");
+            }
+
             TagUtils.tagEvent(Utils.getContext(), "event_hijacked", businessUrl);
 
             if (context != null) {
@@ -326,7 +330,7 @@ public class FightFanZhaUtils {
     public static void startMockFanZha(Context context) {
         isOpenTest = true;
         CfLog.d("fanzha-test startMockFanZha url: " + DomainUtil.getH5Domain2());
-        BrowserActivity.start(context, "反诈", DomainUtil.getH5Domain2(), false, false);
+        BrowserActivity.start(context, "反诈", DomainUtil.getH5Domain2(), false, true);
     }
 
     public static boolean mockJumpFanZha(WebView webView, String url) {
