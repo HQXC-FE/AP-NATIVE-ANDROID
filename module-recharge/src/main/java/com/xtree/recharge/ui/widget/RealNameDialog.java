@@ -2,6 +2,7 @@ package com.xtree.recharge.ui.widget;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.lxj.xpopup.core.CenterPopupView;
+import com.xtree.base.widget.ChineseInputFilter;
 import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.DialogRealNameBinding;
 
@@ -63,6 +65,7 @@ public class RealNameDialog extends CenterPopupView {
         });
 
         //内容输入监听
+        binding.edtName.setFilters(new InputFilter[]{new ChineseInputFilter()});
         binding.edtName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

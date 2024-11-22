@@ -606,7 +606,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
             //BOBI提款,
             errorMessage = String.format(formatOtherType, selectorVo.title);
             //不存在BOBI 绑定模式
-            bindType = getContext().getString(R.string.txt_bind_gopay_type);
+            bindType = getContext().getString(R.string.txt_bind_bobi_type);
         } else if (TextUtils.equals("14", selectorVo.type)) {
             //极速微信提款13
             errorMessage = String.format(formatOtherType, selectorVo.title);
