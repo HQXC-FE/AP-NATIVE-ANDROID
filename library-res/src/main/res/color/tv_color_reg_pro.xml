@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/clr_txt_black_cm" android:state_enabled="true" />
-    <item android:color="@color/clr_txt_04" android:state_enabled="false" />
-    <item android:color="@color/clr_txt_04" />
+    <item android:color="@color/clr_txt_white_cm" android:state_enabled="true" />
+    <item android:color="@color/clr_txt_white_cm" android:state_enabled="false" />
+    <item android:color="@color/clr_txt_white_cm" />
 </selector>

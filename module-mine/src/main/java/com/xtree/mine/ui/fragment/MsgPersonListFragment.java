@@ -132,6 +132,7 @@ public class MsgPersonListFragment extends BaseFragment<FragmentMsgPersonListBin
                     viewModel.deleteAllPersonInfo();
                     ppw.dismiss();
                 }
+
             }));
             ppw.show();
         });

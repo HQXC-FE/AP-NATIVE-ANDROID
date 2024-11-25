@@ -76,8 +76,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/layout_margin</item>
         <item name="android:layout_marginTop">@dimen/layout_margin</item>
-        <item name="android:textColor">@color/clr_recharge_selected</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <!-- 首页-左边的游戏类型 -->
@@ -224,7 +224,7 @@
         <item name="android:gravity">center</item>
         <item name="android:padding">12dp</item>
         <item name="android:background">@drawable/btn_acc_item_selector_item</item>
-        <item name="android:textColor">@color/clr_txt_title</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
     </style>
 
     <!-- 充值页-选取金额 按钮背景 -->
@@ -341,7 +341,7 @@
         <item name="android:layout_marginEnd">@dimen/layout_margin</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:text"></item>
-        <item name="android:textColor">@color/clr_txt_recharge_tip</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
         <item name="android:textSize">12sp</item>
     </style>
     <!-- 通用 提示小字 桔红色 -->
@@ -453,11 +453,11 @@
     <!-- 通用 筛选 值 样式 -->
     <style name="style_filter_info_value" parent="style_filter_info_title">
         <item name="android:layout_weight">1</item>
-        <item name="android:textColor">@color/clr_filter_txt_black</item>
+        <item name="android:textColor">@color/clr_txt_rebateagrt_title</item>
     </style>
     <!-- 通用 筛选 值 下拉 -->
     <style name="style_filter_info_spn" parent="style_filter_info_value">
-        <item name="android:drawableEnd">@mipmap/bt_icon_expand</item>
+        <item name="android:drawableEnd">@mipmap/bt_icon_down_expand</item>
     </style>
     <!-- 通用 筛选 下划线 -->
     <style name="style_filter_info_dividing">
@@ -695,7 +695,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/layout_margin</item>
         <item name="android:layout_marginEnd">@dimen/layout_margin</item>
-        <item name="android:background">@mipmap/cm_bg_input_wht</item>
+        <item name="android:background">@drawable/bg_edit_input</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:hint"></item>
         <item name="android:inputType">text</item>
@@ -704,7 +704,7 @@
         <item name="android:padding">8dp</item>
         <item name="android:tag"></item>
         <item name="android:text"></item>
-        <item name="android:textColor">@color/clr_grey_80</item>
+        <item name="android:textColor">@color/clr_txt_hit</item>
         <item name="android:textColorHint">@color/clr_txt_grey_03</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -1195,7 +1195,6 @@
         <item name="android:layout_marginTop">1dp</item>
         <item name="android:orientation">horizontal</item>
     </style>
-
     <style name="style_btn_short">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -1227,6 +1226,7 @@
     </style>
 
 
+
     <!-- 通用 按钮 背景为颜色,可变色(谷歌验证) -->
     <style name="style_cm_auth_edit">
         <item name="android:layout_width">match_parent</item>
@@ -1248,7 +1248,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">24dp</item>
     </style>
-
     <style name="style_rc_exp_bank_status">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -1259,7 +1258,6 @@
         <item name="android:textColor">@color/clr_purple_02</item>
         <item name="android:textSize">14sp</item>
     </style>
-
     <style name="style_rc_exp_bank_info_title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -1312,7 +1310,6 @@
         <item name="android:textColor">@color/clr_text_btn_selector</item>
         <item name="android:textSize">16sp</item>
     </style>
-
     <style name="style_rc_dlg_copy">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -1351,7 +1348,6 @@
         <item name="android:textColor">@color/clr_txt_recharge_copy</item>
         <item name="android:textSize">14sp</item>
     </style>
-
     <style name="style_recharge_dlg_copy">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -1369,7 +1365,6 @@
         <item name="android:textColor">@color/clr_purple_05</item>
         <item name="android:textSize">12sp</item>
     </style>
-
     <style name="style_rc_dlg_bg_title">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -1399,6 +1394,7 @@
         <item name="android:scaleType">fitStart</item>
         <item name="android:src">@color/clr_white</item>
     </style>
+
 
 
     <style name="style_rc_dlg_title">
@@ -1445,7 +1441,6 @@
         <item name="android:layout_marginEnd">12dp</item>
         <item name="android:background">@color/clr_div_line</item>
     </style>
-
     <style name="style_rc_dlg_money">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -1460,17 +1455,14 @@
         <item name="android:padding">4dp</item>
         <item name="android:src">@mipmap/cm_ic_cs3</item>
     </style>
-
     <style name="style_rc_dlg_hourglass">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:src">@mipmap/cm_ic_hourglass</item>
     </style>
-
     <style name="style_cm_tip_small_title_warn" parent="style_cm_tip_small_title">
         <item name="android:drawableStart">@mipmap/cm_ic_hint_main</item>
     </style>
-
     <style name="style_cm_tip_small_title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

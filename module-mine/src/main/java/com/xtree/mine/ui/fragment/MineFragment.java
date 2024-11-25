@@ -163,6 +163,8 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                     viewModel.do1kAutoRecycle();
                     ppw.dismiss();
                 }
+
+
             }));
             ppw.show();
         });
@@ -454,6 +456,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                 viewModel.doLogout();
                 ppw.dismiss();
             }
+
         });
         ppw = new XPopup.Builder(getContext())
                 .dismissOnTouchOutside(false)

@@ -30,6 +30,8 @@ public class TipDialog extends CenterPopupView {
         void onClickLeft();
 
         void onClickRight();
+
+
     }
 
     public TipDialog(@NonNull Context context, String title, String msg, ICallBack mCallBack) {
@@ -172,6 +174,13 @@ public class TipDialog extends CenterPopupView {
             params.height = dp2px(height);
             binding.ivwBg.setLayoutParams(params);
         }
+
+
+        binding.ivwClose.setOnClickListener(v -> {
+            if (this.mCallBack != null){
+
+            }
+        });
     }
 
     private int dp2px(int dp) {
