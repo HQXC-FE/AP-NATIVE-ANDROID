@@ -3,72 +3,72 @@ package com.xtree.base.net;
 import com.xtree.base.utils.AppUtil;
 
 import io.reactivex.subscribers.DisposableSubscriber;
+import me.xtree.mvvmhabit.http.BaseResponse;
+import me.xtree.mvvmhabit.http.BaseTempResponse;
 import me.xtree.mvvmhabit.http.PMBaseResponse;
+import me.xtree.mvvmhabit.http.PMBaseTempResponse;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
-public abstract class PMHttpCallBack<T> extends DisposableSubscriber<T> {
+public abstract class PMHttpTempCallBack<T> extends DisposableSubscriber<T> {
     public abstract void onResult(T t);
 
     @Override
     public void onNext(T o) {
 
-//        if (!(o instanceof PMBaseResponse)) {
-//            KLog.w("json is not normal");
-//            onResult(o);
-//            return;
-//        }
-        System.out.println("============== PMHttpCallBack Base onNext =============");
-        PMBaseResponse baseResponse = (PMBaseResponse) o;
-        System.out.println("============== PMHttpCallBack baseResponse.getCode ============="+baseResponse.getCode());
-        System.out.println("============== PMHttpCallBack baseResponse.getMsg() ============="+baseResponse.getMsg());
-        System.out.println("============== PMHttpCallBack baseResponse ============="+baseResponse.getData());
-        ResponseThrowable ex = new ResponseThrowable(baseResponse.getCode(), baseResponse.getMsg());
+        if (!(o instanceof BaseTempResponse)) {
+            KLog.w("json is not normal");
+            onResult(o);
+            return;
+        }
+        BaseTempResponse baseResponse = (BaseTempResponse) o;
+        System.out.println("================= BaseTempResponse ==============="+baseResponse.getDataString());
+        ResponseThrowable ex = new ResponseThrowable(baseResponse.getCode(), baseResponse.getMessage());
         int code = baseResponse.getCode();
+        System.out.println("================= BaseTempResponse code ==============="+code);
         switch (code) {
-            case PMHttpCallBack.CodeRule.CODE_0:
+            case PMHttpTempCallBack.CodeRule.CODE_0:
 
                 //请求成功, 正确的操作方式
                 onResult((T) baseResponse.getData());
                 break;
-            case PMHttpCallBack.CodeRule.CODE_401013://账号已登出，请重新登录
-            case PMHttpCallBack.CodeRule.CODE_401026://账号已登出，请重新登录
-            case PMHttpCallBack.CodeRule.CODE_400467:
-            case PMHttpCallBack.CodeRule.CODE_401038:
-            case PMHttpCallBack.CodeRule.CODE_400524:
-            case PMHttpCallBack.CodeRule.CODE_400527:
-            case PMHttpCallBack.CodeRule.CODE_408028:
+            case PMHttpTempCallBack.CodeRule.CODE_401013://账号已登出，请重新登录
+            case PMHttpTempCallBack.CodeRule.CODE_401026://账号已登出，请重新登录
+            case PMHttpTempCallBack.CodeRule.CODE_400467:
+            case PMHttpTempCallBack.CodeRule.CODE_401038:
+            case PMHttpTempCallBack.CodeRule.CODE_400524:
+            case PMHttpTempCallBack.CodeRule.CODE_400527:
+            case PMHttpTempCallBack.CodeRule.CODE_408028:
                 onError(ex);
                 break;
-            case PMHttpCallBack.CodeRule.CODE_400489:
-            case PMHttpCallBack.CodeRule.CODE_400492:
-            case PMHttpCallBack.CodeRule.CODE_400496:
-            case PMHttpCallBack.CodeRule.CODE_400503:
-            case PMHttpCallBack.CodeRule.CODE_400522:
-            case PMHttpCallBack.CodeRule.CODE_400528:
-            case PMHttpCallBack.CodeRule.CODE_400529:
+            case PMHttpTempCallBack.CodeRule.CODE_400489:
+            case PMHttpTempCallBack.CodeRule.CODE_400492:
+            case PMHttpTempCallBack.CodeRule.CODE_400496:
+            case PMHttpTempCallBack.CodeRule.CODE_400503:
+            case PMHttpTempCallBack.CodeRule.CODE_400522:
+            case PMHttpTempCallBack.CodeRule.CODE_400528:
+            case PMHttpTempCallBack.CodeRule.CODE_400529:
 
-            case PMHttpCallBack.CodeRule.CODE_400493:
-            case PMHttpCallBack.CodeRule.CODE_400494:
-            case PMHttpCallBack.CodeRule.CODE_400500:
-            case PMHttpCallBack.CodeRule.CODE_400501:
-            case PMHttpCallBack.CodeRule.CODE_400525:
-            case PMHttpCallBack.CodeRule.CODE_400531:
-            case PMHttpCallBack.CodeRule.CODE_400537:
-            case PMHttpCallBack.CodeRule.CODE_402038:
-                ex.code = PMHttpCallBack.CodeRule.CODE_10000001;
+            case PMHttpTempCallBack.CodeRule.CODE_400493:
+            case PMHttpTempCallBack.CodeRule.CODE_400494:
+            case PMHttpTempCallBack.CodeRule.CODE_400500:
+            case PMHttpTempCallBack.CodeRule.CODE_400501:
+            case PMHttpTempCallBack.CodeRule.CODE_400525:
+            case PMHttpTempCallBack.CodeRule.CODE_400531:
+            case PMHttpTempCallBack.CodeRule.CODE_400537:
+            case PMHttpTempCallBack.CodeRule.CODE_402038:
+                ex.code = PMHttpTempCallBack.CodeRule.CODE_10000001;
                 onError(ex);
                 break;
             default:
-                ToastUtils.showShort(baseResponse.getMsg());
+                ToastUtils.showShort(baseResponse.getMessage());
                 break;
         }
     }
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("============== PMHttpCallBack Base onError ============="+t.toString());
         KLog.e("error: " + t.toString());
         if (t instanceof ResponseThrowable) {
             ResponseThrowable rError = (ResponseThrowable) t;
@@ -85,7 +85,7 @@ public abstract class PMHttpCallBack<T> extends DisposableSubscriber<T> {
 
     @Override
     public void onComplete() {
-        System.out.println("============== PMHttpCallBack onComplete =============");
+
     }
 
     public static final class CodeRule {

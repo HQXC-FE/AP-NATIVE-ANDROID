@@ -359,11 +359,13 @@ public abstract class TemplateMainViewModel extends BaseBtViewModel implements M
     }
 
     public void showCache(String sportId, int playMethodType, int searchDatePos) {
+        System.out.println("============== showCache ===========");
         if (TextUtils.isEmpty(mSearchWord)) {
             String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
             String json = SPUtils.getInstance().getString(BT_LEAGUE_LIST_CACHE + playMethodType + searchDatePos + sportId);
             mHasCache = !TextUtils.isEmpty(json);
             json = TextUtils.isEmpty(json) ? "[]" : json;
+            System.out.println("============== showCache json ==========="+json);
             Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
             Type listType = TextUtils.equals(platform, PLATFORM_PM) || TextUtils.equals(platform, PLATFORM_PMXC) ? new TypeToken<List<LeaguePm>>() {
             }.getType() : new TypeToken<List<LeagueFb>>() {

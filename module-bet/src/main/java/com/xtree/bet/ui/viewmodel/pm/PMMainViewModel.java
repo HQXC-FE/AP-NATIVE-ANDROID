@@ -4,6 +4,7 @@ import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
 import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
 import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401038;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 
@@ -14,9 +15,11 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.PMHttpCallBack;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.request.pm.PMListReq;
+import com.xtree.bet.bean.response.HotLeagueInfo;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.pm.FrontListInfo;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
@@ -38,6 +41,7 @@ import com.xtree.bet.ui.viewmodel.MainViewModel;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
 import com.xtree.bet.ui.viewmodel.callback.PMLeagueListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.PMListCallBack;
+import com.xtree.bet.ui.viewmodel.callback.PMListTempCallBack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,6 +76,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     private int mPageSize = 20;
 
     public void saveLeague(PMListCallBack pmListCallBack) {
+        System.out.println("=============== PMListCallBack saveLeague ==================");
         mLeagueList = pmListCallBack.getLeagueList();
         mGoingOnLeagueList = pmListCallBack.getGoingOnLeagueList();
         mMapLeague = pmListCallBack.getMapLeague();
@@ -81,6 +86,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     }
 
     public void saveLeague(PMLeagueListCallBack pmListCallBack) {
+        System.out.println("=============== PMLeagueListCallBack saveLeague ==================");
         mLeagueList = pmListCallBack.getLeagueList();
         mGoingOnLeagueList = pmListCallBack.getGoingOnLeagueList();
         mMapLeague = pmListCallBack.getMapLeague();
@@ -88,6 +94,16 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         mMapMatch = pmListCallBack.getMapMatch();
         mMapSportType = pmListCallBack.getMapSportType();
         mNoLiveheaderLeague = pmListCallBack.getNoLiveheaderLeague();
+    }
+
+    public void saveLeague(PMListTempCallBack pmListCallBack) {
+        System.out.println("=============== PMListTempCallBack saveLeague ==================");
+        mLeagueList = pmListCallBack.getLeagueList();
+        mGoingOnLeagueList = pmListCallBack.getGoingOnLeagueList();
+        mMapLeague = pmListCallBack.getMapLeague();
+        mMatchList = pmListCallBack.getMatchList();
+        mMapMatch = pmListCallBack.getMapMatch();
+        mMapSportType = pmListCallBack.getMapSportType();
     }
 
     public Map<String, League> getMapLeague() {
@@ -351,6 +367,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         if (mCurrentPage == 1 && !isTimerRefresh && !isStepSecond) {
+            System.out.println("============== getLeagueList to showCache===========");
             showCache(sportId, mPlayMethodType, searchDatePos);
         }
 
@@ -437,45 +454,80 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                 pmListReq.setMd(String.valueOf(TimeUtils.strFormatDate(time, TimeUtils.FORMAT_YY_MM_DD_HH_MM_SS).getTime()));
             }
         }
-        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
-        String token;
-
-        if(TextUtils.equals(platform, PLATFORM_PMXC)) {
-            token = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN);
-        } else {
-            token = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
-        }
-        pmListReq.setToken(token);
+//        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
+//        String token;
+//        if(TextUtils.equals(platform, PLATFORM_PMXC)) {
+//            token = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN);
+//        } else {
+//            token = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
+//        }
+//        pmListReq.setToken(token);
         Flowable flowable = model.getBaseApiService().matchesPagePB(pmListReq);
         if (isStepSecond) {
-            //flowable = model.getBaseApiService().noLiveMatchesPagePB(pmListReq);
+            String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
+            String token;
+            if (TextUtils.equals(platform, PLATFORM_PMXC)) {
+                token = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN);
+            } else {
+                token = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
+            }
+            pmListReq.setToken(token);
+            System.out.println("================ PMMainViewModel noLiveMatchesPagePB ==============");
+            flowable = model.getBaseApiService().noLiveMatchesPagePB(pmListReq);
+//            PMListCallBack httpCallBack = new PMListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
+//                    orderBy, leagueIds, searchDatePos, oddType, matchidList);
+//            Disposable disposable = (Disposable) flowable
+//                    .compose(RxUtils.schedulersTransformer()) //线程调度
+//                    .compose(RxUtils.exceptionTransformer())
+//                    .subscribeWith(httpCallBack);
+//            addSubscribe(disposable);
+//            return;
         }
         pmListReq.setCps(mPageSize);
         if (type == 1) {// 滚球
             if (needSecondStep) {
                 pmListReq.setCps(mGoingOnPageSize);
-                //flowable = model.getBaseApiService().liveMatchesPB(pmListReq);
+                System.out.println("================ PMMainViewModel liveMatchesPB  ==============");
+                String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
+                String token;
+                if (TextUtils.equals(platform, PLATFORM_PMXC)) {
+                    token = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN);
+                } else {
+                    token = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
+                }
+                pmListReq.setToken(token);
+                flowable = model.getBaseApiService().liveMatchesPB(pmListReq);
+//                PMListTempCallBack httpCallBack = new PMListTempCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
+//                        orderBy, leagueIds, searchDatePos, oddType, matchidList);
+//                Disposable disposable = (Disposable) flowable
+//                        .compose(RxUtils.schedulersTransformer()) //线程调度
+//                        .compose(RxUtils.exceptionTransformer())
+//                        .subscribeWith(httpCallBack);
+//                addSubscribe(disposable);
+//                return ;
             }
         }
 
         if (isTimerRefresh) {
-            //flowable = model.getPMApiService().getMatchBaseInfoByMidsPB(pmListReq);
+            System.out.println("================ PMMainViewModel getMatchBaseInfoByMidsPB  ==============");
+            flowable = model.getBaseApiService().getMatchBaseInfoByMidsPB(pmListReq);
         }
 
         if (isRefresh) {
             mNoLiveheaderLeague = null;
         }
-
         if ((type == 1 && needSecondStep) // 获取今日中的全部滚球赛事列表
                 || isTimerRefresh) { // 定时刷新赔率变更
-            PMListCallBack httpCallBack = new PMListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
+            System.out.println("================  PMMainViewModel PMListCallBack 设置回调的入口  ==============");
+//            PMListCallBack httpCallBack = new PMListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
+//                    orderBy, leagueIds, searchDatePos, oddType, matchidList);
+            PMListTempCallBack httpCallBack = new PMListTempCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
                     orderBy, leagueIds, searchDatePos, oddType, matchidList);
             Disposable disposable = (Disposable) flowable
                     .compose(RxUtils.schedulersTransformer()) //线程调度
                     .compose(RxUtils.exceptionTransformer())
                     .subscribeWith(httpCallBack);
             addSubscribe(disposable);
-
         } else {
             mPmHttpCallBack = new PMLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
                     orderBy, leagueIds, searchDatePos, oddType, matchidList,
@@ -522,6 +574,14 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         pmListReq.setSort(orderBy);
         pmListReq.setCpn(mCurrentPage);
         pmListReq.setCps(300);
+//        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
+//        String token;
+//        if(TextUtils.equals(platform, PLATFORM_PMXC)) {
+//            token = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN);
+//        } else {
+//            token = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
+//        }
+//        pmListReq.setToken(token);
         //pbListReq.setOddType(oddType);
 
         if (mMenuInfoList.isEmpty()) {
@@ -546,7 +606,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             //}
         }//再试试断网情况 和弱网情况
 
-        Disposable disposable = (Disposable) model.getBaseApiService().noLiveMatchesPagePB(pmListReq)
+        Disposable disposable = (Disposable) model.getPMApiService().noLiveMatchesPagePB(pmListReq)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new PMHttpCallBack<MatchListRsp>() {
@@ -593,6 +653,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                             searchMatch(mSearchWord, true);
                         }
                         if (mCurrentPage == 1) {
+                            System.out.println("================= put BT_LEAGUE_LIST_CACHE ================");
                             SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + playMethodType + sportId, new Gson().toJson(mChampionMatchList));
                         }
                         mHasCache = false;
