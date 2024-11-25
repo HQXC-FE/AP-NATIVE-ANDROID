@@ -55,7 +55,7 @@
             app:tabIndicatorColor="@color/clr_main"
             app:tabIndicatorFullWidth="false"
             app:tabSelectedTextColor="@color/clr_main"
-            app:tabTextColor="@color/clr_main" />
+            app:tabTextColor="@color/clr_purple_13" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_main"

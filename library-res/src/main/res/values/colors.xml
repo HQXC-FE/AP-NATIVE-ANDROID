@@ -28,7 +28,7 @@
 
     <!-- ################ 配色 设计师提供 start ################ -->
     <!-- 主色 -->
-    <color name="clr_main">#420C0B</color>
+    <color name="clr_main">#D33D3F</color>
     <!-- 主-渐变色 -->
     <color name="clr_main_start">#A0302E</color>
     <color name="clr_main_start_2">#e26d51</color>
@@ -39,6 +39,7 @@
     <!-- 辅-渐变色 -->
     <color name="clr_main_21">#2D2D2D</color>
     <color name="clr_main_22">#49453F</color>
+    <color name="clr_main_line">#2D2727</color>
     <!-- 辅色 -->
     <color name="clr_main_23">#AA927A</color>
     <!-- 背景色 -->

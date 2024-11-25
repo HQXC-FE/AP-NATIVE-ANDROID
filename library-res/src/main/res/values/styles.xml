@@ -341,7 +341,7 @@
         <item name="android:layout_marginEnd">@dimen/layout_margin</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:text"></item>
-        <item name="android:textColor">@color/clr_txt_recharge_tip</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
         <item name="android:textSize">12sp</item>
     </style>
     <!-- 通用 提示小字 桔红色 -->
@@ -453,11 +453,11 @@
     <!-- 通用 筛选 值 样式 -->
     <style name="style_filter_info_value" parent="style_filter_info_title">
         <item name="android:layout_weight">1</item>
-        <item name="android:textColor">@color/clr_filter_txt_black</item>
+        <item name="android:textColor">@color/clr_txt_rebateagrt_title</item>
     </style>
     <!-- 通用 筛选 值 下拉 -->
     <style name="style_filter_info_spn" parent="style_filter_info_value">
-        <item name="android:drawableEnd">@mipmap/bt_icon_expand</item>
+        <item name="android:drawableEnd">@mipmap/bt_icon_down_expand</item>
     </style>
     <!-- 通用 筛选 下划线 -->
     <style name="style_filter_info_dividing">
