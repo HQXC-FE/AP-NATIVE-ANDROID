@@ -4,7 +4,7 @@
     android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/clr_transparent"
+    android:background="@drawable/bg_dialog_top_account"
     android:orientation="vertical"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
@@ -48,7 +48,7 @@
         android:id="@+id/ll_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/clr_bg_main"
+        android:background="@drawable/bg_dialog_account"
         android:orientation="vertical"
         android:padding="@dimen/layout_margin"
         android:paddingBottom="36dp">

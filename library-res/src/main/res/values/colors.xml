@@ -296,7 +296,7 @@
 
     <!-- 通用 begin -->
     <!-- 通用背景色 -->
-    <color name="clr_bg_main">#fcf9f6</color>
+    <color name="clr_bg_main">#382E2B</color>
     <color name="clr_bg_main_black">#1A1716</color>
     <color name="bg_main">#95352E</color>
     <color name="clr_white">#FFFFFF</color>
@@ -305,6 +305,8 @@
     <color name="clr_transparent">#00000000</color>
     <color name="clr_transparent_50">#80000000</color>
     <color name="ic_launcher_background">#FFFFFF</color>
+
+
 
     <color name="clr_black">#000000</color>
     <color name="clr_txt_black">#000000</color>
@@ -473,7 +475,7 @@
     <color name="clr_withdrawal_list_bottom_text_bg">#1FC4F8</color>
     <color name="clr_withdrawal_list_bottom_text_tip_bg">#E77C40</color>
     <color name="clr_withdrawal_list_text_bg">@color/clr_txt_title</color>
-    <color name="clr_withdrawal_btn_bg">@color/clr_bg_frame_32</color>
+    <color name="clr_withdrawal_btn_bg">@color/clr_bg_main</color>
     <color name="clr_withdrawal_btn_stroke">#CF9661</color>
     <color name="clr_withdrawal_list_top_start_bg">@color/clr_main_03</color>
     <color name="clr_withdrawal_list_top_end_bg">@color/clr_main_03</color>
@@ -490,7 +492,7 @@
     <color name="clr_home_top">#2C2A29</color>
 
     <!--    标题-->
-    <color name="clr_txt_rebateagrt_title">#121B47</color>
+    <color name="clr_txt_rebateagrt_title">#FFF8F8</color>
     <!--    副标题-->
     <color name="clr_txt_rebateagrt_subtitle">#99A0B1</color>
     <!--    高亮-->
