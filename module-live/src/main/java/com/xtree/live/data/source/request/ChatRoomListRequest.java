@@ -10,7 +10,7 @@ public class ChatRoomListRequest {
     public int limit ;//笔数
 
     public ChatRoomListRequest(){
-        this.type = "0" ;
+        this.type = "2" ;
         this.page = 1 ;
         this.limit = 100;
     }

@@ -4,7 +4,9 @@ import android.os.Build;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.MD5Util;
+import com.xtree.base.utils.StringUtils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -42,7 +44,19 @@ public class LiveHeaderInterceptor implements Interceptor {
 
         String time = String.valueOf((System.currentTimeMillis() / 1000));
         String version = formartVersion();
-        String reqStr = formatParams(request);
+      /*  String reqStr = formatParams(request);*/
+        String reqStr ;
+
+        if (formatParams(request).endsWith("&&")){
+           // CfLog.e(" 截取前 ||formatParams(request) -----------= " +formatParams(request));
+
+            reqStr =   formatParams(request).substring( 0 ,formatParams(request).length()-1);
+
+            //CfLog.e(" 截取后 ||newReqStr -----------= " +reqStr);
+        }else {
+            reqStr = formatParams(request);
+        }
+
         String uriPathRevKey = getUriPathRevKey(request);
 
         builder.addHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -60,13 +74,36 @@ public class LiveHeaderInterceptor implements Interceptor {
         //手机版本
         builder.addHeader("x-live-Version-OS", "Android_" + Build.VERSION.RELEASE);
 
+
         // xLiveSign加密
         String signStr = reqStr + "key=" + clientSpecialKey + "/" + uriPathRevKey + "/"
                 + time + "/" + X9LiveInfo.INSTANCE.getVisitor() + "/" + X9LiveInfo.INSTANCE.getOaid() + "/" + version;
 
+      /*  CfLog.e("*************************** 加密前  start *************************");
+
+        CfLog.e("signStr  ---> = " + signStr);
+        CfLog.e("*************************** 加密前  end *************************");*/
         String xLiveSign = MD5Util.generateMd5(signStr);
 
         builder.addHeader("x-live-Sign", xLiveSign);
+
+
+        /*CfLog.e("*************************** intercept  start *************************");
+        CfLog.e("Content-Type = " + builder.build().headers("Content-Type"));
+        CfLog.e("Cx-live-Brand = " + builder.build().headers("x-live-Brand"));
+        CfLog.e("x-live-Token = " + builder.build().headers("x-live-Token"));
+        CfLog.e("x-live-Visitor = " + builder.build().headers("x-live-Visitor"));
+        CfLog.e("x-live-Oaid = " + builder.build().headers("x-live-Oaid"));
+        CfLog.e("x-live-Channel = " + builder.build().headers("x-live-Channel"));
+        CfLog.e("x-live-Time = " + builder.build().headers("x-live-Time"));
+
+
+        CfLog.e("x-live-Version = " + builder.build().headers("x-live-Version"));
+        CfLog.e("x-live-Brand = " + builder.build().headers("x-live-Brand"));
+        CfLog.e("x-live-Model = " + builder.build().headers("x-live-Model"));
+        CfLog.e("x-live-Version-OS = " + builder.build().headers("x-live-Version-OS"));
+
+        CfLog.e("*************************** intercept  end *************************");*/
 
         return chain.proceed(builder.build());
     }

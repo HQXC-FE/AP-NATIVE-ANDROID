@@ -57,4 +57,56 @@ public class SearchAssistantResponse {
     public  String vid;// 聊天室识别ID(与直播间VID不同)
     public  String welcome;//是否欢迎语(1:是,0:否)
 
+    @Override
+    public String toString() {
+        return "SearchAssistantResponse{" +
+                "id='" + id + '\'' +
+                ", action='" + action + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", blockchannles=" + blockchannles +
+                ", block_channel=" + block_channel +
+                ", channel='" + channel + '\'' +
+                ", channel_code='" + channel_code + '\'' +
+                ", channel_id='" + channel_id + '\'' +
+                ", color='" + color + '\'' +
+                ", creation_time='" + creation_time + '\'' +
+                ", designation='" + designation + '\'' +
+                ", designation_color='" + designation_color + '\'' +
+                ", exp='" + exp + '\'' +
+                ", ia='" + ia + '\'' +
+                ", is_batch='" + is_batch + '\'' +
+                ", isVir='" + isVir + '\'' +
+                ", has_tag='" + has_tag + '\'' +
+                ", title='" + title + '\'' +
+                ", link='" + link + '\'' +
+                ", method='" + method + '\'' +
+                ", server='" + server + '\'' +
+                ", msg_id='" + msg_id + '\'' +
+                ", msg_type='" + msg_type + '\'' +
+                ", originalText='" + originalText + '\'' +
+                ", note='" + note + '\'' +
+                ", text='" + text + '\'' +
+                ", pic='" + pic + '\'' +
+                ", pic_bnc='" + pic_bnc + '\'' +
+                ", pm_source_type='" + pm_source_type + '\'' +
+                ", pm_source_type_str='" + pm_source_type_str + '\'' +
+                ", readed_count='" + readed_count + '\'' +
+                ", room_type='" + room_type + '\'' +
+                ", seed='" + seed + '\'' +
+                ", sender='" + sender + '\'' +
+                ", sender_nickname='" + sender_nickname + '\'' +
+                ", sender_user_type='" + sender_user_type + '\'' +
+                ", sender_exp='" + sender_exp + '\'' +
+                ", sender_exp_icon='" + sender_exp_icon + '\'' +
+                ", sender_current_exp='" + sender_current_exp + '\'' +
+                ", sender_difference='" + sender_difference + '\'' +
+                ", time='" + time + '\'' +
+                ", time_ms='" + time_ms + '\'' +
+                ", user_id='" + user_id + '\'' +
+                ", username='" + username + '\'' +
+                ", user_nickname='" + user_nickname + '\'' +
+                ", vid='" + vid + '\'' +
+                ", welcome='" + welcome + '\'' +
+                '}';
+    }
 }
