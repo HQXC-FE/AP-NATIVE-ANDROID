@@ -10,13 +10,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <ImageView
             android:id="@+id/ivw_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
-            android:background="@mipmap/cm_dialog_bg"
+           android:background="@mipmap/cm_dialog_bg"
             android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +27,7 @@
             android:layout_width="24dp"
             android:layout_height="16dp"
             android:background="@color/clr_transparent"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@id/ivw_bg"
             app:layout_constraintStart_toStartOf="@id/ivw_bg" />
 
@@ -42,6 +41,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/ivw_empty" />
 
+        <ImageView
+            android:id="@+id/ivw_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:src="@mipmap/cm_ic_close"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.796"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivw_bg" />
+
         <TextView
             android:id="@+id/tvw_title"
             android:layout_width="wrap_content"
@@ -49,8 +60,8 @@
             android:layout_marginTop="60dp"
             android:gravity="center"
             android:text="@string/txt_kind_tips"
-            android:textColor="@color/clr_black"
-            android:textSize="20sp"
+            android:textColor="@color/clr_txt_white_cm"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
             app:layout_constraintStart_toStartOf="@id/ivw_bg"
@@ -78,8 +89,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textColor="@color/clr_grey_60"
-                    android:textSize="15sp"
+                    android:textColor="@color/clr_txt_white_cm"
+                    android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="@id/ivw_bg"
                     app:layout_constraintStart_toStartOf="@id/ivw_bg"
                     app:layout_constraintTop_toBottomOf="@id/tvw_title"
@@ -123,15 +134,16 @@
 
             <TextView
                 android:id="@+id/tvw_left"
-                style="@style/style_btn_back"
+                style="@style/style_btn"
                 android:text="@string/txt_cancel"
-                android:textColor="@color/clr_txt_grey_04"
+                android:textColor="@color/clr_txt_white_cm"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvw_right"
                 style="@style/style_btn"
                 android:text="@string/txt_confirm"
+                android:textColor="@color/clr_txt_white_cm"
                 android:textSize="14sp" />
         </LinearLayout>
 

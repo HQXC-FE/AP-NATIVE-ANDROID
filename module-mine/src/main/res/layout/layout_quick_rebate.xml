@@ -36,7 +36,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/clr_grey_080"
+            android:background="@color/clr_main_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_lottery"
             app:layout_constraintTop_toBottomOf="@+id/tv_lottery" />
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="@string/txt_reg_rebate"
-            android:textColor="@color/clr_txt_warn"
+            android:textColor="@color/clr_purple_13"
             android:textSize="@dimen/bt_text_12sp"
             app:layout_constraintStart_toEndOf="@+id/tv_lottery"
             app:layout_constraintTop_toBottomOf="@+id/tv_lottery" />
@@ -79,7 +79,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/clr_grey_080"
+            android:background="@color/clr_main_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_real"
             app:layout_constraintTop_toBottomOf="@+id/tv_real" />
@@ -89,7 +89,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/txt_reg_rebate"
-            android:textColor="@color/clr_txt_warn"
+            android:textColor="@color/clr_purple_13"
             android:textSize="@dimen/bt_text_12sp"
             app:layout_constraintStart_toEndOf="@+id/tv_real"
             app:layout_constraintTop_toBottomOf="@+id/tv_real" />
@@ -121,7 +121,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/clr_grey_080"
+            android:background="@color/clr_main_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_sports"
             app:layout_constraintTop_toBottomOf="@+id/tv_sports" />
@@ -131,7 +131,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/txt_reg_rebate"
-            android:textColor="@color/clr_txt_warn"
+            android:textColor="@color/clr_purple_13"
             android:textSize="@dimen/bt_text_12sp"
             app:layout_constraintStart_toEndOf="@+id/tv_sports"
             app:layout_constraintTop_toBottomOf="@+id/tv_sports" />
@@ -163,7 +163,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/clr_grey_080"
+            android:background="@color/clr_main_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_chess"
             app:layout_constraintTop_toBottomOf="@+id/tv_chess" />
@@ -173,7 +173,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/txt_reg_rebate"
-            android:textColor="@color/clr_txt_warn"
+            android:textColor="@color/clr_purple_13"
             android:textSize="@dimen/bt_text_12sp"
             app:layout_constraintStart_toEndOf="@+id/tv_chess"
             app:layout_constraintTop_toBottomOf="@+id/tv_chess" />
@@ -205,7 +205,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/clr_grey_080"
+            android:background="@color/clr_main_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_game"
             app:layout_constraintTop_toBottomOf="@+id/tv_game" />
@@ -215,7 +215,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/txt_reg_rebate"
-            android:textColor="@color/clr_txt_warn"
+            android:textColor="@color/clr_purple_13"
             android:textSize="@dimen/bt_text_12sp"
             app:layout_constraintStart_toEndOf="@+id/tv_game"
             app:layout_constraintTop_toBottomOf="@+id/tv_game" />
