@@ -31,6 +31,9 @@ import java.util.List;
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
+/***
+ * 站内信列表
+ */
 @Route(path = RouterFragmentPath.Mine.PAGER_MSG_PERSON_LIST)
 public class MsgPersonListFragment extends BaseFragment<FragmentMsgPersonListBinding, MsgViewModel> {
     MsgPersonListAdapter mMsgPersonListAdapter;
