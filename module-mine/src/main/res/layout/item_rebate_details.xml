@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/clr_popwindow_bg"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
@@ -11,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         tools:text="时时彩返点"
-        android:textColor="@color/textColor"
+        android:textColor="@color/clr_txt_white_cm"
         android:textSize="@dimen/bt_text_14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,5 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view1" />
+        app:layout_constraintTop_toBottomOf="@+id/view1"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
