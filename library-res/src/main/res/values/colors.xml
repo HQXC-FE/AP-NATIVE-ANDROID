@@ -573,5 +573,6 @@
     <color name="clr_txt_fastest_medium">#FFE145</color>
     <color name="clr_txt_fastest_low">#51FF6D</color>
     <color name="clr_popwindow_bg">#27211F</color>
+    <color name ="clr_txt_hit">#51463F</color>
 
 </resources>
