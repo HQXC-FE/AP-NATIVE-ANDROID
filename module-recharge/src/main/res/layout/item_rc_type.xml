@@ -5,11 +5,6 @@
     android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="1dp"
-    android:layout_marginTop="6dp"
-    android:layout_marginEnd="1dp"
-    android:paddingStart="1dp"
-    android:paddingEnd="1dp"
     tools:layout_width="wrap_content">
 
     <ImageView
@@ -48,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-4dp"
             android:gravity="center"
-            android:textColor="@color/clr_item_text_selector"
+            android:textColor="@color/clr_recharge_selected"
             android:textSize="12sp"
             tools:text="USDT" />
 
@@ -59,7 +54,7 @@
             android:layout_marginTop="-2dp"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
-            android:textColor="@color/clr_rc_rate_selector"
+            android:textColor="@color/clr_recharge_selected"
             android:textSize="10sp"
             tools:text="DEMO" />
     </LinearLayout>
