@@ -1,18 +1,24 @@
 package com.xtree.live.ui.main.model.anchor;
 
+import static androidx.test.platform.app.InstrumentationRegistry.getArguments;
+
+import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.drake.brv.BindingAdapter;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xtree.base.mvvm.recyclerview.BaseDatabindingAdapter;
 import com.xtree.base.mvvm.recyclerview.BindModel;
+import com.xtree.base.router.RouterActivityPath;
 import com.xtree.live.R;
 import com.xtree.live.data.source.response.FrontLivesResponse;
+import com.xtree.live.ui.main.bet.LiveMatchDetailActivity;
 import com.xtree.live.ui.main.listener.FetchListener;
 
 import java.util.ArrayList;
@@ -27,9 +33,9 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 public class LiveAnchorModel extends BindModel {
 
     private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
-
     }};
     private final int limit = 10;
+    private BindingAdapter.BindingViewHolder mHolder;
     public ObservableField<ArrayList<BindModel>> datas = new ObservableField<>(new ArrayList<>());
     public ObservableField<ArrayList<Integer>> itemTypeList = new ObservableField<>(
             new ArrayList<Integer>() {
@@ -41,13 +47,21 @@ public class LiveAnchorModel extends BindModel {
 
         @Override
         public void onItemClick(int modelPosition, int layoutPosition, int itemViewType) {
-
+            //跳到直播间投注页
             ToastUtils.show("" + modelPosition, ToastUtils.ShowType.Default);
+            Context context = mHolder.getContext();
+            //判断当前是否是登录状态
+//            boolean isLogin = getArguments().getBoolean("isLogin", false);
+//            if(isLogin){
+//                goLogin();
+//            }else{
+                LiveMatchDetailActivity.start(context, null);
+//            }
         }
 
         @Override
         public void onBind(@NonNull BindingAdapter.BindingViewHolder bindingViewHolder, @NonNull View view, int itemViewType) {
-
+            mHolder = bindingViewHolder;
         }
     };
     public FetchListener<List<FrontLivesResponse>> frontLivesResponseFetchListener;
@@ -109,6 +123,10 @@ public class LiveAnchorModel extends BindModel {
         }
         datas.set(bindModels);
         notifyChange();
+    }
+
+    private void goLogin() {
+        ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_LOGIN_REGISTER).navigation();
     }
 
 }

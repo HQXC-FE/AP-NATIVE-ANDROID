@@ -21,6 +21,9 @@ dependencies {
     api project(':library-base')
     api project(':library-res')
     implementation project(':library-service')
-    //组件中依赖阿里路由编译框架
+    implementation project(':gsyVideoPlayer-java')
+    implementation project(":gsyVideoPlayer")
+    implementation project(':module-bet')
+    //组件依赖基础库
     kapt rootProject.ext.dependencies["arouter-compiler"]
 }
