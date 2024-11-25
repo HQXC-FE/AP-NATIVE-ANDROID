@@ -52,7 +52,8 @@
     <color name="clr_txt_mouse3">#5C5C5C</color>
     <color name="clr_txt_mouse4">#949292</color>
     <color name="clr_txt_mouse5">#1E1E1E</color>
-    <color name="clr_txt_login_page">#FFF8F8</color>
+    <color name="clr_txt_FFF8F8">#FFF8F8</color>
+    <color name="clr_txt_et_hint_51463F">#51463F</color>
     <!-- 点缀色 -->
     <color name="clr_main_31">#FF6C00</color>
     <color name="clr_main_32">#FF1388</color>
@@ -574,5 +575,7 @@
     <color name="clr_txt_fastest_low">#51FF6D</color>
     <color name="clr_popwindow_bg">#27211F</color>
     <color name ="clr_txt_hit">#51463F</color>
+    <!-- 安全中心-->
+    <color name="clr_safe_center_bg_dialog">#27211F</color>
 
 </resources>

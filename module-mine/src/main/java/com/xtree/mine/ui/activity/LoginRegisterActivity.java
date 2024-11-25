@@ -28,6 +28,8 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.SPUtil;
 import com.xtree.base.utils.TagUtils;
+import com.xtree.base.widget.LoadingDialog;
+import com.xtree.base.widget.MsgDialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.data.Spkey;
@@ -248,6 +250,11 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
 
         });
 
+        int logoutStatusCode = intent.getIntExtra("logoutStatusCode", -1);
+        if (logoutStatusCode == HttpCallBack.CodeRule.CODE_20106) {
+            showRepDeviceLOut();
+        }
+
     }
 
     private void showAgreementDialog(CheckBox checkBox) {
@@ -375,6 +382,25 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         showChangeLoginPSWPopView.show();
     }
 
+
+    private void showRepDeviceLOut() {
+        if (ppw == null) {
+            ppw = new XPopup.Builder(this).asCustom(new MsgDialog(this, null, "当前账号在其他设备登录，请检查账号登陆情况后重试",
+                    true, new MsgDialog.ICallBack() {
+                @Override
+                public void onClickLeft() {
+                }
+
+                @Override
+                public void onClickRight() {
+                    ppw.dismiss();
+                }
+            }));
+        }
+        ppw.show();
+    }
+
+
     private void goMain() {
         ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -383,7 +409,8 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
     }
 
     private void goForgetPassword() {
-        startContainerFragment(RouterFragmentPath.Mine.PAGER_FORGET_PASSWORD); // 忘记密码
+        // startContainerFragment(RouterFragmentPath.Mine.PAGER_FORGET_PASSWORD); // 忘记密码
+        ToastUtils.showShort("请联系上级处理~");
     }
 
     private SecretKey checkSecretKey() throws Exception {

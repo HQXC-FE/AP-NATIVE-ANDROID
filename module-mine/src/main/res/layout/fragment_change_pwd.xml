@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/pop_window_bg">
+        android:background="@color/clr_bg_main_black">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_title"
@@ -28,6 +28,7 @@
                 android:paddingBottom="12dp"
                 android:text="@string/txt_login_pwd_update"
                 android:textStyle="bold"
+                android:textColor="@color/clr_txt_FFF8F8"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -61,6 +62,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:visibility="gone"
                 android:background="@color/clr_grey_080"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@string/txt_pwd_should_6_16"
-            android:textColor="@color/clr_txt_warn"
+            android:textColor="#736760"
             android:textSize="@dimen/bt_text_12sp"
             app:layout_constraintEnd_toEndOf="@+id/et_new_pwd"
             app:layout_constraintStart_toStartOf="@+id/et_new_pwd"
@@ -143,11 +145,11 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/bg_btn_selector"
+            android:background="@drawable/bt_bg_login_button"
             android:gravity="center"
             android:padding="10dp"
             android:text="@string/txt_confirm"
-            android:textColor="@color/clr_text_code_selector"
+            android:textColor="@color/clr_txt_FFF8F8"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

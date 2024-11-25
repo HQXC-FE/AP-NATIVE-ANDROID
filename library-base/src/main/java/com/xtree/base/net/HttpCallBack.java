@@ -107,7 +107,8 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                 SPUtils.getInstance().remove(SPKeyGlobal.MSG_PERSON_INFO);
                 RetrofitClient.init();
                 ToastUtils.showShort("请重新登录");
-                ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_LOGIN_REGISTER).navigation();
+                ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_LOGIN_REGISTER)
+                        .withInt("logoutStatusCode",status).navigation();
                 break;
             case HttpCallBack.CodeRule.CODE_20208:
             case HttpCallBack.CodeRule.CODE_30018:
@@ -181,7 +182,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         static final int CODE_20101 = 20101;
         static final int CODE_20102 = 20102;
         static final int CODE_20103 = 20103;
-        static final int CODE_20106 = 20106; // KICKED = '账号已在其他地方登录，请重新登录',
+        public static final int CODE_20106 = 20106; // KICKED = '账号已在其他地方登录，请重新登录',
         static final int CODE_20107 = 20107; // 长时间未操作，请重新登录
         static final int CODE_20111 = 20111;
         public static final int CODE_20208 = 20208; // 异地登录(本次登录并非常用设备或地区， 需要进行安全验证)

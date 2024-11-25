@@ -5,7 +5,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/clr_bg_main_black"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_title"
@@ -20,6 +22,7 @@
                 android:paddingBottom="12dp"
                 android:text="@string/txt_funds_pwd_update"
                 android:textStyle="bold"
+                android:textColor="@color/clr_txt_FFF8F8"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -54,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/clr_grey_080"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -62,7 +66,7 @@
 
         <EditText
             android:id="@+id/et_pwd"
-            style="@style/style_edt_change_pwd"
+            style="@style/style_edt_pwd"
             android:layout_marginStart="16dp"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="16dp"
@@ -81,7 +85,7 @@
 
         <EditText
             android:id="@+id/et_new_pwd"
-            style="@style/style_edt_change_pwd"
+            style="@style/style_edt_pwd"
             android:layout_marginTop="20dp"
             android:hint="新密码长度为6-16字符，包含数字和字母"
             android:maxLength="16"
@@ -98,7 +102,7 @@
 
         <EditText
             android:id="@+id/et_again_pwd"
-            style="@style/style_edt_change_pwd"
+            style="@style/style_edt_pwd"
             android:layout_marginTop="20dp"
             android:hint="请再次输入新密码"
             android:maxLength="16"
@@ -120,11 +124,11 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/bg_btn_selector"
+            android:background="@drawable/bt_bg_login_button"
             android:gravity="center"
             android:padding="10dp"
             android:text="@string/txt_confirm"
-            android:textColor="@color/clr_text_code_selector"
+            android:textColor="@color/clr_txt_FFF8F8"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

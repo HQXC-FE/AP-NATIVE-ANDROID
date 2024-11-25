@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/clr_bg_main"
+        android:background="@color/clr_bg_main_black"
         android:orientation="vertical"
         tools:context=".ui.fragment.SecurityCenterFragment">
 
@@ -28,6 +28,7 @@
                 android:paddingBottom="12dp"
                 android:text="@string/txt_security_center"
                 android:textStyle="bold"
+                android:textColor="@color/clr_txt_FFF8F8"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -45,7 +46,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/clr_grey_080"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -55,7 +55,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/clr_main_06"
+            android:background="@drawable/acc_center_top_bg"
             android:gravity="center"
             android:paddingBottom="@dimen/layout_margin">
 
@@ -75,7 +75,7 @@
             android:layout_marginTop="-10dp"
             android:layout_marginEnd="@dimen/layout_margin"
             android:layout_marginBottom="@dimen/layout_margin"
-            android:background="@drawable/bg_white_12"
+            android:background="@drawable/bg_light_dark_12"
             android:elevation="2dp"
             android:orientation="vertical">
 
@@ -85,7 +85,7 @@
                 android:drawableStart="@mipmap/me_sc_pwd"
                 android:text="@string/txt_login_pwd" />
 
-            <View style="@style/style_dividing_line" />
+            <View style="@style/style_acc_dividing_line" />
 
             <TextView
                 android:id="@+id/tvw_funds_pwd"
@@ -93,7 +93,7 @@
                 android:drawableStart="@mipmap/me_sc_funds_pwd"
                 android:text="@string/txt_funds_pwd" />
 
-            <View style="@style/style_dividing_line" />
+            <View style="@style/style_acc_dividing_line" />
 
             <TextView
                 android:id="@+id/tvw_pwd_safe"
@@ -101,7 +101,7 @@
                 android:drawableStart="@mipmap/me_sc_pwd_safe"
                 android:text="@string/txt_pwd_safe" />
 
-            <View style="@style/style_dividing_line" />
+            <View style="@style/style_acc_dividing_line" />
 
             <TextView
                 android:id="@+id/tvw_google"
@@ -109,7 +109,7 @@
                 android:drawableStart="@mipmap/me_sc_google"
                 android:text="@string/txt_google_code" />
 
-            <View style="@style/style_dividing_line" />
+            <View style="@style/style_acc_dividing_line" />
 
             <TextView
                 android:id="@+id/tvw_phone"
@@ -117,7 +117,7 @@
                 android:drawableStart="@mipmap/me_sc_phone"
                 android:text="@string/txt_bind_phone" />
 
-            <View style="@style/style_dividing_line" />
+            <View style="@style/style_acc_dividing_line" />
 
             <TextView
                 android:id="@+id/tvw_email"

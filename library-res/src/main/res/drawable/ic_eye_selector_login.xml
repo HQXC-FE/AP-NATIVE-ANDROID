@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@mipmap/cm_ic_eye_open_login" android:state_selected="true" />
+    <item android:drawable="@mipmap/cm_ic_eye_open_login" android:state_checked="true" />
+    <item android:drawable="@mipmap/cm_ic_eye_close_login" />
+</selector>

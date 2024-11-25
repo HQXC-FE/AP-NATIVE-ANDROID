@@ -60,7 +60,7 @@ public class FundPassWordFragment extends BottomPopupView {
 
     @Override
     protected int getMaxHeight() {
-        return (XPopupUtils.getScreenHeight(getContext()) * 80 / 100);
+        return (XPopupUtils.getScreenHeight(getContext()) * 40 / 100);
     }
 
     @Override
@@ -169,4 +169,5 @@ public class FundPassWordFragment extends BottomPopupView {
         map.put("secpass", inputString);
         viewModel.getCheckPass(map);
     }
+
 }
