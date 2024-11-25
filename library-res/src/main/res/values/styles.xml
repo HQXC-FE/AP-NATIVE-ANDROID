@@ -76,8 +76,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/layout_margin</item>
         <item name="android:layout_marginTop">@dimen/layout_margin</item>
-        <item name="android:textColor">@color/clr_txt_black_01</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <!-- 首页-左边的游戏类型 -->
