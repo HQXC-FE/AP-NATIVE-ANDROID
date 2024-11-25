@@ -17,6 +17,7 @@ import com.xtree.base.adapter.CacheViewHolder;
 import com.xtree.base.adapter.CachedAutoRefreshAdapter;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.widget.LoadingDialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.FragmentBindUsdtBinding;
@@ -36,14 +37,11 @@ import me.xtree.mvvmhabit.base.BaseFragment;
 @Route(path = RouterFragmentPath.Mine.PAGER_BIND_USDT)
 public class BindUsdtFragment extends BaseFragment<FragmentBindUsdtBinding, BindUsdtViewModel> {
 
+    UserUsdtJumpVo mUserUsdtJumpVo;
+    ItemBindCardBinding binding2;
+    CachedAutoRefreshAdapter<UsdtVo> mAdapter;
     private String tokenSign = "";
     private String mark = "bindusdt";
-
-    UserUsdtJumpVo mUserUsdtJumpVo;
-
-    ItemBindCardBinding binding2;
-
-    CachedAutoRefreshAdapter<UsdtVo> mAdapter;
 
     public BindUsdtFragment() {
     }
@@ -142,6 +140,7 @@ public class BindUsdtFragment extends BaseFragment<FragmentBindUsdtBinding, Bind
         if (mUserUsdtJumpVo == null) {
             CfLog.e("***** args is null... ");
         }
+        LoadingDialog.show(getContext());
     }
 
     @Override
