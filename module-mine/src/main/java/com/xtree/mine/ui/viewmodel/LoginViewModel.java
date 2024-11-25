@@ -124,11 +124,6 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
 
                     }
 
-                    public void onFail30004(BusinessException t) {
-                        if (((LoginResultVo) t.data).frozentype == 1) {
-                            ToastUtils.showLong("用户已被冻结");
-                        }
-                    }
                 });
         addSubscribe(disposable);
     }
@@ -301,11 +296,6 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
 
                     }
 
-                    public void onFail30004(BusinessException t) {
-                        if (((LoginResultVo) t.data).frozentype == 1) {
-                            ToastUtils.showLong("用户已被冻结");
-                        }
-                    }
                 });
         addSubscribe(disposable);
     }

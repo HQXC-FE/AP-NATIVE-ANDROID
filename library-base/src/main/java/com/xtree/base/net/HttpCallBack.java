@@ -73,8 +73,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             case CodeRule.CODE_10039:
             case CodeRule.CODE_20203:
             case CodeRule.CODE_30004:
-                KLog.i(baseResponse);
-                onFail30004(ex);
+                ToastUtils.showShort(baseResponse.getMessage());
                 break;
             //case HttpCallBack.CodeRule.CODE_510:
             //    //无效的Token，提示跳入登录页
@@ -207,12 +206,6 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
 
     }
 
-    /**
-     * 用户已被冻结
-     */
-    public void onFail30004(BusinessException t) {
-
-    }
 
     @Override
     public void onComplete() {
