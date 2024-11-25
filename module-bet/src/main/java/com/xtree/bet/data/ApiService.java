@@ -11,6 +11,7 @@ import com.xtree.bet.bean.response.fb.BtConfirmInfo;
 import com.xtree.bet.bean.response.fb.MatchInfo;
 import com.xtree.bet.bean.response.fb.MatchListRsp;
 import com.xtree.bet.bean.response.fb.StatisticalInfo;
+import com.xtree.bet.bean.response.pm.MatchListRspTemp;
 import com.xtree.bet.bean.response.pm.MenuInfo;
 
 import java.util.List;
@@ -18,7 +19,10 @@ import java.util.Map;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.http.BaseResponse;
+import me.xtree.mvvmhabit.http.BaseTempResponse;
+import me.xtree.mvvmhabit.http.JsonResponse;
 import me.xtree.mvvmhabit.http.PMBaseResponse;
+import me.xtree.mvvmhabit.http.PMBaseTempResponse;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -59,7 +63,7 @@ public interface ApiService {
      * 获取 PM体育请求服务地址
      * @return
      */
-    @POST("/api/sports/obg/getToken?cachedToken=0")
+    @POST("/api/sports/obg/getToken?cachedToken=1")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<PMService>> getPMGameTokenApi();
 
@@ -67,7 +71,7 @@ public interface ApiService {
      * 获取 PM杏彩体育2请求服务地址
      * @return
      */
-    @POST("/api/sports/obgzy/getToken?cachedToken=0")
+    @POST("/api/sports/obgzy/getToken?cachedToken=1")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<PMService>> getPMXCGameTokenApi();
 
@@ -142,14 +146,14 @@ public interface ApiService {
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/matchesPagePB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMBaseResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> matchesPagePB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> matchesPagePB(@Body PMListReq pmListReq);
     /**
      * 获取 PM赛事列表 分页获取非滚球赛事信息
      * @return
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/noLiveMatchesPagePB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMBaseResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> noLiveMatchesPagePB(@Body PMListReq pmListReq);
+    Flowable<BaseTempResponse<MatchListRspTemp>> noLiveMatchesPagePB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表
@@ -157,7 +161,7 @@ public interface ApiService {
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/liveMatchesPB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMBaseResponse<List<MatchInfo>>> liveMatchesPB(@Body PMListReq pmListReq);
+    Flowable<BaseTempResponse<MatchListRspTemp>> liveMatchesPB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表
@@ -165,13 +169,6 @@ public interface ApiService {
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/getMatchBaseInfoByMidsPB")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMBaseResponse<List<com.xtree.bet.bean.response.pm.MatchInfo>>> getMatchBaseInfoByMidsPB(@Body PMListReq pmListReq);
+    Flowable<PMBaseResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> getMatchBaseInfoByMidsPB(@Body PMListReq pmListReq);
 
-    /**
-     * 按运动、分类类型统计可投注的赛事个数
-     * @return
-     */
-    @GET("/api/sports/obgzy/forward?api=/yewu11/pub/v1/m/menu/initPB")
-    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMBaseResponse<List<MenuInfo>>> initPB(@QueryMap Map<String, String> map);
 }

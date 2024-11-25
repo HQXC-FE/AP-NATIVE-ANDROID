@@ -3,16 +3,16 @@ package com.xtree.bet.ui.viewmodel.callback;
 import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
 import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
 import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401038;
-import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
 import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.net.PMHttpTempCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
+import com.xtree.bet.bean.response.pm.MatchListRspTemp;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.LeaguePm;
 import com.xtree.bet.bean.ui.Match;
@@ -29,10 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 import me.xtree.mvvmhabit.http.ResponseThrowable;
-import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class PMListCallBack extends PMHttpCallBack<List<MatchInfo>> {
+public class PMListTempCallBack extends PMHttpTempCallBack<MatchListRspTemp> {
 
     private PMMainViewModel mViewModel;
     private boolean mHasCache;
@@ -101,9 +100,9 @@ public class PMListCallBack extends PMHttpCallBack<List<MatchInfo>> {
         }
     }
 
-    public PMListCallBack(PMMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
-                          int playMethodType, int sportPos, String sportId, int orderBy, List<Long> leagueIds,
-                          int searchDatePos, int oddType, List<Long> matchids/*, boolean isStepSecond*/) {
+    public PMListTempCallBack(PMMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
+                              int playMethodType, int sportPos, String sportId, int orderBy, List<Long> leagueIds,
+                              int searchDatePos, int oddType, List<Long> matchids/*, boolean isStepSecond*/) {
         mViewModel = viewModel;
         mHasCache = hasCache;
         mIsTimerRefresh = isTimerRefresh;
@@ -121,6 +120,7 @@ public class PMListCallBack extends PMHttpCallBack<List<MatchInfo>> {
 
     @Override
     protected void onStart() {
+        System.out.println("================ Temp onStart 1111===============");
         super.onStart();
         if (!mIsTimerRefresh && !mHasCache) {
             mViewModel.getUC().getShowDialogEvent().postValue("");
@@ -128,14 +128,14 @@ public class PMListCallBack extends PMHttpCallBack<List<MatchInfo>> {
     }
 
     @Override
-    public void onResult(List<MatchInfo> data) {
-        System.out.println("================ onResult 1111===============");
+    public void onResult(MatchListRspTemp data) {
+        System.out.println("================ Temp onResult 1111===============");
         if (mIsTimerRefresh) { // 定时刷新赔率变更
-            if (data.size() != mMatchids.size()) {
+            if (data.getData().size() != mMatchids.size()) {
                 //List<Long> matchIdList = new ArrayList<>();
                 mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);
             } else {
-                setOptionOddChange(data);
+                setOptionOddChange(data.getData());
                 mViewModel.leagueLiveTimerListData.postValue(mLeagueList);
             }
         } else {  // 获取今日中的全部滚球赛事列表
@@ -147,18 +147,23 @@ public class PMListCallBack extends PMHttpCallBack<List<MatchInfo>> {
             }
             mViewModel.firstNetworkFinishData.call();
             mIsStepSecond = true;
-            mLiveMatchList.addAll(data);
+            mLiveMatchList.addAll(data.getData());
             if(TextUtils.isEmpty(mViewModel.mSearchWord)) {
-                leagueGoingList(data);
+                System.out.println("================ onResult 22222 ===============");
+                System.out.println("================ onResult 22222 data.getData() ==============="+data.getData());
+                leagueGoingList(data.getData());
             }
             mViewModel.saveLeague(this);
             mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, 2, mSearchDatePos, mOddType, false, mIsRefresh, mIsStepSecond);
+            //if (mCurrentPage == 1) {
+                //SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + mPlayMethodType + mSearchDatePos + mSportId, new Gson().toJson(mLeagueList));
+            //}
         }
     }
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("================ onError 1111===============");
+        System.out.println("================ Temp onError 1111===============");
         mViewModel.getUC().getDismissDialogEvent().call();
         //if (!mIsTimerRefresh) {
             if (t instanceof ResponseThrowable) {

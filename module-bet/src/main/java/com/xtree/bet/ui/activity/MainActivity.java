@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
+import com.drake.net.reflect.TypeToken;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
@@ -36,6 +37,7 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
+import com.xtree.base.GetJsonDataUtil;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
@@ -53,6 +55,8 @@ import com.xtree.bet.R;
 import com.xtree.bet.bean.request.UploadExcetionReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.fb.HotLeague;
+import com.xtree.bet.bean.response.pm.MatchInfo;
+import com.xtree.bet.bean.response.pm.MatchListRsp;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.constant.Constants;
@@ -91,6 +95,9 @@ import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
 import me.xtree.mvvmhabit.base.BaseActivity;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.Messenger;
+import me.xtree.mvvmhabit.http.BaseResponse;
+import me.xtree.mvvmhabit.http.BaseTempResponse;
+import me.xtree.mvvmhabit.http.PMBaseResponse;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -397,6 +404,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         binding.ivwGameSearch.setOnClickListener(this);
         binding.tvwCancel.setOnClickListener(this);
 
+
         tabSportAdapter = new TabSportAdapter(new ArrayList<>(), viewModel.getMatchGames());
         tabSportAdapter.setAnimationEnable(false);
         binding.tabSportType.setAdapter(tabSportAdapter);
@@ -408,6 +416,13 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         initNetFloatWindows();
 
         setChangeDomainVisible();
+
+//        GetJsonDataUtil getJsonDataUtil = new GetJsonDataUtil();
+//        String jsonData = getJsonDataUtil.getJson(this, "test.json");
+//        System.out.println("============ $$$$$$ jsonData 11111 ================="+jsonData);
+//        Gson gson = new Gson();
+//        BaseResponse<MatchListRsp> bigData = gson.fromJson(jsonData, new TypeToken<BaseResponse<com.xtree.bet.bean.response.pm.MatchListRsp>>() {}.getType());
+//        System.out.println("============ $$$$$$ list 22222 ================="+bigData.getData().data.size());
 
         //今日\滚球\早盘\串光\冠军切换
         binding.tabPlayMethod.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -1337,33 +1352,45 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
         viewModel.leagueLiveListData.observe(this, leagueList -> {
             if (playMethodType == 1) {
+                System.out.println("=========== leagueLiveListData.observe ============");
+                System.out.println("=========== leagueList.size ============"+leagueList.size());
                 this.mLeagueList = leagueList;
                 updateData();
             }
         });
 
         viewModel.leagueLiveTimerListData.observe(this, leagueList -> {
+            System.out.println("=========== leagueLiveTimerListData.observe ============");
+            System.out.println("=========== leagueList.size ============"+leagueList.size());
             this.mLeagueList = leagueList;
             updateData();
         });
 
         viewModel.leagueNoLiveListData.observe(this, leagueAdapters -> {
             this.mLeagueList = leagueAdapters;
+            System.out.println("=========== leagueNoLiveListData.observe ============");
+            System.out.println("=========== leagueList.size ============"+leagueAdapters.size());
             updateData();
         });
 
         viewModel.leagueNoLiveTimerListData.observe(this, leagueAdapters -> {
             this.mLeagueList = leagueAdapters;
+            System.out.println("=========== leagueNoLiveTimerListData.observe ============");
+            System.out.println("=========== leagueList.size ============"+leagueAdapters.size());
             updateData();
         });
 
         viewModel.championMatchTimerListData.observe(this, championMatcheList -> {
             mChampionMatchList = championMatcheList;
+            System.out.println("=========== championMatchTimerListData.observe ============");
+            System.out.println("=========== leagueList.size ============"+championMatcheList.size());
             updateData();
         });
 
         viewModel.championMatchListData.observe(this, championMatcheList -> {
             mChampionMatchList = championMatcheList;
+            System.out.println("=========== championMatchListData.observe ============");
+            System.out.println("=========== leagueList.size ============"+championMatcheList.size());
             updateData();
         });
 
@@ -1554,6 +1581,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private void updateData() {
+        System.out.println("=============== updateData  ==============");
         if (playMethodPos == 4) {
             updateChampionMatchData();
         } else {
@@ -1565,6 +1593,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
      * 更新联赛数据
      */
     private void updateLeagueData() {
+        System.out.println("=============== updateLeagueData mLeagueList =============="+mLeagueList.size());
         if (mLeagueAdapter == null) {
             mLeagueAdapter = new LeagueAdapter(MainActivity.this, mLeagueList);
             initLeagueListView();
@@ -1601,10 +1630,13 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
             }
         }
+
         if (mLeagueList.isEmpty()) {
+            System.out.println("========= mLeagueList llEmpty VISIBLE ===========");
             binding.nsvLeague.setVisibility(View.GONE);
             binding.llEmpty.llEmpty.setVisibility(View.VISIBLE);
         } else {
+            System.out.println("========= mLeagueList llEmpty GONE ===========");
             binding.nsvLeague.setVisibility(View.VISIBLE);
             binding.llEmpty.llEmpty.setVisibility(View.GONE);
         }

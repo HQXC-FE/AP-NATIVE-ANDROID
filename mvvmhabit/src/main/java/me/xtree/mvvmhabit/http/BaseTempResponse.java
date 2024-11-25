@@ -3,12 +3,14 @@ package me.xtree.mvvmhabit.http;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * 该类仅供参考，实际业务返回的固定字段, 根据需求来定义
  */
-public class BaseResponse<T> {
+public class BaseTempResponse<T> {
     private int status = -1;
-    private int code = -1;
+    private int code = 0;
     private boolean success;
     @SerializedName(value = "message", alternate = {"msg", "sMsg"})
     @Expose
@@ -44,7 +46,7 @@ public class BaseResponse<T> {
                 "status=" + status +
                 ", message='" + message + '\'' +
                 ", timestamp=" + timestamp +
-                ", data=" + data +
+                //", data=" + data +
                 '}';
     }
 
@@ -56,10 +58,6 @@ public class BaseResponse<T> {
         return code;
     }
 
-    public String getMsg(){
-        return message;
-    }
-
     public void setStatus(int status) {
         this.status = status;
     }
@@ -68,9 +66,9 @@ public class BaseResponse<T> {
         return data;
     }
 
-    public void setData(T data) {
-        this.data = data;
-    }
+//    public void setData(List<T> data) {
+//        this.data = data;
+//    }
 
 //        public T getData() {
 //        if (dataBean == null) {

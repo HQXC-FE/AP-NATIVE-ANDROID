@@ -27,6 +27,7 @@ import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.internal.platform.Platform;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -103,15 +104,15 @@ public class RetrofitClient {
                 .addInterceptor(new UrlModifyingInterceptor())
                 .addInterceptor(new ExceptionInterceptor())
                 .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
-//                .addInterceptor(new HttpLoggingInterceptor(message -> KLog.d(message)).setLevel(HttpLoggingInterceptor.Level.BODY))
-                .addInterceptor(new LoggingInterceptor
-                        .Builder()//构建者模式
-                        .loggable(BuildConfig.DEBUG) //是否开启日志打印
-                        .setLevel(Level.BODY) //打印的等级
-                        .log(Platform.INFO) // 打印类型
-                        .request("Request") // request的Tag
-                        .response("Response")// Response的Tag
-                        .build())
+                .addInterceptor(new HttpLoggingInterceptor(message -> KLog.d(message)).setLevel(HttpLoggingInterceptor.Level.BODY))
+//                .addInterceptor(new LoggingInterceptor
+//                        .Builder()//构建者模式
+//                        .loggable(BuildConfig.DEBUG) //是否开启日志打印
+//                        .setLevel(Level.BODY) //打印的等级
+//                        .log(Platform.INFO) // 打印类型
+//                        .request("Request") // request的Tag
+//                        .response("Response")// Response的Tag
+//                        .build())
                 .dns(DnsFactory.getDns())
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
