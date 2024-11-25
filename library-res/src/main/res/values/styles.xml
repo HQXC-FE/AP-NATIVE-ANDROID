@@ -695,7 +695,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/layout_margin</item>
         <item name="android:layout_marginEnd">@dimen/layout_margin</item>
-        <item name="android:background">@mipmap/cm_bg_input_wht</item>
+        <item name="android:background">@drawable/bg_edit_input</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:hint"></item>
         <item name="android:inputType">text</item>
@@ -704,7 +704,7 @@
         <item name="android:padding">8dp</item>
         <item name="android:tag"></item>
         <item name="android:text"></item>
-        <item name="android:textColor">@color/clr_grey_80</item>
+        <item name="android:textColor">@color/clr_txt_hit</item>
         <item name="android:textColorHint">@color/clr_txt_grey_03</item>
         <item name="android:textSize">14sp</item>
     </style>
