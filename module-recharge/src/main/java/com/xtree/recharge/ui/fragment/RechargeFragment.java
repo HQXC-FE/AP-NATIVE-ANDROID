@@ -21,6 +21,7 @@ import androidx.core.widget.TextViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -35,6 +36,7 @@ import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
+import com.xtree.base.utils.CommonUtil;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.NumberUtils;
 import com.xtree.base.utils.TagUtils;
@@ -52,6 +54,7 @@ import com.xtree.recharge.data.source.request.ExCreateOrderRequest;
 import com.xtree.recharge.databinding.FragmentRechargeBinding;
 import com.xtree.recharge.ui.viewmodel.RechargeViewModel;
 import com.xtree.recharge.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.recharge.ui.widget.SpacesItemDecoration;
 import com.xtree.recharge.vo.BankCardVo;
 import com.xtree.recharge.vo.BannersVo;
 import com.xtree.recharge.vo.HiWalletVo;
@@ -89,9 +92,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     private static final long REFRESH_DELAY = 30 * 60 * 1000L; // 刷新间隔等待时间(如果长时间没刷新)
     private static final String ONE_PAY_FIX = "onepayfix"; // 极速充值包含的关键字
     private static final String KEY_MANUAL = "manual"; // 人工充值
-
-    private Method method;
-    private Object object;
     //RechargeAdapter rechargeAdapter;
     RechargeTypeAdapter mTypeAdapter; //顶部推荐充值渠道适配器
     RechargeChannelAdapter mChannelAdapter;//充值渠道适配器
@@ -122,7 +122,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     String[] arrayBrowser = new String[]{"onepayfix3", "onepayfix4", "onepayfix5", "onepayfix6"};
     List<String> payCodeList = new ArrayList<>(); // 含弹出支付窗口的充值渠道类型列表(从缓存加载用)
     long lastRefresh = System.currentTimeMillis(); // 上次刷新时间
-
     Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -152,6 +151,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             }
         }
     };
+    private Method method;
+    private Object object;
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -236,6 +237,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         binding.rcvPmt.setLayoutManager(new GridLayoutManager(getContext(), 4));
         //binding.rcvPmt.setAdapter(rechargeAdapter);
         binding.rcvPmt.setAdapter(mTypeAdapter);
+        binding.rcvPmt.addItemDecoration(new SpacesItemDecoration(CommonUtil.dip2px(getContext(), 5), RecyclerView.HORIZONTAL));
         binding.rcvPmt.setNestedScrollingEnabled(false); // 禁止滑动
 
         mChannelAdapter = new RechargeChannelAdapter(getContext(), vo -> {
@@ -246,9 +248,10 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         });
         binding.rcvPayChannel.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.rcvPayChannel.setAdapter(mChannelAdapter);
-
+        binding.rcvPayChannel.addItemDecoration(new SpacesItemDecoration(CommonUtil.dip2px(getContext(), 8), RecyclerView.HORIZONTAL));
         mAmountAdapter = new AmountAdapter(getContext(), str -> binding.edtAmount.setText(str));
         binding.rcvAmount.setAdapter(mAmountAdapter);
+        binding.rcvAmount.addItemDecoration(new SpacesItemDecoration(CommonUtil.dip2px(getContext(), 8), RecyclerView.HORIZONTAL));
         binding.rcvAmount.setLayoutManager(new GridLayoutManager(getContext(), 4));
 
         binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
@@ -382,12 +385,12 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                     mAmountAdapter.setAmount(amount);
                     mAmountAdapter.notifyDataSetChanged();
                 }
-                if (amount.length() > 0){
+                if (amount.length() > 0) {
                     binding.btnNext.setEnabled(true); // 默认禁用.
-                    binding.btnNext.setBackground(getContext().getDrawable(R.mipmap.cm_btn_recharge_long_disable));
-                }else{
+//                    binding.btnNext.setBackground(getContext().getDrawable(R.mipmap.cm_btn_recharge_long_disable));
+                } else {
                     binding.btnNext.setEnabled(false); // 默认禁用.
-                    binding.btnNext.setBackground(getContext().getDrawable(R.mipmap.cm_btn_recharge_long_press));
+//                    binding.btnNext.setBackground(getContext().getDrawable(R.mipmap.cm_btn_recharge_long_press));
                 }
                 setNextButton();
             }
