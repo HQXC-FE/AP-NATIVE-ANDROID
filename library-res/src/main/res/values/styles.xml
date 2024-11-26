@@ -128,13 +128,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">2dp</item>
-        <item name="android:textColor">@color/clr_txt_mouse6</item>
+        <item name="android:textColor">@color/clr_txt_02</item>
         <item name="android:textSize">12sp</item>
     </style>
     <!-- 我的-12个菜单 黑色字 -->
     <style name="style_menu_black" parent="style_menu_white">
         <item name="android:minEms">4</item>
-        <item name="android:textColor">@color/clr_txt_mouse6</item>
+        <item name="android:textColor">@color/clr_txt_02</item>
     </style>
 
     <!-- 我的-安全中心 菜单 -->
@@ -468,7 +468,7 @@
         <item name="android:minEms">4</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
-        <item name="android:textColor">@color/clr_filter_txt_gray</item>
+        <item name="android:textColor">@color/clr_purple_13</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -821,7 +821,7 @@
     <style name="style_trans_value" parent="style_trans_name">
         <item name="android:hint">0.0000</item>
         <item name="android:textColorHint">@color/clr_grey_50</item>
-        <item name="android:textColor">@color/clr_txt_mouse6</item>
+        <item name="android:textColor">@color/clr_txt_02</item>
     </style>
 
     <!-- 转账页 灰色区 分割线 -->
@@ -995,7 +995,7 @@
 
     <!-- 报表 列表项 值 黑色 靠左 -->
     <style name="style_item_report_value" parent="style_item_report_base">
-        <item name="android:textColor">@color/clr_filter_txt_black</item>
+        <item name="android:textColor">@color/clr_txt_02</item>
     </style>
     <!-- 报表 列表项 值 黑色 居中 -->
     <style name="style_item_report_value_center" parent="style_item_report_value">
@@ -1160,7 +1160,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/clr_txt_mouse6</item>
+        <item name="android:textColor">@color/clr_txt_02</item>
         <item name="android:textSize">12sp</item>
     </style>
 

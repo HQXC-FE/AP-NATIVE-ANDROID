@@ -6,7 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/clr_bg_main"
+        android:background="@color/clr_bg_main_black"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,11 +82,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/layout_margin"
-            android:background="@drawable/bg_white_6"
+            android:background="@drawable/bg_main_6"
             android:orientation="vertical"
             android:padding="@dimen/layout_margin"
             android:visibility="gone"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -115,21 +115,21 @@
                 <TextView
                     android:id="@+id/tvw_number"
                     style="@style/style_item_report_title"
-                    android:textColor="@color/black"
+                    android:textColor="@color/clr_txt_02"
                     android:textStyle="bold"
                     tools:text="20" />
 
                 <TextView
                     android:id="@+id/tvw_effective"
                     style="@style/style_item_report_title_center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/clr_txt_02"
                     android:textStyle="bold"
                     tools:text="999" />
 
                 <TextView
                     android:id="@+id/tvw_profit"
                     style="@style/style_item_report_title_end"
-                    android:textColor="@color/black"
+                    android:textColor="@color/clr_txt_02"
                     android:textStyle="bold"
                     tools:text="-----" />
 

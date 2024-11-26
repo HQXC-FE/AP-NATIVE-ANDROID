@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/layout_margin"
                     android:text="@string/me_user_name_hint"
-                    android:textColor="@color/clr_txt_mouse6"
+                    android:textColor="@color/clr_txt_02"
                     android:textSize="14sp" />
 
                 <TextView
