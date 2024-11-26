@@ -45,6 +45,11 @@
     <color name="clr_main_23">#AA927A</color>
     <!-- 背景色 -->
     <!--<color name="clr_bg_main">#EBEDF0</color>-->
+    <color name="clr_bg_27211F">#27211F</color>
+    <color name="clr_bg_382E2B">#382E2B</color>
+    <color name="clr_bg_1A1716">#1A1716</color>
+    <color name="clr_bg_736760">#736760</color>
+
 
     <!-- 文字 -->
     <color name="clr_txt">#420C0B</color>
@@ -54,6 +59,8 @@
     <color name="clr_txt_mouse4">#949292</color>
     <color name="clr_txt_mouse5">#1E1E1E</color>
     <color name="clr_txt_FFF8F8">#FFF8F8</color>
+    <color name="clr_txt_D33D3F">#D33D3F</color>
+
     <color name="clr_txt_et_hint_51463F">#51463F</color>
     <!-- 点缀色 -->
     <color name="clr_main_31">#FF6C00</color>
@@ -168,7 +175,7 @@
     <color name="bt_page_bg">#f9f8f4</color>
 
     <!-- 投注页页面各区块背景颜色 -->
-    <color name="bt_page_up_bg">#FFFFFF</color>
+    <color name="bt_page_up_bg">@color/clr_bg_1A1716</color>
 
     <!-- 投注页页面顶部玩法tabIndicator颜色 -->
     <color name="bt_page_top_tab_indicator">#00000000</color>

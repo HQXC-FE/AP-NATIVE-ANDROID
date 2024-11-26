@@ -12,7 +12,7 @@
             android:id="@+id/ll_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/bt_page_bg"
+            android:background="@color/clr_bg_1A1716"
             android:orientation="vertical"
             android:visibility="visible"
             app:layout_constraintTop_toTopOf="parent">
@@ -43,8 +43,9 @@
                     android:layout_marginBottom="4dp"
                     android:layout_marginEnd="25dp"
                     android:layout_centerVertical="true"
+                    android:background="#27211F"
                     android:text="@string/bt_game_going_on"
-                    android:textColor="@color/bt_text_color_primary_1"
+                    android:textColor="@color/clr_txt_FFF8F8"
                     android:textSize="@dimen/bt_text_12sp" />
 
                 <ImageView
