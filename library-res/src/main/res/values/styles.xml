@@ -146,7 +146,7 @@
         <item name="android:drawablePadding">6dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:padding">16dp</item>
-        <item name="android:textColor">@color/clr_txt_FFF8F8</item>
+        <item name="android:textColor">@color/clr_txt_mouse6</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -426,7 +426,7 @@
         <item name="android:minEms">5</item>
         <item name="android:padding">6dp</item>
         <item name="android:text">@string/txt_submit</item>
-        <item name="android:textColor">@color/clr_txt_FFF8F8</item>
+        <item name="android:textColor">@color/clr_txt_mouse6</item>
         <item name="android:textSize">15sp</item>
     </style>
 
@@ -754,7 +754,7 @@
     <style name="style_safe_center_et" parent="style_cm_edt">
         <item name="android:layout_height">48dp</item>
         <item name="android:background">@drawable/bg_safe_center_et</item>
-        <item name="android:textColor">@color/clr_txt_FFF8F8</item>
+        <item name="android:textColor">@color/clr_txt_mouse6</item>
         <item name="android:textColorHint">@color/clr_txt_et_hint_51463F</item>
     </style>
 
@@ -781,7 +781,7 @@
         <item name="android:layout_height">48dp</item>
         <item name="android:background">@drawable/bg_safe_center_et</item>
         <item name="android:drawableStart">@mipmap/ic_pwd_start</item>
-        <item name="android:textColor">@color/clr_txt_FFF8F8</item>
+        <item name="android:textColor">@color/clr_txt_mouse6</item>
         <item name="android:textColorHint">@color/clr_txt_et_hint_51463F</item>
         <item name="android:textSize">@dimen/bt_text_14sp</item>
         <item name="android:inputType">numberPassword</item>
@@ -844,7 +844,7 @@
         <item name="android:hint">@string/txt_enter_login_name</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:lines">1</item>
-        <item name="android:textColor">@color/clr_txt_FFF8F8</item>
+        <item name="android:textColor">@color/clr_txt_mouse6</item>
         <item name="android:textColorHint">@color/clr_txt_et_hint_51463F</item>
     </style>
     <!-- 登录页 密码输入框 -->
@@ -881,8 +881,8 @@
     </style>
 
     <style name="style_login_ckb_normal">
-        <item name="colorAccent">@color/clr_txt_FFF8F8</item>
-        <item name="colorControlNormal">@color/clr_txt_FFF8F8</item>
+        <item name="colorAccent">@color/clr_txt_mouse6</item>
+        <item name="colorControlNormal">@color/clr_txt_mouse6</item>
     </style>
 
     <style name="style_cm_ckb2_normal">
@@ -1237,7 +1237,7 @@
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/clr_txt_FFF8F8</item>
+        <item name="android:textColor">@color/clr_txt_mouse6</item>
         <item name="android:textSize">12sp</item>
     </style>
     <!-- 通用 筛选 标题 外框 -->

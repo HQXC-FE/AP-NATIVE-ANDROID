@@ -6,13 +6,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bt_page_bg">
+        android:background="@color/clr_bg_bet_3">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/pager_bottom_tab"
-            android:background="@color/clr_bg_1A1716"
+            android:background="@color/clr_bg_bet_3"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -59,7 +59,7 @@
                     android:gravity="center"
                     android:padding="2dp"
                     android:text="0.00"
-                    android:textColor="@color/bt_text_color_primary" />
+                    android:textColor="@color/clr_txt_mouse6" />
 
             </RelativeLayout>
 
@@ -75,15 +75,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/rl_play_method"
                 app:tabIndicatorHeight="2dp"
                 app:tabIndicatorFullWidth="false"
-                app:tabIndicatorColor="@color/clr_btn_01"
+                app:tabIndicatorColor="@color/clr_txt_mouse7"
                 app:tabMaxWidth="60dp"
                 app:tabMinWidth="20dp"
                 app:tabMode="scrollable"
                 app:tabPaddingEnd="5dp"
                 app:tabPaddingStart="5dp"
                 app:tabRippleColor="@android:color/transparent"
-                app:tabSelectedTextColor="@color/bt_tab_textcolor_selected"
-                app:tabTextColor="@color/bt_text_color_primary" />
+                app:tabSelectedTextColor="@color/clr_txt_mouse7"
+                app:tabTextColor="@color/clr_txt_mouse7" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_sport_type"
@@ -139,7 +139,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/clr_bg_1A1716"
+                        android:background="@color/clr_bg_bet_3"
                         android:orientation="vertical">
 
                         <com.xtree.bet.weight.AnimatedExpandableListViewMax

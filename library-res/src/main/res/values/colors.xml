@@ -48,10 +48,10 @@
     <color name="clr_main_23">#AA927A</color>
     <!-- 背景色 -->
     <!--<color name="clr_bg_main">#EBEDF0</color>-->
-    <color name="clr_bg_27211F">#27211F</color>
-    <color name="clr_bg_382E2B">#382E2B</color>
-    <color name="clr_bg_1A1716">#1A1716</color>
-    <color name="clr_bg_736760">#736760</color>
+    <color name="clr_bg_bet_1">#27211F</color>
+    <color name="clr_bg_bet_2">#382E2B</color>
+    <color name="clr_bg_bet_3">#1A1716</color>
+    <color name="clr_bg_bet_4">#736760</color>
 
 
     <!-- 文字 -->
@@ -61,8 +61,10 @@
     <color name="clr_txt_mouse3">#5C5C5C</color>
     <color name="clr_txt_mouse4">#949292</color>
     <color name="clr_txt_mouse5">#1E1E1E</color>
-    <color name="clr_txt_FFF8F8">#FFF8F8</color>
-    <color name="clr_txt_D33D3F">#D33D3F</color>
+    <color name="clr_txt_mouse6">#FFF8F8</color>
+    <color name="clr_txt_mouse7">#D33D3F</color>
+    <color name="clr_txt_mouse8">#867163</color>
+    #867163
 
     <color name="clr_txt_736969">#736969</color>
     <color name="clr_txt_et_hint_51463F">#51463F</color>
@@ -156,6 +158,7 @@
 
     <!-- 圆角透明背景颜色，例如投注页右上角显示金额UI -->
     <color name="bt_bg_shape_alpha">#F3F3F3</color>
+    <color name="bt_bg_shape_alpha_1">#27211F</color>
 
     <!-- 投注页字体主题色 -->
     <color name="bt_text_color_primary">@color/clr_txt_black_cm</color>
@@ -179,7 +182,7 @@
     <color name="bt_page_bg">#f9f8f4</color>
 
     <!-- 投注页页面各区块背景颜色 -->
-    <color name="bt_page_up_bg">@color/clr_bg_1A1716</color>
+    <color name="bt_page_up_bg">@color/clr_bg_bet_3</color>
 
     <!-- 投注页页面顶部玩法tabIndicator颜色 -->
     <color name="bt_page_top_tab_indicator">#00000000</color>
