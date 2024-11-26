@@ -191,7 +191,7 @@ public class MemberManagerFragment extends BaseFragment<FragmentMemberManageBind
                         int endIndex = sb.length() - 3;
 
                         sb.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        sb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.textColor)), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        sb.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.clr_txt_02)), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
 
                     if (sb.toString().endsWith(" > ")) {
