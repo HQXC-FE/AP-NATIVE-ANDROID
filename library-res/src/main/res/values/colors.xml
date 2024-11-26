@@ -491,7 +491,8 @@
     <color name="clr_bind_google_key">#E07900</color>
     <color name="clr_me_security_question_text_stroke">@color/clr_gray_6</color>
 
-    <color name="clr_home_top">#2C2A29</color>
+    <color name="clr_home_top">#FFF8F8</color>
+    <color name="clr_home_top2">#D2B19C</color>
 
     <!--    标题-->
     <color name="clr_txt_rebateagrt_title">#FFF8F8</color>
