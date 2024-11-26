@@ -447,7 +447,7 @@
     <color name="cl_amount_bt">@color/clr_main_05</color>
     <color name="cl_withdrawal_amount">#6D6C72</color>
     <color name="cl_withdrawal_tip">#D24859</color>
-    <color name="cl_over_tip">#8F8F8F</color>
+    <color name="cl_over_tip">#736760</color>
     <color name="cl_awards_end">#FFFFFF</color>
     <color name="cl_awards_start">#E7948C</color>
     <color name="clr_e5e7f3">#E5E7F3</color>

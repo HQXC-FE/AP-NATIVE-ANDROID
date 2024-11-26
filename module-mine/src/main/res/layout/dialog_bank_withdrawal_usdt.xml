@@ -13,7 +13,7 @@
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/bg_dialog_top_choose"
+        android:background="@color/clr_bg_main_black"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="USDT提款"
-            android:textColor="@color/clr_filter_txt_black"
+            android:textColor="@color/clr_txt_white_cm"
             android:textSize="15sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="0dp"
-        android:background="@color/clr_white"
+        android:background="@color/clr_bg_main_black"
         android:padding="10dp">
 
         <LinearLayout
@@ -67,7 +67,7 @@
                 android:id="@+id/ll_virtual_top"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
+                android:background="@color/clr_transparent"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="@string/txt_set_withdrawal_request"
-                        android:textColor="@color/clr_choose_20" />
+                        android:textColor="@color/clr_main" />
 
                     <TextView
                         android:id="@+id/tv_confirm_withdrawal_request"
@@ -168,11 +168,9 @@
                         android:orientation="vertical">
 
 
-
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
-                            android:background="@drawable/bg_dialog_withdraw_hint">
+                            android:layout_height="60dp">
 
                             <TextView
                                 android:id="@+id/tv_notice"
@@ -221,7 +219,8 @@
 
                     <View style="@style/style_withdraw_dividing_line" />
 
-                    <LinearLayout style="@style/style_withdraw_confirm_ll"
+                    <LinearLayout
+                        style="@style/style_withdraw_confirm_ll"
                         android:visibility="gone">
 
                         <TextView
@@ -234,7 +233,9 @@
                             tools:text="" />
                     </LinearLayout>
 
-                    <View style="@style/style_withdraw_dividing_line"  android:visibility="gone"/>
+                    <View
+                        style="@style/style_withdraw_dividing_line"
+                        android:visibility="gone" />
 
                     <LinearLayout style="@style/style_withdraw_confirm_ll">
 
@@ -279,8 +280,7 @@
                             android:id="@+id/textView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
-                           />
+                            android:text="" />
 
                         <TextView
                             android:id="@+id/tv_withdrawal_single_show"
@@ -290,8 +290,8 @@
                             android:layout_toRightOf="@id/tv_mini_single_withdrawal"
                             android:text=""
                             android:textColor="@color/red"
-                            tools:text="910191"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            tools:text="910191" />
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -303,7 +303,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ll_virtual_hint"
                     android:layout_marginTop="4dp"
-                    android:background="@drawable/bg_withdraw_money_input"
+                    android:background="@mipmap/cm_bg_input"
                     android:focusable="true"
                     android:focusableInTouchMode="true">
 
@@ -414,7 +414,7 @@
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/bg_withdraw_money_input">
+                                android:background="@mipmap/cm_bg_input">
 
                                 <TextView
                                     android:id="@+id/tv_bind_address"
@@ -517,7 +517,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/me_bg_withdrawal_next"
+                    android:background="@drawable/bg_btn_round_selector"
                     android:text="@string/txt_withdraw_confirm_next"
                     android:textColor="@color/white"
                     android:textSize="16sp" />

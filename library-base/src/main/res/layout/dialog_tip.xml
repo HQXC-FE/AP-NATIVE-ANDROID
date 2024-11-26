@@ -10,17 +10,27 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/ivw_bg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvw_bg"
+            android:layout_width="296dp"
+            android:layout_height="295dp"
+            android:layout_margin="12dp"
             android:layout_marginTop="60dp"
-           android:background="@mipmap/cm_dialog_bg"
-            android:padding="4dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivw_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/clr_popwindow_bg" />
+        </androidx.cardview.widget.CardView>
+
 
         <ImageView
             android:id="@+id/ivw_empty"
@@ -28,8 +38,8 @@
             android:layout_height="16dp"
             android:background="@color/clr_transparent"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@id/ivw_bg"
-            app:layout_constraintStart_toStartOf="@id/ivw_bg" />
+            app:layout_constraintBottom_toTopOf="@id/cvw_bg"
+            app:layout_constraintStart_toStartOf="@id/cvw_bg" />
 
         <ImageView
             android:id="@+id/ivw_bell"
@@ -51,7 +61,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.796"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/ivw_bg" />
+            app:layout_constraintTop_toTopOf="@id/cvw_bg" />
 
         <TextView
             android:id="@+id/tvw_title"
@@ -63,9 +73,9 @@
             android:textColor="@color/clr_txt_white_cm"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/ivw_bg"
-            app:layout_constraintStart_toStartOf="@id/ivw_bg"
-            app:layout_constraintTop_toTopOf="@id/ivw_bg" />
+            app:layout_constraintEnd_toEndOf="@id/cvw_bg"
+            app:layout_constraintStart_toStartOf="@id/cvw_bg"
+            app:layout_constraintTop_toTopOf="@id/cvw_bg" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
@@ -75,8 +85,8 @@
             android:layout_marginEnd="52dp"
             android:layout_marginBottom="18dp"
             app:layout_constraintBottom_toTopOf="@id/layout_tvw"
-            app:layout_constraintEnd_toEndOf="@id/ivw_bg"
-            app:layout_constraintStart_toStartOf="@id/ivw_bg"
+            app:layout_constraintEnd_toEndOf="@id/cvw_bg"
+            app:layout_constraintStart_toStartOf="@id/cvw_bg"
             app:layout_constraintTop_toBottomOf="@id/tvw_title">
 
             <LinearLayout
@@ -91,8 +101,8 @@
                     android:gravity="center"
                     android:textColor="@color/clr_txt_white_cm"
                     android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="@id/ivw_bg"
-                    app:layout_constraintStart_toStartOf="@id/ivw_bg"
+                    app:layout_constraintEnd_toEndOf="@id/cvw_bg"
+                    app:layout_constraintStart_toStartOf="@id/cvw_bg"
                     app:layout_constraintTop_toBottomOf="@id/tvw_title"
                     tools:text="这是内容  这是内容这是内容这是内容这是内容这是内容" />
 
@@ -114,8 +124,8 @@
             android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/layout_tvw"
-            app:layout_constraintEnd_toEndOf="@id/ivw_bg"
-            app:layout_constraintStart_toStartOf="@id/ivw_bg"
+            app:layout_constraintEnd_toEndOf="@id/cvw_bg"
+            app:layout_constraintStart_toStartOf="@id/cvw_bg"
             app:layout_constraintTop_toBottomOf="@id/tvw_title"
             tools:text="这是内容 长的4行52字"
             tools:visibility="gone" />
@@ -128,9 +138,9 @@
             android:layout_marginEnd="36dp"
             android:layout_marginBottom="46dp"
             android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="@id/ivw_bg"
-            app:layout_constraintEnd_toEndOf="@id/ivw_bg"
-            app:layout_constraintStart_toStartOf="@id/ivw_bg">
+            app:layout_constraintBottom_toBottomOf="@id/cvw_bg"
+            app:layout_constraintEnd_toEndOf="@id/cvw_bg"
+            app:layout_constraintStart_toStartOf="@id/cvw_bg">
 
             <TextView
                 android:id="@+id/tvw_left"
