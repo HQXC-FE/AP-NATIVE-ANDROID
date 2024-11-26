@@ -186,7 +186,7 @@ public class MyWalletFragment extends BaseFragment<FragmentMyWalletBinding, MyWa
         // 场馆余额
         viewModel.liveDataGameBalance.observe(this, vo -> {
             transGameBalanceList.add(vo);
-           //count--;
+            //count--;
             count++;
 
             CfLog.e("-------> count : " + count + " //walletGameList.size() : " + walletGameList.size());

@@ -813,7 +813,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:minEms">6</item>
-        <item name="android:textColor">@color/clr_grey_50</item>
+        <item name="android:textColor">@color/clr_purple_13</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -821,7 +821,7 @@
     <style name="style_trans_value" parent="style_trans_name">
         <item name="android:hint">0.0000</item>
         <item name="android:textColorHint">@color/clr_grey_50</item>
-        <item name="android:textColor">@color/clr_text_trans_selector</item>
+        <item name="android:textColor">@color/clr_txt_FFF8F8</item>
     </style>
 
     <!-- 转账页 灰色区 分割线 -->
@@ -1160,7 +1160,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/clr_txt_06</item>
+        <item name="android:textColor">@color/clr_txt_FFF8F8</item>
         <item name="android:textSize">12sp</item>
     </style>
 
