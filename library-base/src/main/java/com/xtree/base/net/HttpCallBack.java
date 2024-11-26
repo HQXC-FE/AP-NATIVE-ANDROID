@@ -9,6 +9,7 @@ import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.net.fastest.SpeedApiLine;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.AppUtil;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.widget.LoadingDialog;
@@ -38,8 +39,11 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         BaseResponse baseResponse = (BaseResponse) o;
         int status = baseResponse.getStatus() == -1 ? baseResponse.getCode() : baseResponse.getStatus();
         BusinessException ex = new BusinessException(status, baseResponse.getMessage(), baseResponse.getData());
+
+        CfLog.e("onNext ===> " +ex.data + "|| -->ex.data.getClass() ="+ ex.data.getClass());
         switch (status) {
             case HttpCallBack.CodeRule.CODE_0:
+                case HttpCallBack.CodeRule.CODE_1000:
             case HttpCallBack.CodeRule.CODE_10000:
                 if (baseResponse.getAuthorization() != null) {
                     SPUtils.getInstance().put(SPKeyGlobal.USER_TOKEN, baseResponse.getAuthorization().token);
@@ -203,6 +207,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
     public static final class CodeRule {
         //请求成功, 正确的操作方式
         static final int CODE_0 = 0;
+        static final int CODE_1000 = 1000;
         static final int CODE_10000 = 10000;
         /**
          * 返回数据非json
