@@ -20,6 +20,7 @@ import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.databinding.FragmentLiveBinding;
+import com.xtree.live.ui.main.bet.LiveMatchDetailActivity;
 import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
@@ -55,7 +56,9 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
 
     @Override
     public void initView() {
-
+        binding.jump.setOnClickListener(view -> {
+            LiveMatchDetailActivity.start(getContext(), null);
+        });
     }
 
     @Override

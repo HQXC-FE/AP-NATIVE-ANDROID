@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 赔率上升字体颜色 -->
+    <color name="bt_color_odd_up">#F34E6C</color>
+
+    <!-- 赔率下降字体颜色 -->
+    <color name="bt_color_odd_down">#4AC6A1</color>
+
+</resources>

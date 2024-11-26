@@ -39,7 +39,6 @@ import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.ui.main.model.anchor.LiveAnchorModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerItemModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerModel;
-import com.xtree.live.ui.main.model.constant.DeatilLivesType;
 import com.xtree.live.ui.main.model.constant.FrontLivesType;
 import com.xtree.live.ui.main.model.hot.LiveHotModel;
 
@@ -68,29 +67,29 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
 
 
     private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
-        LiveAnchorModel liveAnchorModel = new LiveAnchorModel(DeatilLivesType.SQUARE.getLabel());
-        liveAnchorModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.ALL.getValue(), page, limit, success, error);
-        liveAnchorModel.setItemType(0);
-
-        LiveHotModel liveFootBallModel = new LiveHotModel(DeatilLivesType.BETTING.getLabel());
-        liveFootBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.FOOTBALL.getValue(), page, limit, success, error);
-        liveFootBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
-        liveFootBallModel.setItemType(1);
-
-        LiveHotModel liveBasketBallModel = new LiveHotModel(DeatilLivesType.ANCHOR_PRIVATE.getLabel());
-        liveBasketBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.BASKETBALL.getValue(), page, limit, success, error);
-        liveBasketBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
-        liveBasketBallModel.setItemType(1);
-
-        LiveHotModel liveOtherModel = new LiveHotModel(DeatilLivesType.ANCHOR_ASSISTANT.getLabel());
-        liveOtherModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.OTHER.getValue(), page, limit, success, error);
-        liveOtherModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
-        liveOtherModel.setItemType(1);
-
-        add(liveAnchorModel);
-        add(liveFootBallModel);
-        add(liveBasketBallModel);
-        add(liveOtherModel);
+//        LiveAnchorModel liveAnchorModel = new LiveAnchorModel(DeatilLivesType.SQUARE.getLabel());
+//        liveAnchorModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.ALL.getValue(), page, limit, success, error);
+//        liveAnchorModel.setItemType(0);
+//
+//        LiveHotModel liveFootBallModel = new LiveHotModel(DeatilLivesType.BETTING.getLabel());
+//        liveFootBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.FOOTBALL.getValue(), page, limit, success, error);
+//        liveFootBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
+//        liveFootBallModel.setItemType(1);
+//
+//        LiveHotModel liveBasketBallModel = new LiveHotModel(DeatilLivesType.ANCHOR_PRIVATE.getLabel());
+//        liveBasketBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.BASKETBALL.getValue(), page, limit, success, error);
+//        liveBasketBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
+//        liveBasketBallModel.setItemType(1);
+//
+//        LiveHotModel liveOtherModel = new LiveHotModel(DeatilLivesType.ANCHOR_ASSISTANT.getLabel());
+//        liveOtherModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.OTHER.getValue(), page, limit, success, error);
+//        liveOtherModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
+//        liveOtherModel.setItemType(1);
+//
+//        add(liveAnchorModel);
+//        add(liveFootBallModel);
+//        add(liveBasketBallModel);
+//        add(liveOtherModel);
     }};
     private final ArrayList<Integer> typeList = new ArrayList() {
         {
