@@ -1010,7 +1010,7 @@
     <style name="style_item_report_profit_base">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/clr_txt_03</item>
+        <item name="android:textColor">@color/clr_txt_01</item>
         <item name="android:textSize">12sp</item>
     </style>
 
@@ -1020,11 +1020,12 @@
 
     <style name="style_item_report_profit_v" parent="style_item_report_profit_base">
         <item name="android:layout_marginTop">1dp</item>
-        <item name="android:textColor">@color/clr_txt_01</item>
+        <item name="android:textColor">@color/clr_txt_02</item>
     </style>
 
     <style name="style_item_report_profit_sum_t" parent="style_item_report_profit_base">
         <item name="android:layout_marginTop">0dp</item>
+        <item name="android:textColor">@color/clr_txt_01</item>
     </style>
 
     <style name="style_item_report_profit_sum_t2" parent="style_item_report_profit_base">
@@ -1037,7 +1038,7 @@
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginStart">0dp</item>
         <item name="android:hint">--</item>
-        <item name="android:textColor">@color/clr_txt_01</item>
+        <item name="android:textColor">@color/clr_txt_02</item>
     </style>
 
     <!-- 选择提款方式文字风格 -->

@@ -299,7 +299,7 @@ public class ProfitLossFragment extends BaseFragment<FragmentReportProfitBinding
                     int endIndex = startIndex + t.username.length();
 
                     spannableString.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    spannableString.setSpan(new ForegroundColorSpan(getContext().getResources().getColor(R.color.textColor)), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(new ForegroundColorSpan(getContext().getResources().getColor(R.color.clr_txt_02)), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
 
                 binding.tvwBread.setText(spannableString);

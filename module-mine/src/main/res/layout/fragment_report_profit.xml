@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/layout_margin"
-            android:background="@drawable/bg_white_6"
+            android:background="@drawable/bg_main_6"
             android:orientation="vertical"
             android:padding="@dimen/layout_margin"
             android:visibility="gone"
@@ -95,14 +95,17 @@
 
                 <TextView
                     style="@style/style_item_report_title"
+                    android:textColor="@color/clr_txt_01"
                     android:text="@string/txt_tip_number" />
 
                 <TextView
                     style="@style/style_item_report_title_center"
+                    android:textColor="@color/clr_txt_01"
                     android:text="@string/txt_tip_effective" />
 
                 <TextView
                     style="@style/style_item_report_title_end"
+                    android:textColor="@color/clr_txt_01"
                     android:text="@string/txt_tip_profit" />
             </LinearLayout>
 
@@ -114,21 +117,21 @@
                 <TextView
                     android:id="@+id/tvw_number"
                     style="@style/style_item_report_title"
-                    android:textColor="@color/black"
+                    android:textColor="@color/clr_txt_02"
                     android:textStyle="bold"
                     tools:text="20" />
 
                 <TextView
                     android:id="@+id/tvw_effective"
                     style="@style/style_item_report_title_center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/clr_txt_02"
                     android:textStyle="bold"
                     tools:text="999" />
 
                 <TextView
                     android:id="@+id/tvw_profit"
                     style="@style/style_item_report_title_end"
-                    android:textColor="@color/black"
+                    android:textColor="@color/clr_txt_02"
                     android:textStyle="bold"
                     tools:text="-----" />
 
@@ -179,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/layout_margin"
                         android:layout_marginEnd="@dimen/layout_margin"
-                        android:background="@drawable/bg_white_14"
+                        android:background="@drawable/bg_main_14"
                         android:orientation="horizontal"
                         android:padding="@dimen/layout_margin">
 
@@ -187,7 +190,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/txt_rpt_level"
-                            android:textColor="@color/clr_txt_black_cm"
+                            android:textColor="@color/clr_txt_02"
                             android:textSize="16sp" />
 
                         <TextView
