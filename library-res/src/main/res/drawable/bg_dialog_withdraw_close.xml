@@ -3,8 +3,8 @@
     android:shape="rectangle">
 
     <solid android:color="@color/clr_withdrawal_btn_bg" />
-    <stroke android:width="2dp"
-        android:color="@color/clr_withdrawal_btn_stroke" />
+<!--    <stroke android:width="2dp"-->
+<!--        android:color="@color/clr_withdrawal_btn_stroke" />-->
     <corners android:radius="80dp"/>
     <!--<corners
         android:topLeftRadius="10dp"

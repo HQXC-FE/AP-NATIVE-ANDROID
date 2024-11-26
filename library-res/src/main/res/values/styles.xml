@@ -112,7 +112,7 @@
         <item name="android:drawablePadding">0dp</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">4dp</item>
-        <item name="android:textColor">@color/clr_home_top</item>
+        <item name="android:textColor">@color/clr_home_top2</item>
         <item name="android:textSize">12sp</item>
     </style>
 
@@ -255,7 +255,7 @@
     </style>
     <!-- 充值页-底部 提示小字 灰色 -->
     <style name="style_rc_tip_small_grey" parent="style_cm_tip_small_grey">
-        <item name="android:textColor">@color/clr_grey_40</item>
+        <item name="android:textColor">@color/clr_purple_13</item>
         <item name="android:textSize">12sp</item>
     </style>
 
@@ -501,8 +501,8 @@
         <item name="android:lines">1</item>
         <item name="android:maxLength">50</item>
         <item name="android:padding">8dp</item>
-        <item name="android:textColor">@color/clr_grey_80</item>
-        <item name="android:textColorHint">@color/clr_txt_grey_03</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
+        <item name="android:textColorHint">@color/clr_txt_hit</item>
         <item name="android:textSize">14sp</item>
     </style>
     <!--益阳-->
@@ -676,8 +676,8 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:lines">1</item>
         <item name="android:maxLength">16</item>
-        <item name="android:textColor">@color/clr_grey_80</item>
-        <item name="android:textColorHint">@color/clr_txt_grey_03</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
+        <item name="android:textColorHint">@color/clr_txt_hit</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -1334,7 +1334,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">start</item>
         <item name="android:minEms">1</item>
-        <item name="android:textColor">@color/clr_grey_80</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -1367,7 +1367,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingStart">12dp</item>
         <item name="android:gravity">end</item>
-        <item name="android:textColor">@color/clr_txt_recharge_copy</item>
+        <item name="android:textColor">@color/clr_main</item>
         <item name="android:textSize">14sp</item>
     </style>
     <!-- 充值页 输入框左边的标题 -->
@@ -1376,7 +1376,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">80dp</item>
         <item name="android:layout_marginStart">@dimen/layout_margin</item>
-        <item name="android:textColor">@color/clr_txt_black_01</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -1467,7 +1467,7 @@
     <!-- 通用 提示小字 桔红色 -->
     <style name="style_cm_tip_small_yellow" parent="style_cm_tip_small_grey">
         <item name="android:text"></item>
-        <item name="android:textColor">@color/bt_text_color_primary_3</item>
+        <item name="android:textColor">@color/clr_main</item>
         <item name="android:textSize">12sp</item>
     </style>
 
@@ -1496,7 +1496,7 @@
     <style name="style_rc_dlg_money">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
         <item name="android:textSize">48sp</item>
     </style>
 
@@ -1573,6 +1573,7 @@
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:adjustViewBounds">true</item>
+        <item name="android:tint">@color/clr_bg_main</item>
         <item name="android:src">@mipmap/bg_dlg_top_recharge</item>
     </style>
 

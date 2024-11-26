@@ -12,14 +12,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/clr_white">
+        android:background="@color/clr_bg_main_black">
 
 <!--        title-->
         <TextView
             android:id="@+id/tvw_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/clr_txt_black_01"
+            android:textColor="@color/clr_white"
             android:textSize="17sp"
             android:text="@{toolbarModel.title}"
             app:layout_constraintBottom_toBottomOf="parent"

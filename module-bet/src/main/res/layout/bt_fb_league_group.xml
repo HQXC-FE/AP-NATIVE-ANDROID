@@ -7,18 +7,21 @@
     android:id="@+id/ll_league"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/clr_bg_27211F"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/clr_bg_27211F"
+        >
 
         <LinearLayout
             android:id="@+id/ll_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:background="@color/bt_page_bg"
+            android:background="@color/clr_bg_27211F"
             android:orientation="vertical"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent">
@@ -27,7 +30,7 @@
                 android:id="@+id/rl_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bt_bg_match_header"
+                android:background="@color/clr_bg_27211F"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toTopOf="parent">
@@ -49,8 +52,9 @@
                     android:layout_marginBottom="4dp"
                     android:layout_centerVertical="true"
                     android:text="@string/bt_game_going_on"
-                    android:textColor="@color/bt_text_color_primary_1"
-                    android:textSize="@dimen/bt_text_12sp" />
+                    android:textColor="@color/clr_txt_FFF8F8"
+                    android:textSize="@dimen/bt_text_12sp"
+                    android:background="@color/clr_bg_27211F"/>
 
                 <ImageView
                     android:id="@+id/iv_expand"
@@ -68,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="足球"
-                android:textColor="@color/bt_text_color_primary_2"
+                android:textColor="@color/clr_txt_FFF8F8"
                 android:textSize="@dimen/bt_text_12sp" />
 
         </LinearLayout>
@@ -95,9 +99,10 @@
                 android:layout_toRightOf="@+id/iv_icon"
                 android:padding="5dp"
                 android:layout_marginEnd="20dp"
-                android:textColor="@color/bt_text_color_primary_1"
+                android:textColor="@color/clr_txt_FFF8F8"
                 android:textSize="@dimen/bt_text_15sp"
                 android:textStyle="bold"
+                android:background="@color/clr_bg_27211F"
                 tools:text="墨西哥甲级联赛" />
 
             <ImageView

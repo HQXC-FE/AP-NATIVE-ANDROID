@@ -13,8 +13,8 @@
         <shape>
             <gradient
                 android:angle="270"
-                android:endColor="@color/clr_re_dialog_bank_end"
-                android:startColor="@color/clr_re_dialog_bank_start" />
+                android:endColor="@color/clr_bg_main"
+                android:startColor="@color/clr_bg_main" />
             <corners android:radius="10dp"  />
         </shape>
     </item>

@@ -13,6 +13,7 @@
         android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/clr_main_12"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,8 +23,7 @@
         android:layout_marginBottom="12dp"
         android:layout_marginTop="12dp"
         app:cardElevation="1dp"
-        app:cardCornerRadius="12dp"
-        >
+        app:cardCornerRadius="12dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                 <View
                     android:layout_width="3dp"
                     android:layout_height="14dp"
-                    android:background="@color/clr_main"/>
+                    android:background="@color/clr_red_26"/>
 
                 <TextView
                     android:layout_width="wrap_content"

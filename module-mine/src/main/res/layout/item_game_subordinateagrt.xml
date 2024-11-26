@@ -13,6 +13,7 @@
         android:id="@+id/cardview"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        app:cardBackgroundColor="@color/clr_main_12"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

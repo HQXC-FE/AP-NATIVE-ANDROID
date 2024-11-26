@@ -154,9 +154,9 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_dialog_withdraw_close"
+            android:background="@drawable/bg_btn_round_selector"
             android:text="@string/txt_withdraw_previous"
-            android:textColor="@color/clr_withdrawal_text_bg"
+            android:textColor="@color/clr_txt_white_cm"
             android:textSize="16sp" />
 
         <Button
@@ -165,9 +165,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:background="@drawable/me_bg_withdrawal_next"
+            android:background="@drawable/bg_btn_round_selector"
             android:text="@string/txt_withdraw_next"
-            android:textColor="@color/white"
+            android:textColor="@color/clr_txt_white_cm"
             android:textSize="16sp" />
 
     </LinearLayout>

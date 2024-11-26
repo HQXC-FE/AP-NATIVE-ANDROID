@@ -15,6 +15,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/clr_main_12"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -58,6 +59,7 @@
                 android:drawableBottom="@drawable/divider_horizontal"
                 android:gravity="bottom|start"
                 android:hint="@string/txt_input_search_user"
+                android:textColorHint="@color/clr_txt_hit"
                 android:text="@={m.userNameData}"
                 android:textColor="@color/clr_txt_black_cm"
                 android:textSize="14sp"
