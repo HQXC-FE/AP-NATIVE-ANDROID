@@ -97,7 +97,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/me_pwd_rember"
                             android:textSize="12sp"
-                            android:textColor="@color/clr_txt_FFF8F8"
+                            android:textColor="@color/clr_txt_mouse6"
                             android:theme="@style/style_login_ckb_normal" />
 
                         <View
@@ -110,7 +110,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/me_pwd_forget"
-                            android:textColor="@color/clr_txt_FFF8F8"
+                            android:textColor="@color/clr_txt_mouse6"
                             android:textSize="@dimen/me_test_size" />
                     </LinearLayout>
 
@@ -151,7 +151,7 @@
                         android:background="@drawable/bt_bg_login_button"
                         android:text="@string/me_login"
                         android:textSize="16sp"
-                        android:textColor="@color/clr_txt_FFF8F8" />
+                        android:textColor="@color/clr_txt_mouse6" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
