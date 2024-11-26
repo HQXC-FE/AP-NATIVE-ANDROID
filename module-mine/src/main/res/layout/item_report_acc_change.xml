@@ -54,7 +54,7 @@
         <TextView
             android:id="@+id/tvw_balance"
             style="@style/style_item_report_value_center"
-            android:textColor="@color/clr_txt_FFF8F8"
+            android:textColor="@color/clr_txt_02"
             tools:text="5.00" />
 
         <TextView
