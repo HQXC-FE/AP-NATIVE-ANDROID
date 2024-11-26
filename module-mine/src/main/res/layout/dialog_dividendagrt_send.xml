@@ -17,7 +17,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_dialog_top_white_r12">
+            android:background="@drawable/bg_dialog_top_clrbgmainblack_r12">
 
             <include
                 android:id="@+id/layout_toolbar"
@@ -35,7 +35,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:background="@color/clr_white"
+                android:background="@color/clr_bg_main_black"
                 app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@
                     android:layout_width="80dp"
                     android:layout_height="30dp"
                     android:text="发放"
-                    android:textColor="@color/clr_white"
+                    android:textColor="@color/clr_txt_02"
                     android:gravity="center"
                     android:background="@drawable/shape_gradient_main_c10"
                     android:onClick="@{() -> model.sendDividendStep1()}"

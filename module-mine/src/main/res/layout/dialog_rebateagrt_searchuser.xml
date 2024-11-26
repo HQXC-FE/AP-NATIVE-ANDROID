@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:background="@drawable/bg_dialog_top_white_r12">
+            android:background="@drawable/bg_dialog_top_clrbgmainblack_r12">
 
 
             <include

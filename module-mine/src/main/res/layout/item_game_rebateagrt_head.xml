@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@color/clr_bg_main"
+        android:background="@color/clr_bg_main_black"
         android:elevation="1dp"
         android:orientation="vertical">
 
@@ -94,6 +94,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/clr_main_12"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
@@ -198,6 +199,7 @@
                     android:drawableBottom="@drawable/divider_horizontal"
                     android:gravity="bottom|start"
                     android:hint="请输入要查询的用户名"
+                    android:textColorHint="@color/clr_txt_hit"
                     android:onClick="@{() -> m.selectStatus()}"
                     android:text="@{m.state.title}"
                     android:textColor="@color/clr_txt_black_cm"

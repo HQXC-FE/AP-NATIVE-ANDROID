@@ -17,15 +17,18 @@
     <color name="clr_main_02">#96362E</color>
     <color name="clr_main_03">#A0302E</color>
     <color name="clr_main_04">#DDB063</color>
-    <color name="clr_main_05">#FAD881</color>
+    <color name="clr_main_05">#382E2B</color>
     <color name="clr_main_06">#F3D6D6</color>
-    <color name="clr_main_07">#CF5A38</color>
-    <color name="clr_main_08">#95352E</color>
+    <color name="clr_main_07">#B00000</color>
+    <color name="clr_main_08">#FFABAE</color>
     <color name="clr_main_08a">#D24137</color>
-    <color name="clr_main_09">#E78669</color>
+    <color name="clr_main_09">#D33D3F</color>
     <color name="clr_main_10">#A0302E</color>
     <color name="clr_main_11">#F9F8F4</color>
-    <color name="clr_main_12">#413333</color>
+    <color name="clr_main_12">#27211F</color>
+    <color name="clr_main_13">#413333</color>
+    <color name="clr_main_14">#FFD9B2</color>
+    <color name="clr_main_15">#CA9C6C</color>
 
     <!-- ################ 配色 设计师提供 start ################ -->
     <!-- 主色 -->
@@ -72,25 +75,25 @@
 
     <!-- ################ 设计图上的颜色 start ################ -->
     <!-- 通用字颜色 主色/1级字 -->
-    <color name="clr_txt_01">#420C0B</color>
+    <color name="clr_txt_01">#867163</color>
     <!-- 通用字颜色 主色/2级字 -->
-    <color name="clr_txt_02">#333333</color>
+    <color name="clr_txt_02">#FFF8F8</color>
     <!-- 通用字颜色 主色/3级字 -->
     <color name="clr_txt_03">#8B8B8B</color>
     <!-- 通用字颜色 主色/4级字 -->
     <color name="clr_txt_04">#949292</color>
     <!-- 通用字颜色 主色/5级字 -->
     <color name="clr_txt_05">#4F4439</color>
-    <color name="clr_txt_06">#E3C3A2</color>"
+    <color name="clr_txt_06">#E3C3A2</color>
     <!-- 通用黑色 1E -->
-    <color name="clr_txt_black_cm">#1E1E1E</color>
+    <color name="clr_txt_black_cm">#FFF8F8</color>
     <color name="clr_txt_white_cm">#FFF8F8</color>
     <!-- 可跳转链接的文字 通常是蓝色或主题色 -->
     <!--<color name="clr_txt_link">#119BFF</color>-->
     <color name="clr_txt_link">#7F7C79</color>
 
     <!-- 警告红 -->
-    <color name="clr_txt_warn">#DA0000</color>
+    <color name="clr_txt_warn">#D33D3F</color>
     <!-- 辅助/浅蓝 -->
     <color name="clr_bg_light_main">#E78669</color>
     <!-- 大框 背景色 开始 -->
