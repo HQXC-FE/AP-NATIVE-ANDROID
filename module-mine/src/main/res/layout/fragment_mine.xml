@@ -11,7 +11,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/clr_bg_main"
+            android:background="@color/clr_black"
             android:orientation="vertical">
 
             <LinearLayout
@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/layout_margin"
                     android:text="@string/me_user_name_hint"
-                    android:textColor="@color/clr_txt_01"
+                    android:textColor="@color/clr_txt_FFF8F8"
                     android:textSize="14sp" />
 
                 <TextView
@@ -494,7 +494,7 @@
                 android:layout_marginBottom="24dp"
                 android:background="@color/clr_transparent"
                 android:text="@string/me_logout_login"
-                android:textColor="@color/clr_txt"
+                android:textColor="@color/clr_txt_736969"
                 android:textSize="@dimen/bt_text_16sp"
                 android:textStyle="bold" />
 

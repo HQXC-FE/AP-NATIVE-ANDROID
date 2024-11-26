@@ -53,6 +53,7 @@
     <color name="clr_txt_mouse4">#949292</color>
     <color name="clr_txt_mouse5">#1E1E1E</color>
     <color name="clr_txt_FFF8F8">#FFF8F8</color>
+    <color name="clr_txt_736969">#736969</color>
     <color name="clr_txt_et_hint_51463F">#51463F</color>
     <!-- 点缀色 -->
     <color name="clr_main_31">#FF6C00</color>
@@ -382,6 +383,9 @@
     <color name="clr_orange_12">#B34B43</color>
     <color name="clr_orange_13">#FFABAE</color>
     <color name="clr_orange_14">#B00000</color>
+    <color name="clr_orange_15">#231E1E</color>
+    <color name="clr_orange_16">#5A4C48</color>
+    <color name="clr_orange_17">#231E1E</color>
 
     <color name="clr_red_19">#F35A4E</color>
     <color name="clr_red_21">#F47070</color>
