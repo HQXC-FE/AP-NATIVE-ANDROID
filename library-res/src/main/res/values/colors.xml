@@ -388,6 +388,8 @@
     <color name="clr_red_23">#F57171</color>
     <color name="clr_red_24">#F96363</color>
     <color name="clr_red_25">#E59595</color>
+    <color name="clr_red_26">#E6676E</color>
+    <color name="clr_red_27">#7E1D1F</color>
 
     <color name="clr_yellow">#FFD700</color>
     <color name="clr_yellow_2">#FBF6F1</color>
@@ -555,7 +557,7 @@
     <!-- 分隔线 -->
     <color name="clr_div_line">#F2F3F7</color>
     <color name="clr_recharge_selected">#FBEDED</color>
-    <color name="clr_recharge_no_selected">#A8423A</color>
+    <color name="clr_recharge_no_selected">#867163</color>
 
     <!-- 充值 温馨提示 颜色 -->
     <color name="clr_re_dialog_center_start">#66F9C1DC</color>

@@ -63,11 +63,11 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/clr_bg_main_black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_title"
-        android:background="@color/white">
+        app:layout_constraintTop_toBottomOf="@id/cl_title">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,8 +86,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                >
+                android:layout_marginTop="16dp">
 
                 <TextView
                     android:id="@+id/tvw_rate_amount"
@@ -192,7 +191,7 @@
                     android:layout_gravity="center_horizontal"
                     android:drawablePadding="12dp"
                     android:text="@string/txt_rc_submit_succ_pay_in_minutes_pls"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/clr_recharge_no_selected" />
             </LinearLayout>
 
             <View style="@style/style_dlg_info_dividing" />
@@ -225,8 +224,7 @@
                 <TextView
                     android:id="@+id/tvw_copy"
                     style="@style/style_rc_dlg_copy"
-                    android:text="@string/txt_copy"
-                    />
+                    android:text="@string/txt_copy" />
             </LinearLayout>
 
             <ImageView
@@ -240,7 +238,8 @@
             <TextView
                 style="@style/style_cm_tip_small_orange"
                 android:layout_gravity="center_horizontal"
-                android:text="如果二维码不显示，请您再试一次！" />
+                android:text="如果二维码不显示，请您再试一次！"
+                android:textColor="@color/clr_main" />
 
             <TextView
                 android:id="@+id/tvw_ok"
@@ -251,7 +250,8 @@
             <TextView
                 style="@style/style_cm_tip_small_title_warn"
                 android:layout_marginTop="36dp"
-                android:text="@string/txt_notice_c" />
+                android:text="@string/txt_notice_c"
+                android:textColor="@color/clr_purple_13" />
 
             <TextView
                 android:id="@+id/tvw_01"
@@ -265,16 +265,19 @@
 
             <TextView
                 style="@style/style_cm_tip_small_title_warn"
-                android:text="@string/txt_notice_important_c" />
+                android:text="@string/txt_notice_important_c"
+                android:textColor="@color/clr_purple_13" />
 
             <TextView
                 android:id="@+id/tvw_03"
                 style="@style/style_cm_tip_small_grey"
+                android:textColor="@color/clr_main"
                 android:text="@string/txt_rc_usdt_tip" />
 
             <TextView
                 style="@style/style_cm_tip_small_grey"
                 android:text="@string/txt_rc_trans_usdt_demo"
+                android:textColor="@color/clr_purple_13"
                 android:textStyle="bold" />
 
             <ImageView

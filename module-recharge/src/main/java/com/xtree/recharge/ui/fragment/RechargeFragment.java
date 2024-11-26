@@ -27,6 +27,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.luck.picture.lib.decoration.GridSpacingItemDecoration;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.Constant;
@@ -237,7 +238,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         binding.rcvPmt.setLayoutManager(new GridLayoutManager(getContext(), 4));
         //binding.rcvPmt.setAdapter(rechargeAdapter);
         binding.rcvPmt.setAdapter(mTypeAdapter);
-        binding.rcvPmt.addItemDecoration(new SpacesItemDecoration(CommonUtil.dip2px(getContext(), 5), RecyclerView.HORIZONTAL));
+        binding.rcvPmt.addItemDecoration(new GridSpacingItemDecoration(4,CommonUtil.dip2px(getContext(), 5),false));
         binding.rcvPmt.setNestedScrollingEnabled(false); // 禁止滑动
 
         mChannelAdapter = new RechargeChannelAdapter(getContext(), vo -> {
