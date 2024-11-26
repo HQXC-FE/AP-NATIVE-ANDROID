@@ -14,7 +14,7 @@
         android:layout_marginStart="@dimen/layout_margin"
         android:layout_marginTop="@dimen/layout_margin"
         android:layout_marginEnd="@dimen/layout_margin"
-        android:background="@drawable/bg_white"
+        android:background="@drawable/bg_main_button12"
         android:orientation="vertical"
         android:paddingBottom="@dimen/layout_margin">
 
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/layout_margin"
             android:layout_marginTop="8dp"
-            android:textColor="@color/clr_txt_black_03"
+            android:textColor="@color/clr_transparent"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/layout_margin"
             android:text="活动时间："
-            android:textColor="@color/clr_grey_13"
+            android:textColor="@color/clr_txt_02"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvw_title" />
@@ -57,7 +57,7 @@
             android:id="@+id/tvw_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/clr_grey_13"
+            android:textColor="@color/clr_txt_02"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@id/tvw_tm"
             app:layout_constraintStart_toEndOf="@id/tvw_tm"
@@ -67,13 +67,13 @@
         <TextView
             android:id="@+id/tvw_detail"
             style="@style/style_cm_btn_r16"
-            android:background="@drawable/btn_main_r24"
+            android:background="@drawable/bg_btn_selector"
             android:layout_marginStart="@dimen/layout_margin"
             android:layout_marginEnd="@dimen/layout_margin"
             android:text="@string/txt_view_detail"
             app:layout_constraintBottom_toBottomOf="@id/tvw_tm"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvw_title" />
+            app:layout_constraintTop_toTopOf="@id/tvw_tm" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
