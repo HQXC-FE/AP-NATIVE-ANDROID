@@ -39,7 +39,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="0dp"
         android:gravity="center"
-        android:textColor="@color/clr_withdrawal_text_bank_tip"
+        android:textColor="@color/clr_txt_white_cm"
         android:textSize="14sp"
         tools:text="当前渠道【 】充值到账成功率较低，为了保证快速到账，请使用以下渠道进行充值或联系客服进行处理！" />
 
@@ -100,11 +100,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
-
             android:drawableStart="@mipmap/cm_ic_tutorial"
             android:drawablePadding="3dp"
             android:text="@string/txt_recharge_tutorial"
-            android:textColor="@color/clr_grey_00" />
+            android:textColor="@color/clr_purple_13" />
 
       <!--  <TextView
             android:layout_width="wrap_content"
@@ -121,7 +120,7 @@
             android:drawableStart="@mipmap/cm_re_ic_cs2"
             android:drawablePadding="3dp"
             android:text="@string/txt_contact_custom"
-            android:textColor="@color/clr_grey_00" />
+            android:textColor="@color/clr_purple_13" />
     </LinearLayout>
 
 </LinearLayout>
