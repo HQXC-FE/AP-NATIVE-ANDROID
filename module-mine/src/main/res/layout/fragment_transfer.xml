@@ -14,7 +14,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/clr_white"
+        android:background="@color/clr_bg_main_black"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,10 +60,10 @@
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/clr_grey_22" />
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="1dp"-->
+        <!--            android:background="@color/clr_grey_22" />-->
 
         <LinearLayout
             android:id="@+id/ll_wallet"
@@ -71,7 +71,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/layout_margin"
             android:layout_marginEnd="@dimen/layout_margin"
-            android:background="@drawable/bg_white_14"
             android:orientation="vertical"
             android:paddingBottom="@dimen/layout_margin">
 
@@ -94,7 +93,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_all_game_balance"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_margin"
+                android:background="@drawable/bg_main_12"
+                android:padding="15dp" />
         </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -106,7 +108,6 @@
                 android:id="@+id/ll_transfer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/clr_white"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -115,8 +116,10 @@
                     android:layout_marginStart="18dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="18dp"
+                    android:background="@drawable/bg_main_12"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="15dp">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -126,7 +129,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="从" />
+                            android:text="从"
+                            android:textColor="@color/clr_txt_white_cm" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -137,7 +141,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="到" />
+                            android:text="到"
+                            android:textColor="@color/clr_txt_white_cm" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -172,7 +177,7 @@
                                 android:padding="14dp"
                                 android:tag="lottery"
                                 android:text="@string/txt_central_wallet"
-                                android:textColor="@color/clr_grey_80"
+                                android:textColor="@color/clr_txt_hit"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -206,7 +211,7 @@
                                 android:padding="14dp"
                                 android:tag="pt"
                                 android:text="@string/me_wallet_ptgame"
-                                android:textColor="@color/clr_grey_80"
+                                android:textColor="@color/clr_txt_hit"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -271,6 +276,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="6dp"
+                    android:background="@drawable/bg_main_12"
+                    android:padding="15dp"
                     android:visibility="gone" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -293,7 +300,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/layout_margin"
                         android:text="RMB"
-                        android:textColor="@color/clr_grey_60"
+                        android:textColor="@color/clr_txt_hit"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

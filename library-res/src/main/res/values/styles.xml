@@ -250,7 +250,7 @@
         <item name="android:gravity">center</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:textColor">@color/clr_black</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
         <item name="android:textSize">12sp</item>
     </style>
     <!-- 充值页-底部 提示小字 灰色 -->
@@ -762,7 +762,7 @@
     <style name="style_cm_edit_amount">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@mipmap/cm_bg_input_wht</item>
+        <item name="android:background">@mipmap/cm_bg_input</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:hint"></item>
         <item name="android:inputType">numberDecimal</item>
@@ -770,8 +770,8 @@
         <item name="android:maxLength">16</item>
         <item name="android:padding">8dp</item>
         <item name="android:text"></item>
-        <item name="android:textColor">@color/clr_grey_80</item>
-        <item name="android:textColorHint">@color/clr_grey_20</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
+        <item name="android:textColorHint">@color/clr_txt_hit</item>
         <item name="android:textSize">14sp</item>
     </style>
 
