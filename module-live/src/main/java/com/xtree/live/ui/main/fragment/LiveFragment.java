@@ -56,9 +56,6 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
 
     @Override
     public void initView() {
-        binding.jump.setOnClickListener(view -> {
-            LiveMatchDetailActivity.start(getContext(), null);
-        });
     }
 
     @Override
