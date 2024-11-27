@@ -190,7 +190,7 @@
                 android:layout_marginTop="2dp"
                 android:drawableEnd="@mipmap/bt_icon_expand"
                 android:text=""
-                android:textColor="@color/bt_text_color_primary_1"
+                android:textColor="@color/clr_txt_white_cm"
                 android:textSize="16sp" />
 
             <View

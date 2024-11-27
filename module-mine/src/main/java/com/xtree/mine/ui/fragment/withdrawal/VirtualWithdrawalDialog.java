@@ -250,8 +250,8 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
     private void refreshVerifyUI(final WithdrawalVerifyVo verifyVo) {
         //刷新顶部进度条颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
+            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
         }
         binding.llSetRequestView.setVisibility(GONE);
         binding.llVirtualConfirmView.setVisibility(VISIBLE);
@@ -286,7 +286,7 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
             binding.llVirtualConfirmView.setVisibility(GONE);
             //刷新顶部进度条颜色
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+                binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
                 binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.cl_over_tip));
             }
         });
@@ -301,9 +301,9 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
 
         //刷新顶部进度条颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
+            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
+            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
         }
         binding.llVirtualConfirmView.setVisibility(GONE);
         binding.llOverApply.setVisibility(VISIBLE);

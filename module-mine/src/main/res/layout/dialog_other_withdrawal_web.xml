@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text=""
-            android:textColor="@color/clr_filter_txt_black"
+            android:textColor="@color/clr_txt_white_cm"
             android:textSize="15sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/txt_set_withdrawal_request"
-                android:textColor="@color/clr_main" />
+                android:textColor="@color/clr_main_09" />
 
             <TextView
                 android:id="@+id/tv_confirm_withdrawal_request"

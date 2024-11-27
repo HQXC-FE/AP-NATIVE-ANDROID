@@ -564,8 +564,8 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     private void refreshVerifyUI(final WithdrawalVerifyVo verifyVo) {
         //刷新顶部进度条颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
+            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
         }
         binding.llShowChooseCard.setVisibility(View.GONE);//顶部选项卡
         binding.llShowNoticeInfo.setVisibility(View.GONE);//注意事项
@@ -609,7 +609,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         binding.bankConfirmView.ivConfirmPrevious.setOnClickListener(v -> {
             //刷新顶部进度条颜色
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+                binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
                 binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.cl_over_tip));
             }
             //上一步 直接刷新整个页面
@@ -1239,9 +1239,9 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
      */
     private void refreshSubmitUI(final WithdrawalSubmitVo submitVo, final String message) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
+            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
+            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
         }
         binding.llShowChooseCard.setVisibility(View.GONE);//顶部选项卡
         binding.llShowNoticeInfo.setVisibility(View.GONE);//注意事项

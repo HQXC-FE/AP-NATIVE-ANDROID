@@ -57,9 +57,10 @@ import project.tqyb.com.library_res.databinding.ItemTextBinding;
  * USDT虚拟币提款
  */
 public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSDTRecyclerViewAdapter.IUSDTFruitHorCallback {
-    private LifecycleOwner owner;
     ChooseWithdrawViewModel viewModel;
-
+    ItemTextBinding binding2;
+    BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
+    private LifecycleOwner owner;
     private BankWithdrawalDialog.BankWithdrawalClose bankClose;
     private
     @NonNull
@@ -68,18 +69,13 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     private String usdtType;
     private FruitHorUSDTRecyclerViewAdapter recyclerViewAdapter;//顶部选项卡adapter
     private BasePopupView ppwError = null; // 底部弹窗 (显示错误信息)
-
     private String usdtid;//第二步传递的 提款地址ide id
     private ProfileVo mProfileVo;
-
     private String wtype;
-
     private ArrayList<WithdrawalInfoVo.UserBankInfo> trc20BankInfoList;//只支持trc20提款地址
-
     private ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo;
     private WithdrawalInfoVo infoVo;
     private WithdrawalInfoVo.UserBankInfo selectorBankInfo;//选中的支付地址
-
     private WithdrawalVerifyVo verifyVo;
     private WithdrawalSubmitVo submitVo;
     private WithdrawalListVo.WithdrawalItemVo changVo;//切换的Vo
@@ -133,7 +129,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         initViewObservable();
         /*requestData();*/
         //业务正常 刷新页面
-       /* refreshChangeUI(changVo, infoVo);*/
+        /* refreshChangeUI(changVo, infoVo);*/
         String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
         mProfileVo = new Gson().fromJson(json, ProfileVo.class);
     }
@@ -277,7 +273,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
 
     }
 
-
     /**
      * 依据顶部卡片刷新提币地址
      *
@@ -334,6 +329,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
 
         });
     }
+
     /**
      * 刷新 提款确认页面信息
      *
@@ -342,13 +338,13 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     private void refreshVerifyUI(final WithdrawalVerifyVo verifyVo) {
         //刷新顶部进度条颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
+            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_main_09));
         }
 
         binding.llSetRequestView.setVisibility(View.GONE);
         //dialog_withdrawal_usdt_confirm
-       /* binding.llVirtualConfirmView.setVisibility(View.VISIBLE);*/
+        /* binding.llVirtualConfirmView.setVisibility(View.VISIBLE);*/
         binding.llVirtualConfirmView.llConfirmView.setVisibility(View.VISIBLE);
         //用户名
         String userName = verifyVo.user_bank_info.user_name;
@@ -398,7 +394,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
      * @param listVo
      */
     private void refreshTopUI(ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo) {
-        recyclerViewAdapter = new FruitHorUSDTRecyclerViewAdapter( listVo, this);
+        recyclerViewAdapter = new FruitHorUSDTRecyclerViewAdapter(listVo, this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -408,6 +404,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         binding.rvShowChooseCard.setItemAnimator(new DefaultItemAnimator());
 
     }
+
     /**
      * 刷新 提款完成页面
      *
@@ -472,12 +469,11 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
             dismiss();
         });
     }
+
     /*业务异常 跳转登录*/
     private void popLoginView() {
         ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_LOGIN_REGISTER).navigation();
     }
-
-
 
     private void initListener() {
         hideKeyBoard();
@@ -548,12 +544,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
             imm.hideSoftInputFromWindow(this.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-
-
-
-
-    ItemTextBinding binding2;
-    BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
 
     /**
      * 显示USDT收款地址
@@ -653,6 +643,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         final String selectorType = selectVo.type;
         changVo = selectVo;
         //获取当前选中的提款详情
-        viewModel.getWithdrawalInfo(selectVo.name,infoVo.code );
+        viewModel.getWithdrawalInfo(selectVo.name, checkCode);
     }
 }

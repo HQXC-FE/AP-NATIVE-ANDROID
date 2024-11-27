@@ -690,7 +690,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:lines">1</item>
         <item name="android:maxLength">40</item>
-        <item name="android:textColor">@color/bt_color_option_draw</item>
+        <item name="android:textColor">@color/clr_txt_white_cm</item>
         <item name="android:textColorHint">@color/clr_txt_grey_03</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
