@@ -600,4 +600,6 @@
     <!-- 安全中心-->
     <color name="clr_safe_center_bg_dialog">#27211F</color>
     <color name="clr_txt_FFF8F8">#FFF8F8</color>
+    <color name="clr_card_stroke_start">#A28D8D</color>
+    <color name="clr_card_stroke_end">#3E3131</color>
 </resources>
