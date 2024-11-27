@@ -168,6 +168,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     public int getSportId() {
+        if (tabSportAdapter.getData().isEmpty()) {
+            return -1;
+        }
         if (TextUtils.equals(mPlatform, PLATFORM_PM) || TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
             return tabSportAdapter.getItem(sportTypePos == -1 ? 0 : sportTypePos).menuId;
         } else {
@@ -1711,7 +1714,11 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private boolean isGoingOnAllExpand() {
-        boolean isGoingOnAllExpand = SPUtils.getInstance(BET_EXPAND).getBoolean(SPKey.BT_GOINGON_SPORT_TYPE_EXPAND + mPlatformName + playMethodType + getSportId(), true);
+        int id = getSportId();
+        if (id == -1) {
+            return true;
+        }
+        boolean isGoingOnAllExpand = SPUtils.getInstance(BET_EXPAND).getBoolean(SPKey.BT_GOINGON_SPORT_TYPE_EXPAND + mPlatformName + playMethodType + id, true);
         return isGoingOnAllExpand;
     }
 
