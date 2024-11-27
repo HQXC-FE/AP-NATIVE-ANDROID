@@ -432,7 +432,7 @@
 
     <!-- 通用 按钮 背景为灰色,可变色(返回/取消等地方使用) -->
     <style name="style_btn_back" parent="style_btn">
-        <item name="android:background">@drawable/bg_btn_grey_selector</item>
+        <item name="android:background">@drawable/bg_btn_selector</item>
         <item name="android:text">@string/txt_back</item>
         <item name="android:textColor">@color/clr_txt_grey_04</item>
     </style>
