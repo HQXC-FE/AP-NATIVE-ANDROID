@@ -243,6 +243,8 @@
 
     <!-- hine字体颜色 -->
     <color name="bt_color_hine_color">#5B5B6A</color>
+    <color name="bt_color_hine_color_1">#867163</color>
+
 
     <!-- 阴影颜色 -->
     <color name="bt_color_shadow">#1AAD7851</color>
@@ -602,4 +604,10 @@
     <color name="clr_txt_FFF8F8">#FFF8F8</color>
     <color name="clr_card_stroke_start">#A28D8D</color>
     <color name="clr_card_stroke_end">#3E3131</color>
+    <!-- 投注 -->
+    <color name="clr_bet_keyboard_bg">#514242</color>
+    <color name="clr_bet_keyboard_txt">#867163</color>
+    <color name="clr_bg_bet_detail_light">#FFABAE</color>
+    <color name="clr_bg_bet_detail_deep">#B00000</color>
+
 </resources>

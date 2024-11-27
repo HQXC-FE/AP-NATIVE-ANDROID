@@ -53,7 +53,7 @@
                     android:layout_height="32dp"
                     android:background="@drawable/bt_bg_keyboard_item"
                     android:text="@string/bt_bt_keyboadr_max"
-                    android:textColor="@color/bt_text_color_deep_primary"
+                    android:textColor="@color/clr_bet_keyboard_txt"
                     android:textSize="@dimen/bt_text_12sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"
@@ -69,7 +69,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@mipmap/bt_icon_keyboard_delete"/>
+                        android:background="@mipmap/bt_icon_keyboard_delete_1"/>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/ll_expand"
@@ -81,7 +81,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@mipmap/bt_icon_keyboard_expand"/>
+                        android:background="@mipmap/bt_icon_keyboard_expand_1"/>
                 </LinearLayout>
             </LinearLayout>
 

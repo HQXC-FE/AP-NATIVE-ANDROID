@@ -14,7 +14,7 @@
         android:background="@drawable/bt_bg_keyboard_item_selector"
         android:gravity="center"
         android:text="0"
-        android:textColor="@color/bt_text_color_deep_primary"
+        android:textColor="@color/clr_bet_keyboard_txt"
         android:textSize="@dimen/bt_text_15sp"
         android:textStyle="bold" />
 </LinearLayout>
