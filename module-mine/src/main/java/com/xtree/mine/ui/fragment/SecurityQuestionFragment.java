@@ -357,7 +357,7 @@ public class SecurityQuestionFragment extends BottomPopupView {
         };
         adapter.addAll(createQA());
         if (questionPPView1 == null) {
-            questionPPView1 = new XPopup.Builder(getContext()).asCustom(new ListDialog(getContext(), getContext().getString(R.string.txt_fund_question_selector_tip), adapter, 80));
+            questionPPView1 = new XPopup.Builder(getContext()).asCustom(new ListDialog(getContext(), getContext().getString(R.string.txt_fund_question_selector_tip), adapter, 80,"#27211F"));
         }
         questionPPView1.show();
     }
@@ -387,7 +387,7 @@ public class SecurityQuestionFragment extends BottomPopupView {
         };
         adapter.addAll(createQA());
         if (questionPPView2 == null) {
-            questionPPView2 = new XPopup.Builder(getContext()).asCustom(new ListDialog(getContext(), getContext().getString(R.string.txt_fund_question_selector_tip), adapter, 80));
+            questionPPView2 = new XPopup.Builder(getContext()).asCustom(new ListDialog(getContext(), getContext().getString(R.string.txt_fund_question_selector_tip), adapter, 80,"#27211F"));
         }
         questionPPView2.show();
     }

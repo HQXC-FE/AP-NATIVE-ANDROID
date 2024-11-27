@@ -599,5 +599,5 @@
     <color name ="clr_txt_hit">#51463F</color>
     <!-- 安全中心-->
     <color name="clr_safe_center_bg_dialog">#27211F</color>
-
+    <color name="clr_txt_FFF8F8">#FFF8F8</color>
 </resources>
