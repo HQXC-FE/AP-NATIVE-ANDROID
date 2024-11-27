@@ -51,6 +51,7 @@
     <TextView
         android:id="@+id/tvw_msg_date"
         style="@style/style_bind_confirm_value"
+        android:textColor="@color/clr_purple_13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
