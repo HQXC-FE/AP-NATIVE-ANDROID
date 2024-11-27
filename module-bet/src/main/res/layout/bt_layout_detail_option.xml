@@ -4,7 +4,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:background="@color/clr_bg_main_black">
 
         <com.xtree.bet.weight.AnimatedExpandableListViewMax
             android:id="@+id/ael_option"
