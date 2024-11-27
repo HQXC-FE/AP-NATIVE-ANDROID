@@ -437,11 +437,11 @@
     <color name="clr_tutorial">#585858</color>
     <color name="clr_red_choose">#FF4A4D</color>
     <color name="clr_txt_withdraw_money">#6D6C72</color>
-    <color name="clr_gap_bg">#EBEBEB</color>
+    <color name="clr_gap_bg">#736760</color>
     <color name="cl_amount_txt">#420C0B</color>
 
     <color name="clr_no_selector">#CDCDCD</color>
-    <color name="clr_hint">#F4F4F4</color>
+    <color name="clr_hint">#231D1B</color>
     <!-- 通用 end-->
     <color name="clr_toast">#808080</color>
 
