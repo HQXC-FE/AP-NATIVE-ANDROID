@@ -207,7 +207,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|bottom"
                 android:layout_marginStart="20dp"
-                android:src="@mipmap/hm_notice"
+                android:src="@mipmap/hm_btn_notice"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/ll_menu"
                 app:layout_constraintStart_toStartOf="parent"
