@@ -15,7 +15,7 @@
     <!-- 主色参考 -->
     <color name="clr_main_01">#420C0B</color>
     <color name="clr_main_02">#96362E</color>
-    <color name="clr_main_03">#A0302E</color>
+    <color name="clr_main_03">#D33D3F</color>
     <color name="clr_main_04">#DDB063</color>
     <color name="clr_main_05">#382E2B</color>
     <color name="clr_main_06">#F3D6D6</color>
@@ -29,6 +29,7 @@
     <color name="clr_main_13">#413333</color>
     <color name="clr_main_14">#FFD9B2</color>
     <color name="clr_main_15">#CA9C6C</color>
+    <color name="clr_main_16">#514242</color>
 
     <!-- ################ 配色 设计师提供 start ################ -->
     <!-- 主色 -->
