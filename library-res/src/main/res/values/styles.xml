@@ -876,7 +876,7 @@
 
     <!-- 登录页 复选框 -->
     <style name="style_cm_ckb_normal">
-        <item name="colorAccent">@color/clr_main</item>
+        <item name="colorAccent">@color/clr_main_11</item>
         <item name="colorControlNormal">@color/clr_main</item>
     </style>
 
