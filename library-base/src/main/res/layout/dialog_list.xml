@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/clr_transparent"
     android:orientation="vertical"
+    android:paddingBottom="12dp"
     tools:context=".widget.ListDialog">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,6 +51,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/clr_white"
-        android:paddingBottom="12dp" />
+        />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

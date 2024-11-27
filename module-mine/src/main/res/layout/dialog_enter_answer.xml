@@ -8,16 +8,17 @@
     android:background="@color/clr_transparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingHorizontal="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/ivw_bg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             android:layout_marginTop="60dp"
             android:padding="4dp"
-            android:src="@mipmap/cm_dialog_bg"
+            android:background="@drawable/bg_dialog_safe_center_tip"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +27,7 @@
         <ImageView
             android:id="@+id/ivw_empty"
             android:layout_width="24dp"
-            android:layout_height="16dp"
+            android:layout_height="26dp"
             android:background="@color/clr_transparent"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@id/ivw_bg"
@@ -36,7 +37,7 @@
             android:id="@+id/ivw_bell"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/cm_dialog_bell"
+            android:src="@mipmap/ic_safe_center_lindao"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +50,7 @@
             android:layout_marginTop="60dp"
             android:gravity="center"
             android:text="@string/txt_security_question_header"
-            android:textColor="@color/clr_black"
+            android:textColor="@color/clr_txt_FFF8F8"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
@@ -64,8 +65,6 @@
             android:layout_marginTop="14dp"
             android:layout_marginEnd="52dp"
             style="@style/style_set_security_question_edit"
-            android:gravity="center"
-            android:textColor="@color/clr_grey_60"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
             app:layout_constraintStart_toStartOf="@id/ivw_bg"
@@ -81,8 +80,6 @@
             android:paddingLeft="1dp"
             style="@style/style_set_security_question_edit"
             android:hint="@string/txt_security_question_tip"
-            android:gravity="center"
-            android:textColor="@color/clr_grey_60"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
             app:layout_constraintStart_toStartOf="@id/ivw_bg"
@@ -103,14 +100,14 @@
 
             <TextView
                 android:id="@+id/tvw_left"
-                style="@style/style_btn_back"
+                style="@style/style_ok_cancel_button_common"
                 android:text="@string/txt_cancel"
                 android:textSize="14sp"
-                android:textColor="@color/clr_txt_grey_04" />
+                />
 
             <TextView
                 android:id="@+id/tvw_right"
-                style="@style/style_btn"
+                style="@style/style_ok_cancel_button_common"
                 android:textSize="14sp"
                 android:text="@string/txt_confirm" />
         </LinearLayout>

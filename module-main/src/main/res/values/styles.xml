@@ -2,5 +2,6 @@
     <!--StartActivity Style 冷启动效果-->
     <style name="AppTheme.Start">
         <item name="android:windowBackground">@drawable/activity_start</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 </resources>

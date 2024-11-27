@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.text.TextUtils
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.drake.net.Get
 import com.drake.net.NetConfig
@@ -50,11 +51,21 @@ class SplashActivity : BaseActivity<ActivitySplashBinding?, SplashViewModel?>() 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mSavedInstanceState = savedInstanceState
-
+        setFullScreen()
         if (BuildConfig.DEBUG) {
             ToastUtils.showLong("Debug Model")
         }
     }
+
+    fun setFullScreen(){
+        window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_FULLSCREEN or  // 隐藏状态栏
+                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or // 隐藏导航栏
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // 沉浸模式
+                )
+
+    }
+
 
     override fun initContentView(savedInstanceState: Bundle?): Int {
         return R.layout.activity_splash

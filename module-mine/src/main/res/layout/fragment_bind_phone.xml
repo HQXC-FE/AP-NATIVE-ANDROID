@@ -15,19 +15,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@color/clr_bg_main_black"
         tools:context=".ui.fragment.BindPhoneFragment">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="33dp"
             android:text="为了您的账户资讯与资金安全，请绑定常用手机号!"
-            android:textColor="@color/bt_color_blurred"
+            android:textColor="@color/clr_txt_FFF8F8"
             android:textSize="@dimen/bt_text_12sp"
             android:gravity="center_vertical|left"
-            android:drawableLeft="@drawable/ic_info"
+            android:drawableLeft="@mipmap/ic_binphone_info"
             android:drawablePadding="2dp"
             android:paddingStart="12dp"
-            android:background="@color/clr_main_05"/>
+            android:background="#231D1B"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -40,7 +41,7 @@
             <View
                 android:layout_width="2dp"
                 android:layout_height="12dp"
-                android:background="@color/bt_color_blurred" />
+                android:background="@color/clr_txt_FFF8F8" />
 
             <TextView
                 android:id="@+id/tvw_title"
@@ -48,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/txt_phone_num"
                 android:textSize="12sp"
-                android:textColor="@color/bt_color_blurred"
+                android:textColor="@color/clr_txt_FFF8F8"
                 android:layout_marginStart="4dp"/>
 
         </LinearLayout>
@@ -62,21 +63,21 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/layout_margin"
             android:textSize="12sp"
-            app:errorTextColor="@color/clr_txt_warn">
+            app:errorTextColor="#867163">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:background="@mipmap/cm_bg_input">
+                android:background="@drawable/bg_safe_center_et">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="+86 |"
                     android:textSize="14sp"
-                    android:textColor="@color/clr_txt_mouse5"
+                    android:textColor="@color/clr_txt_FFF8F8"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="2dp"
                     />
@@ -89,12 +90,13 @@
                     android:inputType="phone"
                     android:maxLength="11"
                     android:textSize="14sp"
-                    android:textColor="@color/clr_txt_mouse5"/>
+                    android:textColor="@color/clr_txt_FFF8F8"
+                    android:textColorHint="@color/clr_txt_et_hint_51463F"
+                    />
 
             </LinearLayout>
 
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -107,14 +109,14 @@
             <View
                 android:layout_width="2dp"
                 android:layout_height="12dp"
-                android:background="@color/bt_color_blurred" />
+                android:background="@color/clr_txt_FFF8F8" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/txt_verify_code"
                 android:textSize="12sp"
-                android:textColor="@color/bt_color_blurred"
+                android:textColor="@color/clr_txt_FFF8F8"
                 android:layout_marginStart="4dp"/>
 
         </LinearLayout>
@@ -127,29 +129,29 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/layout_margin"
             android:textSize="12sp"
-            app:errorTextColor="@color/clr_txt_warn">
+            app:errorTextColor="#867163">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:orientation="horizontal"
                 android:gravity="end"
-                android:background="@mipmap/cm_bg_input">
+                android:background="@drawable/bg_safe_center_et">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_code"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
+                    android:hint="@string/txt_enter_code_pls"
                     android:imeOptions="actionDone"
                     android:inputType="number"
-                    android:hint="@string/txt_enter_code_pls"
                     android:maxLength="6"
                     android:minEms="6"
-                    android:textSize="14sp"
-                    android:textColor="@color/clr_txt_mouse5"
                     android:paddingStart="8dp"
-                    />
+                    android:textColor="@color/clr_txt_FFF8F8"
+                    android:textColorHint="@color/clr_txt_et_hint_51463F"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvw_code"
@@ -173,7 +175,15 @@
 
         <TextView
             android:id="@+id/ivw_ok"
-            style="@style/style_cm_btn_round"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/bt_bg_login_button"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/clr_txt_FFF8F8"
             android:layout_marginTop="48dp"
             android:text="@string/txt_confirm" />
 
@@ -192,7 +202,7 @@
                 android:id="@+id/tvw_cs"
                 style="@style/style_info2_grey_50"
                 android:text="@string/txt_tip_cs_02"
-                android:textColor="@color/clr_txt_mouse5"
+                android:textColor="@color/clr_login_txt_01"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"/>
 

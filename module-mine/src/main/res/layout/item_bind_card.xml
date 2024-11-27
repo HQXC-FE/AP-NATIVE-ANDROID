@@ -27,11 +27,13 @@
 
         <TextView
             style="@style/style_wd_info_title2"
-            android:text="@string/txt_bind_time_c" />
+            android:text="@string/txt_bind_time_c"
+            android:textColor="@color/clr_purple_13"/>
 
         <TextView
             android:id="@+id/tvw_bind_time"
             style="@style/style_wd_info_title2"
+            android:textColor="@color/clr_purple_13"
             tools:text="2024-01-01 16:00:00" />
     </LinearLayout>
 
@@ -52,12 +54,14 @@
                 android:id="@+id/tvw_type_title"
                 style="@style/style_wd_info_title2"
                 android:gravity="start"
+                android:textColor="@color/clr_purple_13"
                 android:text="@string/txt_open_acc_bank" />
 
             <TextView
                 android:id="@+id/tvw_type"
                 style="@style/style_wd_info_title"
                 android:gravity="start"
+                android:textColor="@color/clr_grey_00"
                 tools:text="XX银行" />
         </LinearLayout>
 
@@ -71,11 +75,13 @@
                 android:id="@+id/tvw_acc_title"
                 style="@style/style_wd_info_title2"
                 android:gravity="start"
+                android:textColor="@color/clr_purple_13"
                 android:text="@string/txt_card_num" />
 
             <TextView
                 android:id="@+id/tvw_account"
                 style="@style/style_wd_info_title"
+                android:textColor="@color/clr_grey_00"
                 android:gravity="start"
                 tools:text="***3281" />
         </LinearLayout>

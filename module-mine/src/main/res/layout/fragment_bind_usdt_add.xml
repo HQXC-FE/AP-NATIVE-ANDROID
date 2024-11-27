@@ -14,7 +14,7 @@
         android:id="@+id/ll_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/clr_white"
+        android:background="@color/clr_bg_main_black"
         android:orientation="vertical"
         tools:context=".ui.fragment.BindUsdtAddFragment">
 
@@ -95,7 +95,8 @@
 
                 <TextView
                     android:id="@+id/tvw_old_back"
-                    style="@style/style_btn_back" />
+                    style="@style/style_btn"
+                    android:text="返回"/>
 
                 <TextView
                     android:id="@+id/tvw_old_submit"
@@ -198,7 +199,8 @@
 
                 <TextView
                     android:id="@+id/tvw_back"
-                    style="@style/style_btn_back" />
+                    style="@style/style_btn"
+                    android:text="返回" />
 
                 <TextView
                     android:id="@+id/tvw_submit"

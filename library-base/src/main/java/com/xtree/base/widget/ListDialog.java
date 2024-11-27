@@ -1,6 +1,8 @@
 package com.xtree.base.widget;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +23,8 @@ public class ListDialog extends BottomPopupView {
     TextView tvwTitle;
     ImageView ivwClose;
     RecyclerView rcvMain;
+
+    String mBgColor;
 
     public ListDialog(@NonNull Context context) {
         super(context);
@@ -45,6 +49,14 @@ public class ListDialog extends BottomPopupView {
         this.maxHeight = maxHeight;
     }
 
+    public ListDialog(@NonNull Context context, String title, RecyclerView.Adapter adapter, int maxHeight,String bgColor) {
+        super(context);
+        this.title = title;
+        this.adapter = adapter;
+        this.maxHeight = maxHeight;
+        mBgColor = bgColor;
+    }
+
     @Override
     protected void onCreate() {
         super.onCreate();
@@ -62,6 +74,10 @@ public class ListDialog extends BottomPopupView {
         rcvMain.setAdapter(adapter);
 
         ivwClose.setOnClickListener(v -> dismiss());
+
+        if(!TextUtils.isEmpty(mBgColor)){
+            findViewById(R.id.ll_root).setBackgroundColor(Color.parseColor(mBgColor));
+        }
 
     }
 

@@ -6,6 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/clr_bg_main_black"
         tools:context=".ui.fragment.GooglePwdFragment">
         <!--顶部-->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,6 +41,7 @@
             android:id="@+id/cl_google_psw_top_view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:visibility="gone"
             android:background="@color/min_google_top_color"
             app:layout_constraintTop_toBottomOf="@id/cl_title" />
         <!---->
@@ -127,7 +129,16 @@
 
             <Button
                 android:id="@+id/btn_bind"
-                style="@style/style_cm_btn_round"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bt_bg_login_button"
+                android:gravity="center"
+                android:textColor="@color/clr_txt_FFF8F8"
+                android:textSize="16sp"
                 android:text="绑定" />
 
         </LinearLayout>

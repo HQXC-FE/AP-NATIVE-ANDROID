@@ -1,6 +1,7 @@
 package com.xtree.mine.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -99,6 +100,7 @@ public class BindPhoneFragment extends BaseFragment<FragmentBindPhoneBinding, Ve
         binding.ivwOk.setOnClickListener(v -> submit());
 
         binding.tvwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
+        binding.tvwCs.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         binding.phoneInputLayout.setError("请仔细核对您的手机号码，验证后无法修改");
     }

@@ -5,7 +5,7 @@
     android:id="@+id/ll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/clr_transparent"
+    android:background="@color/clr_bg_main_black"
     android:orientation="vertical"
     tools:ignore="MissingDefaultResource">
 
@@ -13,7 +13,6 @@
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/bg_dialog_top_choose"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +53,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="0dp"
-        android:background="@color/clr_white"
         android:padding="10dp">
 
         <LinearLayout
@@ -67,7 +65,6 @@
                 android:id="@+id/ll_virtual_top"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
                 android:orientation="horizontal"
                 tools:visibility="visible">
 
@@ -372,7 +369,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/bg_withdraw_money_input">
+                        android:background="@mipmap/cm_bg_input">
 
                         <ImageView
                             android:id="@+id/iv_input_money"
@@ -495,7 +492,7 @@
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/bg_withdraw_money_input">
+                                android:background="@mipmap/cm_bg_input">
 
                                 <TextView
                                     android:id="@+id/tv_bind_address"
@@ -715,7 +712,7 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/me_bg_withdrawal_next"
                                 android:text="@string/txt_withdraw_next"
-                                android:textColor="@color/white"
+                                android:textColor="@color/clr_txt_white_cm"
                                 android:textSize="16sp" />
 
                             <Button
@@ -725,9 +722,9 @@
                                 android:layout_below="@id/iv_confirm_next"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="10dp"
-                                android:background="@drawable/bg_dialog_withdraw_close"
+                                android:background="@drawable/me_bg_withdrawal_next"
                                 android:text="@string/txt_withdraw_previous"
-                                android:textColor="@color/update_progress_start_color"
+                                android:textColor="@color/clr_txt_white_cm"
                                 android:textSize="16sp" />
 
                         </RelativeLayout>
