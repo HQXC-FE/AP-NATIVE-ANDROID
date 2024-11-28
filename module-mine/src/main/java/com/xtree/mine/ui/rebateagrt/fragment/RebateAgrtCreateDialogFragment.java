@@ -41,6 +41,9 @@ public class RebateAgrtCreateDialogFragment extends BaseDialogFragment<DialogReb
     public static final int CREATE_MODE = 1;
     //查看模式
     public static final int CHECK_MODE = 2;
+
+    public static final String SUCCESS = RebateAgrtCreateDialogFragment.class.getName() + "success";
+
     private RebateAgrtCreateDialogFragment() {
     }
 

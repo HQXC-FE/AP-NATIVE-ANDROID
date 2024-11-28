@@ -24,6 +24,7 @@ import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.mine.R;
 import com.xtree.mine.data.MineRepository;
+import com.xtree.mine.ui.rebateagrt.fragment.RebateAgrtCreateDialogFragment;
 import com.xtree.mine.ui.rebateagrt.fragment.RebateAgrtSearchUserDialogFragment;
 import com.xtree.mine.ui.rebateagrt.model.RebateAgrtCreateAddModel;
 import com.xtree.mine.ui.rebateagrt.model.RebateAgrtCreateHeadModel;
@@ -46,6 +47,7 @@ import java.util.Map;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import me.xtree.mvvmhabit.base.BaseViewModel;
+import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -311,6 +313,8 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
                             if (response.getSMsg() != null) {
                                 //创建成功
                                 ToastUtils.show(response.getSMsg(), ToastUtils.ShowType.Success);
+                                //发送完成消息
+                                RxBus.getDefault().post(RebateAgrtCreateDialogFragment.SUCCESS);
                                 finish();
                             } else {
                                 //创建失败
