@@ -299,7 +299,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         } else {
             if (!isFloating) {
                 CfLog.i("bettingNetFloatingWindows.show");
-                mBettingNetFloatingWindows.show();
+                if (!isFinishing() && !isDestroyed()) {//防止activity销毁了页面，还需启动
+                    mBettingNetFloatingWindows.show();
+                }
                 isFloating = true;
             }
         }
@@ -542,6 +544,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     mIsChange = true;
                     isFirstInto = true;
                     mLeagueIdList.clear();
+                    if (mLeagueItemList == null) {
+                        //mLeagueItemList在弱网情况下有可能为null
+                        return;
+                    }
                     mLeagueIdList.addAll(mLeagueItemList.get(hotLeaguePos).leagueid);
                     viewModel.statistical(playMethodType);
                     initTimer();
@@ -670,7 +676,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         boolean hasExpand = isChampionHasExand();
         setChampionAllExpand(hasExpand);
         mChampionMatchAdapter.notifyDataSetChanged();
-        ivHeaderExpand.setSelected(hasExpand);
+        if (ivHeaderExpand != null) {
+            ivHeaderExpand.setSelected(hasExpand);
+        }
     }
 
     private void checkLeagueHeaderIsExpand(int groupPosition) {

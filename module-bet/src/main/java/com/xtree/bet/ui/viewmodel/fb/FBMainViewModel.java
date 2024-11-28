@@ -297,7 +297,9 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         mSearchWord = searchWord;
         mIsChampion = isChampion;
         if (!isChampion) {
-            mLeagueListCallBack.searchMatch(searchWord);
+            if (mLeagueListCallBack != null) {
+                mLeagueListCallBack.searchMatch(searchWord);
+            }
         } else {
             mChampionMatchList.clear();
             if (!TextUtils.isEmpty(searchWord)) {
