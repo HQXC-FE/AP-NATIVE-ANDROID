@@ -1,5 +1,7 @@
 package com.xtree.mine.ui.rebateagrt.model;
 
+import android.text.TextUtils;
+
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.mine.R;
 import com.xtree.mine.vo.response.GameSubordinateAgrteResponse;
@@ -145,6 +147,9 @@ public class GameSubordinateagrtModel extends BindModel {
     }
 
     public void setSname(String sname) {
+        if (TextUtils.isEmpty(sname)) {
+            return;
+        }
         this.sname = sname;
     }
 
