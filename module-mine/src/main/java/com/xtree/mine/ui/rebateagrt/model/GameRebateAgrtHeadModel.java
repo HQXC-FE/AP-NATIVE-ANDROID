@@ -87,7 +87,7 @@ public class GameRebateAgrtHeadModel extends BindModel implements BindHead {
         calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - 1); // 昨天
         startDate.set(TimeUtils.longFormatString(calendar.getTimeInMillis(), "yyyy-MM-dd"));
         endDate.set(TimeUtils.longFormatString(System.currentTimeMillis(), "yyyy-MM-dd"));
-        state.set(new StatusVo(0, BaseApplication.getInstance().getString(R.string.txt_all_status)));
+        state.set(new StatusVo(1, BaseApplication.getInstance().getString(R.string.txt_received)));
     }
 
     public RebateAreegmentTypeEnum getTypeEnum() {
