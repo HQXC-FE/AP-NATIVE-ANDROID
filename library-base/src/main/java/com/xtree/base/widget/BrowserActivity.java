@@ -651,6 +651,7 @@ public class BrowserActivity extends AppCompatActivity {
     public class CustomWebViewClient extends WebViewClient {
         private boolean isInitialUrl = true; // 是否是初始 URL 的标识
         private final String initialUrl = url; // 替换为你的初始 URL
+        private String mUrl;
 //        private OkHttpClient client;
 //
 //        public CustomWebViewClient() throws UnknownHostException {
@@ -696,7 +697,7 @@ public class BrowserActivity extends AppCompatActivity {
                 }
             }
             // 检测是否是初始 URL
-            if (isGame && isInitialUrl && url.equals(initialUrl)) {
+            if (isGame && isInitialUrl && TextUtils.equals(url, initialUrl)) {
                 // 当前加载的是初始 URL
                 isInitialUrl = false; // 初始 URL 加载过一次后更新状态
             }
@@ -706,6 +707,7 @@ public class BrowserActivity extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             CfLog.d("onPageFinished url: " + url);
             //Log.d("---", "onPageFinished url: " + url);
+            mUrl = url;
             hideLoading();
         }
 
@@ -728,7 +730,7 @@ public class BrowserActivity extends AppCompatActivity {
             hideLoading();
             Toast.makeText(getBaseContext(), R.string.network_failed, Toast.LENGTH_SHORT).show();
             // 仅处理初始 URL 的加载错误
-            if (request.getUrl().toString().equals(initialUrl)) {
+            if (TextUtils.equals(request.getUrl().toString(), initialUrl)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     int errorCode = error.getErrorCode();
                     String description = error.getDescription().toString();
@@ -762,14 +764,14 @@ public class BrowserActivity extends AppCompatActivity {
             super.onReceivedHttpError(view, request, errorResponse);
 
             int statusCode = errorResponse.getStatusCode(); // 获取状态码
-            String url = request.getUrl().toString(); // 获取请求的 URL
+            String errorUrl = request.getUrl().toString(); // 获取请求的 URL   这个url不对，返回和初始url不一致
 
-            CfLog.d("HTTP Error", "URL: " + url + ", Status Code: " + statusCode);
+            CfLog.d("HTTP Error:  " +"errorUrl:"+ errorUrl + ",   initialUrl:" + initialUrl + ",   URL: " + mUrl + ",   Status Code: " + statusCode);
             // 仅处理初始 URL 的 HTTP 错误
-            if (request.getUrl().toString().equals(initialUrl)) {
-                String msg = "状态码:" + statusCode + "；加载链接：" + url;
+            if (TextUtils.equals(mUrl, initialUrl) || TextUtils.equals(mUrl, null) || TextUtils.equals(mUrl, errorUrl)) {
+                String msg = "状态码:" + statusCode + "；加载链接：" + initialUrl;
                 //处理403 404 500 502等错误
-                uploadH5Error(msg, url);
+                uploadH5Error(msg, initialUrl);
             }
         }
 
