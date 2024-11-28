@@ -27,6 +27,7 @@ public class GameSubordinateagrtModel extends BindModel {
     private String effectDate;
     private String ruleRatio;
     private String createTime;
+    private String ratioTitle;
     //场馆类型
     private RebateAreegmentTypeEnum typeEnum;
     //规则集
@@ -140,6 +141,22 @@ public class GameSubordinateagrtModel extends BindModel {
 
     public String getRuleRatio() {
         return ruleRatio;
+    }
+
+    public String getRatioTitle() {
+        switch (typeEnum) {
+            case FISH:
+                ratioTitle = BaseApplication.getInstance().getString(R.string.txt_rebate_ratio);
+                break;
+            default:
+                ratioTitle = BaseApplication.getInstance().getString(R.string.txt_salare_ratio);
+                break;
+        }
+        return ratioTitle;
+    }
+
+    public void setRatioTitle(String ratioTitle) {
+        this.ratioTitle = ratioTitle;
     }
 
     public String getSname() {
