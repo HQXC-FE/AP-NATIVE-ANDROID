@@ -8,5 +8,7 @@ public class LiveBannerItemModel extends BindModel {
 
     public ObservableField<String> foreImg = new ObservableField<>();
     public ObservableField<String> backImg = new ObservableField<>();
+    public ObservableField<String> androidUrl = new ObservableField<>();
+    public ObservableField<String> params = new ObservableField<>();
 
 }

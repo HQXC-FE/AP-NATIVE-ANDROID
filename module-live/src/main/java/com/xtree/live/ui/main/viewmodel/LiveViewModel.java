@@ -21,7 +21,6 @@ import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
-import com.xtree.base.vo.WsToken;
 import com.xtree.live.R;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.request.AnchorSortRequest;
@@ -63,9 +62,6 @@ import me.xtree.mvvmhabit.utils.SPUtils;
  * Describe: 直播门户viewModel
  */
 public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabLayout.OnTabSelectedListener {
-    public SingleLiveData<Object> getWsTokenLiveData = new SingleLiveData<>();
-
-
     private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
         LiveAnchorModel liveAnchorModel = new LiveAnchorModel(FrontLivesType.ALL.getLabel());
         liveAnchorModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.ALL.getValue(), page, limit, success, error);
@@ -98,11 +94,11 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
             add(R.layout.layout_live_hot);
         }
     };
+    public SingleLiveData<Object> getWsTokenLiveData = new SingleLiveData<>();
     public LiveBannerModel bannerModel = new LiveBannerModel();
     public ObservableField<ArrayList<String>> tabs = new ObservableField<>(new ArrayList<>());
     public MutableLiveData<ArrayList<BindModel>> datas = new MutableLiveData<>(new ArrayList<>());
     public MutableLiveData<ArrayList<Integer>> itemType = new MutableLiveData<>();
-    private WeakReference<FragmentActivity> mActivity = null;
 
     public LiveViewModel(@NonNull Application application) {
         super(application);
@@ -140,7 +136,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     }
 
     public void setActivity(FragmentActivity mActivity) {
-        this.mActivity = new WeakReference<>(mActivity);
+        bannerModel.mActivity = new WeakReference<>(mActivity);
     }
 
     @Override
@@ -162,9 +158,9 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mActivity != null) {
-            mActivity.clear();
-            mActivity = null;
+        if (bannerModel.mActivity != null) {
+            bannerModel.mActivity.clear();
+            bannerModel.mActivity = null;
         }
     }
 
@@ -262,6 +258,8 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                             LiveBannerItemModel itemModel = new LiveBannerItemModel();
                             itemModel.backImg.set(bannerResponse.getBackImg());
                             itemModel.foreImg.set(bannerResponse.getForeImg());
+                            itemModel.androidUrl.set(bannerResponse.getAndroidUrl());
+                            itemModel.params.set(bannerResponse.getParams());
                             bindModels.add(itemModel);
                         }
                         bannerModel.bannerBg.set(((LiveBannerItemModel) bindModels.get(0)).backImg.get());
@@ -364,7 +362,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         addSubscribe(disposable);
     }
 
-    public void  getAnchorSort(){
+    public void getAnchorSort() {
         LiveRepository.getInstance().getAnchorSort(new AnchorSortRequest())
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
@@ -372,7 +370,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                     @Override
                     public void onResult(AnchorSortResponse data) {
 
-                        if (data !=null){
+                        if (data != null) {
                             CfLog.e("getAnchorSort ---->" + data.toString());
                         }
                     }
