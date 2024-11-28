@@ -3,6 +3,7 @@ package com.xtree.mine.ui.rebateagrt.viewmodel;
 import static com.xtree.mine.ui.rebateagrt.fragment.RebateAgrtCreateDialogFragment.CHECK_MODE;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.CHESS;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.EGAME;
+import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.FISH;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.LIVE;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.SPORT;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.USER;
@@ -277,6 +278,7 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
             case "3": //SPORT
             case "5": //CHESS
             case "6": // EGAME
+            case "9": // FISH
             case "1": //USER
                 query.setType(rebateAgrtDetailModel.getSubData().getType());
                 break;
@@ -339,6 +341,8 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
                 break;
             case "6": // EGAME
                 titleData.setValue(EGAME.getName());
+            case "9": // FISH
+                titleData.setValue(FISH.getName());
                 break;
             case "1": //USER
                 titleData.setValue(USER.getName());
