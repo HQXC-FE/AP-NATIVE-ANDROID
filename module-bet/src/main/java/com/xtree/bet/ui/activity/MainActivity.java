@@ -850,6 +850,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         } else {
             mHeader.layout(0, 0, measuredWidth, measuredHeight);
         }
+        //firstGroup有可能等于-1，导致闪退
+        if (firstGroup == -1) {
+            return;
+        }
         League league = mLeagueList.get(firstGroup);
 
         if (league.isHead() && league.getHeadType() == League.HEAD_TYPE_LIVE_OR_NOLIVE) {
