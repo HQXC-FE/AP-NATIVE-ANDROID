@@ -186,8 +186,6 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
 
             }
         });
-
-        initSearch();
     }
 
     private void initSearch() {
@@ -207,6 +205,21 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
             hideSearchView();
         });
 
+        binding.edtGameSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                search(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     private void search(String query) {
@@ -284,21 +297,7 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
                 resultAdapter = new LeagueResultAdapter(requireContext(), list);
                 binding.rvLeague.setAdapter(resultAdapter);
                 //防止用户搜索时，resultAdapter还为空
-                binding.edtGameSearch.addTextChangedListener(new TextWatcher() {
-
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        search(s.toString());
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                    }
-                });
+                initSearch();
             } else {//搞个加载圈
                 resultAdapter.setData(list);
             }
