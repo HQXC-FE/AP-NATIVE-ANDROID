@@ -1,5 +1,7 @@
 package com.xtree.live.ui.main.bet;
 
+import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,32 +10,36 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.gyf.immersionbar.ImmersionBar;
+import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
+import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.bet.bean.ui.Match;
+import com.xtree.bet.constant.Constants;
+import com.xtree.bet.util.MatchDeserializer;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.data.factory.AppViewModelFactory;
-import com.xtree.live.databinding.ActivityBtLayoutDetailBinding;
-import com.xtree.live.databinding.FragmentChatBinding;
+import com.xtree.live.ui.main.model.constant.DetailLivesType;
+import com.xtree.live.ui.main.viewmodel.LiveDetailViewModel;
 import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 import com.xtree.service.WebSocketService;
 import com.xtree.service.message.MessageData;
@@ -44,27 +50,36 @@ import java.io.File;
 import java.util.ArrayList;
 
 import io.sentry.Sentry;
-import me.xtree.mvvmhabit.base.BaseActivity;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
  * Created by Vickers on 2024/11/24
  */
-public class LiveMatchDetailActivity extends BaseActivity<ActivityBtLayoutDetailBinding, LiveViewModel> {
+public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardGSYVideoPlayer> implements View.OnClickListener {
+    private final static String KEY_MATCH = "KEY_MATCH_ID";
     private ArrayList<Fragment> fragmentList = new ArrayList<>();
     private ArrayList<String> tabList = new ArrayList<>();
     private FragmentStateAdapter mAdapter;
     private PushServiceConnection pushServiceConnection;
     private Observer<Object> pushObserver;
 
+    private Match mMatch;
+
+    private int tabPos;
+
+    private String mPlatform = SPUtils.getInstance().getString(KEY_PLATFORM);
+
+    public Match getmMatch() {
+        return mMatch;
+    }
+
     @Override
     public void initView() {
         boolean isLogin = getIntent().getBooleanExtra("isLogin", false);
-        //ARouter拿到多Fragment(这里需要通过ARouter获取，不能直接new,因为在组件独立运行时，宿主app是没有依赖其他组件，所以new不到其他组件的Fragment)
-        Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_CHAT).withBoolean("isLogin", isLogin).navigation();
+        Fragment homeFragment = new Fragment();
         Fragment liveBetFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_BET).navigation();
-        Fragment liveFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_ATTENTION).navigation();
-        Fragment rechargeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_CHAT_ANCHOR).navigation();
+        Fragment liveFragment = new Fragment();
+        Fragment rechargeFragment = new Fragment();
         fragmentList.add(homeFragment);
         fragmentList.add(liveBetFragment);
         fragmentList.add(liveFragment);
@@ -86,13 +101,10 @@ public class LiveMatchDetailActivity extends BaseActivity<ActivityBtLayoutDetail
         binding.vpMain.setAdapter(mAdapter);
         binding.vpMain.setUserInputEnabled(true); // ViewPager2 左右滑动
 
-//        Fragment bindMsgFragment = new Fragment();
-//        Fragment bindMsgPersonFragment = new Fragment();
-
-        String txtSquare = getString(R.string.txt_live_chat_square);
-        String txtBetting = getString(R.string.txt_live_chat_betting);
-        String txtPrivate = getString(R.string.txt_live_chat_private);
-        String txtMsgAssistant = getString(R.string.txt_live_chat_assistant);
+        String txtSquare = DetailLivesType.SQUARE.getLabel();
+        String txtBetting = DetailLivesType.BET.getLabel();
+        String txtPrivate = DetailLivesType.ANCHOR_PRIVATE.getLabel();
+        String txtMsgAssistant = DetailLivesType.ANCHOR_ASSISTANT.getLabel();
 
         tabList.add(txtSquare);
         tabList.add(txtBetting);
@@ -102,17 +114,46 @@ public class LiveMatchDetailActivity extends BaseActivity<ActivityBtLayoutDetail
         new TabLayoutMediator(binding.tblType, binding.vpMain, (tab, position) -> {
             tab.setText(tabList.get(position));
         }).attach();
-
         mAdapter.notifyDataSetChanged();
 
+        initImmersionBar();
         initPushService();
     }
 
-    public static void start(Context context, Match match) {
+    public static void start(Context context, int matchID) {
         Intent intent = new Intent(context, LiveMatchDetailActivity.class);
-        //SPUtils.getInstance().put(KEY_MATCH, new Gson().toJson(match));
+        //SPUtils.getInstance().put(KEY_MATCH, new Gson().toJson(matchID));
         //intent.putExtra(KEY_MATCH, match);
         context.startActivity(intent);
+    }
+
+    /**
+     * 初始化沉浸式
+     * Init immersion bar.
+     */
+    protected void initImmersionBar() {
+        //设置共同沉浸式样式
+        ImmersionBar.with(this)
+                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
+                .fitsSystemWindows(false)
+                .statusBarDarkFont(false)
+                .init();
+    }
+
+    @Override
+    public void initData() {
+        Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
+        mMatch = gson.fromJson(SPUtils.getInstance().getString(KEY_MATCH), Match.class);
+        if(mMatch != null){
+            System.out.println("=============== LiveMatchDetail mMatch.getId() ================"+mMatch.getId());
+        }else {
+            System.out.println("=============== LiveMatchDetail NO MATCH ================");
+        }
+
+        //viewModel.getMatchDetail(mMatch.getId());
+//        viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
+//        viewModel.addSubscription();
+//        setCgBtCar();
     }
 
     @Override
@@ -126,9 +167,27 @@ public class LiveMatchDetailActivity extends BaseActivity<ActivityBtLayoutDetail
     }
 
     @Override
-    public LiveViewModel initViewModel() {
+    public LiveDetailViewModel initViewModel() {
         AppViewModelFactory factory = AppViewModelFactory.getInstance(getApplication());
-        return new ViewModelProvider(this, factory).get(LiveViewModel.class);
+        return new ViewModelProvider(this, factory).get(LiveDetailViewModel.class);
+    }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == com.xtree.bet.R.id.rl_cg) {
+//            if (BtCarManager.size() <= 1) {
+//                ToastUtils.showLong(getText(com.xtree.bet.R.string.bt_bt_must_have_two_match));
+//                return;
+//            }
+//            if (ClickUtil.isFastClick()) {
+//                return;
+//            }
+//            BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
+//            btCarDialogFragment.show(LiveMatchDetailActivity.this.getSupportFragmentManager(), "btCarDialogFragment");
+        } else if (id == com.xtree.bet.R.id.iv_back) {
+            finish();
+        }
     }
 
     private void initPushService() {
@@ -140,7 +199,7 @@ public class LiveMatchDetailActivity extends BaseActivity<ActivityBtLayoutDetail
                 switch (outputType) {
                     case OBTAIN_LINK:
                         if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
-                            viewModel.getWebsocket();
+                            //viewModel.getWebsocket();
                         }
                         break;
                     case REMOTE_MSG://后端的消息
@@ -195,5 +254,91 @@ public class LiveMatchDetailActivity extends BaseActivity<ActivityBtLayoutDetail
         obj.putLong("expireTime", expireTime);
         pushServiceConnection.sendMessageToService(MessageType.Input.LINK, obj);
 
+    }
+
+    /**
+     * 设置顶部背景图
+     */
+    private void setTopBg() {
+        if (mMatch != null && mMatch.getSportId() != null) {
+            binding.ctlBg.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
+        }
+    }
+    /**
+     * 初始化播放器相关控件
+     */
+    private void initVideoPlayer() {
+        //增加title
+        binding.tvLive.setOnClickListener(this);
+        binding.tvAnimi.setOnClickListener(this);
+        binding.ivBack.setOnClickListener(this);
+    }
+
+    @Override
+    public StandardGSYVideoPlayer getGSYVideoPlayer() {
+        return binding.videoPlayer;
+    }
+
+    @Override
+    public GSYVideoOptionBuilder getGSYVideoOptionBuilder() {
+//         String videoUrl = "";
+//        if (!mMatch.getVideoUrls().isEmpty()) {
+//            videoUrl = mMatch.getVideoUrls().get(0);
+//        }
+//        String score = "";
+//        List<Integer> scoreList = mMatch.getScore(Constants.getScoreType());
+//
+//        if (scoreList != null && scoreList.size() > 1) {
+//            score = scoreList.get(0) + " - " + scoreList.get(1);
+//        }
+//        ImageView thumb = new ImageView(this);
+//        if (mMatch != null) {
+//            thumb.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
+//        }
+//        Map header = new HashMap();
+//        if (!TextUtils.isEmpty(mMatch.getReferUrl())) {
+//            header.put("Referer", mMatch.getReferUrl());
+//        }
+//        return new GSYVideoOptionBuilder()
+//                .setThumbImageView(thumb)
+//                .setUrl(videoUrl)
+//                .setMapHeadData(header)
+//                .setCacheWithPlay(false)
+//                .setShrinkImageRes(com.xtree.bet.R.mipmap.bt_video_shrink)
+//                .setEnlargeImageRes(com.xtree.bet.R.mipmap.bt_video_enlarge)
+//                .setVideoTitle(mMatch.getTeamMain() + score + mMatch.getTeamVistor())
+//                .setIsTouchWiget(false)
+//                //.setAutoFullWithSize(true)
+//                .setRotateViewAuto(false)
+//                .setLockLand(false)
+//                .setShowFullAnimation(false)//打开动画
+//                .setNeedLockFull(false)
+//                .setSeekRatio(1);
+        return null;
+    }
+
+    @Override
+    public void clickForFullScreen() {
+
+    }
+
+    @Override
+    public boolean getDetailOrientationRotateAuto() {
+        return false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            System.out.println("=================== onResume ===========================");
+            //刷新数据
+            if (binding.tblType.getSelectedTabPosition() != -1) {
+                System.out.println("=================== onResume viewModel.refresh ===========================");
+                viewModel.refresh(binding.tblType.getTabAt(binding.tblType.getSelectedTabPosition()).getText().toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -5,33 +5,143 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/shape_gradient_0">
+        android:background="@color/bt_page_bg"
+        android:orientation="vertical">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bt_page_bg"
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <RelativeLayout
+                    android:id="@+id/rl_play_method"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@color/bt_page_up_bg">
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tab_category_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_toLeftOf="@+id/iv_expand"
+                        android:textSize="10sp"
+                        app:tabIndicatorFullWidth="false"
+                        app:tabIndicatorHeight="0dp"
+                        app:tabMode="scrollable"
+                        app:tabPaddingEnd="0dp"
+                        app:tabPaddingStart="0dp"
+                        app:tabRippleColor="@android:color/transparent" />
+
+                    <ImageView
+                        android:id="@+id/iv_expand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:src="@mipmap/bt_ic_list_expand" />
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:id="@+id/fl_option"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <include
+                    android:id="@+id/ll_end"
+                    layout="@layout/bt_layout_match_ended" />
+
+            </LinearLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_play_method"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="37dp"
-            android:layout_marginEnd="38dp"
-            android:layout_marginBottom="60dp"
-            android:padding="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/rl_cg"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:layout_marginEnd="17dp"
+            android:layout_marginBottom="94dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@drawable/shape_solid_light_blue_violet_40">
+            app:layout_constraintRight_toRightOf="parent">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_category_type"
+            <ImageView
+                android:id="@+id/iv_bt"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:textSize="10sp"
-                app:tabIndicatorFullWidth="false"
-                app:tabIndicatorHeight="0dp"
-                app:tabMode="scrollable"
-                app:tabPaddingEnd="0dp"
-                app:tabPaddingStart="0dp"/>
+                android:layout_height="match_parent"
+                android:background="@mipmap/bt_ic_chuan_suspend" />
+
+            <TextView
+                android:id="@+id/tv_cg_count"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="4dp"
+                android:background="@mipmap/bt_bg_text_cg"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/bt_color_under_bg_primary_text"
+                android:textSize="12sp" />
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--    <com.scwang.smart.refresh.layout.SmartRefreshLayout-->
+    <!--        android:id="@+id/refreshLayout"-->
+    <!--        onRefreshLoadMoreListener="@{m.onRefreshLoadMoreListener}"-->
+    <!--        srlEnableLoadMore="@{m.enableLoadMore}"-->
+    <!--        srlFinishRefresh="@{m.finishRefresh}"-->
+    <!--        srlAutoRefresh="@{m.autoRefresh}"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:background="@color/red"-->
+    <!--        app:srlEnableAutoLoadMore="true">-->
+
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:background="@drawable/shape_gradient_0">-->
+
+
+    <!--        <RelativeLayout-->
+    <!--            android:id="@+id/rl_play_method"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="45dp"-->
+    <!--            android:layout_marginStart="37dp"-->
+    <!--            android:layout_marginEnd="38dp"-->
+    <!--            android:layout_marginBottom="60dp"-->
+    <!--            android:padding="8dp"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            android:background="@drawable/shape_solid_light_blue_violet_40">-->
+
+    <!--            <com.google.android.material.tabs.TabLayout-->
+    <!--                android:id="@+id/tab_category_type"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="30dp"-->
+    <!--                android:layout_centerVertical="true"-->
+    <!--                android:textSize="10sp"-->
+    <!--                app:tabIndicatorFullWidth="false"-->
+    <!--                app:tabIndicatorHeight="0dp"-->
+    <!--                app:tabMode="scrollable"-->
+    <!--                app:tabPaddingEnd="0dp"-->
+    <!--                app:tabPaddingStart="0dp"/>-->
+    <!--        </RelativeLayout>-->
+
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+    <!--    </com.scwang.smart.refresh.layout.SmartRefreshLayout>-->
 </layout>

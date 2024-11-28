@@ -1,7 +1,5 @@
 package com.xtree.live.ui.main.model.anchor;
 
-import static androidx.test.platform.app.InstrumentationRegistry.getArguments;
-
 import android.content.Context;
 import android.view.View;
 
@@ -55,7 +53,9 @@ public class LiveAnchorModel extends BindModel {
 //            if(isLogin){
 //                goLogin();
 //            }else{
-                LiveMatchDetailActivity.start(context, null);
+                int matchID = Integer.parseInt(((LiveAnchorItemModel) bindModels.get(modelPosition)).getMatchId());
+                System.out.println("================= onItemClick matchID ===================="+matchID);
+                LiveMatchDetailActivity.start(context, matchID);
 //            }
         }
 
@@ -119,6 +119,7 @@ public class LiveAnchorModel extends BindModel {
             itemModel.setAvatar(response.getAvatar());
             itemModel.setUserNickname(response.getUserNickname());
             itemModel.setHeat("" + response.getHeat());
+            itemModel.setMatchId(String.valueOf(response.getMatchId()));
             bindModels.add(itemModel);
         }
         datas.set(bindModels);
