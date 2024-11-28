@@ -66,7 +66,11 @@ public class GameSubordinaterebateModel extends BindModel {
     }
 
     public void setRatio(String ratio) {
-        this.ratio = ratio;
+        if (ratio == null) {
+            this.ratio = "0";
+        } else {
+            this.ratio = ratio;
+        }
     }
 
     public String getTotalMoney() {
