@@ -25,7 +25,7 @@ import me.xtree.mvvmhabit.base.BaseActivity;
  * 详情模式播放页面基础类
  * Created by guoshuyu on 2017/9/14.
  */
-public abstract class LiveGSYBaseActivityDetail<T extends GSYBaseVideoPlayer> extends BaseActivity<BtLayoutDetailBinding, TemplateBtDetailViewModel> implements VideoAllCallBack {
+public abstract class LiveGSYBaseActivityDetail<T extends GSYBaseVideoPlayer> extends BaseActivity<ActivityBtLayoutDetailBinding, LiveDetailViewModel> implements VideoAllCallBack {
 
     protected boolean isPlay;
 

@@ -39,7 +39,9 @@ import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.ui.main.model.anchor.LiveAnchorModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerItemModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerModel;
+import com.xtree.live.ui.main.model.constant.DetailLivesType;
 import com.xtree.live.ui.main.model.constant.FrontLivesType;
+import com.xtree.live.ui.main.model.hot.LiveBetModel;
 import com.xtree.live.ui.main.model.hot.LiveHotModel;
 
 import java.lang.ref.WeakReference;
@@ -66,42 +68,32 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
     public SingleLiveData<Object> getWsTokenLiveData = new SingleLiveData<>();
 
 
-    private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
-//        LiveAnchorModel liveAnchorModel = new LiveAnchorModel(DeatilLivesType.SQUARE.getLabel());
-//        liveAnchorModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.ALL.getValue(), page, limit, success, error);
-//        liveAnchorModel.setItemType(0);
+//    private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
 //
-//        LiveHotModel liveFootBallModel = new LiveHotModel(DeatilLivesType.BETTING.getLabel());
-//        liveFootBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.FOOTBALL.getValue(), page, limit, success, error);
-//        liveFootBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
-//        liveFootBallModel.setItemType(1);
+//        LiveBetModel liveBetModel = new LiveBetModel(DetailLivesType.BET.getLabel());
+//        liveBetModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(DetailLivesType.BET.getValue(), page, limit, success, error);
+//        liveBetModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
+//        liveBetModel.setItemType(1);
 //
-//        LiveHotModel liveBasketBallModel = new LiveHotModel(DeatilLivesType.ANCHOR_PRIVATE.getLabel());
-//        liveBasketBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.BASKETBALL.getValue(), page, limit, success, error);
-//        liveBasketBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
-//        liveBasketBallModel.setItemType(1);
+//        add(liveBetModel);
+//        add(liveBetModel);
+//        add(liveBetModel);
+//        add(liveBetModel);
 //
-//        LiveHotModel liveOtherModel = new LiveHotModel(DeatilLivesType.ANCHOR_ASSISTANT.getLabel());
-//        liveOtherModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.OTHER.getValue(), page, limit, success, error);
-//        liveOtherModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
-//        liveOtherModel.setItemType(1);
-//
-//        add(liveAnchorModel);
-//        add(liveFootBallModel);
-//        add(liveBasketBallModel);
-//        add(liveOtherModel);
-    }};
-    private final ArrayList<Integer> typeList = new ArrayList() {
-        {
-            add(R.layout.layout_live_anchor);
-            add(R.layout.layout_live_hot);
-        }
-    };
+//    }};
+//    private final ArrayList<Integer> typeList = new ArrayList() {
+//        {
+//            add(R.layout.fragment_bet); //广场
+//            add(R.layout.fragment_bet); //投注
+//            //add(R.layout.fragment_bet);
+//            //add(R.layout.fragment_bet);
+//        }
+//    };
     public LiveBannerModel bannerModel = new LiveBannerModel();
     public ObservableField<ArrayList<String>> tabs = new ObservableField<>(new ArrayList<>());
     public MutableLiveData<ArrayList<BindModel>> datas = new MutableLiveData<>(new ArrayList<>());
     public MutableLiveData<ArrayList<Integer>> itemType = new MutableLiveData<>();
-    //private WeakReference<FragmentActivity> mActivity = null;
+    private WeakReference<FragmentActivity> mActivity = null;
 
     public LiveDetailViewModel(@NonNull Application application) {
         super(application);
@@ -113,34 +105,34 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
 
 
     public void initData(FragmentActivity mActivity) {
-        //setActivity(mActivity);
+        setActivity(mActivity);
 
-//        if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
-//            model.getLiveToken(new LiveTokenRequest())
-//                    .compose(RxUtils.schedulersTransformer())
-//                    .compose(RxUtils.exceptionTransformer())
-//                    .subscribe(new HttpCallBack<LiveTokenResponse>() {
-//                        @Override
-//                        public void onResult(LiveTokenResponse data) {
-//                            if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
-//                                model.setLive(data);
-//                                initData();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable t) {
-//                            super.onError(t);
-//                        }
-//                    });
-//        } else {
+        if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
+            model.getLiveToken(new LiveTokenRequest())
+                    .compose(RxUtils.schedulersTransformer())
+                    .compose(RxUtils.exceptionTransformer())
+                    .subscribe(new HttpCallBack<LiveTokenResponse>() {
+                        @Override
+                        public void onResult(LiveTokenResponse data) {
+                            if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                                model.setLive(data);
+                                initData();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            super.onError(t);
+                        }
+                    });
+        } else {
             initData();
-//        }
+        }
     }
 
-//    public void setActivity(FragmentActivity mActivity) {
-//        this.mActivity = new WeakReference<>(mActivity);
-//    }
+    public void setActivity(FragmentActivity mActivity) {
+        this.mActivity = new WeakReference<>(mActivity);
+    }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
@@ -175,48 +167,49 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
     }
 
     private void initData() {
-        itemType.setValue(typeList);
-        datas.setValue(bindModels);
+//        itemType.setValue(typeList);
+//        datas.setValue(bindModels);
 
-//        //获取直播配置文件
-//        model.getReviseHot()
-//                .compose(RxUtils.schedulersTransformer())
-//                .compose(RxUtils.exceptionTransformer())
-//                .subscribe(new HttpCallBack<ReviseHotResponse>() {
-//                    @Override
-//                    public void onResult(ReviseHotResponse o) {
-//
-//                    }
-//                });
+        //获取直播配置文件
+        model.getReviseHot()
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<ReviseHotResponse>() {
+                    @Override
+                    public void onResult(ReviseHotResponse o) {
+
+                    }
+                });
     }
 
     public void refresh(String tag) {
-        System.out.println("============= LiveDeatailModel refresh bindModels ================="+bindModels.size());
-        if (bindModels.isEmpty()) {
-            return;
-        }
-        if (TextUtils.isEmpty(tag)) {
-            BindModel bindModel = bindModels.get(0);
-            bindModelAutoRefresh(bindModel);
-        } else {
-            for (BindModel bindModel : bindModels) {
-                if (bindModel.getTag() != null && bindModel.getTag().toString().equals(tag)) {
-                    bindModelAutoRefresh(bindModel);
-                }
-            }
-        }
+//        System.out.println("============= LiveDeatailModel refresh bindModels ================="+bindModels.size());
+//        if (bindModels.isEmpty()) {
+//            return;
+//        }
+//        if (TextUtils.isEmpty(tag)) {
+//            BindModel bindModel = bindModels.get(0);
+//            bindModelAutoRefresh(bindModel);
+//        } else {
+//            for (BindModel bindModel : bindModels) {
+//                if (bindModel.getTag() != null && bindModel.getTag().toString().equals(tag)) {
+//                    bindModelAutoRefresh(bindModel);
+//                }
+//            }
+//        }
 
     }
 
-    private void bindModelAutoRefresh(BindModel bindModel) {
-        if (bindModel instanceof LiveAnchorModel) {
-            ((LiveAnchorModel) bindModel).autoRefresh.set(new Object());
-        } else if (bindModel instanceof LiveHotModel) {
-            ((LiveHotModel) bindModel).autoRefresh.set(new Object());
-        }
-    }
+//    private void bindModelAutoRefresh(BindModel bindModel) {
+//        if (bindModel instanceof LiveBetModel) {
+//            ((LiveBetModel) bindModel).autoRefresh.set(new Object());
+//        } else if (bindModel instanceof LiveBetModel) {
+//            ((LiveBetModel) bindModel).autoRefresh.set(new Object());
+//        }
+//    }
 
     private void getFrontLives(String type, int page, int limit, Observer<List<FrontLivesResponse>> success, Observer<Object> error) {
+        System.out.println("================= LiveDetailViewModel getFrontLives ===================");
         FrontLivesRequest request = new FrontLivesRequest();
         request.setLimit(limit);
         request.setType(type);
@@ -228,6 +221,7 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
                     @Override
                     public void onResult(List<FrontLivesResponse> data) {
                         success.onChanged(data);
+                        System.out.println("================= LiveDetailViewModel getFrontLives onResult ===================");
                     }
 
                     @Override
@@ -246,6 +240,7 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
     }
 
     private void getMatchDetail(String matchId, Observer<Match> success, Observer<Object> error) {
+        System.out.println("================= LiveDetailViewModel getMatchDetail ===================");
         MatchDetailRequest request = new MatchDetailRequest();
         request.setMatchId(matchId);
         Disposable disposable = (Disposable) model.getMatchDetail(request)
@@ -254,6 +249,7 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
                 .subscribeWith(new HttpCallBack<MatchInfo>() {
                     @Override
                     public void onResult(MatchInfo data) {
+                        System.out.println("================= LiveDetailViewModel getMatchDetail onResult ===================");
                         if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
                             success.onChanged(new MatchFb(data.data));
                         } else {
