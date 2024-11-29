@@ -182,18 +182,19 @@ public class ListMsgInfoDialog extends BottomPopupView {
                     }
                     content.append("\n");
                 }
-            } else if (msgPersonInfoVo.type.equals("3") || msgPersonInfoVo.type.equals("4") || msgPersonInfoVo.type.equals("6") || msgPersonInfoVo.type.equals("7") || msgPersonInfoVo.type.equals("9")) {
+            } else if (msgPersonInfoVo.type.equals("3") || msgPersonInfoVo.type.equals("4") || msgPersonInfoVo.type.equals("6") || msgPersonInfoVo.type.equals("7") || msgPersonInfoVo.type.equals("9") || msgPersonInfoVo.type.equals("10")) {
                 for (HashMap<String, Object> hashMap : ruleList) {
                     level = new Double((double) hashMap.get("level")).intValue();
                     content.append("规则")
                             .append(level).append(":")
                             .append(unit.get(0))
                             .append("日有效投注额≥").append(hashMap.get("min_bet"))
-                            .append("元，且活跃玩家人数≥").append(hashMap.get("min_player"));
+                            .append("元，且活跃玩家人数≥").append(hashMap.get("min_player"))
+                            .append("人，返水").append(hashMap.get("ratio")).append("%").append("\n");
                 }
             } else if (msgPersonInfoVo.type.equals("5")) {
                 for (HashMap<String, Object> hashMap : ruleList) {
-                    int loseStreak = new  Double((double) hashMap.get("lose_streak")).intValue();
+                    int loseStreak = new Double((double) hashMap.get("lose_streak")).intValue();
                     int people = new Double((double) hashMap.get("people")).intValue();
                     level = new Double((double) hashMap.get("level")).intValue();
                     content.append("规则").append(level).append("：\n");

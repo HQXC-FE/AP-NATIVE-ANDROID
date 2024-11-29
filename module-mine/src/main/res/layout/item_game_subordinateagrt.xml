@@ -115,7 +115,7 @@
                 android:id="@+id/item_proportions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="工资比例"
+                android:text="@{m.ratioTitle}"
                 android:textSize="12sp"
                 android:textColor="@color/clr_txt_02"
                 android:layout_marginTop="13dp"

@@ -3,6 +3,7 @@ package com.xtree.mine.ui.rebateagrt.viewmodel;
 import static com.xtree.mine.ui.rebateagrt.fragment.RebateAgrtCreateDialogFragment.CHECK_MODE;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.CHESS;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.EGAME;
+import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.FISH;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.LIVE;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.SPORT;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.USER;
@@ -23,6 +24,7 @@ import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.mine.R;
 import com.xtree.mine.data.MineRepository;
+import com.xtree.mine.ui.rebateagrt.fragment.RebateAgrtCreateDialogFragment;
 import com.xtree.mine.ui.rebateagrt.fragment.RebateAgrtSearchUserDialogFragment;
 import com.xtree.mine.ui.rebateagrt.model.RebateAgrtCreateAddModel;
 import com.xtree.mine.ui.rebateagrt.model.RebateAgrtCreateHeadModel;
@@ -45,6 +47,7 @@ import java.util.Map;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import me.xtree.mvvmhabit.base.BaseViewModel;
+import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -277,6 +280,7 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
             case "3": //SPORT
             case "5": //CHESS
             case "6": // EGAME
+            case "9": // FISH
             case "1": //USER
                 query.setType(rebateAgrtDetailModel.getSubData().getType());
                 break;
@@ -309,6 +313,8 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
                             if (response.getSMsg() != null) {
                                 //创建成功
                                 ToastUtils.show(response.getSMsg(), ToastUtils.ShowType.Success);
+                                //发送完成消息
+                                RxBus.getDefault().post(RebateAgrtCreateDialogFragment.SUCCESS);
                                 finish();
                             } else {
                                 //创建失败
@@ -339,6 +345,8 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
                 break;
             case "6": // EGAME
                 titleData.setValue(EGAME.getName());
+            case "9": // FISH
+                titleData.setValue(FISH.getName());
                 break;
             case "1": //USER
                 titleData.setValue(USER.getName());

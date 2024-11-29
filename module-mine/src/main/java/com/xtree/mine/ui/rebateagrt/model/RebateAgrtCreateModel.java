@@ -42,7 +42,8 @@ public class RebateAgrtCreateModel extends BindModel {
             case "2": //LIVE
             case "3": //SPORT
             case "5": //CHESS
-            case "6": // EGAME
+            case "6": //EGAME
+            case "9": //FISH
                 subTitle1 = BaseApplication.getInstance().getString(R.string.txt_daily_effective_bet_amount);
                 subTitle2 = BaseApplication.getInstance().getString(R.string.txt_num_active_persons_morethan);
                 subTitle3 = BaseApplication.getInstance().getString(R.string.txt_rebate_percent);
