@@ -46,7 +46,7 @@ public class RebateAgrtCreateModel extends BindModel {
             case "9": //FISH
                 subTitle1 = BaseApplication.getInstance().getString(R.string.txt_daily_effective_bet_amount);
                 subTitle2 = BaseApplication.getInstance().getString(R.string.txt_num_active_persons_morethan);
-                subTitle3 = BaseApplication.getInstance().getString(R.string.txt_rebate_percent);
+                subTitle3 = BaseApplication.getInstance().getString(R.string.txt_rebate_ratio_percent);
                 break;
             default:
                 break;
