@@ -1,6 +1,9 @@
 package com.xtree.live.ui.main.model.anchor;
 
+import static androidx.test.platform.app.InstrumentationRegistry.getArguments;
+
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -11,6 +14,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.drake.brv.BindingAdapter;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
+import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.mvvm.recyclerview.BaseDatabindingAdapter;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.router.RouterActivityPath;
@@ -22,6 +26,7 @@ import com.xtree.live.ui.main.listener.FetchListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
@@ -49,14 +54,14 @@ public class LiveAnchorModel extends BindModel {
             ToastUtils.show("" + modelPosition, ToastUtils.ShowType.Default);
             Context context = mHolder.getContext();
             //判断当前是否是登录状态
-//            boolean isLogin = getArguments().getBoolean("isLogin", false);
-//            if(isLogin){
-//                goLogin();
-//            }else{
+            String token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
+            boolean isLogin = !TextUtils.isEmpty(token);
+            if(isLogin){
                 int matchID = Integer.parseInt(((LiveAnchorItemModel) bindModels.get(modelPosition)).getMatchId());
-                System.out.println("================= onItemClick matchID ===================="+matchID);
                 LiveMatchDetailActivity.start(context, matchID);
-//            }
+            }else{
+                goLogin();
+            }
         }
 
         @Override

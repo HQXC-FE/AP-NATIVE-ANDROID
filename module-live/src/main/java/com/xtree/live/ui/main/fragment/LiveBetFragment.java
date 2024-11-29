@@ -18,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,14 +25,11 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
-import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.PlayType;
-import com.xtree.bet.constant.Constants;
 import com.xtree.bet.contract.BetContract;
 import com.xtree.bet.manager.BtCarManager;
-import com.xtree.bet.ui.activity.BtDetailActivity;
 import com.xtree.bet.ui.fragment.BtCarDialogFragment;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
@@ -41,12 +37,9 @@ import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FbBtDetailViewModel;
 import com.xtree.bet.ui.viewmodel.pm.PmBtDetailViewModel;
 import com.xtree.bet.util.MatchDeserializer;
-import com.xtree.bet.weight.BaseDetailDataView;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.databinding.FragmentBetBinding;
-import com.xtree.live.ui.main.model.hot.LiveBetModel;
-import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,18 +68,13 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
         initImmersionBar();
         Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
         mMatch = gson.fromJson(SPUtils.getInstance().getString(KEY_MATCH), Match.class);
-        System.out.println("================ LiveBetFragment initView ==================");
-//        viewModel.getMatchDetail(mMatch.getId());
-//        viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
-//        viewModel.addSubscription();
-
         binding.tabCategoryType.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tabPos = tab.getPosition();
                 for(int i = 0; i < binding.tabCategoryType.getTabCount(); i ++){
                     if(tabPos == i){
-                        binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(com.xtree.bet.R.mipmap.bt_bg_category_tab_selected);
+                        binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(R.drawable.shape_live_bet_selected_gradient_33);
                     }else {
                         binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(com.xtree.bet.R.drawable.bt_bg_category_tab);
                     }
@@ -106,33 +94,6 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
             }
         });
         binding.rlCg.setOnClickListener(this);
-        binding.ivExpand.setOnClickListener(this);
-
-//        binding.tabCategoryType.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                tabPos = tab.getPosition();
-//                for(int i = 0; i < binding.tabCategoryType.getTabCount(); i ++){
-//                    if(tabPos == i){
-//                        binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(R.drawable.shape_gradient_33);
-//                    }else {
-//                        binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(R.drawable.shape_gradient_white_33);
-//                    }
-//                }
-//
-//                updateOptionData();
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
     }
 
     @Override
@@ -198,9 +159,6 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
         }
     }
 
-
-
-
     /**
      * 更新投注选项数据
      */
@@ -264,13 +222,13 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
         });
         viewModel.categoryListData.observe(this, categories -> {
             if (categories.isEmpty()) {
-                binding.rlPlayMethod.setVisibility(View.GONE);
+                binding.tabCategoryType.setVisibility(View.GONE);
                 binding.flOption.setVisibility(View.GONE);
                 binding.llEnd.llEmpty.setVisibility(View.VISIBLE);
             } else {
-                binding.rlPlayMethod.setVisibility(View.VISIBLE);
                 binding.flOption.setVisibility(View.VISIBLE);
                 binding.llEnd.llEmpty.setVisibility(View.GONE);
+                binding.tabCategoryType.setVisibility(View.VISIBLE);
             }
             //if (mCategories.size() != categories.size()) {
             mCategories = categories;
@@ -296,7 +254,6 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
                         if (categories.get(i) == null && binding.tabCategoryType != null && i < binding.tabCategoryType.getTabCount()) {
                             binding.tabCategoryType.removeTabAt(i);
                             if (binding.tabCategoryType.getTabCount() == 0) {
-                                binding.rlPlayMethod.setVisibility(View.GONE);
                                 binding.flOption.setVisibility(View.GONE);
                                 binding.llEnd.llEmpty.setVisibility(View.VISIBLE);
                             }

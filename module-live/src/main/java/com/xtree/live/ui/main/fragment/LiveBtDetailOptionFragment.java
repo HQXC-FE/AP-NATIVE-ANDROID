@@ -128,7 +128,6 @@ public class LiveBtDetailOptionFragment extends BaseFragment<LiveBtLayoutDetailO
 
     @Override
     public void initViewObservable() {
-
         viewModel.betContractListData.observe(this, betContract -> {
             if (betContract.action == BetContract.ACTION_OPTION_CHANGE) {
                 playTypeList = (List<PlayType>) betContract.getData();

@@ -21,28 +21,17 @@ import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
-import com.xtree.live.R;
 import com.xtree.live.data.LiveRepository;
-import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
-import com.xtree.live.data.source.request.SubscriptionRequest;
-import com.xtree.live.data.source.response.AnchorSortResponse;
-import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.fb.Match;
 import com.xtree.live.data.source.response.fb.MatchFb;
 import com.xtree.live.data.source.response.fb.MatchInfo;
-import com.xtree.live.ui.main.model.anchor.LiveAnchorModel;
-import com.xtree.live.ui.main.model.banner.LiveBannerItemModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerModel;
-import com.xtree.live.ui.main.model.constant.DetailLivesType;
-import com.xtree.live.ui.main.model.constant.FrontLivesType;
-import com.xtree.live.ui.main.model.hot.LiveBetModel;
-import com.xtree.live.ui.main.model.hot.LiveHotModel;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -50,7 +39,6 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
-import io.sentry.Sentry;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
 import me.xtree.mvvmhabit.http.BaseResponse;
@@ -68,27 +56,6 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
     public SingleLiveData<Object> getWsTokenLiveData = new SingleLiveData<>();
 
 
-//    private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
-//
-//        LiveBetModel liveBetModel = new LiveBetModel(DetailLivesType.BET.getLabel());
-//        liveBetModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(DetailLivesType.BET.getValue(), page, limit, success, error);
-//        liveBetModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
-//        liveBetModel.setItemType(1);
-//
-//        add(liveBetModel);
-//        add(liveBetModel);
-//        add(liveBetModel);
-//        add(liveBetModel);
-//
-//    }};
-//    private final ArrayList<Integer> typeList = new ArrayList() {
-//        {
-//            add(R.layout.fragment_bet); //广场
-//            add(R.layout.fragment_bet); //投注
-//            //add(R.layout.fragment_bet);
-//            //add(R.layout.fragment_bet);
-//        }
-//    };
     public LiveBannerModel bannerModel = new LiveBannerModel();
     public ObservableField<ArrayList<String>> tabs = new ObservableField<>(new ArrayList<>());
     public MutableLiveData<ArrayList<BindModel>> datas = new MutableLiveData<>(new ArrayList<>());

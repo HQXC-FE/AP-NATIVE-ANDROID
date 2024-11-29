@@ -1,6 +1,8 @@
 package com.xtree.live.ui.main.bet;
 
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
 import android.content.Context;
 import android.content.Intent;
@@ -34,13 +36,15 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.constant.Constants;
+import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
+import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
+import com.xtree.bet.ui.viewmodel.fb.FbBtDetailViewModel;
+import com.xtree.bet.ui.viewmodel.pm.PmBtDetailViewModel;
 import com.xtree.bet.util.MatchDeserializer;
 import com.xtree.live.BR;
 import com.xtree.live.R;
-import com.xtree.live.data.factory.AppViewModelFactory;
 import com.xtree.live.ui.main.model.constant.DetailLivesType;
-import com.xtree.live.ui.main.viewmodel.LiveDetailViewModel;
-import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 import com.xtree.service.WebSocketService;
 import com.xtree.service.message.MessageData;
 import com.xtree.service.message.MessageType;
@@ -48,9 +52,17 @@ import com.xtree.service.message.PushServiceConnection;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.sentry.Sentry;
 import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
  * Created by Vickers on 2024/11/24
@@ -68,6 +80,7 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
     private int tabPos;
 
     private String mPlatform = SPUtils.getInstance().getString(KEY_PLATFORM);
+    private static int mMatchID = -1;
 
     public Match getmMatch() {
         return mMatch;
@@ -116,7 +129,7 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
         }).attach();
         mAdapter.notifyDataSetChanged();
 
-        initImmersionBar();
+        initVideoPlayer();
         initPushService();
     }
 
@@ -124,36 +137,16 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
         Intent intent = new Intent(context, LiveMatchDetailActivity.class);
         //SPUtils.getInstance().put(KEY_MATCH, new Gson().toJson(matchID));
         //intent.putExtra(KEY_MATCH, match);
+        mMatchID = matchID;
         context.startActivity(intent);
-    }
-
-    /**
-     * 初始化沉浸式
-     * Init immersion bar.
-     */
-    protected void initImmersionBar() {
-        //设置共同沉浸式样式
-        ImmersionBar.with(this)
-                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
-                .fitsSystemWindows(false)
-                .statusBarDarkFont(false)
-                .init();
     }
 
     @Override
     public void initData() {
-        Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
-        mMatch = gson.fromJson(SPUtils.getInstance().getString(KEY_MATCH), Match.class);
-        if(mMatch != null){
-            System.out.println("=============== LiveMatchDetail mMatch.getId() ================"+mMatch.getId());
-        }else {
-            System.out.println("=============== LiveMatchDetail NO MATCH ================");
-        }
-
-        //viewModel.getMatchDetail(mMatch.getId());
-//        viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
-//        viewModel.addSubscription();
-//        setCgBtCar();
+        System.out.println("=============== LiveMatchDetail MatchID ================"+mMatchID);
+        viewModel.getMatchDetail(mMatchID);
+        //viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
+        viewModel.addSubscription();
     }
 
     @Override
@@ -167,24 +160,30 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
     }
 
     @Override
-    public LiveDetailViewModel initViewModel() {
-        AppViewModelFactory factory = AppViewModelFactory.getInstance(getApplication());
-        return new ViewModelProvider(this, factory).get(LiveDetailViewModel.class);
+    public TemplateBtDetailViewModel initViewModel() {
+        if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+            com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory factory = AppViewModelFactory.getInstance(getApplication());
+            return new ViewModelProvider(this, factory).get(FbBtDetailViewModel.class);
+        } else {
+            PMAppViewModelFactory factory = PMAppViewModelFactory.getInstance(getApplication());
+            return new ViewModelProvider(this, factory).get(PmBtDetailViewModel.class);
+        }
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
         if (id == com.xtree.bet.R.id.rl_cg) {
-//            if (BtCarManager.size() <= 1) {
-//                ToastUtils.showLong(getText(com.xtree.bet.R.string.bt_bt_must_have_two_match));
-//                return;
-//            }
-//            if (ClickUtil.isFastClick()) {
-//                return;
-//            }
-//            BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
-//            btCarDialogFragment.show(LiveMatchDetailActivity.this.getSupportFragmentManager(), "btCarDialogFragment");
+
+        } else if (id == com.xtree.bet.R.id.tv_live) {
+            binding.videoPlayer.setVisibility(View.VISIBLE);
+            binding.ctlToolbarLeague.setVisibility(View.GONE);
+            binding.rlToolbarTime.setVisibility(View.GONE);
+            if (mMatch.isVideoStart()) {
+                initVideoBuilderMode();
+            } else {
+                ToastUtils.showLong(getText(com.xtree.bet.R.string.bt_bt_match_not_runing));
+            }
         } else if (id == com.xtree.bet.R.id.iv_back) {
             finish();
         }
@@ -253,7 +252,6 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
         obj.putLong("retryWaitingTime", retryWaitingTime);
         obj.putLong("expireTime", expireTime);
         pushServiceConnection.sendMessageToService(MessageType.Input.LINK, obj);
-
     }
 
     /**
@@ -281,40 +279,39 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
 
     @Override
     public GSYVideoOptionBuilder getGSYVideoOptionBuilder() {
-//         String videoUrl = "";
-//        if (!mMatch.getVideoUrls().isEmpty()) {
-//            videoUrl = mMatch.getVideoUrls().get(0);
-//        }
-//        String score = "";
-//        List<Integer> scoreList = mMatch.getScore(Constants.getScoreType());
-//
-//        if (scoreList != null && scoreList.size() > 1) {
-//            score = scoreList.get(0) + " - " + scoreList.get(1);
-//        }
-//        ImageView thumb = new ImageView(this);
-//        if (mMatch != null) {
-//            thumb.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
-//        }
-//        Map header = new HashMap();
-//        if (!TextUtils.isEmpty(mMatch.getReferUrl())) {
-//            header.put("Referer", mMatch.getReferUrl());
-//        }
-//        return new GSYVideoOptionBuilder()
-//                .setThumbImageView(thumb)
-//                .setUrl(videoUrl)
-//                .setMapHeadData(header)
-//                .setCacheWithPlay(false)
-//                .setShrinkImageRes(com.xtree.bet.R.mipmap.bt_video_shrink)
-//                .setEnlargeImageRes(com.xtree.bet.R.mipmap.bt_video_enlarge)
-//                .setVideoTitle(mMatch.getTeamMain() + score + mMatch.getTeamVistor())
-//                .setIsTouchWiget(false)
-//                //.setAutoFullWithSize(true)
-//                .setRotateViewAuto(false)
-//                .setLockLand(false)
-//                .setShowFullAnimation(false)//打开动画
-//                .setNeedLockFull(false)
-//                .setSeekRatio(1);
-        return null;
+         String videoUrl = "";
+        if (!mMatch.getVideoUrls().isEmpty()) {
+            videoUrl = mMatch.getVideoUrls().get(0);
+        }
+        String score = "";
+        List<Integer> scoreList = mMatch.getScore(Constants.getScoreType());
+
+        if (scoreList != null && scoreList.size() > 1) {
+            score = scoreList.get(0) + " - " + scoreList.get(1);
+        }
+        ImageView thumb = new ImageView(this);
+        if (mMatch != null) {
+            thumb.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
+        }
+        Map header = new HashMap();
+        if (!TextUtils.isEmpty(mMatch.getReferUrl())) {
+            header.put("Referer", mMatch.getReferUrl());
+        }
+        return new GSYVideoOptionBuilder()
+                .setThumbImageView(thumb)
+                .setUrl(videoUrl)
+                .setMapHeadData(header)
+                .setCacheWithPlay(false)
+                .setShrinkImageRes(com.xtree.bet.R.mipmap.bt_video_shrink)
+                .setEnlargeImageRes(com.xtree.bet.R.mipmap.bt_video_enlarge)
+                .setVideoTitle(mMatch.getTeamMain() + score + mMatch.getTeamVistor())
+                .setIsTouchWiget(false)
+                //.setAutoFullWithSize(true)
+                .setRotateViewAuto(false)
+                .setLockLand(false)
+                .setShowFullAnimation(false)//打开动画
+                .setNeedLockFull(false)
+                .setSeekRatio(1);
     }
 
     @Override
@@ -330,15 +327,16 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            System.out.println("=================== onResume ===========================");
-            //刷新数据
-            if (binding.tblType.getSelectedTabPosition() != -1) {
-                System.out.println("=================== onResume viewModel.refresh ===========================");
-                viewModel.refresh(binding.tblType.getTabAt(binding.tblType.getSelectedTabPosition()).getText().toString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        viewModel.addSubscribe(Observable.interval(5, 5, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    viewModel.getMatchDetail(mMatch.getId());
+                    //viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
+                    /*if (!mCategories.isEmpty() && mCategories.size() > tabPos) {
+                        viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
+                    }*/
+                })
+        );
     }
 }

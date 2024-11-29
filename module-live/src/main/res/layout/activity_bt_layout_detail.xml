@@ -280,37 +280,32 @@
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tbl_type"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="26dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="12dp"
                 android:padding="2dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/vp_main"
                 app:tabBackground="@color/white"
                 app:tabGravity="center"
-                app:tabIndicatorColor="@color/clr_purple_01"
+                app:tabIndicator="@drawable/shape_tabindicator_live"
                 app:tabMode="scrollable"
                 app:tabPadding="2dp"
-                app:tabSelectedTextColor="@color/clr_purple_01"
-                app:tabTextColor="@color/black">
+                app:tabSelectedTextColor="#302E36"
+                app:tabTextColor="#9A96A4">
 
             </com.google.android.material.tabs.TabLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/vp_main"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>
