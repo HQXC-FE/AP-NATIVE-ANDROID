@@ -20,7 +20,7 @@ import me.xtree.mvvmhabit.base.BaseApplication;
 public class GameSubordinateagrtHeadModel extends BindModel implements BindHead {
 
     //状态
-    public ObservableField<StatusVo> state = new ObservableField<>(new StatusVo(0, BaseApplication.getInstance().getString(R.string.txt_all_status)));
+    public ObservableField<StatusVo> state = new ObservableField<>(new StatusVo(1, BaseApplication.getInstance().getString(R.string.txt_signed)));
     //查找名称
     public ObservableField<String> serachName = new ObservableField<>();
     //分页索引
