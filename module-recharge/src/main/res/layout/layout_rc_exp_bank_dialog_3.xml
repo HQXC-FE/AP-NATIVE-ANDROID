@@ -163,6 +163,7 @@
             android:layout_marginEnd="24dp"
             android:onClick="@{() -> model.gotoSelectMedia()}"
             android:scaleType="fitXY"
+            tools:src="@mipmap/icon_ereplyslip_tips"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
             app:layout_constraintStart_toStartOf="@id/ivw_bg"
             app:layout_constraintTop_toBottomOf="@+id/tvWarnTips" />
