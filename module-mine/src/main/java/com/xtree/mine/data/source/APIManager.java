@@ -31,7 +31,7 @@ public class APIManager {
     //FISH
     public static final String GAMEREBATEAGRT_FISH_URL = "/compact/userfishing/";
     public static final String GAMESUBORDINATEAGRTE_FISH_URL = "/compact/teamcompactfishing/";
-    public static final String GAMESUBORDINATEREBATE_FISH_URL = "/compact/teamcompactfishing/";
+    public static final String GAMESUBORDINATEREBATE_FISH_URL = "/compact/teamsalaryfishing/";
 
     //USER
     public static final String GAMEREBATEAGRT_USER_URL = "/compact/user/";

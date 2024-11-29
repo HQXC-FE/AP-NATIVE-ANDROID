@@ -280,6 +280,16 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
         }
 
         @Override
+        public void selectStatus(ObservableField<StatusVo> state, List<FilterView.IBaseVo> listStatus) {
+            FilterView.showDialog(mActivity.get(), getApplication().getString(R.string.status), listStatus, new FilterView.ICallBack() {
+                @Override
+                public void onTypeChanged(FilterView.IBaseVo vo) {
+                    state.set(new StatusVo(vo.getShowId(), vo.getShowName()));
+                }
+            });
+        }
+
+        @Override
         public void check(String userName, String startDate, String endDate) {
             getSubordinateRebateData();
         }
@@ -320,6 +330,7 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
         this.type = type;
         //设置给头布局场馆类型
         gameRebateAgrtHeadModel.setTypeEnum(type);
+        gameSubordinaterebateHeadModel.setTypeEnum(type);
         initTab();
         empty.setItemType(7);
         datas.setValue(gameRebateDatas);
@@ -738,6 +749,7 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
         gameSubordinateRebateRequest.username = gameSubordinaterebateHeadModel.userName.get();
         gameSubordinateRebateRequest.starttime = gameSubordinaterebateHeadModel.startDate.get();
         gameSubordinateRebateRequest.endtime = gameSubordinaterebateHeadModel.endDate.get();
+        gameSubordinateRebateRequest.pstatus = gameSubordinaterebateHeadModel.state.get().getShowId();
         gameSubordinateRebateRequest.p = gameSubordinaterebateHeadModel.p;
         gameSubordinateRebateRequest.pn = gameSubordinaterebateHeadModel.pn;
         Disposable disposable = model.getGameSubordinateRebateData(getSubordinateRebateDataURL(), gameSubordinateRebateRequest)
