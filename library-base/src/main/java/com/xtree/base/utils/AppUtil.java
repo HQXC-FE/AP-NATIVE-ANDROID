@@ -123,7 +123,26 @@ public class AppUtil {
      * @return true:是 false:否
      */
     public static boolean isMultiSegmentEmail(String num){
-        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$ "; // 多段邮箱
+        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$"; // 多段邮箱
+        return num.matches(regex);
+    }
+
+    /**
+     * 是否是微信号
+     * @return
+     */
+    public static boolean isWechatAccount(String num){
+        String regex = "^[a-zA-Z_-][a-zA-Z0-9_-]{5,19}$"; //
+        return num.matches(regex);
+    }
+
+    /**
+     *是否是支付宝账号,和微信号同样
+     * @param ctx
+     * @param tvw
+     */
+    public static boolean isAlipayAccount(String num){
+        String regex = "^[a-zA-Z_-][a-zA-Z0-9_-]{5,19}$"; //
         return num.matches(regex);
     }
 
