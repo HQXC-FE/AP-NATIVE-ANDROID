@@ -881,8 +881,14 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
         if (vo2 != null) {
             //liveDataPayment.setValue(vo);
             //liveDataPaymentData.setValue(vo2);
-            liveDataPayCodeArr.setValue(vo2.payCodeArr);
-            liveDataPayTypeList.setValue(vo2.chongzhiList);
+            if (vo2.payCodeArr != null) {
+                liveDataPayCodeArr.setValue(vo2.payCodeArr);
+            }
+
+            if (vo2.chongzhiList != null) {
+                liveDataPayTypeList.setValue(vo2.chongzhiList);
+            }
+
             liveDataTutorial.setValue(vo2.bankdirect_url);
         }
 
