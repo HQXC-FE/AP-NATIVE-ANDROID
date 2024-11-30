@@ -400,7 +400,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             @Override
             public void onBindView(BannerImageHolder holder, BannersVo data, int position, int size) {
                 holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                Glide.with(getContext()).load(data.picture).placeholder(R.mipmap.hm_bnr_01).into(holder.imageView);
+                Glide.with(getContext()).load(data.picture)
+                        .placeholder(R.mipmap.hm_bnr_01).into(holder.imageView);
             }
         });
 

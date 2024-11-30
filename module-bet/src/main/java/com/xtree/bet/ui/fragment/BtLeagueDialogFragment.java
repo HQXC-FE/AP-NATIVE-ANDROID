@@ -215,9 +215,12 @@ public class BtLeagueDialogFragment extends BaseDialogFragment<BtDialogLeagueBin
             }
             binding.sbLeague.addView(sideBar);
             sideBar.setOnSelectListener(index -> {
-                if(index > -1) {
-                    int position = mLeagueAreaList.indexOf(mInitialLeagueAreaList.get(index).getLeagueAreaList().get(0));
-                    binding.aelLeague.scroll(position);
+                if (index > -1 && index < mInitialLeagueAreaList.size()) {
+                    List<LeagueArea> leagueAreaList = mInitialLeagueAreaList.get(index).getLeagueAreaList();
+                    if (leagueAreaList != null && !leagueAreaList.isEmpty()) {
+                        int position = mLeagueAreaList.indexOf(leagueAreaList.get(0));
+                        binding.aelLeague.scroll(position);
+                    }
                 }
             });
         });

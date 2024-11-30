@@ -186,8 +186,6 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
 
             }
         });
-
-        initSearch();
     }
 
     private void initSearch() {
@@ -298,6 +296,8 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
             if (resultAdapter == null) {
                 resultAdapter = new LeagueResultAdapter(requireContext(), list);
                 binding.rvLeague.setAdapter(resultAdapter);
+                //防止用户搜索时，resultAdapter还为空
+                initSearch();
             } else {//搞个加载圈
                 resultAdapter.setData(list);
             }

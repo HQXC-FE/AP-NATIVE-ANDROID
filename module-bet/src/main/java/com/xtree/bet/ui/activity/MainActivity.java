@@ -168,6 +168,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     public int getSportId() {
+        if (tabSportAdapter.getData().isEmpty()) {
+            return -1;
+        }
         if (TextUtils.equals(mPlatform, PLATFORM_PM) || TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
             return tabSportAdapter.getItem(sportTypePos == -1 ? 0 : sportTypePos).menuId;
         } else {
@@ -296,7 +299,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         } else {
             if (!isFloating) {
                 CfLog.i("bettingNetFloatingWindows.show");
-                mBettingNetFloatingWindows.show();
+                if (!isFinishing() && !isDestroyed()) {//防止activity销毁了页面，还需启动
+                    mBettingNetFloatingWindows.show();
+                }
                 isFloating = true;
             }
         }
@@ -539,6 +544,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     mIsChange = true;
                     isFirstInto = true;
                     mLeagueIdList.clear();
+                    if (mLeagueItemList == null) {
+                        //mLeagueItemList在弱网情况下有可能为null
+                        return;
+                    }
                     mLeagueIdList.addAll(mLeagueItemList.get(hotLeaguePos).leagueid);
                     viewModel.statistical(playMethodType);
                     initTimer();
@@ -667,7 +676,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         boolean hasExpand = isChampionHasExand();
         setChampionAllExpand(hasExpand);
         mChampionMatchAdapter.notifyDataSetChanged();
-        ivHeaderExpand.setSelected(hasExpand);
+        if (ivHeaderExpand != null) {
+            ivHeaderExpand.setSelected(hasExpand);
+        }
     }
 
     private void checkLeagueHeaderIsExpand(int groupPosition) {
@@ -846,6 +857,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             }
         } else {
             mHeader.layout(0, 0, measuredWidth, measuredHeight);
+        }
+        //firstGroup有可能等于-1，导致闪退
+        if (firstGroup == -1) {
+            return;
         }
         League league = mLeagueList.get(firstGroup);
 
@@ -1711,7 +1726,11 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private boolean isGoingOnAllExpand() {
-        boolean isGoingOnAllExpand = SPUtils.getInstance(BET_EXPAND).getBoolean(SPKey.BT_GOINGON_SPORT_TYPE_EXPAND + mPlatformName + playMethodType + getSportId(), true);
+        int id = getSportId();
+        if (id == -1) {
+            return true;
+        }
+        boolean isGoingOnAllExpand = SPUtils.getInstance(BET_EXPAND).getBoolean(SPKey.BT_GOINGON_SPORT_TYPE_EXPAND + mPlatformName + playMethodType + id, true);
         return isGoingOnAllExpand;
     }
 

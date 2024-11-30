@@ -49,7 +49,7 @@ public interface FBApiService {
     Flowable<BaseResponse<MatchListRsp>> getFBList(@Body FBListReq FBListReq);
 
     /**
-     * 按运动、分类类型统计可投注的赛事个数
+     * 获取彩种个数
      * @return
      */
     @POST("/v1/match/statistical")
