@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -101,7 +102,6 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
         //mMatch = getIntent().getParcelableExtra(KEY_MATCH);
         Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
         mMatch = gson.fromJson(SPUtils.getInstance().getString(KEY_MATCH), Match.class);
-        System.out.println("=================== initData mMatch ======================"+mMatch);
         if(mMatch != null){
             viewModel.getMatchDetail(mMatch.getId());
             viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
@@ -119,24 +119,21 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
                 .subscribe(aLong -> {
                     viewModel.getMatchDetail(mMatch.getId());
                     viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
-                    /*if (!mCategories.isEmpty() && mCategories.size() > tabPos) {
-                        viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
-                    }*/
                 })
         );
     }
-    /**
-     * 初始化沉浸式
-     * Init immersion bar.
-     */
-    protected void initImmersionBar() {
-        //设置共同沉浸式样式
-        ImmersionBar.with(this)
-                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
-                .fitsSystemWindows(false)
-                .statusBarDarkFont(false)
-                .init();
-    }
+//    /**
+//     * 初始化沉浸式
+//     * Init immersion bar.
+//     */
+//    protected void initImmersionBar() {
+//        //设置共同沉浸式样式
+//        ImmersionBar.with(this)
+//                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
+//                .fitsSystemWindows(false)
+//                .statusBarDarkFont(false)
+//                .init();
+//    }
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -198,10 +195,6 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
             }
             BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
             btCarDialogFragment.show(getActivity().getSupportFragmentManager(), "btCarDialogFragment");
-        } else if (id == com.xtree.bet.R.id.iv_expand) {
-            if (fragment != null) {
-                fragment.expand();
-            }
         }
     }
 
@@ -216,7 +209,20 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
             if (match == null) {
                 return;
             }
+
+            binding.tvTeamMain.setText(mMatch.getTeamMain());
+            binding.tvTeamVisisor.setText(mMatch.getTeamVistor());
+            Glide.with(this)
+                    .load(match.getIconMain())
+                    //.apply(new RequestOptions().placeholder(placeholderRes))
+                    .into(binding.ivLogoMain);
+
+            Glide.with(this)
+                    .load(match.getIconVisitor())
+                    //.apply(new RequestOptions().placeholder(placeholderRes))
+                    .into(binding.ivLogoVisitor);
         });
+
         viewModel.updateCagegoryListData.observe(this, categories -> {
             mCategories = categories;
         });

@@ -6,6 +6,8 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -13,8 +15,11 @@ import android.os.Message;
 import android.os.Messenger;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
-
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,9 +28,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.gyf.immersionbar.ImmersionBar;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
@@ -34,14 +40,18 @@ import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.TimeUtils;
+import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.constant.Constants;
+import com.xtree.bet.ui.activity.BtDetailActivity;
+import com.xtree.bet.ui.fragment.BtDetailOptionFragment;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FbBtDetailViewModel;
 import com.xtree.bet.ui.viewmodel.pm.PmBtDetailViewModel;
-import com.xtree.bet.util.MatchDeserializer;
+import com.xtree.bet.weight.BaseDetailDataView;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.ui.main.model.constant.DetailLivesType;
@@ -55,11 +65,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import io.sentry.Sentry;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -69,84 +75,31 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
  */
 public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardGSYVideoPlayer> implements View.OnClickListener {
     private final static String KEY_MATCH = "KEY_MATCH_ID";
-    private ArrayList<Fragment> fragmentList = new ArrayList<>();
-    private ArrayList<String> tabList = new ArrayList<>();
-    private FragmentStateAdapter mAdapter;
-    private PushServiceConnection pushServiceConnection;
-    private Observer<Object> pushObserver;
+
+    private List<Category> mCategories = new ArrayList<>();
+
+    private BaseDetailDataView mScoreDataView;
+
+    private BtDetailOptionFragment fragment;
 
     private Match mMatch;
+
+    private static int mMatchID = -1;
 
     private int tabPos;
 
     private String mPlatform = SPUtils.getInstance().getString(KEY_PLATFORM);
-    private static int mMatchID = -1;
+
+    private ArrayList<Fragment> fragmentList = new ArrayList<>();
+
+    private ArrayList<String> tabList = new ArrayList<>();
+
+    private FragmentStateAdapter mAdapter;
+
+    private PushServiceConnection pushServiceConnection;
 
     public Match getmMatch() {
         return mMatch;
-    }
-
-    @Override
-    public void initView() {
-        boolean isLogin = getIntent().getBooleanExtra("isLogin", false);
-        Fragment homeFragment = new Fragment();
-        Fragment liveBetFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_BET).navigation();
-        Fragment liveFragment = new Fragment();
-        Fragment rechargeFragment = new Fragment();
-        fragmentList.add(homeFragment);
-        fragmentList.add(liveBetFragment);
-        fragmentList.add(liveFragment);
-        fragmentList.add(rechargeFragment);
-
-        mAdapter = new FragmentStateAdapter(getSupportFragmentManager(), getLifecycle()) {
-            @NonNull
-            @Override
-            public Fragment createFragment(int position) {
-                return fragmentList.get(position);
-            }
-
-            @Override
-            public int getItemCount() {
-                return fragmentList.size();
-            }
-        };
-
-        binding.vpMain.setAdapter(mAdapter);
-        binding.vpMain.setUserInputEnabled(true); // ViewPager2 左右滑动
-
-        String txtSquare = DetailLivesType.SQUARE.getLabel();
-        String txtBetting = DetailLivesType.BET.getLabel();
-        String txtPrivate = DetailLivesType.ANCHOR_PRIVATE.getLabel();
-        String txtMsgAssistant = DetailLivesType.ANCHOR_ASSISTANT.getLabel();
-
-        tabList.add(txtSquare);
-        tabList.add(txtBetting);
-        tabList.add(txtPrivate);
-        tabList.add(txtMsgAssistant);
-
-        new TabLayoutMediator(binding.tblType, binding.vpMain, (tab, position) -> {
-            tab.setText(tabList.get(position));
-        }).attach();
-        mAdapter.notifyDataSetChanged();
-
-        initVideoPlayer();
-        initPushService();
-    }
-
-    public static void start(Context context, int matchID) {
-        Intent intent = new Intent(context, LiveMatchDetailActivity.class);
-        //SPUtils.getInstance().put(KEY_MATCH, new Gson().toJson(matchID));
-        //intent.putExtra(KEY_MATCH, match);
-        mMatchID = matchID;
-        context.startActivity(intent);
-    }
-
-    @Override
-    public void initData() {
-        System.out.println("=============== LiveMatchDetail MatchID ================"+mMatchID);
-        viewModel.getMatchDetail(mMatchID);
-        //viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
-        viewModel.addSubscription();
     }
 
     @Override
@@ -156,13 +109,34 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
 
     @Override
     public int initVariableId() {
-        return BR.model;
+        return com.xtree.bet.BR.viewModel;
+    }
+
+    /**
+     * 初始化沉浸式
+     * Init immersion bar.
+     */
+    protected void initImmersionBar() {
+        //设置共同沉浸式样式
+        ImmersionBar.with(this)
+                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
+                .fitsSystemWindows(false)
+                .statusBarDarkFont(false)
+                .init();
+    }
+
+    public static void start(Context context, int matchID) {
+        Intent intent = new Intent(context, LiveMatchDetailActivity.class);
+        //SPUtils.getInstance().put(KEY_MATCH, new Gson().toJson(match));
+        mMatchID = matchID;
+        //intent.putExtra(KEY_MATCH, match);
+        context.startActivity(intent);
     }
 
     @Override
     public TemplateBtDetailViewModel initViewModel() {
         if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
-            com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory factory = AppViewModelFactory.getInstance(getApplication());
+            AppViewModelFactory factory = AppViewModelFactory.getInstance(getApplication());
             return new ViewModelProvider(this, factory).get(FbBtDetailViewModel.class);
         } else {
             PMAppViewModelFactory factory = PMAppViewModelFactory.getInstance(getApplication());
@@ -170,88 +144,57 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
         }
     }
 
+
     @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if (id == com.xtree.bet.R.id.rl_cg) {
-
-        } else if (id == com.xtree.bet.R.id.tv_live) {
-            binding.videoPlayer.setVisibility(View.VISIBLE);
-            binding.ctlToolbarLeague.setVisibility(View.GONE);
-            binding.rlToolbarTime.setVisibility(View.GONE);
-            if (mMatch.isVideoStart()) {
-                initVideoBuilderMode();
-            } else {
-                ToastUtils.showLong(getText(com.xtree.bet.R.string.bt_bt_match_not_runing));
-            }
-        } else if (id == com.xtree.bet.R.id.iv_back) {
-            finish();
-        }
-    }
-
-    private void initPushService() {
-        Messenger replyMessenger = new Messenger(new Handler(Looper.getMainLooper()) {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                MessageType.Output outputType = MessageType.Output.fromCode(msg.what);
-                switch (outputType) {
-                    case OBTAIN_LINK:
-                        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
-                            //viewModel.getWebsocket();
-                        }
-                        break;
-                    case REMOTE_MSG://后端的消息
-                        if (msg.getData() != null) {
-                            CfLog.i("receiving class: " + MessageData.class.getName());
-                            try {
-                                msg.getData().setClassLoader(getClassLoader());
-                                //                                getActivity().handleRemoteMessage(msg.getData().getParcelable("data"));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Sentry.captureException(e);
-                            }
-                        }
-                        break;
+    public void initView() {
+        binding.appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {// 收缩状态
+                binding.rlToolbarTime.setVisibility(View.VISIBLE);
+                binding.ctlToolbarLeague.setVisibility(View.GONE);
+                binding.llLive.setVisibility(View.GONE);
+                binding.llData.setVisibility(View.GONE);
+                binding.toolbar.setBackgroundResource(com.xtree.bet.R.color.bt_color_detail_top_toolbar);
+            } else if (Math.abs(verticalOffset) == 0) {//展开
+                binding.rlToolbarTime.setVisibility(View.GONE);
+                if (binding.videoPlayer.getVisibility() != View.VISIBLE && binding.wvAmin.getVisibility() != View.VISIBLE) {
+                    binding.ctlToolbarLeague.setVisibility(View.VISIBLE);
+                } else {
+                    binding.ctlToolbarLeague.setVisibility(View.GONE);
                 }
+                binding.llLive.setVisibility(View.VISIBLE);
+                binding.llData.setVisibility(View.VISIBLE);
+                binding.toolbar.setBackgroundResource(android.R.color.transparent);
+            } else {
+                binding.llLive.setVisibility(View.VISIBLE);
+                binding.llData.setVisibility(View.VISIBLE);
             }
         });
-        pushServiceConnection = new PushServiceConnection(replyMessenger);
-        // 绑定 Service
-        Intent intent = new Intent(this, WebSocketService.class);
-        this.bindService(intent, pushServiceConnection, Context.BIND_AUTO_CREATE);
 
+        initFragmet();
+        initVideoPlayer();
+        setWebView();
 
-        //&& !TextUtils.isEmpty(wsToken.getToken())) {
-        //                String token = wsToken.getToken();
-        long checkInterval = SPUtils.getInstance().getLong(SPKeyGlobal.WS_CHECK_INTERVAL, 30);
-        long retryNumber = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_NUMBER, 3);
-        long retryWaitingTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_WAITING_TIME, 300);
-        long expireTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_EXPIRE_TIME, 90);
+    }
 
-        //分隔符
-        String separator;
-        if (DomainUtil.getApiUrl().endsWith("/")) {
-            separator = "";
-        } else {
-            separator = File.separator;
-        }
-        String url = DomainUtil.getApiUrl() + separator + "wss/?xLiveToken=" + X9LiveInfo.INSTANCE.getToken();
+    @Override
+    public void initData() {
+        System.out.println("=============== initData LiveMatchDetail MatchID ================"+mMatchID);
+        viewModel.getMatchDetail(mMatchID);
+        viewModel.addSubscription();
+    }
 
-        //协议转换
-        if (url.startsWith("https")) {
-            url = url.replaceFirst("https", "wss");
-        } else if (url.startsWith("http")) {
-            url = url.replaceFirst("http", "ws");
-        }
-        CfLog.e(url);
-        Bundle obj = new Bundle();
-        obj.putString("url", url);
-        obj.putLong("checkInterval", checkInterval);
-        obj.putLong("retryNumber", retryNumber);
-        obj.putLong("retryWaitingTime", retryWaitingTime);
-        obj.putLong("expireTime", expireTime);
-        pushServiceConnection.sendMessageToService(MessageType.Input.LINK, obj);
+    @Override
+    public void onResume() {
+        super.onResume();
+//        viewModel.addSubscribe(Observable.interval(5, 5, TimeUnit.SECONDS)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(aLong -> {
+//                    if(mMatch != null){
+//                        viewModel.getMatchDetail(mMatch.getId());
+//                    }
+//                })
+//        );
     }
 
     /**
@@ -262,6 +205,7 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
             binding.ctlBg.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
         }
     }
+
     /**
      * 初始化播放器相关控件
      */
@@ -272,6 +216,42 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
         binding.ivBack.setOnClickListener(this);
     }
 
+    private void setWebView() {
+        WebView webView = binding.wvAmin;
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setLoadsImagesAutomatically(true);
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                CfLog.d("onPageStarted url:  " + url);
+                //Log.d("---", "onPageStarted url:  " + url);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                CfLog.d("onPageFinished url: " + url);
+            }
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.proceed();
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                ToastUtils.showShort("");
+            }
+
+        });
+    }
+
     @Override
     public StandardGSYVideoPlayer getGSYVideoPlayer() {
         return binding.videoPlayer;
@@ -279,7 +259,7 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
 
     @Override
     public GSYVideoOptionBuilder getGSYVideoOptionBuilder() {
-         String videoUrl = "";
+        String videoUrl = "";
         if (!mMatch.getVideoUrls().isEmpty()) {
             videoUrl = mMatch.getVideoUrls().get(0);
         }
@@ -319,24 +299,182 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
 
     }
 
+    /**
+     * 是否启动旋转横屏，true表示启动
+     */
     @Override
     public boolean getDetailOrientationRotateAuto() {
-        return false;
+        return true;
+    }
+
+    /**
+     * 初始化播放器相关控件
+     */
+    private void initFragmet() {
+        Fragment homeFragment = new Fragment();
+        Fragment liveBetFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_BET).navigation();
+        Fragment liveFragment = new Fragment();
+        Fragment rechargeFragment = new Fragment();
+        fragmentList.add(homeFragment);
+        fragmentList.add(liveBetFragment);
+        fragmentList.add(liveFragment);
+        fragmentList.add(rechargeFragment);
+
+        mAdapter = new FragmentStateAdapter(getSupportFragmentManager(), getLifecycle()) {
+            @NonNull
+            @Override
+            public Fragment createFragment(int position) {
+                return fragmentList.get(position);
+            }
+
+            @Override
+            public int getItemCount() {
+                return fragmentList.size();
+            }
+        };
+
+        binding.vpMain.setAdapter(mAdapter);
+        binding.vpMain.setUserInputEnabled(true); // ViewPager2 左右滑动
+
+        String txtSquare = DetailLivesType.SQUARE.getLabel();
+        String txtBetting = DetailLivesType.BET.getLabel();
+        String txtPrivate = DetailLivesType.ANCHOR_PRIVATE.getLabel();
+        String txtMsgAssistant = DetailLivesType.ANCHOR_ASSISTANT.getLabel();
+
+        tabList.add(txtSquare);
+        tabList.add(txtBetting);
+        tabList.add(txtPrivate);
+        tabList.add(txtMsgAssistant);
+
+        new TabLayoutMediator(binding.tblType, binding.vpMain, (tab, position) -> {
+            tab.setText(tabList.get(position));
+        }).attach();
+
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        viewModel.addSubscribe(Observable.interval(5, 5, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    viewModel.getMatchDetail(mMatch.getId());
-                    //viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
-                    /*if (!mCategories.isEmpty() && mCategories.size() > tabPos) {
-                        viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
-                    }*/
-                })
-        );
+    public void initViewObservable() {
+        viewModel.matchData.observe(this, match -> {
+            this.mMatch = match;
+            if (match == null) {
+                return;
+            }
+            SPUtils.getInstance().put(KEY_MATCH, new Gson().toJson(match));
+            setTopBg();
+            if (match.hasAs()) {
+                binding.tvAnimi.setVisibility(View.VISIBLE);
+            } else {
+                binding.tvAnimi.setVisibility(View.GONE);
+            }
+
+            if (match.hasVideo()) {
+                binding.tvLive.setVisibility(View.VISIBLE);
+            } else {
+                binding.tvLive.setVisibility(View.GONE);
+            }
+            binding.tvLeagueName.setText(match.getLeague().getLeagueName());
+            binding.tvTeamMain.setText(match.getTeamMain());
+            binding.tvTeamVisisor.setText(match.getTeamVistor());
+            Glide.with(this)
+                    .load(match.getIconMain())
+                    //.apply(new RequestOptions().placeholder(placeholderRes))
+                    .into(binding.ivLogoMain);
+
+            Glide.with(this)
+                    .load(match.getIconVisitor())
+                    //.apply(new RequestOptions().placeholder(placeholderRes))
+                    .into(binding.ivLogoVisitor);
+
+            Glide.with(this)
+                    .load(match.getIconMain())
+                    //.apply(new RequestOptions().placeholder(placeholderRes))
+                    .into(binding.ivLogoMainTop);
+
+            Glide.with(this)
+                    .load(match.getIconVisitor())
+                    //.apply(new RequestOptions().placeholder(placeholderRes))
+                    .into(binding.ivLogoVisitorTop);
+
+            String score;
+            List<Integer> scoreList = mMatch.getScore(Constants.getScoreType());
+
+            if (scoreList != null && scoreList.size() > 1) {
+                String scoreMain = String.valueOf(scoreList.get(0));
+                String scoreVisitor = String.valueOf(scoreList.get(1));
+                score = scoreMain + " - " + scoreVisitor;
+                binding.tvScore.setText(score);
+                binding.tvScoreMainTop.setText(scoreMain);
+                binding.tvScoreVisitorTop.setText(scoreVisitor);
+                binding.videoPlayer.getTitleTextView().setText(mMatch.getTeamMain() + score + mMatch.getTeamVistor());
+                if (fullVideoPlayer != null) {
+                    fullVideoPlayer.getTitleTextView().setText(mMatch.getTeamMain() + score + mMatch.getTeamVistor());
+                }
+            }
+
+            // 比赛未开始
+            if (!match.isGoingon()) {
+                binding.tvTimeTop.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_HH_MM));
+                binding.tvTime.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_1));
+                binding.tvScore.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_HH_MM));
+            } else {
+                if (TextUtils.equals(Constants.getFbSportId(), match.getSportId()) || TextUtils.equals(Constants.getBsbSportId(), match.getSportId())) { // 足球和篮球
+                    binding.tvTime.setText(match.getStage() + " " + match.getTime());
+                    binding.tvTimeTop.setText(match.getStage() + " " + match.getTime());
+                } else {
+                    binding.tvTime.setText(match.getStage());
+                    binding.tvTimeTop.setText(match.getStage());
+                }
+            }
+
+            if (binding.llData.getChildCount() == 0) {
+                mScoreDataView = BaseDetailDataView.getInstance(this, match, false);
+                if (mScoreDataView != null) {
+                    binding.llData.addView(mScoreDataView);
+                }
+            } else {
+                mScoreDataView.setMatch(match, false);
+            }
+        });
     }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == com.xtree.bet.R.id.tv_live) {
+            binding.videoPlayer.setVisibility(View.VISIBLE);
+            binding.ctlToolbarLeague.setVisibility(View.GONE);
+            binding.rlToolbarTime.setVisibility(View.GONE);
+            if (mMatch.isVideoStart()) {
+                initVideoBuilderMode();
+            } else {
+                ToastUtils.showLong(getText(com.xtree.bet.R.string.bt_bt_match_not_runing));
+            }
+
+        } else if (id == com.xtree.bet.R.id.tv_animi) {
+            if (mMatch.hasAs() && mMatch.isAnimationStart()) {
+                if (mMatch.getAnmiUrls() != null && !TextUtils.isEmpty(mMatch.getAnmiUrls().get(0))) {
+                    setWebView();
+                    binding.wvAmin.setVisibility(View.VISIBLE);
+                    binding.ctlToolbarLeague.setVisibility(View.GONE);
+                    binding.rlToolbarTime.setVisibility(View.GONE);
+                    binding.wvAmin.loadUrl(mMatch.getAnmiUrls().get(0));
+                } else {
+                    ToastUtils.showLong(getText(com.xtree.bet.R.string.bt_bt_match_not_runing));
+                }
+            }
+
+        } else if (id == com.xtree.bet.R.id.iv_back) {
+            if (binding.videoPlayer.getVisibility() == View.VISIBLE || binding.videoPlayer.getGSYVideoManager().isPlaying()) {
+                binding.videoPlayer.release();
+                binding.videoPlayer.setVisibility(View.GONE);
+            } else if (binding.wvAmin.getVisibility() == View.VISIBLE) {
+                binding.wvAmin.destroy();
+                binding.wvAmin.setVisibility(View.GONE);
+            } else {
+                finish();
+            }
+        }
+    }
+
 }
