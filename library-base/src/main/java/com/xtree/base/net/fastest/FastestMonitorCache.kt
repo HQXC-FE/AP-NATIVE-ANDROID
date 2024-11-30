@@ -19,7 +19,7 @@ object FastestMonitorCache {
 
     var MAX_UPLOAD_TIME = TIME_OUT
 
-    var SPEED_CALCULATION = 1F
+    var SPEED_CALCULATION = 0F
         set(value) {
             field = if (value >= 100) {
                 1F
