@@ -123,7 +123,7 @@ public class AppUtil {
      * @return true:是 false:否
      */
     public static boolean isMultiSegmentEmail(String num){
-        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$ "; // 多段邮箱
+        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$"; // 多段邮箱
         return num.matches(regex);
     }
 
