@@ -2,6 +2,7 @@ package com.xtree.mine.ui.fragment
 
 import android.os.Bundle
 import android.text.InputType
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.xtree.base.adapter.CacheViewHolder
 import com.xtree.base.adapter.CachedAutoRefreshAdapter
 import com.xtree.base.databinding.ItemTextBinding
 import com.xtree.base.global.SPKeyGlobal
+import com.xtree.base.utils.CfLog
 import com.xtree.base.utils.ClickUtil
 import com.xtree.base.utils.NumberUtils
 import com.xtree.base.utils.UuidUtil
@@ -42,11 +44,15 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
     private lateinit var ppwSports: BasePopupView
     private lateinit var ppwChess: BasePopupView
     private lateinit var ppwGame: BasePopupView
+    private lateinit var ppwFish: BasePopupView
+
     private lateinit var ppwLottery1: BasePopupView
     private lateinit var ppwReal1: BasePopupView
     private lateinit var ppwSports1: BasePopupView
     private lateinit var ppwChess1: BasePopupView
     private lateinit var ppwGame1: BasePopupView
+
+    private lateinit var ppwFish1: BasePopupView
 
     private lateinit var mProfileVo: ProfileVo
 
@@ -121,7 +127,7 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
                     AdduserRequest(
                         UuidUtil.getID(), "insert", type.toString(),
                         name, pwd, nickname,
-                        bd.typeLottery.removePercentage(), bd.typeReal.removePercentage(), bd.typeSports.removePercentage(),
+                        bd.typeLottery.removePercentage(), bd.typeFishing.removePercentage(), bd.typeReal.removePercentage(), bd.typeSports.removePercentage(),
                         bd.typeChess.removePercentage(), bd.typeGame.removePercentage()
                     )
                 )
@@ -331,6 +337,31 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
                                 { ppwGame1.dismiss() }
                         }
                         ppwGame1.show()
+                    }
+                }
+            }
+            //判断mProfileVo  maxFishingPoint
+            if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) || TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())) {
+                layoutFishing.visibility = View.GONE
+            } else {
+                typeFishing.text = mProfileVo.maxEsportsPoint.toString().plus("%")
+                tvGameFishing.text = getString(R.string.txt_reg_rebate).plus("0.0%")
+                typeFishing.setOnClickListener {
+                    if (type == 0) {
+                        //未初始化，创建ppw
+                        if (!::ppwFish.isInitialized) {
+                            ppwFish =
+                                createPpw(mProfileVo.maxFishingPoint, typeFishing, tvGameFishing, getRebateList(mProfileVo.maxFishingPoint))
+                                { ppwFish.dismiss() }
+                        }
+                        ppwFish.show()
+                    } else {
+                        if (!::ppwFish1.isInitialized) {
+                            ppwFish1 =
+                                createPpw(mProfileVo.maxFishingPoint, typeFishing, tvGameFishing, getRebateList(mProfileVo.maxFishingPoint))
+                                { ppwFish1.dismiss() }
+                        }
+                        ppwFish1.show()
                     }
                 }
             }

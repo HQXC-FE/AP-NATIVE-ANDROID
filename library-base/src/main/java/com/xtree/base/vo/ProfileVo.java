@@ -36,6 +36,8 @@ public class ProfileVo {
     public Double maxPokerPoint; // 0,
     //电竞返点最大值
     public Double maxEsportsPoint; // 0,
+    //捕鱼返点最大值
+    public Double maxFishingPoint ;//0
 
     public String userid; // 5373118,
     public String username; // test032
