@@ -129,8 +129,8 @@
                 android:layout_height="22dp"
                 android:layout_gravity="center_vertical|end"
                 android:gravity="center"
-                android:text="回执单示例"
                 android:onClick="@{() -> model.showExample()}"
+                android:text="回执单示例"
                 android:textColor="@color/clr_white"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ivw_pic"
@@ -163,23 +163,25 @@
             android:layout_marginEnd="24dp"
             android:onClick="@{() -> model.gotoSelectMedia()}"
             android:scaleType="fitXY"
-            tools:src="@mipmap/icon_ereplyslip_tips"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
             app:layout_constraintStart_toStartOf="@id/ivw_bg"
-            app:layout_constraintTop_toBottomOf="@+id/tvWarnTips" />
+            app:layout_constraintTop_toBottomOf="@+id/tvWarnTips"
+            tools:src="@mipmap/icon_ereplyslip_tips" />
 
         <TextView
             android:id="@+id/tvwRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
             android:background="@mipmap/cm_btn_long2"
             android:gravity="center"
+            android:onClick="@{() -> model.uploadVoucher()}"
             android:text="确认提交"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/ivw_bg"
             app:layout_constraintEnd_toEndOf="parent"
-            android:onClick="@{() -> model.uploadVoucher()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivReceipt" />
 

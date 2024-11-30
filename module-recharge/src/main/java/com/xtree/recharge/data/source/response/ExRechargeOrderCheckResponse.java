@@ -179,6 +179,21 @@ public class ExRechargeOrderCheckResponse {
          */
         @SerializedName("bank_code")
         private String bankCode;
+
+        public String getPayBankType() {
+            return payBankType;
+        }
+
+        public void setPayBankType(String payBankType) {
+            this.payBankType = payBankType;
+        }
+
+        /**
+         * bankCode
+         */
+        @SerializedName("payBankType")
+        private String payBankType;
+
         /**
          * bankName
          */

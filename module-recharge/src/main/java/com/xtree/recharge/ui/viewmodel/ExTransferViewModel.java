@@ -28,10 +28,13 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
+import com.xtree.base.global.Constant;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.ImageUploadUtil;
+import com.xtree.base.widget.BrowserDialog;
 import com.xtree.base.widget.GlideEngine;
 import com.xtree.base.widget.ImageFileCompressEngine;
 import com.xtree.base.widget.LoadingDialog;
@@ -55,8 +58,10 @@ import com.xtree.recharge.ui.fragment.extransfer.ExTransferPayeeFragment;
 import com.xtree.recharge.ui.fragment.extransfer.ExTransferSuccessFragment;
 import com.xtree.recharge.ui.fragment.extransfer.ExTransferVoucherDialogFragment;
 import com.xtree.recharge.ui.fragment.extransfer.ExTransferVoucherFragment;
+import com.xtree.recharge.ui.fragment.extransfer.ExTransferVoucherPositiveDialogFragment;
 import com.xtree.recharge.ui.model.BankPickModel;
 import com.xtree.recharge.ui.widget.Comm100ChatWindows;
+import com.xtree.recharge.ui.widget.TipOnePayNextDialog;
 import com.xtree.recharge.vo.RechargeVo;
 
 import java.io.File;
@@ -111,8 +116,12 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     //付款银行
     public MutableLiveData<String> bankCodeOfPayment = new MutableLiveData<>();
     public MutableLiveData<String> bankNameOfPayment = new MutableLiveData<>();
+    public MutableLiveData<String> typeOfPayment = new MutableLiveData<>();
+
     //付款卡号
     public MutableLiveData<String> bankNumberOfPayment = new MutableLiveData<>();
+    //回单验证码
+    public MutableLiveData<String> receiptIdOfPayment = new MutableLiveData<>();
     //上传凭证页面 是否显示银行卡信息输入框
     public MutableLiveData<Boolean> showBankEdit = new MutableLiveData<>(false);
     //充值提示
@@ -124,6 +133,8 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     public MutableLiveData<String> titleLiveData = new MutableLiveData<>("小额网银");
     private WeakReference<FragmentActivity> mActivity = null;
     private BasePopupView loadingDialog = null;
+    private BasePopupView positiveConfirmDialog = null;
+
     @SuppressLint("StaticFieldLeak")
     private Comm100ChatWindows serviceChatFlow = null;
 
@@ -651,6 +662,102 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             return;
         }
 
+
+        if ("1".equals(typeOfPayment.getValue()) && mActivity != null && mActivity.get() != null) {
+            if (positiveConfirmDialog != null && positiveConfirmDialog.isShow()) {
+                positiveConfirmDialog.dismiss();
+            }
+            positiveConfirmDialog = new XPopup.Builder(mActivity.get()).dismissOnTouchOutside(false)
+                    .dismissOnBackPressed(false).asCustom(new TipOnePayNextDialog(mActivity.get(), new TipOnePayNextDialog.ICallBack() {
+                        @Override
+                        public void onClickConfirm() {
+                            toVoucherPositive();
+                        }
+                    }));
+            positiveConfirmDialog.show();
+            return;
+        }
+
+/*        if (TextUtils.isEmpty(bankCodeOfPayment.getValue())) {
+            ToastUtils.show("请选择付款银行", ToastUtils.ShowType.Default);
+            return;
+        }
+
+        if (TextUtils.isEmpty(bankNumberOfPayment.getValue())) {
+            ToastUtils.show("请输入付款账号", ToastUtils.ShowType.Default);
+            return;
+        }*/
+
+        if (mActivity != null && mActivity.get() != null) {
+            if (loadingDialog != null) {
+                loadingDialog.dismiss();
+            }
+            loadingDialog = new XPopup.Builder(mActivity.get())
+                    .dismissOnTouchOutside(false)
+                    .dismissOnBackPressed(true)
+                    .asCustom(new LoadingDialog(mActivity.get()))
+                    .show();
+            loadingDialog.show();
+        }
+
+        ExReceiptUploadRequest request = new ExReceiptUploadRequest();
+        request.setPid(cOrderData.getPid());
+        request.setReceipt(ImageUploadUtil.bitmapToString(voucher.getValue().getPath()));
+        request.setPlatformOrder(pOrderData.getPlatformOrder());
+        request.setPayBankCode(bankCodeOfPayment.getValue());
+        request.setPayAccount(bankNumberOfPayment.getValue());
+        request.setReceipt_id(receiptIdOfPayment.getValue());
+        request.setPayName(cOrderData.getPayName());
+
+        Disposable disposable = (Disposable) model.rechargeReceiptUpload(request)
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<ExReceiptUploadResponse>() {
+                    @Override
+                    public void onResult(ExReceiptUploadResponse response) {
+                        if (loadingDialog != null) {
+                            loadingDialog.dismiss();
+                        }
+
+                        toConfirm();
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        if (loadingDialog != null) {
+                            loadingDialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        super.onFail(t);
+                        if (loadingDialog != null) {
+                            loadingDialog.dismiss();
+                        }
+                    }
+                });
+
+        addSubscribe(disposable);
+    }
+
+    /**
+     * 正向银行上传凭证
+     */
+    public void uploadVoucherPositive() {
+        ExRechargeOrderCheckResponse.DataDTO pOrderData = payOrderData.getValue();
+        ExCreateOrderRequest cOrderData = createOrderInfoData.getValue();
+        if (pOrderData == null || cOrderData == null) {
+            return;
+        }
+
+        if (voucher.getValue() == null) {
+            ToastUtils.show("请提交回执单", ToastUtils.ShowType.Default);
+            return;
+        }
+
+
         if (TextUtils.isEmpty(bankCodeOfPayment.getValue())) {
             ToastUtils.show("请选择付款银行", ToastUtils.ShowType.Default);
             return;
@@ -658,6 +765,11 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
 
         if (TextUtils.isEmpty(bankNumberOfPayment.getValue())) {
             ToastUtils.show("请输入付款账号", ToastUtils.ShowType.Default);
+            return;
+        }
+
+        if (TextUtils.isEmpty(receiptIdOfPayment.getValue())) {
+            ToastUtils.show("请输入转账流水号", ToastUtils.ShowType.Default);
             return;
         }
 
@@ -679,6 +791,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         request.setPlatformOrder(pOrderData.getPlatformOrder());
         request.setPayBankCode(bankCodeOfPayment.getValue());
         request.setPayAccount(bankNumberOfPayment.getValue());
+        request.setReceipt_id(receiptIdOfPayment.getValue());
         request.setPayName(cOrderData.getPayName());
 
         Disposable disposable = (Disposable) model.rechargeReceiptUpload(request)
@@ -763,15 +876,24 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                         if (response != null) {
                             bankCodeOfPayment.setValue(null);
                             bankNameOfPayment.setValue(null);
+                            typeOfPayment.setValue(null);
                             bankNumberOfPayment.setValue(null);
+                            receiptIdOfPayment.setValue(null);
 
                             bankCodeOfPayment.setValue(response.getBankcode());
                             bankNameOfPayment.setValue(getBankNameByCode(response.getBankcode()));
+                            typeOfPayment.setValue(getTypeByCode(response.getBankcode()));
                             String payAccount = response.getPayAccount();
+                            String receiptId = response.getReceiptId();
 
                             if (!TextUtils.isEmpty(payAccount) && isNumeric(payAccount)) {
                                 bankNumberOfPayment.setValue(payAccount);
                             }
+
+                            if (!TextUtils.isEmpty(receiptId) && isNumeric(receiptId)) {
+                                receiptIdOfPayment.setValue(receiptId);
+                            }
+
                         } else {
                             ToastUtils.show("图片无法识别，请重选", ToastUtils.ShowType.Default);
                         }
@@ -817,7 +939,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             return "";
         }
 
-        String bankName = "";
+        String bankName = pvalue.getPayBankName();
         ExRechargeOrderCheckResponse.DataDTO.OpBankListDTO opBankList = pvalue.getOpBankList();
         ArrayList<RechargeVo.OpBankListDTO.BankInfoDTO> bankInfoDTOS = new ArrayList<>();
         if (opBankList.getHot() != null) {
@@ -841,6 +963,41 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             }
         }
         return bankName;
+    }
+
+    /**
+     * 通过bankCode获取type
+     */
+    private String getTypeByCode(String bankCode) {
+        ExRechargeOrderCheckResponse.DataDTO pvalue = payOrderData.getValue();
+        if (pvalue == null || pvalue.getOpBankList() == null) {
+            return "";
+        }
+
+        String type = pvalue.getPayBankType();
+        ExRechargeOrderCheckResponse.DataDTO.OpBankListDTO opBankList = pvalue.getOpBankList();
+        ArrayList<RechargeVo.OpBankListDTO.BankInfoDTO> bankInfoDTOS = new ArrayList<>();
+        if (opBankList.getHot() != null) {
+            bankInfoDTOS.addAll(opBankList.getHot());
+        }
+        if (opBankList.getOthers() != null) {
+            bankInfoDTOS.addAll(opBankList.getOthers());
+        }
+        if (opBankList.getUsed() != null) {
+            bankInfoDTOS.addAll(opBankList.getUsed());
+        }
+        if (opBankList.getTop() != null) {
+            bankInfoDTOS.addAll(opBankList.getTop());
+        }
+
+
+        for (RechargeVo.OpBankListDTO.BankInfoDTO b : bankInfoDTOS) {
+            if (b.getBankCode().equals(bankCode)) {
+                type = b.getType();
+                break;
+            }
+        }
+        return type;
     }
 
     /**
@@ -886,6 +1043,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                             bankCodeOfPayment.setValue(model.getBankCode());
                         }
                         bankNameOfPayment.setValue(model.getBankName());
+                        typeOfPayment.setValue(model.getType());
                     }
                 });
     }
@@ -965,10 +1123,18 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         ExTransferVoucherDialogFragment.show(mActivity.get());
     }
 
+    public void toVoucherPositive() {
+        if (isActivityNull()) {
+            return;
+        }
+        ExTransferVoucherPositiveDialogFragment.show(mActivity.get());
+    }
+
     public void toFail() {
         startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_FAIL);
         close();
     }
+
 
     public void toSuccess() {
         startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_SUCCESS);
@@ -984,6 +1150,17 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         }
 
         ExSlipExampleDialogFragment.show(mActivity.get());
+    }
+
+    /**
+     * 转账流水示例
+     */
+    public void showReceiptExample() {
+        if (isActivityNull()) {
+            return;
+        }
+        String url = DomainUtil.getH5Domain2() + Constant.URL_RC_CNYT_TUTORIAL;
+        new XPopup.Builder(mActivity.get()).asCustom(new BrowserDialog(mActivity.get(), mActivity.get().getString(R.string.txt_transfer_tutorial), url)).show();
     }
 
     /**
@@ -1119,7 +1296,9 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         cancleOrderWaitStatus.setValue(true);
         cancleOrderStatus.setValue(false);
         bankNumberOfPayment.setValue(null);
+        receiptIdOfPayment.setValue(null);
         bankNameOfPayment.setValue(null);
+        typeOfPayment.setValue(null);
         bankCodeOfPayment.setValue(null);
         bankInfoData.setValue(null);
         createOrderInfoData.setValue(null);
@@ -1151,6 +1330,12 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                     fa.finish();
                 }
                 if (fragment.getClass().getCanonicalName().equals(ExTransferVoucherFragment.class.getCanonicalName())) {
+                    fa.finish();
+                }
+                if (fragment.getClass().getCanonicalName().equals(ExTransferVoucherDialogFragment.class.getCanonicalName())) {
+                    fa.finish();
+                }
+                if (fragment.getClass().getCanonicalName().equals(ExTransferVoucherPositiveDialogFragment.class.getCanonicalName())) {
                     fa.finish();
                 }
                 if (fragment.getClass().getCanonicalName().equals(ExTransferFailFragment.class.getCanonicalName())) {
