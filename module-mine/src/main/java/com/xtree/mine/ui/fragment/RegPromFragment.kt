@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,9 @@ import me.xtree.mvvmhabit.utils.KLog
 import me.xtree.mvvmhabit.utils.SPUtils
 import me.xtree.mvvmhabit.utils.ToastUtils
 
-
+/**
+ * 推广链接
+ */
 class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(), RegInterface {
 
     private lateinit var ppw: BasePopupView
@@ -47,7 +50,9 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
     private lateinit var ppwSports1: BasePopupView
     private lateinit var ppwChess1: BasePopupView
     private lateinit var ppwGame1: BasePopupView
+    private lateinit var ppwFish: BasePopupView
 
+    private lateinit var ppwFish1: BasePopupView
 
     private lateinit var linkPpw: BasePopupView
 
@@ -97,6 +102,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
             map["sportpoint"] = bd.typeSports.removePercentage()
             map["pokerpoint"] = bd.typeChess.removePercentage()
             map["esportspoint"] = bd.typeGame.removePercentage()
+            map["fishingpoint"] = bd.typeFishing.removePercentage()  //捕鱼返点
 
             viewModel.postMarketing(map, requireContext())
 
@@ -369,6 +375,33 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                                 { ppwGame1.dismiss() }
                         }
                         ppwGame1.show()
+                    }
+                }
+            }
+            //判断mProfileVo  maxFishingPoint
+            if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString())
+                || TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())
+                || TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
+                layoutFishing.visibility = View.GONE
+            } else {
+                typeFishing.text = mProfileVo.maxFishingPoint.toString().plus("%")
+                tvGameFishing.text = getString(R.string.txt_reg_rebate).plus("0.0%")
+                typeFishing.setOnClickListener {
+                    if (type == 0) {
+                        //未初始化，创建ppw
+                        if (!::ppwFish.isInitialized) {
+                            ppwFish =
+                                createPpw(mProfileVo.maxFishingPoint, typeFishing, tvGameFishing, getRebateList(mProfileVo.maxFishingPoint))
+                                { ppwFish.dismiss() }
+                        }
+                        ppwFish.show()
+                    } else {
+                        if (!::ppwFish1.isInitialized) {
+                            ppwFish1 =
+                                createPpw(mProfileVo.maxFishingPoint, typeFishing, tvGameFishing, getRebateList(mProfileVo.maxFishingPoint))
+                                { ppwFish1.dismiss() }
+                        }
+                        ppwFish1.show()
                     }
                 }
             }

@@ -35,7 +35,9 @@ import me.xtree.mvvmhabit.utils.KLog
 import me.xtree.mvvmhabit.utils.SPUtils
 import me.xtree.mvvmhabit.utils.ToastUtils
 
-
+/**
+ * 注册开户
+ */
 class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel>(), RegInterface {
 
     private lateinit var ppw: BasePopupView
@@ -341,10 +343,13 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
                 }
             }
             //判断mProfileVo  maxFishingPoint
-            if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) || TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())) {
+            if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
+                TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
+                TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
                 layoutFishing.visibility = View.GONE
             } else {
-                typeFishing.text = mProfileVo.maxEsportsPoint.toString().plus("%")
+                CfLog.e("mProfileVo.maxFishingPoint =" +mProfileVo.maxFishingPoint)
+                typeFishing.text = mProfileVo.maxFishingPoint.toString().plus("%")
                 tvGameFishing.text = getString(R.string.txt_reg_rebate).plus("0.0%")
                 typeFishing.setOnClickListener {
                     if (type == 0) {
