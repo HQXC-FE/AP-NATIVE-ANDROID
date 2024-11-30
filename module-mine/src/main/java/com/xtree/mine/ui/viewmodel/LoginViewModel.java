@@ -123,17 +123,19 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
                         }
 
                     }
+
                 });
         addSubscribe(disposable);
     }
 
     /**
      * 验证码注册后 调用此方法完成登录
+     *
      * @param userName
      * @param pwd
      * @param captcha
      */
-    public void  loginAndVerAuto(String userName, String pwd ,final String captcha){
+    public void loginAndVerAuto(String userName, String pwd, final String captcha) {
         String password = MD5Util.generateMd5("") + MD5Util.generateMd5(pwd);
         //KLog.i("password: " + password);
 
@@ -210,14 +212,16 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
                 });
         addSubscribe(disposable);
     }
+
     /**
      * 使用验证码登录
+     *
      * @param userName
      * @param pwd
      * @param key
      * @param validcode
      */
-    public void loginAndVer(String userName, String pwd ,final String key , final String validcode){
+    public void loginAndVer(String userName, String pwd, final String key, final String validcode) {
         String password = MD5Util.generateMd5("") + MD5Util.generateMd5(pwd);
         //KLog.i("password: " + password);
 
@@ -291,6 +295,7 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
                         }
 
                     }
+
                 });
         addSubscribe(disposable);
     }
