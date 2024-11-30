@@ -407,7 +407,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             // 下一步
             if (curRechargeVo.paycode.equals(KEY_MANUAL)) {
                 goNextManual(); // 人工充值
-            } else if (viewModel.isOnePayFix(curRechargeVo)) {
+            } else if (viewModel.isOnePayFix(curRechargeVo)//极速充值增加实名即可充值【HQAP2-4857】
+                    || ((curRechargeVo.paycode.contains(viewModel.ONE_PAY_FIX) && curRechargeVo.can_use_name_channel_status == true))) {
                 goNext2(); // 极速充值
             } else if (curRechargeVo.paycode.contains("hiwallet")) {
                 goHiWallet(); // 嗨钱包
@@ -1701,8 +1702,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             curRechargeVo = vo;
             viewModel.curRechargeLiveData.setValue(curRechargeVo);
 
-            // 极速充值
-            if (viewModel.isOnePayFix(vo)) {
+            // 极速充值 极速充值增加实名即可充值HQAP2-4857
+            if (viewModel.isOnePayFix(vo) || (vo.paycode.contains(viewModel.ONE_PAY_FIX) && vo.can_use_name_channel_status == true)) {
                 // 银行列表,搜索页会用到
                 onClickPayment3(vo);
                 return;
