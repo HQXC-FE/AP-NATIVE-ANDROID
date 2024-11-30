@@ -99,6 +99,9 @@ public class GameRebateAgrtHeadModel extends BindModel implements BindHead {
             case USER:
                 yesterdayRebateTitle.set("昨日彩票工资（元）");
                 break;
+            case FISH:
+                yesterdayRebateTitle.set(BaseApplication.getInstance().getString(R.string.txt_dividend_yestday_salary));
+                break;
             default:
                 yesterdayRebateTitle.set(BaseApplication.getInstance().getString(R.string.txt_dividend_yestday_rmb));
                 break;
