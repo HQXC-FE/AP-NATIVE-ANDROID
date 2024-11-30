@@ -76,12 +76,12 @@ public class TopSpeedDomainFloatingWindows extends FloatingWindows {
 
                 TextView fastestStatusTime = iconView.findViewById(R.id.fastest_status_time);
                 ImageView fastestStatusImg = iconView.findViewById(R.id.fastest_status_img);
-                fastestStatusTime.setText(topSpeedDomain.speedSec + "ms");
+                fastestStatusTime.setText(topSpeedDomain.speedScore + "ms");
 
-                if (topSpeedDomain.speedSec <= 500) {
+                if (topSpeedDomain.speedScore <= 500) {
                     fastestStatusTime.setTextColor(mContext.getResources().getColor(R.color.clr_txt_fastest_low));
                     fastestStatusImg.setImageResource(R.mipmap.icon_fastest_status_low);
-                } else if (topSpeedDomain.speedSec < 1000) {
+                } else if (topSpeedDomain.speedScore < 1000) {
                     fastestStatusTime.setTextColor(mContext.getResources().getColor(R.color.clr_txt_fastest_medium));
                     fastestStatusImg.setImageResource(R.mipmap.icon_fastest_status_medium);
                 } else {
@@ -358,7 +358,7 @@ public class TopSpeedDomainFloatingWindows extends FloatingWindows {
                 if (oldSize >= (i + 1)) {
                     TopSpeedDomain oldData = datas.get(i);
                     oldData.url = newData.url;
-                    oldData.speedSec = newData.speedSec;
+                    oldData.speedScore = newData.speedScore;
                     mainDomainAdapter.notifyItemChanged(i);
                 } else {
                     datas.add(newData);
