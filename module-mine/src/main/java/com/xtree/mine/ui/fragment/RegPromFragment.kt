@@ -57,6 +57,8 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
     private lateinit var linkPpw: BasePopupView
 
     private lateinit var mProfileVo: ProfileVo
+    private var isChangLink:Boolean =false
+    private var changeLink:String = ""
 
 
     override fun initView() {
@@ -120,7 +122,12 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                 for (i in it.domainList) {
                     linkList.add(i + it.links[0].domain)
                 }
-                binding.tvLink.text = linkList[0]
+                if (isChangLink == false){
+                    binding.tvLink.text = linkList[0]
+                }else{
+                    binding.tvLink.text = changeLink
+                }
+
                 val adapter: CachedAutoRefreshAdapter<String> = object : CachedAutoRefreshAdapter<String>() {
                     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CacheViewHolder {
                         return CacheViewHolder(LayoutInflater.from(context).inflate(R.layout.item_text, parent, false))
@@ -131,6 +138,8 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                         binding2.tvwTitle.text = get(position)
                         binding2.tvwTitle.setOnClickListener {
                             binding.tvLink.text = get(position)
+                            isChangLink = true
+                            changeLink = get(position)
                             linkPpw.dismiss()
                         }
                     }
@@ -391,7 +400,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                     }
                 }
             }
-            //判断mProfileVo  maxFishingPoint
+
             //判断mProfileVo  maxFishingPoint
             if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
                 TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
