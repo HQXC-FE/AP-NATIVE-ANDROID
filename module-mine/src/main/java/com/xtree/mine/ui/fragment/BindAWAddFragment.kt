@@ -149,9 +149,9 @@ class BindAWAddFragment : BaseFragment<FragmentBindAddAwBinding, BindCardViewMod
                     action = "adduseronepaywx"
                     qrcodeType = 1
                     binding.ivAwIcon.setImageResource(R.mipmap.bind_success)
-                    binding.tvMsg.text =  getString(R.string.txt_bind_succ)
+                    binding.tvMsg.text = getString(R.string.txt_bind_succ)
                     binding.etPhone.hint = "请输入微信支付绑定的11位手机号码"
-                    binding.etPhone.inputType = InputType.TYPE_CLASS_PHONE
+                    binding.etPhone.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                 }
             }
             binding.etNickname.hint = getString(R.string.txt_input_nickname, typeName)
@@ -160,7 +160,11 @@ class BindAWAddFragment : BaseFragment<FragmentBindAddAwBinding, BindCardViewMod
         }
     }
 
-    override fun initContentView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): Int {
+    override fun initContentView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): Int {
         return R.layout.fragment_bind_add_aw
     }
 
@@ -184,7 +188,8 @@ class BindAWAddFragment : BaseFragment<FragmentBindAddAwBinding, BindCardViewMod
             binding.layoutRecharge.visibility = View.VISIBLE
             binding.ivAwIcon.setImageResource(R.mipmap.bind_success)
             binding.llConfirm.visibility = View.GONE
-            val type = SPUtils.getInstance().getString(SPKeyGlobal.TYPE_RECHARGE_WITHDRAW, getString(R.string.txt_go_recharge))
+            val type = SPUtils.getInstance()
+                .getString(SPKeyGlobal.TYPE_RECHARGE_WITHDRAW, getString(R.string.txt_go_recharge))
             binding.tvType.text = type
             binding.tvType.setOnClickListener {
                 viewModel.getProfile()
@@ -198,7 +203,8 @@ class BindAWAddFragment : BaseFragment<FragmentBindAddAwBinding, BindCardViewMod
 
                     getString(R.string.txt_go_withdraw) -> {
                         val bundle = Bundle()
-                        ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_CHOOSE_WITHDRAW).withBundle("viewType", bundle)
+                        ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_CHOOSE_WITHDRAW)
+                            .withBundle("viewType", bundle)
                             .navigation()
                         requireActivity().finish()
                     }
@@ -229,14 +235,17 @@ class BindAWAddFragment : BaseFragment<FragmentBindAddAwBinding, BindCardViewMod
         when (mark) {
             getString(R.string.txt_bind_zfb_type) -> {
                 //增加邮箱多端式判断
-                if (!(AppUtil.isPhone(phone) || !AppUtil.isMultiSegmentEmail(phone))) {
+                if (!(AppUtil.isPhone(phone) || AppUtil.isMultiSegmentEmail(phone) || AppUtil.isAlipayAccount(
+                        phone
+                    ))
+                ) {
                     ToastUtils.showLong(R.string.txt_tip_account, ToastUtils.ShowType.Fail)
                     return
                 }
             }
 
             getString(R.string.txt_bind_wechat_type) -> {
-                if (!AppUtil.isPhone(phone)) {
+                if (!(AppUtil.isPhone(phone) || AppUtil.isWechatAccount(phone))) {
                     ToastUtils.showLong(R.string.txt_tip_account, ToastUtils.ShowType.Fail)
                     return
                 }
@@ -247,7 +256,10 @@ class BindAWAddFragment : BaseFragment<FragmentBindAddAwBinding, BindCardViewMod
             return
         }
         if (!imageSelector) {
-            ToastUtils.showLong(getString(R.string.txt_tip_code, typeName), ToastUtils.ShowType.Fail)
+            ToastUtils.showLong(
+                getString(R.string.txt_tip_code, typeName),
+                ToastUtils.ShowType.Fail
+            )
             return
         }
 
@@ -258,7 +270,8 @@ class BindAWAddFragment : BaseFragment<FragmentBindAddAwBinding, BindCardViewMod
         )
 
         val fileType = ImageUtils.getImageType(File(imageRealPathString))
-        val filedata = "data:" + fileType + ";base64," + ImageUploadUtil.bitmapToString(imageRealPathString)
+        val filedata =
+            "data:" + fileType + ";base64," + ImageUploadUtil.bitmapToString(imageRealPathString)
         //KLog.i("filedata", filedata)
         val map = HashMap<String, Any?>()
         map["check"] = tokenSign

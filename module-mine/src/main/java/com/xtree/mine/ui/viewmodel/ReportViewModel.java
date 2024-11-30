@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.widget.LoadingDialog;
 import com.xtree.mine.R;
 import com.xtree.mine.data.MineRepository;
 import com.xtree.mine.vo.AccountChangeVo;
@@ -78,7 +79,7 @@ public class ReportViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onError(Throwable t) {
                         CfLog.e("error, " + t.toString());
-                        super.onError(t);
+                        LoadingDialog.finish();
                         liveDataAccountChange.setValue(null);
                     }
                 });
@@ -345,7 +346,7 @@ public class ReportViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onError(Throwable t) {
                         CfLog.e("error, " + t.toString());
-                        super.onError(t);
+                        LoadingDialog.finish();
                         liveDataGameChange.setValue(null);
                     }
                 });
