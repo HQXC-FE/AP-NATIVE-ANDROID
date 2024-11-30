@@ -294,7 +294,7 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
                 .subscribeWith(new HttpCallBack<MarketingVo>() {
                     @Override
                     public void onResult(MarketingVo vo) {
-                        CfLog.d(vo.toString());
+                        CfLog.e(vo.toString());
                         liveDataMarketing.setValue(vo);
                     }
 

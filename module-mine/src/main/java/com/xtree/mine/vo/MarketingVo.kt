@@ -28,7 +28,8 @@ data class MarketingVo(
     val user_channel_id: String,
     val usertype: Int,
     val webtitle: String,
-    val sMsg: String
+    val sMsg: String,
+    val fishingPoint:String  //新增捕鱼返点
 )
 
 data class LinkVo(

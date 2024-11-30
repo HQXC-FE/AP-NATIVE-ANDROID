@@ -230,8 +230,21 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                         }
 
                     }
-
+                    //arrayListOf("代理", "会员")
                     binding.tvSelectType.text = get(position)
+                   /* if (TextUtils.equals("会员",binding.tvSelectType.text)) {
+                        binding.include1.layoutFishing.visibility =View.GONE
+                        //判断mProfileVo  maxFishingPoint
+                    }else if (TextUtils.equals("代理",binding.tvSelectType.text)){
+                        if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
+                            TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
+                            TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
+                            binding.include0.layoutFishing.visibility = View.GONE
+                        } else if ( binding.include0.layoutFishing.visibility == View.GONE) {
+                            binding.include0.layoutFishing.visibility == View.VISIBLE
+                        }
+                    }*/
+
                     ppw.dismiss()
                 }
             }
@@ -379,13 +392,15 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                 }
             }
             //判断mProfileVo  maxFishingPoint
-            if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString())
-                || TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())
-                || TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
+            //判断mProfileVo  maxFishingPoint
+            if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
+                TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
+                TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
                 layoutFishing.visibility = View.GONE
             } else {
-                typeFishing.text = mProfileVo.maxFishingPoint.toString().plus("%")
-                tvGameFishing.text = getString(R.string.txt_reg_rebate).plus("0.0%")
+
+                typeFishing.text = vo.fishingPoint.plus("%")
+                tvGameFishing.text = getString(R.string.txt_reg_rebate).plus((  NumberUtils.sub(mProfileVo.maxFishingPoint,vo.fishingPoint.toDouble()).toString())+"%")
                 typeFishing.setOnClickListener {
                     if (type == 0) {
                         //未初始化，创建ppw
