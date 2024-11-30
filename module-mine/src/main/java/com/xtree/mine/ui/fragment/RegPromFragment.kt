@@ -379,7 +379,9 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                 }
             }
             //判断mProfileVo  maxFishingPoint
-            if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) || TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())) {
+            if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString())
+                || TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())
+                || TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
                 layoutFishing.visibility = View.GONE
             } else {
                 typeFishing.text = mProfileVo.maxFishingPoint.toString().plus("%")
