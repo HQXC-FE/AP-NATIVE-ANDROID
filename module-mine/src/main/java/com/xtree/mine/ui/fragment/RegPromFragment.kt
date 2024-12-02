@@ -117,6 +117,9 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
 
     override fun initViewObservable() {
         viewModel.liveDataMarketing.observe(this) {
+
+            CfLog.e("initViewObservable ---->  viewModel.liveDataMarketing")
+
             if (it.links.isNotEmpty() && it.domainList.isNotEmpty()) {
                 val linkList = ArrayList<String>()
                 for (i in it.domainList) {
@@ -156,6 +159,8 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                     member -> {
                         binding.include0.layout.visibility = View.INVISIBLE
                         binding.include1.layout.visibility = View.VISIBLE
+                        binding.include1.layoutFishing.visibility =View.GONE
+                        binding.include0.layoutFishing.visibility =View.GONE
                         mList[1]
                     }
 
@@ -221,7 +226,13 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CacheViewHolder {
                 return CacheViewHolder(LayoutInflater.from(context).inflate(R.layout.item_text, parent, false))
             }
-
+           /* get() = arrayListOf("代理", "会员")
+            //代理
+            val daili: Int
+                get() = 1
+            //会员
+            val member: Int
+                get() = 0*/
             override fun onBindViewHolder(holder: CacheViewHolder, position: Int) {
                 val binding2 = ItemTextBinding.bind(holder.itemView)
                 binding2.tvwTitle.text = get(position)
@@ -241,19 +252,13 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                     }
                     //arrayListOf("代理", "会员")
                     binding.tvSelectType.text = get(position)
-                   /* if (TextUtils.equals("会员",binding.tvSelectType.text)) {
+                    if (TextUtils.equals("会员",binding.tvSelectType.text)) {
                         binding.include1.layoutFishing.visibility =View.GONE
+                        binding.include0.layoutFishing.visibility =View.GONE
                         //判断mProfileVo  maxFishingPoint
-                    }else if (TextUtils.equals("代理",binding.tvSelectType.text)){
-                        if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
-                            TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
-                            TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
-                            binding.include0.layoutFishing.visibility = View.GONE
-                        } else if ( binding.include0.layoutFishing.visibility == View.GONE) {
-                            binding.include0.layoutFishing.visibility == View.VISIBLE
-                        }
-                    }*/
-
+                    }else{
+                        binding.include0.layoutFishing.visibility =View.VISIBLE
+                    }
                     ppw.dismiss()
                 }
             }
