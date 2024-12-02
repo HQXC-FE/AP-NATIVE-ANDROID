@@ -610,5 +610,6 @@
     <color name="clr_bet_keyboard_txt">#867163</color>
     <color name="clr_bg_bet_detail_light">#FFABAE</color>
     <color name="clr_bg_bet_detail_deep">#B00000</color>
+    <color name="clr_feed_back_tip">#592424</color>
 
 </resources>

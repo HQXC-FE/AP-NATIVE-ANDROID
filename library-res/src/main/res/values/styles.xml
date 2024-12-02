@@ -304,7 +304,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">end</item>
         <item name="android:minEms">7</item>
-        <item name="android:textColor">@color/clr_grey_80</item>
+        <item name="android:textColor">@color/clr_purple_13</item>
         <item name="android:textSize">14sp</item>
     </style>
     <!--设置密保-->
@@ -337,7 +337,7 @@
     <style name="style_fb_tip_title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:textColor">@color/clr_withdrawal_text_tip</item>
+        <item name="android:textColor">@color/clr_feed_back_tip</item>
         <item name="android:textSize">11sp</item>
         <item name="android:layout_marginLeft">2dp</item>
 
