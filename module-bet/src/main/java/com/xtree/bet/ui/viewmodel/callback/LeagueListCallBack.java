@@ -1,6 +1,6 @@
 package com.xtree.bet.ui.viewmodel.callback;
 
-import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FB;
@@ -10,7 +10,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.net.FBHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.base.request.UploadExcetionReq;
@@ -36,7 +36,7 @@ import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class LeagueListCallBack extends FBHttpCallBack<MatchListRsp> {
+public class LeagueListCallBack extends HttpCallBack<MatchListRsp> {
     private FBMainViewModel mViewModel;
     private boolean mHasCache;
     private boolean mIsTimerRefresh;

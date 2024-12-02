@@ -1,15 +1,11 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
-import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_400467;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.bet.bean.request.pm.BtCarCgReq;
 import com.xtree.bet.bean.request.pm.BtCarReq;
 import com.xtree.bet.bean.request.pm.BtReq;
@@ -34,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -85,10 +82,11 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().batchBetMatchMarketOfJumpLine(btCarReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<BtConfirmInfo>>() {
+                .subscribeWith(new HttpCallBack<List<BtConfirmInfo>>() {
                     @Override
-                    public void onResult(List<BtConfirmInfo> btConfirmInfoList) {
+                    public void onResult(List<BtConfirmInfo> btConfirmInfoList, BusinessException exception) {
                         if (btConfirmInfoList == null || btConfirmInfoList.isEmpty()) {
+                            onFail(exception);
                             return;
                         }
                         mBetConfirmOptionList = new ArrayList<>();
@@ -103,7 +101,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                         //super.onError(t);
                         if (t instanceof ResponseThrowable) {
                             ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == CODE_401026 || error.code == CODE_401013) {
+                            if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
                                 batchBetMatchMarketOfJumpLine(betConfirmOptionList);
                             }
                         }
@@ -135,7 +133,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().queryMarketMaxMinBetMoney(btCarCgReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<CgOddLimitInfo>>() {
+                .subscribeWith(new HttpCallBack<List<CgOddLimitInfo>>() {
                     @Override
                     public void onResult(List<CgOddLimitInfo> cgOddLimitInfos) {
 
@@ -184,7 +182,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
         btReq.setAcceptOdds(acceptOdds);
         List<SeriesOrder> seriesOrders = new ArrayList<>();
         for (CgOddLimit cgOddLimit : cgOddLimitList) {
-            if(cgOddLimit.getBtAmount() > 0) {
+            if (cgOddLimit.getBtAmount() > 0) {
                 SeriesOrder seriesOrder = new SeriesOrder();
                 seriesOrder.setSeriesSum(cgOddLimit.getBtCount());
                 seriesOrder.setSeriesType(cgOddLimit.getCgType());
@@ -211,7 +209,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
             }
         }
         btReq.setSeriesOrders(seriesOrders);
-        if(seriesOrders.isEmpty()){
+        if (seriesOrders.isEmpty()) {
             noBetAmountDate.call();
             return;
         }
@@ -219,7 +217,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().bet(btReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<BtResultInfo>() {
+                .subscribeWith(new HttpCallBack<BtResultInfo>() {
                     @Override
                     public void onResult(BtResultInfo btResultInfo) {
                         List<BtResult> btResultList = new ArrayList<>();
@@ -243,7 +241,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                     public void onError(Throwable t) {
                         super.onError(t);
                         if (t instanceof ResponseThrowable) {
-                            if (((ResponseThrowable) t).code == CODE_400467) {
+                            if (((ResponseThrowable) t).code == HttpCallBack.CodeRule.CODE_400467) {
                                 batchBetMatchMarketOfJumpLine(mSearchBetConfirmOptionList);
                             }
                         }

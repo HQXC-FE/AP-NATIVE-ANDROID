@@ -1,18 +1,12 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_10000001;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_400524;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_400527;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401038;
 
 import android.app.Application;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.bet.bean.request.pm.BtCashOutBetReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
 import com.xtree.bet.bean.response.pm.BtCashOutPriceInfo;
@@ -52,7 +46,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
         Disposable disposable = (Disposable) model.getPMApiService().betRecord(btRecordReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<BtRecordRsp>() {
+                .subscribeWith(new HttpCallBack<BtRecordRsp>() {
                     @Override
                     public void onResult(BtRecordRsp btRecordRsp) {
                         List<BtRecordTime> btRecordTimeList = new ArrayList<>();
@@ -84,9 +78,9 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                         super.onError(t);
                         if (t instanceof ResponseThrowable) {
                             ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == CODE_401038) {
+                            if (error.code == HttpCallBack.CodeRule.CODE_401038) {
                                 ToastUtils.showShort("请求速度太快，请稍候重试");
-                            } else if (error.code == CODE_401026 || error.code == CODE_401013) {
+                            } else if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
                                 getGameTokenApi();
                             }
                         }
@@ -97,7 +91,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
 
     @Override
     public void cashOutPrice() {
-        if(mOrderIdList.isEmpty()){
+        if (mOrderIdList.isEmpty()) {
             return;
         }
         Map<String, String> map = new HashMap<>();
@@ -105,7 +99,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
         for (String orderId : mOrderIdList) {
             orderNo += orderId + ",";
         }
-        if(!TextUtils.isEmpty(orderNo)) {
+        if (!TextUtils.isEmpty(orderNo)) {
             orderNo = orderNo.substring(0, orderNo.length() - 1);
         }
         map.put("orderNo", orderNo);
@@ -113,7 +107,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                 .getCashoutMaxAmountList(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<BtCashOutPriceInfo>>() {
+                .subscribeWith(new HttpCallBack<List<BtCashOutPriceInfo>>() {
                     @Override
                     public void onResult(List<BtCashOutPriceInfo> btCashOutPriceInfoList) {
                         for (BtCashOutPriceInfo btCashOutPriceInfo : btCashOutPriceInfoList) {
@@ -128,11 +122,11 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                     public void onError(Throwable t) {
                         if (t instanceof ResponseThrowable) {
                             ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == CODE_401038) {
+                            if (error.code == HttpCallBack.CodeRule.CODE_401038) {
                                 ToastUtils.showShort("请求速度太快，请稍候重试");
-                            } else if (error.code == CODE_401026 || error.code == CODE_401013) {
+                            } else if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
                                 getGameTokenApi();
-                            } else if (error.code == CODE_400527) {
+                            } else if (error.code == HttpCallBack.CodeRule.CODE_400527) {
                                 betRecord(mIsSettled);
                             }
                         }
@@ -151,7 +145,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                 .orderPreSettle(btCashOutBetReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<BtCashOutPriceInfo>>() {
+                .subscribeWith(new HttpCallBack<List<BtCashOutPriceInfo>>() {
                     @Override
                     public void onResult(List<BtCashOutPriceInfo> btCashOutPriceInfoList) {
 
@@ -163,14 +157,14 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                         if (t instanceof ResponseThrowable) {
 
                             ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == CODE_400524) {
+                            if (error.code == HttpCallBack.CodeRule.CODE_400524) {
                                 btUpdateCashOutBet.postValue(orderId);
-                            } else if (error.code == CODE_401026 || error.code == CODE_401013) {
+                            } else if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
                                 btUpdateCashOutStatus.postValue(false);
                                 getGameTokenApi();
-                            } else if (error.code == CODE_401038) {
+                            } else if (error.code == HttpCallBack.CodeRule.CODE_401038) {
                                 ToastUtils.showShort("请求速度太快，请稍候重试");
-                            } else if (error.code == CODE_400527 || error.code == CODE_10000001) {
+                            } else if (error.code == HttpCallBack.CodeRule.CODE_400527 || error.code == HttpCallBack.CodeRule.CODE_10000001) {
                                 btUpdateCashOutStatus.postValue(false);
                                 ToastUtils.showShort(error.getMessage());
                             } else {
@@ -189,18 +183,18 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                 .queryOrderPreSettleConfirm()
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<BtCashOutStatusInfo>>() {
+                .subscribeWith(new HttpCallBack<List<BtCashOutStatusInfo>>() {
                     @Override
                     public void onResult(List<BtCashOutStatusInfo> btCashOutStatusInfoList) {
-                        if(btCashOutStatusInfoList != null && !btCashOutStatusInfoList.isEmpty()) {
+                        if (btCashOutStatusInfoList != null && !btCashOutStatusInfoList.isEmpty()) {
                             BtCashOutStatusInfo btCashOutStatusInfo = null;
                             for (BtCashOutStatusInfo info : btCashOutStatusInfoList) {
-                                if(TextUtils.equals(info.orderNo, id)){
+                                if (TextUtils.equals(info.orderNo, id)) {
                                     btCashOutStatusInfo = info;
                                     break;
                                 }
                             }
-                            if(btCashOutStatusInfo != null) {
+                            if (btCashOutStatusInfo != null) {
                                 if (btCashOutStatusInfo.preSettleOrderStatus == 2) {
                                     btUpdateCashOutStatus.postValue(false);
                                 } else if (btCashOutStatusInfo.preSettleOrderStatus == 1) {
@@ -216,9 +210,9 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                             super.onError(t);
                             if (t instanceof ResponseThrowable) {
                                 ResponseThrowable error = (ResponseThrowable) t;
-                                if (error.code == CODE_401038) {
+                                if (error.code == HttpCallBack.CodeRule.CODE_401038) {
                                     ToastUtils.showShort("请求速度太快，请稍候重试");
-                                } else if (error.code == CODE_401026 || error.code == CODE_401013) {
+                                } else if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
                                     getGameTokenApi();
                                 }
                             }
