@@ -792,6 +792,7 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
                                     model.setSelfMoney(dataDTO.getSelf_money());
                                     model.setSubMoney(dataDTO.getSub_money());
                                     model.setType(dataDTO.getType());
+                                    model.setPstatus(dataDTO.getPstatus());
                                     model.setCreateTime(dataDTO.getCreate_time());
                                     subordinateRebateDatas.add(model);
                                 }
