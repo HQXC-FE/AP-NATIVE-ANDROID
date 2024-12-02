@@ -33,7 +33,7 @@ import java.util.HashMap;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
-import me.xtree.mvvmhabit.http.BaseResponse3;
+import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -345,9 +345,9 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().getOffer(key, map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<BaseResponse3>() {
+                .subscribeWith(new HttpCallBack<BaseResponse>() {
                     @Override
-                    public void onResult(BaseResponse3 response) {
+                    public void onResult(BaseResponse response) {
                         ToastUtils.showSuccess(response.getMessage());
                         getOfferList(offerListMap);
                     }

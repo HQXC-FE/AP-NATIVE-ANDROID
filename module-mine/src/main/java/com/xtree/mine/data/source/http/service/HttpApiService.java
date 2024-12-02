@@ -75,7 +75,7 @@ import java.util.Map;
 import io.reactivex.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.BaseResponse3;
+import me.xtree.mvvmhabit.http.BaseResponse;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -628,51 +628,51 @@ public interface HttpApiService {
      * 提款获取可用额度
      */
     @GET("/api/withdrawal/quota")
-    Flowable<BaseResponse3<WithdrawalQuotaVo>> getWithdrawalQuota();
+    Flowable<BaseResponse<WithdrawalQuotaVo>> getWithdrawalQuota();
 
     /**
      * 获取可提现渠道列表
      */
     @GET("/api/withdrawal/list")
-    Flowable<BaseResponse3<ArrayList<WithdrawalListVo>>> getWithdrawalList();
+    Flowable<BaseResponse<ArrayList<WithdrawalListVo>>> getWithdrawalList();
 
     /**
      * 获取当前渠道详情
      * /api/withdrawal/info?wtype=ebpay
      */
     @GET("/api/withdrawal/info/{key}")
-    Flowable<BaseResponse3<WithdrawalInfoVo>> getWithdrawalInfo(@Path("key") String key);
+    Flowable<BaseResponse<WithdrawalInfoVo>> getWithdrawalInfo(@Path("key") String key);
 
     /**
      * 银行卡提现获取当前渠道详情
      */
     @GET("/api/withdrawal/info/{key}")
-    Flowable<BaseResponse3<WithdrawalBankInfoVo>> getWithdrawalBankInfo(@Path("key") String key);
+    Flowable<BaseResponse<WithdrawalBankInfoVo>> getWithdrawalBankInfo(@Path("key") String key);
 
     /**
      * 验证当前渠道信息
      */
     @POST("/api/withdrawal/verify")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse3<WithdrawalVerifyVo>> postWithdrawalVerify(@Body Map<String, Object> map);
+    Flowable<BaseResponse<WithdrawalVerifyVo>> postWithdrawalVerify(@Body Map<String, Object> map);
 
     /**
      * 提款提交
      */
     @POST("/api/withdrawal/submit")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse3<WithdrawalSubmitVo>> postWithdrawalSubmit(@Body Map<String, Object> map);
+    Flowable<BaseResponse<WithdrawalSubmitVo>> postWithdrawalSubmit(@Body Map<String, Object> map);
 
     /**
      * 优惠中心列表
      */
     @GET("/api/activity/reward?")
-    Flowable<BaseResponse3<OfferVo>> getOfferList(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<OfferVo>> getOfferList(@QueryMap Map<String, String> map);
 
     /**
      * 取得优惠
      */
     @PUT("/api/activity/reward/{key}")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse3> getOffer(@Path("key") String key, @Body Map<String, String> map);
+    Flowable<BaseResponse> getOffer(@Path("key") String key, @Body Map<String, String> map);
 }
