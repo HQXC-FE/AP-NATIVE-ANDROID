@@ -1,7 +1,5 @@
 package com.xtree.mine.vo.WithdrawVo;
 
-import me.xtree.mvvmhabit.http.BaseResponse2;
-
 /**
  * 提款余额 提款列表
  */

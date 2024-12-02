@@ -1,13 +1,37 @@
 package com.xtree.mine.vo;
 
-import java.util.ArrayList;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-import me.xtree.mvvmhabit.http.BaseResponse2;
+import java.util.ArrayList;
 
 /**
  * other提款请求返回体(支付宝、微信)
  */
-public class OtherWebWithdrawVo extends BaseResponse2 {
+public class OtherWebWithdrawVo {
+    public String rest;
+    public ArrayList<ChannelInfo> channel_list;
+    public ArrayList<BankInfo> banks;
+    public WrapTime wraptime;
+    public User user;
+    public String usdt_type;
+    public String min_money;
+    public String max_money;
+    public String d_min_money;
+    public String d_max_money;
+    public String limitarr;
+    public String count;
+    public String times;
+    public String ur_here;
+    public String ourfee;
+    public String usdtfee;
+    public String freeWithDrawTimes;
+    public String withdraw_rand_on;
+    public String exchangerate;
+    @SerializedName(value = "message", alternate = {"msg", "sMsg"})
+    @Expose
+    public String message; // "页面超时！请重试。",
+
     @Override
     public String toString() {
         return "OtherWebWithdrawVo{" +
@@ -29,28 +53,9 @@ public class OtherWebWithdrawVo extends BaseResponse2 {
                 ", freeWithDrawTimes='" + freeWithDrawTimes + '\'' +
                 ", withdraw_rand_on='" + withdraw_rand_on + '\'' +
                 ", exchangerate='" + exchangerate + '\'' +
+                ", message='" + message + '\'' +
                 '}';
     }
-    public String rest ;
-    public ArrayList<ChannelInfo> channel_list;
-    public ArrayList<BankInfo> banks;
-    public WrapTime wraptime;
-    public User user;
-
-    public String usdt_type;
-    public String min_money;
-    public String max_money;
-    public String d_min_money;
-    public String d_max_money;
-    public String limitarr;
-    public String count;
-    public String times;
-    public String ur_here;
-    public String ourfee;
-    public String usdtfee;
-    public String freeWithDrawTimes;
-    public String withdraw_rand_on;
-    public String exchangerate;
 
     public class User {
         /*"userid": "5228811",
@@ -125,6 +130,29 @@ public class OtherWebWithdrawVo extends BaseResponse2 {
 
     /*页面加载所需的数据*/
     public class ChannelInfo {
+        public String typenum;
+        public String name;
+        public String thiriframe_use;
+        public String thiriframe_status;//异常状态码 1：成功 0：失败
+        public String thiriframe_msg; //异常显示信息
+        public String thiriframe_url;//加载的web地址
+        public String channel_amount_use;
+        public String fixamount_list_status;
+        public String fixamount_list;
+        public String fixamount_list_status1;
+        public String fixamount_list1;
+        public String fixamount_rule_status;
+        public String fixamount_rule;
+        public String earnest_money_pl;
+        public String didvided_list;
+        public String opfast_min_money;
+        public String opfast_max_money;
+        public String fee_ratio;
+        public String configkey; //提款类型  onepaywx 微信
+        public String min_money;
+        public String max_money;
+        public String recommend;
+
         @Override
         public String toString() {
             return "ChannelInfo{" +
@@ -152,29 +180,6 @@ public class OtherWebWithdrawVo extends BaseResponse2 {
                     ", recommend='" + recommend + '\'' +
                     '}';
         }
-
-        public String typenum;
-        public String name;
-        public String thiriframe_use;
-        public String thiriframe_status;//异常状态码 1：成功 0：失败
-        public String thiriframe_msg; //异常显示信息
-        public String thiriframe_url;//加载的web地址
-        public String channel_amount_use;
-        public String fixamount_list_status;
-        public String fixamount_list;
-        public String fixamount_list_status1;
-        public String fixamount_list1;
-        public String fixamount_rule_status;
-        public String fixamount_rule;
-        public String earnest_money_pl;
-        public String didvided_list;
-        public String opfast_min_money;
-        public String opfast_max_money;
-        public String fee_ratio;
-        public String configkey; //提款类型  onepaywx 微信
-        public String min_money;
-        public String max_money;
-        public String recommend;
        /*"typenum": "14",
                "name": "极速微信提款",
                "thiriframe_use": 1,
