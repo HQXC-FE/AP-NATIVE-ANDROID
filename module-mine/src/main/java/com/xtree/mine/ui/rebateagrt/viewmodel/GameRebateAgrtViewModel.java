@@ -548,7 +548,9 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
                             //p<=1说明是第一页数据
                             if (gameRebateAgrtRequest.p <= 1) {
                                 gameRebateDatas.clear();
-                                gameRebateAgrtHeadModel.yesterdayRebate.set(vo.getUser().getIscreditaccount());
+                                if (vo.getYesterday_bill() != null) {
+                                    gameRebateAgrtHeadModel.yesterdayRebate.set(vo.getYesterday_bill().getSelfMoney());
+                                }
                                 if (vo.getContract() != null && vo.getContract().getRule() != null && vo.getContract().getRule().size() > 0) {
                                     //设置规则提示
                                     gameRebateAgrtHeadModel.setRules(vo.getContract().getRule());
