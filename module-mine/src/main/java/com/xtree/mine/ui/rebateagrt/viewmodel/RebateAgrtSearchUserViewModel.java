@@ -38,7 +38,6 @@ import java.util.List;
 
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
  * Created by KAKA on 2024/3/18.
@@ -67,20 +66,10 @@ public class RebateAgrtSearchUserViewModel extends BaseViewModel<MineRepository>
         public void onItemClick(int modelPosition, int layoutPosition, int itemViewType) {
             //计算数量
             if (datas.getValue() != null) {
-                int num = 0;
-
                 //反选当前条目
                 RebateAgrtSearchUserLabelModel cModel = (RebateAgrtSearchUserLabelModel) datas.getValue().get(layoutPosition);
                 cModel.checked.set(!cModel.checked.get());
-
-                for (BindModel bindModel : datas.getValue()) {
-                    //统计选中条目
-                    RebateAgrtSearchUserLabelModel label = (RebateAgrtSearchUserLabelModel) bindModel;
-                    if (label.checked.get()) {
-                        num++;
-                    }
-                }
-                pickNums.set("选中" + num + "人");
+                checkPickNums();
             }
         }
     };
@@ -129,6 +118,7 @@ public class RebateAgrtSearchUserViewModel extends BaseViewModel<MineRepository>
         }
 
         datas.setValue(bindModels);
+        checkPickNums();
     }
 
     public void setActivity(FragmentActivity mActivity) {
@@ -159,6 +149,21 @@ public class RebateAgrtSearchUserViewModel extends BaseViewModel<MineRepository>
             default:
                 break;
         }
+    }
+
+    /**
+     * 检查当前选中的用户数量
+     */
+    private void checkPickNums() {
+        int num = 0;
+        for (BindModel bindModel : datas.getValue()) {
+            //统计选中条目
+            RebateAgrtSearchUserLabelModel label = (RebateAgrtSearchUserLabelModel) bindModel;
+            if (label.checked.get()) {
+                num++;
+            }
+        }
+        pickNums.set("选中" + num + "人");
     }
 
     /**
@@ -201,13 +206,15 @@ public class RebateAgrtSearchUserViewModel extends BaseViewModel<MineRepository>
             }
             if (map.size() > 0) {
                 RxBus.getDefault().post(new RebateAgrtSearchUserResultModel(map));
-                onBack();
             } else {
-                ToastUtils.show(getApplication().getString(R.string.txt_rebateagrt_tip1), ToastUtils.ShowType.Fail);
+                RxBus.getDefault().post(new RebateAgrtSearchUserResultModel(map));
+//                ToastUtils.show(getApplication().getString(R.string.txt_rebateagrt_tip1), ToastUtils.ShowType.Fail);
             }
         } else {
-            ToastUtils.show(getApplication().getString(R.string.txt_rebateagrt_tip1), ToastUtils.ShowType.Fail);
+            RxBus.getDefault().post(new RebateAgrtSearchUserResultModel(new HashMap<>()));
+//            ToastUtils.show(getApplication().getString(R.string.txt_rebateagrt_tip1), ToastUtils.ShowType.Fail);
         }
+        onBack();
     }
 
     @Override

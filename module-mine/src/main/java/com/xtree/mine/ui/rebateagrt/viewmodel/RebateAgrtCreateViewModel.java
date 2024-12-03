@@ -220,7 +220,9 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
         for (Map.Entry<String, String> map : model.getUser().entrySet()) {
             usreNames.append(map.getValue()).append(",");
         }
-        usreNames.deleteCharAt(usreNames.lastIndexOf(","));
+        if (usreNames.length() > 0) {
+            usreNames.deleteCharAt(usreNames.lastIndexOf(","));
+        }
         headModel.user.set(usreNames.toString());
     }
     private void formatItem() {
@@ -239,7 +241,7 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
      */
     public void create() {
 
-        if (searchUserResultLiveData.getValue() == null || searchUserResultLiveData.getValue().getUser() == null) {
+        if (searchUserResultLiveData.getValue() == null || searchUserResultLiveData.getValue().getUser() == null || searchUserResultLiveData.getValue().getUser().isEmpty()) {
             ToastUtils.show(getApplication().getString(R.string.txt_rebateagrt_tip1), ToastUtils.ShowType.Default);
             return;
         }
