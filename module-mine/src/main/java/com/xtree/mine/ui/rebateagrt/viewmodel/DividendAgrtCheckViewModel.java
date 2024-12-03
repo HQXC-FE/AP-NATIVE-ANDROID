@@ -83,7 +83,7 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
         public void accept(String s) throws Exception {
             RebateAgrtDetailModel rebateAgrtDetailModel = new RebateAgrtDetailModel(1);
             rebateAgrtDetailModel.setSearchUserModel(event.getSearchUserModel());
-            RebateAgrtSearchUserDialogFragment.show(mActivity.get(), rebateAgrtDetailModel);
+            RebateAgrtSearchUserDialogFragment.show(mActivity.get(), rebateAgrtDetailModel, searchUserResultLiveData.getValue());
         }
     });
     private final RebateAgrtCreateAddModel addModel = new RebateAgrtCreateAddModel();

@@ -109,7 +109,7 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
     private final RebateAgrtCreateHeadModel headModel = new RebateAgrtCreateHeadModel(new Consumer<String>() {
         @Override
         public void accept(String s) throws Exception {
-            RebateAgrtSearchUserDialogFragment.show(mActivity.get(), rebateAgrtDetailModel);
+            RebateAgrtSearchUserDialogFragment.show(mActivity.get(), rebateAgrtDetailModel, searchUserResultLiveData.getValue());
         }
     });
     private final RebateAgrtCreateAddModel addModel = new RebateAgrtCreateAddModel(new Consumer<String>() {
