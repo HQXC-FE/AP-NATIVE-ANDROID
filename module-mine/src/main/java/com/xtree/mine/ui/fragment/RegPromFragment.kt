@@ -258,20 +258,25 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                         binding.include0.layoutFishing.visibility =View.GONE
                         //判断mMarketingVo  fishingPoint
                     }else{
+                        setRebate(binding.include0, mMarketingVo, 1)
+                        CfLog.e("mMarketingVo.fishingPoint" +mMarketingVo.fishingPoint)
+                        CfLog.e("mProfileVo.maxFishingPoint" +mProfileVo.maxFishingPoint)
 
-                        if (TextUtils.isEmpty(mMarketingVo.fishingPoint) ||
-                            TextUtils.equals("0",mMarketingVo.fishingPoint)||
-                            TextUtils.equals("0.0",mMarketingVo.fishingPoint)) {
+                        //判断mProfileVo  maxFishingPoint
+                        if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
+                            TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
+                            TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
                             binding.include0.layoutFishing.visibility = View.GONE
-                        } else if ( binding.include0.layoutFishing.visibility == View.GONE) {
+                        } else {
                             binding.include0.layoutFishing.visibility =View.VISIBLE
+                            binding.include0.typeFishing.text = mMarketingVo.fishingPoint.plus("%")
+                            binding.include0.tvGameFishing.text = getString(R.string.txt_reg_rebate).plus((NumberUtils.sub(mProfileVo.maxFishingPoint,mMarketingVo.fishingPoint.toDouble()).toString())+"%")
                         }
                     }
                     ppw.dismiss()
                 }
             }
         }
-
         KLog.i("usertype", mProfileVo.usertype)
         adapter.addAll(mList)
         ppw = XPopup.Builder(context).asCustom(ListDialog(requireContext(), "", adapter))
