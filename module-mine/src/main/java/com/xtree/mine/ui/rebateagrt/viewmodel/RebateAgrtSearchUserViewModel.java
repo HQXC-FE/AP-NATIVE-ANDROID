@@ -8,6 +8,7 @@ import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.USER;
 
 import android.app.Application;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 
@@ -94,7 +95,7 @@ public class RebateAgrtSearchUserViewModel extends BaseViewModel<MineRepository>
         super(application, model);
     }
 
-    public void initData(RebateAgrtDetailModel rebateAgrtDetailModel) {
+    public void initData(RebateAgrtDetailModel rebateAgrtDetailModel, RebateAgrtSearchUserResultModel selectedUsers) {
         //init data
         searchUsreModel = rebateAgrtDetailModel;
 
@@ -103,13 +104,27 @@ public class RebateAgrtSearchUserViewModel extends BaseViewModel<MineRepository>
             List<GameSubordinateAgrteResponse.ChildrenDTO> children = rebateAgrtDetailModel.getSubData().getChildren();
             if (children != null) {
                 for (GameSubordinateAgrteResponse.ChildrenDTO child : children) {
-                    bindModels.add(new RebateAgrtSearchUserLabelModel(child.getUserid(), child.getUsername()));
+                    RebateAgrtSearchUserLabelModel m = new RebateAgrtSearchUserLabelModel(child.getUserid(), child.getUsername());
+                    if (selectedUsers != null) {
+                        String s = selectedUsers.getUser().get(m.userId);
+                        if (!TextUtils.isEmpty(s)) {
+                            m.checked.set(true);
+                        }
+                    }
+                    bindModels.add(m);
                 }
             }
         } else {
             titleData.setValue(getApplication().getString(R.string.txt_dividendagrt_title));
             for (RebateAgrtSearchUserModel m : rebateAgrtDetailModel.getSearchUserModel()) {
-                bindModels.add(new RebateAgrtSearchUserLabelModel(m.getUsreId(), m.getUsreName()));
+                RebateAgrtSearchUserLabelModel labelModel = new RebateAgrtSearchUserLabelModel(m.getUsreId(), m.getUsreName());
+                if (selectedUsers != null) {
+                    String s = selectedUsers.getUser().get(labelModel.userId);
+                    if (!TextUtils.isEmpty(s)) {
+                        labelModel.checked.set(true);
+                    }
+                }
+                bindModels.add(labelModel);
             }
         }
 
@@ -149,30 +164,25 @@ public class RebateAgrtSearchUserViewModel extends BaseViewModel<MineRepository>
     /**
      * 全选/取消 标签
      */
-    public void overall() {
+    public void overAll() {
         ArrayList<BindModel> value = datas.getValue();
         if (value != null && value.size() > 0) {
-            RebateAgrtSearchUserLabelModel itemFirst = (RebateAgrtSearchUserLabelModel) value.get(0);
-            boolean isSame = true;
             for (BindModel bindModel : value) {
                 RebateAgrtSearchUserLabelModel label = (RebateAgrtSearchUserLabelModel) bindModel;
-                if (isSame && label.checked.get() != itemFirst.checked.get()) {
-                    isSame = false;
-                }
+                label.checked.set(true);
             }
+            pickNums.set("选中" + value.size() + "人");
+        }
+    }
+
+    public void clearAll() {
+        ArrayList<BindModel> value = datas.getValue();
+        if (value != null && value.size() > 0) {
             for (BindModel bindModel : value) {
                 RebateAgrtSearchUserLabelModel label = (RebateAgrtSearchUserLabelModel) bindModel;
-                if (isSame) {
-                    label.checked.set(!label.checked.get());
-                } else {
-                    label.checked.set(true);
-                }
+                label.checked.set(false);
             }
-            if (itemFirst.checked.get()) {
-                pickNums.set("选中" + value.size() + "人");
-            } else {
-                pickNums.set("选中" + 0 + "人");
-            }
+            pickNums.set("选中" + 0 + "人");
         }
     }
 
