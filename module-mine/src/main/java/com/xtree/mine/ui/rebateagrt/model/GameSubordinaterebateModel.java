@@ -24,6 +24,7 @@ public class GameSubordinaterebateModel extends BindModel {
     private int statusColor = R.color.clr_txt_rebateagrt_default;
     private String createTime;
     private String createDate;
+    private String date;
     //场馆类型
     private RebateAreegmentTypeEnum typeEnum;
 
@@ -140,6 +141,14 @@ public class GameSubordinaterebateModel extends BindModel {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getStatusString() {
