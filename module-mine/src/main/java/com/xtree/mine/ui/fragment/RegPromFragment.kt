@@ -59,6 +59,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
     private lateinit var mProfileVo: ProfileVo
     private var isChangLink:Boolean =false
     private var changeLink:String = ""
+    private lateinit var mMarketingVo: MarketingVo
 
 
     override fun initView() {
@@ -117,8 +118,8 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
 
     override fun initViewObservable() {
         viewModel.liveDataMarketing.observe(this) {
-
-            CfLog.e("initViewObservable ---->  viewModel.liveDataMarketing")
+            mMarketingVo = it
+            CfLog.e("initViewObservable ---->  viewModel.liveDataMarketing" + mMarketingVo.fishingPoint)
 
             if (it.links.isNotEmpty() && it.domainList.isNotEmpty()) {
                 val linkList = ArrayList<String>()
@@ -255,9 +256,16 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                     if (TextUtils.equals("会员",binding.tvSelectType.text)) {
                         binding.include1.layoutFishing.visibility =View.GONE
                         binding.include0.layoutFishing.visibility =View.GONE
-                        //判断mProfileVo  maxFishingPoint
+                        //判断mMarketingVo  fishingPoint
                     }else{
-                        binding.include0.layoutFishing.visibility =View.VISIBLE
+
+                        if (TextUtils.isEmpty(mMarketingVo.fishingPoint) ||
+                            TextUtils.equals("0",mMarketingVo.fishingPoint)||
+                            TextUtils.equals("0.0",mMarketingVo.fishingPoint)) {
+                            binding.include0.layoutFishing.visibility = View.GONE
+                        } else if ( binding.include0.layoutFishing.visibility == View.GONE) {
+                            binding.include0.layoutFishing.visibility =View.VISIBLE
+                        }
                     }
                     ppw.dismiss()
                 }
