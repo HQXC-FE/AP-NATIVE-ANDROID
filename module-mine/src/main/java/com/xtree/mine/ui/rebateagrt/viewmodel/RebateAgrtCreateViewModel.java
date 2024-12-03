@@ -252,6 +252,15 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
         usreIds.deleteCharAt(usreIds.lastIndexOf(","));
         request.setUsers(usreIds.toString());
 
+        switch (viewMode.get()) {
+            case CHECK_MODO:
+                request.setTag("modify");
+                break;
+            case CREATE_MODO:
+                request.setTag("create");
+                break;
+        }
+
         if (datas.getValue() != null) {
             ArrayList<String> minBetList = new ArrayList<>();
             ArrayList<String> minPlayerList = new ArrayList<>();

@@ -548,7 +548,9 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
                             //p<=1说明是第一页数据
                             if (gameRebateAgrtRequest.p <= 1) {
                                 gameRebateDatas.clear();
-                                gameRebateAgrtHeadModel.yesterdayRebate.set(vo.getUser().getIscreditaccount());
+                                if (vo.getYesterday_bill() != null) {
+                                    gameRebateAgrtHeadModel.yesterdayRebate.set(vo.getYesterday_bill().getSelfMoney());
+                                }
                                 if (vo.getContract() != null && vo.getContract().getRule() != null && vo.getContract().getRule().size() > 0) {
                                     //设置规则提示
                                     gameRebateAgrtHeadModel.setRules(vo.getContract().getRule());
@@ -792,7 +794,9 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
                                     model.setSelfMoney(dataDTO.getSelf_money());
                                     model.setSubMoney(dataDTO.getSub_money());
                                     model.setType(dataDTO.getType());
+                                    model.setPstatus(dataDTO.getPstatus());
                                     model.setCreateTime(dataDTO.getCreate_time());
+                                    model.setCreateDate(dataDTO.getCreate_date());
                                     subordinateRebateDatas.add(model);
                                 }
                             } else {

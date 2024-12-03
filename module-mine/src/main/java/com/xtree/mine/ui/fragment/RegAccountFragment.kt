@@ -61,11 +61,11 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
     override fun initView() {
         val json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE)
         mProfileVo = Gson().fromJson(json, ProfileVo::class.java)
-        initDialog()
+
         createRebatePpw()
         setRebate(binding.include0, 0)
         setRebate(binding.include1, 1)
-
+        initDialog()
 
         binding.ckbEye.setOnCheckedChangeListener { _, isChecked -> setEdtPwd(isChecked, binding.etLoginPwd) }
         initCreateUser()
@@ -112,11 +112,13 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
                     mList[0] -> {
                         type = daili
                         binding.include0
+                        //CfLog.e("选择的是 会员")
                     }
 
                     mList[1] -> {
                         type = member
                         binding.include1
+                       // CfLog.e("选择的是 代理")
                     }
 
                     else -> {
@@ -183,6 +185,7 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
             override fun onBindViewHolder(holder: CacheViewHolder, position: Int) {
                 val binding2 = ItemTextBinding.bind(holder.itemView)
                 binding2.tvwTitle.text = get(position)
+                //get() = arrayListOf("代理", "会员")
                 binding2.tvwTitle.setOnClickListener {
                     when (position) {
                         0 -> {
@@ -192,12 +195,26 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
 
                         1 -> {
                             //INVISIBLE 留个占位
+                            //1 代表会员
                             binding.include0.layout.visibility = View.INVISIBLE
                             binding.include1.layout.visibility = View.VISIBLE
                         }
                     }
 
                     binding.tvSelectType.text = get(position)
+                    if (TextUtils.equals("会员",binding.tvSelectType.text)) {
+                        binding.include1.layoutFishing.visibility =View.GONE
+                        //判断mProfileVo  maxFishingPoint
+                    }else if (TextUtils.equals("代理",binding.tvSelectType.text)){
+                        if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
+                            TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
+                            TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
+                            binding.include0.layoutFishing.visibility = View.GONE
+                        } else if ( binding.include0.layoutFishing.visibility == View.GONE) {
+                            binding.include0.layoutFishing.visibility == View.VISIBLE
+                        }
+                    }
+
                     ppw.dismiss()
                 }
             }
