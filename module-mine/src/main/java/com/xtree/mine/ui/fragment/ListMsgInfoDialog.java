@@ -184,8 +184,7 @@ public class ListMsgInfoDialog extends BottomPopupView {
                 }
             } else if (msgPersonInfoVo.type.equals("3") || msgPersonInfoVo.type.equals("4")
                     || msgPersonInfoVo.type.equals("6") || msgPersonInfoVo.type.equals("7")
-                    || msgPersonInfoVo.type.equals("10")) {
-
+                    ) {
                 for (HashMap<String, Object> hashMap : ruleList) {
 
                     String minPlayer = splitMinPlayer(String.valueOf(hashMap.get("min_player")));
@@ -197,7 +196,22 @@ public class ListMsgInfoDialog extends BottomPopupView {
                             .append("元，且活跃玩家人数≥").append(minPlayer)
                             .append("人，返水").append(hashMap.get("ratio")).append("%").append("\n");
                 }
-            }else if (msgPersonInfoVo.type.equals("9")) {
+            } else if ( msgPersonInfoVo.type.equals("10")) {
+                //捕鱼返水
+                for (HashMap<String, Object> hashMap : ruleList) {
+
+                    String minPlayer = splitMinPlayer(String.valueOf(hashMap.get("min_player")));
+                    level = new Double((double) hashMap.get("level")).intValue();
+                    content.append("规则")
+                            .append(level).append(":")
+                            /*.append(unit.get(0))*/
+                            .append("日有效投注额≥").append(hashMap.get("min_bet"))
+                            .append("元，且活跃玩家人数≥").append(minPlayer)
+                            .append("人，返水比例").append(hashMap.get("ratio")).append("%").append("\n");
+                }
+            }
+
+            else if (msgPersonInfoVo.type.equals("9")) {
                 for (HashMap<String, Object> hashMap : ruleList) {
                     level = new Double((double) hashMap.get("level")).intValue();
                     content.append("规则")
