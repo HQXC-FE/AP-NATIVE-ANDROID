@@ -1,5 +1,7 @@
 package com.xtree.lottery.data.source.response;
 
+import androidx.databinding.ObservableField;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -159,15 +161,7 @@ public class HandicapResponse {
                 private String rebatePrize;
 
                 //是否选中
-                private boolean isChecked = false;
-
-                public boolean isChecked() {
-                    return isChecked;
-                }
-
-                public void setChecked(boolean checked) {
-                    isChecked = checked;
-                }
+                public ObservableField<Boolean> isChecked = new ObservableField<>(false);
 
                 public String getMenuid() {
                     return menuid;

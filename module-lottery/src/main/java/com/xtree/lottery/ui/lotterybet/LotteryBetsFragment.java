@@ -1,5 +1,7 @@
 package com.xtree.lottery.ui.lotterybet;
 
+import static com.xtree.lottery.utils.EventConstant.EVENT_TIME_FINISH;
+
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -13,11 +15,10 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.util.KeyboardUtils;
-import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.BR;
 import com.xtree.lottery.R;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
@@ -32,8 +33,12 @@ import com.xtree.lottery.ui.view.LotteryDrawView;
 import com.xtree.lottery.ui.view.LotteryMoneyView;
 import com.xtree.lottery.ui.view.model.LotteryMoneyModel;
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.lottery.utils.EventVo;
 import com.xtree.lottery.utils.LotteryAnalyzer;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -177,6 +182,33 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
             binding.lotteryBetsBetlayout.clearBet();
         });
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        viewModel.getUserBalance();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventVo event) {
+        switch (event.getEvent()) {
+            case EVENT_TIME_FINISH:
+                binding.getModel().getBonusNumbers();
+                break;
+        }
     }
 
     @Override
