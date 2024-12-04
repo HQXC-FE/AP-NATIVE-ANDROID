@@ -17,6 +17,7 @@ import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.adapter.CacheViewHolder;
 import com.xtree.base.adapter.CachedAutoRefreshAdapter;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.widget.ListDialog;
 import com.xtree.mine.R;
@@ -93,7 +94,7 @@ public class SettingPointDialog extends BottomPopupView {
             stringList.add(df.format(i) + "%");
         }
 
-        /*stringList.add("0");*/
+        stringList.add("0");
 
         CachedAutoRefreshAdapter adapter = new CachedAutoRefreshAdapter<String>() {
 
@@ -122,9 +123,18 @@ public class SettingPointDialog extends BottomPopupView {
         adapter.addAll(stringList);
         ppw = new XPopup.Builder(getContext()).asCustom(new ListDialog(getContext(), "", adapter));
         tvwUserSetPoint.setOnClickListener(v -> ppw.show());
-
+        StringBuffer showWarning = new StringBuffer();
         String warning = String.format(context.getString(R.string.txt_lottery_point_warning), df.format(maxPoint - (Double.parseDouble(memberUserInfoVo.userpoint) * 100)) + "%");
-        tvwUserPointWarning.setText(warning);
+        String s =  df.format(maxPoint - (Double.parseDouble(memberUserInfoVo.userpoint) * 100)) ;
+        if (s.contains("-")){
+           String[] showWarningList = s.split("-");
+           for (int i = 1 ; i < showWarningList.length ; i++){
+               showWarning.append(showWarningList[i]);
+           }
+            tvwUserPointWarning.setText("自身保留返点： "+showWarning + "%");
+        }else{
+            tvwUserPointWarning.setText(warning);
+        }
 
         btnConfirm.setOnClickListener(v -> {
             callback.onClick(tvwUserSetPoint.getText().toString().replace("%", ""));
