@@ -15,7 +15,7 @@ import com.xtree.base.vo.ProfileVo
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
 import com.xtree.lottery.data.source.vo.UserMethodsVo
-import com.xtree.lottery.databinding.ActivityMainBinding
+import com.xtree.lottery.databinding.ActivityMainLtBinding
 import com.xtree.lottery.ui.adapter.LotteryAdapter
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
@@ -27,11 +27,11 @@ import me.xtree.mvvmhabit.utils.SPUtils
  * 彩种选择页面
  */
 @Route(path = RouterActivityPath.Lottery.PAGER_LOTTERY_HOME)
-class MainActivity : BaseActivity<ActivityMainBinding, LotteryViewModel>() {
+class MainActivity : BaseActivity<ActivityMainLtBinding, LotteryViewModel>() {
     private var userMethods = ArrayList<UserMethodsVo>()
     private lateinit var lottery: Lottery
     override fun initContentView(savedInstanceState: Bundle?): Int {
-        return R.layout.activity_main
+        return R.layout.activity_main_lt
     }
 
     override fun initVariableId(): Int {
