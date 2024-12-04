@@ -15,6 +15,7 @@ import com.xtree.base.net.RetrofitClient;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.FBService;
+import com.xtree.base.vo.MsgPersonListVo;
 import com.xtree.base.vo.PMService;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.widget.LoadingDialog;
@@ -37,12 +38,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -61,6 +64,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<CookieVo> liveDataCookie = new MutableLiveData<>();
     public MutableLiveData<ProfileVo> liveDataProfile = new MutableLiveData<>();
     public MutableLiveData<VipInfoVo> liveDataVipInfo = new MutableLiveData<>();
+    public MutableLiveData<Integer> liveDataMsgUnread = new MutableLiveData<>();
     public MutableLiveData<SettingsVo> liveDataSettings = new MutableLiveData<>();
     public MutableLiveData<HashMap<String, ArrayList<AugVo>>> liveDataAug = new MutableLiveData<>();
     public MutableLiveData<EleVo> liveDataEle = new MutableLiveData<>();
@@ -392,6 +396,32 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         CfLog.e("error, " + t.toString());
                         //super.onError(t);
                         //ToastUtils.showLong("请求失败");
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    public void getUnread() {
+        Disposable disposable = (Disposable) model.getApiService().unread()
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<MsgPersonListVo>() {
+                    @Override
+                    public void onResult(MsgPersonListVo vo) {
+                        liveDataMsgUnread.setValue(vo.count);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        liveDataMsgUnread.setValue(0);
+                        super.onError(t);
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        liveDataMsgUnread.setValue(0);
+                        super.onFail(t);
                     }
                 });
         addSubscribe(disposable);
