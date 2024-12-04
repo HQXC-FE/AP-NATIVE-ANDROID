@@ -93,7 +93,7 @@ public class SettingPointDialog extends BottomPopupView {
             stringList.add(df.format(i) + "%");
         }
 
-        stringList.add("0");
+        /*stringList.add("0");*/
 
         CachedAutoRefreshAdapter adapter = new CachedAutoRefreshAdapter<String>() {
 
