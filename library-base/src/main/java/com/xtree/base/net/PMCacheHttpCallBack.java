@@ -3,62 +3,58 @@ package com.xtree.base.net;
 import com.xtree.base.utils.AppUtil;
 
 import io.reactivex.subscribers.DisposableSubscriber;
-import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.BaseTempResponse;
-import me.xtree.mvvmhabit.http.PMBaseResponse;
-import me.xtree.mvvmhabit.http.PMBaseTempResponse;
+import me.xtree.mvvmhabit.http.PMCacheResponse;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
-public abstract class PMHttpTempCallBack<T> extends DisposableSubscriber<T> {
+public abstract class PMCacheHttpCallBack<T> extends DisposableSubscriber<T> {
     public abstract void onResult(T t);
 
     @Override
     public void onNext(T o) {
 
-        if (!(o instanceof BaseTempResponse)) {
+        if (!(o instanceof PMCacheResponse)) {
             KLog.w("json is not normal");
             onResult(o);
             return;
         }
-        BaseTempResponse baseResponse = (BaseTempResponse) o;
-        System.out.println("================= BaseTempResponse ==============="+baseResponse.getDataString());
-        ResponseThrowable ex = new ResponseThrowable(baseResponse.getCode(), baseResponse.getMessage());
-        int code = baseResponse.getCode();
-        System.out.println("================= BaseTempResponse code ==============="+code);
+
+        PMCacheResponse baseResponse = (PMCacheResponse) o;
+        ResponseThrowable ex = new ResponseThrowable(baseResponse.getData().getCode(), baseResponse.getMessage());
+        int code = baseResponse.getData().getCode();
         switch (code) {
-            case PMHttpTempCallBack.CodeRule.CODE_0:
+            case PMCacheHttpCallBack.CodeRule.CODE_0:
 
                 //请求成功, 正确的操作方式
-                onResult((T) baseResponse.getData());
+                onResult((T) baseResponse.getData().getData());
                 break;
-            case PMHttpTempCallBack.CodeRule.CODE_401013://账号已登出，请重新登录
-            case PMHttpTempCallBack.CodeRule.CODE_401026://账号已登出，请重新登录
-            case PMHttpTempCallBack.CodeRule.CODE_400467:
-            case PMHttpTempCallBack.CodeRule.CODE_401038:
-            case PMHttpTempCallBack.CodeRule.CODE_400524:
-            case PMHttpTempCallBack.CodeRule.CODE_400527:
-            case PMHttpTempCallBack.CodeRule.CODE_408028:
+            case PMCacheHttpCallBack.CodeRule.CODE_401013://账号已登出，请重新登录
+            case PMCacheHttpCallBack.CodeRule.CODE_401026://账号已登出，请重新登录
+            case PMCacheHttpCallBack.CodeRule.CODE_400467:
+            case PMCacheHttpCallBack.CodeRule.CODE_401038:
+            case PMCacheHttpCallBack.CodeRule.CODE_400524:
+            case PMCacheHttpCallBack.CodeRule.CODE_400527:
+            case PMCacheHttpCallBack.CodeRule.CODE_408028:
                 onError(ex);
                 break;
-            case PMHttpTempCallBack.CodeRule.CODE_400489:
-            case PMHttpTempCallBack.CodeRule.CODE_400492:
-            case PMHttpTempCallBack.CodeRule.CODE_400496:
-            case PMHttpTempCallBack.CodeRule.CODE_400503:
-            case PMHttpTempCallBack.CodeRule.CODE_400522:
-            case PMHttpTempCallBack.CodeRule.CODE_400528:
-            case PMHttpTempCallBack.CodeRule.CODE_400529:
+            case PMCacheHttpCallBack.CodeRule.CODE_400489:
+            case PMCacheHttpCallBack.CodeRule.CODE_400492:
+            case PMCacheHttpCallBack.CodeRule.CODE_400496:
+            case PMCacheHttpCallBack.CodeRule.CODE_400503:
+            case PMCacheHttpCallBack.CodeRule.CODE_400522:
+            case PMCacheHttpCallBack.CodeRule.CODE_400528:
+            case PMCacheHttpCallBack.CodeRule.CODE_400529:
 
-            case PMHttpTempCallBack.CodeRule.CODE_400493:
-            case PMHttpTempCallBack.CodeRule.CODE_400494:
-            case PMHttpTempCallBack.CodeRule.CODE_400500:
-            case PMHttpTempCallBack.CodeRule.CODE_400501:
-            case PMHttpTempCallBack.CodeRule.CODE_400525:
-            case PMHttpTempCallBack.CodeRule.CODE_400531:
-            case PMHttpTempCallBack.CodeRule.CODE_400537:
-            case PMHttpTempCallBack.CodeRule.CODE_402038:
-                ex.code = PMHttpTempCallBack.CodeRule.CODE_10000001;
+            case PMCacheHttpCallBack.CodeRule.CODE_400493:
+            case PMCacheHttpCallBack.CodeRule.CODE_400494:
+            case PMCacheHttpCallBack.CodeRule.CODE_400500:
+            case PMCacheHttpCallBack.CodeRule.CODE_400501:
+            case PMCacheHttpCallBack.CodeRule.CODE_400525:
+            case PMCacheHttpCallBack.CodeRule.CODE_400531:
+            case PMCacheHttpCallBack.CodeRule.CODE_400537:
+            case PMCacheHttpCallBack.CodeRule.CODE_402038:
+                ex.code = PMCacheHttpCallBack.CodeRule.CODE_10000001;
                 onError(ex);
                 break;
             default:

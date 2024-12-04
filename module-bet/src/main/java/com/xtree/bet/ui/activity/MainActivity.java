@@ -36,7 +36,6 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
-import com.xtree.base.GetJsonDataUtil;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.router.RouterActivityPath;
@@ -94,9 +93,6 @@ import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
 import me.xtree.mvvmhabit.base.BaseActivity;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.Messenger;
-import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.BaseTempResponse;
-import me.xtree.mvvmhabit.http.PMBaseResponse;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -420,14 +416,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         initNetFloatWindows();
 
         setChangeDomainVisible();
-
-//        GetJsonDataUtil getJsonDataUtil = new GetJsonDataUtil();
-//        String jsonData = getJsonDataUtil.getJson(this, "test.json");
-//        System.out.println("============ $$$$$$ jsonData 11111 ================="+jsonData);
-//        Gson gson = new Gson();
-//        BaseResponse<MatchListRsp> bigData = gson.fromJson(jsonData, new TypeToken<BaseResponse<com.xtree.bet.bean.response.pm.MatchListRsp>>() {}.getType());
-//        System.out.println("============ $$$$$$ list 22222 ================="+bigData.getData().data.size());
-
         //今日\滚球\早盘\串光\冠军切换
         binding.tabPlayMethod.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
