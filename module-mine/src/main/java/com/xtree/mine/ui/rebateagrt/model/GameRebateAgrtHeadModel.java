@@ -29,7 +29,7 @@ public class GameRebateAgrtHeadModel extends BindModel implements BindHead {
     //状态
     public ObservableField<StatusVo> state = new ObservableField<>();
     //昨日分红
-    public ObservableField<String> yesterdayRebate = new ObservableField<>();
+    public ObservableField<String> yesterdayRebate = new ObservableField<>("0");
     //昨日分红标题
     public ObservableField<String> yesterdayRebateTitle = new ObservableField<>();
     //显示温馨提示
