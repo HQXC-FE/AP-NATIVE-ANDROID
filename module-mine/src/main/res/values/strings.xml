@@ -386,6 +386,14 @@
     <string name="txt_team_balance_desc">按团队余额-从高到低</string>
     <string name="txt_team_balance_asc">按团队余额-从低到高</string>
 
+    <string name="txt_input_output_transfer">充值转账</string>
+    <string name="txt_lottery_bonus">彩票分红</string>
+    <string name="txt_lottery_active_money">彩票活动奖金</string>
+    <string name="txt_day_money">日工资</string>
+    <string name="txt_real_bonus">真人电子体育分红</string>
+    <string name="txt_agent_money">代理拥金</string>
+    <string name="txt_third_active_money">三方活动奖金</string>
+
     <!--    返水契约-->
     <string name="rebate_agrt_title">返水契约</string>
     <string name="commissions_reports_title">体育分红</string>
@@ -398,9 +406,10 @@
     <string name="txt_warning_money_password">请妥善保管好您的资金密码，如遗忘请使用密保功能找回或联系在线客服处理</string>
     <string name="txt_please_input_money_google_key">请输入谷歌验证</string>
     <string name="txt_transfer_member">下级转账</string>
-    <string name="txt_member_account">用户账号:</string>
-    <string name="txt_account_balance">您的余额:</string>
-    <string name="txt_transfer_money">充值金额:</string>
+    <string name="txt_member_account">用户账号：</string>
+    <string name="txt_account_balance">您的余额：</string>
+    <string name="txt_transfer_kind">转账类型：</string>
+    <string name="txt_transfer_money">充值金额：</string>
     <string name="txt_check_money">请仔细核对转账金额后提交</string>
     <string name="txt_sort">排序</string>
     <string name="txt_username">用户名</string>
