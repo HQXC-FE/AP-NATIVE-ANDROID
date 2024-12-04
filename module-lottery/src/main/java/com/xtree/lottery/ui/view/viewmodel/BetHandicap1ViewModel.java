@@ -291,8 +291,12 @@ public class BetHandicap1ViewModel {
         for (BindModel bindModel : bindModels) {
             BetHandicapModel handicapModel = (BetHandicapModel) bindModel;
             handicapModel.clicked.set(false);
+            for (HandicapResponse.DataDTO.GroupsDTO.CodesDTO code : handicapModel.getData().getCodes()) {
+                code.setChecked(false);
+            }
         }
         codesData.set(null);
+        datas.set(bindModels);
     }
 
 }
