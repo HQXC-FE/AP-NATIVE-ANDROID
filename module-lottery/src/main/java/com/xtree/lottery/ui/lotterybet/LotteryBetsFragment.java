@@ -138,6 +138,11 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
             @Override
             public void onBetChange(List<LotteryBetRequest.BetOrderData> betOrderList) {
                 if (betOrderList != null && betOrderList.size() > 0) {
+                    for (LotteryBetRequest.BetOrderData betOrderData : betOrderList) {
+                        betOrderData.setMode(binding.lotteryBetsMoneyView.getMoneyData().getMoneyModel().getModelId());
+                        betOrderData.setTimes(binding.lotteryBetsMoneyView.getMoneyData().getFactor());
+                        betOrderData.setOmodel(viewModel.prizeData.getValue().getValue());
+                    }
                     binding.getModel().betLiveData.setValue(betOrderList.get(0));
                 } else {
                     binding.getModel().betLiveData.setValue(null);
