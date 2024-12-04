@@ -4,6 +4,7 @@ include ':module-mine'
 include ':module-activity'
 include ':module-recharge'
 include ':module-bet'
+include ':module-lottery'
 include ":gsyVideoPlayer",
         ":gsyVideoPlayer-java",
         ":gsyVideoPlayer-armv7a",
