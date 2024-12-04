@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
-import com.xtree.lottery.data.config.Lottery
 import com.xtree.base.utils.CfLog
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
+import com.xtree.lottery.data.config.Lottery
 import com.xtree.lottery.data.source.vo.IssueVo
 import com.xtree.lottery.data.source.vo.MethodMenus
 import com.xtree.lottery.data.source.vo.UserMethodsVo

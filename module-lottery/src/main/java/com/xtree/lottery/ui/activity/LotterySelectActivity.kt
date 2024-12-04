@@ -27,7 +27,7 @@ import me.xtree.mvvmhabit.utils.SPUtils
  * 彩种选择页面
  */
 @Route(path = RouterActivityPath.Lottery.PAGER_LOTTERY_HOME)
-class MainActivity : BaseActivity<ActivityMainLtBinding, LotteryViewModel>() {
+class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewModel>() {
     private var userMethods = ArrayList<UserMethodsVo>()
     private lateinit var lottery: Lottery
     override fun initContentView(savedInstanceState: Bundle?): Int {
@@ -58,8 +58,6 @@ class MainActivity : BaseActivity<ActivityMainLtBinding, LotteryViewModel>() {
     override fun initData() {
    //     setLoginSucc()
         //viewModel.getUserMethods()
-        SPUtils.getInstance()
-            .put(SPKeyGlobal.HOME_PROFILE, Gson().toJson(ProfileVo("jiuhao001", "***")))
     }
 
     override fun initViewObservable() {

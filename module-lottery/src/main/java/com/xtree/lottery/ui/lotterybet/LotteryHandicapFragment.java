@@ -47,7 +47,9 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
         RxBus.getDefault().postSticky(lottery);
         return new LotteryHandicapFragment();
     }
+    protected void initImmersionBar() {
 
+    }
 
     @Override
     public void initView() {

@@ -35,6 +35,12 @@ class ChaseBetReportFragment : BaseFragment<FragmentCharseReportBinding, Lottery
         }
     }
 
+
+    override fun initImmersionBar() {
+
+    }
+
+
     override fun initContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): Int {
         return R.layout.fragment_charse_report
     }

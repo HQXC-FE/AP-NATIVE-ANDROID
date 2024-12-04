@@ -36,6 +36,10 @@ class LotteryReportFragment : BaseFragment<FragmentLotteryReportBinding, Lottery
         }
     }
 
+    override fun initImmersionBar() {
+
+    }
+
     override fun initContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): Int {
         return R.layout.fragment_lottery_report
     }

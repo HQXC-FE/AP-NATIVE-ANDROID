@@ -141,7 +141,8 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
             // 拼装URL
             if (vo.id.equals("601")) {
                 //playGame(DomainUtil.getDomain() + vo.playURL, vo.name, true); //
-                playGame(DomainUtil.getApiUrl()+ "/" + vo.playURL, vo.name, vo.id.equals("601"));
+                //playGame(DomainUtil.getApiUrl()+ "/" + vo.playURL, vo.name, vo.id.equals("601"));
+                ARouter.getInstance().build(RouterActivityPath.Lottery.PAGER_LOTTERY_HOME).navigation();
             } else {
                 playGame(DomainUtil.getDomain() + vo.playURL, vo.name);
             }

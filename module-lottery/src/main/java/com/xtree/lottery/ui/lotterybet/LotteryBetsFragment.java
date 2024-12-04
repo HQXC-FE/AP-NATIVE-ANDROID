@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.util.KeyboardUtils;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.BR;
@@ -53,6 +54,10 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
 
         RxBus.getDefault().postSticky(lottery);
         return new LotteryBetsFragment();
+    }
+
+    protected void initImmersionBar() {
+
     }
 
     @Override

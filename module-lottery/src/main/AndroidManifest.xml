@@ -8,7 +8,7 @@
             android:exported="false"
             android:screenOrientation="portrait" /> <!-- 在自己组件中注册Activity -->
         <activity
-            android:name="com.xtree.lottery.ui.activity.MainActivity"
+            android:name="com.xtree.lottery.ui.activity.LotterySelectActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
