@@ -19,9 +19,12 @@ public class GameSubordinaterebateModel extends BindModel {
     private String selfMoney;
     private String subMoney;
     private String type;
+    private String pstatus;
     private String statusString = BaseApplication.getInstance().getString(R.string.txt_unreceived);
-    private int statusColor = R.color.clr_txt_rebateagrt_fail;
+    private int statusColor = R.color.clr_txt_rebateagrt_default;
     private String createTime;
+    private String createDate;
+    private String date;
     //场馆类型
     private RebateAreegmentTypeEnum typeEnum;
 
@@ -66,7 +69,11 @@ public class GameSubordinaterebateModel extends BindModel {
     }
 
     public void setRatio(String ratio) {
-        this.ratio = ratio;
+        if (ratio == null) {
+            this.ratio = "0";
+        } else {
+            this.ratio = ratio;
+        }
     }
 
     public String getTotalMoney() {
@@ -98,16 +105,23 @@ public class GameSubordinaterebateModel extends BindModel {
     }
 
     public void setType(String type) {
-        if (type != null && !type.isEmpty()) {
-            this.type = type;
-            switch (type) {
+    }
+
+    public String getPstatus() {
+        return pstatus;
+    }
+
+    public void setPstatus(String pstatus) {
+        if (pstatus != null && !pstatus.isEmpty()) {
+            this.pstatus = pstatus;
+            switch (pstatus) {
                 case "1":
                     statusString = BaseApplication.getInstance().getString(R.string.txt_received);
                     statusColor = R.color.clr_txt_rebateagrt_success;
                     break;
-                case "2":
+                case "4":
                     statusString = BaseApplication.getInstance().getString(R.string.txt_unreceived);
-                    statusColor = R.color.clr_txt_rebateagrt_fail;
+                    statusColor = R.color.clr_txt_rebateagrt_default;
                     break;
             }
         }
@@ -119,6 +133,22 @@ public class GameSubordinaterebateModel extends BindModel {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getStatusString() {

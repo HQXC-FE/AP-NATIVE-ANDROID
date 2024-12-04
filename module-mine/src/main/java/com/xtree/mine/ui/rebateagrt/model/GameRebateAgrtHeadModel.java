@@ -87,7 +87,7 @@ public class GameRebateAgrtHeadModel extends BindModel implements BindHead {
         calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - 1); // 昨天
         startDate.set(TimeUtils.longFormatString(calendar.getTimeInMillis(), "yyyy-MM-dd"));
         endDate.set(TimeUtils.longFormatString(System.currentTimeMillis(), "yyyy-MM-dd"));
-        state.set(new StatusVo(0, BaseApplication.getInstance().getString(R.string.txt_all_status)));
+        state.set(new StatusVo(1, BaseApplication.getInstance().getString(R.string.txt_received)));
     }
 
     public RebateAreegmentTypeEnum getTypeEnum() {
@@ -98,6 +98,9 @@ public class GameRebateAgrtHeadModel extends BindModel implements BindHead {
         switch (typeEnum) {
             case USER:
                 yesterdayRebateTitle.set("昨日彩票工资（元）");
+                break;
+            case FISH:
+                yesterdayRebateTitle.set(BaseApplication.getInstance().getString(R.string.txt_dividend_yestday_salary));
                 break;
             default:
                 yesterdayRebateTitle.set(BaseApplication.getInstance().getString(R.string.txt_dividend_yestday_rmb));

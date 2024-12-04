@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,9 @@ import me.xtree.mvvmhabit.utils.KLog
 import me.xtree.mvvmhabit.utils.SPUtils
 import me.xtree.mvvmhabit.utils.ToastUtils
 
-
+/**
+ * 推广链接
+ */
 class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(), RegInterface {
 
     private lateinit var ppw: BasePopupView
@@ -47,11 +50,16 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
     private lateinit var ppwSports1: BasePopupView
     private lateinit var ppwChess1: BasePopupView
     private lateinit var ppwGame1: BasePopupView
+    private lateinit var ppwFish: BasePopupView
 
+    private lateinit var ppwFish1: BasePopupView
 
     private lateinit var linkPpw: BasePopupView
 
     private lateinit var mProfileVo: ProfileVo
+    private var isChangLink:Boolean =false
+    private var changeLink:String = ""
+    private lateinit var mMarketingVo: MarketingVo
 
 
     override fun initView() {
@@ -97,6 +105,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
             map["sportpoint"] = bd.typeSports.removePercentage()
             map["pokerpoint"] = bd.typeChess.removePercentage()
             map["esportspoint"] = bd.typeGame.removePercentage()
+            map["fishingpoint"] = bd.typeFishing.removePercentage()  //捕鱼返点
 
             viewModel.postMarketing(map, requireContext())
 
@@ -109,12 +118,20 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
 
     override fun initViewObservable() {
         viewModel.liveDataMarketing.observe(this) {
+            mMarketingVo = it
+            CfLog.e("initViewObservable ---->  viewModel.liveDataMarketing" + mMarketingVo.fishingPoint)
+
             if (it.links.isNotEmpty() && it.domainList.isNotEmpty()) {
                 val linkList = ArrayList<String>()
                 for (i in it.domainList) {
                     linkList.add(i + it.links[0].domain)
                 }
-                binding.tvLink.text = linkList[0]
+                if (isChangLink == false){
+                    binding.tvLink.text = linkList[0]
+                }else{
+                    binding.tvLink.text = changeLink
+                }
+
                 val adapter: CachedAutoRefreshAdapter<String> = object : CachedAutoRefreshAdapter<String>() {
                     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CacheViewHolder {
                         return CacheViewHolder(LayoutInflater.from(context).inflate(R.layout.item_text, parent, false))
@@ -125,6 +142,8 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                         binding2.tvwTitle.text = get(position)
                         binding2.tvwTitle.setOnClickListener {
                             binding.tvLink.text = get(position)
+                            isChangLink = true
+                            changeLink = get(position)
                             linkPpw.dismiss()
                         }
                     }
@@ -141,6 +160,8 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                     member -> {
                         binding.include0.layout.visibility = View.INVISIBLE
                         binding.include1.layout.visibility = View.VISIBLE
+                        binding.include1.layoutFishing.visibility =View.GONE
+                        binding.include0.layoutFishing.visibility =View.GONE
                         mList[1]
                     }
 
@@ -206,7 +227,13 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CacheViewHolder {
                 return CacheViewHolder(LayoutInflater.from(context).inflate(R.layout.item_text, parent, false))
             }
-
+           /* get() = arrayListOf("代理", "会员")
+            //代理
+            val daili: Int
+                get() = 1
+            //会员
+            val member: Int
+                get() = 0*/
             override fun onBindViewHolder(holder: CacheViewHolder, position: Int) {
                 val binding2 = ItemTextBinding.bind(holder.itemView)
                 binding2.tvwTitle.text = get(position)
@@ -224,13 +251,32 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                         }
 
                     }
-
+                    //arrayListOf("代理", "会员")
                     binding.tvSelectType.text = get(position)
+                    if (TextUtils.equals("会员",binding.tvSelectType.text)) {
+                        binding.include1.layoutFishing.visibility =View.GONE
+                        binding.include0.layoutFishing.visibility =View.GONE
+                        //判断mMarketingVo  fishingPoint
+                    }else{
+                        setRebate(binding.include0, mMarketingVo, 1)
+                        CfLog.e("mMarketingVo.fishingPoint" +mMarketingVo.fishingPoint)
+                        CfLog.e("mProfileVo.maxFishingPoint" +mProfileVo.maxFishingPoint)
+
+                        //判断mProfileVo  maxFishingPoint
+                        if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
+                            TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
+                            TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
+                            binding.include0.layoutFishing.visibility = View.GONE
+                        } else {
+                            binding.include0.layoutFishing.visibility =View.VISIBLE
+                            binding.include0.typeFishing.text = mMarketingVo.fishingPoint.plus("%")
+                            binding.include0.tvGameFishing.text = getString(R.string.txt_reg_rebate).plus((NumberUtils.sub(mProfileVo.maxFishingPoint,mMarketingVo.fishingPoint.toDouble()).toString())+"%")
+                        }
+                    }
                     ppw.dismiss()
                 }
             }
         }
-
         KLog.i("usertype", mProfileVo.usertype)
         adapter.addAll(mList)
         ppw = XPopup.Builder(context).asCustom(ListDialog(requireContext(), "", adapter))
@@ -369,6 +415,35 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                                 { ppwGame1.dismiss() }
                         }
                         ppwGame1.show()
+                    }
+                }
+            }
+
+            //判断mProfileVo  maxFishingPoint
+            if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
+                TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
+                TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
+                layoutFishing.visibility = View.GONE
+            } else {
+
+                typeFishing.text = vo.fishingPoint.plus("%")
+                tvGameFishing.text = getString(R.string.txt_reg_rebate).plus((  NumberUtils.sub(mProfileVo.maxFishingPoint,vo.fishingPoint.toDouble()).toString())+"%")
+                typeFishing.setOnClickListener {
+                    if (type == 0) {
+                        //未初始化，创建ppw
+                        if (!::ppwFish.isInitialized) {
+                            ppwFish =
+                                createPpw(mProfileVo.maxFishingPoint, typeFishing, tvGameFishing, getRebateList(mProfileVo.maxFishingPoint))
+                                { ppwFish.dismiss() }
+                        }
+                        ppwFish.show()
+                    } else {
+                        if (!::ppwFish1.isInitialized) {
+                            ppwFish1 =
+                                createPpw(mProfileVo.maxFishingPoint, typeFishing, tvGameFishing, getRebateList(mProfileVo.maxFishingPoint))
+                                { ppwFish1.dismiss() }
+                        }
+                        ppwFish1.show()
                     }
                 }
             }

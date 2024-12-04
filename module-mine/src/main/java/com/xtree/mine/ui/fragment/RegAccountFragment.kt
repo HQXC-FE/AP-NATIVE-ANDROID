@@ -2,6 +2,7 @@ package com.xtree.mine.ui.fragment
 
 import android.os.Bundle
 import android.text.InputType
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.xtree.base.adapter.CacheViewHolder
 import com.xtree.base.adapter.CachedAutoRefreshAdapter
 import com.xtree.base.databinding.ItemTextBinding
 import com.xtree.base.global.SPKeyGlobal
+import com.xtree.base.utils.CfLog
 import com.xtree.base.utils.ClickUtil
 import com.xtree.base.utils.NumberUtils
 import com.xtree.base.utils.UuidUtil
@@ -33,7 +35,9 @@ import me.xtree.mvvmhabit.utils.KLog
 import me.xtree.mvvmhabit.utils.SPUtils
 import me.xtree.mvvmhabit.utils.ToastUtils
 
-
+/**
+ * 注册开户
+ */
 class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel>(), RegInterface {
 
     private lateinit var ppw: BasePopupView
@@ -42,22 +46,26 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
     private lateinit var ppwSports: BasePopupView
     private lateinit var ppwChess: BasePopupView
     private lateinit var ppwGame: BasePopupView
+    private lateinit var ppwFish: BasePopupView
+
     private lateinit var ppwLottery1: BasePopupView
     private lateinit var ppwReal1: BasePopupView
     private lateinit var ppwSports1: BasePopupView
     private lateinit var ppwChess1: BasePopupView
     private lateinit var ppwGame1: BasePopupView
 
+    private lateinit var ppwFish1: BasePopupView
+
     private lateinit var mProfileVo: ProfileVo
 
     override fun initView() {
         val json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE)
         mProfileVo = Gson().fromJson(json, ProfileVo::class.java)
-        initDialog()
+
         createRebatePpw()
         setRebate(binding.include0, 0)
         setRebate(binding.include1, 1)
-
+        initDialog()
 
         binding.ckbEye.setOnCheckedChangeListener { _, isChecked -> setEdtPwd(isChecked, binding.etLoginPwd) }
         initCreateUser()
@@ -104,11 +112,13 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
                     mList[0] -> {
                         type = daili
                         binding.include0
+                        //CfLog.e("选择的是 会员")
                     }
 
                     mList[1] -> {
                         type = member
                         binding.include1
+                       // CfLog.e("选择的是 代理")
                     }
 
                     else -> {
@@ -121,7 +131,7 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
                     AdduserRequest(
                         UuidUtil.getID(), "insert", type.toString(),
                         name, pwd, nickname,
-                        bd.typeLottery.removePercentage(), bd.typeReal.removePercentage(), bd.typeSports.removePercentage(),
+                        bd.typeLottery.removePercentage(), bd.typeFishing.removePercentage(), bd.typeReal.removePercentage(), bd.typeSports.removePercentage(),
                         bd.typeChess.removePercentage(), bd.typeGame.removePercentage()
                     )
                 )
@@ -175,6 +185,7 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
             override fun onBindViewHolder(holder: CacheViewHolder, position: Int) {
                 val binding2 = ItemTextBinding.bind(holder.itemView)
                 binding2.tvwTitle.text = get(position)
+                //get() = arrayListOf("代理", "会员")
                 binding2.tvwTitle.setOnClickListener {
                     when (position) {
                         0 -> {
@@ -184,12 +195,26 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
 
                         1 -> {
                             //INVISIBLE 留个占位
+                            //1 代表会员
                             binding.include0.layout.visibility = View.INVISIBLE
                             binding.include1.layout.visibility = View.VISIBLE
                         }
                     }
 
                     binding.tvSelectType.text = get(position)
+                    if (TextUtils.equals("会员",binding.tvSelectType.text)) {
+                        binding.include1.layoutFishing.visibility =View.GONE
+                        //判断mProfileVo  maxFishingPoint
+                    }else if (TextUtils.equals("代理",binding.tvSelectType.text)){
+                        if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
+                            TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
+                            TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
+                            binding.include0.layoutFishing.visibility = View.GONE
+                        } else if ( binding.include0.layoutFishing.visibility == View.GONE) {
+                            binding.include0.layoutFishing.visibility == View.VISIBLE
+                        }
+                    }
+
                     ppw.dismiss()
                 }
             }
@@ -331,6 +356,34 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
                                 { ppwGame1.dismiss() }
                         }
                         ppwGame1.show()
+                    }
+                }
+            }
+            //判断mProfileVo  maxFishingPoint
+            if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
+                TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
+                TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
+                layoutFishing.visibility = View.GONE
+            } else {
+                CfLog.e("mProfileVo.maxFishingPoint =" +mProfileVo.maxFishingPoint)
+                typeFishing.text = mProfileVo.maxFishingPoint.toString().plus("%")
+                tvGameFishing.text = getString(R.string.txt_reg_rebate).plus("0.0%")
+                typeFishing.setOnClickListener {
+                    if (type == 0) {
+                        //未初始化，创建ppw
+                        if (!::ppwFish.isInitialized) {
+                            ppwFish =
+                                createPpw(mProfileVo.maxFishingPoint, typeFishing, tvGameFishing, getRebateList(mProfileVo.maxFishingPoint))
+                                { ppwFish.dismiss() }
+                        }
+                        ppwFish.show()
+                    } else {
+                        if (!::ppwFish1.isInitialized) {
+                            ppwFish1 =
+                                createPpw(mProfileVo.maxFishingPoint, typeFishing, tvGameFishing, getRebateList(mProfileVo.maxFishingPoint))
+                                { ppwFish1.dismiss() }
+                        }
+                        ppwFish1.show()
                     }
                 }
             }

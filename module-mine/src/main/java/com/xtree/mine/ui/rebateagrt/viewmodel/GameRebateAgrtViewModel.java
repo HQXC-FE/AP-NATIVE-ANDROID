@@ -5,6 +5,7 @@ import static com.xtree.mine.ui.rebateagrt.fragment.RebateAgrtCreateDialogFragme
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.CHESS;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.DAYREBATE;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.EGAME;
+import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.FISH;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.LIVE;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.SPORT;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.USER;
@@ -210,6 +211,9 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
                 case EGAME:
                     content = getApplication().getString(R.string.txt_rebateagrt_tip7);
                     break;
+                case FISH:
+                    content = getApplication().getString(R.string.txt_rebateagrt_tip10);
+                    break;
                 case DAYREBATE:
                     content = getApplication().getString(R.string.txt_rebateagrt_tip8);
                     break;
@@ -276,6 +280,16 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
         }
 
         @Override
+        public void selectStatus(ObservableField<StatusVo> state, List<FilterView.IBaseVo> listStatus) {
+            FilterView.showDialog(mActivity.get(), getApplication().getString(R.string.status), listStatus, new FilterView.ICallBack() {
+                @Override
+                public void onTypeChanged(FilterView.IBaseVo vo) {
+                    state.set(new StatusVo(vo.getShowId(), vo.getShowName()));
+                }
+            });
+        }
+
+        @Override
         public void check(String userName, String startDate, String endDate) {
             getSubordinateRebateData();
         }
@@ -316,6 +330,7 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
         this.type = type;
         //设置给头布局场馆类型
         gameRebateAgrtHeadModel.setTypeEnum(type);
+        gameSubordinaterebateHeadModel.setTypeEnum(type);
         initTab();
         empty.setItemType(7);
         datas.setValue(gameRebateDatas);
@@ -350,6 +365,13 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
                 titleData.setValue(EGAME.getName());
                 tabList.add("电竞返水");
                 tabList.add("下级契约");
+                tabs.setValue(tabList);
+                break;
+            case FISH:
+                titleData.setValue(FISH.getName());
+                tabList.add("捕鱼返水");
+                tabList.add("下级契约");
+                tabList.add("下级返水");
                 tabs.setValue(tabList);
                 break;
             case USER:
@@ -441,6 +463,8 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
                 return APIManager.GAMEREBATEAGRT_CHESS_URL;
             case EGAME:
                 return APIManager.GAMEREBATEAGRT_EGAME_URL;
+            case FISH:
+                return APIManager.GAMEREBATEAGRT_FISH_URL;
             case USER:
                 return APIManager.GAMEREBATEAGRT_USER_URL;
             case DAYREBATE:
@@ -460,6 +484,8 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
                 return APIManager.GAMESUBORDINATEAGRTE_CHESS_URL;
             case EGAME:
                 return APIManager.GAMESUBORDINATEAGRTE_EGAME_URL;
+            case FISH:
+                return APIManager.GAMESUBORDINATEAGRTE_FISH_URL;
             case USER:
                 return APIManager.GAMESUBORDINATEAGRTE_USER_URL;
             default:
@@ -475,6 +501,8 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
                 return APIManager.GAMESUBORDINATEREBATE_SPORT_URL;
             case CHESS:
                 return APIManager.GAMESUBORDINATEREBATE_CHESS_URL;
+            case FISH:
+                return APIManager.GAMESUBORDINATEREBATE_FISH_URL;
             case USER:
                 return APIManager.GAMESUBORDINATEREBATE_USER_URL;
             default:
@@ -520,7 +548,9 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
                             //p<=1说明是第一页数据
                             if (gameRebateAgrtRequest.p <= 1) {
                                 gameRebateDatas.clear();
-                                gameRebateAgrtHeadModel.yesterdayRebate.set(vo.getUser().getIscreditaccount());
+                                if (vo.getYesterday_bill() != null) {
+                                    gameRebateAgrtHeadModel.yesterdayRebate.set(vo.getYesterday_bill().getSelfMoney());
+                                }
                                 if (vo.getContract() != null && vo.getContract().getRule() != null && vo.getContract().getRule().size() > 0) {
                                     //设置规则提示
                                     gameRebateAgrtHeadModel.setRules(vo.getContract().getRule());
@@ -721,6 +751,7 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
         gameSubordinateRebateRequest.username = gameSubordinaterebateHeadModel.userName.get();
         gameSubordinateRebateRequest.starttime = gameSubordinaterebateHeadModel.startDate.get();
         gameSubordinateRebateRequest.endtime = gameSubordinaterebateHeadModel.endDate.get();
+        gameSubordinateRebateRequest.pstatus = gameSubordinaterebateHeadModel.state.get().getShowId();
         gameSubordinateRebateRequest.p = gameSubordinaterebateHeadModel.p;
         gameSubordinateRebateRequest.pn = gameSubordinaterebateHeadModel.pn;
         Disposable disposable = model.getGameSubordinateRebateData(getSubordinateRebateDataURL(), gameSubordinateRebateRequest)
@@ -763,7 +794,10 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
                                     model.setSelfMoney(dataDTO.getSelf_money());
                                     model.setSubMoney(dataDTO.getSub_money());
                                     model.setType(dataDTO.getType());
+                                    model.setPstatus(dataDTO.getPstatus());
                                     model.setCreateTime(dataDTO.getCreate_time());
+                                    model.setCreateDate(dataDTO.getCreate_date());
+                                    model.setDate(dataDTO.getDate());
                                     subordinateRebateDatas.add(model);
                                 }
                             } else {

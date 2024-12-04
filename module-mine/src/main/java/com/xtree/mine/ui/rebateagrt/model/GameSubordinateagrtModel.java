@@ -1,5 +1,7 @@
 package com.xtree.mine.ui.rebateagrt.model;
 
+import android.text.TextUtils;
+
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.mine.R;
 import com.xtree.mine.vo.response.GameSubordinateAgrteResponse;
@@ -25,6 +27,7 @@ public class GameSubordinateagrtModel extends BindModel {
     private String effectDate;
     private String ruleRatio;
     private String createTime;
+    private String ratioTitle;
     //场馆类型
     private RebateAreegmentTypeEnum typeEnum;
     //规则集
@@ -140,11 +143,30 @@ public class GameSubordinateagrtModel extends BindModel {
         return ruleRatio;
     }
 
+    public String getRatioTitle() {
+        switch (typeEnum) {
+            case FISH:
+                ratioTitle = BaseApplication.getInstance().getString(R.string.txt_rebate_ratio);
+                break;
+            default:
+                ratioTitle = BaseApplication.getInstance().getString(R.string.txt_salare_ratio);
+                break;
+        }
+        return ratioTitle;
+    }
+
+    public void setRatioTitle(String ratioTitle) {
+        this.ratioTitle = ratioTitle;
+    }
+
     public String getSname() {
         return sname;
     }
 
     public void setSname(String sname) {
+        if (TextUtils.isEmpty(sname)) {
+            return;
+        }
         this.sname = sname;
     }
 

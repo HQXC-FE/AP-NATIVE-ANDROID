@@ -3,6 +3,7 @@ package com.xtree.mine.ui.rebateagrt.viewmodel;
 import static com.xtree.mine.ui.rebateagrt.fragment.RebateAgrtCreateDialogFragment.CHECK_MODE;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.CHESS;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.EGAME;
+import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.FISH;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.LIVE;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.SPORT;
 import static com.xtree.mine.ui.rebateagrt.model.RebateAreegmentTypeEnum.USER;
@@ -23,6 +24,7 @@ import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.mine.R;
 import com.xtree.mine.data.MineRepository;
+import com.xtree.mine.ui.rebateagrt.fragment.RebateAgrtCreateDialogFragment;
 import com.xtree.mine.ui.rebateagrt.fragment.RebateAgrtSearchUserDialogFragment;
 import com.xtree.mine.ui.rebateagrt.model.RebateAgrtCreateAddModel;
 import com.xtree.mine.ui.rebateagrt.model.RebateAgrtCreateHeadModel;
@@ -45,6 +47,7 @@ import java.util.Map;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import me.xtree.mvvmhabit.base.BaseViewModel;
+import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -106,7 +109,7 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
     private final RebateAgrtCreateHeadModel headModel = new RebateAgrtCreateHeadModel(new Consumer<String>() {
         @Override
         public void accept(String s) throws Exception {
-            RebateAgrtSearchUserDialogFragment.show(mActivity.get(), rebateAgrtDetailModel);
+            RebateAgrtSearchUserDialogFragment.show(mActivity.get(), rebateAgrtDetailModel, searchUserResultLiveData.getValue());
         }
     });
     private final RebateAgrtCreateAddModel addModel = new RebateAgrtCreateAddModel(new Consumer<String>() {
@@ -217,7 +220,9 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
         for (Map.Entry<String, String> map : model.getUser().entrySet()) {
             usreNames.append(map.getValue()).append(",");
         }
-        usreNames.deleteCharAt(usreNames.lastIndexOf(","));
+        if (usreNames.length() > 0) {
+            usreNames.deleteCharAt(usreNames.lastIndexOf(","));
+        }
         headModel.user.set(usreNames.toString());
     }
     private void formatItem() {
@@ -236,7 +241,7 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
      */
     public void create() {
 
-        if (searchUserResultLiveData.getValue() == null || searchUserResultLiveData.getValue().getUser() == null) {
+        if (searchUserResultLiveData.getValue() == null || searchUserResultLiveData.getValue().getUser() == null || searchUserResultLiveData.getValue().getUser().isEmpty()) {
             ToastUtils.show(getApplication().getString(R.string.txt_rebateagrt_tip1), ToastUtils.ShowType.Default);
             return;
         }
@@ -248,6 +253,15 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
         }
         usreIds.deleteCharAt(usreIds.lastIndexOf(","));
         request.setUsers(usreIds.toString());
+
+        switch (viewMode.get()) {
+            case CHECK_MODO:
+                request.setTag("modify");
+                break;
+            case CREATE_MODO:
+                request.setTag("create");
+                break;
+        }
 
         if (datas.getValue() != null) {
             ArrayList<String> minBetList = new ArrayList<>();
@@ -277,6 +291,7 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
             case "3": //SPORT
             case "5": //CHESS
             case "6": // EGAME
+            case "9": // FISH
             case "1": //USER
                 query.setType(rebateAgrtDetailModel.getSubData().getType());
                 break;
@@ -309,6 +324,8 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
                             if (response.getSMsg() != null) {
                                 //创建成功
                                 ToastUtils.show(response.getSMsg(), ToastUtils.ShowType.Success);
+                                //发送完成消息
+                                RxBus.getDefault().post(RebateAgrtCreateDialogFragment.SUCCESS);
                                 finish();
                             } else {
                                 //创建失败
@@ -339,6 +356,8 @@ public class RebateAgrtCreateViewModel extends BaseViewModel<MineRepository> imp
                 break;
             case "6": // EGAME
                 titleData.setValue(EGAME.getName());
+            case "9": // FISH
+                titleData.setValue(FISH.getName());
                 break;
             case "1": //USER
                 titleData.setValue(USER.getName());

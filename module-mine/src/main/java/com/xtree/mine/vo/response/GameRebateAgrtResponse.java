@@ -26,7 +26,7 @@ public class GameRebateAgrtResponse extends BaseResponse2 {
     private String topprizes_wintips_enabled;
     private String quickSearch;
     private String desK;
-    private Object yesterday_bill;
+    private YesterdayBillDTO yesterday_bill;
     private String pageinfo;
     private int isget;
     private TotalDTO total;
@@ -164,11 +164,11 @@ public class GameRebateAgrtResponse extends BaseResponse2 {
         this.desK = desK;
     }
 
-    public Object getYesterday_bill() {
+    public YesterdayBillDTO getYesterday_bill() {
         return yesterday_bill;
     }
 
-    public void setYesterday_bill(Object yesterday_bill) {
+    public void setYesterday_bill(YesterdayBillDTO yesterday_bill) {
         this.yesterday_bill = yesterday_bill;
     }
 
@@ -308,6 +308,334 @@ public class GameRebateAgrtResponse extends BaseResponse2 {
 
         public void setMessages(String messages) {
             this.messages = messages;
+        }
+    }
+
+    public static class YesterdayBillDTO{
+        /**
+         * id
+         */
+        @SerializedName("id")
+        private String id;
+        /**
+         * type
+         */
+        @SerializedName("type")
+        private String type;
+        /**
+         * contractId
+         */
+        @SerializedName("contract_id")
+        private String contractId;
+        /**
+         * contractInfoId
+         */
+        @SerializedName("contract_info_id")
+        private String contractInfoId;
+        /**
+         * userid
+         */
+        @SerializedName("userid")
+        private String userid;
+        /**
+         * username
+         */
+        @SerializedName("username")
+        private String username;
+        /**
+         * parentid
+         */
+        @SerializedName("parentid")
+        private String parentid;
+        /**
+         * tmpTree
+         */
+        @SerializedName("tmp_tree")
+        private String tmpTree;
+        /**
+         * lvtopid
+         */
+        @SerializedName("lvtopid")
+        private String lvtopid;
+        /**
+         * isLvtop
+         */
+        @SerializedName("is_lvtop")
+        private String isLvtop;
+        /**
+         * userLevel
+         */
+        @SerializedName("user_level")
+        private String userLevel;
+        /**
+         * bet
+         */
+        @SerializedName("bet")
+        private String bet;
+        /**
+         * effectiveBet
+         */
+        @SerializedName("effective_bet")
+        private String effectiveBet;
+        /**
+         * playerNum
+         */
+        @SerializedName("player_num")
+        private String playerNum;
+        /**
+         * ratio
+         */
+        @SerializedName("ratio")
+        private String ratio;
+        /**
+         * date
+         */
+        @SerializedName("date")
+        private String date;
+        /**
+         * totalMoney
+         */
+        @SerializedName("total_money")
+        private String totalMoney;
+        /**
+         * subMoney
+         */
+        @SerializedName("sub_money")
+        private String subMoney;
+        /**
+         * selfMoney
+         */
+        @SerializedName("self_money")
+        private String selfMoney;
+        /**
+         * payMoney
+         */
+        @SerializedName("pay_money")
+        private String payMoney;
+        /**
+         * pstatus
+         */
+        @SerializedName("pstatus")
+        private String pstatus;
+        /**
+         * payTime
+         */
+        @SerializedName("pay_time")
+        private Object payTime;
+        /**
+         * createTime
+         */
+        @SerializedName("create_time")
+        private String createTime;
+        /**
+         * platformId
+         */
+        @SerializedName("platform_id")
+        private String platformId;
+        /**
+         * liushui
+         */
+        @SerializedName("liushui")
+        private String liushui;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getContractId() {
+            return contractId;
+        }
+
+        public void setContractId(String contractId) {
+            this.contractId = contractId;
+        }
+
+        public String getContractInfoId() {
+            return contractInfoId;
+        }
+
+        public void setContractInfoId(String contractInfoId) {
+            this.contractInfoId = contractInfoId;
+        }
+
+        public String getUserid() {
+            return userid;
+        }
+
+        public void setUserid(String userid) {
+            this.userid = userid;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getParentid() {
+            return parentid;
+        }
+
+        public void setParentid(String parentid) {
+            this.parentid = parentid;
+        }
+
+        public String getTmpTree() {
+            return tmpTree;
+        }
+
+        public void setTmpTree(String tmpTree) {
+            this.tmpTree = tmpTree;
+        }
+
+        public String getLvtopid() {
+            return lvtopid;
+        }
+
+        public void setLvtopid(String lvtopid) {
+            this.lvtopid = lvtopid;
+        }
+
+        public String getIsLvtop() {
+            return isLvtop;
+        }
+
+        public void setIsLvtop(String isLvtop) {
+            this.isLvtop = isLvtop;
+        }
+
+        public String getUserLevel() {
+            return userLevel;
+        }
+
+        public void setUserLevel(String userLevel) {
+            this.userLevel = userLevel;
+        }
+
+        public String getBet() {
+            return bet;
+        }
+
+        public void setBet(String bet) {
+            this.bet = bet;
+        }
+
+        public String getEffectiveBet() {
+            return effectiveBet;
+        }
+
+        public void setEffectiveBet(String effectiveBet) {
+            this.effectiveBet = effectiveBet;
+        }
+
+        public String getPlayerNum() {
+            return playerNum;
+        }
+
+        public void setPlayerNum(String playerNum) {
+            this.playerNum = playerNum;
+        }
+
+        public String getRatio() {
+            return ratio;
+        }
+
+        public void setRatio(String ratio) {
+            this.ratio = ratio;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public String getTotalMoney() {
+            return totalMoney;
+        }
+
+        public void setTotalMoney(String totalMoney) {
+            this.totalMoney = totalMoney;
+        }
+
+        public String getSubMoney() {
+            return subMoney;
+        }
+
+        public void setSubMoney(String subMoney) {
+            this.subMoney = subMoney;
+        }
+
+        public String getSelfMoney() {
+            return selfMoney;
+        }
+
+        public void setSelfMoney(String selfMoney) {
+            this.selfMoney = selfMoney;
+        }
+
+        public String getPayMoney() {
+            return payMoney;
+        }
+
+        public void setPayMoney(String payMoney) {
+            this.payMoney = payMoney;
+        }
+
+        public String getPstatus() {
+            return pstatus;
+        }
+
+        public void setPstatus(String pstatus) {
+            this.pstatus = pstatus;
+        }
+
+        public Object getPayTime() {
+            return payTime;
+        }
+
+        public void setPayTime(Object payTime) {
+            this.payTime = payTime;
+        }
+
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
+
+        public String getPlatformId() {
+            return platformId;
+        }
+
+        public void setPlatformId(String platformId) {
+            this.platformId = platformId;
+        }
+
+        public String getLiushui() {
+            return liushui;
+        }
+
+        public void setLiushui(String liushui) {
+            this.liushui = liushui;
         }
     }
 

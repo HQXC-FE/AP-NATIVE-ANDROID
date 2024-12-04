@@ -83,7 +83,7 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
         public void accept(String s) throws Exception {
             RebateAgrtDetailModel rebateAgrtDetailModel = new RebateAgrtDetailModel(1);
             rebateAgrtDetailModel.setSearchUserModel(event.getSearchUserModel());
-            RebateAgrtSearchUserDialogFragment.show(mActivity.get(), rebateAgrtDetailModel);
+            RebateAgrtSearchUserDialogFragment.show(mActivity.get(), rebateAgrtDetailModel, searchUserResultLiveData.getValue());
         }
     });
     private final RebateAgrtCreateAddModel addModel = new RebateAgrtCreateAddModel();
@@ -304,7 +304,9 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
         for (Map.Entry<String, String> map : model.getUser().entrySet()) {
             usreNames.append(map.getValue()).append(",");
         }
-        usreNames.deleteCharAt(usreNames.lastIndexOf(","));
+        if (usreNames.length() > 0) {
+            usreNames.deleteCharAt(usreNames.lastIndexOf(","));
+        }
         headModel.user.set(usreNames.toString());
     }
     private void formatItem() {

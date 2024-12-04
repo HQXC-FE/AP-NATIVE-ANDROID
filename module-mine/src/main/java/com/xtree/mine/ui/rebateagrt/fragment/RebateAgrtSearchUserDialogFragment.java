@@ -19,6 +19,7 @@ import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.DialogRebateagrtSearchuserBinding;
 import com.xtree.mine.ui.rebateagrt.model.RebateAgrtDetailModel;
+import com.xtree.mine.ui.rebateagrt.model.RebateAgrtSearchUserResultModel;
 import com.xtree.mine.ui.rebateagrt.viewmodel.RebateAgrtSearchUserViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
@@ -43,8 +44,13 @@ public class RebateAgrtSearchUserDialogFragment extends BaseDialogFragment<Dialo
      * @param activity 获取FragmentManager
      * @param model    入参
      */
-    public static void show(FragmentActivity activity, RebateAgrtDetailModel model) {
-        RxBus.getDefault().postSticky(model);
+    public static void show(FragmentActivity activity, RebateAgrtDetailModel model, RebateAgrtSearchUserResultModel selectedUsers) {
+        if (model != null) {
+            RxBus.getDefault().postSticky(model);
+        }
+        if (selectedUsers != null) {
+            RxBus.getDefault().postSticky(selectedUsers);
+        }
         RebateAgrtSearchUserDialogFragment fragment = new RebateAgrtSearchUserDialogFragment();
         fragment.show(activity.getSupportFragmentManager(), RebateAgrtSearchUserDialogFragment.class.getName());
     }
@@ -69,9 +75,10 @@ public class RebateAgrtSearchUserDialogFragment extends BaseDialogFragment<Dialo
         super.initData();
         binding.setVariable(BR.model, viewModel);
         RebateAgrtDetailModel stickyEvent = RxBus.getDefault().getStickyEvent(RebateAgrtDetailModel.class);
+        RebateAgrtSearchUserResultModel selectedUsers = RxBus.getDefault().getStickyEvent(RebateAgrtSearchUserResultModel.class);
         if (stickyEvent != null) {
             viewModel.setActivity(getActivity());
-            viewModel.initData(stickyEvent);
+            viewModel.initData(stickyEvent, selectedUsers);
         }
     }
 
