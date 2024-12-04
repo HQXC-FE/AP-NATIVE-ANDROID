@@ -1,5 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xtree.lottery">
 
-    <application></application>
+    <application>
+        <activity
+            android:name="com.xtree.lottery.ui.activity.LotteryActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" /> <!-- 在自己组件中注册Activity -->
+        <activity
+            android:name="com.xtree.lottery.ui.activity.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+    </application>
 </manifest>

@@ -94,6 +94,9 @@ dependencies {
     api rootProject.ext.dependencies["flexbox"]
 
     api rootProject.ext.dependencies["jsoup"]
+    api rootProject.ext.dependencies["ShadowLayout"]
+    api rootProject.ext.dependencies["BaseQuickAdapter"]
+    api rootProject.ext.dependencies["easy-rule"]
 
     configurations.all {
         resolutionStrategy {

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="m"
+            type="com.xtree.lottery.ui.view.model.BetDigitalModel" />
+
+        <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
+    </data>
+    <com.lihang.ShadowLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:hl_cornerRadius="12dp"
+        app:hl_shadowColor="@color/lt_color_shadows1"
+        app:hl_shadowLimit="2dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/clr_white"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp">
+
+            <com.lihang.ShadowLayout
+                android:id="@+id/item_digital_label"
+                android:layout_width="76dp"
+                android:layout_height="28dp"
+                app:hl_cornerRadius="88dp"
+                app:hl_shadowColor="@color/lt_color_shadows1"
+                app:hl_shadowLimit="2dp"
+                app:hl_layoutBackground="@color/clr_main_08a"
+                android:visibility="@{TextUtils.isEmpty(m.tag)?View.INVISIBLE:View.VISIBLE}"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{m.tag}"
+                    android:layout_gravity="center"/>
+
+            </com.lihang.ShadowLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintTop_toTopOf="@id/item_digital_label"
+                app:layout_constraintBottom_toBottomOf="@id/item_digital_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/item_digital_a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="全"
+                    android:textSize="16sp"
+                    android:textColor="@color/lt_color_text11" />
+
+                <TextView
+                    android:id="@+id/item_digital_l"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="大"
+                    android:textSize="16sp"
+                    android:textColor="@color/lt_color_text11"
+                    android:layout_marginStart="12dp"/>
+
+                <TextView
+                    android:id="@+id/item_digital_s"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="小"
+                    android:textSize="16sp"
+                    android:textColor="@color/lt_color_text11"
+                    android:layout_marginStart="12dp"/>
+
+                <TextView
+                    android:id="@+id/item_digital_o"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="奇"
+                    android:textSize="16sp"
+                    android:textColor="@color/lt_color_text11"
+                    android:layout_marginStart="12dp"/>
+
+                <TextView
+                    android:id="@+id/item_digital_e"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="偶"
+                    android:textSize="16sp"
+                    android:textColor="@color/lt_color_text11"
+                    android:layout_marginStart="12dp"/>
+
+                <TextView
+                    android:id="@+id/item_digital_c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清"
+                    android:textSize="16sp"
+                    android:textColor="@color/lt_color_text11"
+                    android:layout_marginStart="12dp"/>
+            </LinearLayout>
+
+            <com.xtree.lottery.ui.view.LotteryPickView
+                android:id="@+id/item_digital_lotterypickview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                data="@{m.pickDatas}"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintTop_toBottomOf="@id/item_digital_label"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.lihang.ShadowLayout>
+
+</layout>

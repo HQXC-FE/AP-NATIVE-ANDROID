@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.xtree.lottery.ui.view.viewmodel.BetInputViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/bet_input_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawableStart="@mipmap/lt_icon_hint"
+            android:drawablePadding="2dp"
+            android:text="帮助"
+            android:textColor="@color/lt_color_text12"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/bet_input_example"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawableStart="@mipmap/lt_icon_noti"
+            android:drawablePadding="2dp"
+            android:text="示例"
+            android:textColor="@color/lt_color_text12"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bet_input_help"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/bet_input_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="从个、十、百位各选一个号码组成一注。"
+            android:textColor="@color/lt_color_text12"
+            android:textSize="12sp"
+            android:layout_marginEnd="2dp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bet_input_example"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0" />
+
+        <com.xtree.lottery.ui.view.LotterySeatView
+            android:id="@+id/bet_input_seatview"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="16dp"
+            android:visibility="@{model.showSeatView?View.VISIBLE:View.GONE}"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bet_input_tip"/>
+
+
+        <com.lihang.ShadowLayout
+            android:id="@+id/bet_input_editlayout"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            app:hl_cornerRadius="5dp"
+            app:hl_layoutBackground="@color/clr_white"
+            app:hl_strokeColor="@color/clr_main_06"
+            app:hl_strokeWith="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bet_input_seatview"
+            app:layout_constraintVertical_bias="0">
+
+            <EditText
+                android:id="@+id/bet_input_edit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="start|top"
+                android:hint="请输入投注号码"
+                android:text="@={model.lotteryNumbs}"
+                android:singleLine="false"
+                android:textSize="12sp"
+                android:padding="3dp"/>
+
+        </com.lihang.ShadowLayout>
+
+        <TextView
+            android:id="@+id/bet_input_derepeat"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/clr_black"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="删除重复号"
+            android:textColor="@color/clr_white"
+            android:textSize="12sp"
+            android:onClick="@{model.deleteDuplicates}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bet_input_editlayout"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/bet_input_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/clr_black"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="清空"
+            android:textColor="@color/clr_white"
+            android:textSize="12sp"
+            android:onClick="@{() -> model.clear()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bet_input_editlayout"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/bet_input_tip2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/txt_inputview_tip2_mode1"
+            android:textColor="@color/lt_color_text12"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bet_input_derepeat"
+            app:layout_constraintVertical_bias="0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

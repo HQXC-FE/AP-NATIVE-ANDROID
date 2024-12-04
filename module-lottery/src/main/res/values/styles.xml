@@ -1,0 +1,128 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--将ActionBar隐藏,这里使用ToolBar-->
+        <item name="windowActionBar">false</item>
+        <!-- 使用 API Level 22以上编译的话，要拿掉前綴字 -->
+        <item name="windowNoTitle">true</item>
+        <!--colorPrimary 对应ToolBar的颜色-->
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <!--colorPrimaryDark对应状态栏的颜色-->
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!--colorAccent 对应EditText编辑时、RadioButton选中、CheckBox等选中时的颜色。-->
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+    <style name="ViewLineStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/viewLineColor</item>
+    </style>
+
+    <style name="CustomDialog" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+    <!-- 通用 按钮 背景为灰色,可变色(返回/取消等地方使用) -->
+    <style name="style_btn_back" parent="style_btn">
+        <item name="android:background">@drawable/lt_bg_btn_grey_selector</item>
+        <item name="android:text">@string/txt_back</item>
+        <item name="android:textColor">@color/lt_clr_text_code_selector</item>
+    </style>
+    <!-- 通用 提示小字 灰色 -->
+    <style name="style_cm_tip_small_grey">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:text"></item>
+        <item name="android:textColor">@color/clr_grey_80</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <!-- 通用 按钮 背景为颜色,可变色(大部分地方使用) -->
+    <style name="style_btn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:background">@drawable/lt_bg_btn_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minEms">5</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:text">@string/txt_submit</item>
+        <item name="android:textColor">@color/lt_clr_text_code_selector</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- 通用 提示小字 桔红色 -->
+    <style name="style_cm_tip_small_orange" parent="style_cm_tip_small_grey">
+        <item name="android:textColor">@color/clr_orange_08</item>
+    </style>
+
+    <style name="style_lottery_tab">
+        <item name="android:textSize">14sp</item>
+    </style>
+    <!-- 报表 列表项 行 -->
+    <style name="style_item_ll_row">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginEnd">0dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <!-- 报表 列表项 标题和值 基类 -->
+    <style name="style_item_report_base">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">start</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:minEms">5</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:textColor">@color/lt_color_text15</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+    <!-- 报表 列表项 标题灰色 靠左 -->
+    <style name="style_item_report_title" parent="style_item_report_base">
+        <item name="android:gravity">start</item>
+    </style>
+    <!-- 报表 列表项 标题灰色 居中 -->
+    <style name="style_item_report_title_center" parent="style_item_report_base">
+        <item name="android:gravity">center</item>
+    </style>
+    <!-- 报表 列表项 标题灰色 靠右 -->
+    <style name="style_item_report_title_end" parent="style_item_report_base">
+        <item name="android:gravity">end</item>
+    </style>
+    <!-- 报表 列表项 值 黑色 靠左 -->
+    <style name="style_item_report_value" parent="style_item_report_base">
+        <item name="android:textColor">@color/lt_color_text6</item>
+    </style>
+    <!-- 报表 列表项 值 黑色 居中 -->
+    <style name="style_item_report_value_center" parent="style_item_report_value">
+        <item name="android:gravity">center</item>
+    </style>
+    <!-- 报表 列表项 值 黑色 靠右 -->
+    <style name="style_item_report_value_end" parent="style_item_report_value">
+        <item name="android:gravity">end</item>
+    </style>
+    <!-- 通用 筛选 下划线 -->
+    <style name="style_filter_info_dividing">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:background">@color/clr_grey_080</item>
+    </style>
+    <!-- 报表 详情 标题 靠右 (适合一行两个的) -->
+    <style name="style_item_report_title_end2" parent="style_item_report_base">
+        <item name="android:gravity">end</item>
+        <item name="android:layout_weight">0</item>
+    </style>
+
+</resources>

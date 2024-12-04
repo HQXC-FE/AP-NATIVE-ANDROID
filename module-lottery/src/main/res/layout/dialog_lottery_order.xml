@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.xtree.lottery.ui.lotterybet.viewmodel.LotteryOrderViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/lt_shape_solid_white_crtop_8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0">
+
+            <!--            标题-->
+            <TextView
+                android:id="@+id/dialog_lottery_order_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:text="订单详情"
+                android:textColor="@color/lt_color_text6"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0" />
+
+            <!--            关闭-->
+            <ImageView
+                android:id="@+id/dialog_lottery_order_cancle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="11dp"
+                android:onClick="@{() -> model.finish()}"
+                android:src="@mipmap/lt_icon_close"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0" />
+
+            <View
+                android:id="@+id/dialog_lottery_order_div1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/divider_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialog_lottery_order_title"
+                app:layout_constraintVertical_bias="0" />
+
+            <View
+                android:id="@+id/dialog_lottery_order_div2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/divider_horizontal"
+                app:layout_constraintBottom_toTopOf="@id/dialog_lottery_order_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialog_lottery_order_div1"
+                app:layout_constraintVertical_bias="1" />
+
+            <!--            投注-->
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/dialog_lottery_order_bottom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:divider="@drawable/divider_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialog_lottery_order_div1"
+                app:layout_constraintVertical_bias="1"
+                app:showDividers="middle">
+
+
+                <!--                订单金额-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="已选："
+                            android:textColor="@color/lt_color_text6"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{model.orderNums}"
+                            android:textColor="@color/lt_color_text14"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="单 共"
+                            android:textColor="@color/lt_color_text6"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{model.betNums}"
+                            android:textColor="@color/lt_color_text14"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="注"
+                            android:textColor="@color/lt_color_text6"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="总金额："
+                            android:textColor="@color/lt_color_text6"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{model.moneyNums}"
+                            android:textColor="@color/lt_color_text14"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="元"
+                            android:textColor="@color/lt_color_text6"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+<!--                    余额-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="余额："
+                            android:textColor="@color/lt_color_text6"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{model.betsViewModel.balanceData}"
+                            android:textColor="@color/lt_color_text6"
+                            android:textSize="14sp"
+                            tools:text="88,888,888.00" />
+                    </LinearLayout>
+
+<!--                    中奖通知-->
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:checked="@={model.winNotifi}"
+                        android:text="中奖通知"
+                        android:textColor="@color/lt_color_text8"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="42dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/lt_shape_solid_clrmain13_c8"
+                        android:drawableStart="@mipmap/lt_icon_lottery_write_add"
+                        android:gravity="center"
+                        android:onClick="@{() -> model.finish()}"
+                        android:paddingStart="12dp"
+                        android:text="继续追号"
+                        android:textColor="@color/clr_white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_chasing_number"
+                        android:layout_width="0dp"
+                        android:layout_height="42dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/lt_shape_solid_clrmain13_c8"
+                        android:gravity="center"
+                        android:text="追号"
+                        android:textColor="@color/clr_white"
+                        android:textSize="14sp" />
+
+                    <!--            一键投注-->
+                    <com.lihang.ShadowLayout
+                        android:layout_width="0dp"
+                        android:layout_height="42dp"
+                        android:layout_weight="1"
+                        android:onClick="@{() -> model.bet()}"
+                        app:hl_cornerRadius="42dp"
+                        app:hl_layoutBackground="@drawable/lt_shape_gradient_clrmain03_clrmain11"
+                        app:hl_shadowColor="@color/lt_color_shadows1"
+                        app:hl_shadowLimit="2dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="立即投注"
+                            android:textColor="@color/clr_white"
+                            android:textSize="14sp" />
+                    </com.lihang.ShadowLayout>
+
+                </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.recyclerview.widget.RecyclerView
+                itemData="@{model.datas}"
+                itemViewType="@{model.itemType}"
+                onBindListener="@{model.onBindListener}"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintBottom_toTopOf="@id/dialog_lottery_order_div2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dialog_lottery_order_div1"
+                app:layout_constraintVertical_bias="0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

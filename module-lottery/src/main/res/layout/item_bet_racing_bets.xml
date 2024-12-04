@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="m"
+            type="com.xtree.lottery.ui.view.model.BetRacingBetModel" />
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_racing_bet_bt1"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            tools:text="07"
+            android:text="@{m.number_v1.number}"
+            android:textColor="@color/lt_color_text17"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:backgroundTintMode="src_over"
+            android:backgroundTint="@{m.number_v1.color}"
+            android:background="@drawable/lt_shape_racing_bet_def_oval"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="vs"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/item_racing_bet_bt2"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            tools:text="08"
+            android:text="@{m.number_v2.number}"
+            android:textColor="@color/lt_color_text17"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:backgroundTintMode="src_over"
+            android:backgroundTint="@{m.number_v2.color}"
+            android:background="@drawable/lt_shape_racing_bet_def_oval"/>
+
+        <TextView
+            android:id="@+id/item_racing_bet_bt3"
+            android:layout_width="34dp"
+            android:layout_height="22dp"
+            android:text="清"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/lt_shape_racing_bet_def_rec"/>
+
+    </LinearLayout>
+</layout>

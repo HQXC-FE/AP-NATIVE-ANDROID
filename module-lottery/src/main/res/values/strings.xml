@@ -1,3 +1,62 @@
 <resources>
-    <string name="app_name">module-lottery</string>
+    <string name="app_name">library-lottery</string>
+    <string name="txt_kind_tips">温馨提示</string>
+
+    <string name="txt_reset">重置</string>
+    <string name="txt_confirm">确定</string>
+    <string name="txt_cancel">取消</string>
+    <string name="txt_back">返回</string>
+    <string name="txt_submit">提交</string>
+    <string name="txt_i_know">我知道了</string>
+
+    <string name="txt_type">类型</string>
+    <string name="txt_status">状态</string>
+    <string name="txt_all">所有</string>
+    <string name="txt_succ">成功</string>
+    <string name="txt_fail">失败</string>
+    <string name="txt_processed">已处理</string>
+    <string name="txt_to_process">待处理</string>
+    <string name="txt_expired">超时无效</string>
+    <string name="txt_settled">已结算</string>
+    <string name="txt_unsettle">未结算</string>
+    <string name="txt_copy">复制</string>
+    <string name="txt_copied">已复制</string>
+    <string name="txt_yuan">元</string>
+
+    <string name="txt_all_lottery">全部彩种</string>
+    <string name="txt_refresh">刷新</string>
+    <string name="txt_bt_amount2">投注金额</string>
+    <string name="txt_bt_play_type">投注玩法</string>
+    <string name="txt_sprize_amount">中奖金额</string>
+    <string name="txt_sprize_amount2">奖金</string>
+    <string name="txt_user_name_s">用户名：</string>
+    <string name="txt_cp_time_s">注单时间：</string>
+    <string name="txt_cp_id_s">注单编号：</string>
+    <string name="txt_cp_acc_s">投注账号：</string>
+    <string name="txt_method_name_s">玩法：</string>
+    <string name="txt_lottery_name_s">彩种：</string>
+    <string name="txt_status_s">状态：</string>
+    <string name="txt_bt_date_s">投注日期：</string>
+
+    <string name="txt_cancel_by_self">本人撤单</string>
+    <string name="txt_cancel_by_platform">平台撤单</string>
+    <string name="txt_cancel_by_error">错开撤单</string>
+    <string name="txt_cancel_no_status">暂无状态</string>
+    <string name="txt_prizes_not_open">未开奖</string>
+    <string name="txt_prizes_not_win">未中奖</string>
+    <string name="txt_prizes_not_distributed">未派奖</string>
+    <string name="txt_prizes_distributed">已派奖</string>
+    <string name="txt_bt_content_s">投注内容：</string>
+    <string name="txt_bt_issue_s">投注期号：</string>
+    <string name="txt_bt_issue_t">追号期号：</string>
+    <string name="txt_bt_status_s">注单状态：</string>
+    <string name="txt_bt_status_t">追号状态：</string>
+    <string name="txt_prizes_code_s">中奖号码：</string>
+    <string name="txt_bt_total_s">投注总额：</string>
+    <string name="txt_prizes_s">奖金：</string>
+    <string name="txt_multiple_s">倍数：</string>
+    <string name="txt_modes_s">模式：</string>
+
+    <string name="txt_inputview_tip2_mode1">每注号码之间请使用逗号【，】、分号【；】 或回车隔开。</string>
+    <string name="txt_inputview_tip2_mode2">每注号码之间请使用逗号【，】、分号【；】 或回车隔开。注意：号码之间要用空格隔开，不足2位要在前面加0。</string>
 </resources>

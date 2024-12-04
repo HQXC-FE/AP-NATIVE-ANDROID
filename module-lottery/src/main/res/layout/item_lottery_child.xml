@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:adjustViewBounds="true"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@mipmap/lottery_bg"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/iv_lottery"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@mipmap/lottery_ssc_1"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_lottery"
+        android:layout_width="0dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="4dp"
+        tools:text="河内五分彩"
+        app:autoSizeMaxTextSize="12sp"
+        app:autoSizeMinTextSize="6sp"
+        app:autoSizeTextType="uniform"
+        android:layout_marginBottom="4dp"
+        android:maxLines="1"
+        android:gravity="center"
+        android:textColor="@color/lt_color_text6"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_lottery" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

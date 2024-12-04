@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.xtree.lottery.ui.view.viewmodel.BetDxdsTagViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/bet_dxdstag_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/lt_icon_hint"
+            android:drawablePadding="2dp"
+            android:text="帮助"
+            android:textColor="@color/lt_color_text12"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/bet_dxdstag_example"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/lt_icon_noti"
+            android:drawablePadding="2dp"
+            android:text="示例"
+            android:textColor="@color/lt_color_text12"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bet_dxdstag_help"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/bet_dxdstag_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="从个、十、百位各选一个号码组成一注。"
+            android:textColor="@color/lt_color_text12"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="2dp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bet_dxdstag_example"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            itemData="@{model.datas}"
+            itemViewType="@{model.itemType}"
+            layoutManager="@{model.layoutManager}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bet_dxdstag_tip"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

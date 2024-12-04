@@ -1,0 +1,203 @@
+package com.xtree.lottery.ui.lotterybet;
+
+import android.content.Context;
+import android.graphics.Paint;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.lxj.xpopup.util.KeyboardUtils;
+import com.xtree.lottery.data.config.Lottery;
+import com.xtree.lottery.BR;
+import com.xtree.lottery.R;
+import com.xtree.lottery.data.source.request.LotteryBetRequest;
+import com.xtree.lottery.data.source.response.BonusNumbersResponse;
+import com.xtree.lottery.data.source.response.MenuMethodsResponse;
+import com.xtree.lottery.data.source.vo.IssueVo;
+import com.xtree.lottery.databinding.FragmentLotteryBetsBinding;
+import com.xtree.lottery.inter.ParentChildCommunication;
+import com.xtree.lottery.ui.lotterybet.data.LotteryMoneyData;
+import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
+import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel;
+import com.xtree.lottery.ui.view.LotteryBetView;
+import com.xtree.lottery.ui.view.LotteryDrawView;
+import com.xtree.lottery.ui.view.LotteryMoneyView;
+import com.xtree.lottery.ui.view.model.LotteryMoneyModel;
+import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.lottery.utils.LotteryAnalyzer;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import me.xtree.mvvmhabit.base.BaseFragment;
+import me.xtree.mvvmhabit.bus.RxBus;
+
+/**
+ * Created by KAKA on 2024/5/1.
+ * Describe: 彩种投注
+ */
+public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding, LotteryBetsViewModel> implements ParentChildCommunication {
+    private ParentChildCommunication communication;
+    private ArrayList<IssueVo> mIssues;
+
+    public static LotteryBetsFragment newInstance(Lottery lottery) {
+
+        RxBus.getDefault().postSticky(lottery);
+        return new LotteryBetsFragment();
+    }
+
+    @Override
+    public void initView() {
+        binding.getRoot().setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                KeyboardUtils.hideSoftInput(getActivity().getWindow());
+                return false;
+            }
+        });
+
+        binding.lotteryBetsPrizeOption.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+    }
+
+    @Override
+    public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return R.layout.fragment_lottery_bets;
+    }
+
+    @Override
+    public int initVariableId() {
+        return BR.model;
+    }
+
+    @Override
+    public LotteryBetsViewModel initViewModel() {
+        LotteryBetsViewModel viewmodel = new ViewModelProvider(getActivity()).get(LotteryBetsViewModel.class);
+        AppViewModelFactory factory = AppViewModelFactory.getInstance(requireActivity().getApplication());
+        viewmodel.setModel(factory.getmRepository());
+        return viewmodel;
+    }
+
+    @Override
+    public void initData() {
+        super.initData();
+
+        Lottery lottery = RxBus.getDefault().getStickyEvent(Lottery.class);
+
+        if (lottery == null) {
+            return;
+        }
+
+        binding.getModel().initData(getActivity(), lottery);
+
+        binding.lotteryBetsMoneyView.setOnChangeMoneyListener(new LotteryMoneyView.onChangeMoneyListener() {
+            @Override
+            public void onChange(LotteryMoneyData moneyData) {
+                binding.getModel().moneyLiveData.setValue(moneyData);
+            }
+        });
+
+        binding.lotteryBetsDrawview.setOnLotteryDrawListener(new LotteryDrawView.OnLotteryDrawListener() {
+            @Override
+            public void onRefresh() {
+                binding.getModel().getBonusNumbers();
+            }
+        });
+
+        binding.getModel().currentBetModel.observe(this, new Observer<LotteryBetsModel>() {
+            @Override
+            public void onChanged(LotteryBetsModel lotteryBetsModel) {
+                if (lotteryBetsModel != null) {
+                    //设置选注形态
+                    binding.lotteryBetsBetlayout.setData(lotteryBetsModel);
+
+                    //设置投注金额
+                    ArrayList<LotteryMoneyModel> moneyModelList = new ArrayList<>();
+                    for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO moneyMode : lotteryBetsModel.getMenuMethodLabelData().getMoneyModes()) {
+                        moneyModelList.add(new LotteryMoneyModel(moneyMode.getName(), moneyMode.getRate(), moneyMode.getModeid()));
+                    }
+                    binding.lotteryBetsMoneyView.setMoneyUnit(moneyModelList);
+                }
+            }
+        });
+
+        binding.lotteryBetsBetlayout.setOnLotteryBetListener(new LotteryBetView.OnLotteryBetListener() {
+            @Override
+            public void onBetChange(List<LotteryBetRequest.BetOrderData> betOrderList) {
+                if (betOrderList != null && betOrderList.size() > 0) {
+                    binding.getModel().betLiveData.setValue(betOrderList.get(0));
+                } else {
+                    binding.getModel().betLiveData.setValue(null);
+                }
+            }
+        });
+
+        binding.getModel().bonusNumbersLiveData.observe(this, new Observer<BonusNumbersResponse>() {
+            @Override
+            public void onChanged(BonusNumbersResponse bonusNumbers) {
+                if (bonusNumbers.getData() != null && bonusNumbers.getData().size() > 0) {
+                    ArrayList<String> lotteryNumbs = new ArrayList<>();
+                    for (BonusNumbersResponse.DataDTO datum : bonusNumbers.getData()) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (String s : datum.getSplitCode()) {
+                            stringBuilder.append(s + LotteryAnalyzer.SPLIT);
+                        }
+                        lotteryNumbs.add(stringBuilder.deleteCharAt(stringBuilder
+                                        .lastIndexOf(LotteryAnalyzer.SPLIT))
+                                .toString()
+                        );
+                    }
+                    binding.lotteryBetsBetlayout.setLotteryNumbsHistory(lotteryNumbs);
+
+                    binding.lotteryBetsDrawview.setDrawCode(bonusNumbers.getData().get(0));
+                }
+            }
+        });
+
+        binding.lotteryBetsSavebetLayout.setOnClickListener(v -> {
+            binding.getModel().saveBetOrder();
+            binding.lotteryBetsBetlayout.clearBet();
+        });
+
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        // 确保 Activity 实现了接口
+        if (context instanceof ParentChildCommunication) {
+            communication = (ParentChildCommunication) context;
+        } else {
+            throw new RuntimeException("Activity must implement ParentChildCommunication");
+        }
+    }
+
+    // Fragment 提供方法给 Activity 调用
+    @Override
+    public void onFragmentSendData(@NonNull ArrayList<IssueVo> data) {
+    }
+
+    // Fragment 主动通过接口通知 Activity
+    @Override
+    public void onActivitySendData(@NotNull ArrayList<IssueVo> data) {
+        if (communication != null) {
+            //communication.onFragmentSendData("Data from Fragment");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        communication = null;
+    }
+
+}

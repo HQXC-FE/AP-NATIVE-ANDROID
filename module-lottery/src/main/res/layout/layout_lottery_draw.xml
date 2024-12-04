@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.xtree.lottery.ui.view.viewmodel.LotteryDrawViewModel" />
+    </data>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="2dp"
+        android:shadowColor="@color/lt_color_shadows1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="10dp"
+            android:paddingEnd="5dp">
+
+            <TextView
+                android:id="@+id/lottery_period"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{model.drawDate}"
+                tools:text="20230822-184期："
+                android:textColor="@color/lt_color_text7"
+                android:textSize="14sp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"/>
+
+            <ImageView
+                android:id="@+id/lottery_refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:src="@mipmap/lt_icon_lotterynum_refresh"
+                android:onClick="@{() -> model.refresh()}"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:importantForAccessibility="no" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toStartOf="@id/lottery_refresh"
+                android:layout_toEndOf="@id/lottery_period"
+                android:layout_centerVertical="true">
+
+                <LinearLayout
+                    android:id="@+id/lottery_draw_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="start|center_vertical">
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

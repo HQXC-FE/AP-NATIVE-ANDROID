@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type= "com.xtree.lottery.ui.view.viewmodel.LotteryMoneyViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/lottery_money_factor"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="1">
+
+            <TextView
+                android:id="@+id/lottery_money_factor_add"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:text="+"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:background="@drawable/lt_shape_solid_clrmain13_cl2"
+                android:gravity="center"
+                android:onClick="@{() -> model.add()}"/>
+
+            <EditText
+                android:id="@+id/lottery_money_factor_edit"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:textSize="14sp"
+                android:textColor="@color/lt_color_text6"
+                android:textStyle="bold"
+                android:text="@{model.factorData}"
+                tools:text="1 倍"
+                android:inputType="number"
+                android:maxLength="14"
+                android:selectAllOnFocus="true"
+                android:gravity="center"
+                android:background="@drawable/lt_shape_solid_white_stroke_clrmain13_1" />
+
+            <TextView
+                android:id="@+id/lottery_money_factor_subtrac"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:text="-"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:background="@drawable/lt_shape_solid_clrmain13_cr2"
+                android:gravity="center"
+                android:onClick="@{() -> model.subtrac()}"/>
+
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constrainedWidth="true"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/lottery_money_factor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioGroup
+                android:id="@+id/lottery_money_unit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"/>
+
+        </HorizontalScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

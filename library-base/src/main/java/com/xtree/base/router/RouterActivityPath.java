@@ -54,4 +54,12 @@ public class RouterActivityPath {
         private static final String BET = "/bet";
         public static final String PAGER_BET_HOME = BET + "/home";
     }
+
+    /**
+     * 彩票组件
+     */
+    public static class Lottery {
+        private static final String LOTTERY = "/lottery";
+        public static final String PAGER_LOTTERY_HOME = LOTTERY + "/home";
+    }
 }

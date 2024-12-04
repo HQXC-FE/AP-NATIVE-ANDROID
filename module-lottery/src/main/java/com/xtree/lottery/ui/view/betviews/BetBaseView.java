@@ -1,0 +1,72 @@
+package com.xtree.lottery.ui.view.betviews;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.ObservableField;
+
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
+import com.xtree.base.widget.MsgDialog;
+import com.xtree.base.widget.TipDialog;
+import com.xtree.lottery.R;
+import com.xtree.lottery.data.source.request.LotteryBetRequest;
+import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
+
+import java.util.List;
+
+/**
+ * Created by KAKA on 2024/5/3.
+ * Describe: 投注组件的基础视图
+ */
+public abstract class BetBaseView extends FrameLayout {
+
+    private LotteryBetsModel model;
+    private BasePopupView pop;
+    public ObservableField<List<LotteryBetRequest.BetOrderData>> betData = new ObservableField<>();
+
+    public BetBaseView(@NonNull Context context) {
+        super(context);
+    }
+
+    public BetBaseView(@NonNull Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public void setModel(LotteryBetsModel model) {
+        this.model = model;
+    }
+
+    public LotteryBetsModel getModel() {
+        return model;
+    }
+
+    public abstract void clearBet();
+
+    /**
+     * 提示弹窗
+     */
+    public void showTipDialog(String msg) {
+        MsgDialog dialog = new MsgDialog(getContext(), getContext().getString(R.string.txt_kind_tips), msg, true, new TipDialog.ICallBack() {
+            @Override
+            public void onClickLeft() {
+
+            }
+
+            @Override
+            public void onClickRight() {
+                if (pop != null) {
+                    pop.dismiss();
+                }
+            }
+        });
+
+        pop = new XPopup.Builder(getContext())
+                .dismissOnTouchOutside(true)
+                .dismissOnBackPressed(true)
+                .asCustom(dialog).show();
+    }
+}

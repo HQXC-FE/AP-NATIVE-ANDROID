@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <CheckBox
+        android:id="@+id/label_box"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/lt_selector_clrmain20_clrmain13"
+        android:button="@null"
+        android:paddingLeft="20dp"
+        android:paddingTop="4dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="4dp"
+        android:textColor="@color/lt_color_text6_white"
+        tools:text="标签" />
+</FrameLayout>

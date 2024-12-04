@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:toools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/clr_line_02"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/v1"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/clr_line_02"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.16"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/v2"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/clr_line_02"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.46"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/v3"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/clr_line_02"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.72"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/cb_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:button="@drawable/checkbox_item"
+        android:gravity="center"
+        android:paddingStart="3dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/lt_color_text3"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        toools:text="9" />
+
+    <TextView
+        android:id="@+id/tv_issue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/lt_color_text3"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/v2"
+        app:layout_constraintStart_toEndOf="@+id/v1"
+        app:layout_constraintTop_toTopOf="parent"
+        toools:text="20240813-224" />
+
+    <TextView
+        android:id="@+id/tv_multiple"
+        android:layout_width="58dp"
+        android:layout_height="24dp"
+        android:textColor="@color/lt_color_text3"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:background="@drawable/bg_multiple"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv1"
+        app:layout_constraintTop_toTopOf="parent"
+        toools:text="10000000" />
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/lt_color_text3"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/v3"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text=" 倍" />
+
+    <TextView
+        android:id="@+id/tv_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/lt_color_text14"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/v3"
+        app:layout_constraintTop_toTopOf="parent"
+        toools:text="¥1000000000.0000" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

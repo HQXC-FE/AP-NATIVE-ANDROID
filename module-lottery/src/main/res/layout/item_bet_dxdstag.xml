@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="m"
+            type="com.xtree.lottery.ui.view.model.BetDxdsTagModel" />
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="10dp">
+        <CheckBox
+            android:layout_width="60dp"
+            android:layout_height="35dp"
+            android:button="@null"
+            android:text="@{m.tag}"
+            android:checked="@={m.clicked}"
+            android:textSize="14sp"
+            android:textColor="@color/lt_color_text13_white"
+            android:gravity="center"
+            android:background="@drawable/lt_selector_betbull_checkbox">
+        </CheckBox>
+    </LinearLayout>
+</layout>

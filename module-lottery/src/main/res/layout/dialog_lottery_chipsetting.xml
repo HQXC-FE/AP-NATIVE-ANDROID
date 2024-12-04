@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.xtree.lottery.ui.lotterybet.viewmodel.LotteryChipSettingViewModel" />
+
+    </data>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/lt_shape_solid_clrmain13_ctop_4">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置筹码"
+                    android:textSize="14sp"
+                    android:textColor="@color/clr_white"
+                    android:textStyle="bold"
+                    android:layout_centerInParent="true" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/lt_icon_close_white"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:padding="8dp"
+                    android:onClick="@{() -> model.finish()}"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:background="@color/clr_white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="注："
+                    android:textSize="12sp"
+                    android:textColor="@color/lt_color_text14" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="可以设置任意1的倍数，最高设置9999"
+                    android:textSize="12sp"
+                    android:textColor="@color/lt_color_text6" />
+
+            </LinearLayout>
+
+<!--            筹码设置-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="28dp"
+                android:paddingStart="28dp"
+                android:paddingEnd="28dp"
+                android:paddingBottom="18dp"
+                android:gravity="center_vertical"
+                android:background="@color/clr_main_08">
+
+                <!--                筹码1-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/lottery_chipsetting_clear1"
+                        android:layout_width="66dp"
+                        android:layout_height="match_parent"
+                        android:text="清 空"
+                        android:textColor="@color/clr_white"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:background="@drawable/lt_shape_gradient_clrmain03_clrmain11_c4"
+                        android:onClick="@{() -> model.clearAmount(0)}"
+                        android:layout_alignParentEnd="true"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@={model.chip1}"
+                        android:textColor="@color/lt_color_text6"
+                        android:textSize="14sp"
+                        android:textColorHint="@color/clr_main_25"
+                        android:hint="请输入筹码金额"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:layout_marginEnd="8dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:gravity="center"
+                        android:background="@drawable/lt_shape_solid_white_stroke_clrmain05_1_c4"
+                        android:layout_toStartOf="@id/lottery_chipsetting_clear1"/>
+                </RelativeLayout>
+
+<!--                筹码2-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/lottery_chipsetting_clear2"
+                        android:layout_width="66dp"
+                        android:layout_height="match_parent"
+                        android:text="清 空"
+                        android:textColor="@color/clr_white"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:background="@drawable/lt_shape_gradient_clrmain03_clrmain11_c4"
+                        android:onClick="@{() -> model.clearAmount(1)}"
+                        android:layout_alignParentEnd="true"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@={model.chip2}"
+                        android:textColor="@color/lt_color_text6"
+                        android:textSize="14sp"
+                        android:textColorHint="@color/clr_main_25"
+                        android:hint="请输入筹码金额"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:layout_marginEnd="8dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:gravity="center"
+                        android:background="@drawable/lt_shape_solid_white_stroke_clrmain05_1_c4"
+                        android:layout_toStartOf="@id/lottery_chipsetting_clear2"/>
+                </RelativeLayout>
+
+                <!--                筹码3-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/lottery_chipsetting_clear3"
+                        android:layout_width="66dp"
+                        android:layout_height="match_parent"
+                        android:text="清 空"
+                        android:textColor="@color/clr_white"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:background="@drawable/lt_shape_gradient_clrmain03_clrmain11_c4"
+                        android:onClick="@{() -> model.clearAmount(2)}"
+                        android:layout_alignParentEnd="true"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@={model.chip3}"
+                        android:textColor="@color/lt_color_text6"
+                        android:textSize="14sp"
+                        android:textColorHint="@color/clr_main_25"
+                        android:hint="请输入筹码金额"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:gravity="center"
+                        android:background="@drawable/lt_shape_solid_white_stroke_clrmain05_1_c4"
+                        android:layout_toStartOf="@id/lottery_chipsetting_clear3"/>
+                </RelativeLayout>
+
+                <!--                筹码4-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/lottery_chipsetting_clear4"
+                        android:layout_width="66dp"
+                        android:layout_height="match_parent"
+                        android:text="清 空"
+                        android:textColor="@color/clr_white"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:background="@drawable/lt_shape_gradient_clrmain03_clrmain11_c4"
+                        android:onClick="@{() -> model.clearAmount(3)}"
+                        android:layout_alignParentEnd="true"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@={model.chip4}"
+                        android:textColor="@color/lt_color_text6"
+                        android:textSize="14sp"
+                        android:textColorHint="@color/clr_main_25"
+                        android:hint="请输入筹码金额"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:layout_marginEnd="8dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:gravity="center"
+                        android:background="@drawable/lt_shape_solid_white_stroke_clrmain05_1_c4"
+                        android:layout_toStartOf="@id/lottery_chipsetting_clear4"/>
+                </RelativeLayout>
+
+                <!--                筹码5-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/lottery_chipsetting_clear5"
+                        android:layout_width="66dp"
+                        android:layout_height="match_parent"
+                        android:text="清 空"
+                        android:textColor="@color/clr_white"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:background="@drawable/lt_shape_gradient_clrmain03_clrmain11_c4"
+                        android:onClick="@{() -> model.clearAmount(4)}"
+                        android:layout_alignParentEnd="true"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@={model.chip5}"
+                        android:textColor="@color/lt_color_text6"
+                        android:textSize="14sp"
+                        android:textColorHint="@color/clr_main_25"
+                        android:hint="请输入筹码金额"
+                        android:inputType="number"
+                        android:maxLength="4"
+                        android:layout_marginEnd="8dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:gravity="center"
+                        android:background="@drawable/lt_shape_solid_white_stroke_clrmain05_1_c4"
+                        android:layout_toStartOf="@id/lottery_chipsetting_clear5"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:paddingStart="23dp"
+                android:paddingEnd="23dp"
+                android:orientation="horizontal"
+                android:background="@color/clr_white"
+                android:gravity="center_vertical">
+
+                <com.lihang.ShadowLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    app:hl_shadowColor="@color/lt_color_shadows1"
+                    app:hl_cornerRadius="88dp"
+                    app:hl_shadowLimit="2dp"
+                    app:hl_layoutBackground="@color/clr_main_05"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:onClick="@{() -> model.setDefult()}">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="恢复默认"
+                        android:textSize="16sp"
+                        android:textColor="@color/lt_color_text3"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"/>
+
+                </com.lihang.ShadowLayout>
+
+                <com.lihang.ShadowLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    app:hl_shadowColor="@color/lt_color_shadows1"
+                    app:hl_cornerRadius="88dp"
+                    app:hl_shadowLimit="2dp"
+                    app:hl_layoutBackground="@drawable/lt_shape_gradient_clrmain03_clrmain11"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:onClick="@{() -> model.save() }">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="保 存"
+                        android:textSize="16sp"
+                        android:textColor="@color/clr_white"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:gravity="center"/>
+
+                </com.lihang.ShadowLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>
