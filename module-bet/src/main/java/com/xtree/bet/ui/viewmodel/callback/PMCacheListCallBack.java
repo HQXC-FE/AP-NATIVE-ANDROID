@@ -6,13 +6,11 @@ import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401038;
 
 import android.text.TextUtils;
 
-import com.xtree.base.net.PMHttpCallBack;
-import com.xtree.base.net.PMHttpTempCallBack;
+import com.xtree.base.net.PMCacheHttpCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
-import com.xtree.bet.bean.response.pm.MatchListRspTemp;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.LeaguePm;
 import com.xtree.bet.bean.ui.Match;
@@ -31,7 +29,7 @@ import java.util.Map;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class PMListTempCallBack extends PMHttpTempCallBack<MatchListRspTemp> {
+public class PMCacheListCallBack extends PMCacheHttpCallBack<List<MatchInfo>> {
 
     private PMMainViewModel mViewModel;
     private boolean mHasCache;
@@ -100,9 +98,9 @@ public class PMListTempCallBack extends PMHttpTempCallBack<MatchListRspTemp> {
         }
     }
 
-    public PMListTempCallBack(PMMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
-                              int playMethodType, int sportPos, String sportId, int orderBy, List<Long> leagueIds,
-                              int searchDatePos, int oddType, List<Long> matchids/*, boolean isStepSecond*/) {
+    public PMCacheListCallBack(PMMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
+                               int playMethodType, int sportPos, String sportId, int orderBy, List<Long> leagueIds,
+                               int searchDatePos, int oddType, List<Long> matchids/*, boolean isStepSecond*/) {
         mViewModel = viewModel;
         mHasCache = hasCache;
         mIsTimerRefresh = isTimerRefresh;
@@ -120,7 +118,6 @@ public class PMListTempCallBack extends PMHttpTempCallBack<MatchListRspTemp> {
 
     @Override
     protected void onStart() {
-        System.out.println("================ Temp onStart 1111===============");
         super.onStart();
         if (!mIsTimerRefresh && !mHasCache) {
             mViewModel.getUC().getShowDialogEvent().postValue("");
@@ -128,14 +125,13 @@ public class PMListTempCallBack extends PMHttpTempCallBack<MatchListRspTemp> {
     }
 
     @Override
-    public void onResult(MatchListRspTemp data) {
-        System.out.println("================ Temp onResult 1111===============");
+    public void onResult(List<MatchInfo> data) {
         if (mIsTimerRefresh) { // 定时刷新赔率变更
-            if (data.getData().size() != mMatchids.size()) {
+            if (data.size() != mMatchids.size()) {
                 //List<Long> matchIdList = new ArrayList<>();
                 mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);
             } else {
-                setOptionOddChange(data.getData());
+                setOptionOddChange(data);
                 mViewModel.leagueLiveTimerListData.postValue(mLeagueList);
             }
         } else {  // 获取今日中的全部滚球赛事列表
@@ -147,23 +143,17 @@ public class PMListTempCallBack extends PMHttpTempCallBack<MatchListRspTemp> {
             }
             mViewModel.firstNetworkFinishData.call();
             mIsStepSecond = true;
-            mLiveMatchList.addAll(data.getData());
+            mLiveMatchList.addAll(data);
             if(TextUtils.isEmpty(mViewModel.mSearchWord)) {
-                System.out.println("================ onResult 22222 ===============");
-                System.out.println("================ onResult 22222 data.getData() ==============="+data.getData());
-                leagueGoingList(data.getData());
+                leagueGoingList(data);
             }
             mViewModel.saveLeague(this);
             mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, 2, mSearchDatePos, mOddType, false, mIsRefresh, mIsStepSecond);
-            //if (mCurrentPage == 1) {
-                //SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + mPlayMethodType + mSearchDatePos + mSportId, new Gson().toJson(mLeagueList));
-            //}
         }
     }
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("================ Temp onError 1111===============");
         mViewModel.getUC().getDismissDialogEvent().call();
         //if (!mIsTimerRefresh) {
             if (t instanceof ResponseThrowable) {

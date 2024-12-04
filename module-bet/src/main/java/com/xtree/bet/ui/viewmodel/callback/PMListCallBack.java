@@ -129,7 +129,6 @@ public class PMListCallBack extends PMHttpCallBack<List<MatchInfo>> {
 
     @Override
     public void onResult(List<MatchInfo> data) {
-        System.out.println("================ onResult 1111===============");
         if (mIsTimerRefresh) { // 定时刷新赔率变更
             if (data.size() != mMatchids.size()) {
                 //List<Long> matchIdList = new ArrayList<>();
@@ -158,7 +157,6 @@ public class PMListCallBack extends PMHttpCallBack<List<MatchInfo>> {
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("================ onError 1111===============");
         mViewModel.getUC().getDismissDialogEvent().call();
         //if (!mIsTimerRefresh) {
             if (t instanceof ResponseThrowable) {

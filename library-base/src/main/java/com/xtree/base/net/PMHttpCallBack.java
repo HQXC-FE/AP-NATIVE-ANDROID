@@ -14,16 +14,12 @@ public abstract class PMHttpCallBack<T> extends DisposableSubscriber<T> {
     @Override
     public void onNext(T o) {
 
-//        if (!(o instanceof PMBaseResponse)) {
-//            KLog.w("json is not normal");
-//            onResult(o);
-//            return;
-//        }
-        System.out.println("============== PMHttpCallBack Base onNext =============");
+        if (!(o instanceof PMBaseResponse)) {
+            KLog.w("json is not normal");
+            onResult(o);
+            return;
+        }
         PMBaseResponse baseResponse = (PMBaseResponse) o;
-        System.out.println("============== PMHttpCallBack baseResponse.getCode ============="+baseResponse.getCode());
-        System.out.println("============== PMHttpCallBack baseResponse.getMsg() ============="+baseResponse.getMsg());
-        System.out.println("============== PMHttpCallBack baseResponse ============="+baseResponse.getData());
         ResponseThrowable ex = new ResponseThrowable(baseResponse.getCode(), baseResponse.getMsg());
         int code = baseResponse.getCode();
         switch (code) {
@@ -68,7 +64,6 @@ public abstract class PMHttpCallBack<T> extends DisposableSubscriber<T> {
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("============== PMHttpCallBack Base onError ============="+t.toString());
         KLog.e("error: " + t.toString());
         if (t instanceof ResponseThrowable) {
             ResponseThrowable rError = (ResponseThrowable) t;
@@ -85,7 +80,6 @@ public abstract class PMHttpCallBack<T> extends DisposableSubscriber<T> {
 
     @Override
     public void onComplete() {
-        System.out.println("============== PMHttpCallBack onComplete =============");
     }
 
     public static final class CodeRule {
