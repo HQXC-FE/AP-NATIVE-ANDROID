@@ -1,5 +1,7 @@
 package com.xtree.lottery.ui.lotterybet;
 
+import static com.xtree.lottery.utils.EventConstant.EVENT_TIME_FINISH;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,7 +26,12 @@ import com.xtree.lottery.ui.view.LotteryBetView;
 import com.xtree.lottery.ui.view.LotteryDrawView;
 import com.xtree.lottery.ui.view.LotteryRoadMapDialog;
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.lottery.utils.EventVo;
 import com.xtree.lottery.utils.LotteryAnalyzer;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -170,5 +177,26 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
             }
         });
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventVo event) {
+        switch (event.getEvent()) {
+            case EVENT_TIME_FINISH:
+                binding.getModel().getBonusNumbers();
+                break;
+        }
     }
 }

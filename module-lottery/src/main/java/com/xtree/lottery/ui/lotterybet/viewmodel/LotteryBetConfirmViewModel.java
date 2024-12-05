@@ -17,6 +17,7 @@ import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.xtree.mvvmhabit.base.BaseViewModel;
@@ -129,7 +130,11 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
         lotteryBetRequest.setLtTotalNums(nums);
         lotteryBetRequest.setPlaySource(6);
 
-        model.bet(lotteryBetRequest, chasingNumberParams.getValue().getParmes()).subscribe(new HttpCallBack<BaseResponse>() {
+        HashMap<String, Object> parmes = new HashMap<>();
+        if (chasingNumberParams.getValue() != null && chasingNumberParams.getValue().getParmes() != null) {
+            parmes.putAll(chasingNumberParams.getValue().getParmes());
+        }
+        model.bet(lotteryBetRequest, parmes).subscribe(new HttpCallBack<BaseResponse>() {
             @Override
             public void onResult(BaseResponse response) {
                 chasingNumberParams.setValue(null);

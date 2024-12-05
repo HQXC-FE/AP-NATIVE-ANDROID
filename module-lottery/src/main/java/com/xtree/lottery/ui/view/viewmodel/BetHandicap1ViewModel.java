@@ -7,6 +7,7 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.Observable;
 import androidx.databinding.ObservableField;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,7 +70,32 @@ public class BetHandicap1ViewModel {
                     name.setText(code.getName());
                     odd.setText(code.getNonRebatePrize());
 
-                    if (code.isChecked()) {
+                    code.isChecked.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+                        @Override
+                        public void onPropertyChanged(Observable sender, int propertyId) {
+                            if (code.isChecked.get()) {
+                                labelLayout.setBackgroundResource(R.drawable.lt_shape_solid_clrmain13_c8);
+                                odd.setTextColor(view.getResources().getColor(R.color.clr_white));
+                                if (code.getType().equals("digital")) {
+                                    name.setTextColor(view.getResources().getColor(R.color.lt_color_text6));
+                                    name.setBackgroundResource(R.mipmap.lt_icon_handicap_digital_checked);
+                                } else {
+                                    name.setTextColor(view.getResources().getColor(R.color.clr_white));
+                                }
+                            } else {
+                                labelLayout.setBackgroundResource(R.drawable.lt_shape_solid_white_stroke_clrmain23_05_c8);
+                                name.setTextColor(view.getResources().getColor(R.color.lt_color_text6));
+                                odd.setTextColor(view.getResources().getColor(R.color.lt_color_text6));
+                                if (code.getType().equals("digital")) {
+                                    name.setBackgroundResource(R.mipmap.lt_icon_handicap_digital_unchecked);
+                                } else {
+                                    name.setTextColor(view.getResources().getColor(R.color.lt_color_text6));
+                                }
+                            }
+                        }
+                    });
+
+                    if (code.isChecked.get()) {
                         labelLayout.setBackgroundResource(R.drawable.lt_shape_solid_clrmain13_c8);
                         odd.setTextColor(view.getResources().getColor(R.color.clr_white));
                         if (code.getType().equals("digital")) {
@@ -89,11 +115,11 @@ public class BetHandicap1ViewModel {
                         }
                     }
 
-                    labelView.setOnClickListener(v -> {
-                        code.setChecked(!code.isChecked());
-                        codesData.set(formatCode());
 
-                        if (code.isChecked()) {
+                    labelView.setOnClickListener(v -> {
+                        code.isChecked.set(!code.isChecked.get());
+                        codesData.set(formatCode());
+                        if (code.isChecked.get()) {
                             labelLayout.setBackgroundResource(R.drawable.lt_shape_solid_clrmain13_c8);
                             odd.setTextColor(view.getResources().getColor(R.color.clr_white));
                             if (code.getType().equals("digital")) {
@@ -133,7 +159,7 @@ public class BetHandicap1ViewModel {
 
             if (itemViewType == R.layout.item_bet_handicap2) {
                 BetHandicapModel m = (BetHandicapModel) bindModels.get(modelPosition);
-                m.getData().getCodes().get(0).setChecked(Boolean.FALSE.equals(m.clicked.get()));
+                m.getData().getCodes().get(0).isChecked.set(Boolean.FALSE.equals(m.clicked.get()));
                 m.clicked.set(Boolean.FALSE.equals(m.clicked.get()));
                 codesData.set(formatCode());
             }
@@ -151,7 +177,7 @@ public class BetHandicap1ViewModel {
         for (HandicapResponse.DataDTO.GroupsDTO group : model.getHandicapMethodData().getGroups()) {
 
             for (HandicapResponse.DataDTO.GroupsDTO.CodesDTO code : group.getCodes()) {
-                code.setChecked(false);
+                code.isChecked.set(false);
             }
 
             switch (category) {
@@ -225,7 +251,7 @@ public class BetHandicap1ViewModel {
 
             for (HandicapResponse.DataDTO.GroupsDTO.CodesDTO code : handicapModel.getData().getCodes()) {
 
-                if (code.isChecked()) {
+                if (code.isChecked.get()) {
                     LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
                     StringBuilder codeStr = new StringBuilder();
                     if (code.getType().equals("digital")) {
@@ -261,7 +287,7 @@ public class BetHandicap1ViewModel {
                                         .append(code.getName())
                                         .append("|");
                                 break;
-                            case "ge位":
+                            case "个位":
                                 codeStr
                                         .append("|")
                                         .append("|")
@@ -292,7 +318,7 @@ public class BetHandicap1ViewModel {
             BetHandicapModel handicapModel = (BetHandicapModel) bindModel;
             handicapModel.clicked.set(false);
             for (HandicapResponse.DataDTO.GroupsDTO.CodesDTO code : handicapModel.getData().getCodes()) {
-                code.setChecked(false);
+                code.isChecked.set(false);
             }
         }
         codesData.set(null);

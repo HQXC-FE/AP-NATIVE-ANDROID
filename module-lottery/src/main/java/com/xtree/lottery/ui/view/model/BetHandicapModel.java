@@ -24,12 +24,4 @@ public class BetHandicapModel extends BindModel {
     public void setData(HandicapResponse.DataDTO.GroupsDTO data) {
         this.data = data;
     }
-
-    public ObservableField<Boolean> getClicked() {
-        return clicked;
-    }
-
-    public void setClicked(ObservableField<Boolean> clicked) {
-        this.clicked = clicked;
-    }
 }
