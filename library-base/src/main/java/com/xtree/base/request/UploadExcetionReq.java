@@ -1,4 +1,4 @@
-package com.xtree.bet.bean.request;
+package com.xtree.base.request;
 
 public class UploadExcetionReq {
 

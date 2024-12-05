@@ -1,5 +1,7 @@
 package com.xtree.base.net.fastest
 
+import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.TypeReference
 import com.xtree.base.global.SPKeyGlobal
 import com.xtree.base.vo.TopSpeedDomain
 import me.xtree.mvvmhabit.utils.SPUtils
@@ -11,16 +13,32 @@ import me.xtree.mvvmhabit.utils.SPUtils
 object FastestMonitorCache {
 
     private val domains = mutableListOf<TopSpeedDomain>()
+    private var scoreCacheList = mutableListOf<TopSpeedDomain>()
 
     const val TIME_OUT = 1000 * 60 * 60
 
     var MAX_UPLOAD_TIME = TIME_OUT
+
+    var SPEED_CALCULATION = 0F
+        set(value) {
+            field = if (value >= 100) {
+                1F
+            } else {
+                value / 100
+            }
+        }
 
     init {
         val fastest_monitor_timeout =
             SPUtils.getInstance().getInt(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT)
         if (fastest_monitor_timeout > 0) {
             MAX_UPLOAD_TIME = fastest_monitor_timeout
+        }
+
+        val fastest_score_cache = SPUtils.getInstance().getString(SPKeyGlobal.FASTEST_SCORE_CACHE)
+        if (!fastest_score_cache.isNullOrEmpty()) {
+            scoreCacheList = JSON.parseObject<List<TopSpeedDomain>>(fastest_score_cache,
+                object : TypeReference<List<TopSpeedDomain>?>() {}).toMutableList();
         }
     }
 
@@ -60,5 +78,34 @@ object FastestMonitorCache {
         } ?: run {
             return true
         }
+    }
+
+    fun getFastestScore(domain: TopSpeedDomain): Long {
+        scoreCacheList.findLast {
+            it.url.equals(domain.url)
+        }?.let {
+            //（1）本次测速<上次测速：上次测速扣百分比
+            //（2）本次测速>上次测速：本次测速为基础计算数字
+            if (domain.speedSec > it.speedScore) {
+                domain.speedScore = domain.speedSec
+            } else {
+                domain.speedScore = it.speedScore - (it.speedScore * SPEED_CALCULATION).toLong()
+            }
+
+            scoreCacheList.remove(it)
+
+            scoreCacheList.add(domain)
+
+            return domain.speedScore
+        } ?: run {
+            domain.speedScore = domain.speedSec
+            scoreCacheList.add(domain)
+            return domain.speedScore
+        }
+    }
+
+    fun saveFastestScore() {
+        SPUtils.getInstance()
+            .put(SPKeyGlobal.FASTEST_SCORE_CACHE, JSON.toJSONString(scoreCacheList))
     }
 }

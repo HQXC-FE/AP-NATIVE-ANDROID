@@ -327,13 +327,13 @@ public class AccountChangeFragment extends BaseFragment<FragmentReportBinding, R
             gameChangeVo = vo;
             curGamePage = vo.mobilePage.p;
 
-            if (vo.mobilePage.p < vo.mobilePage.totalPage) {
+            if (vo.mobilePage.p < vo.mobilePage.total_page) {
                 binding.refreshGameLayout.setEnableLoadMore(true);
             } else {
                 binding.refreshGameLayout.setEnableLoadMore(false);
             }
 
-            if (curPage == 1) {
+            if (curGamePage == 1) {
                 mGameAdapter.clear();
             }
 

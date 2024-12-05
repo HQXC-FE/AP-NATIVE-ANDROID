@@ -38,10 +38,6 @@ import retrofit2.http.QueryMap;
 
 public interface HomeApiService {
 
-    @FormUrlEncoded
-    @POST("/api/auth/login")
-    Flowable<BaseResponse<Object>> login(@Field("username") String username, @Field("password") String password);
-
     /**
      * 获取 banner列表
      * d @return
@@ -84,13 +80,6 @@ public interface HomeApiService {
      */
     @GET("/api/settings")
     Flowable<BaseResponse<SettingsVo>> getSettings(@QueryMap(encoded = true) Map<String, String> filters);
-
-    /**
-     * 登录
-     */
-    @POST("/api/auth/login")
-    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<LoginResultVo>> login(@Body Map<String, String> map);
 
     /**
      * 获取 cookie,session
@@ -192,5 +181,13 @@ public interface HomeApiService {
      */
     @GET("/api/deposit/payments?")
     Flowable<BaseResponse<PaymentDataVo.RechargeVo>> getPayment(@Query("bid") String bid);
+
+    /**
+     * 异常日志上报
+     * @return
+     */
+    @POST("/api/sports/excaption")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<String>> uploadExcetion(@Body Map<String, String> map);
 
 }

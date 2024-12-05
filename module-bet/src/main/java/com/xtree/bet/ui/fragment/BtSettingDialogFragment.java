@@ -165,6 +165,9 @@ public class BtSettingDialogFragment extends BaseDialogFragment<BtDialogSettingB
             dismiss();
             if (getActivity() instanceof MainActivity) {
                 MainActivity activity = (MainActivity) getActivity();
+                if (activity.getSportId() == -1) {
+                    return;
+                }
                 BtLeagueDialogFragment btLeagueDialogFragment = BtLeagueDialogFragment.getInstance(activity.getSettingLeagueList(), activity.getSportId(), activity.getPlayMethodType(), mLeagueIdList);
                 btLeagueDialogFragment.show(getParentFragmentManager(), "BtLeagueDialogFragment");
             }

@@ -205,11 +205,12 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
     }
 
     /**
-     *该场馆禁止当前用户玩乐
+     * 该场馆禁止当前用户玩乐
      */
     public void onFail41011(BusinessException t) {
 
     }
+
 
     @Override
     public void onComplete() {
@@ -253,7 +254,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         public static final int CODE_20208 = 20208; // 异地登录(本次登录并非常用设备或地区， 需要进行安全验证)
         public static final int CODE_30018 = 30018; // 谷歌验证
         static final int CODE_30003 = 30003;
-        static final int CODE_30004 = 30004; // 被踢下线, 禁止登录
+        public static final int CODE_30004 = 30004; // 被踢下线, 禁止登录
         static final int CODE_30713 = 30713;
         static final int CODE_20203 = 20203; //用户名或密码错误
         static final int CODE_20217 = 20217; //已修改密码或被踢出
