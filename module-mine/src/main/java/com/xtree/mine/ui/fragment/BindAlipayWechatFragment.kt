@@ -70,9 +70,9 @@ class BindAlipayWechatFragment : BaseFragment<FragmentBindAwBinding, BindCardVie
 
                             binding2.ivBankIcon.setImageResource(R.mipmap.mine_default_alipay)
 
-                           /* binding2.tvName.setText(R.string.txt_alipay_name)
-                            binding2.tvNickname.setText(R.string.txt_alipay_nickname)
-                            binding2.tvCode.setText(R.string.txt_alipay_code)*/
+//                            binding2.tvName.setText(R.string.txt_alipay_name)
+                            binding2.tvDefaultAlipayNickName.setText(R.string.txt_alipay_nickname)
+//                            binding2.tvCode.setText(R.string.txt_alipay_code)
                         }
 
                         getString(R.string.txt_bind_wechat_type) -> {
@@ -81,9 +81,9 @@ class BindAlipayWechatFragment : BaseFragment<FragmentBindAwBinding, BindCardVie
                             binding2.tvDefaultAlipayPayCode.setText(R.string.txt_wechat_code)
                             binding2.tvDefaultAlipayName.setText(R.string.txt_wechat_name_1)
                             binding2.ivBankIcon.setImageResource(R.mipmap.mine_default_wechat)
-                            /*binding2.tvName.setText(R.string.txt_wechat_name)
-                            binding2.tvNickname.setText(R.string.txt_wechat_nickname)
-                            binding2.tvCode.setText(R.string.txt_wechat_code)*/
+//                            binding2.tvName.setText(R.string.txt_wechat_name)
+                            binding2.tvDefaultAlipayNickName.setText(R.string.txt_wechat_nickname)
+//                            binding2.tvCode.setText(R.string.txt_wechat_code)
                         }
                     }
 
