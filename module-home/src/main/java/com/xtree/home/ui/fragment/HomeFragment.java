@@ -551,6 +551,15 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     return;
                 }
             }
+
+            @Override
+            public boolean getIsFrozen() {
+                if (mProfileVo != null && mProfileVo.isFrozen != 0) {
+                    showFreezePpw();
+                    return true;
+                }
+                return false;
+            }
         };
 
         gameAdapter = new GameAdapter(getContext(), mCallBack);
