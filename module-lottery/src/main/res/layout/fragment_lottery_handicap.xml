@@ -316,7 +316,7 @@
                 android:layout_marginEnd="2dp"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:visibility="@{TextUtils.isEmpty(model.prizeData)?View.GONE:View.VISIBLE}"
+                android:visibility="@{model.prizeData==null?View.GONE:View.VISIBLE}"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -332,20 +332,21 @@
                     android:textSize="12sp"
                     android:textColor="@color/lt_color_text3"/>
 
-                <ImageView
+                <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
-                    android:src="@drawable/prize_switch_off"
-                    android:onClick="@{model.showPrizeMenu}"/>
+                    android:background="@drawable/lt_selector_prize_switch_bg"
+                    android:button="@null"
+                    android:checked="@={model.prizeSwitchData}"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="9.0%"
-                    android:text="@{model.prizeData}"
+                    android:text="@{model.prizeData.name}"
                     android:textSize="12sp"
                     android:textColor="@color/lt_color_text16"/>
 

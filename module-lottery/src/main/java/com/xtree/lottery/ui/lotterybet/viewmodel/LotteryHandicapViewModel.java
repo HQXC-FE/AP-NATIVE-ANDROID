@@ -1,26 +1,27 @@
 package com.xtree.lottery.ui.lotterybet.viewmodel;
 
 import android.app.Application;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
-import com.xtree.lottery.data.config.Lottery;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.lottery.data.LotteryRepository;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.BonusNumbersRequest;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.ui.lotterybet.LotteryChipSettingDialogFragment;
+import com.xtree.lottery.ui.lotterybet.data.LotteryHandicapPrizeData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 
 import java.lang.ref.WeakReference;
@@ -59,7 +60,7 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
     //余额
     public MutableLiveData<String> balanceData = new MutableLiveData<>();
     //奖金玩法返点
-    public MutableLiveData<String> prizeData = new MutableLiveData<>();
+    public MutableLiveData<LotteryHandicapPrizeData> prizeData = new MutableLiveData<>(new LotteryHandicapPrizeData("0%", 2));
     //是否启用奖金玩法
     public MutableLiveData<Boolean> prizeSwitchData = new MutableLiveData<>(false);
     //当前有效投注项
@@ -70,17 +71,38 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
     public MutableLiveData<int[]> chips = new MutableLiveData<>(new int[]{10, 50, 100, 5000, 10000});
     //彩票信息
     public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
+    //返点数据
+    public static ArrayList<LotteryHandicapPrizeData> prizeMap = new ArrayList<>();
 
     public void initData(FragmentActivity mActivity, Lottery lottery) {
         setActivity(mActivity);
         lotteryLiveData.setValue(lottery);
         getHandicapMethods();
         getUserBalance();
+        initPrize();
+    }
+
+    //返点监听
+    private final Observer<Boolean> prizeObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(Boolean aBoolean) {
+            if (aBoolean) {
+                prizeData.setValue(prizeMap.get(1));
+            } else {
+                prizeData.setValue(prizeMap.get(0));
+            }
+        }
+    };
+
+    private void initPrize() {
         String profile = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
         ProfileVo profileVo = new Gson().fromJson(profile, ProfileVo.class);
+        prizeMap.clear();
+        prizeMap.add(new LotteryHandicapPrizeData("0%", 2));
         if (profileVo != null) {
-            prizeData.setValue(profileVo.rebate_percentage);
+            prizeMap.add(new LotteryHandicapPrizeData(profileVo.rebate_percentage, 1));
         }
+        prizeSwitchData.observeForever(prizeObserver);
     }
 
     private void setActivity(FragmentActivity mActivity) {
@@ -156,13 +178,6 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
     }
 
     /**
-     * 选择金额模式
-     */
-    public void showPrizeMenu(View anchorView) {
-        prizeSwitchData.setValue(Boolean.FALSE.equals(prizeSwitchData.getValue()));
-    }
-
-    /**
      * 快选金额
      */
     public void QuickPickAmount() {
@@ -193,7 +208,7 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
     /**
      * 投注
      */
-    public void bet() {
+    public void handicapBet() {
 
         List<LotteryBetRequest.BetOrderData> betOrders = betLiveData.getValue();
 
@@ -259,5 +274,6 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
             mActivity.clear();
             mActivity = null;
         }
+        prizeSwitchData.removeObserver(prizeObserver);
     }
 }

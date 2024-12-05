@@ -131,6 +131,14 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
             @Override
             public void onBetChange(List<LotteryBetRequest.BetOrderData> betOrderList) {
                 if (betOrderList != null && betOrderList.size() > 0) {
+                    int money = Integer.parseInt(viewModel.moneyLiveData.getValue());
+                    for (LotteryBetRequest.BetOrderData betOrderData : betOrderList) {
+                        //默认是2分倍率
+                        betOrderData.setMode(3);
+                        betOrderData.setMoney(money);
+                        betOrderData.setTimes((int) (money / 0.02));
+                        betOrderData.setOmodel(viewModel.prizeData.getValue().getMode());
+                    }
                     binding.getModel().betLiveData.setValue(betOrderList);
                 } else {
                     binding.getModel().betLiveData.setValue(null);
@@ -174,6 +182,13 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
             public void onClick(View v) {
                 binding.lotteryHandicapBetlayout.clearBet();
                 viewModel.betLiveData.setValue(null);
+            }
+        });
+
+        binding.lotteryHandicapBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.handicapBet();
             }
         });
 
