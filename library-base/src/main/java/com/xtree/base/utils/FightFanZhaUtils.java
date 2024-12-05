@@ -1,5 +1,7 @@
 package com.xtree.base.utils;
 
+import static com.xtree.base.utils.EventConstant.EVENT_UPLOAD_EXCEPTION;
+
 import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -11,7 +13,11 @@ import com.google.gson.Gson;
 import com.xtree.base.BuildConfig;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.fastest.ChangeH5LineUtil;
+import com.xtree.base.request.UploadExcetionReq;
+import com.xtree.base.vo.EventVo;
 import com.xtree.base.widget.BrowserActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -212,8 +218,13 @@ public class FightFanZhaUtils {
                 AppUtil.goBrowser(context,DomainUtil.getH5Domain2());
             }
 
-            //todo 上传到三方异常的接口  等3803上线
+            //上传到三方异常的接口
 
+            UploadExcetionReq req = new UploadExcetionReq();
+            req.setLogTag("thirdgame_domain_hijacked");
+            req.setApiUrl(businessUrl);
+            req.setMsg("反诈中心劫持 : " + businessUrl);
+            EventBus.getDefault().post(new EventVo(EVENT_UPLOAD_EXCEPTION, req));
 
         }
 

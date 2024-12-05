@@ -807,17 +807,6 @@ public class BrowserActivity extends AppCompatActivity {
             }
         }
 
-    }
-
-    private void uploadH5Error(String msg, String url) {
-        if (isGame) {
-            UploadExcetionReq req = new UploadExcetionReq();
-            req.setLogTag("thirdgame_domain_exception");
-            req.setApiUrl(url);
-            req.setMsg(msg);
-            EventBus.getDefault().post(new EventVo(EVENT_UPLOAD_EXCEPTION, req));
-        }
-
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
             if(FightFanZhaUtils.checkRequest(getBaseContext(),webResourceRequest,isGame,url)){
@@ -833,6 +822,19 @@ public class BrowserActivity extends AppCompatActivity {
             }
             return super.shouldOverrideUrlLoading(webView, webResourceRequest);
         }
+
+
+    }
+
+    private void uploadH5Error(String msg, String url) {
+        if (isGame) {
+            UploadExcetionReq req = new UploadExcetionReq();
+            req.setLogTag("thirdgame_domain_exception");
+            req.setApiUrl(url);
+            req.setMsg(msg);
+            EventBus.getDefault().post(new EventVo(EVENT_UPLOAD_EXCEPTION, req));
+        }
+
     }
 
     public boolean isGame() {
