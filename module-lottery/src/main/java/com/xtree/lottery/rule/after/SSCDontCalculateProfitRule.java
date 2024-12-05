@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.List;
 import java.util.Map;
@@ -17,13 +18,13 @@ public class SSCDontCalculateProfitRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
+    public boolean when(Facts facts) {
         String lotteryType = (String) facts.get("lotteryType");
         return "ssc".equals(lotteryType) && facts.get("currentPrizeModes") != null;
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
+    public void then(Facts facts) {
         String methodName = (String) facts.get("currentCategoryName") + facts.get("currentMethodName");
         boolean disabled = false;
 

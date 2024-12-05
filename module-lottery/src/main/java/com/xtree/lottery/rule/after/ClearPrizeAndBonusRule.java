@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.Map;
 
@@ -16,13 +17,13 @@ public class ClearPrizeAndBonusRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
+    public boolean when(Facts facts) {
         // 检查 currentPrizeModes 是否为空或不存在
         return facts.get("currentPrizeModes") == null;
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
+    public void then(Facts facts) {
         // 清除当前奖金和奖励
         facts.put("currentPrize", null);
         facts.put("currentBonus", null);

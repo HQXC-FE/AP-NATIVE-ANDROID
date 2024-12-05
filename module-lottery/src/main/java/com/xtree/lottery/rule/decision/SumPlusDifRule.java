@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,14 +24,14 @@ public class SumPlusDifRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
+    public boolean when(Facts facts) {
         // 检查是否包含 "sum-plus-dif"
         List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
         return ruleSuite != null && ruleSuite.contains("sum-plus-dif");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
+    public void then(Facts facts) {
         // 初始化数据
         List<List<Integer>> formatCodes = (List<List<Integer>>) facts.get("formatCodes");
         Map<String, Object> attached = (Map<String, Object>) facts.get("attached");

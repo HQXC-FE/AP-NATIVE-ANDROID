@@ -16,11 +16,13 @@ import com.xtree.lottery.BR
 import com.xtree.lottery.R
 import com.xtree.lottery.data.source.vo.UserMethodsVo
 import com.xtree.lottery.databinding.ActivityMainLtBinding
+import com.xtree.lottery.rule.EntryRule
 import com.xtree.lottery.ui.adapter.LotteryAdapter
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
 import me.xtree.mvvmhabit.base.BaseActivity
 import me.xtree.mvvmhabit.utils.SPUtils
+import org.jeasy.rules.api.Facts
 
 
 /**

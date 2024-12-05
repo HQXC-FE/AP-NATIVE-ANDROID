@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.List;
 import java.util.Map;
@@ -16,19 +17,20 @@ public class CombinationRule {
         return 19800;
     }
 
+
     @Condition
-    public boolean when(Map<String, Object> facts) {
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+    public boolean when(Facts facts) {
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite.contains("combination");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
+    public void then(Facts facts) {
+        List<List<String>> formatCodes = facts.get("formatCodes");
         int num = formatCodes.size();
 
-        for (List<String> item : formatCodes) {
-            num *= item.size();
+        for (List<String> codeList : formatCodes) {
+            num *= codeList.size();
         }
 
         facts.put("num", num);

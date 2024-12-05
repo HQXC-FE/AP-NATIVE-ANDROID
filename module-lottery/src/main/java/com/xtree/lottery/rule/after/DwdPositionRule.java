@@ -18,11 +18,11 @@ public class DwdPositionRule {
 
     @Condition
     public boolean when(Facts facts) {
-        boolean currentPrizeModes = (boolean) facts.get("currentPrizeModes");
-        String currentCategoryName = (String) facts.get("currentCategoryName");
-        List<String> currentCategoryFlag = (List<String>) facts.get("currentCategoryFlag");
-        List<String> pk10Alias = (List<String>) facts.get("pk10Alias");
-        List<String> jssmAlias = (List<String>) facts.get("jssmAlias");
+        boolean currentPrizeModes = facts.get("currentPrizeModes");
+        String currentCategoryName = facts.get("currentCategoryName");
+        List<String> currentCategoryFlag = facts.get("currentCategoryFlag");
+        List<String> pk10Alias = facts.get("pk10Alias");
+        List<String> jssmAlias = facts.get("jssmAlias");
 
         return currentPrizeModes &&
                 ("定位胆".equals(currentCategoryName) || "位置".equals(currentCategoryName)) &&
@@ -31,10 +31,10 @@ public class DwdPositionRule {
 
     @Action
     public void then(Facts facts) {
-        List<String> betPosChoose = (List<String>) facts.get("betPosChoose");
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
-        String currentBonus = (String) facts.get("currentBonus");
-        String currentPrize = (String) facts.get("currentPrize");
+        List<String> betPosChoose =facts.get("betPosChoose");
+        List<List<String>> formatCodes = facts.get("formatCodes");
+        String currentBonus = facts.get("currentBonus");
+        String currentPrize = facts.get("currentPrize");
 
         int posChooseNum = (betPosChoose != null)
                 ? (int) betPosChoose.stream().filter(item -> item != null && !item.isEmpty()).count()

@@ -2,8 +2,10 @@ package com.xtree.lottery.rule.decision;
 
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
+import org.jeasy.rules.annotation.Fact;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,13 +19,13 @@ public class SumPlusRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+    public boolean when(Facts facts) {
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite.contains("sum-plus");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
+    public void then(Facts facts) {
         List<Integer> scope = (List<Integer>) ((Map<String, Object>) facts.get("attached")).getOrDefault("scope", Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
         int number = (int) ((Map<String, Object>) facts.get("attached")).get("number");
         boolean isTail = (boolean) ((Map<String, Object>) facts.get("attached")).getOrDefault("isTail", false);

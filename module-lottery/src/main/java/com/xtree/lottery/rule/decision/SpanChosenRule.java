@@ -2,8 +2,10 @@ package com.xtree.lottery.rule.decision;
 
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
+import org.jeasy.rules.annotation.Fact;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +20,14 @@ public class SpanChosenRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
+    public boolean when(Facts facts) {
         // 检查是否包含 "span-chosen"
         List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
         return ruleSuite != null && ruleSuite.contains("span-chosen");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
+    public void then(Facts facts) {
         // 从 facts 中获取必要数据
         Integer number = (Integer) facts.get("attached.number");
         List<Integer> scope = (List<Integer>) facts.get("attached.scope");

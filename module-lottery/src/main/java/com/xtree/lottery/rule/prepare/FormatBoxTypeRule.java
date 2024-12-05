@@ -4,12 +4,13 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Rule(name = "Format Box Type", description = "格式化BOX类型")
+@Rule(name = "Format BOX Type", description = "Formats the codes when type is 'box' and lottery type is 'ssc'")
 public class FormatBoxTypeRule {
 
     @Priority
@@ -18,19 +19,23 @@ public class FormatBoxTypeRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
-        return "ssc".equals(facts.get("lotteryType")) && "box".equals(((Map<?, ?>) facts.get("currentMethod")).get("selectarea.type"));
+    public boolean when(Facts facts) {
+        String lotteryType = facts.get("lotteryType");
+        Map<String, Object> currentMethod = facts.get("currentMethod");
+        return "ssc".equals(lotteryType)
+                && currentMethod.containsKey("selectarea")
+                && "box".equals(((Map<?, ?>) currentMethod.get("selectarea")).get("type"));
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
-        List<Object> formatCodes = new ArrayList<>();
-        List<?> betCodes = (List<?>) ((Map<?, ?>) facts.get("bet")).get("codes");
+    public void then(Facts facts) {
+        List<String> betCodes = facts.get("betCodes");
+        List<List<String>> formatCodes = new ArrayList<>();
 
-        for (Object item : betCodes) {
-            List<Object> codeList = new ArrayList<>();
-            codeList.add(item);
-            formatCodes.add(codeList);
+        for (String code : betCodes) {
+            List<String> singleCode = new ArrayList<>();
+            singleCode.add(code);
+            formatCodes.add(singleCode);
         }
 
         facts.put("formatCodes", formatCodes);

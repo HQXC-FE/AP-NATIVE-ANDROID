@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,12 +20,12 @@ public class CommonLHCProcessingRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
+    public boolean when(Facts facts) {
         return ((List<String>) facts.get("ruleSuite")).contains("lhc-common");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
+    public void then(Facts facts) {
         List<Map<String, Object>> forDisplay = new ArrayList<>();
         List<Map<String, Object>> forSubmit = new ArrayList<>();
 

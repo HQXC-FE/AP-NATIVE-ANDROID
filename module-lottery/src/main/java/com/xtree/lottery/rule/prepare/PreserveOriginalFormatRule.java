@@ -4,11 +4,11 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.List;
-import java.util.Map;
 
-@Rule(name = "Preserve Original Format", description = "保持原有格式")
+@Rule(name = "Keep Original Format", description = "Keeps the original format if ruleSuite includes 'without-format-codes'")
 public class PreserveOriginalFormatRule {
 
     @Priority
@@ -17,14 +17,15 @@ public class PreserveOriginalFormatRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
-        List<?> ruleSuite = (List<?>) facts.get("ruleSuite");
-        return "ssc".equals(facts.get("lotteryType")) && ruleSuite.contains("without-format-codes");
+    public boolean when(Facts facts) {
+        String lotteryType = facts.get("lotteryType");
+        List<String> ruleSuite = facts.get("ruleSuite");
+        return "ssc".equals(lotteryType) && ruleSuite.contains("without-format-codes");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
-        String betCodes = (String) ((Map<?, ?>) facts.get("bet")).get("codes");
-        facts.put("formatCodes", betCodes);
+    public void then(Facts facts) {
+        List<String> betCodes = facts.get("betCodes");
+        facts.put("formatCodes", betCodes);  // 直接保持原有格式
     }
 }

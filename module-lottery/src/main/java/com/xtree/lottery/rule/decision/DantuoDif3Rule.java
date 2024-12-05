@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.List;
 import java.util.Map;
@@ -17,16 +18,16 @@ public class DantuoDif3Rule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
+    public boolean when(Facts facts) {
         // 检查是否包含 "dantuo-dif-3"
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite != null && ruleSuite.contains("dantuo-dif-3");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
+    public void then(Facts facts) {
         // 获取 formatCodes 数据
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
+        List<List<String>> formatCodes = facts.get("formatCodes");
 
         // 初始化 num 为 0
         int num = 0;

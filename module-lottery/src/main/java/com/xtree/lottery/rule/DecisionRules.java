@@ -6,6 +6,7 @@ import com.xtree.lottery.rule.decision.CombinationRule;
 import com.xtree.lottery.rule.decision.DantuoDif2Rule;
 import com.xtree.lottery.rule.decision.DantuoDif3Rule;
 import com.xtree.lottery.rule.decision.GeneralElectionRule;
+import com.xtree.lottery.rule.decision.GenericSingleBetRule;
 import com.xtree.lottery.rule.decision.LineMissRule;
 import com.xtree.lottery.rule.decision.MultiCombinationRule;
 import com.xtree.lottery.rule.decision.MultiRule;
@@ -14,7 +15,6 @@ import com.xtree.lottery.rule.decision.PositionChosenRule;
 import com.xtree.lottery.rule.decision.RankingChosenRule;
 import com.xtree.lottery.rule.decision.RankingPkRule;
 import com.xtree.lottery.rule.decision.SingleNumberMultipleBetsRule;
-import com.xtree.lottery.rule.decision.SingleRule;
 import com.xtree.lottery.rule.decision.SpanChosenRule;
 import com.xtree.lottery.rule.decision.SumPlusDifRule;
 import com.xtree.lottery.rule.decision.SumPlusRule;
@@ -25,7 +25,7 @@ import org.jeasy.rules.api.Rules;
 public class DecisionRules {
     public static void addRules(Rules rules) {
         rules.register(new MultiRule());
-        rules.register(new SingleRule());
+        rules.register(new GenericSingleBetRule());
         rules.register(new CombinationRule());
         rules.register(new MultiCombinationRule());
         rules.register(new SumPlusRule());

@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,14 +21,14 @@ public class AnyChosenRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+    public boolean when(Facts facts) {
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite.contains("any-chosen");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
+    public void then(Facts facts) {
+        List<List<String>> formatCodes = facts.get("formatCodes");
         int number = (int) ((Map<String, Object>) facts.get("attached")).get("number");
 
         int num = 0;

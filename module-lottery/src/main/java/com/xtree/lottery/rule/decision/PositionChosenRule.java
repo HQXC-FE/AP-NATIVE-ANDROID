@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.List;
 import java.util.Map;
@@ -17,19 +18,19 @@ public class PositionChosenRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
+    public boolean when(Facts facts) {
         // 从 facts 获取规则套件
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite != null && ruleSuite.contains("position-chosen");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
+    public void then(Facts facts) {
         // 从 facts 中获取相关数据
-        List<Boolean> poschoose = (List<Boolean>) facts.get("bet.poschoose");
-        Integer posnum = (Integer) facts.get("attached.posnum");
-        Integer number = (Integer) facts.get("attached.number");
-        Integer num = (Integer) facts.get("num");
+        List<Boolean> poschoose = facts.get("bet.poschoose");
+        Integer posnum = facts.get("attached.posnum");
+        Integer number = facts.get("attached.number");
+        Integer num = facts.get("num");
 
         if (poschoose == null || num == null) {
             throw new IllegalArgumentException("Missing required facts: poschoose or num");

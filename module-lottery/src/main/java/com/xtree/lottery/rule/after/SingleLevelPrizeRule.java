@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class SingleLevelPrizeRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
+    public boolean when(Facts facts) {
         List<String> applicableCategories = List.of("包组", "头", "头与尾");
         List<String> categoryFlags = (List<String>) facts.get("vnmNorAlias");
         categoryFlags.addAll((List<String>) facts.get("vnmMidSouAlias"));
@@ -32,7 +33,7 @@ public class SingleLevelPrizeRule {
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
+    public void then(Facts facts) {
         double currentPrize = (double) facts.get("currentPrize");
         double money = (double) facts.get("money");
         int attachedNumber = (int) facts.get("attachedNumber");

@@ -6,6 +6,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,16 +22,16 @@ public class TimesChosenRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+    public boolean when(Facts facts) {
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite.contains("times-chosen");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
-        Integer num = (Integer) facts.get("num");
-        Map<String, Object> attached = (Map<String, Object>) facts.get("attached");
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
+    public void then(Facts facts) {
+        Integer num = facts.get("num");
+        Map<String, Object> attached = facts.get("attached");
+        List<List<String>> formatCodes = facts.get("formatCodes");
         String categoryFlag = (String) ((Map<String, Object>) facts.get("currentCategory")).get("flag");
         String matchName = ((Map<String, Object>) facts.get("currentCategory")).get("name") + "-" + ((Map<String, Object>) facts.get("currentMethod")).get("groupName");
 

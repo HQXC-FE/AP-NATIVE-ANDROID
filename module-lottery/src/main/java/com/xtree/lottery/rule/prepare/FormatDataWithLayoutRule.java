@@ -4,12 +4,13 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Rule(name = "Format Data With Layout", description = "格式化数据格式（有布局）")
+@Rule(name = "Format Data with Layout", description = "Formats the codes based on the layout if lottery type is 'ssc'")
 public class FormatDataWithLayoutRule {
 
     @Priority
@@ -18,20 +19,28 @@ public class FormatDataWithLayoutRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
-        return "ssc".equals(facts.get("lotteryType")) && ((Map<?, ?>) facts.get("currentMethod")).containsKey("selectarea.layout");
+    public boolean when(Facts facts) {
+        String lotteryType = facts.get("lotteryType");
+        Map<String, Object> currentMethod = facts.get("currentMethod");
+        return "ssc".equals(lotteryType) && currentMethod.containsKey("selectarea")
+                && currentMethod.get("selectarea") instanceof Map
+                && ((Map<?, ?>) currentMethod.get("selectarea")).containsKey("layout");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
-        List<Object> formatCodes = new ArrayList<>();
-        List<?> layout = (List<?>) ((Map<?, ?>) facts.get("currentMethod")).get("selectarea.layout");
-        List<?> betCodes = (List<?>) ((Map<?, ?>) facts.get("bet")).get("codes");
+    public void then(Facts facts) {
+        Map<String, Object> currentMethod = facts.get("currentMethod");
+        List<Map<String, Object>> layout = (List<Map<String, Object>>) ((Map<?, ?>) currentMethod.get("selectarea")).get("layout");
+        List<List<String>> betCodes = (List<List<String>>) facts.get("betCodes");
 
-        for (int i = 0; i < layout.size(); i++) {
-            Map<?, ?> item = (Map<?, ?>) layout.get(i);
-            int place = (int) item.get("place");
-            formatCodes.addAll(place, (List<?>) betCodes.get(i));
+        Map<String, List<String>> formatCodes = facts.get("formatCodes");
+
+        for (int index = 0; index < layout.size(); index++) {
+            Map<String, Object> item = layout.get(index);
+            String place = (String) item.get("place");
+            List<String> codesAtPlace = formatCodes.getOrDefault(place, new ArrayList<>());
+            codesAtPlace.addAll(betCodes.get(index));
+            formatCodes.put(place, codesAtPlace);
         }
 
         facts.put("formatCodes", formatCodes);

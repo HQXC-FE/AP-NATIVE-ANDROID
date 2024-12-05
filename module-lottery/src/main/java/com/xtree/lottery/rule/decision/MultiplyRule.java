@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.List;
 import java.util.Map;
@@ -17,19 +18,19 @@ public class MultiplyRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+    public boolean when(Facts facts) {
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite.stream().anyMatch(item -> item.matches("^multiply-.*$"));
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+    public void then(Facts facts) {
+        List<String> ruleSuite = facts.get("ruleSuite");
 
         String matchedRule = ruleSuite.stream().filter(item -> item.matches("^multiply-.*$")).findFirst().orElse("");
         int multiplier = Integer.parseInt(matchedRule.split("multiply-")[1]);
 
-        int num = (int) facts.get("num");
+        int num = facts.get("num");
         num *= multiplier;
 
         facts.put("num", num);

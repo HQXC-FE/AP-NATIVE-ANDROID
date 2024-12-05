@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,71 +19,76 @@ public class MultiCombinationRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+    public boolean when(Facts facts) {
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite.contains("multi-combination");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
-        List<Map<String, Object>> layout = (List<Map<String, Object>>) ((Map<String, Object>) facts.get("currentMethod")).get("selectarea.layout");
+    public void then(Facts facts) {
+        List<List<String>> formatCodes = facts.get("formatCodes");
+        List<Map<String, Object>> layout = facts.get("layout");  // selectarea.layout 结构化为 Map
+        boolean noFinish = false;
 
-        boolean noFinish = layout.stream().anyMatch(item -> formatCodes.get((int) item.get("place")).size() < (int) item.get("minchosen"));
+        // 检查是否有任何行未达到最小选择数
+        for (Map<String, Object> item : layout) {
+            int place = (int) item.get("place");
+            int minChosen = (int) item.get("minchosen");
+
+            if (formatCodes.get(place).size() < minChosen) {
+                noFinish = true;
+                break;
+            }
+        }
 
         if (noFinish) {
             facts.put("num", 0);
-            return;
-        }
+        } else {
+            // 计算组合数
+            List<List<List<String>>> eachCombination = IntStream.range(0, formatCodes.size())
+                    .mapToObj(index -> {
+                        int minChosen = (int) layout.get(index).get("minchosen");
+                        return getCombinations(formatCodes.get(index), minChosen);
+                    }).collect(Collectors.toList());
 
-        List<List<List<String>>> eachCombination = IntStream.range(0, formatCodes.size())
-                .mapToObj(index -> getCombinations(formatCodes.get(index), (int) layout.get(index).get("minchosen")))
-                .collect(Collectors.toList());
+            List<List<String>> allCombination = cartesianProduct(eachCombination);
 
-        List<List<String>> allCombination = cartesianProduct(eachCombination);
+            long num = allCombination.stream()
+                    .filter(item -> item.size() == new HashSet<>(item).size())  // 去重判断
+                    .count();
 
-        long validCombinations = allCombination.stream()
-                .filter(comb -> comb.size() == new HashSet<>(comb).size())
-                .count();
-
-        facts.put("num", (int) validCombinations);
-    }
-
-    private List<List<String>> getCombinations(List<String> items, int minChosen) {
-        if (items.size() < minChosen) return Collections.emptyList();
-        List<List<String>> combinations = new ArrayList<>();
-        generateCombinations(items, minChosen, 0, new ArrayList<>(), combinations);
-        return combinations;
-    }
-
-    private void generateCombinations(List<String> items, int minChosen, int start, List<String> current, List<List<String>> result) {
-        if (current.size() == minChosen) {
-            result.add(new ArrayList<>(current));
-            return;
-        }
-        for (int i = start; i < items.size(); i++) {
-            current.add(items.get(i));
-            generateCombinations(items, minChosen, i + 1, current, result);
-            current.remove(current.size() - 1);
+            facts.put("num", (int) num);
         }
     }
 
-    private List<List<String>> cartesianProduct(List<List<List<String>>> lists) {
+    // 获取组合的方法
+    private List<List<String>> getCombinations(List<String> items, int k) {
         List<List<String>> result = new ArrayList<>();
-        cartesianProductHelper(lists, 0, new ArrayList<>(), result);
+        combine(items, new ArrayList<>(), 0, k, result);
         return result;
     }
 
-    private void cartesianProductHelper(List<List<List<String>>> lists, int depth, List<String> current, List<List<String>> result) {
-        if (depth == lists.size()) {
-            result.add(new ArrayList<>(current));
+    private void combine(List<String> items, List<String> temp, int start, int k, List<List<String>> result) {
+        if (temp.size() == k) {
+            result.add(new ArrayList<>(temp));
             return;
         }
-        for (List<String> list : lists.get(depth)) {
-            current.addAll(list);
-            cartesianProductHelper(lists, depth + 1, current, result);
-            for (int i = 0; i < list.size(); i++) current.remove(current.size() - 1);
+        for (int i = start; i < items.size(); i++) {
+            temp.add(items.get(i));
+            combine(items, temp, i + 1, k, result);
+            temp.remove(temp.size() - 1);
         }
+    }
+
+    // 笛卡尔积（所有行组合项合并）
+    private List<List<String>> cartesianProduct(List<List<List<String>>> lists) {
+        return lists.stream().reduce((a, b) ->
+                a.stream().flatMap(x -> b.stream().map(y -> {
+                    List<String> newList = new ArrayList<>(x);
+                    newList.addAll(y);
+                    return newList;
+                })).collect(Collectors.toList())
+        ).orElse(Collections.emptyList());
     }
 }
 

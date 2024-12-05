@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.HashSet;
 import java.util.List;
@@ -19,14 +20,14 @@ public class RankingChosenRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
+    public boolean when(Facts facts) {
         // 检查是否包含 "ranking-chosen"
         List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
         return ruleSuite != null && ruleSuite.contains("ranking-chosen");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
+    public void then(Facts facts) {
         // 获取相关数据
         List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
         Integer num = (Integer) facts.get("num");

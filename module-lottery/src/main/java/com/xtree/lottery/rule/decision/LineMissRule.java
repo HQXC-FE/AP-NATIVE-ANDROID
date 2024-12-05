@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.List;
 import java.util.Map;
@@ -17,15 +18,15 @@ public class LineMissRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+    public boolean when(Facts facts) {
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite.stream().anyMatch(item -> item.matches("^line-miss-.*$"));
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
+    public void then(Facts facts) {
+        List<String> ruleSuite = facts.get("ruleSuite");
+        List<List<String>> formatCodes = facts.get("formatCodes");
 
         String matchedRule = ruleSuite.stream().filter(item -> item.matches("^line-miss-.*$")).findFirst().orElse("");
         int limitNum = Integer.parseInt(matchedRule.split("line-miss-")[1]);

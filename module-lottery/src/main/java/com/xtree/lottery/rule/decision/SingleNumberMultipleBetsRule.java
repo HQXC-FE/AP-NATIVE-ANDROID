@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.List;
 import java.util.Map;
@@ -17,33 +18,42 @@ public class SingleNumberMultipleBetsRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
-        return ruleSuite.stream().anyMatch(item -> item.matches("^add-bet-num-.*$"));
+    public boolean when(Facts facts) {
+        List<String> ruleSuite = facts.get("ruleSuite");
+        return ruleSuite != null && ruleSuite.stream().anyMatch(item -> item.matches("^add-bet-num-.*$"));
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
-        Map<String, Object> currentCategory = (Map<String, Object>) facts.get("currentCategory");
-        String currentFlag = (String) currentCategory.get("flag");
-        List<String> vnmMidSouAlias = (List<String>) facts.get("vnmMidSouAlias");
-        List<String> vnmFastAlias = (List<String>) facts.get("vnmFastAlias");
+    public void then(Facts facts) {
+        List<String> ruleSuite = facts.get("ruleSuite");
+        String currentCategoryFlag = facts.get("currentCategory.flag");
+        String currentCategoryName = facts.get("currentCategory.name");
+        String currentMethodGroupName = facts.get("currentMethod.groupName");
+        List<String> vnmMidSouAlias = facts.get("vnmMidSouAlias");
+        List<String> vnmFastAlias = facts.get("vnmFastAlias");
+        List<Map<String, Object>> mapMatchNameToNumList = facts.get("mapMatchNameToNumList");
+        int num = facts.get("num");
 
-        int num = (int) facts.get("num");
-
-        if (vnmMidSouAlias.contains(currentFlag) || vnmFastAlias.contains(currentFlag)) {
-            List<Map<String, Object>> mapMatchNameToNumList = (List<Map<String, Object>>) facts.get("mapMatchNameToNumList");
-            String matchName = currentCategory.get("name") + "-" + facts.get("currentMethod.groupName");
+        // 判断是否属于特定彩种
+        if (vnmMidSouAlias.contains(currentCategoryFlag) || vnmFastAlias.contains(currentCategoryFlag)) {
+            String matchName = (currentCategoryName + "-" + currentMethodGroupName).trim();
             for (Map<String, Object> item : mapMatchNameToNumList) {
-                if (matchName.trim().equals(item.get("name"))) {
+                if (matchName.equals(item.get("name"))) {
                     num *= (int) item.get("num");
+                    break;
                 }
             }
         } else {
-            String matchedRule = ruleSuite.stream().filter(item -> item.matches("^add-bet-num-.*$")).findFirst().orElse("");
-            int multiplier = Integer.parseInt(matchedRule.split("add-bet-num-")[1]);
-            num *= multiplier;
+            // 处理一般情况
+            String matchedRule = ruleSuite.stream()
+                    .filter(item -> item.matches("^add-bet-num-.*$"))
+                    .findFirst()
+                    .orElse(null);
+
+            if (matchedRule != null) {
+                int multiplier = Integer.parseInt(matchedRule.split("add-bet-num-")[1]);
+                num *= multiplier;
+            }
         }
 
         facts.put("num", num);

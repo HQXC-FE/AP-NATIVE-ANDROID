@@ -4,6 +4,7 @@ import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
+import org.jeasy.rules.api.Facts;
 
 import java.util.List;
 import java.util.Map;
@@ -17,17 +18,17 @@ public class MultiRule {
     }
 
     @Condition
-    public boolean when(Map<String, Object> facts) {
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+    public boolean when(Facts facts) {
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite.contains("multi");
     }
 
     @Action
-    public void then(Map<String, Object> facts) {
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
+    public void then(Facts facts) {
+        List<List<String>> formatCodes = facts.get("formatCodes");
         int num = formatCodes.stream()
                 .mapToInt(List::size)
-                .reduce(1, (a, b) -> a * b); // 乘积计算
+                .reduce(1, (a, b) -> a * b);  // 计算所有子列表长度的乘积
 
         facts.put("num", num);
     }

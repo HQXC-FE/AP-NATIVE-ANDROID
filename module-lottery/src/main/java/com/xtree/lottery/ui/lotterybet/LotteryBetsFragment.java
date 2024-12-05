@@ -25,6 +25,7 @@ import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.databinding.FragmentLotteryBetsBinding;
 import com.xtree.lottery.inter.ParentChildCommunication;
+import com.xtree.lottery.rule.EntryRule;
 import com.xtree.lottery.ui.lotterybet.data.LotteryMoneyData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel;
@@ -39,6 +40,7 @@ import com.xtree.lottery.utils.LotteryAnalyzer;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jeasy.rules.api.Facts;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -149,6 +151,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
                         betOrderData.setOmodel(viewModel.prizeData.getValue().getValue());
                     }
                     binding.getModel().betLiveData.setValue(betOrderList.get(0));
+                    EntryRule.getInstance().startEngine(new Facts());
                 } else {
                     binding.getModel().betLiveData.setValue(null);
                 }
