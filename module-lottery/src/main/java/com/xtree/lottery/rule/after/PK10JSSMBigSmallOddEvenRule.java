@@ -62,14 +62,14 @@ public class PK10JSSMBigSmallOddEvenRule {
             case "大小单双前三大小个数":
             case "大小单双中三大小个数":
             case "大小单双后三大小个数":
-                List<String> codeJoinCol = formatCodes.stream().flatMap(List::stream).toList();
-                String codeJoin = String.join("", codeJoinCol);
-                int num = facts.get("num");
-                if (num < 3 && List.of("全大", "全小", "全大全小").contains(codeJoin)) {
+                List<String> codeJoinCol1 = formatCodes.stream().flatMap(List::stream).toList();
+                String codeJoin1 = String.join("", codeJoinCol1);
+                int num1 = facts.get("num");
+                if (num1 < 3 && List.of("全大", "全小", "全大全小").contains(codeJoin1)) {
                     facts.put("currentBonus", splitBonusOrPrize(currentBonus, 1));
                     facts.put("currentPrize", splitBonusOrPrize(currentPrize, 1));
                 }
-                if (num < 3 && List.of("2大1小", "1大2小", "1大2小2大1小").contains(codeJoin)) {
+                if (num1 < 3 && List.of("2大1小", "1大2小", "1大2小2大1小").contains(codeJoin1)) {
                     facts.put("currentBonus", splitBonusOrPrize(currentBonus, 0));
                     facts.put("currentPrize", splitBonusOrPrize(currentPrize, 0));
                 }
@@ -77,14 +77,14 @@ public class PK10JSSMBigSmallOddEvenRule {
             case "大小单双前三单双个数":
             case "大小单双中三单双个数":
             case "大小单双后三单双个数": {
-                List<String> codeJoinCol = formatCodes.stream().flatMap(List::stream).toList();
-                String codeJoin = String.join("", codeJoinCol);
-                int num = facts.get("num");
-                if (num < 3 && List.of("全单", "全双", "全单全双").contains(codeJoin)) {
+                List<String> codeJoinCol2 = formatCodes.stream().flatMap(List::stream).toList();
+                String codeJoin2 = String.join("", codeJoinCol2);
+                int num2 = facts.get("num");
+                if (num2 < 3 && List.of("全单", "全双", "全单全双").contains(codeJoin2)) {
                     facts.put("currentBonus", splitBonusOrPrize(currentBonus, 1));
                     facts.put("currentPrize", splitBonusOrPrize(currentPrize, 1));
                 }
-                if (num < 3 && List.of("2单1双", "1单2双", "1单2双2单1双").contains(codeJoin)) {
+                if (num2 < 3 && List.of("2单1双", "1单2双", "1单2双2单1双").contains(codeJoin2)) {
                     facts.put("currentBonus", splitBonusOrPrize(currentBonus, 0));
                     facts.put("currentPrize", splitBonusOrPrize(currentPrize, 0));
                 }
