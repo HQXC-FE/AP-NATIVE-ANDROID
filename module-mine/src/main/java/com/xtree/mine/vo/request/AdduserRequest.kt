@@ -8,11 +8,18 @@ data class AdduserRequest(
     val userpass: String,
     val nikename: String,
 
-    val esportspoint: String,
+    val point: String,//point     # 彩票返点
+    val esportspoint: String, //电竞返点
     val fishingpoint: String,//新增捕鱼分红
-    val point: String,
-    val livepoint: String,
-    val sportpoint: String,
-    val pokerpoint: String,
 
+    val livepoint: String,//# 真人返点
+    val pokerpoint: String,//# 棋牌返点
+    val sportpoint: String,//# 体育返点
+
+  /*  point     # 彩票返点
+    esportspoint   # 电竞返点
+fishingpoint   # 捕鱼返点
+livepoint      # 真人返点
+pokerpoint   # 棋牌返点
+sportpoint    # 体育返点*/
 )
