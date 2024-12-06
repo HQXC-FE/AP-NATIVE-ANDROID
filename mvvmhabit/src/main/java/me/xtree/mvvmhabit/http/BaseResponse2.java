@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * 老接口返回的数据基类(父类), 适合老接口用
  */
-public class BaseResponse2 {
+public class BaseResponse2 <T>{
 
     public String webtitle; // "",
     //public String sSystemImagesAndCssPath; // "",
@@ -42,6 +42,16 @@ public class BaseResponse2 {
     //public String  endDate; // "2024-01-09 23:59:59",
     //public String  platform; // "FBXC"
     //}
+    private T data;
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+
     public String today; // "2024-01-08",
     public String starttime; // "2023-08-08 00:00:00",
     public String endtime; // "2024-01-09 23:59:59",
@@ -62,6 +72,16 @@ public class BaseResponse2 {
     @Expose
     public String message; // "页面超时！请重试。",
     public AuthVo authorization;
+
+    private int status = -1;
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
 
     public static class ICountVo {
         public String out; // 465,

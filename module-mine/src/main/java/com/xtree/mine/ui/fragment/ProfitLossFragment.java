@@ -3,6 +3,7 @@ package com.xtree.mine.ui.fragment;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -44,6 +45,7 @@ import java.util.List;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
  * 盈亏报表
@@ -334,6 +336,12 @@ public class ProfitLossFragment extends BaseFragment<FragmentReportProfitBinding
                 binding.llSum.tvwSumSactivePrize.setText(vo.totalCount.sactive_prize);
 
                 binding.llSum.tvwSumNetProfit.setText(vo.totalCount.settlement); // 会员净输赢
+            }
+        });
+
+        viewModel.liveDataException.observe(this , vo->{
+            if (!TextUtils.isEmpty(vo.message)){
+                ToastUtils.showError(vo.message);
             }
         });
 
