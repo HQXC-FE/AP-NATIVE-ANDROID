@@ -83,7 +83,7 @@ object FastestMonitorCache {
 
     fun getFastestScore(domain: TopSpeedDomain): Long {
 
-        val app_response_speed_max =  SPUtils.getInstance().getInt(SPKeyGlobal.APP_Response_Speed_Max)
+        val app_response_speed_max =  SPUtils.getInstance().getLong(SPKeyGlobal.APP_Response_Speed_Max)
         CfLog.i("****** SettingsVo app_response_speed_max " + app_response_speed_max)
 
         scoreCacheList.findLast {
@@ -98,7 +98,7 @@ object FastestMonitorCache {
             }
 
             if(domain.speedScore > app_response_speed_max && app_response_speed_max > 0){
-                domain.speedScore = app_response_speed_max.toLong();
+                domain.speedScore = app_response_speed_max;
             }
 
             scoreCacheList.remove(it)
@@ -109,7 +109,7 @@ object FastestMonitorCache {
         } ?: run {
             domain.speedScore = domain.speedSec
             if(domain.speedScore > app_response_speed_max && app_response_speed_max > 0){
-                domain.speedScore = app_response_speed_max.toLong();
+                domain.speedScore = app_response_speed_max;
             }
             scoreCacheList.add(domain)
             return domain.speedScore

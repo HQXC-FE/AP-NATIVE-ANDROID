@@ -23,7 +23,7 @@ public class SettingsVo implements Parcelable {
     // 测速扣除百分比
     public long app_response_speed_calculation;
     //推荐测速上限设置
-    public long app_response_speed_max;
+    public long app_response_speed_max = -1;
 
     // Constructor for Parcelable
     protected SettingsVo(Parcel in) {
