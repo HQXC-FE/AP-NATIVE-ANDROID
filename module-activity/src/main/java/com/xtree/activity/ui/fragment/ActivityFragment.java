@@ -47,7 +47,7 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel.readCache();
+        //viewModel.readCache();
         viewModel.getNewList();
     }
 
