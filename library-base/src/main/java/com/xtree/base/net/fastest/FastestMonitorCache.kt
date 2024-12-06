@@ -3,6 +3,7 @@ package com.xtree.base.net.fastest
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.TypeReference
 import com.xtree.base.global.SPKeyGlobal
+import com.xtree.base.utils.CfLog
 import com.xtree.base.vo.TopSpeedDomain
 import me.xtree.mvvmhabit.utils.SPUtils
 
@@ -81,6 +82,10 @@ object FastestMonitorCache {
     }
 
     fun getFastestScore(domain: TopSpeedDomain): Long {
+
+        val app_response_speed_max =  SPUtils.getInstance().getInt(SPKeyGlobal.APP_Response_Speed_Max)
+        CfLog.i("****** SettingsVo app_response_speed_max " + app_response_speed_max)
+
         scoreCacheList.findLast {
             it.url.equals(domain.url)
         }?.let {
@@ -92,6 +97,10 @@ object FastestMonitorCache {
                 domain.speedScore = it.speedScore - (it.speedScore * SPEED_CALCULATION).toLong()
             }
 
+            if(domain.speedScore > app_response_speed_max && app_response_speed_max > 0){
+                domain.speedScore = app_response_speed_max.toLong();
+            }
+
             scoreCacheList.remove(it)
 
             scoreCacheList.add(domain)
@@ -99,6 +108,9 @@ object FastestMonitorCache {
             return domain.speedScore
         } ?: run {
             domain.speedScore = domain.speedSec
+            if(domain.speedScore > app_response_speed_max && app_response_speed_max > 0){
+                domain.speedScore = app_response_speed_max.toLong();
+            }
             scoreCacheList.add(domain)
             return domain.speedScore
         }

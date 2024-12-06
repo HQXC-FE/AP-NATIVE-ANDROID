@@ -88,6 +88,8 @@ public class SPKeyGlobal {
     public static final String WS_EXPIRE_TIME ="ws_expire_time";
     // 测速扣除百分比
     public static final String APP_RESPONSE_SPEED_CALCULATION ="app_response_speed_calculation";
+    //推荐测速上限设置
+    public static final String APP_Response_Speed_Max ="app_response_speed_max";
     //websocket
 
 }
