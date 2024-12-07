@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.decision;
 
+import com.xtree.lottery.rule.Matchers;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -9,6 +11,8 @@ import org.jeasy.rules.api.Facts;
 import java.util.List;
 import java.util.Map;
 
+
+//Todo
 @Rule(name = "SingleNumberMultipleBetsRule", description = "单式 一号多注")
 public class SingleNumberMultipleBetsRule {
 
@@ -26,20 +30,19 @@ public class SingleNumberMultipleBetsRule {
     @Action
     public void then(Facts facts) {
         List<String> ruleSuite = facts.get("ruleSuite");
-        String currentCategoryFlag = facts.get("currentCategory.flag");
-        String currentCategoryName = facts.get("currentCategory.name");
-        String currentMethodGroupName = facts.get("currentMethod.groupName");
-        List<String> vnmMidSouAlias = facts.get("vnmMidSouAlias");
-        List<String> vnmFastAlias = facts.get("vnmFastAlias");
-        List<Map<String, Object>> mapMatchNameToNumList = facts.get("mapMatchNameToNumList");
+        Map<String, String> currentCategory = facts.get("currentCategory");
+        Map<String, String> currentMethod = facts.get("currentMethod");
+        String currentCategoryFlag = currentCategory.get("flag");
+        String currentCategoryName = currentCategory.get("name");
+        String currentMethodGroupName = currentMethod.get("groupName");
         int num = facts.get("num");
 
         // 判断是否属于特定彩种
-        if (vnmMidSouAlias.contains(currentCategoryFlag) || vnmFastAlias.contains(currentCategoryFlag)) {
+        if (Matchers.vnmMidSouAlias.contains(currentCategoryFlag) || Matchers.vnmFastAlias.contains(currentCategoryFlag)) {
             String matchName = (currentCategoryName + "-" + currentMethodGroupName).trim();
-            for (Map<String, Object> item : mapMatchNameToNumList) {
-                if (matchName.equals(item.get("name"))) {
-                    num *= (int) item.get("num");
+            for (Map.Entry<String, Integer> item : Matchers.mapMatchNameToNumList.entrySet()) {
+                if (matchName.equals(item.getKey())) {
+                    num *= item.getValue();
                     break;
                 }
             }

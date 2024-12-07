@@ -1,6 +1,7 @@
 package com.xtree.lottery.rule;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -650,6 +651,64 @@ public class Matchers {
             Map.entry("头-头", 1),
             Map.entry("头与尾-头与尾", 2)
     );
+
+        // 时时彩部分
+        public static final List<String> sscAlias = Arrays.asList(
+                "cqssc", "hn1fc", "hn5fc", "xjssc", "tjssc", "jnd30m", "rd1fc", "rd2fc", "txffc", "qqffc",
+                "rbffc", "xgffc", "ynffc", "cq30s", "tx30s", "mmc", "txdsq", "txssq", "txwfc", "eosffc",
+                "jdcqssc", "sytxffc", "cqffc", "cq5fc", "tg60s", "tg300s", "qq30m", "xgwfc", "ynwfc",
+                "qq1fc", "syqiqu", "azxy5", "zfbffc", "btcffc", "zfb5fc", "hntc", "lztc", "mltc", "tgfctc",
+                "gsjp", "gskr", "gshk", "gscn", "gstw", "gssg", "gseg", "gsde", "gsgb", "gsru", "gsin",
+                "gsus", "gsth", "ynhn", "pl5", "tlzc", "hnvip", "ynma", "gsb3y", "gsb5y", "baac",
+                "bnbtcffc", "bnbtcwfc", "bnethffc", "bnethwfc", "okbtcffc", "okbtcwfc", "okethffc",
+                "okethwfc", "hashffc", "hashsfc", "hashwfc"
+        );
+
+        // 11选5部分
+        public static final List<String> _11x5Alias = Arrays.asList(
+                "gd11x5", "jx11x5", "sd11x5", "sh11x5", "ah11x5", "jnd11x5", "tg11x5", "js11x5",
+                "gx11x5", "hlj11x5", "hb11x5", "ln11x5", "tg11x5ff", "yn11x5"
+        );
+
+        // 3D 排列3
+        public static final List<String> _3dAlias = Arrays.asList("3dfc", "pl3", "3djnd");
+
+        // PK10
+        public static final List<String> pk10Alias = Arrays.asList(
+                "pk10", "xyft", "ydl10", "jssc", "ynpk10ff", "ynpk10wf", "azxy10"
+        );
+
+        // jssm
+        public static final List<String> jssmAlias = Arrays.asList("jssm");
+
+        // 快3
+        public static final List<String> k3Alias = Arrays.asList("jsk3", "ahk3", "gxk3", "hbk3", "hnks", "jlks");
+
+        // vnm - 北部
+        public static final List<String> vnmNorAlias = Arrays.asList("vnn");
+
+        // vnm - 中部, 南部
+        public static final List<String> vnmMidSouAlias = Arrays.asList(
+                "sfc", "fac", "dolc", "gnc", "xxc", "qhc", "pdc", "gzc", "gpc", "jlc", "lsc", "gyc",
+                "dnc", "kgc", "fzmsc", "joc", "ttc", "blc", "bzc", "tdc", "tnc", "jyc", "szc", "ajc",
+                "xlc", "psc", "pyc", "ylc", "crc", "pfc", "lac", "hjc", "qjc", "jjc", "dlc"
+        );
+
+        // vnm - 极速
+        public static final List<String> vnmFastAlias = Arrays.asList("vnffc", "vnwfc");
+
+        // 类型和别名映射
+        public static final Map<String, List<String>> lotteryAliasMap = Map.of(
+                "ssc", sscAlias,
+                "11x5", _11x5Alias,
+                "3d", _3dAlias,
+                "pk10", pk10Alias,
+                "jssm", jssmAlias,
+                "k3", k3Alias,
+                "vnmNorth", vnmNorAlias,
+                "vnmMidSouth", vnmMidSouAlias,
+                "vnmFast", vnmFastAlias
+        );
 
     /**
      * 玩法对规则指纹的匹配关系(除去单式)

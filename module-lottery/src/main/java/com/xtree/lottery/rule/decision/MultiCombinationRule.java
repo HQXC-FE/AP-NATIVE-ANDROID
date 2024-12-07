@@ -6,7 +6,11 @@ import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -27,7 +31,9 @@ public class MultiCombinationRule {
     @Action
     public void then(Facts facts) {
         List<List<String>> formatCodes = facts.get("formatCodes");
-        List<Map<String, Object>> layout = facts.get("layout");  // selectarea.layout 结构化为 Map
+        Map<String, Map<String, List<Map<String, Object>>>> currentMethod = facts.get("currentMethod");
+        Map<String, List<Map<String, Object>>> selectarea = currentMethod.get("selectarea");  // selectarea.layout 结构化为 Map
+        List<Map<String, Object>> layout = selectarea.get("layout");
         boolean noFinish = false;
 
         // 检查是否有任何行未达到最小选择数

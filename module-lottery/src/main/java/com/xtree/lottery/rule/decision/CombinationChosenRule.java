@@ -20,19 +20,19 @@ public class CombinationChosenRule {
     @Condition
     public boolean when(Facts facts) {
         // 检查是否包含 "combination-chosen"
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite != null && ruleSuite.contains("combination-chosen");
     }
 
     @Action
     public void then(Facts facts) {
         // 获取相关数据
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
-        Integer number = (Integer) facts.get("attached.number");
-        Integer num = (Integer) facts.get("num");
+        List<List<String>> formatCodes = facts.get("formatCodes");
+        Map<String, Integer> attached = facts.get("attached");
+        Integer number = attached.get("attached");
 
         // 检查输入的有效性
-        if (formatCodes == null || formatCodes.isEmpty() || number == null || num == null) {
+        if (formatCodes == null || formatCodes.isEmpty() || number == null) {
             facts.put("num", 0);
             return;
         }

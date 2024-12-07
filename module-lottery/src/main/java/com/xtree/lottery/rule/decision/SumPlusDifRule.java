@@ -26,16 +26,16 @@ public class SumPlusDifRule {
     @Condition
     public boolean when(Facts facts) {
         // 检查是否包含 "sum-plus-dif"
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite != null && ruleSuite.contains("sum-plus-dif");
     }
 
     @Action
     public void then(Facts facts) {
         // 初始化数据
-        List<List<Integer>> formatCodes = (List<List<Integer>>) facts.get("formatCodes");
-        Map<String, Object> attached = (Map<String, Object>) facts.get("attached");
-        Integer num = (Integer) facts.get("num");
+        List<List<Integer>> formatCodes = facts.get("formatCodes");
+        Map<String, Object> attached = facts.get("attached");
+        Integer num = facts.get("num");
         if (formatCodes == null || formatCodes.isEmpty() || attached == null || num == null) {
             facts.put("num", 0);
             return;

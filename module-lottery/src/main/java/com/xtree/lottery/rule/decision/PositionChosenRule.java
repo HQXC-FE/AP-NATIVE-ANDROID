@@ -27,9 +27,10 @@ public class PositionChosenRule {
     @Action
     public void then(Facts facts) {
         // 从 facts 中获取相关数据
-        List<Boolean> poschoose = facts.get("bet.poschoose");
-        Integer posnum = facts.get("attached.posnum");
-        Integer number = facts.get("attached.number");
+        List<Boolean> poschoose = ((Map<String, List<Boolean>>) facts.get("betposchoose")).get("poschoose");
+
+        Integer posnum = (Integer) ((Map<String, Object>) facts.get("attached")).get("posnum");
+        Integer number = (Integer) ((Map<String, Object>) facts.get("attached")).get("number");
         Integer num = facts.get("num");
 
         if (poschoose == null || num == null) {

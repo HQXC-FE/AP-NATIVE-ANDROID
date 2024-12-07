@@ -24,14 +24,15 @@ public class FormatDataWithLayoutRule {
         Map<String, Object> currentMethod = facts.get("currentMethod");
         return "ssc".equals(lotteryType) && currentMethod.containsKey("selectarea")
                 && currentMethod.get("selectarea") instanceof Map
-                && ((Map<?, ?>) currentMethod.get("selectarea")).containsKey("layout");
+                && ((Map<String, Object>) currentMethod.get("selectarea")).containsKey("layout");
     }
 
     @Action
     public void then(Facts facts) {
         Map<String, Object> currentMethod = facts.get("currentMethod");
-        List<Map<String, Object>> layout = (List<Map<String, Object>>) ((Map<?, ?>) currentMethod.get("selectarea")).get("layout");
-        List<List<String>> betCodes = (List<List<String>>) facts.get("betCodes");
+        List<Map<String, Object>> layout = (List<Map<String, Object>>) ((Map<String, Object>) currentMethod.get("selectarea")).get("layout");
+        Map<String,List<String>> bet = facts.get("bet");
+        List<String> codes = bet.get("codes");
 
         Map<String, List<String>> formatCodes = facts.get("formatCodes");
 
@@ -39,7 +40,7 @@ public class FormatDataWithLayoutRule {
             Map<String, Object> item = layout.get(index);
             String place = (String) item.get("place");
             List<String> codesAtPlace = formatCodes.getOrDefault(place, new ArrayList<>());
-            codesAtPlace.addAll(betCodes.get(index));
+            codesAtPlace.add(codes.get(index));
             formatCodes.put(place, codesAtPlace);
         }
 

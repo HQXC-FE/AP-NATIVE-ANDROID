@@ -20,14 +20,14 @@ public class DantuoDif2Rule {
     @Condition
     public boolean when(Facts facts) {
         // 检查是否包含 "dantuo-dif-2"
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite != null && ruleSuite.contains("dantuo-dif-2");
     }
 
     @Action
     public void then(Facts facts) {
         // 获取 formatCodes 数据
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
+        List<List<String>> formatCodes = facts.get("formatCodes");
 
         // 初始化 num 为 0
         int num = 0;

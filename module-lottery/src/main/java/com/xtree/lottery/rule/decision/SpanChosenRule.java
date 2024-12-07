@@ -2,7 +2,6 @@ package com.xtree.lottery.rule.decision;
 
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
-import org.jeasy.rules.annotation.Fact;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
@@ -22,17 +21,17 @@ public class SpanChosenRule {
     @Condition
     public boolean when(Facts facts) {
         // 检查是否包含 "span-chosen"
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite != null && ruleSuite.contains("span-chosen");
     }
 
     @Action
     public void then(Facts facts) {
         // 从 facts 中获取必要数据
-        Integer number = (Integer) facts.get("attached.number");
-        List<Integer> scope = (List<Integer>) facts.get("attached.scope");
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
-        Integer num = (Integer) facts.get("num");
+        Map<String, List<Integer>> attached = facts.get("attached");
+        Integer number = attached.get("number").get(0);
+        List<Integer> scope = attached.get("scope");
+        List<List<String>> formatCodes = facts.get("formatCodes");
 
         // 默认 scope 为 0-9
         if (scope == null) {

@@ -6,9 +6,9 @@ import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Rule(name = "Add Extra Flag", description = "添加额外标记")
 public class AddFlagRule {
@@ -32,6 +32,9 @@ public class AddFlagRule {
                 .map(item -> item.split("add-flag-")[1])
                 .toList();
 
-        facts.put("attachedFlags", flags);  // 假设有一个键 attachedFlags
+        Map<String, List<String>> attached = new HashMap<>();
+        attached.put("flags", flags);
+
+        facts.put("attached", attached);
     }
 }

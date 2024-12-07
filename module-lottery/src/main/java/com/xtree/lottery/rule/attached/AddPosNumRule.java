@@ -26,11 +26,13 @@ public class AddPosNumRule {
 
     @Action
     public void then(Facts facts) {
+        Map<String, String> attached = facts.get("attached");
         List<String> ruleSuite = facts.get("ruleSuite");
         Optional<String> match = ruleSuite.stream().filter(item -> item.matches("^add-posnum-.*$")).findFirst();
         match.ifPresent(item -> {
             int posnum = Integer.parseInt(item.split("add-posnum-")[1]);
-            facts.put("attachedPosnum", posnum);  // 假设有一个键 attachedPosnum
+            attached.put("posnum", posnum + "");
+            facts.put("attached", attached);
         });
     }
 }

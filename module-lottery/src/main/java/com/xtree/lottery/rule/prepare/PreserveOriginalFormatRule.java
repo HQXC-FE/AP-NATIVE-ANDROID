@@ -7,6 +7,7 @@ import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
 import java.util.List;
+import java.util.Map;
 
 @Rule(name = "Keep Original Format", description = "Keeps the original format if ruleSuite includes 'without-format-codes'")
 public class PreserveOriginalFormatRule {
@@ -25,7 +26,8 @@ public class PreserveOriginalFormatRule {
 
     @Action
     public void then(Facts facts) {
-        List<String> betCodes = facts.get("betCodes");
+        Map<String, List<String>> bet = facts.get("bet");
+        List<String> betCodes = bet.get("codes");
         facts.put("formatCodes", betCodes);  // 直接保持原有格式
     }
 }

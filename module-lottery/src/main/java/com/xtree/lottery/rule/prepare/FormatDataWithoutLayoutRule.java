@@ -21,13 +21,14 @@ public class FormatDataWithoutLayoutRule {
         String lotteryType = facts.get("lotteryType");
         Map<String, Object> currentMethod = facts.get("currentMethod");
         return "ssc".equals(lotteryType) && (!currentMethod.containsKey("selectarea")
-                || !((Map<?, ?>) currentMethod.get("selectarea")).containsKey("layout"));
+                || !((Map<String, Object>) currentMethod.get("selectarea")).containsKey("layout"));
     }
 
     @Action
     public void then(Facts facts) {
-        String betCodes = facts.get("betCodes");
-        String formatCodes = betCodes.trim();  // 去除前后空格
+        Map<String, String> bet = facts.get("bet");
+        String codes = bet.get("codes");
+        String formatCodes = codes.trim();  // 去除前后空格
         facts.put("formatCodes", formatCodes);
     }
 }

@@ -20,14 +20,14 @@ public class PkTypeFormatRule {
 
     @Condition
     public boolean when(Facts facts) {
-        String lotteryType = (String) facts.get("lotteryType");
-        String selectAreaType = (String) facts.get("currentMethod.selectarea.type");
+        String lotteryType = facts.get("lotteryType");
+        String selectAreaType = facts.get("currentMethod.selectarea.type");
         return "ssc".equals(lotteryType) && "pk".equals(selectAreaType);
     }
 
     @Action
     public void then(Facts facts) {
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
+        List<List<String>> formatCodes = facts.get("formatCodes");
         List<String> displayCodes = new ArrayList<>();
 
         for (List<String> item : formatCodes) {

@@ -26,11 +26,13 @@ public class AddNumRule {
 
     @Action
     public void then(Facts facts) {
+        Map<String, String> attached = facts.get("attached");
         List<String> ruleSuite = facts.get("ruleSuite");
         Optional<String> match = ruleSuite.stream().filter(item -> item.matches("^add-num-.*$")).findFirst();
         match.ifPresent(item -> {
             int number = Integer.parseInt(item.split("add-num-")[1]);
-            facts.put("attachedNumber", number);  // 假设有一个键 attachedNumber
+            attached.put("number", number + "");
+            facts.put("attached", attached);
         });
     }
 }

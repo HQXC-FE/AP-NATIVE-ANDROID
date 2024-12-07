@@ -29,7 +29,8 @@ public class FormatBoxTypeRule {
 
     @Action
     public void then(Facts facts) {
-        List<String> betCodes = facts.get("betCodes");
+        Map<String, List<String>> bet = facts.get("bet");
+        List<String> betCodes = bet.get("codes");
         List<List<String>> formatCodes = new ArrayList<>();
 
         for (String code : betCodes) {

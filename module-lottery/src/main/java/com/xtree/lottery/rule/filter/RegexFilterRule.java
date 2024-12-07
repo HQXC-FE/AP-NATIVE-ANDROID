@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+//Todo 此方案的 scope 与 number 是有问题的 他属于 attached 应该要修正
+
 @Rule(name = "Single Regex Filter", description = "Filter entries by regex")
 public class RegexFilterRule {
 

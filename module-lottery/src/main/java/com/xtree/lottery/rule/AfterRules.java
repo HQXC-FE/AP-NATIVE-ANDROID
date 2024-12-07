@@ -28,28 +28,28 @@ import org.jeasy.rules.api.Rules;
 
 public class AfterRules {
     public static void addRules(Rules rules) {
-        rules.register(new AnySoloRule());
-        rules.register(new CalculateSSCProfitPrizeModesRule());
-        rules.register(new CalculateTotalBetAmountRule());
-        rules.register(new ClearPrizeAndBonusRule());
-        rules.register(new CombinationProfitCalculationRule());
-        rules.register(new DwdPositionRule());
-        rules.register(new ElevenOptionalMultipleRule());
-        rules.register(new FillZeroCountRule());
-        rules.register(new CalculateBonusRule());
-        rules.register(new GeneralProfitCalculationRule());
-        rules.register(new K3TwoDifferentNumbersRule());
-        rules.register(new LotteryPrizeRule());
-        rules.register(new PK10JSSMBigSmallOddEvenRule());
         rules.register(new PkTypeFormatRule());
-        rules.register(new PositionChosenRule());
-        rules.register(new RelationMethodsRule());
+        rules.register(new AnySoloRule());
+        rules.register(new SoloIdentifierRule());
+        rules.register(new FillZeroCountRule());
         rules.register(new SetFundingModeRule());
         rules.register(new SetTimesRule());
-        rules.register(new SingleLevelPrizeRule());
-        rules.register(new SoloIdentifierRule());
-        rules.register(new SSCDontCalculateProfitRule());
-        rules.register(new ThreeDPositionAndUncertainRule());
+        rules.register(new CalculateTotalBetAmountRule());
+        rules.register(new LotteryPrizeRule());
+        rules.register(new PositionChosenRule());
+        rules.register(new CalculateSSCProfitPrizeModesRule());
+        rules.register(new GeneralProfitCalculationRule());
+        rules.register(new CombinationProfitCalculationRule());
+        rules.register(new CalculateBonusRule());
         rules.register(new Choose5LotteryRule());
+        rules.register(new DwdPositionRule());
+        rules.register(new PK10JSSMBigSmallOddEvenRule());
+        rules.register(new ElevenOptionalMultipleRule());
+        rules.register(new ThreeDPositionAndUncertainRule());
+        rules.register(new K3TwoDifferentNumbersRule());
+        rules.register(new SingleLevelPrizeRule());
+        rules.register(new SSCDontCalculateProfitRule());
+        rules.register(new ClearPrizeAndBonusRule());
+        rules.register(new RelationMethodsRule());
     }
 }

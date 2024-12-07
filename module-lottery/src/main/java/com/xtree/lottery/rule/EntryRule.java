@@ -19,7 +19,6 @@ public class EntryRule {
     }
 
     public EntryRule() {
-        rules = new Rules();
         facts = new Facts();
         rulesEngine = new DefaultRulesEngine();
 
@@ -33,7 +32,7 @@ public class EntryRule {
     }
 
     public void startEngine(Facts facts) {
-
+        rules = new Rules();
         rulesEngine.fire(rules, facts);
         //Todo
     }

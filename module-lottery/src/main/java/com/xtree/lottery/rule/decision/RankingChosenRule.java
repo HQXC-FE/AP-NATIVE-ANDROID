@@ -22,15 +22,15 @@ public class RankingChosenRule {
     @Condition
     public boolean when(Facts facts) {
         // 检查是否包含 "ranking-chosen"
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+        List<String> ruleSuite = facts.get("ruleSuite");
         return ruleSuite != null && ruleSuite.contains("ranking-chosen");
     }
 
     @Action
     public void then(Facts facts) {
         // 获取相关数据
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
-        Integer num = (Integer) facts.get("num");
+        List<List<String>> formatCodes = facts.get("formatCodes");
+        Integer num = facts.get("num");
 
         // 检查输入的有效性
         if (formatCodes == null || formatCodes.isEmpty() || num == null) {

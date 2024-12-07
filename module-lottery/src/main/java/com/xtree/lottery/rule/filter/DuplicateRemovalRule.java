@@ -26,7 +26,6 @@ public class DuplicateRemovalRule {
 
     @Action
     public void then(Facts facts) {
-
         List<String> formatCodes = facts.get("formatCodes");
         List<String> realCode = Arrays.stream(String.join(",", formatCodes).split("[,; ]"))
                 .filter(s -> !s.isEmpty())

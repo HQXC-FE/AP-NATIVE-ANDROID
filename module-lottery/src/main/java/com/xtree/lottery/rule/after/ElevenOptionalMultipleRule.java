@@ -7,6 +7,7 @@ import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
 import java.util.List;
+import java.util.Map;
 
 @Rule(name = "11x5OptionalMultipleRule", description = "11选5任选复式规则")
 public class ElevenOptionalMultipleRule {
@@ -18,8 +19,9 @@ public class ElevenOptionalMultipleRule {
 
     @Condition
     public boolean when(Facts facts) {
-        String currentCategoryName = facts.get("currentCategoryName");
-        String currentCategoryFlag = facts.get("currentCategoryFlag");
+        Map<String, String> currentCategory = facts.get("currentCategory");
+        String currentCategoryName = currentCategory.get("name");
+        String currentCategoryFlag = currentCategory.get("flag");
 
         return facts.get("currentPrizeModes") != null &&
                 currentCategoryName.equals("任选复式") &&
@@ -28,7 +30,9 @@ public class ElevenOptionalMultipleRule {
 
     @Action
     public void then(Facts facts) {
-        String methodName = (String) facts.get("currentCategoryName") + facts.get("currentMethodName");
+        Map<String, String> currentCategory = facts.get("currentCategory");
+        Map<String, String> currentMethod = facts.get("currentMethod");
+        String methodName = currentCategory.get("name") + currentMethod.get("name");
         List<String> formatCodes = facts.get("formatCodes");
         double currentPrize = facts.get("currentPrize");
         double currentBonus = facts.get("currentBonus");
