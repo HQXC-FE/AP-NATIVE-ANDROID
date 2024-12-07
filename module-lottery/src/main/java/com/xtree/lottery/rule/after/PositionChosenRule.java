@@ -32,7 +32,8 @@ public class PositionChosenRule {
 
     @Action
     public void then(Facts facts) {
-        List<Boolean> posChooseList = facts.get("bet.poschoose");
+        Map<String,  List<Boolean>> bet = facts.get("bet");
+        List<Boolean> posChooseList = bet.get("poschoose");
         List<Integer> selectedPositions = new ArrayList<>();
 
         // Collect indices of true values from posChooseList

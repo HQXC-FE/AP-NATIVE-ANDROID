@@ -8,6 +8,7 @@ import org.jeasy.rules.api.Facts;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Rule(name = "Pk Type Format", description = "竞速PK类型格式化最后显示号码")
@@ -21,7 +22,9 @@ public class PkTypeFormatRule {
     @Condition
     public boolean when(Facts facts) {
         String lotteryType = facts.get("lotteryType");
-        String selectAreaType = facts.get("currentMethod.selectarea.type");
+        Map<String, Map<String, String>> currentMethod = facts.get("currentMethod");
+        Map<String, String> selectarea = currentMethod.get("selectarea");
+        String selectAreaType = selectarea.get("type");
         return "ssc".equals(lotteryType) && "pk".equals(selectAreaType);
     }
 

@@ -6,6 +6,8 @@ import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
+import java.util.Map;
+
 @Rule(name = "Calculate Bonus for 趣味 and 不定胆", description = "Calculate bonus for 趣味 and 不定胆 types")
 public class CalculateBonusRule {
 
@@ -16,7 +18,7 @@ public class CalculateBonusRule {
 
     @Condition
     public boolean when(Facts facts) {
-        String currentCategoryName = facts.get("currentCategoryName");
+        String currentCategoryName = (String) ((Map<String, Object>) facts.get("currentCategory")).get("name");
         Object currentPrizeModes = facts.get("currentPrizeModes");
         return currentPrizeModes != null &&
                 ("趣味".equals(currentCategoryName) ||
@@ -26,7 +28,7 @@ public class CalculateBonusRule {
 
     @Action
     public void then(Facts facts) {
-        String methodName = facts.get("currentMethodName");
+        String methodName = (String) ((Map<String, Object>) facts.get("currentCategory")).get("name");
         Integer num = facts.get("num");
         double currentBonus = facts.get("currentBonus");
         double currentPrize = facts.get("currentPrize");

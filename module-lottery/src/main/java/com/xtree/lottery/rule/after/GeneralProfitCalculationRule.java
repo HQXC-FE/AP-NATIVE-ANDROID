@@ -27,11 +27,11 @@ public class GeneralProfitCalculationRule {
 
     @Action
     public void then(Facts facts) {
-        List<Map<String, Object>> currentPrizeModes = (List<Map<String, Object>>) facts.get("currentPrizeModes");
-        Map<String, Object> currentMethod = (Map<String, Object>) facts.get("currentMethod");
-        Map<String, Object> mode = (Map<String, Object>) facts.get("mode");
-        int times = (int) facts.get("times");
-        double money = (double) facts.get("money");
+        List<Map<String, Object>> currentPrizeModes = facts.get("currentPrizeModes");
+        Map<String, Object> currentMethod = facts.get("currentMethod");
+        Map<String, Object> mode = facts.get("mode");
+        int times = facts.get("times");
+        double money = facts.get("money");
         int omodel = facts.get("prize") != null ? Integer.parseInt(facts.get("prize").toString()) : 1;
 
         // 计算 arrPrizeModes

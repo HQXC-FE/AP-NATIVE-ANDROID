@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.lottery.rule.Matchers;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -19,21 +21,23 @@ public class K3TwoDifferentNumbersRule {
 
     @Condition
     public boolean when(Facts facts) {
-        List<String> k3Alias = (List<String>) facts.get("k3Alias");
-        String currentCategoryName = (String) facts.get("currentCategoryName");
-        String currentCategoryFlag = (String) facts.get("currentCategoryFlag");
+        Map<String, String> currentCategory = facts.get("currentCategory");
+        String currentCategoryName = currentCategory.get("name");
+        String currentCategoryFlag = currentCategory.get("flag");
 
         return facts.get("currentPrizeModes") != null &&
                 "二不同号".equals(currentCategoryName) &&
-                k3Alias.contains(currentCategoryFlag);
+                Matchers.k3Alias.contains(currentCategoryFlag);
     }
 
     @Action
     public void then(Facts facts) {
-        String methodName = (String) facts.get("currentCategoryName") + facts.get("currentMethodName");
-        double currentPrize = (double) facts.get("currentPrize");
-        double money = (double) facts.get("money");
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
+        Map<String, String> currentCategory = facts.get("currentCategory");
+        Map<String, String> currentMethod = facts.get("currentMethod");
+        String methodName = currentCategory.get("name") + currentMethod.get("name");
+        double currentPrize = facts.get("currentPrize");
+        double money = facts.get("money");
+        List<List<String>> formatCodes = facts.get("formatCodes");
 
         if ("二不同号标准选号".equals(methodName)) {
             if (formatCodes.get(0).size() >= 3) {

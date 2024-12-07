@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.lottery.rule.Matchers;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -19,13 +21,15 @@ public class SSCDontCalculateProfitRule {
 
     @Condition
     public boolean when(Facts facts) {
-        String lotteryType = (String) facts.get("lotteryType");
+        String lotteryType = facts.get("lotteryType");
         return "ssc".equals(lotteryType) && facts.get("currentPrizeModes") != null;
     }
 
     @Action
     public void then(Facts facts) {
-        String methodName = (String) facts.get("currentCategoryName") + facts.get("currentMethodName");
+        Map<String, String> currentCategory = facts.get("currentCategory");
+        Map<String, String> currentMethod = facts.get("currentMethod");
+        String methodName = currentCategory.get("name") + currentMethod.get("name");
         boolean disabled = false;
 
         // 单式屏蔽
@@ -33,12 +37,9 @@ public class SSCDontCalculateProfitRule {
             disabled = true;
         }
 
-        // PK10 和 JSSM 的屏蔽规则
-        List<String> pk10Alias = (List<String>) facts.get("pk10Alias");
-        List<String> jssmAlias = (List<String>) facts.get("jssmAlias");
-        String currentCategoryFlag = (String) facts.get("currentCategoryFlag");
+        String currentCategoryFlag = currentCategory.get("flag");
 
-        if (pk10Alias.contains(currentCategoryFlag) || jssmAlias.contains(currentCategoryFlag)) {
+        if (Matchers.pk10Alias.contains(currentCategoryFlag) || Matchers.jssmAlias.contains(currentCategoryFlag)) {
             List<String> disabledMethods = List.of("竞速竞速", "对决对决");
             if (disabledMethods.contains(methodName)) {
                 disabled = true;

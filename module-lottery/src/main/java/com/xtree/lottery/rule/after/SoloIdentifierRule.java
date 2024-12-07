@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.lottery.rule.Matchers;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -26,16 +28,15 @@ public class SoloIdentifierRule {
 
     @Action
     public void then(Facts facts) {
-        int num = (int) facts.get("num");
-        String methodName = (String) facts.get("methodName");
-        String lotteryAlias = (String) facts.get("lotteryAlias");
-        List<Boolean> posChoose = (List<Boolean>) facts.get("posChoose");
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
-        List<String> sscAlias = (List<String>) facts.get("sscAlias");
-        List<String> _11x5Alias = (List<String>) facts.get("_11x5Alias");
-        List<String> _3dAlias = (List<String>) facts.get("_3dAlias");
-        List<String> pk10Alias = (List<String>) facts.get("pk10Alias");
-        List<String> jssmAlias = (List<String>) facts.get("jssmAlias");
+        int num = facts.get("num");
+        Map<String, String> currentCategory = facts.get("currentCategory");
+        Map<String, String> currentMethod = facts.get("currentMethod");
+        String methodName = currentCategory.get("name") + currentMethod.get("name");
+        String lotteryAlias = currentCategory.get("lotteryAlias");
+
+        Map<String, List<Boolean>> bet = facts.get("bet");
+        List<Boolean> posChoose = bet.get("posChoose");
+        List<List<String>> formatCodes = facts.get("formatCodes");
 
         boolean solo = false;
         int positionLength = 0;
@@ -54,7 +55,7 @@ public class SoloIdentifierRule {
             }
         }
 
-        if (sscAlias.contains(lotteryAlias)) {
+        if (Matchers.sscAlias.contains(lotteryAlias)) {
             switch (methodName) {
                 case "五星复式":
                 case "五星单式":
@@ -234,7 +235,7 @@ public class SoloIdentifierRule {
             }
         }
 
-        if (_11x5Alias.contains(lotteryAlias)) {
+        if (Matchers._11x5Alias.contains(lotteryAlias)) {
             switch (methodName) {
                 case "三码前三直选复式":
                 case "三码前三直选单式":
@@ -267,7 +268,7 @@ public class SoloIdentifierRule {
             }
         }
 
-        if (_3dAlias.contains(lotteryAlias)) {
+        if (Matchers._3dAlias.contains(lotteryAlias)) {
             switch (methodName) {
                 case "三码复式":
                 case "三码直选和值":
@@ -293,7 +294,7 @@ public class SoloIdentifierRule {
             }
         }
 
-        if (pk10Alias.contains(lotteryAlias)) {
+        if (Matchers.pk10Alias.contains(lotteryAlias)) {
             switch (methodName) {
                 case "前六复式":
                 case "前六单式":
@@ -318,7 +319,7 @@ public class SoloIdentifierRule {
             }
         }
 
-        if (jssmAlias.contains(lotteryAlias)) {
+        if (Matchers.jssmAlias.contains(lotteryAlias)) {
             switch (methodName) {
                 case "六连环复式":
                 case "六连环单式":

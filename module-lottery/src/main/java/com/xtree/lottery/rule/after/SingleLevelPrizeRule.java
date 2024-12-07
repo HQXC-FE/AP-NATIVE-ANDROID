@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.lottery.rule.Matchers;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -20,23 +22,24 @@ public class SingleLevelPrizeRule {
     @Condition
     public boolean when(Facts facts) {
         List<String> applicableCategories = List.of("包组", "头", "头与尾");
-        List<String> categoryFlags = (List<String>) facts.get("vnmNorAlias");
-        categoryFlags.addAll((List<String>) facts.get("vnmMidSouAlias"));
-        categoryFlags.addAll((List<String>) facts.get("vnmFastAlias"));
 
-        String currentCategoryName = (String) facts.get("currentCategoryName");
-        String currentCategoryFlag = (String) facts.get("currentCategoryFlag");
+        Map<String, String> currentCategory = facts.get("currentCategory");
+        String currentCategoryName = currentCategory.get("name");
+        String currentCategoryFlag = currentCategory.get("flag");
 
         return facts.get("currentPrizeModes") != null &&
                 applicableCategories.contains(currentCategoryName) &&
-                categoryFlags.contains(currentCategoryFlag);
+                (Matchers.vnmNorAlias.contains(currentCategoryFlag) ||
+                        Matchers.vnmMidSouAlias.contains(currentCategoryFlag) ||
+                        Matchers.vnmFastAlias.contains(currentCategoryFlag));
     }
 
     @Action
     public void then(Facts facts) {
-        double currentPrize = (double) facts.get("currentPrize");
-        double money = (double) facts.get("money");
-        int attachedNumber = (int) facts.get("attachedNumber");
+        double currentPrize = facts.get("currentPrize");
+        double money = facts.get("money");
+        Map<String, Integer> attached = facts.get("attached");
+        int attachedNumber = attached.get("number");
 
         if (attachedNumber == 1) {
             facts.put("currentBonus", currentPrize - money);

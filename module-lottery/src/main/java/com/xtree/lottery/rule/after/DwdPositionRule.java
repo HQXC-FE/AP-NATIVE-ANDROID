@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.lottery.rule.Matchers;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -7,6 +9,7 @@ import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
 import java.util.List;
+import java.util.Map;
 
 @Rule(name = "DwdPositionRule", description = "定位胆和位置玩法规则")
 public class DwdPositionRule {
@@ -19,19 +22,18 @@ public class DwdPositionRule {
     @Condition
     public boolean when(Facts facts) {
         boolean currentPrizeModes = facts.get("currentPrizeModes");
-        String currentCategoryName = facts.get("currentCategoryName");
+        String currentCategoryName = (String) ((Map<String, Object>) facts.get("currentCategory")).get("name");
         List<String> currentCategoryFlag = facts.get("currentCategoryFlag");
-        List<String> pk10Alias = facts.get("pk10Alias");
-        List<String> jssmAlias = facts.get("jssmAlias");
 
         return currentPrizeModes &&
                 ("定位胆".equals(currentCategoryName) || "位置".equals(currentCategoryName)) &&
-                currentCategoryFlag.stream().anyMatch(flag -> pk10Alias.contains(flag) || jssmAlias.contains(flag));
+                currentCategoryFlag.stream().anyMatch(flag -> Matchers.pk10Alias.contains(flag) || Matchers.jssmAlias.contains(flag));
     }
 
     @Action
     public void then(Facts facts) {
-        List<String> betPosChoose =facts.get("betPosChoose");
+        Map<String, List<String>> bet = facts.get("bet");
+        List<String> betPosChoose = bet.get("PosChoose");
         List<List<String>> formatCodes = facts.get("formatCodes");
         String currentBonus = facts.get("currentBonus");
         String currentPrize = facts.get("currentPrize");

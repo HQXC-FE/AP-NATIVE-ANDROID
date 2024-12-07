@@ -19,18 +19,18 @@ public class RelationMethodsRule {
 
     @Condition
     public boolean when(Facts facts) {
-        Map<String, Object> currentMethod = (Map<String, Object>) facts.get("currentMethod");
+        Map<String, Object> currentMethod = facts.get("currentMethod");
         return currentMethod != null && currentMethod.containsKey("relationMethods") &&
                 ((List<?>) currentMethod.get("relationMethods")).size() > 0;
     }
 
     @Action
     public void then(Facts facts) throws Exception {
-        Map<String, Object> currentMethod = (Map<String, Object>) facts.get("currentMethod");
+        Map<String, Object> currentMethod = facts.get("currentMethod");
         List<Integer> relationMethodsIds = (List<Integer>) currentMethod.get("relationMethods");
         String currentCategoryFlag = (String) ((Map<String, Object>) facts.get("currentCategory")).get("flag");
-        String lotteryType = (String) facts.get("lotteryType");
-        Map<String, Object> bet = (Map<String, Object>) facts.get("bet");
+        String lotteryType = facts.get("lotteryType");
+        Map<String, Object> bet = facts.get("bet");
 
         // 模拟执行异步任务并收集结果
         List<Map<String, Object>> relationMethods = relationMethodsIds.stream()

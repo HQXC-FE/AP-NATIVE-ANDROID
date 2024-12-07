@@ -7,6 +7,7 @@ import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
 import java.util.List;
+import java.util.Map;
 
 @Rule(name = "11选5任选复式规则", description = "按位置任选, 11选5任选复式")
 public class Choose5LotteryRule {
@@ -19,13 +20,13 @@ public class Choose5LotteryRule {
     @Condition
     public boolean when(Facts facts) {
         List<String> currentPrizeModes = facts.get("currentPrizeModes");
-        String currentCategoryName = facts.get("currentCategoryName");
+        String currentCategoryName = (String) ((Map<String, Object>) facts.get("currentCategory")).get("name");
         return currentPrizeModes != null && List.of("任选二", "任选三", "任选四").contains(currentCategoryName);
     }
 
     @Action
     public void then(Facts facts) {
-        String methodName = (String) facts.get("currentCategoryName") + facts.get("currentMethodName");
+        String methodName = ((Map<String, String>) facts.get("currentCategory")).get("name") + ((Map<String, String>) facts.get("currentMethodName")).get("name");
         int poschooseNum = calculatePositionChosenNumber(facts);
         String currentBonus = facts.get("currentBonus");
         String currentPrize = facts.get("currentPrize");
@@ -194,7 +195,8 @@ public class Choose5LotteryRule {
     }
 
     private int calculatePositionChosenNumber(Facts facts) {
-        List<Boolean> poschoose = facts.get("poschoose");
+        Map<String, List<Boolean>> bet = facts.get("bet");
+        List<Boolean> poschoose = bet.get("poschoose");
         List<List<String>> formatCodes = facts.get("formatCodes");
 
         if (poschoose != null) {

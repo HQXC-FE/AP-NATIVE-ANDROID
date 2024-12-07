@@ -80,8 +80,7 @@ public class CalculateSSCProfitPrizeModesRule {
         }
 
         // Save prize modes back to facts
-        currentMethod.put("currentPrizeModes", prizeModes);
-        facts.put("currentMethod", currentMethod);
+        facts.put("currentPrizeModes", prizeModes);
     }
 }
 

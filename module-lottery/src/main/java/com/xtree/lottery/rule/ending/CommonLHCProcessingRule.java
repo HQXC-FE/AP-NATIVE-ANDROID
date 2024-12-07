@@ -29,8 +29,8 @@ public class CommonLHCProcessingRule {
         List<Map<String, Object>> forDisplay = new ArrayList<>();
         List<Map<String, Object>> forSubmit = new ArrayList<>();
 
-        List<Map<String, Object>> betCodes = (List<Map<String, Object>>) facts.get("bet.codes");
-        Map<String, Object> currentMethod = (Map<String, Object>) facts.get("currentMethod");
+        List<Map<String, Object>> betCodes = facts.get("bet.codes");
+        Map<String, Object> currentMethod = facts.get("currentMethod");
 
         betCodes.forEach(code -> {
             if (code.get("value") != null && Integer.parseInt(code.get("value").toString()) > 0) {

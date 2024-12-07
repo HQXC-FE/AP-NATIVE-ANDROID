@@ -7,6 +7,7 @@ import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
 import java.util.List;
+import java.util.Map;
 
 @Rule(name = "任意单注判断", description = "判断是否符合任意单注规则")
 public class AnySoloRule {
@@ -32,7 +33,8 @@ public class AnySoloRule {
         long posChoose = formatCodes.stream().filter(item -> !item.isEmpty()).count();
 
         // 任意N配置
-        int attachedNumber = facts.get("attachedNumber"); // 对应 case 中的 N (2/3/4)
+        Map<String, String> attached = facts.get("attached");
+        int attachedNumber = Integer.getInteger(attached.get("number"));
         int minNumber = facts.get("minNumber"); // 最小号码
 
         // 判断 solo 规则

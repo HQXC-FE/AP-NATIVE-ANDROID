@@ -58,9 +58,9 @@ public class SSCFinalMergeRule {
         forBet.put("times", times);
         forBet.put("poschoose", facts.get("poschoose"));
         forBet.put("menuid", currentMethod.get("menuid"));
-        forBet.put("type", currentMethod.get("selectarea.originType") != null
-                ? currentMethod.get("selectarea.originType")
-                : currentMethod.get("selectarea.type"));
+        forBet.put("type", ((Map<?,?>)currentMethod.get("selectarea")).get("originType") != null
+                ? ((Map<?,?>)currentMethod.get("selectarea")).get("originType")
+                : ((Map<?,?>)currentMethod.get("selectarea")).get("type"));
         forBet.put("nums", num);
         forBet.put("money", money);
         forBet.put("solo", facts.get("solo") != null ? facts.get("solo") : false);

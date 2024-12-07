@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.lottery.rule.Matchers;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -7,6 +9,7 @@ import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
 import java.util.List;
+import java.util.Map;
 
 @Rule(name = "PK10JSSMBigSmallOddEven", description = "PK10, JSSM 大小单双规则")
 public class PK10JSSMBigSmallOddEvenRule {
@@ -18,18 +21,19 @@ public class PK10JSSMBigSmallOddEvenRule {
 
     @Condition
     public boolean when(Facts facts) {
-        String currentCategoryName = facts.get("currentCategoryName");
-        String currentCategoryFlag = facts.get("currentCategoryFlag");
-        List<String> aliases = facts.get("aliases");
+        String currentCategoryName = (String) ((Map<String, Object>) facts.get("currentCategory")).get("name");
+        String currentCategoryFlag = (String) ((Map<String, Object>) facts.get("currentCategory")).get("flag");
 
         return facts.get("currentPrizeModes") != null &&
                 currentCategoryName.equals("大小单双") &&
-                aliases.stream().anyMatch(currentCategoryFlag::contains);
+                (Matchers.pk10Alias.contains(currentCategoryFlag) ||
+                        Matchers.jssmAlias.contains(currentCategoryFlag) ||
+                        Matchers.sscAlias.contains(currentCategoryFlag));
     }
 
     @Action
     public void then(Facts facts) {
-        String methodName = (String) facts.get("currentCategoryName") + facts.get("currentMethodName");
+        String methodName = ((Map<String, String>) facts.get("currentCategory")).get("name") + ((Map<String, String>) facts.get("currentMethod")).get("name");
         List<List<String>> formatCodes = facts.get("formatCodes");
         double currentPrize = facts.get("currentPrize");
         double currentBonus = facts.get("currentBonus");

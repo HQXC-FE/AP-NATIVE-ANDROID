@@ -11,8 +11,6 @@ import org.jeasy.rules.api.Facts;
 import java.util.List;
 import java.util.Map;
 
-
-//Todo
 @Rule(name = "SingleNumberMultipleBetsRule", description = "单式 一号多注")
 public class SingleNumberMultipleBetsRule {
 

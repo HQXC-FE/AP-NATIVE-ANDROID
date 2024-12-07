@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.lottery.rule.Matchers;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -19,22 +21,25 @@ public class ThreeDPositionAndUncertainRule {
 
     @Condition
     public boolean when(Facts facts) {
-        List<String> aliasList = (List<String>) facts.get("aliasList");
-        String currentCategoryName = (String) facts.get("currentCategoryName");
-        String currentCategoryFlag = (String) facts.get("currentCategoryFlag");
+        Map<String, String> currentCategory = facts.get("currentCategory");
+        String currentCategoryName = currentCategory.get("name");
+        String currentCategoryFlag = currentCategory.get("flag");
 
         return facts.get("currentPrizeModes") != null &&
                 (currentCategoryName.equals("定位胆") || currentCategoryName.equals("不定胆")) &&
-                aliasList.contains(currentCategoryFlag);
+                (Matchers.pk10Alias.contains(currentCategoryFlag) ||
+                        Matchers.jssmAlias.contains(currentCategoryFlag) ||
+                        Matchers.sscAlias.contains(currentCategoryFlag));
     }
 
     @Action
     public void then(Facts facts) {
         String methodName = (String) facts.get("currentCategoryName") + facts.get("currentMethodName");
-        double currentPrize = (double) facts.get("currentPrize");
-        double currentBonus = (double) facts.get("currentBonus");
-        List<Boolean> posChoose = (List<Boolean>) facts.get("posChoose");
-        List<List<String>> formatCodes = (List<List<String>>) facts.get("formatCodes");
+        Map<String, List<Boolean>> bet = facts.get("bet");
+        double currentPrize = facts.get("currentPrize");
+        double currentBonus = facts.get("currentBonus");
+        List<Boolean> posChoose = bet.get("posChoose");
+        List<List<String>> formatCodes = facts.get("formatCodes");
 
         int posChooseNum = 0;
 
