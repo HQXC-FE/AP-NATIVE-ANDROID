@@ -4,8 +4,10 @@ import com.drake.net.NetConfig
 import com.drake.net.okhttp.trustSSLCertificate
 import com.drake.net.request.UrlRequest
 import com.xtree.base.BuildConfig
+import com.xtree.base.utils.StringUtils
 import me.xtree.mvvmhabit.http.interceptor.logging.Level
 import me.xtree.mvvmhabit.http.interceptor.logging.LoggingInterceptor
+import me.xtree.mvvmhabit.utils.Utils
 import okhttp3.ConnectionPool
 import okhttp3.Dispatcher
 import okhttp3.MediaType
@@ -38,6 +40,12 @@ const val FASTEST_GOURP_NAME_H5 = "fstestaRequestH5"
 //测速接口配置
 val FASTEST_BLOCK: (UrlRequest.() -> Unit) = {
     addHeader("App-RNID", "87jumkljo")
+    addHeader("Source", "9")
+    addHeader(
+        "app-version", StringUtils.getVersionName(
+            Utils.getContext()
+        )
+    )
 }
 
 //测速URL
