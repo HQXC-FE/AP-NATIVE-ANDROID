@@ -23,7 +23,7 @@ public class SettingsVo implements Parcelable {
     // 测速扣除百分比
     public long app_response_speed_calculation;
     //推荐测速上限设置
-    public long app_response_speed_max = -1;
+    public int app_response_speed_max = -1;
 
     // Constructor for Parcelable
     protected SettingsVo(Parcel in) {
@@ -39,7 +39,7 @@ public class SettingsVo implements Parcelable {
         ws_retry_waiting_time = in.readLong();
         ws_expire_time = in.readLong();
         app_response_speed_calculation = in.readLong();
-        app_response_speed_max = in.readLong();
+        app_response_speed_max = in.readInt();
     }
 
     public static final Creator<SettingsVo> CREATOR = new Creator<SettingsVo>() {
@@ -73,7 +73,7 @@ public class SettingsVo implements Parcelable {
         parcel.writeLong(ws_retry_waiting_time);
         parcel.writeLong(ws_expire_time);
         parcel.writeLong(app_response_speed_calculation);
-        parcel.writeLong(app_response_speed_max);
+        parcel.writeInt(app_response_speed_max);
     }
 
     @Override
