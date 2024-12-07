@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.StringUtils;
 import com.xtree.base.utils.TagUtils;
 
 import java.io.IOException;
@@ -46,6 +47,7 @@ public class FBHeaderInterceptor implements Interceptor {
         builder.addHeader("App-RNID", "87jumkljo"); //
         builder.addHeader("Source", "9");
         builder.addHeader("UUID", TagUtils.getDeviceId(Utils.getContext()));
+        builder.addHeader("app-version", StringUtils.getVersionName(Utils.getContext()));
         //请求信息
         return chain.proceed(builder.build());
     }
