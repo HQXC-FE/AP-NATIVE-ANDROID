@@ -193,7 +193,6 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
             token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
             fBListReq.setToken(token );
         }
-        System.out.println("=============== getFBList 11111 ================");
         Disposable disposable = (Disposable) model.getApiService().getFBList(fBListReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
@@ -381,7 +380,6 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         //    }
         //    FBListReq.setSportId(sportIds);
         //}
-        System.out.println("=============== getFBList 33333 ================");
         String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
         String token;
         if(TextUtils.equals(platform, PLATFORM_FBXC)) {
@@ -522,8 +520,7 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
 
                     @Override
                     public void onError(Throwable t) {
-                        System.out.println("================== statistical onError ==================");
-                        //super.onError(t);
+                        super.onError(t);
                     }
                 });
         addSubscribe(disposable);
