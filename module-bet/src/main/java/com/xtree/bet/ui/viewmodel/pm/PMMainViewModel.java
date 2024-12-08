@@ -91,7 +91,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     }
 
     public void saveLeague(PMCacheListCallBack pmListCallBack) {
-        System.out.println("=============== PMListTempCallBack saveLeague ==================");
         mLeagueList = pmListCallBack.getLeagueList();
         mGoingOnLeagueList = pmListCallBack.getGoingOnLeagueList();
         mMapLeague = pmListCallBack.getMapLeague();
@@ -101,7 +100,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     }
 
     public void saveLeague(PMCacheLeagueListCallBack pmListCallBack) {
-        System.out.println("=============== PMListTempCallBack saveLeague ==================");
         mLeagueList = pmListCallBack.getLeagueList();
         mGoingOnLeagueList = pmListCallBack.getGoingOnLeagueList();
         mMapLeague = pmListCallBack.getMapLeague();
@@ -467,7 +465,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         pmListReq.setToken(token);
         Flowable flowable = model.getBaseApiService().matchesPagePB(pmListReq);
         if (isStepSecond) {
-            pmListReq.setToken(token);
             flowable = model.getBaseApiService().noLiveMatchesPagePB(pmListReq);
             PMCacheLeagueListCallBack mPmHttpCallBack = new PMCacheLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
                     orderBy, leagueIds, searchDatePos, oddType, matchidList,
@@ -506,8 +503,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                 || isTimerRefresh) { // 定时刷新赔率变更
             PMListCallBack httpCallBack = new PMListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
                     orderBy, leagueIds, searchDatePos, oddType, matchidList);
-//            PMListTempCallBack httpCallBack = new PMListTempCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
-//                    orderBy, leagueIds, searchDatePos, oddType, matchidList);
             Disposable disposable = (Disposable) flowable
                     .compose(RxUtils.schedulersTransformer()) //线程调度
                     .compose(RxUtils.exceptionTransformer())
