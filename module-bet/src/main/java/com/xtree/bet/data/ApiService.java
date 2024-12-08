@@ -166,6 +166,6 @@ public interface ApiService {
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/getMatchBaseInfoByMidsPB")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMBaseResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> getMatchBaseInfoByMidsPB(@Body PMListReq pmListReq);
+    Flowable<PMCacheResponse<List<com.xtree.bet.bean.response.pm.MatchInfo>>> getMatchBaseInfoByMidsPB(@Body PMListReq pmListReq);
 
 }
