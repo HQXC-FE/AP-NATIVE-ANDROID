@@ -15,7 +15,7 @@ public class DuplicateRemovalRule {
 
     @Priority
     public int getPriority() {
-        return 50000;
+        return -50000;
     }
 
     @Condition

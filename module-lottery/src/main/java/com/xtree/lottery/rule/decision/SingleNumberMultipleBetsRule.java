@@ -16,7 +16,7 @@ public class SingleNumberMultipleBetsRule {
 
     @Priority
     public int getPriority() {
-        return 17900;
+        return -17900;
     }
 
     @Condition

@@ -15,7 +15,7 @@ public class AddFlagRule {
 
     @Priority
     public int getPriority() {
-        return 59800;
+        return -59800;
     }
 
     @Condition

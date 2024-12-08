@@ -13,7 +13,7 @@ public class NoRuleSetFoundRule {
 
     @Priority
     public int getPriority() {
-        return 99700;
+        return -99700;
     }
 
     @Condition

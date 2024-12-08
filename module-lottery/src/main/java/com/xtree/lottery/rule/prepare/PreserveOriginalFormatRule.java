@@ -14,7 +14,7 @@ public class PreserveOriginalFormatRule {
 
     @Priority
     public int getPriority() {
-        return 80001;
+        return -80001;
     }
 
     @Condition

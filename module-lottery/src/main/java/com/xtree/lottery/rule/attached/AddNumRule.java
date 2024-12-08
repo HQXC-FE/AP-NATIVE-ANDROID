@@ -15,7 +15,7 @@ public class AddNumRule {
 
     @Priority
     public int getPriority() {
-        return 60000;
+        return -60000;
     }
 
     @Condition

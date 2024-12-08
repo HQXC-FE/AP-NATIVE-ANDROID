@@ -14,7 +14,7 @@ public class MultiRule {
 
     @Priority
     public int getPriority() {
-        return 20000;
+        return -20000;
     }
 
     @Condition

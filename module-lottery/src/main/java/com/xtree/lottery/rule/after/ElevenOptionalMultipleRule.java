@@ -14,7 +14,7 @@ public class ElevenOptionalMultipleRule {
 
     @Priority
     public int getPriority() {
-        return 8792;
+        return -8792;
     }
 
     @Condition

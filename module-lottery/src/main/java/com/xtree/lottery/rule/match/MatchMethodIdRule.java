@@ -14,7 +14,7 @@ public class MatchMethodIdRule {
 
     @Priority
     public int getPriority() {
-        return 100000;
+        return -100000;
     }
 
     @Condition

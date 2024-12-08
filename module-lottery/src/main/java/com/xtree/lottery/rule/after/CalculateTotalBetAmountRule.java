@@ -13,7 +13,7 @@ public class CalculateTotalBetAmountRule {
 
     @Priority
     public int getPriority() {
-        return 8847;
+        return -8847;
     }
 
     @Condition

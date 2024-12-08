@@ -16,7 +16,7 @@ public class DwdPositionRule {
 
     @Priority
     public int getPriority() {
-        return 8794;
+        return -8794;
     }
 
     @Condition

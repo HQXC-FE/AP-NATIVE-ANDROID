@@ -18,7 +18,7 @@ public class RegexFilterRule {
 
     @Priority
     public int getPriority() {
-        return 48000;
+        return -48000;
     }
 
     @Condition

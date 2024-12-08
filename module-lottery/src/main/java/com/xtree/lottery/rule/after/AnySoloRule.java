@@ -14,7 +14,7 @@ public class AnySoloRule {
 
     @Priority
     public int getPriority() {
-        return 8950;
+        return -8950;
     }
 
     @Condition

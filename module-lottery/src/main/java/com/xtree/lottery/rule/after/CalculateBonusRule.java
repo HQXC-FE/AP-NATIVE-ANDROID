@@ -13,7 +13,7 @@ public class CalculateBonusRule {
 
     @Priority
     public int getPriority() {
-        return 8796;
+        return -8796;
     }
 
     @Condition

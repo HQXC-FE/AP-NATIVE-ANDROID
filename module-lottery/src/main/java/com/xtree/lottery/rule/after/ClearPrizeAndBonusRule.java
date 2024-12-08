@@ -13,7 +13,7 @@ public class ClearPrizeAndBonusRule {
 
     @Priority
     public int getPriority() {
-        return 8600;
+        return -8600;
     }
 
     @Condition

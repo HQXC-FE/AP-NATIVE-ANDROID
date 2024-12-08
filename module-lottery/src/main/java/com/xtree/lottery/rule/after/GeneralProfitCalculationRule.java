@@ -17,7 +17,7 @@ public class GeneralProfitCalculationRule {
 
     @Priority
     public int getPriority() {
-        return 8798;
+        return -8798;
     }
 
     @Condition

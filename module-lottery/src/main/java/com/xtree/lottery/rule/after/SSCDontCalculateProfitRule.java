@@ -16,7 +16,7 @@ public class SSCDontCalculateProfitRule {
 
     @Priority
     public int getPriority() {
-        return 8789;
+        return -8789;
     }
 
     @Condition

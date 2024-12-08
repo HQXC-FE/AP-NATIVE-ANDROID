@@ -15,7 +15,7 @@ public class SumPlusRule {
 
     @Priority
     public int getPriority() {
-        return 19600;
+        return -19600;
     }
 
     @Condition

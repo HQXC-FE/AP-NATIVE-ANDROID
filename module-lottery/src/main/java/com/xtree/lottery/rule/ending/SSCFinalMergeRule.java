@@ -18,7 +18,7 @@ public class SSCFinalMergeRule {
 
     @Priority
     public int getPriority() {
-        return 100;
+        return -100;
     }
 
     @Condition

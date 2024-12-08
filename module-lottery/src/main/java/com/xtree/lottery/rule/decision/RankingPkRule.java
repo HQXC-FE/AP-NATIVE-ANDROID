@@ -13,7 +13,7 @@ public class RankingPkRule {
 
     @Priority
     public int getPriority() {
-        return 19200;
+        return -19200;
     }
 
     @Condition

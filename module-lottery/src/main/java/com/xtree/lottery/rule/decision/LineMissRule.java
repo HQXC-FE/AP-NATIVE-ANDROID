@@ -14,7 +14,7 @@ public class LineMissRule {
 
     @Priority
     public int getPriority() {
-        return 17800;
+        return -17800;
     }
 
     @Condition

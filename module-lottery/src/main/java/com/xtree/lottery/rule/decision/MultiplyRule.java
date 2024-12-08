@@ -14,7 +14,7 @@ public class MultiplyRule {
 
     @Priority
     public int getPriority() {
-        return 17700;
+        return -17700;
     }
 
     @Condition

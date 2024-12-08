@@ -14,7 +14,7 @@ public class RelationMethodsRule {
 
     @Priority
     public int getPriority() {
-        return 8550;
+        return -8550;
     }
 
     @Condition

@@ -14,7 +14,7 @@ public class DantuoDif3Rule {
 
     @Priority
     public int getPriority() {
-        return 18050;
+        return -18050;
     }
 
     @Condition

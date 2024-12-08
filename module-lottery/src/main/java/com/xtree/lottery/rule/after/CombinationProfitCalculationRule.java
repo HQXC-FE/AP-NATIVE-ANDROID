@@ -17,7 +17,7 @@ public class CombinationProfitCalculationRule {
 
     @Priority
     public int getPriority() {
-        return 8797;
+        return -8797;
     }
 
     @Condition

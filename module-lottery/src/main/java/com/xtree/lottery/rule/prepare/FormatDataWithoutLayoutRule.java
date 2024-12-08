@@ -13,7 +13,7 @@ public class FormatDataWithoutLayoutRule {
 
     @Priority
     public int getPriority() {
-        return 89900;
+        return -89900;
     }
 
     @Condition

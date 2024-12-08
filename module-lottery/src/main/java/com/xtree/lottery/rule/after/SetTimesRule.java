@@ -13,7 +13,7 @@ public class SetTimesRule {
 
     @Priority
     public int getPriority() {
-        return 8848;
+        return -8848;
     }
 
     @Condition

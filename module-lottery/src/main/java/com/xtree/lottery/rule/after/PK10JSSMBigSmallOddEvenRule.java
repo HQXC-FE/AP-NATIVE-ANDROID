@@ -16,7 +16,7 @@ public class PK10JSSMBigSmallOddEvenRule {
 
     @Priority
     public int getPriority() {
-        return 8793;
+        return -8793;
     }
 
     @Condition

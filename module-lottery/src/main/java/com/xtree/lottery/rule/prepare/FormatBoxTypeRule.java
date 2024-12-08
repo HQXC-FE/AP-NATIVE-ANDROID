@@ -15,7 +15,7 @@ public class FormatBoxTypeRule {
 
     @Priority
     public int getPriority() {
-        return 89800;
+        return -89800;
     }
 
     @Condition

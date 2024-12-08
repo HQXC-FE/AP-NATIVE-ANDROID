@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.gson.Gson
-import com.xtree.lottery.data.config.Lottery
-import com.xtree.lottery.data.config.lotteries
 import com.xtree.base.global.SPKeyGlobal
 import com.xtree.base.net.RetrofitClient
 import com.xtree.base.router.RouterActivityPath
 import com.xtree.base.vo.ProfileVo
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
+import com.xtree.lottery.data.config.Lottery
+import com.xtree.lottery.data.config.lotteries
 import com.xtree.lottery.data.source.vo.UserMethodsVo
 import com.xtree.lottery.databinding.ActivityMainLtBinding
 import com.xtree.lottery.rule.EntryRule
@@ -41,6 +41,7 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
     }
 
     override fun initView() {
+        EntryRule.getInstance().startEngine(Facts())
         binding.ivBack.setOnClickListener { finish() }
         binding.rvLottery.setHasFixedSize(true)
         binding.rvLottery.layoutManager = LinearLayoutManager(this)

@@ -16,7 +16,7 @@ public class K3TwoDifferentNumbersRule {
 
     @Priority
     public int getPriority() {
-        return 8791;
+        return -8791;
     }
 
     @Condition

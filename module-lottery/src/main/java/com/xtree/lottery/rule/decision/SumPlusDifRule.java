@@ -20,7 +20,7 @@ public class SumPlusDifRule {
 
     @Priority
     public int getPriority() {
-        return 19600;
+        return -19600;
     }
 
     @Condition

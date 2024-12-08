@@ -14,7 +14,7 @@ public class SetFundingModeRule {
 
     @Priority
     public int getPriority() {
-        return 8849;
+        return -8849;
     }
 
     @Condition

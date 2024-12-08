@@ -16,7 +16,7 @@ public class SingleLevelPrizeRule {
 
     @Priority
     public int getPriority() {
-        return 8790;
+        return -8790;
     }
 
     @Condition

@@ -22,7 +22,7 @@ public class SpecialSingleRule {
 
     @Priority
     public int getPriority() {
-        return 19900;
+        return -19900;
     }
 
     @Condition

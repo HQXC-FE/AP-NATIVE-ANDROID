@@ -18,7 +18,7 @@ public class TimesChosenRule {
 
     @Priority
     public int getPriority() {
-        return 19400;
+        return -19400;
     }
 
     @Condition

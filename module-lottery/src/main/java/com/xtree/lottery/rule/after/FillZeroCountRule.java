@@ -11,7 +11,7 @@ public class FillZeroCountRule {
 
     @Priority
     public int getPriority() {
-        return 8850;
+        return -8850;
     }
 
     @Condition

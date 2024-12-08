@@ -15,7 +15,7 @@ public class FormatDataWithLayoutRule {
 
     @Priority
     public int getPriority() {
-        return 90000;
+        return -90000;
     }
 
     @Condition

@@ -14,7 +14,7 @@ public class LotteryPrizeRule {
 
     @Priority
     public int getPriority() {
-        return 8846;
+        return -8846;
     }
 
     @Condition

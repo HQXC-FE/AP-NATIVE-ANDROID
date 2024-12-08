@@ -15,7 +15,7 @@ public class MatchRuleTokenToSetRule {
 
     @Priority
     public int getPriority() {
-        return 99800;
+        return -99800;
     }
 
     @Condition

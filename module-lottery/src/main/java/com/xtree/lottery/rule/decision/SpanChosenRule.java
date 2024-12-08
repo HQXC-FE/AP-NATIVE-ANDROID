@@ -15,7 +15,7 @@ public class SpanChosenRule {
 
     @Priority
     public int getPriority() {
-        return 19300;
+        return -19300;
     }
 
     @Condition

@@ -16,7 +16,7 @@ public class LHCRuleSetRule {
 
     @Priority
     public int getPriority() {
-        return 99600;
+        return -99600;
     }
 
     @Condition

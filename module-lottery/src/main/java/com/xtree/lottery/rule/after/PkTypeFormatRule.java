@@ -16,7 +16,7 @@ public class PkTypeFormatRule {
 
     @Priority
     public int getPriority() {
-        return 9000; // 设置规则优先级
+        return -9000; // 设置规则优先级
     }
 
     @Condition

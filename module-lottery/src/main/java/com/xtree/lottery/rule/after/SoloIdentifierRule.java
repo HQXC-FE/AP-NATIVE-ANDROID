@@ -16,7 +16,7 @@ public class SoloIdentifierRule {
 
     @Priority
     public int getPriority() {
-        return 8900;
+        return -8900;
     }
 
     @Condition

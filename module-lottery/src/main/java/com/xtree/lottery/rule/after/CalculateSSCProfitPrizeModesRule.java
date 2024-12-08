@@ -14,7 +14,7 @@ public class CalculateSSCProfitPrizeModesRule {
 
     @Priority
     public int getPriority() {
-        return 8800;
+        return -8800;
     }
 
     @Condition

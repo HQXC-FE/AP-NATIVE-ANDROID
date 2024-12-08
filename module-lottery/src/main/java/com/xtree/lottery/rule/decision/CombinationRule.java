@@ -14,7 +14,7 @@ public class CombinationRule {
 
     @Priority
     public int getPriority() {
-        return 19800;
+        return -19800;
     }
 
 

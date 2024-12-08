@@ -19,7 +19,7 @@ public class MultiCombinationRule {
 
     @Priority
     public int getPriority() {
-        return 19700;
+        return -19700;
     }
 
     @Condition
