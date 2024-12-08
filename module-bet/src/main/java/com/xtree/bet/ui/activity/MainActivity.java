@@ -1373,45 +1373,33 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
         viewModel.leagueLiveListData.observe(this, leagueList -> {
             if (playMethodType == 1) {
-                System.out.println("=========== leagueLiveListData.observe ============");
-                System.out.println("=========== leagueList.size ============"+leagueList.size());
                 this.mLeagueList = leagueList;
                 updateData();
             }
         });
 
         viewModel.leagueLiveTimerListData.observe(this, leagueList -> {
-            System.out.println("=========== leagueLiveTimerListData.observe ============");
-            System.out.println("=========== leagueList.size ============"+leagueList.size());
             this.mLeagueList = leagueList;
             updateData();
         });
 
         viewModel.leagueNoLiveListData.observe(this, leagueAdapters -> {
             this.mLeagueList = leagueAdapters;
-            System.out.println("=========== leagueNoLiveListData.observe ============");
-            System.out.println("=========== leagueList.size ============"+leagueAdapters.size());
             updateData();
         });
 
         viewModel.leagueNoLiveTimerListData.observe(this, leagueAdapters -> {
             this.mLeagueList = leagueAdapters;
-            System.out.println("=========== leagueNoLiveTimerListData.observe ============");
-            System.out.println("=========== leagueList.size ============"+leagueAdapters.size());
             updateData();
         });
 
         viewModel.championMatchTimerListData.observe(this, championMatcheList -> {
             mChampionMatchList = championMatcheList;
-            System.out.println("=========== championMatchTimerListData.observe ============");
-            System.out.println("=========== leagueList.size ============"+championMatcheList.size());
             updateData();
         });
 
         viewModel.championMatchListData.observe(this, championMatcheList -> {
             mChampionMatchList = championMatcheList;
-            System.out.println("=========== championMatchListData.observe ============");
-            System.out.println("=========== leagueList.size ============"+championMatcheList.size());
             updateData();
         });
 
@@ -1602,7 +1590,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private void updateData() {
-        System.out.println("=============== updateData  ==============");
         if (playMethodPos == 4) {
             updateChampionMatchData();
         } else {
@@ -1614,7 +1601,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
      * 更新联赛数据
      */
     private void updateLeagueData() {
-        System.out.println("=============== updateLeagueData mLeagueList =============="+mLeagueList.size());
         if (mLeagueAdapter == null) {
             mLeagueAdapter = new LeagueAdapter(MainActivity.this, mLeagueList);
             initLeagueListView();
@@ -1653,11 +1639,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         }
 
         if (mLeagueList.isEmpty()) {
-            System.out.println("========= mLeagueList llEmpty VISIBLE ===========");
             binding.nsvLeague.setVisibility(View.GONE);
             binding.llEmpty.llEmpty.setVisibility(View.VISIBLE);
         } else {
-            System.out.println("========= mLeagueList llEmpty GONE ===========");
             binding.nsvLeague.setVisibility(View.VISIBLE);
             binding.llEmpty.llEmpty.setVisibility(View.GONE);
         }

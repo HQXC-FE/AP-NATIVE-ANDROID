@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.PMCacheHttpCallBack;
 import com.xtree.base.net.PMHttpCallBack;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.request.pm.PMListReq;
@@ -66,7 +67,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     private List<MatchInfo> mChampionMatchInfoList = new ArrayList<>();
     private Map<String, List<SportTypeItem>> sportCountMap = new HashMap<>();
     private List<MenuInfo> mMenuInfoList = new ArrayList<>();
-    private PMHttpCallBack mPmHttpCallBack;
+    private PMCacheHttpCallBack mPmHttpCallBack;
 
     private HashMap<Integer, SportTypeItem> mMatchGames = new HashMap<>();
 
@@ -306,7 +307,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         mIsChampion = isChampion;
         if (!isChampion) {
             if (mPmHttpCallBack != null) {
-                ((PMLeagueListCallBack) mPmHttpCallBack).searchMatch(searchWord);
+                ((PMCacheLeagueListCallBack) mPmHttpCallBack).searchMatch(searchWord);
             }
         } else {
             mChampionMatchList.clear();
@@ -470,32 +471,14 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         Flowable flowable = model.getBaseApiService().matchesPagePB(pmListReq);
         if (isStepSecond) {
             flowable = model.getBaseApiService().noLiveMatchesPagePB(pmListReq);
-            PMCacheLeagueListCallBack mPmHttpCallBack = new PMCacheLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
-                    orderBy, leagueIds, searchDatePos, oddType, matchidList,
-                    finalType, isStepSecond);
-            Disposable disposable = (Disposable) flowable
-                    .compose(RxUtils.schedulersTransformer()) //线程调度
-                    .compose(RxUtils.exceptionTransformer())
-                    .subscribeWith(mPmHttpCallBack);
-            addSubscribe(disposable);
-            return;
         }
         pmListReq.setCps(mPageSize);
         if (type == 1) {// 滚球
             if (needSecondStep) {
                 pmListReq.setCps(mGoingOnPageSize);
                 flowable = model.getBaseApiService().liveMatchesPB(pmListReq);
-                PMCacheListCallBack httpCallBack = new PMCacheListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
-                        orderBy, leagueIds, searchDatePos, oddType, matchidList);
-                Disposable disposable = (Disposable) flowable
-                        .compose(RxUtils.schedulersTransformer()) //线程调度
-                        .compose(RxUtils.exceptionTransformer())
-                        .subscribeWith(httpCallBack);
-                addSubscribe(disposable);
-                return;
             }
         }
-
         if (isTimerRefresh) {
             flowable = model.getBaseApiService().getMatchBaseInfoByMidsPB(pmListReq);
         }
@@ -503,9 +486,10 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         if (isRefresh) {
             mNoLiveheaderLeague = null;
         }
+
         if ((type == 1 && needSecondStep) // 获取今日中的全部滚球赛事列表
                 || isTimerRefresh) { // 定时刷新赔率变更
-            PMListCallBack httpCallBack = new PMListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
+            PMCacheListCallBack httpCallBack = new PMCacheListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
                     orderBy, leagueIds, searchDatePos, oddType, matchidList);
             Disposable disposable = (Disposable) flowable
                     .compose(RxUtils.schedulersTransformer()) //线程调度
@@ -513,7 +497,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                     .subscribeWith(httpCallBack);
             addSubscribe(disposable);
         } else {
-            mPmHttpCallBack = new PMLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
+            mPmHttpCallBack = new PMCacheLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
                     orderBy, leagueIds, searchDatePos, oddType, matchidList,
                     finalType, isStepSecond);
             Disposable disposable = (Disposable) flowable
@@ -558,14 +542,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         pmListReq.setSort(orderBy);
         pmListReq.setCpn(mCurrentPage);
         pmListReq.setCps(300);
-//        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
-//        String token;
-//        if(TextUtils.equals(platform, PLATFORM_PMXC)) {
-//            token = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN);
-//        } else {
-//            token = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
-//        }
-//        pmListReq.setToken(token);
         //pbListReq.setOddType(oddType);
 
         if (mMenuInfoList.isEmpty()) {

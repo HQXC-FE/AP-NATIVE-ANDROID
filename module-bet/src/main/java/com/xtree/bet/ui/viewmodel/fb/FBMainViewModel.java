@@ -435,7 +435,6 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
                             searchMatch(mSearchWord, true);
                         }
                         if (mCurrentPage == 1) {
-                            System.out.println("================== FBMainViewModel getChampionList====================");
                             SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + playMethodType + sportId, new Gson().toJson(mChampionMatchList));
                         }
                         mHasCache = false;
