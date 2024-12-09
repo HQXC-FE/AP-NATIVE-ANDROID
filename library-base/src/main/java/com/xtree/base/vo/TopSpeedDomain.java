@@ -11,7 +11,7 @@ public class TopSpeedDomain implements BaseBean, Comparable<TopSpeedDomain> {
     public long curCTSSec = 0;
     //最后一次超时上传的时间
     public long lastUploadMonitor = 0;
-    public int isRecommend = 1;//是否推荐 0 或 1
+    public int isRecommend = 0;//是否推荐 1 或 0
 
     @Override
     public int describeContents() {

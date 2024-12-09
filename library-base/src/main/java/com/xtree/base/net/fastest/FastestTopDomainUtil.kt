@@ -190,7 +190,7 @@ class FastestTopDomainUtil private constructor() {
                                 //debug模式 显示所有测速线路 release模式 只显示4条
                                 if (mTopSpeedDomainList.size < 4 || BuildConfig.DEBUG) {
                                     if(topSpeedDomain.speedScore < 500){
-                                        topSpeedDomain.isRecommend = 0;
+                                        topSpeedDomain.isRecommend = 1;
                                     }
                                     mTopSpeedDomainList.add(topSpeedDomain)
                                     mTopSpeedDomainList.sort()
