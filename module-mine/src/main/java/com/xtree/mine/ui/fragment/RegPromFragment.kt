@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,13 +56,11 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
     private lateinit var linkPpw: BasePopupView
 
     private lateinit var mProfileVo: ProfileVo
-    private var isChangLink:Boolean =false
-    private var changeLink:String = ""
-    private lateinit var mMarketingVo: MarketingVo
 
 
     override fun initView() {
         val json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE)
+        KLog.i("mProfileVo", json)
         mProfileVo = Gson().fromJson(json, ProfileVo::class.java)
         initDialog()
         saveUpdate()
@@ -118,20 +115,12 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
 
     override fun initViewObservable() {
         viewModel.liveDataMarketing.observe(this) {
-            mMarketingVo = it
-            CfLog.e("initViewObservable ---->  viewModel.liveDataMarketing" + mMarketingVo.fishingPoint)
-
             if (it.links.isNotEmpty() && it.domainList.isNotEmpty()) {
                 val linkList = ArrayList<String>()
                 for (i in it.domainList) {
                     linkList.add(i + it.links[0].domain)
                 }
-                if (isChangLink == false){
-                    binding.tvLink.text = linkList[0]
-                }else{
-                    binding.tvLink.text = changeLink
-                }
-
+                binding.tvLink.text = linkList[0]
                 val adapter: CachedAutoRefreshAdapter<String> = object : CachedAutoRefreshAdapter<String>() {
                     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CacheViewHolder {
                         return CacheViewHolder(LayoutInflater.from(context).inflate(R.layout.item_text, parent, false))
@@ -142,8 +131,6 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                         binding2.tvwTitle.text = get(position)
                         binding2.tvwTitle.setOnClickListener {
                             binding.tvLink.text = get(position)
-                            isChangLink = true
-                            changeLink = get(position)
                             linkPpw.dismiss()
                         }
                     }
@@ -160,8 +147,6 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                     member -> {
                         binding.include0.layout.visibility = View.INVISIBLE
                         binding.include1.layout.visibility = View.VISIBLE
-                        binding.include1.layoutFishing.visibility =View.GONE
-                        binding.include0.layoutFishing.visibility =View.GONE
                         mList[1]
                     }
 
@@ -227,13 +212,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CacheViewHolder {
                 return CacheViewHolder(LayoutInflater.from(context).inflate(R.layout.item_text, parent, false))
             }
-           /* get() = arrayListOf("代理", "会员")
-            //代理
-            val daili: Int
-                get() = 1
-            //会员
-            val member: Int
-                get() = 0*/
+
             override fun onBindViewHolder(holder: CacheViewHolder, position: Int) {
                 val binding2 = ItemTextBinding.bind(holder.itemView)
                 binding2.tvwTitle.text = get(position)
@@ -248,58 +227,16 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                             //INVISIBLE 留个占位
                             binding.include0.layout.visibility = View.INVISIBLE
                             binding.include1.layout.visibility = View.VISIBLE
-
                         }
 
                     }
-                    //arrayListOf("代理", "会员")
+
                     binding.tvSelectType.text = get(position)
-                    //user_level >= 4的代理用户 并且 max返点 >0 ，注册、推广链接界面 才显示三方返点设置:
-
-                    if (mProfileVo.userLevel >=4){
-                        if (TextUtils.equals("会员",binding.tvSelectType.text)) {
-                            CfLog.e("会员 --------------->")
-                            //真人
-                            binding.include1.layoutReal.visibility = View.GONE
-                            //体育
-                            binding.include1.layoutSports.visibility = View.GONE
-                            //棋牌
-                            binding.include1.layoutChess.visibility = View.GONE
-                            //电竞
-                            binding.include1.layoutGame.visibility = View.GONE
-                            //捕鱼
-                            binding.include1.layoutFishing.visibility = View.GONE
-                            //判断mProfileVo  maxFishingPoint
-                        }else if (TextUtils.equals("代理",binding.tvSelectType.text)){
-                            CfLog.e("代理 --------------->")
-                            if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
-                                TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
-                                TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
-                                binding.include0.layoutFishing.visibility = View.GONE
-                            } else if ( binding.include0.layoutFishing.visibility == View.GONE) {
-                                binding.include0.layoutFishing.visibility == View.VISIBLE
-                            }
-                        }
-                    }else{
-                        if (TextUtils.equals("会员",binding.tvSelectType.text)) {
-                            binding.include1.layoutFishing.visibility =View.GONE
-                            binding.include0.layout.visibility  =View.GONE
-                            //判断mProfileVo  maxFishingPoint
-                        }else if (TextUtils.equals("代理",binding.tvSelectType.text)){
-                            if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
-                                TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
-                                TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
-                                binding.include0.layoutFishing.visibility = View.GONE
-                            } else if ( binding.include0.layoutFishing.visibility == View.GONE) {
-                                binding.include0.layoutFishing.visibility == View.VISIBLE
-                            }
-                        }
-                    }
-
                     ppw.dismiss()
                 }
             }
         }
+
         KLog.i("usertype", mProfileVo.usertype)
         adapter.addAll(mList)
         ppw = XPopup.Builder(context).asCustom(ListDialog(requireContext(), "", adapter))
@@ -335,12 +272,15 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                     ppwLottery1.show()
                 }
             }
-            //user_level >= 4的代理用户 并且 max返点 >0 ，注册、推广链接界面 才显示三方返点设置:
-            if (mProfileVo.userLevel >=4){
+
+            //userLevel大于4，且是代理，才显示三方返点
+            if (mProfileVo.userLevel >= 4 && type == 0) {
+
                 //状态等于0不显示
                 if (mProfileVo.liveStatus == 0) {
                     layoutReal.visibility = View.GONE
                 } else {
+                    layoutReal.visibility = View.VISIBLE
                     typeReal.text = vo.livePoint.plus("%")
                     tvRealRebate.text = getString(R.string.txt_reg_rebate)
                         .plus(NumberUtils.sub(mProfileVo.maxLivePoint, vo.livePoint.toDouble()).toString() + "%")
@@ -366,6 +306,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                 if (mProfileVo.sportStatus == 0) {
                     layoutSports.visibility = View.GONE
                 } else {
+                    layoutSports.visibility = View.VISIBLE
                     typeSports.text = vo.sportPoint.plus("%")
                     tvSportsRebate.text = getString(R.string.txt_reg_rebate)
                         .plus(NumberUtils.sub(mProfileVo.maxSportPoint, vo.sportPoint.toDouble()).toString() + "%")
@@ -393,6 +334,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                 if (mProfileVo.pokerStatus == 0) {
                     layoutChess.visibility = View.GONE
                 } else {
+                    layoutChess.visibility = View.VISIBLE
                     typeChess.text = vo.chessPoint.plus("%")
                     tvChessRebate.text = getString(R.string.txt_reg_rebate)
                         .plus(NumberUtils.sub(mProfileVo.maxPokerPoint, vo.chessPoint.toDouble()).toString() + "%")
@@ -420,6 +362,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                 if (mProfileVo.esportsStatus == 0) {
                     layoutGame.visibility = View.GONE
                 } else {
+                    layoutGame.visibility = View.VISIBLE
                     typeGame.text = vo.esportsPoint.plus("%")
                     tvGameRebate.text = getString(R.string.txt_reg_rebate)
                         .plus(NumberUtils.sub(mProfileVo.maxEsportsPoint, vo.esportsPoint.toDouble()).toString() + "%")
@@ -442,16 +385,13 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                         }
                     }
                 }
-
-                //判断mProfileVo  maxFishingPoint
-                if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
-                    TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
-                    TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
+                //状态等于0不显示
+                if (mProfileVo.fishingStatus == 0) {
                     layoutFishing.visibility = View.GONE
                 } else {
-
-                    typeFishing.text = vo.fishingPoint.plus("%")
-                    tvGameFishing.text = getString(R.string.txt_reg_rebate).plus((  NumberUtils.sub(mProfileVo.maxFishingPoint,vo.fishingPoint.toDouble()).toString())+"%")
+                    layoutFishing.visibility = View.VISIBLE
+                    typeFishing.text = mProfileVo.maxFishingPoint.toString().plus("%")
+                    tvGameFishing.text = getString(R.string.txt_reg_rebate).plus("0.0%")
                     typeFishing.setOnClickListener {
                         if (type == 0) {
                             //未初始化，创建ppw
@@ -471,202 +411,12 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                         }
                     }
                 }
-            }else{
-                //真人
-                layoutReal.visibility = View.GONE
-                //体育
-                layoutSports.visibility = View.GONE
-                //棋牌
-                layoutChess.visibility = View.GONE
-                //电竞
-                layoutGame.visibility = View.GONE
-                //捕鱼
-                layoutFishing.visibility = View.GONE
             }
         }
 
 
     }
-    /**
-     * 代理/会员快速返点设置
-     */
-    private fun setRebate(include: LayoutQuickRebateBinding, vo: MarketingVo) {
-        include.apply {
-            if (mProfileVo.rebate_percentage == null) {
-                return
-            }
-            val max = mProfileVo.rebate_percentage.replace("%", "").toDouble()
 
-            typeLottery.text = vo.selectedPoint.plus("%")
-            val self = NumberUtils.sub(max, vo.selectedPoint.toDouble())
-            tvLotteryRebate.text = getString(R.string.txt_reg_rebate).plus("$self%")
-            val arrayList = getRebateList(max)
-            typeLottery.setOnClickListener {
-               /* if (type == 0) {
-                    //未初始化，创建ppw
-                    if (!::ppwLottery.isInitialized) {
-                        ppwLottery = createPpw(max, typeLottery, tvLotteryRebate, arrayList) { ppwLottery.dismiss() }
-                    }
-                    ppwLottery.show()
-                } else {
-                    if (!::ppwLottery1.isInitialized) {
-                        ppwLottery1 = createPpw(max, typeLottery, tvLotteryRebate, arrayList) { ppwLottery1.dismiss() }
-                    }
-                    ppwLottery1.show()
-                }*/
-            }
-            //user_level >= 4的代理用户 并且 max返点 >0 ，注册、推广链接界面 才显示三方返点设置:
-            if (mProfileVo.userLevel >=4){
-                //状态等于0不显示
-                if (mProfileVo.liveStatus == 0) {
-                    layoutReal.visibility = View.GONE
-                } else {
-                    typeReal.text = vo.livePoint.plus("%")
-                    tvRealRebate.text = getString(R.string.txt_reg_rebate)
-                        .plus(NumberUtils.sub(mProfileVo.maxLivePoint, vo.livePoint.toDouble()).toString() + "%")
-                    typeReal.setOnClickListener {
-                        /*if (type == 0) {
-                            //未初始化，创建ppw
-                            if (!::ppwReal.isInitialized) {
-                                ppwReal = createPpw(mProfileVo.maxLivePoint, typeReal, tvRealRebate, getRebateList(mProfileVo.maxLivePoint))
-                                { ppwReal.dismiss() }
-                            }
-                            ppwReal.show()
-                        } else {
-                            if (!::ppwReal1.isInitialized) {
-                                ppwReal1 = createPpw(mProfileVo.maxLivePoint, typeReal, tvRealRebate, getRebateList(mProfileVo.maxLivePoint))
-                                { ppwReal1.dismiss() }
-                            }
-                            ppwReal1.show()
-                        }*/
-                    }
-                }
-
-                //状态等于0不显示
-                if (mProfileVo.sportStatus == 0) {
-                    layoutSports.visibility = View.GONE
-                } else {
-                    typeSports.text = vo.sportPoint.plus("%")
-                    tvSportsRebate.text = getString(R.string.txt_reg_rebate)
-                        .plus(NumberUtils.sub(mProfileVo.maxSportPoint, vo.sportPoint.toDouble()).toString() + "%")
-                    typeSports.setOnClickListener {
-                        /*if (type == 0) {
-                            //未初始化，创建ppw
-                            if (!::ppwSports.isInitialized) {
-                                ppwSports =
-                                    createPpw(mProfileVo.maxSportPoint, typeSports, tvSportsRebate, getRebateList(mProfileVo.maxSportPoint))
-                                    { ppwSports.dismiss() }
-                            }
-                            ppwSports.show()
-                        } else {
-                            if (!::ppwSports1.isInitialized) {
-                                ppwSports1 =
-                                    createPpw(mProfileVo.maxSportPoint, typeSports, tvSportsRebate, getRebateList(mProfileVo.maxSportPoint))
-                                    { ppwSports1.dismiss() }
-                            }
-                            ppwSports1.show()
-                        }*/
-                    }
-                }
-
-                //状态等于0不显示
-                if (mProfileVo.pokerStatus == 0) {
-                    layoutChess.visibility = View.GONE
-                } else {
-                    typeChess.text = vo.chessPoint.plus("%")
-                    tvChessRebate.text = getString(R.string.txt_reg_rebate)
-                        .plus(NumberUtils.sub(mProfileVo.maxPokerPoint, vo.chessPoint.toDouble()).toString() + "%")
-                    typeChess.setOnClickListener {
-                     /*   if (type == 0) {
-                            //未初始化，创建ppw
-                            if (!::ppwChess.isInitialized) {
-                                ppwChess =
-                                    createPpw(mProfileVo.maxPokerPoint, typeChess, tvChessRebate, getRebateList(mProfileVo.maxPokerPoint))
-                                    { ppwChess.dismiss() }
-                            }
-                            ppwChess.show()
-                        } else {
-                            if (!::ppwChess1.isInitialized) {
-                                ppwChess1 =
-                                    createPpw(mProfileVo.maxPokerPoint, typeChess, tvChessRebate, getRebateList(mProfileVo.maxPokerPoint))
-                                    { ppwChess1.dismiss() }
-                            }
-                            ppwChess1.show()
-                        }*/
-                    }
-                }
-
-                //状态等于0不显示
-                if (mProfileVo.esportsStatus == 0) {
-                    layoutGame.visibility = View.GONE
-                } else {
-                    typeGame.text = vo.esportsPoint.plus("%")
-                    tvGameRebate.text = getString(R.string.txt_reg_rebate)
-                        .plus(NumberUtils.sub(mProfileVo.maxEsportsPoint, vo.esportsPoint.toDouble()).toString() + "%")
-                    typeGame.setOnClickListener {
-                       /* if (type == 0) {
-                            //未初始化，创建ppw
-                            if (!::ppwGame.isInitialized) {
-                                ppwGame =
-                                    createPpw(mProfileVo.maxEsportsPoint, typeGame, tvGameRebate, getRebateList(mProfileVo.maxEsportsPoint))
-                                    { ppwGame.dismiss() }
-                            }
-                            ppwGame.show()
-                        } else {
-                            if (!::ppwGame1.isInitialized) {
-                                ppwGame1 =
-                                    createPpw(mProfileVo.maxEsportsPoint, typeGame, tvGameRebate, getRebateList(mProfileVo.maxEsportsPoint))
-                                    { ppwGame1.dismiss() }
-                            }
-                            ppwGame1.show()
-                        }*/
-                    }
-                }
-
-                //判断mProfileVo  maxFishingPoint
-                if (TextUtils.isEmpty(mProfileVo.maxFishingPoint.toString()) ||
-                    TextUtils.equals("0",mProfileVo.maxFishingPoint.toString())||
-                    TextUtils.equals("0.0",mProfileVo.maxFishingPoint.toString())) {
-                    layoutFishing.visibility = View.GONE
-                } else {
-
-                    typeFishing.text = vo.fishingPoint.plus("%")
-                    tvGameFishing.text = getString(R.string.txt_reg_rebate).plus((  NumberUtils.sub(mProfileVo.maxFishingPoint,vo.fishingPoint.toDouble()).toString())+"%")
-                    typeFishing.setOnClickListener {
-                        /*if (type == 0) {
-                            //未初始化，创建ppw
-                            if (!::ppwFish.isInitialized) {
-                                ppwFish =
-                                    createPpw(mProfileVo.maxFishingPoint, typeFishing, tvGameFishing, getRebateList(mProfileVo.maxFishingPoint))
-                                    { ppwFish.dismiss() }
-                            }
-                            ppwFish.show()
-                        } else {
-                            if (!::ppwFish1.isInitialized) {
-                                ppwFish1 =
-                                    createPpw(mProfileVo.maxFishingPoint, typeFishing, tvGameFishing, getRebateList(mProfileVo.maxFishingPoint))
-                                    { ppwFish1.dismiss() }
-                            }
-                            ppwFish1.show()
-                        }*/
-                    }
-                }
-            }else{
-                //真人
-                layoutReal.visibility = View.GONE
-                //体育
-                layoutSports.visibility = View.GONE
-                //棋牌
-                layoutChess.visibility = View.GONE
-                //电竞
-                layoutGame.visibility = View.GONE
-                //捕鱼
-                layoutFishing.visibility = View.GONE
-            }
-        }
-
-
-    }
 
     /**
      * 创建返点弹窗
