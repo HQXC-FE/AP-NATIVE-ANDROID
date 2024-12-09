@@ -25,6 +25,8 @@ public class ProfileVo {
     public int sportStatus; // 0,
     public int pokerStatus; // 0,
     public int esportsStatus; // 0,
+    //注册开户捕鱼返点是否显示  ==0不显示
+    public int fishingStatus; // 0,
 
     //彩票返点最大值
     public String rebate_percentage; // "3.0%",

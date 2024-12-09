@@ -3,6 +3,7 @@ package com.xtree.base.net;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterActivityPath;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.widget.LoadingDialog;
 
 import io.reactivex.subscribers.DisposableSubscriber;
@@ -16,6 +17,12 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 
 public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
     public abstract void onResult(T t);
+    public  void onResult(T t, BusinessException ex)
+    {
+        CfLog.e("onResult ---> BusinessException ==" +ex.toString());
+        onFail(ex);
+    }
+
 
     @Override
     public void onNext(T o) {
@@ -23,11 +30,13 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         if (o instanceof BaseResponse2) {
             KLog.w("json is not normal (BaseResponse2)");
             BaseResponse2 rsp2 = (BaseResponse2) o;
+            BusinessException ex = new BusinessException(rsp2.getStatus(), rsp2.message);
             if (rsp2.authorization != null) {
                 SPUtils.getInstance().put(SPKeyGlobal.USER_TOKEN, rsp2.authorization.token);
                 SPUtils.getInstance().put(SPKeyGlobal.USER_TOKEN_TYPE, rsp2.authorization.token_type);
             }
             onResult(o);
+            onResult((T) rsp2.getData(),ex);
             return;
         }
         if (!(o instanceof BaseResponse)) {
@@ -47,6 +56,8 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                 }
                 //请求成功, 正确的操作方式
                 onResult((T) baseResponse.getData());
+                //这里返回可能的null Data和错误信息，只需复写onResult(T t, BusinessException ex)即可
+                //onResult((T) baseResponse.getData(),ex);
                 break;
             case HttpCallBack.CodeRule.CODE_300:
                 //请求失败，不打印Message
@@ -146,7 +157,10 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         if (t.code != CodeRule.CODE_30321){
             ToastUtils.showShort(t.message);
         }
-
+      /*  LoadingDialog.finish();
+        KLog.e("error: " + t.toString());
+        Sentry.captureException(t);
+        ToastUtils.showLong(t.message + " [" + t.code + "]");*/
     }
 
     @Override
@@ -192,6 +206,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         static final int CODE_20203 = 20203; //用户名或密码错误
         static final int CODE_20217 = 20217; //已修改密码或被踢出
         static final int CODE_30321 = 30321;//OBG余额至少为1元,登入游戏失败,请充值OBG游戏转账后再试! 【针对这个返回message进行隐藏】
+        static final int CODE_100000 = 100000 ;//当前请求繁忙，请稍后再试
     }
 
     public static final class FBCodeRule {
