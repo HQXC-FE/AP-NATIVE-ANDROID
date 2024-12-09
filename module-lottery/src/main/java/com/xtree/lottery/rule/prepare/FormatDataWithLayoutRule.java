@@ -7,6 +7,7 @@ import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,18 +31,30 @@ public class FormatDataWithLayoutRule {
     @Action
     public void then(Facts facts) {
         Map<String, Object> currentMethod = facts.get("currentMethod");
-        List<Map<String, Object>> layout = (List<Map<String, Object>>) ((Map<String, Object>) currentMethod.get("selectarea")).get("layout");
-        Map<String,List<String>> bet = facts.get("bet");
-        List<String> codes = bet.get("codes");
+        Map<String, Object> selectArea = (Map<String, Object>) currentMethod.get("selectarea");
+        List<Map<String, String>> layout = (List<Map<String, String>>) selectArea.get("layout");
+        Map<String, List<String>> bet = facts.get("bet");
+        List<String> betCodes = bet.get("codes");
 
-        Map<String, List<String>> formatCodes = facts.get("formatCodes");
 
-        for (int index = 0; index < layout.size(); index++) {
-            Map<String, Object> item = layout.get(index);
-            String place = (String) item.get("place");
-            List<String> codesAtPlace = formatCodes.getOrDefault(place, new ArrayList<>());
-            codesAtPlace.add(codes.get(index));
-            formatCodes.put(place, codesAtPlace);
+        int place;
+        Map<Integer, String> formatCodes = new HashMap<>();
+
+        for (int i = 0; i < layout.size(); i++) {
+            Map<String, String> item = layout.get(i);
+            Object placeObj = item.get("place");
+            if (placeObj instanceof Integer) {
+                place = (Integer) placeObj;
+            } else if (placeObj instanceof String) {
+                try {
+                    place = Integer.parseInt((String) placeObj);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Invalid place value: " + placeObj);
+                }
+            } else {
+                throw new IllegalArgumentException("Unsupported type for place: " + placeObj.getClass());
+            }
+            formatCodes.put(place,  betCodes.get(i));
         }
 
         facts.put("formatCodes", formatCodes);
