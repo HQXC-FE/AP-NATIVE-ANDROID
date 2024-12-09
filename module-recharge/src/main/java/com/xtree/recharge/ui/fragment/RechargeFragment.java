@@ -630,7 +630,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         }
 
         //嗨钱包需要绑定手机号和银行卡
-        if (curRechargeVo.paycode.contains("hiwallet") && vo.userBankList.isEmpty()) {
+        if (vo.paycode.contains("hiwallet") && vo.userBankList.isEmpty()) {
             binding.llBindInfo.setVisibility(View.VISIBLE);
             binding.tvwBindYhk.setVisibility(View.VISIBLE);
         }
@@ -813,7 +813,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             binding.edtName.setEnabled(true);
             binding.ivwClear.setVisibility(View.VISIBLE);
             //嗨钱包不隐藏姓名输入栏
-            if (!curRechargeVo.paycode.contains("hiwallet")) {
+            if (!vo.paycode.contains("hiwallet")) {
                 binding.llName.setVisibility(View.GONE);
             }
             binding.tvwTipName.setVisibility(View.VISIBLE);
