@@ -783,6 +783,7 @@ public class BrowserActivity extends AppCompatActivity {
             req.setLogTag("thirdgame_domain_exception");
             req.setApiUrl(url);
             req.setMsg(msg);
+            req.setLogType("三方游戏打开失败/初始 URL错误处理");
             EventBus.getDefault().post(new EventVo(EVENT_UPLOAD_EXCEPTION, req));
         }
     }
