@@ -22,6 +22,8 @@ public class SettingsVo implements Parcelable {
     public long ws_expire_time; // "90"若检测到距离上次收到后端确认成功讯息(type为open)超过90秒, 這中間都沒有訊息傳入或是成功訊息, 则需主动断开连线然后重新连接。
     // 测速扣除百分比
     public long app_response_speed_calculation;
+    //推荐测速上限设置
+    public int app_response_speed_max = -1;
 
     // Constructor for Parcelable
     protected SettingsVo(Parcel in) {
@@ -37,6 +39,7 @@ public class SettingsVo implements Parcelable {
         ws_retry_waiting_time = in.readLong();
         ws_expire_time = in.readLong();
         app_response_speed_calculation = in.readLong();
+        app_response_speed_max = in.readInt();
     }
 
     public static final Creator<SettingsVo> CREATOR = new Creator<SettingsVo>() {
@@ -70,6 +73,7 @@ public class SettingsVo implements Parcelable {
         parcel.writeLong(ws_retry_waiting_time);
         parcel.writeLong(ws_expire_time);
         parcel.writeLong(app_response_speed_calculation);
+        parcel.writeInt(app_response_speed_max);
     }
 
     @Override
@@ -87,6 +91,7 @@ public class SettingsVo implements Parcelable {
                 ", ws_retry_waiting_time=" + ws_retry_waiting_time +
                 ", ws_expire_time=" + ws_expire_time +
                 ", app_response_speed_calculation=" + app_response_speed_calculation +
+                ", app_response_speed_max=" + app_response_speed_max +
                 '}';
     }
 }
