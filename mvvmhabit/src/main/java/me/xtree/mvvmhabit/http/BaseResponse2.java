@@ -42,15 +42,6 @@ public class BaseResponse2{
     //public String  endDate; // "2024-01-09 23:59:59",
     //public String  platform; // "FBXC"
     //}
-    /*private T data;
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }*/
-
 
     public String today; // "2024-01-08",
     public String starttime; // "2023-08-08 00:00:00",
