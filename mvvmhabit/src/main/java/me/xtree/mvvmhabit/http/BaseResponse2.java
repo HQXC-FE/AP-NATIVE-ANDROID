@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * 老接口返回的数据基类(父类), 适合老接口用
  */
-public class BaseResponse2 <T>{
+public class BaseResponse2{
 
     public String webtitle; // "",
     //public String sSystemImagesAndCssPath; // "",
@@ -42,14 +42,14 @@ public class BaseResponse2 <T>{
     //public String  endDate; // "2024-01-09 23:59:59",
     //public String  platform; // "FBXC"
     //}
-    private T data;
+    /*private T data;
     public T getData() {
         return data;
     }
 
     public void setData(T data) {
         this.data = data;
-    }
+    }*/
 
 
     public String today; // "2024-01-08",
