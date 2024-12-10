@@ -61,6 +61,7 @@ import com.xtree.recharge.ui.fragment.extransfer.ExTransferVoucherFragment;
 import com.xtree.recharge.ui.fragment.extransfer.ExTransferVoucherPositiveDialogFragment;
 import com.xtree.recharge.ui.model.BankPickModel;
 import com.xtree.recharge.ui.widget.Comm100ChatWindows;
+import com.xtree.recharge.ui.widget.RcExpPositiveConfirmDialog;
 import com.xtree.recharge.ui.widget.TipOnePayNextDialog;
 import com.xtree.recharge.vo.RechargeVo;
 
@@ -668,7 +669,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                 positiveConfirmDialog.dismiss();
             }
             positiveConfirmDialog = new XPopup.Builder(mActivity.get()).dismissOnTouchOutside(false)
-                    .dismissOnBackPressed(false).asCustom(new TipOnePayNextDialog(mActivity.get(), new TipOnePayNextDialog.ICallBack() {
+                    .dismissOnBackPressed(false).asCustom(new RcExpPositiveConfirmDialog(mActivity.get(), new RcExpPositiveConfirmDialog.ICallBack() {
                         @Override
                         public void onClickConfirm() {
                             toVoucherPositive();
@@ -1159,7 +1160,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         if (isActivityNull()) {
             return;
         }
-        String url = DomainUtil.getH5Domain2() + Constant.URL_RC_CNYT_TUTORIAL;
+        String url = DomainUtil.getH5Domain2() + Constant.URL_RC_TRANSFER_TUTORIAL;
         new XPopup.Builder(mActivity.get()).asCustom(new BrowserDialog(mActivity.get(), mActivity.get().getString(R.string.txt_transfer_tutorial), url)).show();
     }
 
