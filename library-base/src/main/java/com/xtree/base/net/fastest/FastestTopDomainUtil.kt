@@ -61,6 +61,8 @@ class FastestTopDomainUtil private constructor() {
         private lateinit var mThirdApiDomainList: MutableList<String>
         private lateinit var mCurApiDomainList: MutableList<String>
         private lateinit var mThirdDomainList: MutableList<String>
+        @set:Synchronized
+        @get:Synchronized
         private lateinit var mTopSpeedDomainList: MutableList<TopSpeedDomain>
 
         @set:Synchronized
@@ -185,10 +187,11 @@ class FastestTopDomainUtil private constructor() {
                                 CfLog.e("域名：api------$url---${topSpeedDomain.speedSec}")
                                 mCurApiDomainList.remove(url)
 
-                                allTest.add(topSpeedDomain)
-
                                 //debug模式 显示所有测速线路 release模式 只显示4条
                                 if (mTopSpeedDomainList.size < 4 || BuildConfig.DEBUG) {
+                                    if(topSpeedDomain.speedScore < 500){
+                                        topSpeedDomain.isRecommend = 1;
+                                    }
                                     mTopSpeedDomainList.add(topSpeedDomain)
                                     mTopSpeedDomainList.sort()
                                     DomainUtil.setApiUrl(mTopSpeedDomainList[0].url)
@@ -203,6 +206,9 @@ class FastestTopDomainUtil private constructor() {
                                         mIsFinish = true
                                     }
                                 }
+
+                                allTest.add(topSpeedDomain)
+
                             }
                         } catch (e: Exception) {
                             try {
@@ -238,7 +244,8 @@ class FastestTopDomainUtil private constructor() {
                     val check = FastestMonitorCache.check(it)
                     if (check) {
                         val infoList =
-                            listOf<String>(it.url ?: "", it.speedSec.toString(), dateFormat)
+                            listOf<String>(it.url ?: "", it.speedSec.toString(),
+                                dateFormat,it.speedScore.toString(),it.isRecommend.toString())
                         highSpeedList.add(infoList)
                         FastestMonitorCache.put(it.apply { lastUploadMonitor = curTime })
                     }
