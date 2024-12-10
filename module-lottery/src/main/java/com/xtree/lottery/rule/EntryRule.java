@@ -55,10 +55,16 @@ public class EntryRule {
         String currentMethodCodeSP = "";
         String currentMethodCateTitle = "后三码";
         String currentMethodDesc = "组选和值";
-        List<String> betCodes = new ArrayList<>();
-        betCodes.add("5");
-        betCodes.add("6");
-        betCodes.add("7");
+        List<List<String>> betCodes = new ArrayList<>();
+        List<String> betCodesItem11 = new ArrayList<>();
+        List<String> betCodesItem12 = new ArrayList<>();
+        List<String> betCodesItem13 = new ArrayList<>();
+        betCodesItem11.add("5");
+        betCodesItem12.add("6");
+        betCodesItem13.add("7");
+        betCodes.add(betCodesItem11);
+        betCodes.add(betCodesItem12);
+        betCodes.add(betCodesItem13);
         String betPoschoose = "";
 
         HashMap<String, Object> currentMethod = new HashMap<>();

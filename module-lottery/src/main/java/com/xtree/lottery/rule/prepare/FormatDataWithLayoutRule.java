@@ -32,16 +32,16 @@ public class FormatDataWithLayoutRule {
     public void then(Facts facts) {
         Map<String, Object> currentMethod = facts.get("currentMethod");
         Map<String, Object> selectArea = (Map<String, Object>) currentMethod.get("selectarea");
-        List<Map<String, String>> layout = (List<Map<String, String>>) selectArea.get("layout");
-        Map<String, List<String>> bet = facts.get("bet");
-        List<String> betCodes = bet.get("codes");
+        List<Map<String, Object>> layout = (List<Map<String, Object>>) selectArea.get("layout");
+        Map<String, List<List<String>>> bet = facts.get("bet");
+        List<List<String>> betCodes = bet.get("codes");
 
 
         int place;
-        Map<Integer, String> formatCodes = new HashMap<>();
+        Map<Integer, List<String>> formatCodes = new HashMap<>();
 
         for (int i = 0; i < layout.size(); i++) {
-            Map<String, String> item = layout.get(i);
+            Map<String, Object> item = layout.get(i);
             Object placeObj = item.get("place");
             if (placeObj instanceof Integer) {
                 place = (Integer) placeObj;
@@ -54,9 +54,19 @@ public class FormatDataWithLayoutRule {
             } else {
                 throw new IllegalArgumentException("Unsupported type for place: " + placeObj.getClass());
             }
-            formatCodes.put(place,  betCodes.get(i));
+            formatCodes.put(place, mergeLists(formatCodes.getOrDefault(place, new ArrayList<>()), betCodes.get(i)));
         }
-
         facts.put("formatCodes", formatCodes);
+    }
+
+    private List<String> mergeLists(List<String> list1, List<String> list2) {
+        if (list1 == null) {
+            return list2;
+        }
+        if (list2 == null) {
+            return list1;
+        }
+        list1.addAll(list2);
+        return list1;
     }
 }
