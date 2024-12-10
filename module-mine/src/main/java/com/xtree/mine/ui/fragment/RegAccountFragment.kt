@@ -120,8 +120,8 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
                     AdduserRequest(
                         UuidUtil.getID(), "insert", type.toString(),
                         name, pwd, nickname,
-                        bd.typeLottery.removePercentage(), bd.typeFishing.removePercentage(), bd.typeReal.removePercentage(), bd.typeSports.removePercentage(),
-                        bd.typeChess.removePercentage(), bd.typeGame.removePercentage()
+                        bd.typeLottery.removePercentage(),  bd.typeReal.removePercentage(), bd.typeSports.removePercentage(),
+                        bd.typeChess.removePercentage(), bd.typeGame.removePercentage(),bd.typeFishing.removePercentage(),
                     )
                 )
             }
