@@ -34,7 +34,7 @@ android {
             resValue "string", "mixpanel_token", "8c0e04f787df7fa37fdd8ed81c4c219a"
             resValue "bool", "is_tag", "true" // 是否开启统计
             resValue "string", "ms_secret_key", "b8597911-c169-4fcb-b548-51a575e698d1"
-            resValue "string", "domain_api_list", "https://app1.v3y2m4.com;" +
+            resValue "string", "domain_api_list", "https://app1.c6j6g4.com;" +
                     "https://app1.q7n5k5.com;" +
                     "https://app1.j4p5m1.com;" +
                     "https://app1.n6d1r1.com;" +
