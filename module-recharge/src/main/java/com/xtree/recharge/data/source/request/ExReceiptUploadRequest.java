@@ -39,15 +39,16 @@ public class ExReceiptUploadRequest {
     /**
      * receipt_id
      */
-    @SerializedName("receipt_id")
-    private String receipt_id;
+    @SerializedName("receiptId")
+    private String receiptId;
 
-    public String getReceipt_id() {
-        return receipt_id;
+
+    public String getReceiptId() {
+        return receiptId;
     }
 
-    public void setReceipt_id(String receipt_id) {
-        this.receipt_id = receipt_id;
+    public void setReceiptId(String receiptId) {
+        this.receiptId = receiptId;
     }
 
     /**

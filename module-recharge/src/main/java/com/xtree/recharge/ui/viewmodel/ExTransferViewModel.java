@@ -706,7 +706,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         request.setPlatformOrder(pOrderData.getPlatformOrder());
         request.setPayBankCode(bankCodeOfPayment.getValue());
         request.setPayAccount(bankNumberOfPayment.getValue());
-        request.setReceipt_id(receiptIdOfPayment.getValue());
+        request.setReceiptId(receiptIdOfPayment.getValue());
         request.setPayName(cOrderData.getPayName());
 
         Disposable disposable = (Disposable) model.rechargeReceiptUpload(request)
@@ -791,7 +791,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         request.setPlatformOrder(pOrderData.getPlatformOrder());
         request.setPayBankCode(bankCodeOfPayment.getValue());
         request.setPayAccount(bankNumberOfPayment.getValue());
-        request.setReceipt_id(receiptIdOfPayment.getValue());
+        request.setReceiptId(receiptIdOfPayment.getValue());
         request.setPayName(cOrderData.getPayName());
 
         Disposable disposable = (Disposable) model.rechargeReceiptUpload(request)
