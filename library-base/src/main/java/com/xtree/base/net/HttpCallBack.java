@@ -36,7 +36,6 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                 SPUtils.getInstance().put(SPKeyGlobal.USER_TOKEN_TYPE, rsp2.authorization.token_type);
             }
             onResult(o);
-            onResult((T) rsp2.getData(),ex);
             return;
         }
         if (!(o instanceof BaseResponse)) {
