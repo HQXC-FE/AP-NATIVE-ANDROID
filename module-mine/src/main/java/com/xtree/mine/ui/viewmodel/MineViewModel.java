@@ -297,6 +297,9 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onResult(MarketingVo vo) {
                         CfLog.e(vo.toString());
+                        if (vo == null) {
+                            return;
+                        }
                         liveDataMarketing.setValue(vo);
                     }
 
