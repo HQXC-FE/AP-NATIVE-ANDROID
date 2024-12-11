@@ -1,12 +1,12 @@
 package com.xtree.bet.ui.viewmodel.callback;
 
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401038;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
 
 import android.text.TextUtils;
 
-import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
@@ -29,7 +29,7 @@ import java.util.Map;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class PMListCallBack extends PMHttpCallBack<List<MatchInfo>> {
+public class PMListCallBack extends HttpCallBack<List<MatchInfo>> {
 
     private PMMainViewModel mViewModel;
     private boolean mHasCache;
@@ -126,7 +126,6 @@ public class PMListCallBack extends PMHttpCallBack<List<MatchInfo>> {
 
     @Override
     public void onResult(List<MatchInfo> data) {
-        System.out.println("====================== PMListCallBack onResult data =========================="+data.size());
         if (mIsTimerRefresh) { // 定时刷新赔率变更
             if (data.size() != mMatchids.size()) {
                 //List<Long> matchIdList = new ArrayList<>();
@@ -155,7 +154,6 @@ public class PMListCallBack extends PMHttpCallBack<List<MatchInfo>> {
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("====================== PMListCallBack onError t =========================="+t.toString());
         mViewModel.getUC().getDismissDialogEvent().call();
         //if (!mIsTimerRefresh) {
             if (t instanceof ResponseThrowable) {

@@ -17,7 +17,7 @@ public class PMBaseResponse<T> {
         }else{
             dataStr = ", data=null";
         }
-        return "BaseResponse{" +
+        return "PMBaseResponse{" +
                 "code=" + code +
                 ", message='" + msg + '\'' +
                 ", timestamp=" + ts +

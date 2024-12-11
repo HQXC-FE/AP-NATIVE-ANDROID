@@ -5,13 +5,10 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.xtree.base.net.PMHttpCallBack;
-import com.xtree.base.utils.StringUtils;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.bet.bean.response.pm.LeagueAreaInfo;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
-import com.xtree.bet.bean.ui.InitialLeagueArea;
 import com.xtree.bet.bean.ui.League;
-import com.xtree.bet.bean.ui.LeagueArea;
 import com.xtree.bet.bean.ui.LeaguePm;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.TemplateBtSettingLeagueModel;
@@ -20,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.utils.RxUtils;
@@ -50,7 +46,7 @@ public class PMBtSettingLeagueModel extends TemplateBtSettingLeagueModel {
         Disposable disposable = (Disposable) model.getPMApiService().getOnSaleLeagues(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<LeagueAreaInfo>>() {
+                .subscribeWith(new HttpCallBack<List<LeagueAreaInfo>>() {
                     @Override
                     public void onResult(List<LeagueAreaInfo> leagueAreas) {
                         List<League> leagueList = new ArrayList<>();

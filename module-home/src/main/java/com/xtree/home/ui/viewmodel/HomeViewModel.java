@@ -463,7 +463,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_WAITING_TIME, vo.ws_retry_waiting_time);
                         SPUtils.getInstance().put(SPKeyGlobal.HICHAT_URL_SUFFIX, new LinkedHashSet(Arrays.asList(vo.hichat_url_suffix)));
                         //SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
-
+                        CfLog.e("**************** vo.sport_match_cache = " + vo.sport_match_cache);
+                        SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, new Gson().toJson(vo.sport_match_cache));
                         SPUtils.getInstance().put(SPKeyGlobal.APP_RESPONSE_SPEED_CALCULATION, vo.app_response_speed_calculation);
                         SPUtils.getInstance().put(SPKeyGlobal.APP_Response_Speed_Max, vo.app_response_speed_max);
                         //本地存储最新客服链接

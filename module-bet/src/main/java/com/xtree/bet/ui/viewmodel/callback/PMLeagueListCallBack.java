@@ -1,11 +1,9 @@
 package com.xtree.bet.ui.viewmodel.callback;
 
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401038;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FB;
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
@@ -14,7 +12,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.base.request.UploadExcetionReq;
@@ -36,7 +34,7 @@ import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class PMLeagueListCallBack extends PMHttpCallBack<MatchListRsp> {
+public class PMLeagueListCallBack extends HttpCallBack<MatchListRsp> {
 
     private PMMainViewModel mViewModel;
     private boolean mHasCache;

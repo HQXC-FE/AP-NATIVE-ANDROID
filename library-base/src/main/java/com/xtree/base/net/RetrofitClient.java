@@ -3,12 +3,14 @@ package com.xtree.base.net;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.xtree.base.BuildConfig;
+import androidx.annotation.NonNull;
+
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.HttpGsonConverterFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -16,17 +18,17 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import io.sentry.Sentry;
 import me.xtree.mvvmhabit.http.cookie.CookieJarImpl;
 import me.xtree.mvvmhabit.http.cookie.store.PersistentCookieStore;
 import me.xtree.mvvmhabit.http.interceptor.CacheInterceptor;
-import me.xtree.mvvmhabit.http.interceptor.logging.Level;
-import me.xtree.mvvmhabit.http.interceptor.logging.LoggingInterceptor;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.Utils;
 import okhttp3.Cache;
 import okhttp3.ConnectionPool;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.internal.platform.Platform;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -51,26 +53,6 @@ public class RetrofitClient {
     private Cache cache = null;
     private File httpCacheDirectory;
 
-    private static class SingletonHolder {
-        private static RetrofitClient INSTANCE = new RetrofitClient();
-    }
-
-    public static RetrofitClient getInstance() {
-        return SingletonHolder.INSTANCE;
-    }
-
-    public static void init() {
-        baseUrl = DomainUtil.getApiUrl();
-        SingletonHolder.INSTANCE = new RetrofitClient();
-        CfLog.i("OkHttpClient init");
-    }
-
-    public static void setApi(String url) {
-        baseUrl = url;
-        SingletonHolder.INSTANCE = new RetrofitClient();
-        CfLog.e("OkHttpClient setApi");
-    }
-
     private RetrofitClient() {
         this(baseUrl, null);
     }
@@ -93,6 +75,30 @@ public class RetrofitClient {
             KLog.e("Could not create http cache", e);
         }
 
+
+        Interceptor tokenAuthenticator = null;
+        try {
+            // 获取类的引用
+            Class<?> clazz = Class.forName("com.xtree.bet.data.TokenAuthenticator");
+
+            // 创建类的实例（旧方法，Java 9 之后不推荐）
+            Object obj = clazz.newInstance();
+
+            // 强制转换为目标类型
+            tokenAuthenticator = (Interceptor) obj;
+        } catch (Exception e) {
+            e.printStackTrace(); // 处理类异常
+            Sentry.captureException(e);
+            tokenAuthenticator = new Interceptor() {
+                @NonNull
+                @Override
+                public Response intercept(@NonNull Chain chain) throws IOException {
+                    // 转发请求
+                    return chain.proceed(chain.request());
+                }
+            };
+        }
+
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory();
         okHttpClient = new OkHttpClient.Builder()
                 .cookieJar(new CookieJarImpl(new PersistentCookieStore(mContext)))
@@ -104,6 +110,7 @@ public class RetrofitClient {
                 .addInterceptor(new UrlModifyingInterceptor())
                 .addInterceptor(new ExceptionInterceptor())
                 .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+                //.addInterceptor(tokenAuthenticator)
                 .addInterceptor(new HttpLoggingInterceptor(message -> KLog.d(message)).setLevel(HttpLoggingInterceptor.Level.BODY))
 //                .addInterceptor(new LoggingInterceptor
 //                        .Builder()//构建者模式
@@ -129,19 +136,20 @@ public class RetrofitClient {
 
     }
 
-    public OkHttpClient getOkHttpClient() {
-        return okHttpClient;
+    public static RetrofitClient getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
-    /**
-     * create you ApiService
-     * Create an implementation of the API endpoints defined by the {@code service} interface.
-     */
-    public <T> T create(final Class<T> service) {
-        if (service == null) {
-            throw new RuntimeException("Api service is null!");
-        }
-        return retrofit.create(service);
+    public static void init() {
+        baseUrl = DomainUtil.getApiUrl();
+        SingletonHolder.INSTANCE = new RetrofitClient();
+        CfLog.i("OkHttpClient init");
+    }
+
+    public static void setApi(String url) {
+        baseUrl = url;
+        SingletonHolder.INSTANCE = new RetrofitClient();
+        CfLog.e("OkHttpClient setApi");
     }
 
     /**
@@ -163,5 +171,24 @@ public class RetrofitClient {
                 .subscribe(subscriber);
 
         return null;
+    }
+
+    public OkHttpClient getOkHttpClient() {
+        return okHttpClient;
+    }
+
+    /**
+     * create you ApiService
+     * Create an implementation of the API endpoints defined by the {@code service} interface.
+     */
+    public <T> T create(final Class<T> service) {
+        if (service == null) {
+            throw new RuntimeException("Api service is null!");
+        }
+        return retrofit.create(service);
+    }
+
+    private static class SingletonHolder {
+        private static RetrofitClient INSTANCE = new RetrofitClient();
     }
 }

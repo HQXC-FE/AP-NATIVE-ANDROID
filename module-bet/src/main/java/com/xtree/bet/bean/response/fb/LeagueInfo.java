@@ -112,4 +112,25 @@ public class LeagueInfo implements BaseBean {
             return new LeagueInfo[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "LeagueInfo {" +
+                "id=" + id +
+                ", mt='" + mt + '\'' +
+                ", lt=" + lt +
+                ", na=" + na +
+                ", or='" + or + '\'' +
+                ", lurl=" + lurl +
+                ", sid=" + sid +
+                ", na=" + na +
+                ", rnm='" + or + '\'' +
+                ", lurl=" + lurl +
+                ", sid=" + sid +
+                ", rid=" + rid +
+                ", rnm=" + rnm +
+                ", hot='" + hot + '\'' +
+                ", slid=" + slid +
+                '}';
+    }
 }

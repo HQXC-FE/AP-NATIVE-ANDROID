@@ -881,7 +881,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 .dismissOnBackPressed(false)
                 .dismissOnTouchOutside(false)
                 .asCustom(dialog);
-        updateView.show();
+        //updateView.show();
     }
 
     private void showUpdateErrorDialog(final boolean isWeakUpdate, final String downUrl) {

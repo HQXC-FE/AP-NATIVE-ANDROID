@@ -1,11 +1,12 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_10000001;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_400524;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_400527;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401038;
+
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_10000001;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_400524;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_400527;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
 
 import android.app.Application;
 import android.text.TextUtils;
@@ -14,7 +15,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
@@ -60,7 +61,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
         Disposable disposable = (Disposable) model.getPMApiService().betRecord(btRecordReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<BtRecordRsp>() {
+                .subscribeWith(new HttpCallBack<BtRecordRsp>() {
                     @Override
                     public void onResult(BtRecordRsp btRecordRsp) {
                         List<BtRecordTime> btRecordTimeList = new ArrayList<>();
@@ -85,7 +86,6 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                             btRecordTime.addBtResultList(new BtRecordBeanPm(recordsBean));
                         }
                         btRecordTimeDate.postValue(btRecordTimeList);
-
 
 
                         //请求投注记录getOrderListV4PB接口时，如果有注单是确认中且是1分钟后，
@@ -176,7 +176,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                 .getCashoutMaxAmountList(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<BtCashOutPriceInfo>>() {
+                .subscribeWith(new HttpCallBack<List<BtCashOutPriceInfo>>() {
                     @Override
                     public void onResult(List<BtCashOutPriceInfo> btCashOutPriceInfoList) {
                         for (BtCashOutPriceInfo btCashOutPriceInfo : btCashOutPriceInfoList) {
@@ -214,7 +214,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                 .orderPreSettle(btCashOutBetReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<BtCashOutPriceInfo>>() {
+                .subscribeWith(new HttpCallBack<List<BtCashOutPriceInfo>>() {
                     @Override
                     public void onResult(List<BtCashOutPriceInfo> btCashOutPriceInfoList) {
 
@@ -252,7 +252,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                 .queryOrderPreSettleConfirm()
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<BtCashOutStatusInfo>>() {
+                .subscribeWith(new HttpCallBack<List<BtCashOutStatusInfo>>() {
                     @Override
                     public void onResult(List<BtCashOutStatusInfo> btCashOutStatusInfoList) {
                         if (btCashOutStatusInfoList != null && !btCashOutStatusInfoList.isEmpty()) {

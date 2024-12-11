@@ -1,15 +1,15 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
-import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_400467;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
+
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_400467;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.bet.bean.request.pm.BtCarCgReq;
 import com.xtree.bet.bean.request.pm.BtCarReq;
 import com.xtree.bet.bean.request.pm.BtReq;
@@ -99,7 +99,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().batchBetMatchMarketOfJumpLine(btCarReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<BtConfirmInfo>>() {
+                .subscribeWith(new HttpCallBack<List<BtConfirmInfo>>() {
                     @Override
                     public void onResult(List<BtConfirmInfo> btConfirmInfoList) {
                         if (btConfirmInfoList == null || btConfirmInfoList.isEmpty()) {
@@ -149,7 +149,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().queryMarketMaxMinBetMoney(btCarCgReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<CgOddLimitInfo>>() {
+                .subscribeWith(new HttpCallBack<List<CgOddLimitInfo>>() {
                     @Override
                     public void onResult(List<CgOddLimitInfo> cgOddLimitInfos) {
 
@@ -245,7 +245,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().bet(btReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<BtResultInfo>() {
+                .subscribeWith(new HttpCallBack<BtResultInfo>() {
                     @Override
                     public void onResult(BtResultInfo btResultInfo) {
                         List<BtResult> btResultList = new ArrayList<>();

@@ -3,22 +3,17 @@ package com.xtree.bet.data;
 import com.xtree.base.vo.BalanceVo;
 import com.xtree.base.vo.FBService;
 import com.xtree.base.vo.PMService;
-import com.xtree.bet.bean.request.fb.BtCarReq;
 import com.xtree.bet.bean.request.fb.FBListReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.HotLeagueInfo;
-import com.xtree.bet.bean.response.fb.BtConfirmInfo;
+import com.xtree.bet.bean.response.fb.FbMatchListCacheRsp;
+import com.xtree.bet.bean.response.fb.FbStatisticalInfoCacheRsp;
 import com.xtree.bet.bean.response.fb.MatchInfo;
-import com.xtree.bet.bean.response.fb.MatchListRsp;
-import com.xtree.bet.bean.response.fb.StatisticalInfo;
 
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.PMBaseResponse;
-import me.xtree.mvvmhabit.http.PMCacheResponse;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -40,20 +35,36 @@ public interface ApiService {
     Flowable<BaseResponse<HotLeagueInfo>> getSettings(@QueryMap(encoded = true) Map<String, String> filters);
 
     /**
-     * 获取 FB体育请求服务地址
+     * 获取 FB token 参数 cachedToken=1
      * @return
      */
-    @POST("/api/sports/fb/getToken?cachedToken=0")
+    @POST("/api/sports/fb/getToken?cachedToken=1")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<FBService>> getFBGameTokenApi();
 
     /**
-     * 获取 FB杏彩体育请求服务地址
+     * 获取 FB token 参数 cachedToken=0
+     * @return
+     */
+    @POST("/api/sports/fb/getToken?cachedToken=0")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<FBService>> getFBGameZeroTokenApi();
+
+    /**
+     * 获取 FBXC token 参数 cachedToken=1
+     * @return
+     */
+    @POST("/api/sports/fbxc/getToken?cachedToken=1")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<FBService>> getFBXCGameTokenApi();
+
+    /**
+     * 获取 FBXC token 参数 cachedToken=0
      * @return
      */
     @POST("/api/sports/fbxc/getToken?cachedToken=0")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<FBService>> getFBXCGameTokenApi();
+    Flowable<BaseResponse<FBService>> getFBXCGameZeroTokenApi();
 
     /**
      * 获取 PM体育请求服务地址
@@ -108,9 +119,34 @@ public interface ApiService {
      * 获取 FB体育请求服务地址
      * @return
      */
+    @POST("/api/sports/fb/forward?api=/v1/match/getList&method=post")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<FbMatchListCacheRsp>> fbGetFBList(@Body FBListReq FBListReq);
+
+    /**
+     * 按运动、分类类型统计可投注的赛事个数
+     * @return
+     */
+    @POST("/api/sports/fb/forward?api=/v1/match/statistical&method=post")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<FbStatisticalInfoCacheRsp>> fbStatistical(@Body Map<String, String> map);
+
+//    /**
+//     * 按运动、分类类型统计可投注的赛事个数
+//     * 按运动、分类类型获取单个赛事详情及玩法
+//     * @return
+//     */
+//    @POST("/api/sports/fb/forward?api=/v1/match/getMatchDetail&method=post")
+//    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+//    Flowable<BaseResponse<MatchInfo>> fbGetMatchDetail(@Body Map<String, String> map);
+
+    /**
+     * 获取 FB体育请求服务地址
+     * @return
+     */
     @POST("/api/sports/fbxc/forward?api=/v1/match/getList&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<MatchListRsp>> getFBList(@Body FBListReq FBListReq);
+    Flowable<BaseResponse<FbStatisticalInfoCacheRsp>> fbxcGetFBList(@Body FBListReq FBListReq);
 
     /**
      * 按运动、分类类型统计可投注的赛事个数
@@ -118,23 +154,48 @@ public interface ApiService {
      */
     @POST("/api/sports/fbxc/forward?api=/v1/match/statistical&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<StatisticalInfo>> statistical(@Body Map<String, String> map);
+    Flowable<BaseResponse<FbStatisticalInfoCacheRsp>> fbxcStatistical(@Body Map<String, String> map);
+
+//    /**
+//     * 按运动、分类类型统计可投注的赛事个数
+//     * 按运动、分类类型获取单个赛事详情及玩法
+//     * @return
+//     */
+//    @POST("/api/sports/fbxc/forward?api=/v1/match/getMatchDetail&method=post")
+//    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+//    Flowable<BaseResponse<MatchInfo>> fbxcGetMatchDetail(@Body Map<String, String> map);
 
     /**
-     * 按运动、分类类型统计可投注的赛事个数
+     * 获取 PM赛事列表
      * @return
      */
-    @POST("/api/sports/fbxc/forward?api=/v1/order/batchBetMatchMarketOfJumpLine&method=post")
+    @POST("/api/sports/obg/forward?api=/yewu11/v1/m/matchesPagePB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<BtConfirmInfo>> batchBetMatchMarketOfJumpLine(@Body BtCarReq btCarReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListCacheRsp>> pmMatchesPagePB(@Body PMListReq pmListReq);
+
     /**
-     * 按运动、分类类型统计可投注的赛事个数
-     * 按运动、分类类型获取单个赛事详情及玩法
+     * 获取 PM赛事列表 分页获取非滚球赛事信息
      * @return
      */
-    @POST("/api/sports/fbxc/forward?api=/v1/match/getMatchDetail&method=post")
+    @POST("/api/sports/obg/forward?api=/yewu11/v1/m/noLiveMatchesPagePB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<MatchInfo>> getMatchDetail(@Body Map<String, String> map);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchLeagueListCacheRsp>> pmNoLiveMatchesPagePB(@Body PMListReq pmListReq);
+
+    /**
+     * 获取 PM赛事列表
+     * @return
+     */
+    @POST("/api/sports/obg/forward?api=/yewu11/v1/m/liveMatchesPB&method=post")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListCacheRsp>> pmLiveMatchesPB(@Body PMListReq pmListReq);
+
+    /**
+     * 获取 PM赛事列表
+     * @return
+     */
+    @POST("/api/sports/obg/forward?api=/yewu11/v1/m/getMatchBaseInfoByMidsPB")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListCacheRsp>> pmGetMatchBaseInfoByMidsPB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表
@@ -142,7 +203,7 @@ public interface ApiService {
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/matchesPagePB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> matchesPagePB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchLeagueListCacheRsp>> pmxcMatchesPagePB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表 分页获取非滚球赛事信息
@@ -150,7 +211,7 @@ public interface ApiService {
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/noLiveMatchesPagePB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMCacheResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> noLiveMatchesPagePB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchLeagueListCacheRsp>> pmxcNoLiveMatchesPagePB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表
@@ -158,7 +219,7 @@ public interface ApiService {
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/liveMatchesPB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMCacheResponse<List<com.xtree.bet.bean.response.pm.MatchInfo>>> liveMatchesPB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListCacheRsp>> pmxcLiveMatchesPB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表
@@ -166,6 +227,6 @@ public interface ApiService {
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/getMatchBaseInfoByMidsPB")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMCacheResponse<List<com.xtree.bet.bean.response.pm.MatchInfo>>> getMatchBaseInfoByMidsPB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListCacheRsp>> pmxcGetMatchBaseInfoByMidsPB(@Body PMListReq pmListReq);
 
 }

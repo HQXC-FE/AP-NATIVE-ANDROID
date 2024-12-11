@@ -401,6 +401,7 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
     }
 
     public void getSettings() {
+
         HashMap<String, String> map = new HashMap();
         /*map.put("fields", "customer_service_url,public_key,barrage_api_url," +
                 "x9_customer_service_url," + "promption_code,default_promption_code");*/
