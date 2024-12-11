@@ -1,7 +1,6 @@
 package com.xtree.base.widget;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
@@ -27,6 +27,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.just.agentweb.AgentWeb;
+import com.just.agentweb.AgentWebConfig;
 import com.just.agentweb.WebViewClient;
 import com.luck.picture.lib.basic.PictureSelector;
 import com.luck.picture.lib.config.SelectMimeType;
@@ -34,6 +35,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
+import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterActivityPath;
@@ -166,8 +168,8 @@ public class BrowserDialog extends BottomPopupView {
             header.put("Cache-Control", "no-cache");
             header.put("Pragme", "no-cache");
         }
-//        header.put("Content-Type", "application/vnd.sc-api.v1.json");
-//        header.put("App-RNID", "87jumkljo");
+        //        header.put("Content-Type", "application/vnd.sc-api.v1.json");
+        //        header.put("App-RNID", "87jumkljo");
 
         //header.put("Source", "8");
         //header.put("UUID", TagUtils.getDeviceId(Utils.getContext()));
@@ -218,6 +220,11 @@ public class BrowserDialog extends BottomPopupView {
         cookieManager.setCookie(url, "auth=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN) + ";" + "_sessionHandler=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID));
         cookieManager.flush();
 
+        // debug模式
+        if (BuildConfig.DEBUG) {
+            AgentWebConfig.debug();
+        }
+
         agentWeb = AgentWeb.with((Activity) mContext)
                 .setAgentWebParent(findViewById(R.id.wv_main), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
                 .useDefaultIndicator() // 使用默认的加载进度条
@@ -235,6 +242,15 @@ public class BrowserDialog extends BottomPopupView {
                                 LoadingDialog.finish();
                             }
                         }
+                    }
+
+                    // debug模式
+                    @Override
+                    public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                        CfLog.d("AgentWeb", consoleMessage.message() + " -- From line "
+                                + consoleMessage.lineNumber() + " of "
+                                + consoleMessage.sourceId());
+                        return true;
                     }
 
                     /**
@@ -265,6 +281,9 @@ public class BrowserDialog extends BottomPopupView {
                 .ready()
                 .go(url); // 加载网页
 
+        WebView webView = agentWeb.getWebCreator().getWebView();
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setUserAgentString(WebSettings.getDefaultUserAgent(mContext) + " Chrome/100.0.4896.127 Mobile Safari/537.36");
     }
 
     public WebAppInterface.ICallBack getCallBack() {
@@ -315,20 +334,6 @@ public class BrowserDialog extends BottomPopupView {
         ivwLaunch.setVisibility(View.GONE);
     }
 
-    private void tipSsl(WebView view, SslErrorHandler handler) {
-        Activity activity = (Activity) view.getContext();
-        activity.runOnUiThread(() -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setMessage(R.string.ssl_failed_will_u_continue); // SSL认证失败，是否继续访问？
-            builder.setPositiveButton(R.string.ok, (dialog, which) -> handler.proceed()); // 接受https所有网站的证书
-
-            builder.setNegativeButton(R.string.cancel, (dialog, which) -> handler.cancel());
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        });
-    }
-
     /**
      * 图片选择
      */
@@ -367,21 +372,6 @@ public class BrowserDialog extends BottomPopupView {
                         mUploadCallbackAboveL.onReceiveValue(null);
                     }
                 });
-    }
-
-    private void setWebView(WebView webView) {
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setDatabaseEnabled(true);
-        //settings.setAppCacheEnabled(true);
-        settings.setUseWideViewPort(true);
-        //settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        //settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
-        settings.setLoadWithOverviewMode(true);
-        settings.setJavaScriptCanOpenWindowsAutomatically(true);
-        settings.setLoadsImagesAutomatically(true);
-        settings.setSupportZoom(true);
     }
 
     @Override
@@ -459,36 +449,36 @@ public class BrowserDialog extends BottomPopupView {
     }
 
     public class CustomWebViewClient extends WebViewClient {
-//        private OkHttpClient client;
-//
-//        public CustomWebViewClient() throws UnknownHostException {
-//            // 初始化 OkHttpClient 并配置自定义的 DNS 解析
-//            client = new OkHttpClient.Builder()
-//                    .dns(new DnsOverHttps.Builder()
-//                            .client(new OkHttpClient())
-//                            .url(HttpUrl.get(ARG_SEARCH_DNS_URL))
-//                            .bootstrapDnsHosts(InetAddress.getByName("8.8.8.8"), InetAddress.getByName("114.114.114.114"))
-//                            .build())
-//                    .build();
-//        }
-//
-//        @Override
-//        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-//            String url = request.getUrl().toString();
-//            Request httpRequest = new Request.Builder().url(url).build();
-//
-//            try {
-//                Response response = client.newCall(httpRequest).execute();
-//                return new WebResourceResponse(
-//                        response.header("content-type"),
-//                        response.header("content-encoding"),
-//                        response.body().byteStream()
-//                );
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return super.shouldInterceptRequest(view, request);
-//            }
-//        }
+        //        private OkHttpClient client;
+        //
+        //        public CustomWebViewClient() throws UnknownHostException {
+        //            // 初始化 OkHttpClient 并配置自定义的 DNS 解析
+        //            client = new OkHttpClient.Builder()
+        //                    .dns(new DnsOverHttps.Builder()
+        //                            .client(new OkHttpClient())
+        //                            .url(HttpUrl.get(ARG_SEARCH_DNS_URL))
+        //                            .bootstrapDnsHosts(InetAddress.getByName("8.8.8.8"), InetAddress.getByName("114.114.114.114"))
+        //                            .build())
+        //                    .build();
+        //        }
+        //
+        //        @Override
+        //        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        //            String url = request.getUrl().toString();
+        //            Request httpRequest = new Request.Builder().url(url).build();
+        //
+        //            try {
+        //                Response response = client.newCall(httpRequest).execute();
+        //                return new WebResourceResponse(
+        //                        response.header("content-type"),
+        //                        response.header("content-encoding"),
+        //                        response.body().byteStream()
+        //                );
+        //            } catch (IOException e) {
+        //                e.printStackTrace();
+        //                return super.shouldInterceptRequest(view, request);
+        //            }
+        //        }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -515,14 +505,7 @@ public class BrowserDialog extends BottomPopupView {
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            //handler.proceed();
-            hideLoading();
-            if (sslErrorCount < 4) {
-                sslErrorCount++;
-                tipSsl(view, handler);
-            } else {
-                handler.proceed();
-            }
+            handler.proceed();
         }
 
         @Override
