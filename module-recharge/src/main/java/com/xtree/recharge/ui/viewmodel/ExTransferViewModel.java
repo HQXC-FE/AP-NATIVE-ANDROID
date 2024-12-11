@@ -246,7 +246,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             bankInfoData.setValue(bankInfo);
         }
 
-        deadlinesData.setValue("请于 " + data.getExpireTime() + " 内完成支付");
+        deadlinesData.setValue("请于 " + data.getExpireTime() + " 内完成上传");
         cancleWaitTimeKeeping();
         cancleOrderTimeKeeping();
     }
@@ -324,7 +324,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                 .doOnNext(aLong -> {
                     long l = cancleOrderDifference - aLong;
                     String formatTime = formatSeconds(l);
-                    leftTimeData.setValue("剩余支付时间：" + formatTime);
+                    leftTimeData.setValue("剩余上传时间：" + formatTime);
 
                     String str1 = "等待匹配中，于";
                     String str2 = "后自动取消";
