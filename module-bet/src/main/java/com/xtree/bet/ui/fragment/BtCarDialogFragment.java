@@ -264,6 +264,9 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
                     hasCloseOption = betConfirmOptionList.get(i).isClose();
                 }
                 if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {
+                    if (betConfirmOptions.isEmpty()) {
+                        break;
+                    }
                     betConfirmOptionList.get(i).setRealData(betConfirmOptions.get(i).getRealData());
                 } else {
                     for (BetConfirmOption option : betConfirmOptions) {
