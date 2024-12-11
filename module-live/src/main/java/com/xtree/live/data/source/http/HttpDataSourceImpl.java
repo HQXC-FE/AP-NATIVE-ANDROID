@@ -91,6 +91,8 @@ public class HttpDataSourceImpl implements HttpDataSource {
         X9LiveInfo.INSTANCE.setChannel(liveData.getChannelCode());
         X9LiveInfo.INSTANCE.setToken(liveData.getXLiveToken());
         X9LiveInfo.INSTANCE.setVisitor(liveData.getVisitorId());
+        //Todo 这边我不确定会有多少疙 api 所以战时设定成第一位
+        X9LiveInfo.INSTANCE.setWebApi(liveData.getWebApi().get(0));
 
         //抓包可去掉证书replace("https", "http")
         LiveClient.setApi(liveData.getAppApi().get(0));
@@ -153,6 +155,7 @@ public class HttpDataSourceImpl implements HttpDataSource {
 
     /**
      * 聊天房列表
+     *
      * @param request
      * @return
      */
@@ -162,40 +165,44 @@ public class HttpDataSourceImpl implements HttpDataSource {
         return liveService.get(APIManager.CHAT_ROOM_LIST_API, map).map(new Function<ResponseBody, BaseResponse<ChatRoomResponse>>() {
             @Override
             public BaseResponse<ChatRoomResponse> apply(ResponseBody responseBody) throws Exception {
-                return  JSON.parseObject(responseBody.string(),
+                return JSON.parseObject(responseBody.string(),
                         new TypeReference<BaseResponse<ChatRoomResponse>>() {
 
                         });
             }
         });
     }
+
     /**
      * 搜索主播助手
+     *
      * @param request
      * @return
      */
     @Override
     public Flowable<BaseResponse<SearchAssistantResponse>> getSearchAssistant(SearchAssistantRequest request) {
         Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
-        return liveService.post(APIManager.CHAT_SEARCH_ASSISTANT_API , map).map(new Function<ResponseBody, BaseResponse<SearchAssistantResponse>>() {
+        return liveService.post(APIManager.CHAT_SEARCH_ASSISTANT_API, map).map(new Function<ResponseBody, BaseResponse<SearchAssistantResponse>>() {
             @Override
             public BaseResponse<SearchAssistantResponse> apply(ResponseBody responseBody) throws Exception {
-                return  JSON.parseObject(responseBody.string(),
+                return JSON.parseObject(responseBody.string(),
                         new TypeReference<BaseResponse<SearchAssistantResponse>>() {
 
                         });
             }
         });
     }
+
     /**
      * 助手私聊
+     *
      * @param request
      * @return
      */
     @Override
     public Flowable<BaseResponse<SendToAssistantResponse>> sendToAssistant(SendToAssistantRequest request) {
         Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
-        return  liveService.post(APIManager.CHAT_SEND_TO_ASSISTANT_API , map).map(new Function<ResponseBody, BaseResponse<SendToAssistantResponse>>() {
+        return liveService.post(APIManager.CHAT_SEND_TO_ASSISTANT_API, map).map(new Function<ResponseBody, BaseResponse<SendToAssistantResponse>>() {
             @Override
             public BaseResponse<SendToAssistantResponse> apply(ResponseBody responseBody) throws Exception {
                 return JSON.parseObject(responseBody.string(),

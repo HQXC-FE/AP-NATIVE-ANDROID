@@ -1,5 +1,6 @@
 package com.xtree.live.ui.main.fragment;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +8,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -24,24 +24,25 @@ import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
-import com.xtree.base.utils.DomainUtil;
-import com.xtree.base.vo.WsToken;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.data.factory.AppViewModelFactory;
 import com.xtree.live.databinding.FragmentChatBinding;
+import com.xtree.live.ui.main.model.chat.LiveWebSocketViewModel;
+import com.xtree.live.ui.main.service.LiveWebSocketService;
 import com.xtree.live.ui.main.viewmodel.LiveViewModel;
-import com.xtree.service.WebSocketService;
 import com.xtree.service.message.MessageData;
 import com.xtree.service.message.MessageType;
 import com.xtree.service.message.PushServiceConnection;
 
-import java.io.File;
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 import io.sentry.Sentry;
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.Utils;
 
 @Route(path = RouterFragmentPath.Live.PAGER_LIVE_CHAT)
 public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveViewModel> {
@@ -50,9 +51,19 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveViewMode
     private FragmentStateAdapter mAdapter;
     private PushServiceConnection pushServiceConnection;
     private Observer<Object> pushObserver;
+    private String url;
+    private LiveWebSocketViewModel liveWebSocketViewModel;
+    int i = 0;
 
     @Override
     public void initView() {
+        url = "https://zhibo-apis.oxldkm.com" + "/wss/?xLiveToken=" + X9LiveInfo.INSTANCE.getToken();
+        //协议转换
+        if (url.startsWith("https")) {
+            url = url.replaceFirst("https", "wss");
+        } else if (url.startsWith("http")) {
+            url = url.replaceFirst("http", "ws");
+        }
 
         mAdapter = new FragmentStateAdapter(getChildFragmentManager(), getLifecycle()) {
             @NonNull
@@ -112,7 +123,21 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveViewMode
         return new ViewModelProvider(this, factory).get(LiveViewModel.class);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        if (pushServiceConnection.isBound()) {
+            getActivity().unbindService(pushServiceConnection);
+        }
+        if (pushObserver != null && liveWebSocketViewModel != null) {
+            liveWebSocketViewModel.getWsTokenLiveData.removeObserver(pushObserver);
+        }
+    }
+
     private void initPushService() {
+        AppViewModelFactory factory = AppViewModelFactory.getInstance((Application) Utils.getContext());
+        liveWebSocketViewModel = new ViewModelProvider(this, factory).get(LiveWebSocketViewModel.class);
         Messenger replyMessenger = new Messenger(new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -120,9 +145,21 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveViewMode
                 MessageType.Output outputType = MessageType.Output.fromCode(msg.what);
                 switch (outputType) {
                     case OBTAIN_LINK:
-                        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
-                            viewModel.getWebsocket();
-                        }
+                        CfLog.e(i++ + "");
+                        long checkInterval = SPUtils.getInstance().getLong(SPKeyGlobal.WS_CHECK_INTERVAL, 10);
+                        long retryNumber = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_NUMBER, 3);
+                        long retryWaitingTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_WAITING_TIME, 300);
+                        long expireTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_EXPIRE_TIME, 90);
+
+                        Bundle obj = new Bundle();
+                        obj.putString("url", url);
+                        obj.putLong("checkInterval", checkInterval);
+                        obj.putLong("retryNumber", retryNumber);
+                        obj.putLong("retryWaitingTime", retryWaitingTime);
+                        obj.putLong("expireTime", expireTime);
+                        obj.putString("action", "sub");
+                        obj.putString("vid", "25CF6942CB31DBFB888D7EBD18DE09D3");
+                        pushServiceConnection.sendMessageToService(MessageType.Input.LINK, obj);
                         break;
                     case REMOTE_MSG://后端的消息
                         if (msg.getData() != null) {
@@ -141,40 +178,26 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveViewMode
         });
         pushServiceConnection = new PushServiceConnection(replyMessenger);
         // 绑定 Service
-        Intent intent = new Intent(getContext(), WebSocketService.class);
+        Intent intent = new Intent(getContext(), LiveWebSocketService.class);
         getActivity().bindService(intent, pushServiceConnection, Context.BIND_AUTO_CREATE);
 
 
-        //&& !TextUtils.isEmpty(wsToken.getToken())) {
-        //                String token = wsToken.getToken();
-        long checkInterval = SPUtils.getInstance().getLong(SPKeyGlobal.WS_CHECK_INTERVAL, 30);
-        long retryNumber = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_NUMBER, 3);
-        long retryWaitingTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_WAITING_TIME, 300);
-        long expireTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_EXPIRE_TIME, 90);
+        pushObserver = wsToken -> {
+            long checkInterval = SPUtils.getInstance().getLong(SPKeyGlobal.WS_CHECK_INTERVAL, 10);
+            long retryNumber = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_NUMBER, 3);
+            long retryWaitingTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_WAITING_TIME, 300);
+            long expireTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_EXPIRE_TIME, 90);
 
-        //分隔符
-        String separator;
-        if (DomainUtil.getApiUrl().endsWith("/")) {
-            separator = "";
-        } else {
-            separator = File.separator;
-        }
-        String url = DomainUtil.getApiUrl() + separator + "wss/?xLiveToken=" + X9LiveInfo.INSTANCE.getToken();
-
-        //协议转换
-        if (url.startsWith("https")) {
-            url = url.replaceFirst("https", "wss");
-        } else if (url.startsWith("http")) {
-            url = url.replaceFirst("http", "ws");
-        }
-        CfLog.e(url);
-        Bundle obj = new Bundle();
-        obj.putString("url", url);
-        obj.putLong("checkInterval", checkInterval);
-        obj.putLong("retryNumber", retryNumber);
-        obj.putLong("retryWaitingTime", retryWaitingTime);
-        obj.putLong("expireTime", expireTime);
-        pushServiceConnection.sendMessageToService(MessageType.Input.LINK, obj);
-
+            Bundle obj = new Bundle();
+            obj.putString("url", url);
+            obj.putLong("checkInterval", checkInterval);
+            obj.putLong("retryNumber", retryNumber);
+            obj.putLong("retryWaitingTime", retryWaitingTime);
+            obj.putLong("expireTime", expireTime);
+            obj.putString("action", "sub");
+            obj.putString("vid", "25CF6942CB31DBFB888D7EBD18DE09D3");
+            pushServiceConnection.sendMessageToService(MessageType.Input.LINK, obj);
+        };
+        liveWebSocketViewModel.getWsTokenLiveData.observeForever(pushObserver);
     }
 }

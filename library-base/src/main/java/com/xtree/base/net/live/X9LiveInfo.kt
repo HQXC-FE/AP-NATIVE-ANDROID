@@ -14,4 +14,5 @@ object X9LiveInfo {
     var visitor = ""
     var oaid = TagUtils.getDeviceId(Utils.getContext())
     var channel = ""
+    var webApi = ""
 }
