@@ -229,10 +229,12 @@
                 android:id="@+id/tv5"
                 style="@style/login_tv_style"
                 android:layout_marginEnd="40dp"
-                android:drawableTop="@mipmap/login_bottom5"
+                android:drawableTop="@mipmap/ic_xijia"
+                android:drawablePadding="7dp"
                 android:text="西甲"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv1" />
+                app:layout_constraintBottom_toBottomOf="@+id/tv1"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
