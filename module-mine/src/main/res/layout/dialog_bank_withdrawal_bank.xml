@@ -5,7 +5,7 @@
     android:id="@+id/ll_withdrawal_bank_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/clr_transparent"
+    android:background="@color/clr_bg_main_black"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text=""
-            android:textColor="@color/clr_filter_txt_black"
+            android:textColor="@color/clr_txt_white_cm"
             android:textSize="15sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -57,7 +57,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -81,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="@string/txt_set_withdrawal_request"
-                        android:textColor="@color/clr_choose_20" />
+                        android:textColor="@color/clr_main_09" />
 
                     <TextView
                         android:id="@+id/tv_confirm_withdrawal_request"
@@ -174,7 +173,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
-        android:background="@color/clr_white"
         android:visibility="gone"
         tools:visibility="gone">
 
@@ -193,7 +191,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="0dp"
-        android:background="@color/clr_white"
         android:visibility="gone"
         tools:visibility="gone">
         <!--大额提款View-->
@@ -290,6 +287,33 @@
                     android:layout_marginTop="10dp"
                     android:orientation="vertical"
                     android:visibility="visible">
+
+                    <!--多金额选择View-->
+                    <LinearLayout
+                        android:id="@+id/ll_select_amount"
+                        style="@style/style_withdraw_money_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/ll_virtual_hint"
+                        android:layout_marginTop="10dp"
+                        android:visibility="visible">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_withdraw_money_input">
+
+                            <com.xtree.mine.ui.fragment.WithdrawAmountSelectionGridView
+                                android:id="@+id/gv_select_amount_more"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:listSelector="@android:color/transparent"
+                                android:numColumns="4"
+                                android:verticalSpacing="10dp" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
                     <!--输入提款信息-->
                     <LinearLayout
                         android:id="@+id/ll_virtual_input_more"
@@ -326,32 +350,6 @@
                         </RelativeLayout>
 
                     </LinearLayout>
-                    <!--多金额选择View-->
-                    <LinearLayout
-                        android:id="@+id/ll_select_amount"
-                        style="@style/style_withdraw_money_bg"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/ll_virtual_hint"
-                        android:layout_marginTop="-1dp"
-                        android:visibility="visible">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/bg_withdraw_money_input">
-
-                            <com.xtree.mine.ui.fragment.WithdrawAmountSelectionGridView
-                                android:id="@+id/gv_select_amount_more"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:listSelector="@android:color/transparent"
-                                android:numColumns="4"
-                                android:verticalSpacing="10dp" />
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
                 </LinearLayout>
                 <!--大额提款 实际提款 提款银行卡 下一步 提示 View-->
                 <LinearLayout
@@ -424,7 +422,7 @@
                                 android:layout_marginTop="8dp"
                                 android:drawableEnd="@mipmap/bt_icon_expand"
                                 android:text=""
-                                android:textColor="@color/bt_text_color_primary_1"
+                                android:textColor="@color/clr_txt_white_cm"
                                 android:textSize="16sp" />
 
                             <View
@@ -484,7 +482,6 @@
         android:id="@+id/mask_h5_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/clr_white"
         android:orientation="vertical"
         android:visibility="visible"></LinearLayout>
 
@@ -492,7 +489,6 @@
         android:id="@+id/ns_h5_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:layerType="software"
         android:visibility="invisible" />
 
@@ -502,7 +498,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="0dp"
-        android:background="@color/clr_white"
         android:visibility="gone">
 
         <LinearLayout
@@ -537,7 +532,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="0dp"
-        android:background="@color/white"
         android:visibility="visible"
         tools:visibility="visible">
 
@@ -560,7 +554,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="0dp"
-        android:background="@color/clr_white"
         android:visibility="visible"
         tools:visibility="gone">
 
@@ -584,7 +577,6 @@
         android:id="@+id/ns_over_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:visibility="gone">
         <!--显示状态 3 确认提款信息View-->
         <include

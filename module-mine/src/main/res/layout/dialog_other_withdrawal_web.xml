@@ -5,7 +5,7 @@
     android:id="@+id/ll_root_other"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/clr_transparent"
+    android:background="@color/clr_bg_main_black"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
@@ -15,7 +15,7 @@
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/bg_dialog_top_choose"
+        android:background="@color/clr_bg_main_black"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text=""
-            android:textColor="@color/clr_filter_txt_black"
+            android:textColor="@color/clr_txt_white_cm"
             android:textSize="15sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -80,7 +80,6 @@
         android:id="@+id/ll_virtual_top"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/white"
         android:orientation="horizontal"
         tools:visibility="visible">
 
@@ -94,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/txt_set_withdrawal_request"
-                android:textColor="@color/clr_choose_20" />
+                android:textColor="@color/clr_main_09" />
 
             <TextView
                 android:id="@+id/tv_confirm_withdrawal_request"
@@ -167,7 +166,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_virtual_top"
-        android:background="@color/white"
         android:orientation="vertical">
 
         <LinearLayout
@@ -181,8 +179,10 @@
                 android:id="@+id/tv_notice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableStart="@mipmap/cm_ic_hint_main"
+                android:drawablePadding="5dp"
                 android:text=""
-                android:textColor="@color/clr_txt_rebateagrt_subtitle" />
+                android:textColor="@color/clr_txt_white_cm" />
         </LinearLayout>
 
     </LinearLayout>
@@ -191,7 +191,6 @@
         android:id="@+id/mask_h5_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/clr_white"
         android:orientation="vertical"
         android:visibility="visible">
 
@@ -209,7 +208,6 @@
         android:id="@+id/ll_bank_withdrawal_number_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:orientation="vertical"
         android:padding="8dp"
         android:visibility="gone"
@@ -224,7 +222,7 @@
             android:layout_marginBottom="0dp"
             android:gravity="center_horizontal"
             android:text=""
-            android:textColor="@color/black"
+            android:textColor="@color/clr_txt_white_cm"
             android:textSize="14sp"
             tools:text="12312321231231213131我啊啊是啊的" />
     </LinearLayout>

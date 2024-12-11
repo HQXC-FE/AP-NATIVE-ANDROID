@@ -4,8 +4,8 @@
 
     <gradient
         android:angle="0"
-        android:endColor="@color/clr_bg_main"
-        android:startColor="@color/clr_bg_main" />
+        android:endColor="@color/clr_bg_main_black"
+        android:startColor="@color/clr_bg_main_black" />
     <corners android:radius="8dp" />
 
 </shape>

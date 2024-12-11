@@ -8,16 +8,16 @@ android {
             versionName "1.0.0"
             versionCode 100
             resValue "string", "app_name", "恒行6T${versionCode}"
-            resValue "string", "domain_api", "https://hxing5pre.hxing5vip.com"
-            resValue "string", "domain_url", "https://hxing5pre.hxing5vip.com"
+            resValue "string", "domain_api", "https://hxing6pre.hxing5vip.com"
+            resValue "string", "domain_url", "https://hxing6pre.hxing5vip.com"
             resValue "string", "channel_name", "hengxing6"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
             resValue "bool", "is_tag", "false" // 是否开启统计
             resValue "string", "mixpanel_token", "5b010a2b31cbfd8c759cf6b135efe3d7"
             resValue "string", "ms_secret_key", "3c668bf3-b6b2-4146-86b2-7c000c2d1d49"
             resValue "string", "sentry_dsn", "https://552dcc17bc3f9472be954a1fd5b5610b@o4507447554539520.ingest.us.sentry.io/4508341154676736"
-            resValue "string", "domain_api_list", "https://hxing5pre.hxing5vip.com;"
-            resValue "string", "domain_url_list", "https://hxing5pre.hxing5vip.com;"
+            resValue "string", "domain_api_list", "https://hxing6pre.hxing5vip.com;"
+            resValue "string", "domain_url_list", "https://hxing6pre.hxing5vip.com;"
             multiDexEnabled true
             dimension "channelName"
         }

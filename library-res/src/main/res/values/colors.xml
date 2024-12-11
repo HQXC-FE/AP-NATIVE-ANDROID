@@ -15,7 +15,7 @@
     <!-- 主色参考 -->
     <color name="clr_main_01">#420C0B</color>
     <color name="clr_main_02">#96362E</color>
-    <color name="clr_main_03">#A0302E</color>
+    <color name="clr_main_03">#D33D3F</color>
     <color name="clr_main_04">#DDB063</color>
     <color name="clr_main_05">#382E2B</color>
     <color name="clr_main_06">#F3D6D6</color>
@@ -29,6 +29,7 @@
     <color name="clr_main_13">#413333</color>
     <color name="clr_main_14">#FFD9B2</color>
     <color name="clr_main_15">#CA9C6C</color>
+    <color name="clr_main_16">#514242</color>
 
     <!-- ################ 配色 设计师提供 start ################ -->
     <!-- 主色 -->
@@ -243,6 +244,8 @@
 
     <!-- hine字体颜色 -->
     <color name="bt_color_hine_color">#5B5B6A</color>
+    <color name="bt_color_hine_color_1">#867163</color>
+
 
     <!-- 阴影颜色 -->
     <color name="bt_color_shadow">#1AAD7851</color>
@@ -437,11 +440,11 @@
     <color name="clr_tutorial">#585858</color>
     <color name="clr_red_choose">#FF4A4D</color>
     <color name="clr_txt_withdraw_money">#6D6C72</color>
-    <color name="clr_gap_bg">#EBEBEB</color>
+    <color name="clr_gap_bg">#736760</color>
     <color name="cl_amount_txt">#420C0B</color>
 
     <color name="clr_no_selector">#CDCDCD</color>
-    <color name="clr_hint">#F4F4F4</color>
+    <color name="clr_hint">#231D1B</color>
     <!-- 通用 end-->
     <color name="clr_toast">#808080</color>
 
@@ -600,4 +603,13 @@
     <!-- 安全中心-->
     <color name="clr_safe_center_bg_dialog">#27211F</color>
     <color name="clr_txt_FFF8F8">#FFF8F8</color>
+    <color name="clr_card_stroke_start">#A28D8D</color>
+    <color name="clr_card_stroke_end">#3E3131</color>
+    <!-- 投注 -->
+    <color name="clr_bet_keyboard_bg">#514242</color>
+    <color name="clr_bet_keyboard_txt">#867163</color>
+    <color name="clr_bg_bet_detail_light">#FFABAE</color>
+    <color name="clr_bg_bet_detail_deep">#B00000</color>
+    <color name="clr_feed_back_tip">#592424</color>
+
 </resources>

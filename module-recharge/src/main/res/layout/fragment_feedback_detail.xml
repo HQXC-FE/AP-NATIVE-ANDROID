@@ -15,7 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.fragment.FeedbackDetailFragment">
+        tools:context=".ui.fragment.FeedbackDetailFragment"
+        android:background="@color/clr_bg_main_black"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -94,7 +96,7 @@
 
                         <TextView
                             android:id="@+id/tvw_type"
-                            style="@style/style_feedback_edit_edit"
+                            style="@style/style_cm_edit"
                             android:layout_toRightOf="@id/tv_selector_pay_way"
                             android:text="" />
                     </RelativeLayout>
@@ -116,7 +118,7 @@
 
                         <TextView
                             android:id="@+id/tv_username"
-                            style="@style/style_feedback_edit_edit"
+                            style="@style/style_cm_edit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/tv_left_username"
@@ -143,7 +145,7 @@
 
                         <TextView
                             android:id="@+id/tv_selector_right_payment_account"
-                            style="@style/style_feedback_edit_edit"
+                            style="@style/style_cm_edit"
                             android:layout_toRightOf="@id/tv_selector_left_payment_account"
 
                             android:text="" />
@@ -173,7 +175,7 @@
 
                             <TextView
                                 android:id="@+id/tv_selector_right_payment_name"
-                                style="@style/style_feedback_edit_edit"
+                                style="@style/style_cm_edit"
                                 android:text="" />
                         </LinearLayout>
                     </RelativeLayout>
@@ -201,7 +203,7 @@
 
                             <TextView
                                 android:id="@+id/tvw_payee_name"
-                                style="@style/style_feedback_edit_edit"
+                                style="@style/style_cm_edit"
                                 android:text=""
                                 android:visibility="visible" />
                         </LinearLayout>
@@ -225,7 +227,7 @@
 
                         <TextView
                             android:id="@+id/et_selector_right_savename"
-                            style="@style/style_feedback_edit_edit"
+                            style="@style/style_cm_edit"
                             android:layout_toRightOf="@id/tvw_deposit_amount"
                             android:text="" />
                     </RelativeLayout>
@@ -248,7 +250,7 @@
 
                         <TextView
                             android:id="@+id/tvw_deposit_time"
-                            style="@style/style_feedback_edit_edit"
+                            style="@style/style_cm_edit"
                             android:layout_toRightOf="@id/tv_deposit_time"
                             android:text="" />
 
@@ -270,7 +272,7 @@
 
                         <TextView
                             android:id="@+id/tv_selector_right_three"
-                            style="@style/style_feedback_edit_edit"
+                            style="@style/style_cm_edit"
                             android:layout_toRightOf="@id/tv_selector_left_three" />
 
                     </RelativeLayout>
@@ -291,7 +293,7 @@
 
                         <TextView
                             android:id="@+id/tv_selector_right_payway"
-                            style="@style/style_feedback_edit_edit"
+                            style="@style/style_cm_edit"
                             android:layout_toRightOf="@id/tv_payment_channel"
                             android:text="" />
 
@@ -315,9 +317,8 @@
 
                         <TextView
                             android:id="@+id/et_selector_right_add"
-                            style="@style/style_feedback_edit_edit"
+                            style="@style/style_cm_edit"
                             android:layout_toRightOf="@id/tv_selector_left_add"
-
                             android:text="" />
 
                     </RelativeLayout>

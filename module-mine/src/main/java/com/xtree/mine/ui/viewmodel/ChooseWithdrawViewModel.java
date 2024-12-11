@@ -671,10 +671,10 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
         addSubscribe(disposable);
     }
 
-    public void getWithdrawalInfo(final String wtype, final  String check) {
+    public void getWithdrawalInfo(final String wtype, final String check) {
         //wtype
         //	hipayht
-        Disposable disposable = (Disposable) model.getApiService().getWithdrawalInfo(wtype , check)
+        Disposable disposable = (Disposable) model.getApiService().getWithdrawalInfo(wtype, check)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpWithdrawalCallBack<WithdrawalInfoVo>() {
@@ -688,10 +688,14 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onError(Throwable t) {
                         //super.onError(t);  ex.message = "连接超时";
-
-                        BusinessException exception = (BusinessException) t;
-                        String errorMessage = t.getMessage();
-                        CfLog.e("onError --->exception.getMessage()=" + exception.getMessage() + "|t.getMessage()=" + t.getMessage());
+                        String errorMessage;
+                        if (t instanceof BusinessException) {
+                            BusinessException exception = (BusinessException) t;
+                            errorMessage = t.getMessage();
+                            CfLog.e("onError --->exception.getMessage()=" + exception.getMessage() + "|t.getMessage()=" + t.getMessage());
+                        } else {
+                            errorMessage = t.getMessage();
+                        }
                         withdrawalListErrorData.setValue(errorMessage);
                     }
 
@@ -711,10 +715,11 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
 
     /**
      * 获取银行卡渠道详情
+     *
      * @param wtype
      * @param check
      */
-    public void getWithdrawalBankInfo(final String wtype, final  String check) {
+    public void getWithdrawalBankInfo(final String wtype, final String check) {
         Disposable disposable = (Disposable) model.getApiService().getWithdrawalBankInfo(wtype, check)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())

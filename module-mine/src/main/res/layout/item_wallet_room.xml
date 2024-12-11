@@ -30,6 +30,7 @@
             android:id="@+id/tvw_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/clr_txt_01"
             android:text="中心钱包"
             android:textSize="14sp" />
 
