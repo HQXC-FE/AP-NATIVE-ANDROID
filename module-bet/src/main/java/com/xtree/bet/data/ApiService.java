@@ -120,13 +120,13 @@ public interface ApiService {
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<StatisticalInfo>> statistical(@Body Map<String, String> map);
 
-    /**
-     * 按运动、分类类型统计可投注的赛事个数
-     * @return
-     */
-    @POST("/api/sports/fbxc/forward?api=/v1/order/batchBetMatchMarketOfJumpLine&method=post")
-    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<BtConfirmInfo>> batchBetMatchMarketOfJumpLine(@Body BtCarReq btCarReq);
+//    /**
+//     * 按运动、分类类型统计可投注的赛事个数
+//     * @return
+//     */
+//    @POST("/api/sports/fbxc/forward?api=/v1/order/batchBetMatchMarketOfJumpLine&method=post")
+//    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+//    Flowable<BaseResponse<BtConfirmInfo>> batchBetMatchMarketOfJumpLine(@Body BtCarReq btCarReq);
     /**
      * 按运动、分类类型统计可投注的赛事个数
      * 按运动、分类类型获取单个赛事详情及玩法
