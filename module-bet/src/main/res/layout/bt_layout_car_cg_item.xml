@@ -138,8 +138,8 @@
                     android:gravity="left|center_vertical"
                     tools:hint="限额5.00-2600"
                     android:inputType="number"
-                    android:textColor="@color/bt_text_color_primary_1"
-                    android:textColorHint="@color/bt_color_hine_color"
+                    android:textColor="@color/clr_txt_white_cm"
+                    android:textColorHint="@color/clr_txt_et_hint_51463F"
                     android:textSize="@dimen/bt_text_13sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -179,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="预计可赢999.0000RMB"
-                    android:textColor="@color/bt_color_car_dialog_hight_line2"
+                    android:textColor="@color/clr_login_txt_01"
                     android:textSize="@dimen/bt_text_11sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -190,7 +190,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="小计999.0000RMB"
-                    android:textColor="@color/bt_color_car_dialog_hight_line2"
+                    android:textColor="@color/clr_login_txt_01"
                     android:textSize="@dimen/bt_text_11sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

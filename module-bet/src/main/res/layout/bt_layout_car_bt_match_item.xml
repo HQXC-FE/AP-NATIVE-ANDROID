@@ -20,7 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <ImageView
             android:id="@+id/iv_name"
             android:layout_width="3dp"
@@ -107,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:textColor="@color/bt_color_car_dialog_hight_line2"
+            android:textColor="@color/clr_txt_mouse6"
             android:textSize="@dimen/bt_text_13sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
