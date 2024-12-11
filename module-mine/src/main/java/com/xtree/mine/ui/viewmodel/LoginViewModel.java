@@ -18,13 +18,10 @@ import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.vo.PromotionCodeVo;
 import com.xtree.mine.data.MineRepository;
 import com.xtree.mine.vo.LoginResultVo;
-import com.xtree.mine.vo.SettingsVo;
 import com.xtree.mine.vo.RegisterVerificationCodeVo;
-
-import org.w3c.dom.Text;
+import com.xtree.mine.vo.SettingsVo;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
@@ -126,17 +123,19 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
                         }
 
                     }
+
                 });
         addSubscribe(disposable);
     }
 
     /**
      * 验证码注册后 调用此方法完成登录
+     *
      * @param userName
      * @param pwd
      * @param captcha
      */
-    public void  loginAndVerAuto(String userName, String pwd ,final String captcha){
+    public void loginAndVerAuto(String userName, String pwd, final String captcha) {
         String password = MD5Util.generateMd5("") + MD5Util.generateMd5(pwd);
         //KLog.i("password: " + password);
 
@@ -213,14 +212,16 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
                 });
         addSubscribe(disposable);
     }
+
     /**
      * 使用验证码登录
+     *
      * @param userName
      * @param pwd
      * @param key
      * @param validcode
      */
-    public void loginAndVer(String userName, String pwd ,final String key , final String validcode){
+    public void loginAndVer(String userName, String pwd, final String key, final String validcode) {
         String password = MD5Util.generateMd5("") + MD5Util.generateMd5(pwd);
         //KLog.i("password: " + password);
 
@@ -294,6 +295,7 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
                         }
 
                     }
+
                 });
         addSubscribe(disposable);
     }
@@ -403,8 +405,7 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
         /*map.put("fields", "customer_service_url,public_key,barrage_api_url," +
                 "x9_customer_service_url," + "promption_code,default_promption_code");*/
         map.put("fields", "customer_service_url,public_key,barrage_api_url," +
-                "x9_customer_service_url," + "promption_code,default_promption_code"+",register_captcha_switch");
-
+                "x9_customer_service_url," + "promption_code,default_promption_code,register_captcha_switch,ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time,app_response_speed_calculation");
         CfLog.e("**************** MAP = " + map);
         Disposable disposable = (Disposable) model.getApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度

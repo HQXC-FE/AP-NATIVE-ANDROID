@@ -7,6 +7,7 @@
     <string name="txt_contact_custom">联系客服</string>
     <string name="txt_recharge_tutorial">充值教程</string>
     <string name="txt_msg_center">消息中心</string>
+    <string name="txt_offer">优惠中心</string>
     <string name="txt_kind_tips">温馨提示</string>
 
     <string name="txt_bind_card_type">bindcard</string>
@@ -314,6 +315,23 @@
     <string name="txt_mine_alipay_nick_name">支付宝昵称</string>
     <string name="txt_alipay_code">支付宝收款码：</string>
 
+    <string name="txt_offer_wait_money">全部待领取 (元)</string>
+    <string name="txt_offer_all_money">累计领取(元)</string>
+    <string name="txt_offer_all_status">全部状态</string>
+    <string name="txt_offer_all">全部</string>
+    <string name="txt_offer_receive">待领取</string>
+    <string name="txt_offer_received">已领取</string>
+    <string name="txt_offer_expired">已过期</string>
+    <string name="txt_offer_time">发放时间区间</string>
+    <string name="txt_offer_today">今天</string>
+    <string name="txt_offer_yesterday">昨天</string>
+    <string name="txt_offer_7_day">近7天</string>
+    <string name="txt_offer_30_day">近30天</string>
+    <string name="txt_offer_setting">自定义</string>
+    <string name="txt_offer_reset">重置</string>
+    <string name="txt_offer_ok">确定</string>
+    <string name="txt_offer_receiving">立即领取</string>
+    <string name="txt_offer_no_data">暂无优惠</string>
 
     <!--测速浮窗-->
     <string name="txt_fastest_tip">当前线路网络速度较慢，是否切换</string>

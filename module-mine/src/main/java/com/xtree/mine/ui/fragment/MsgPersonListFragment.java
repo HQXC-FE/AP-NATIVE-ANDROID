@@ -80,7 +80,7 @@ public class MsgPersonListFragment extends BaseFragment<FragmentMsgPersonListBin
             binding.chbSelectAll.setChecked(false);
             curPage = 1;
             msgPersonVoList.clear();
-            viewModel.getMessagePersonList(String.valueOf(curPage));
+            viewModel.getMessagePersonList(String.valueOf(curPage), String.valueOf(getArguments().getInt("category", 2)));
         });
 
         binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
@@ -90,7 +90,7 @@ public class MsgPersonListFragment extends BaseFragment<FragmentMsgPersonListBin
             if (curPage == 0) {
                 curPage = 1;
             }
-            viewModel.getMessagePersonList(String.valueOf(++curPage));
+            viewModel.getMessagePersonList(String.valueOf(++curPage), String.valueOf(getArguments().getInt("category", 2)));
         });
 
         binding.btnSelectAll.setOnClickListener(v -> {
@@ -154,7 +154,7 @@ public class MsgPersonListFragment extends BaseFragment<FragmentMsgPersonListBin
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel.readCache();
-        viewModel.getMessagePersonList(String.valueOf(1));
+        viewModel.getMessagePersonList(String.valueOf(1), String.valueOf(getArguments().getInt("category", 2)));
     }
 
     @Override
@@ -228,12 +228,12 @@ public class MsgPersonListFragment extends BaseFragment<FragmentMsgPersonListBin
 
         viewModel.liveDataDeleteAll.observe(this, flag -> {
             curPage = 1;
-            viewModel.getMessagePersonList(String.valueOf(1));
+            viewModel.getMessagePersonList(String.valueOf(1), String.valueOf(getArguments().getInt("category", 2)));
         });
 
         viewModel.liveDataDeletePart.observe(this, flag -> {
             curPage = 1;
-            viewModel.getMessagePersonList(String.valueOf(1));
+            viewModel.getMessagePersonList(String.valueOf(1), String.valueOf(getArguments().getInt("category", 2)));
         });
     }
 

@@ -30,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
@@ -50,7 +49,7 @@ import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.TipDialog;
 import com.xtree.bet.BR;
 import com.xtree.bet.R;
-import com.xtree.bet.bean.request.UploadExcetionReq;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.fb.HotLeague;
 import com.xtree.bet.bean.ui.League;
@@ -169,6 +168,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     public int getSportId() {
+        if (tabSportAdapter.getData().isEmpty()) {
+            return -1;
+        }
         if (TextUtils.equals(mPlatform, PLATFORM_PM) || TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
             return tabSportAdapter.getItem(sportTypePos == -1 ? 0 : sportTypePos).menuId;
         } else {
@@ -245,7 +247,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             mPlatformName = getString(R.string.bt_platform_name_pmxc);
             isDisabled = SPUtils.getInstance().getBoolean(SPKeyGlobal.PMXC_DISABLED);
         }
-        if(isDisabled){
+        if (isDisabled) {
             MsgDialog dialog = new MsgDialog(this, "温馨提示", "该场馆已被关闭，请切换至其它场馆进行游玩。感谢您的支持。", true, new MsgDialog.ICallBack() {
                 @Override
                 public void onClickLeft() {
@@ -297,7 +299,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         } else {
             if (!isFloating) {
                 CfLog.i("bettingNetFloatingWindows.show");
-                mBettingNetFloatingWindows.show();
+                if (!isFinishing() && !isDestroyed()) {//防止activity销毁了页面，还需启动
+                    mBettingNetFloatingWindows.show();
+                }
                 isFloating = true;
             }
         }
@@ -455,7 +459,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                ((TextView) tab.getCustomView()).setTextSize(12);
+                ((TextView) tab.getCustomView()).setTextSize(14);
             }
 
             @Override
@@ -508,8 +512,11 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                         searchDatePos = tab.getPosition();
                         viewModel.statistical(playMethodType);
                         initTimer();
-                        getMatchData(String.valueOf(getSportId()), mOrderBy, mLeagueIdList, null,
-                                playMethodType, searchDatePos, false, true);
+                        //彩种数据接口未加载时   禁止加载早盘列表接口
+                        if (!tabSportAdapter.getData().isEmpty()) {
+                            getMatchData(String.valueOf(getSportId()), mOrderBy, mLeagueIdList, null,
+                                    playMethodType, searchDatePos, false, true);
+                        }
                     }
                 }
             }
@@ -537,6 +544,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     mIsChange = true;
                     isFirstInto = true;
                     mLeagueIdList.clear();
+                    if (mLeagueItemList == null) {
+                        //mLeagueItemList在弱网情况下有可能为null
+                        return;
+                    }
                     mLeagueIdList.addAll(mLeagueItemList.get(hotLeaguePos).leagueid);
                     viewModel.statistical(playMethodType);
                     initTimer();
@@ -665,7 +676,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         boolean hasExpand = isChampionHasExand();
         setChampionAllExpand(hasExpand);
         mChampionMatchAdapter.notifyDataSetChanged();
-        ivHeaderExpand.setSelected(hasExpand);
+        if (ivHeaderExpand != null) {
+            ivHeaderExpand.setSelected(hasExpand);
+        }
     }
 
     private void checkLeagueHeaderIsExpand(int groupPosition) {
@@ -845,6 +858,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         } else {
             mHeader.layout(0, 0, measuredWidth, measuredHeight);
         }
+        //firstGroup有可能等于-1，导致闪退
+        if (firstGroup == -1) {
+            return;
+        }
         League league = mLeagueList.get(firstGroup);
 
         if (league.isHead() && league.getHeadType() == League.HEAD_TYPE_LIVE_OR_NOLIVE) {
@@ -876,6 +893,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private void initBottomTab() {
         refreshMenu = (MenuItemView) newItem(R.mipmap.bt_icon_menu_refresh, getResources().getString(R.string.bt_bt_menu_refresh));
         navigationController = binding.pagerBottomTab.custom()
+                .addItem(newItem(R.mipmap.bt_icon_menu_result, getResources().getString(R.string.bt_bt_menu_result)))
                 .addItem(newItem(R.mipmap.bt_icon_menu_tutorial, getResources().getString(R.string.bt_bt_menu_course)))
                 .addItem(newItem(R.mipmap.bt_icon_menu_setting, getResources().getString(R.string.bt_bt_menu_setting)))
                 .addItem(newItem(R.mipmap.bt_icon_menu_unbet, getResources().getString(R.string.bt_bt_menu_unbet)))
@@ -898,20 +916,22 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private void menuOnClick(int index) {
-        if (index == 4) {
+        if (index == 5) {
             refreshMenu.rotation();
             refreshLeague();
-        } else if (index == 2) {
+        } else if (index == 3) {
             BtRecordDialogFragment btRecordDialogFragment = BtRecordDialogFragment.getInstance(false);
             btRecordDialogFragment.show(getSupportFragmentManager(), "BtRecordDialogFragment");
-        } else if (index == 3) {
+        } else if (index == 4) {
             BtRecordDialogFragment btRecordDialogFragment = BtRecordDialogFragment.getInstance(true);
             btRecordDialogFragment.show(getSupportFragmentManager(), "BtRecordDialogFragment");
-        } else if (index == 1) {
+        } else if (index == 2) {
             BtSettingDialogFragment btSettingDialogFragment = BtSettingDialogFragment.getInstance(mLeagueIdList);
             btSettingDialogFragment.show(getSupportFragmentManager(), "BtSettingDialogFragment");
-        } else if (index == 0) {
+        } else if (index == 1) {
             startContainerFragment(RouterFragmentPath.Bet.PAGER_BET_AT);
+        } else if (index == 0) {
+            startContainerFragment(RouterFragmentPath.Bet.PAGER_BET_RESULT);
         }
     }
 
@@ -1259,7 +1279,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 if (i == 0) {
                     textView.setTextSize(16);
                 } else {
-                    textView.setTextSize(12);
+                    textView.setTextSize(14);
                 }
                 binding.tabPlayMethod.addTab(binding.tabPlayMethod.newTab().setCustomView(textView));
 
@@ -1706,7 +1726,11 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private boolean isGoingOnAllExpand() {
-        boolean isGoingOnAllExpand = SPUtils.getInstance(BET_EXPAND).getBoolean(SPKey.BT_GOINGON_SPORT_TYPE_EXPAND + mPlatformName + playMethodType + getSportId(), true);
+        int id = getSportId();
+        if (id == -1) {
+            return true;
+        }
+        boolean isGoingOnAllExpand = SPUtils.getInstance(BET_EXPAND).getBoolean(SPKey.BT_GOINGON_SPORT_TYPE_EXPAND + mPlatformName + playMethodType + id, true);
         return isGoingOnAllExpand;
     }
 

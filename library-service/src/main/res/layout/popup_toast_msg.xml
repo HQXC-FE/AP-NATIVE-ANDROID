@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_round2"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tvContent"
+        android:padding="10dp"
+        android:minWidth="200dp"
+        android:textColor="@color/textColor"
+        android:textSize="16sp"
+        tools:text="我是QQ的消息弹窗，嘿嘿！！！"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

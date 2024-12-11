@@ -1,45 +1,75 @@
 package com.xtree.main.ui;
 
 import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_TO_ACT;
+import static com.xtree.base.utils.EventConstant.EVENT_LOG_OUT;
 import static com.xtree.base.utils.EventConstant.EVENT_RED_POINT;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FAILED;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FINISH;
 
+import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.os.Messenger;
+import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gyf.immersionbar.ImmersionBar;
+import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.fastest.ChangeH5LineUtil;
+import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
-import com.xtree.base.net.fastest.ChangeH5LineUtil;
-import com.xtree.base.net.fastest.FastestTopDomainUtil;
+import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.vo.EventVo;
+import com.xtree.base.vo.MsgPersonInfoVo;
+import com.xtree.base.vo.WsToken;
+import com.xtree.base.widget.BrowserActivity;
 import com.xtree.base.widget.MenuItemView;
 import com.xtree.base.widget.SpecialMenuItemView;
 import com.xtree.main.BR;
 import com.xtree.main.R;
 import com.xtree.main.databinding.ActivityMainBinding;
+import com.xtree.main.ui.viewmodel.WebSocketViewModel;
+import com.xtree.main.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.service.PopMessageUtils;
+import com.xtree.service.WebSocketService;
+import com.xtree.service.message.MessageData;
+import com.xtree.service.message.MessageType;
+import com.xtree.service.message.PushServiceConnection;
 import com.xtree.weight.TopSpeedDomainFloatingWindows;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.sentry.Sentry;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
+import me.xtree.mvvmhabit.base.AppManager;
 import me.xtree.mvvmhabit.base.BaseActivity;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.utils.ConvertUtils;
+import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.Utils;
 
 /**
  * Created by goldze on 2018/6/21
@@ -55,6 +85,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
     private BaseTabItem meMenuItem;
     private TopSpeedDomainFloatingWindows mTopSpeedDomainFloatingWindows;
     private boolean mIsDomainSpeedChecked;
+    private PushServiceConnection pushServiceConnection;
+    private Observer<WsToken> pushObserver;
+    private Observer<MsgPersonInfoVo> msgPersonObserver;
+    private WebSocketViewModel webSocketViewModel;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -87,6 +121,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         initFragment();
         //初始化底部Button
         initBottomTab();
+        //初始化推送服务
+        initPushService();
     }
 
     @Override
@@ -103,6 +139,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         EventBus.getDefault().unregister(this);
         if (mTopSpeedDomainFloatingWindows != null) {
             mTopSpeedDomainFloatingWindows.removeView();
+        }
+        if (pushServiceConnection.isBound()) {
+            unbindService(pushServiceConnection);
+        }
+        if (pushObserver != null && webSocketViewModel != null) {
+            webSocketViewModel.getWsTokenLiveData.removeObserver(pushObserver);
+        }
+
+        if (msgPersonObserver != null && webSocketViewModel != null) {
+            webSocketViewModel.liveDataMsgPersonInfo.removeObserver(msgPersonObserver);
         }
     }
 
@@ -135,8 +181,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         normalItemView.initialize(drawable, drawable, text);
         normalItemView.setDefaultDrawable(getResources().getDrawable(drawable));
         normalItemView.setSelectedDrawable(getResources().getDrawable(drawableSelect));
-        normalItemView.setTextDefaultColor(getResources().getColor(R.color.main_bottom_unselect));
-        normalItemView.setTextCheckedColor(getResources().getColor(R.color.main_bottom_select));
+        normalItemView.setTextDefaultColor(getResources().getColor(R.color.main_bottom_xmas_unselect));
+        normalItemView.setTextCheckedColor(getResources().getColor(R.color.main_bottom_xmas_select));
         normalItemView.setIconTopMargin(ConvertUtils.dp2px(29f));
         normalItemView.setIconWH(ConvertUtils.dp2px(30f), ConvertUtils.dp2px(30f));
         normalItemView.setTextTopMarginOnIcon(ConvertUtils.dp2px(1.5f));
@@ -213,6 +259,116 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
             case EVENT_TOP_SPEED_FAILED:
                 mTopSpeedDomainFloatingWindows.onError();
                 break;
+            case EVENT_LOG_OUT:
+                if (pushServiceConnection != null) {
+                    pushServiceConnection.sendMessageToService(MessageType.Input.LOGOUT, null);
+                }
+                break;
+        }
+    }
+
+    private void initPushService() {
+        AppViewModelFactory factory = AppViewModelFactory.getInstance((Application) Utils.getContext());
+        webSocketViewModel = new ViewModelProvider(this, factory).get(WebSocketViewModel.class);
+        Messenger replyMessenger = new Messenger(new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                MessageType.Output outputType = MessageType.Output.fromCode(msg.what);
+                switch (outputType) {
+                    case OBTAIN_LINK:
+                        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
+                            webSocketViewModel.getWsToken();
+                        }
+                        break;
+                    case REMOTE_MSG://后端的消息
+                        if (msg.getData() != null) {
+                            CfLog.i("receiving class: " + MessageData.class.getName());
+                            try {
+                                msg.getData().setClassLoader(getClassLoader());
+                                MainActivity.this.handleRemoteMessage(msg.getData().getParcelable("data"));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Sentry.captureException(e);
+                            }
+                        }
+                        break;
+                }
+            }
+        });
+        pushServiceConnection = new PushServiceConnection(replyMessenger);
+        // 绑定 Service
+        Intent intent = new Intent(this, WebSocketService.class);
+        bindService(intent, pushServiceConnection, Context.BIND_AUTO_CREATE);
+
+        pushObserver = wsToken -> {
+            if (wsToken != null && !TextUtils.isEmpty(wsToken.getToken())) {
+                String token = wsToken.getToken();
+                long checkInterval = SPUtils.getInstance().getLong(SPKeyGlobal.WS_CHECK_INTERVAL, 30);
+                long retryNumber = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_NUMBER, 3);
+                long retryWaitingTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_WAITING_TIME, 300);
+                long expireTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_EXPIRE_TIME, 90);
+
+                //分隔符
+                String separator;
+                if (DomainUtil.getApiUrl().endsWith("/")) {
+                    separator = "";
+                } else {
+                    separator = File.separator;
+                }
+                String url = DomainUtil.getApiUrl() + separator + "ws/online?token=" + token;
+
+                //协议转换
+                if (url.startsWith("https")) {
+                    url = url.replaceFirst("https", "wss");
+                } else if (url.startsWith("http")) {
+                    url = url.replaceFirst("http", "ws");
+                }
+                Bundle obj = new Bundle();
+                obj.putString("url", url);
+                obj.putLong("checkInterval", checkInterval);
+                obj.putLong("retryNumber", retryNumber);
+                obj.putLong("retryWaitingTime", retryWaitingTime);
+                obj.putLong("expireTime", expireTime);
+                pushServiceConnection.sendMessageToService(MessageType.Input.LINK, obj);
+            }
+        };
+        msgPersonObserver = msgPersonInfoVo -> {
+            try {
+                Activity currentActivity = AppManager.getAppManager().currentActivity();
+                PopMessageUtils.showPromptDetail(currentActivity, msgPersonInfoVo);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Sentry.captureException(e);
+            }
+        };
+        webSocketViewModel.getWsTokenLiveData.observeForever(pushObserver);
+        webSocketViewModel.liveDataMsgPersonInfo.observeForever(msgPersonObserver);
+
+    }
+
+    private void handleRemoteMessage(MessageData data) {
+        //1，判断用户在游戏场馆内的时候使用toast提示
+        //2，判断用户在非游戏场馆页面的时候用prompt提示
+
+        String message = data.getSubject();
+        Activity currentActivity = AppManager.getAppManager().currentActivity();
+        boolean isGame = false;
+        if (currentActivity instanceof BrowserActivity) {
+            isGame = ((BrowserActivity) currentActivity).isGame();
+        }
+        if (isGame) {//弹toast
+            PopMessageUtils.showToastPop(currentActivity, message, view -> {
+                if (webSocketViewModel != null && data.getMessageId() > 0) {
+                    webSocketViewModel.getMessagePerson("" + data.getMessageId());
+                }
+            });
+        } else {//弹dialog
+            PopMessageUtils.showPrompt(currentActivity, message, view -> {
+                if (webSocketViewModel != null && data.getMessageId() > 0) {
+                    webSocketViewModel.getMessagePerson("" + data.getMessageId());
+                }
+            });
         }
     }
 }

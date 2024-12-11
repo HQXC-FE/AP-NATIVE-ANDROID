@@ -330,7 +330,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
     private void updateOptionData() {
         if (fragment == null) {
             if (mCategories != null && !mCategories.isEmpty()) {
-                fragment = BtDetailOptionFragment.getInstance(mMatch, (ArrayList<PlayType>) mCategories.get(tabPos).getPlayTypeList());
+                fragment = BtDetailOptionFragment.getInstance(mMatch, (ArrayList<PlayType>) mCategories.get(tabPos).getPlayTypeList(),false);
                 FragmentTransaction trans = getSupportFragmentManager()
                         .beginTransaction();
                 trans.replace(R.id.fl_option, fragment);
@@ -339,7 +339,11 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         } else {
             if (mCategories != null && !mCategories.isEmpty()) {
                 if (tabPos < mCategories.size()) {
-                    RxBus.getDefault().post(new BetContract(BetContract.ACTION_OPTION_CHANGE, mCategories.get(tabPos).getPlayTypeList()));
+                    Category category = mCategories.get(tabPos);
+                    if (category == null) {
+                        return;
+                    }
+                    RxBus.getDefault().post(new BetContract(BetContract.ACTION_OPTION_CHANGE, category.getPlayTypeList()));
                 }
             }
         }
