@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.gson.Gson;
+import com.xtree.base.utils.CfLog;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.Score;
@@ -61,6 +63,7 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
 
     public void setMatch(Match match, boolean isMatchList){
         List<Score> scoreList = match.getScoreList(scoreType);
+        //CfLog.i("scoreType    "+(new Gson()).toJson(scoreType));
         scores = new ArrayList<>();
         if(periods == null){
             return;

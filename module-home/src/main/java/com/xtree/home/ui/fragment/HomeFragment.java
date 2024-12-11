@@ -5,6 +5,7 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_TO_ACT;
+import static com.xtree.base.utils.EventConstant.EVENT_UPLOAD_EXCEPTION;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
@@ -67,6 +69,8 @@ import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,8 +93,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private BasePopupView ppw = null; // 底部弹窗
     private BasePopupView ppw2 = null; // 底部弹窗
     private BasePopupView closePpw = null; // 禁止该用户玩当前游戏的弹窗
+    private BasePopupView freezePpw = null; // 冻结弹窗
     private BasePopupView updateView = null;
-    private BasePopupView showUpdateErrorView ;//显示下载失败
+    private BasePopupView showUpdateErrorView;//显示下载失败
 
     private BasePopupView showNewRegPopView = null;//显示新注册用户window
     boolean isBinding = false; // 是否正在跳转到其它页面绑定手机/YHK (跳转后回来刷新用)
@@ -105,7 +110,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private boolean isSelectedGame = false;
     private int gameGroup = -1;
 
-    private static  final  int MSG_REFRESH_NOTICE = 1001;//刷新公告
+    private static final int MSG_REFRESH_NOTICE = 1001;//刷新公告
     //刷新公共Handler
     Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -121,7 +126,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             }
         }
     };
-
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -235,7 +239,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     viewModel.getECLink();
                 }
                 String showRegMsg = SPUtils.getInstance().getString(SPKeyGlobal.USER_CODE_MSG);
-                if (showRegMsg !=null && !TextUtils.isEmpty(showRegMsg)){
+                if (showRegMsg != null && !TextUtils.isEmpty(showRegMsg)) {
                     //显示注册弹窗
                     showRegPop(showRegMsg);
                 }
@@ -304,6 +308,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         });
         viewModel.liveDataProfile.observe(getViewLifecycleOwner(), vo -> {
             CfLog.d("*** " + new Gson().toJson(vo));
+            if (vo.isFrozen != 0) {
+                showFreezePpw();
+            }
+
             mProfileVo = vo;
             binding.clLoginNot.setVisibility(View.GONE);
             binding.clLoginYet.setVisibility(View.VISIBLE);
@@ -392,7 +400,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             @Override
             public void onBindView(BannerImageHolder holder, BannersVo data, int position, int size) {
                 holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                Glide.with(getContext()).load(data.picture).placeholder(R.mipmap.hm_bnr_01).into(holder.imageView);
+                Glide.with(getContext()).load(data.picture)
+                        .placeholder(R.mipmap.hm_bnr_01).into(holder.imageView);
             }
         });
 
@@ -509,7 +518,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     startContainerFragment(RouterFragmentPath.Home.AUG);
                     return;
                 }
-                if (vo.cid == 19 || vo.cid == 34 || vo.cid == 1 || vo.cid == 43) {
+                if (vo.cid == 19 || vo.cid == 34 || vo.cid == 1 || vo.cid == 52) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("vo", vo);
                     startContainerFragment(RouterFragmentPath.Home.ELE, bundle);
@@ -629,6 +638,29 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     .asCustom(dialog);
         }
         closePpw.show();
+    }
+
+    /**
+     * 冻结弹窗
+     */
+    private void showFreezePpw() {
+        if (freezePpw == null) {
+            MsgDialog dialog = new MsgDialog(requireContext(), "温馨提示", "账户无法操作, 请联系平台客服\n\n", true, new MsgDialog.ICallBack() {
+                @Override
+                public void onClickLeft() {
+                }
+
+                @Override
+                public void onClickRight() {
+                    freezePpw.dismiss();
+                }
+            });
+            freezePpw = new XPopup.Builder(requireContext())
+                    .dismissOnTouchOutside(true)
+                    .dismissOnBackPressed(true)
+                    .asCustom(dialog);
+        }
+        freezePpw.show();
     }
 
     @Override
@@ -840,10 +872,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         updateView.show();
     }
 
-    private void  showUpdateErrorDialog(final boolean isWeakUpdate , final String downUrl){
-        showUpdateErrorView = null ;
-        AppUpdateErrorDialog updateErrorDialog = null ;
-        if (isWeakUpdate){
+    private void showUpdateErrorDialog(final boolean isWeakUpdate, final String downUrl) {
+        showUpdateErrorView = null;
+        AppUpdateErrorDialog updateErrorDialog = null;
+        if (isWeakUpdate) {
             //弱更
             updateErrorDialog = new AppUpdateErrorDialog(getContext(), downUrl, false, new AppUpdateErrorDialog.ICallBack() {
                 @Override
@@ -857,7 +889,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 }
             });
 
-        }else{
+        } else {
             //刚更
             updateErrorDialog = new AppUpdateErrorDialog(getContext(), downUrl, true, new AppUpdateErrorDialog.ICallBack() {
                 @Override
@@ -907,9 +939,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
     /**
      * 显示注册弹窗
+     *
      * @param message
      */
-    private void  showRegPop(final String message){
+    private void showRegPop(final String message) {
         String title = getString(R.string.txt_kind_tips);
         MsgDialog dialog = new MsgDialog(getContext(), title, message, true, new MsgDialog.ICallBack() {
             @Override
@@ -926,6 +959,33 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 .dismissOnBackPressed(false)
                 .asCustom(dialog);
         showNewRegPopView.show();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // 注册 EventBus
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // 注销 EventBus
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventVo event) {
+        switch (event.getEvent()) {
+            case EVENT_UPLOAD_EXCEPTION://上传三方场馆H5链接加载失败日志
+                viewModel.uploadException((UploadExcetionReq) event.getMsg());
+                break;
+        }
     }
 
 }

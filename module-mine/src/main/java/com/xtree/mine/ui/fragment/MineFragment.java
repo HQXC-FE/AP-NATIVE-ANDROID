@@ -176,7 +176,8 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         });
         binding.tvwDcCentre.setOnClickListener(v -> {
             CfLog.i("****** ");
-            BrowserActivity.start(getContext(), DomainUtil.getH5Domain2() + Constant.URL_DC_CENTER); // 优惠中心
+//            BrowserActivity.start(getContext(), DomainUtil.getH5Domain2() + Constant.URL_DC_CENTER); // 优惠中心
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_OFFER); // 优惠中心
         });
 
         binding.tvwInviteFriend.setOnClickListener(v -> {

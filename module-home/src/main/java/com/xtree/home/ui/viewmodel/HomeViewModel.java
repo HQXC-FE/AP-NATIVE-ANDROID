@@ -15,9 +15,13 @@ import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.RetrofitClient;
+import com.xtree.base.net.fastest.FastestMonitorCache;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.SystemUtil;
+import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.FBService;
@@ -49,7 +53,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +62,7 @@ import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.Utils;
 
 /**
  * Created by marquis on 2023/11/24.
@@ -433,7 +437,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public void getSettings() {
         HashMap<String, String> map = new HashMap();
         map.put("fields", "customer_service_url,public_key,barrage_api_url," +
-                "x9_customer_service_url," + "promption_code,default_promption_code");
+                "x9_customer_service_url," + "promption_code,default_promption_code,ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time,app_response_speed_calculation");
         Disposable disposable = (Disposable) model.getApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
@@ -449,7 +453,17 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
                         SPUtils.getInstance().put(SPKeyGlobal.PUBLIC_KEY, public_key);
                         SPUtils.getInstance().put("customer_service_url", vo.customer_service_url);
+                        SPUtils.getInstance().put(SPKeyGlobal.WS_CHECK_INTERVAL, vo.ws_check_interval);
+                        SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_NUMBER, vo.ws_retry_number);
+                        SPUtils.getInstance().put(SPKeyGlobal.WS_EXPIRE_TIME, vo.ws_expire_time);
+                        SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_WAITING_TIME, vo.ws_retry_waiting_time);
                         //SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
+
+                        SPUtils.getInstance().put(SPKeyGlobal.APP_RESPONSE_SPEED_CALCULATION, vo.app_response_speed_calculation);
+
+                        //设置测速扣除百分比
+                        FastestMonitorCache.INSTANCE.setSPEED_CALCULATION(vo.app_response_speed_calculation);
+
 
                         liveDataSettings.setValue(vo);
                     }
@@ -830,6 +844,32 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         }
 
         return sb.toString();
+    }
+
+    public void uploadException(UploadExcetionReq uploadExcetionReq) {
+        Map<String, String> map = new HashMap<>();
+        map.put("log_tag", uploadExcetionReq.getLogTag());
+        map.put("api_url", uploadExcetionReq.getApiUrl());
+        map.put("device_no", "android-app-" + TagUtils.getDeviceId(Utils.getContext()));
+        //map.put("device_no2", "log_tag");
+        map.put("log_type", uploadExcetionReq.getLogType());
+        map.put("device_type", "9");
+        map.put("device_detail", SystemUtil.getDeviceBrand() + " " + SystemUtil.getDeviceModel() + " " + "Android " + SystemUtil.getSystemVersion());
+        map.put("msg", uploadExcetionReq.getMsg());
+        Disposable disposable = (Disposable) model.getApiService().uploadExcetion(map)
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<String>() {
+                    @Override
+                    public void onResult(String result) {
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+                });
+        addSubscribe(disposable);
     }
 
 }

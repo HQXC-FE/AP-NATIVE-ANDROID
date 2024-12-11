@@ -127,6 +127,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="10dp"
+                android:background="@color/red"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <EditText

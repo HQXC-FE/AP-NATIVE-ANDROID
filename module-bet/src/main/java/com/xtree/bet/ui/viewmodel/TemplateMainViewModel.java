@@ -18,7 +18,7 @@ import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
-import com.xtree.bet.bean.request.UploadExcetionReq;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.bet.bean.response.HotLeagueInfo;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.fb.HotLeague;
@@ -88,6 +88,8 @@ public abstract class TemplateMainViewModel extends BaseBtViewModel implements M
      */
     public SingleLiveData<Map<String, List<SportTypeItem>>> statisticalData = new SingleLiveData<>();
     public SingleLiveData<List<League>> settingLeagueData = new SingleLiveData<>();
+    public SingleLiveData<List<League>> resultLeagueData = new SingleLiveData<>();
+    public SingleLiveData<Map<String, List<SportTypeItem>>> resultData = new SingleLiveData<>();
 
     /**
      * 赛事公告
