@@ -6,7 +6,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.FBRetrofitClient;
-import com.xtree.base.net.live.LiveClient;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.AESUtil;
 import com.xtree.base.utils.CfLog;

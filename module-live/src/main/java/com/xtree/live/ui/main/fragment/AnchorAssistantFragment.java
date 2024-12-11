@@ -107,7 +107,7 @@ public class AnchorAssistantFragment extends BaseFragment<FragmentAnchorAssistan
     }
     @Override
     public void callback() {
-        viewModel.getAnchorSort();
+        //viewModel.getAnchorSort();
 
     }
 

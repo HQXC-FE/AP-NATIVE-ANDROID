@@ -20,6 +20,8 @@ import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.broadcaster.fragment.LiveShareDialog;
 import com.xtree.live.data.factory.AppViewModelFactory;
+import com.xtree.live.data.source.request.SearchAssistantRequest;
+import com.xtree.live.data.source.request.SendToAssistantRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.SearchAssistantResponse;
@@ -41,7 +43,7 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
     private AttentionListAdapter mAdapter;
     private BasePopupView shareView;
     private LiveShareDialog liveShareDialog;
-
+    private AnchorSortResponse anchorSortResponse ;
     private ChatRoomResponse chatRoomResponse;//聊天房列表
     private SearchAssistantResponse searchAssistantResponse ;//搜索主播助理
 
@@ -99,6 +101,15 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
 
     @Override
     public void callback() {
+
+        CfLog.e("AttentionListFragment ----> callback" );
+        viewModel.getAnchorSort();
+        /* viewModel.getChatRoomList();*/
+
+     //   viewModel.searchAssistant(new SearchAssistantRequest("20"));
+/*
+        viewModel.sendAssistant( new SendToAssistantRequest(20 ,"测试",1,"","10001"));
+        viewModel.searchAssistant(new SearchAssistantRequest("20"));*/
         viewModel.getChatRoomList();
 
     }
@@ -106,12 +117,23 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
     @Override
     public void initViewObservable() {
         super.initViewObservable();
+
+        viewModel.anchorSortResponseMutableLiveData.observe(getActivity() , vo ->{
+            if (vo != null){
+                anchorSortResponse = vo ;
+                 mAdapter = new AttentionListAdapter(getContext() , anchorSortResponse);
+                 binding.rvMain.setAdapter(mAdapter);
+                 mAdapter.notifyDataSetChanged();
+            }
+
+        });
+
         viewModel.chatRoomResponseMutableLiveData.observe(getActivity(), vo -> {
             if (vo != null ) {
                 chatRoomResponse = vo;
                 CfLog.e("initViewObservable = " + chatRoomResponse.toString());
                 /*Collections.sort(anchorSortResponse.data);
-                mAdapter = new AttentionListAdapter(getContext(), anchorSortResponse);
+                mAdapter = new AttentionListAdapter(getContext(), chatRoomResponse);
                 binding.rvMain.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();*/
             }
@@ -121,6 +143,7 @@ public class AttentionListFragment extends BaseFragment<FragmentLiveBroadcasterB
         viewModel.searchAssistantResponseMutableLiveData.observe(getActivity() , vo->{
             if (vo != null){
                 searchAssistantResponse = vo;
+                CfLog.e("searchAssistantResponse = " + searchAssistantResponse.toString());
             }
         });
 

@@ -3,6 +3,12 @@
     package="com.xtree.live">
 
     <application>
+        <activity
+            android:name="com.xtree.live.ui.main.bet.LiveMatchDetailActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait"/>
+    </application>
+    <application>
         <service
             android:name="com.xtree.live.ui.main.service.LiveWebSocketService"
             android:process=":push" />

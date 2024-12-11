@@ -55,7 +55,6 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
 
     @Override
     public void initView() {
-
     }
 
     @Override

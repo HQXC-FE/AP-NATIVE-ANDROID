@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
 import com.xtree.base.net.RetrofitClient;
-import com.xtree.base.net.live.LiveClient;
+import com.xtree.live.data.source.http.LiveClient;
 import com.xtree.base.vo.FBService;
 import com.xtree.live.data.source.ApiService;
 import com.xtree.live.data.source.HttpDataSource;

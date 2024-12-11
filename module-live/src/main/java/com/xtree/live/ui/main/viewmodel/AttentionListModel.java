@@ -14,6 +14,7 @@ import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.ChatRoomListRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.SearchAssistantRequest;
+import com.xtree.live.data.source.request.SendToAssistantRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
@@ -104,7 +105,8 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
                     public void onResult(ChatRoomResponse data) {
 
                         if (data !=null){
-                            CfLog.e("getAnchorSort ----------------> ");
+                            CfLog.e("getChatRoomList -------------chatRoomResponseMutableLiveData---> " + data.data.toString());
+                            CfLog.e("getChatRoomList ------------- data.data.size()---> " + data.data.size());
                             chatRoomResponseMutableLiveData.setValue(data);
                         }
                     }
@@ -125,7 +127,6 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
                     public void onResult(SearchAssistantResponse data) {
 
                         if (data !=null){
-                            CfLog.e("getAnchorSort ----------------> ");
                             searchAssistantResponseMutableLiveData.setValue(data);
                         }
                     }
@@ -133,12 +134,29 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
                 });
     }
 
+    public void  sendAssistant(SendToAssistantRequest request){
+        LiveRepository.getInstance().sendToAssistant(request)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<SearchAssistantResponse>() {
+                    @Override
+                    public void onResult(SearchAssistantResponse data) {
+
+                        if (data !=null){
+                            searchAssistantResponseMutableLiveData.setValue(data);
+                        }
+                    }
+
+                });
+    }
+
+
     public void setActivity(FragmentActivity mActivity) {
         this.mActivity = new WeakReference<>(mActivity);
     }
     private void initData() {
         /*itemType.setValue(typeList);
         datas.setValue(bindModels);*/
-        getAnchorSort();
+       /* getAnchorSort();*/
     }
 }

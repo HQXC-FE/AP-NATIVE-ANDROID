@@ -1,10 +1,11 @@
-package com.xtree.base.net.live;
+package com.xtree.live.data.source.http;
 
 import android.content.Context;
 import android.text.TextUtils;
 
 import com.xtree.base.BuildConfig;
 import com.xtree.base.net.HttpsUtils;
+import com.xtree.base.net.live.LiveHeaderInterceptor;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 
@@ -93,6 +94,7 @@ public class LiveClient {
 
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory();
         okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new TokenAuthenticator())
                 .addInterceptor(new LiveHeaderInterceptor())
                 .addInterceptor(new LoggingInterceptor
                         .Builder()//构建者模式
