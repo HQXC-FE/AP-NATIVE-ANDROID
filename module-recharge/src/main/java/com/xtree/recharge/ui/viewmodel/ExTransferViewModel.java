@@ -62,7 +62,6 @@ import com.xtree.recharge.ui.fragment.extransfer.ExTransferVoucherPositiveDialog
 import com.xtree.recharge.ui.model.BankPickModel;
 import com.xtree.recharge.ui.widget.Comm100ChatWindows;
 import com.xtree.recharge.ui.widget.RcExpPositiveConfirmDialog;
-import com.xtree.recharge.ui.widget.TipOnePayNextDialog;
 import com.xtree.recharge.vo.RechargeVo;
 
 import java.io.File;
@@ -664,7 +663,9 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         }
 
 
-        if ("1".equals(typeOfPayment.getValue()) && mActivity != null && mActivity.get() != null) {
+        boolean isPositive = "1".equals(typeOfPayment.getValue());
+        isPositive = true;
+        if (isPositive && mActivity != null && mActivity.get() != null) {
             if (positiveConfirmDialog != null && positiveConfirmDialog.isShow()) {
                 positiveConfirmDialog.dismiss();
             }
