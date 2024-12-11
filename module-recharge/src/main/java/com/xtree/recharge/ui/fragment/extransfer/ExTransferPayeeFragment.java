@@ -76,6 +76,15 @@ public class ExTransferPayeeFragment extends BaseFragment<FragmentExtransferPaye
             }
         });
         serviceChatFlow.show();
+
+        showExTransferKindTipsDialogFragment();
+    }
+
+    private void showExTransferKindTipsDialogFragment() {
+        binding.getModel().setActivity(getActivity());
+        if (isTipTodayCount()) {
+            ExTransferKindTipsDialogFragment.show(getActivity());
+        }
     }
 
     @Override
@@ -141,14 +150,6 @@ public class ExTransferPayeeFragment extends BaseFragment<FragmentExtransferPaye
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        binding.getModel().setActivity(getActivity());
-        if (isTipTodayCount()) {
-            ExTransferKindTipsDialogFragment.show(getActivity());
-        }
-    }
 
     /**
      * 是否弹窗(充值次数)
