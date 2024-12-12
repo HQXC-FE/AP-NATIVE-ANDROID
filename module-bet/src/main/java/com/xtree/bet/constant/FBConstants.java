@@ -26,7 +26,7 @@ public class FBConstants {
             MATCH_GAMES.put(7, new SportTypeItem(7, "baseball", "棒球", 5, R.drawable.bt_match_item_bq_selector));
             MATCH_GAMES.put(13, new SportTypeItem(13, "volleyball", "排球", 6, R.drawable.bt_match_item_pq_selector));
             MATCH_GAMES.put(47, new SportTypeItem(47, "badminton", "羽毛球", 7, R.drawable.bt_match_item_ymq_selector));
-            MATCH_GAMES.put(6, new SportTypeItem(6, "americanfootball", "美式足球", 8, R.drawable.bt_match_item_mszq_selector));
+            MATCH_GAMES.put(6, new SportTypeItem(6, "americanfootball", "美式足球", 8, R.drawable.bt_match_item_mszq_selector));//串关美式足球三方接口返回错误，返回空
             MATCH_GAMES.put(15, new SportTypeItem(15, "tabletennis", "乒乓球", 9, R.drawable.bt_match_item_bbq_selector));
             MATCH_GAMES.put(2, new SportTypeItem(2, "icehockey", "冰球", 10, R.drawable.bt_match_item_iceq_selector));
             MATCH_GAMES.put(4, new SportTypeItem(4, "rugby", "橄榄球", 11, R.drawable.bt_match_item_glq_selector));
@@ -35,7 +35,7 @@ public class FBConstants {
             MATCH_GAMES.put(12, new SportTypeItem(12, "golf", "高尔夫", 17, R.drawable.bt_match_item_golf_selector));
             MATCH_GAMES.put(14, new SportTypeItem(14, "cricket", "板球", 15, R.drawable.bt_match_item_wbq_selector));
             MATCH_GAMES.put(17, new SportTypeItem(17, "futsal", "五人足球", 25, R.drawable.bt_match_item_wrzq_selector));
-            MATCH_GAMES.put(18, new SportTypeItem(18, "mixedmartialarts", "综合", 13, R.drawable.bt_match_item_zhgd_selector));
+            //MATCH_GAMES.put(18, new SportTypeItem(18, "mixedmartialarts", "综合", 13, R.drawable.bt_match_item_zhgd_selector));
             MATCH_GAMES.put(19, new SportTypeItem(19, "boxing", "拳击", 14, R.drawable.bt_match_item_qj_selector));
             MATCH_GAMES.put(20, new SportTypeItem(20, "darts", "飞镖", 19, R.drawable.bt_match_item_darts_selector));
             MATCH_GAMES.put(21, new SportTypeItem(21, "bowls", "草地滚球", 20, R.drawable.bt_match_item_cdgq_selector));
