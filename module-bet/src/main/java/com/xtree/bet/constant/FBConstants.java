@@ -33,7 +33,7 @@ public class FBConstants {
             MATCH_GAMES.put(8, new SportTypeItem(8, "handball", "手球", 12, R.drawable.bt_match_item_sq_selector));
             MATCH_GAMES.put(10, new SportTypeItem(10, "floorball", "地板球", 24, R.drawable.bt_match_item_dbq_selector));
             MATCH_GAMES.put(12, new SportTypeItem(12, "golf", "高尔夫", 17, R.drawable.bt_match_item_golf_selector));
-            MATCH_GAMES.put(14, new SportTypeItem(14, "cricket", "板球", 15, R.drawable.bt_match_item_wbq_selector));
+            //MATCH_GAMES.put(14, new SportTypeItem(14, "cricket", "板球", 15, R.drawable.bt_match_item_wbq_selector));
             MATCH_GAMES.put(17, new SportTypeItem(17, "futsal", "五人足球", 25, R.drawable.bt_match_item_wrzq_selector));
             //MATCH_GAMES.put(18, new SportTypeItem(18, "mixedmartialarts", "综合", 13, R.drawable.bt_match_item_zhgd_selector));
             MATCH_GAMES.put(19, new SportTypeItem(19, "boxing", "拳击", 14, R.drawable.bt_match_item_qj_selector));
