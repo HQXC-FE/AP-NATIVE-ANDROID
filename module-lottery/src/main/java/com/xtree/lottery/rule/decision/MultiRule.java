@@ -26,7 +26,7 @@ public class MultiRule {
     @Action
     public void then(Facts facts) {
         // 获取格式化后的代码集合
-        Map<String, List<String>> formatCodes = facts.get("formatCodes");
+        List<List<String>> formatCodes = facts.get("formatCodes");
 
         // 检查 formatCodes 是否为空
         if (formatCodes == null || formatCodes.isEmpty()) {
@@ -37,7 +37,7 @@ public class MultiRule {
         int num = 1;
 
         // 遍历 Map 的每个条目，计算所有 List 的长度乘积
-        for (List<String> codes : formatCodes.values()) {
+        for (List<String> codes : formatCodes) {
             if (codes != null && !codes.isEmpty()) {
                 num *= codes.size();
             }

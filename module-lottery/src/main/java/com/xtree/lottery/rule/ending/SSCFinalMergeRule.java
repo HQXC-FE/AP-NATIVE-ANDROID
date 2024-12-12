@@ -32,6 +32,7 @@ public class SSCFinalMergeRule {
         Map<String, Object> currentMethod = facts.get("currentMethod");
         Map<String, Object> mode = facts.get("mode");
         List<Object> formatCodes = facts.get("formatCodes");
+        Map<String, String> selectarea = (Map<String, String>) currentMethod.get("selectarea");
         String prize = facts.get("prize") != null ? facts.get("prize").toString() : null;
         int times = facts.get("times");
         double money = facts.get("money");
@@ -43,14 +44,20 @@ public class SSCFinalMergeRule {
         forBet.put("methodid", currentMethod.get("methodid"));
 
         // Generate codes for submission
-        if (List.of("input", "box").contains(currentMethod.get("selectarea.type"))) {
+        if (List.of("input", "box").contains(selectarea.get("type"))) {
             forBet.put("codes", formatCodes.stream()
                     .map(item -> String.join(sortSplit, (String) item))
                     .collect(Collectors.joining("&")));
         } else {
-            forBet.put("codes", formatCodes.stream()
-                    .map(item -> String.join("&", (String) item))
-                    .collect(Collectors.joining("|")));
+            if (formatCodes.get(0) instanceof List<?>) {
+                forBet.put("codes", formatCodes.stream()
+                        .map(item -> String.join("&", (List<String>) item))
+                        .collect(Collectors.joining("|")));
+            } else {
+                forBet.put("codes", formatCodes.stream()
+                        .map(item -> String.join("&", (String) item))
+                        .collect(Collectors.joining("|")));
+            }
         }
 
         forBet.put("omodel", prize != null ? Integer.parseInt(prize) : 1);
@@ -58,9 +65,9 @@ public class SSCFinalMergeRule {
         forBet.put("times", times);
         forBet.put("poschoose", facts.get("poschoose"));
         forBet.put("menuid", currentMethod.get("menuid"));
-        forBet.put("type", ((Map<?,?>)currentMethod.get("selectarea")).get("originType") != null
-                ? ((Map<?,?>)currentMethod.get("selectarea")).get("originType")
-                : ((Map<?,?>)currentMethod.get("selectarea")).get("type"));
+        forBet.put("type", ((Map<?, ?>) currentMethod.get("selectarea")).get("originType") != null
+                ? ((Map<?, ?>) currentMethod.get("selectarea")).get("originType")
+                : ((Map<?, ?>) currentMethod.get("selectarea")).get("type"));
         forBet.put("nums", num);
         forBet.put("money", money);
         forBet.put("solo", facts.get("solo") != null ? facts.get("solo") : false);
@@ -101,7 +108,7 @@ public class SSCFinalMergeRule {
         forDisplay.put("singleDesc", facts.get("singleDesc"));
 
         // Generate codes for display
-        if (List.of("input", "box").contains(currentMethod.get("selectarea.type"))) {
+        if (List.of("input", "box").contains(((Map<String, String>) currentMethod.get("selectarea")).get("type"))) {
             forDisplay.put("codes", betCodes.stream()
                     .map(item -> String.join(sortSplit, item))
                     .collect(Collectors.joining((String) currentMethod.get("code_sp"))));

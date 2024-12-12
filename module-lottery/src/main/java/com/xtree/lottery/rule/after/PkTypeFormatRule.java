@@ -49,8 +49,5 @@ public class PkTypeFormatRule {
                 .filter(item -> item.size() == 2)
                 .collect(Collectors.toList());
         facts.put("formatCodes", filteredFormatCodes);
-
-        // 完成后触发下一个规则
-        facts.get("rules");
     }
 }

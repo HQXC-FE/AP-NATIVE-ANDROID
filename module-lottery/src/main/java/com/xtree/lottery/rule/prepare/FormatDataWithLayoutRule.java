@@ -7,7 +7,6 @@ import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,38 +34,22 @@ public class FormatDataWithLayoutRule {
         List<Map<String, Object>> layout = (List<Map<String, Object>>) selectArea.get("layout");
         Map<String, List<List<String>>> bet = facts.get("bet");
         List<List<String>> betCodes = bet.get("codes");
+        List<List<String>> formatCodes = new ArrayList<>();
 
+        // 遍历布局，根据 place 将代码分组到 formatCodes 中
+        for (int index = 0; index < layout.size(); index++) {
+            Map<String, Object> item = layout.get(index);
+            Integer place = Integer.parseInt((String) item.get("place"));
 
-        int place;
-        Map<Integer, List<String>> formatCodes = new HashMap<>();
-
-        for (int i = 0; i < layout.size(); i++) {
-            Map<String, Object> item = layout.get(i);
-            Object placeObj = item.get("place");
-            if (placeObj instanceof Integer) {
-                place = (Integer) placeObj;
-            } else if (placeObj instanceof String) {
-                try {
-                    place = Integer.parseInt((String) placeObj);
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("Invalid place value: " + placeObj);
-                }
-            } else {
-                throw new IllegalArgumentException("Unsupported type for place: " + placeObj.getClass());
+            // 确保 place 对应的列表已初始化
+            while (formatCodes.size() <= place) {
+                formatCodes.add(new ArrayList<>());
             }
-            formatCodes.put(place, mergeLists(formatCodes.getOrDefault(place, new ArrayList<>()), betCodes.get(i)));
-        }
-        facts.put("formatCodes", formatCodes);
-    }
 
-    private List<String> mergeLists(List<String> list1, List<String> list2) {
-        if (list1 == null) {
-            return list2;
+            // 将 bet.codes[index] 的内容追加到对应 place 的列表中
+            formatCodes.get(place).addAll(betCodes.get(index));
         }
-        if (list2 == null) {
-            return list1;
-        }
-        list1.addAll(list2);
-        return list1;
+        // 将格式化后的数据存入 facts
+        facts.put("formatCodes", formatCodes);
     }
 }

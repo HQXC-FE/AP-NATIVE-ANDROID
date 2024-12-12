@@ -30,7 +30,7 @@ public class CalculateTotalBetAmountRule {
         Map<String, Object> mode = facts.get("mode");
 
         if (num != null && times != null && mode != null) {
-            Double rate = (Double) mode.get("rate");
+            Double rate = Double.parseDouble((String) mode.get("rate"));
             if (rate != null) {
                 Double money = Math.round(num * times * rate * 2 * 1000.0) / 1000.0;
                 facts.put("money", money);

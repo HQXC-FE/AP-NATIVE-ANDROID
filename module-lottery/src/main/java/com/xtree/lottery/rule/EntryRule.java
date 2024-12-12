@@ -55,6 +55,7 @@ public class EntryRule {
         String currentMethodCodeSP = "";
         String currentMethodCateTitle = "后三码";
         String currentMethodDesc = "组选和值";
+        String currentMethodShowStr = "-,-,X,X,X";
         List<List<String>> betCodes = new ArrayList<>();
         List<String> betCodesItem11 = new ArrayList<>();
         List<String> betCodesItem12 = new ArrayList<>();
@@ -87,6 +88,7 @@ public class EntryRule {
 
         matcherName = currentCategoryCateName + "-" + currentMethodGroupName + "-" + currentMethodName;
 
+        currentMethod.put("name", currentMethodName);
         currentMethod.put("groupName", currentMethodGroupName);
         currentMethod.put("lotteryId", currentMethodLotteryId);
         currentMethodSelectareaLayouTitem1.put("title", "百位");
@@ -130,6 +132,8 @@ public class EntryRule {
         currentMethod.put("prize_level", currentMethodPrizeLevel);
         currentMethod.put("cate_title", currentMethodCateTitle);
         currentMethod.put("desc", currentMethodDesc);
+        currentMethod.put("show_str", currentMethodShowStr);
+
         currentCategory.put("name", currentCategoryName);
         currentCategory.put("flag", currentCategoryFlag);
         bet.put("codes", betCodes);
@@ -137,6 +141,7 @@ public class EntryRule {
         betModeitem.put("modeid", "1");
         betModeitem.put("name", "元");
         betModeitem.put("rate", "1");
+        bet.put("mode", betModeitem);
         bet.put("times", betTimes);
         bet.put("prize", betPrize);
         betDisplay.put("money", betDisplayMoney);

@@ -56,7 +56,7 @@ public class CommonLHCProcessingRule {
                 submitItem.put("type", code.get("type"));
                 submitItem.put("money", Integer.parseInt(code.get("value").toString()));
                 submitItem.put("nums", 1);
-                submitItem.put("desc", (String)displayItem.get("methodName") + displayItem.get("codes"));
+                submitItem.put("desc", (String) displayItem.get("methodName") + displayItem.get("codes"));
 
                 forDisplay.add(displayItem);
                 forSubmit.add(submitItem);

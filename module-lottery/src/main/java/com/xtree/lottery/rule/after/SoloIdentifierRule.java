@@ -21,8 +21,8 @@ public class SoloIdentifierRule {
 
     @Condition
     public boolean when(Facts facts) {
-        String lotteryType = (String) facts.get("lotteryType");
-        List<String> ruleSuite = (List<String>) facts.get("ruleSuite");
+        String lotteryType = facts.get("lotteryType");
+        List<String> ruleSuite = facts.get("ruleSuite");
         return "ssc".equals(lotteryType) && !ruleSuite.contains("any-solo");
     }
 
@@ -32,7 +32,7 @@ public class SoloIdentifierRule {
         Map<String, String> currentCategory = facts.get("currentCategory");
         Map<String, String> currentMethod = facts.get("currentMethod");
         String methodName = currentCategory.get("name") + currentMethod.get("name");
-        String lotteryAlias = currentCategory.get("lotteryAlias");
+        String lotteryAlias = currentCategory.get("flag");
 
         Map<String, List<Boolean>> bet = facts.get("bet");
         List<Boolean> posChoose = bet.get("posChoose");

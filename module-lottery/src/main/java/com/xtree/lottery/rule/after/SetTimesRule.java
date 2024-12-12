@@ -26,7 +26,10 @@ public class SetTimesRule {
     @Action
     public void then(Facts facts) {
         Map<String, Object> bet = facts.get("bet");
-        Integer times = (Integer) bet.get("times");
-        facts.put("times", times != null ? times : 1);
+        if (bet.get("times") == null) {
+            facts.put("times", 1);
+        }
+        Integer times = Integer.parseInt((String) bet.get("times"));
+        facts.put("times", times);
     }
 }
