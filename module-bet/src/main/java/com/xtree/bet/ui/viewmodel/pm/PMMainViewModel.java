@@ -576,7 +576,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                 Disposable disposable = (Disposable) flowable
                         .compose(RxUtils.schedulersTransformer()) // 线程调度
                         .compose(RxUtils.exceptionTransformer())
-                        .subscribeWith(mPmHttpCallBack);
+                        .subscribeWith(mPmCacheHttpCallBack);
                 addSubscribe(disposable);
             }
         } else {
