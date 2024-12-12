@@ -437,7 +437,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public void getSettings() {
         HashMap<String, String> map = new HashMap();
         map.put("fields", "customer_service_url,public_key,barrage_api_url," +
-                "x9_customer_service_url," + "promption_code,default_promption_code,ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time,app_response_speed_calculation");
+                "x9_customer_service_url," + "promption_code,default_promption_code,ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time,app_response_speed_calculation,sport_match_cache");
         Disposable disposable = (Disposable) model.getApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
@@ -458,7 +458,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         SPUtils.getInstance().put(SPKeyGlobal.WS_EXPIRE_TIME, vo.ws_expire_time);
                         SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_WAITING_TIME, vo.ws_retry_waiting_time);
                         //SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
-
+                        System.out.println("=============== vo.sport_match_cache =================="+vo.sport_match_cache);
+                        SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, new Gson().toJson(vo.sport_match_cache));
                         SPUtils.getInstance().put(SPKeyGlobal.APP_RESPONSE_SPEED_CALCULATION, vo.app_response_speed_calculation);
 
                         //设置测速扣除百分比

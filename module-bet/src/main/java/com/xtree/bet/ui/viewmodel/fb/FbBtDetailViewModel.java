@@ -4,12 +4,15 @@ package com.xtree.bet.ui.viewmodel.fb;
 import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 
 import android.app.Application;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.FBHttpCallBack;
 import com.xtree.base.net.HttpCallBack;
@@ -26,9 +29,11 @@ import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.bean.ui.PlayTypeFb;
 import com.xtree.bet.constant.FBMarketTag;
 import com.xtree.bet.data.BetRepository;
+import com.xtree.bet.ui.viewmodel.SportCacheType;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
 import com.xtree.base.utils.BtDomainUtil;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,8 +62,8 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
         Map<String, String> map = new HashMap<>();
         map.put("languageType", "CMN");
         map.put("matchId", String.valueOf(matchId));
-
-        Disposable disposable = (Disposable) model.getBaseApiService().getMatchDetail(map)
+        Flowable flowable = createMatchDetailFlowable(map);
+        Disposable disposable = (Disposable) flowable
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new FBHttpCallBack<MatchInfo>() {
@@ -249,6 +254,74 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
                     }
                 });
         addSubscribe(disposable);
+    }
+
+    //获取接口类型
+    private SportCacheType getSportCacheType() {
+        // 获取平台和缓存数据
+        String platform = SPUtils.getInstance().getString("KEY_PLATFORM", "");
+        String json = SPUtils.getInstance().getString(SPKeyGlobal.SPORT_MATCH_CACHE, "");
+
+        if (TextUtils.isEmpty(platform) || TextUtils.isEmpty(json)) {
+            return SportCacheType.NONE;  // 如果平台或缓存数据为空，直接返回 NONE
+        }
+
+        Type typeToken = new TypeToken<Map<String, List<Integer>>>() {}.getType();
+        Map<String, List<Integer>> sportMatchCache = new Gson().fromJson(json, typeToken);
+
+        // 如果 sportMatchCache 为空或不包含指定平台，返回 NONE
+        if (sportMatchCache == null || !sportMatchCache.containsKey(platform)) {
+            return SportCacheType.NONE;
+        }
+
+        List<Integer> platformCache = sportMatchCache.get(platform);
+
+        // 检查缓存数据并根据条件返回结果
+        if (platformCache != null && platformCache.size() > 0 && platformCache.contains(9)) {
+            // 检查平台并返回相应的 SportCacheType
+            if (TextUtils.equals(platform, PLATFORM_PM)) {
+                return SportCacheType.PM;
+            } else {
+                return SportCacheType.PMXC;
+            }
+        }
+
+        return SportCacheType.NONE;
+    }
+
+    private Flowable createMatchDetailFlowable(Map<String, String> map) {
+        Flowable flowable = null;
+
+        SportCacheType sportCacheType = getSportCacheType();
+        switch (sportCacheType) {
+            case PM:
+                flowable = getFbMatchDetailFlowable(map);
+                break;
+            case PMXC:
+                flowable = getFbxcMatchDetailFlowable(map);
+                break;
+            default:
+                flowable = getDefaultMatchDetailFlowable(map);
+                break;
+        }
+
+        return flowable;
+    }
+
+    private Flowable getFbMatchDetailFlowable(Map<String, String> map) {
+        Flowable flowable = model.getBaseApiService().fbGetMatchDetail(map);
+        return flowable;
+    }
+
+    private Flowable getFbxcMatchDetailFlowable(Map<String, String> map) {
+        Flowable flowable = model.getBaseApiService().fbxcGetMatchDetail(map);
+
+        return flowable;
+    }
+
+    private Flowable getDefaultMatchDetailFlowable(Map<String, String> map) {
+        Flowable flowable = model.getApiService().getMatchDetail(map);
+        return flowable;
     }
 
 }

@@ -2,6 +2,7 @@ package com.xtree.bet.ui.viewmodel.fb;
 
 import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 
 import android.app.Application;
@@ -10,10 +11,12 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.FBHttpCallBack;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.request.fb.FBListReq;
+import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.fb.LeagueInfo;
 import com.xtree.bet.bean.response.fb.MatchInfo;
@@ -35,15 +38,18 @@ import com.xtree.bet.constant.FBConstants;
 import com.xtree.bet.constant.SportTypeItem;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.MainViewModel;
+import com.xtree.bet.ui.viewmodel.SportCacheType;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
 import com.xtree.bet.ui.viewmodel.callback.LeagueListCallBack;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
@@ -306,7 +312,8 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
             token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
             fBListReq.setToken(token );
         }
-        Disposable disposable = (Disposable) model.getBaseApiService().getFBList(fBListReq)
+        Flowable flowable = createFBListFlowable(fBListReq);
+        Disposable disposable = (Disposable) flowable
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(mLeagueListCallBack);
@@ -389,8 +396,8 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
             token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
             fbListReq.setToken(token);
         }
-
-        Disposable disposable = (Disposable) model.getBaseApiService().getFBList(fbListReq)
+        Flowable flowable = createFBListFlowable(fbListReq);
+        Disposable disposable = (Disposable) flowable
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new FBHttpCallBack<MatchListRsp>() {
@@ -471,7 +478,8 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
             token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
             map.put("_accessToken", token);
         }
-        Disposable disposable = (Disposable) model.getBaseApiService().statistical(map)
+        Flowable flowable = createStatisticalFlowable(map);
+        Disposable disposable = (Disposable) flowable
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new FBHttpCallBack<StatisticalInfo>() {
@@ -805,5 +813,109 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    //获取接口类型
+    private SportCacheType getSportCacheType() {
+        // 获取平台和缓存数据
+        String platform = SPUtils.getInstance().getString("KEY_PLATFORM", "");
+        String json = SPUtils.getInstance().getString(SPKeyGlobal.SPORT_MATCH_CACHE, "");
+
+        if (TextUtils.isEmpty(platform) || TextUtils.isEmpty(json)) {
+            return SportCacheType.NONE;  // 如果平台或缓存数据为空，直接返回 NONE
+        }
+
+        Type typeToken = new TypeToken<Map<String, List<Integer>>>() {}.getType();
+        Map<String, List<Integer>> sportMatchCache = new Gson().fromJson(json, typeToken);
+
+        // 如果 sportMatchCache 为空或不包含指定平台，返回 NONE
+        if (sportMatchCache == null || !sportMatchCache.containsKey(platform)) {
+            return SportCacheType.NONE;
+        }
+
+        List<Integer> platformCache = sportMatchCache.get(platform);
+
+        // 检查缓存数据并根据条件返回结果
+        if (platformCache != null && platformCache.size() > 0 && platformCache.contains(9)) {
+            // 检查平台并返回相应的 SportCacheType
+            if (TextUtils.equals(platform, PLATFORM_PM)) {
+                return SportCacheType.PM;
+            } else {
+                return SportCacheType.PMXC;
+            }
+        }
+
+        return SportCacheType.NONE;
+    }
+
+    private Flowable createFBListFlowable(FBListReq fBListReq) {
+        Flowable flowable = null;
+
+        SportCacheType sportCacheType = getSportCacheType();
+        switch (sportCacheType) {
+            case PM:
+                flowable = getFbListFlowable(fBListReq);
+                break;
+            case PMXC:
+                flowable = getFbxcListFlowable(fBListReq);
+                break;
+            default:
+                flowable = getDefaultListFlowable(fBListReq);
+                break;
+        }
+
+        return flowable;
+    }
+
+    private Flowable getFbListFlowable(FBListReq fBListReq) {
+        Flowable flowable = model.getBaseApiService().fbGetFBList(fBListReq);
+        return flowable;
+    }
+
+    private Flowable getFbxcListFlowable(FBListReq fBListReq) {
+        Flowable flowable = model.getBaseApiService().fbxcGetFBList(fBListReq);
+
+        return flowable;
+    }
+
+    private Flowable getDefaultListFlowable(FBListReq fBListReq) {
+        Flowable flowable = model.getApiService().getFBList(fBListReq);
+        return flowable;
+    }
+
+
+    private Flowable createStatisticalFlowable(Map<String, String> map) {
+        Flowable flowable = null;
+
+        SportCacheType sportCacheType = getSportCacheType();
+        switch (sportCacheType) {
+            case PM:
+                flowable = getFbStatisticalFlowable(map);
+                break;
+            case PMXC:
+                flowable = getFbxcStatisticalFlowable(map);
+                break;
+            default:
+                flowable = getDefaultStatisticalFlowable(map);
+                break;
+        }
+
+        return flowable;
+    }
+
+    private Flowable getFbStatisticalFlowable(Map<String, String> map) {
+        Flowable flowable = model.getBaseApiService().fbStatistical(map);
+        return flowable;
+    }
+
+    private Flowable getFbxcStatisticalFlowable(Map<String, String> map) {
+        Flowable flowable = model.getBaseApiService().fbxcStatistical(map);
+
+        return flowable;
+    }
+
+    private Flowable getDefaultStatisticalFlowable(Map<String, String> map) {
+        Flowable flowable = model.getApiService().statistical(map);
+        return flowable;
     }
 }
