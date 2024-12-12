@@ -14,7 +14,7 @@
         android:id="@id/iv_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/bt_color_line"
+        android:background="@color/clr_main_line"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,7 +42,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_icon"
             android:padding="5dp"
-            android:textColor="@color/bt_text_color_primary_3"
+            android:textColor="@color/clr_txt_mouse6"
             android:textSize="@dimen/bt_text_10sp"
             tools:text="墨西哥甲级联赛" />
 
@@ -53,7 +53,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:padding="5dp"
-            android:textColor="@color/bt_text_color_primary_3"
+            android:textColor="@color/clr_txt_mouse6"
             android:textSize="@dimen/bt_text_10sp"
             tools:text="比赛时间：2023-11-01 18:00" />
 
@@ -69,7 +69,7 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/bt_text_color_primary_1"
+            android:textColor="@color/clr_txt_mouse6"
             android:textSize="@dimen/bt_text_13sp"
             app:layout_constraintStart_toEndOf="@+id/iv_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_league_name"
@@ -81,7 +81,7 @@
             android:id="@+id/tv_play_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/bt_text_color_primary_1"
+            android:textColor="@color/clr_txt_mouse8"
             android:textSize="@dimen/bt_text_12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_name"
@@ -92,7 +92,7 @@
             android:id="@+id/tv_match_team"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/bt_color_hine_color"
+            android:textColor="@color/clr_txt_mouse8"
             android:textSize="@dimen/bt_text_12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_play_type"
@@ -105,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:textColor="@color/bt_color_car_dialog_hight_line2"
+            android:textColor="@color/clr_txt_mouse6"
             android:textSize="@dimen/bt_text_18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:textColor="@color/bt_text_color_primary_1"
+            android:textColor="@color/clr_txt_mouse7"
             android:textSize="@dimen/bt_text_12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_odd"

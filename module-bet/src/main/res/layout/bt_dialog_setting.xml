@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="联赛筛选"
-                android:textColor="@color/bt_text_color_primary_1"
+                android:textColor="@color/clr_txt_mouse6"
                 android:textSize="@dimen/bt_text_14sp" />
 
             <TextView
@@ -79,7 +79,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="8dp"
-            android:background="@color/bt_color_line" />
+            android:background="@color/clr_main_line" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="排序规律"
-                android:textColor="@color/bt_text_color_primary_1"
+                android:textColor="@color/clr_txt_mouse6"
                 android:textSize="@dimen/bt_text_14sp" />
 
             <com.xtree.bet.weight.SwitchView
@@ -103,7 +103,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/bt_color_line" />
+            android:background="@color/clr_main_line" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="盘口设置"
-                android:textColor="@color/bt_text_color_primary_1"
+                android:textColor="@color/clr_txt_mouse6"
                 android:textSize="@dimen/bt_text_14sp" />
 
             <com.xtree.bet.weight.SwitchView
@@ -127,7 +127,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/bt_color_line" />
+            android:background="@color/clr_main_line" />
 
         <TextView
             android:id="@+id/tv_close"

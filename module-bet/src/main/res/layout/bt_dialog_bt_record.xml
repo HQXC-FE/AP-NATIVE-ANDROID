@@ -55,7 +55,7 @@
                 android:layout_above="@+id/csl_bottom"
                 android:layout_below="@+id/csl_top"
                 android:layout_marginTop="10dp"
-                android:background="@mipmap/bt_bg_dialog_bt"
+                android:background="@drawable/bg_main_frame"
                 android:fillViewport="true"
                 android:paddingTop="5dp"
                 android:scrollbars="none"

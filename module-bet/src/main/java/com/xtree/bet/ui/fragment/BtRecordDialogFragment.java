@@ -121,7 +121,7 @@ public class BtRecordDialogFragment extends BaseDialogFragment<BtDialogBtRecordB
         SpannableString spannableString = new SpannableString(getActivity().getResources().getString(R.string.bt_txt_search_record));
         int startIndex = 12; // "这"的索引值
         int endIndex = spannableString.length();   // "是"的索引值 + 1
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.bt_color_car_dialog_hight_line2));
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(R.color.clr_txt_mouse6));
         spannableString.setSpan(colorSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         UnderlineSpan underlineSpan = new UnderlineSpan();
