@@ -127,10 +127,11 @@ fun FilterView.initData(
 )
 fun TabLayout.init(setSelectedListener: OnTabSelectedListener?, tabs: List<String>?) {
     tabs?.let {
+        removeAllTabs()
         for (tab in it) {
             addTab(newTab().apply { text = tab })
         }
-    }?:run {
+    } ?: run {
         visibility = GONE
     }
 

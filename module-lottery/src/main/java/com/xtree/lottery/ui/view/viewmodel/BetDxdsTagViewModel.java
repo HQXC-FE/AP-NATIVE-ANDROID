@@ -13,6 +13,7 @@ import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.view.model.BetDxdsTagModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by KAKA on 2024/5/6.
@@ -75,6 +76,16 @@ public class BetDxdsTagViewModel {
         } else {
             return codesBuildr.toString();
         }
+    }
+
+    /**
+     * 投注号码拼接的解析
+     */
+    public ArrayList<String> reFormatCode(String codes) {
+        ArrayList<String> codeList = new ArrayList<>();
+        String[] parts = codes.split("&");
+        codeList.addAll(Arrays.asList(parts));
+        return codeList;
     }
 
     public void clearBet() {

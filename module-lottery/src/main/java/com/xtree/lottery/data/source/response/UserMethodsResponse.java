@@ -83,8 +83,8 @@ public class UserMethodsResponse {
         /**
          * prizeLevel
          */
-        //@SerializedName("prize_level")
-        //private List<PrizeLevelDTO> prizeLevel;
+        @SerializedName("prize_level")
+        private List<String> prizeLevel;
         /**
          * prizeGroup
          */
@@ -130,13 +130,13 @@ public class UserMethodsResponse {
             this.name = name;
         }
 
-        //public List<PrizeLevelDTO> getPrizeLevel() {
-        //    return prizeLevel;
-        //}
-        //
-        //public void setPrizeLevel(List<PrizeLevelDTO> prizeLevel) {
-        //    this.prizeLevel = prizeLevel;
-        //}
+        public List<String> getPrizeLevel() {
+            return prizeLevel;
+        }
+
+        public void setPrizeLevel(List<String> prizeLevel) {
+            this.prizeLevel = prizeLevel;
+        }
 
         public List<PrizeGroupDTO> getPrizeGroup() {
             return prizeGroup;
@@ -168,22 +168,6 @@ public class UserMethodsResponse {
 
         public void setRelationMethods(List<Integer> relationMethods) {
             this.relationMethods = relationMethods;
-        }
-
-        public static class PrizeLevelDTO {
-            /**
-             * $1
-             */
-            @SerializedName("1")
-            private String $1;
-
-            public String get$1() {
-                return $1;
-            }
-
-            public void set$1(String $1) {
-                this.$1 = $1;
-            }
         }
 
         public static class PrizeGroupDTO {

@@ -51,6 +51,7 @@ public class BetHandicap1View extends BetBaseView {
      * 保留投注数据
      */
     private void setBetData() {
+        betCodes.set(binding.getModel().codesData.get());
         betData.set(binding.getModel().codesData.get());
     }
 

@@ -120,7 +120,7 @@ public class BetDigitalView extends BetBaseView {
         String numbs = codes.replaceAll("[|,&]", "");
         if (!TextUtils.isEmpty(numbs) && betsModel != null) {
             LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
-            betOrderData.setCodes(codes);
+            betOrderData.setCodes(codes.trim());
             betOrderData.setDesc(betsModel.getTitle());
             betOrderData.setMenuid(betsModel.getMenuMethodLabelData().getMenuid());
             betOrderData.setMethodid(betsModel.getMenuMethodLabelData().getMethodid());
@@ -138,6 +138,13 @@ public class BetDigitalView extends BetBaseView {
             }
             ArrayList<LotteryBetRequest.BetOrderData> orderList = new ArrayList<>();
             orderList.add(betOrderData);
+
+            if (codes.contains("|")) {
+                betCodes.set(binding.getModel().reFormatCode(codes));
+            } else {
+                betCodes.set(binding.getModel().reFormatCode2(codes));
+            }
+
             betData.set(orderList);
         } else {
             betData.set(null);

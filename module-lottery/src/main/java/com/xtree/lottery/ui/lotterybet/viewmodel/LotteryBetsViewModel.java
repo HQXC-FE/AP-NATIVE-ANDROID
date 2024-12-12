@@ -21,6 +21,7 @@ import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 import com.xtree.lottery.data.source.response.UserMethodsResponse;
+import com.xtree.lottery.rule.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.LotteryBetConfirmDialogFragment;
 import com.xtree.lottery.ui.lotterybet.LotteryOrderDialogFragment;
 import com.xtree.lottery.ui.lotterybet.LotteryPlayCollectionDialogFragment;
@@ -93,6 +94,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             if (label != null && label.getLabels() != null) {
                 for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO labels1DTO : label.getLabels()) {
                     LotteryPlayCollectionModel model = new LotteryPlayCollectionModel();
+                    model.setMenulabel(label);
                     MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO la = new MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO();
                     la.setTitle(labels1DTO.getTitle());
                     la.setLabels(new ArrayList<>());
@@ -130,7 +132,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 if (label.isUserPlay()) {
                     String title = m.getLabel().getTitle() + "-" + label.getName();
                     tabList.add(title);
-                    LotteryBetsModel lotteryBetsModel = new LotteryBetsModel(title, label, m.getUserMethods());
+                    LotteryBetsModel lotteryBetsModel = new LotteryBetsModel(title, m.getMenulabel(), label, m.getUserMethods());
                     betModels.add(lotteryBetsModel);
                 }
             }
@@ -320,6 +322,116 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
+    }
+
+    public void rule(RulesEntryData.BetDTO betDTO){
+
+        Lottery lottery = lotteryLiveData.getValue();
+        LotteryBetsModel lotteryBetsModel = currentBetModel.getValue();
+        UserMethodsResponse.DataDTO userMethodData = lotteryBetsModel.getUserMethodData();
+        MenuMethodsResponse.DataDTO.LabelsDTO menuMethodLabel = lotteryBetsModel.getMenuMethodLabel();
+        MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO currentl2 = lotteryBetsModel.getMenuMethodLabelData();
+        RulesEntryData rulesEntryData = new RulesEntryData();
+        rulesEntryData.setType(lottery.getType());
+
+        RulesEntryData.CurrentCategoryDTO currentCategoryDTO = new RulesEntryData.CurrentCategoryDTO();
+        currentCategoryDTO.setFlag(lottery.getAlias());
+        currentCategoryDTO.setName(menuMethodLabel.getTitle());
+
+        ArrayList<RulesEntryData.CurrentCategoryDTO.CategoriesDTO> categoriesDTOS = new ArrayList<>();
+
+        for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO l1 : menuMethodLabel.getLabels()) {
+            RulesEntryData.CurrentCategoryDTO.CategoriesDTO categoriesDTO = new RulesEntryData.CurrentCategoryDTO.CategoriesDTO();
+            categoriesDTO.setGroupName(l1.getTitle());
+            categoriesDTO.setDyTitle(l1.getTitle());
+            ArrayList<RulesEntryData.CurrentCategoryDTO.CategoriesDTO.MethodsDTO> methodsDTOS = new ArrayList<>();
+            for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO l2 : l1.getLabels()) {
+                //整理玩法
+                RulesEntryData.CurrentCategoryDTO.CategoriesDTO.MethodsDTO methodsDTO = new RulesEntryData.CurrentCategoryDTO.CategoriesDTO.MethodsDTO();
+                methodsDTO.setMenuid(l2.getMenuid());
+                methodsDTO.setMethodid(l2.getMethodid());
+                methodsDTO.setName(l2.getName());
+                methodsDTO.setIsMultiple(l2.getIsMultiple());
+                methodsDTO.setRelationMethods(l2.getRelationMethods());
+                methodsDTO.setMaxcodecount(l2.getMaxcodecount());
+                methodsDTO.setSelectarea(l2.getSelectarea());
+                methodsDTO.setShowStr(l2.getShowStr());
+                methodsDTO.setCodeSp(l2.getCodeSp());
+                methodsDTO.setDefaultposition(l2.getDefaultposition());
+                methodsDTO.setDesc(l2.getName());
+                methodsDTO.setGroupName(l1.getTitle());
+                methodsDTO.setCateName(menuMethodLabel.getTitle());
+                methodsDTO.setLotteryId(String.valueOf(lottery.getId()));
+                methodsDTO.setOriginalName(l2.getName());
+                methodsDTO.setMethoddesc(l2.getMethoddesc());
+                methodsDTO.setMethodexample(l2.getMethodexample());
+                methodsDTO.setMethodhelp(l2.getMethodhelp());
+                methodsDTO.setDescription(l2.getDescription());
+                methodsDTO.setMoneyModes(l2.getMoneyModes());
+                methodsDTO.setCateTitle(menuMethodLabel.getTitle());
+                methodsDTO.setGroupTitle(l1.getTitle());
+//                methodsDTO.setCurrent();
+                methodsDTOS.add(methodsDTO);
+
+                for (UserMethodsResponse.DataDTO um : userMethods.getData()) {
+                    if (l2.getMenuid().equals(um.getMenuid()) && l2.getMethodid().equals(um.getMethodid())) {
+                        methodsDTO.setPrizeLevel(userMethodData.getPrizeLevel());
+                        methodsDTO.setPrizeGroup(userMethodData.getPrizeGroup());
+                        break;
+                    }
+                }
+
+                //设置当前玩法
+                if (l2.getMenuid().equals(currentl2.getMenuid()) && l2.getMethodid().equals(currentl2.getMethodid())) {
+                    RulesEntryData.CurrentMethodDTO currentMethodDTO = new RulesEntryData.CurrentMethodDTO();
+                    currentMethodDTO.setMenuid(l2.getMenuid());
+                    currentMethodDTO.setMethodid(l2.getMethodid());
+                    currentMethodDTO.setName(l2.getName());
+                    currentMethodDTO.setIsMultiple(l2.getIsMultiple());
+                    currentMethodDTO.setRelationMethods(l2.getRelationMethods());
+                    currentMethodDTO.setMaxcodecount(l2.getMaxcodecount());
+                    currentMethodDTO.setSelectarea(l2.getSelectarea());
+                    currentMethodDTO.setShowStr(l2.getShowStr());
+                    currentMethodDTO.setCodeSp(l2.getCodeSp());
+                    currentMethodDTO.setDefaultposition(l2.getDefaultposition());
+                    currentMethodDTO.setDesc(l2.getName());
+                    currentMethodDTO.setPrizeLevel(userMethodData.getPrizeLevel());
+                    currentMethodDTO.setPrizeGroup(userMethodData.getPrizeGroup());
+                    currentMethodDTO.setGroupName(l1.getTitle());
+                    currentMethodDTO.setCateName(menuMethodLabel.getTitle());
+                    currentMethodDTO.setLotteryId(String.valueOf(lottery.getId()));
+                    currentMethodDTO.setOriginalName(l2.getName());
+                    currentMethodDTO.setMethoddesc(l2.getMethoddesc());
+                    currentMethodDTO.setMethodexample(l2.getMethodexample());
+                    currentMethodDTO.setMethodhelp(l2.getMethodhelp());
+                    currentMethodDTO.setDescription(l2.getDescription());
+                    currentMethodDTO.setMoneyModes(l2.getMoneyModes());
+                    currentMethodDTO.setCateTitle(menuMethodLabel.getTitle());
+                    currentMethodDTO.setGroupTitle(l1.getTitle());
+//                    currentMethodDTO.setTarget();
+                    rulesEntryData.setCurrentMethod(currentMethodDTO);
+                }
+            }
+            //设置子玩法
+            categoriesDTO.setMethods(methodsDTOS);
+            //设置一组玩法
+            categoriesDTOS.add(categoriesDTO);
+        }
+        //设置玩法菜单
+        currentCategoryDTO.setCategories(categoriesDTOS);
+        //设置当前选中的玩法菜单
+        rulesEntryData.setCurrentCategory(currentCategoryDTO);
+
+        betDTO.setMethodid(currentl2.getMethodid());
+        betDTO.setPrize(prizeData.getValue().getValue());
+        RulesEntryData.BetDTO.DisplayDTO displayDTO = new RulesEntryData.BetDTO.DisplayDTO();
+        displayDTO.setPrize(String.valueOf(prizeData.getValue().getLabel()));
+        displayDTO.setPrizeLevel(userMethodData.getPrizeLevel());
+        displayDTO.setPrizeGroup(userMethodData.getPrizeGroup());
+        displayDTO.setMoneyModes(currentl2.getMoneyModes());
+        betDTO.setDisplay(displayDTO);
+        betDTO.setSubmit(new RulesEntryData.BetDTO.SubmitDTO());
+        rulesEntryData.setBet(betDTO);
     }
 
     @Override

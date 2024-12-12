@@ -129,7 +129,7 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
 
         binding.lotteryHandicapBetlayout.setOnLotteryBetListener(new LotteryBetView.OnLotteryBetListener() {
             @Override
-            public void onBetChange(List<LotteryBetRequest.BetOrderData> betOrderList) {
+            public void onBetChange(List<LotteryBetRequest.BetOrderData> betOrderList, Object codes) {
                 if (betOrderList != null && betOrderList.size() > 0) {
                     int money = Integer.parseInt(viewModel.moneyLiveData.getValue());
                     for (LotteryBetRequest.BetOrderData betOrderData : betOrderList) {

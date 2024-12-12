@@ -11,6 +11,7 @@ import com.xtree.lottery.data.source.response.UserMethodsResponse;
 public class LotteryPlayCollectionModel extends BindModel {
 
     private MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO label;
+    private MenuMethodsResponse.DataDTO.LabelsDTO menulabel;
     private UserMethodsResponse.DataDTO userMethods;
 
     public UserMethodsResponse.DataDTO getUserMethods() {
@@ -27,6 +28,14 @@ public class LotteryPlayCollectionModel extends BindModel {
 
     public void setLabel(MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO label) {
         this.label = label;
+    }
+
+    public MenuMethodsResponse.DataDTO.LabelsDTO getMenulabel() {
+        return menulabel;
+    }
+
+    public void setMenulabel(MenuMethodsResponse.DataDTO.LabelsDTO menulabel) {
+        this.menulabel = menulabel;
     }
 
     public String labelName() {

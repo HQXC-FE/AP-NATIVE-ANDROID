@@ -25,7 +25,7 @@ import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.databinding.FragmentLotteryBetsBinding;
 import com.xtree.lottery.inter.ParentChildCommunication;
-import com.xtree.lottery.rule.EntryRule;
+import com.xtree.lottery.rule.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.data.LotteryMoneyData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel;
@@ -40,7 +40,6 @@ import com.xtree.lottery.utils.LotteryAnalyzer;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jeasy.rules.api.Facts;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -143,15 +142,28 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
 
         binding.lotteryBetsBetlayout.setOnLotteryBetListener(new LotteryBetView.OnLotteryBetListener() {
             @Override
-            public void onBetChange(List<LotteryBetRequest.BetOrderData> betOrderList) {
+            public void onBetChange(List<LotteryBetRequest.BetOrderData> betOrderList, Object codes) {
                 if (betOrderList != null && betOrderList.size() > 0) {
                     for (LotteryBetRequest.BetOrderData betOrderData : betOrderList) {
-                        betOrderData.setMode(binding.lotteryBetsMoneyView.getMoneyData().getMoneyModel().getModelId());
-                        betOrderData.setTimes(binding.lotteryBetsMoneyView.getMoneyData().getFactor());
+                        LotteryMoneyModel moneyModel = binding.lotteryBetsMoneyView.getMoneyData().getMoneyModel();
+                        int factor = binding.lotteryBetsMoneyView.getMoneyData().getFactor();
+                        betOrderData.setMode(moneyModel.getModelId());
+                        betOrderData.setTimes(factor);
                         betOrderData.setOmodel(viewModel.prizeData.getValue().getValue());
+
+                        RulesEntryData.BetDTO betDTO = new RulesEntryData.BetDTO();
+                        RulesEntryData.BetDTO.ModeDTO modeDTO = new RulesEntryData.BetDTO.ModeDTO();
+                        modeDTO.setModeid(moneyModel.getModelId());
+                        modeDTO.setName(moneyModel.getName());
+                        modeDTO.setRate(String.valueOf(moneyModel.getRate()));
+                        betDTO.setMode(modeDTO);
+                        betDTO.setTimes(factor);
+                        betDTO.setDisplay(new RulesEntryData.BetDTO.DisplayDTO());
+                        betDTO.setSubmit(new RulesEntryData.BetDTO.SubmitDTO());
+                        betDTO.setCodes(codes);
+                        viewModel.rule(betDTO);
                     }
                     binding.getModel().betLiveData.setValue(betOrderList.get(0));
-                    EntryRule.getInstance().startEngine(new Facts());
                 } else {
                     binding.getModel().betLiveData.setValue(null);
                 }

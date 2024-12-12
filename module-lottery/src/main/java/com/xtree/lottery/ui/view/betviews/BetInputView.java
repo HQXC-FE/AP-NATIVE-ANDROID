@@ -124,6 +124,8 @@ public class BetInputView extends BetBaseView {
 
         ArrayList<LotteryBetRequest.BetOrderData> orderList = new ArrayList<>();
         orderList.add(betOrderData);
+
+        betCodes.set(codes);
         betData.set(orderList);
     }
 

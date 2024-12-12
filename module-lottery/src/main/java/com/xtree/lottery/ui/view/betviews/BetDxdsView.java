@@ -67,6 +67,12 @@ public class BetDxdsView extends BetBaseView {
 
             ArrayList<LotteryBetRequest.BetOrderData> orderList = new ArrayList<>();
             orderList.add(betOrderData);
+
+            if (codes.contains("|")) {
+                betCodes.set(binding.getModel().reFormatCode(codes));
+            } else {
+                betCodes.set(binding.getModel().reFormatCode2(codes));
+            }
             betData.set(orderList);
         } else {
             betData.set(null);

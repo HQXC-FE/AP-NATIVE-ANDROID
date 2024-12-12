@@ -21,6 +21,7 @@ import com.xtree.lottery.ui.view.model.LotteryPickModel;
 import com.xtree.lottery.utils.LotteryAnalyzer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -117,7 +118,7 @@ public class BetDigitalViewModel {
     /**
      * 格式化投注号码
      */
-    private String formatCode() {
+    public String formatCode() {
         StringBuilder codesBuildr = new StringBuilder();
 
         //判断是多个投注条目还是一个条目的拆分
@@ -141,7 +142,12 @@ public class BetDigitalViewModel {
             if (itemBuildr.length() > 0) {
                 itemBuildr.deleteCharAt(itemBuildr.length() - 1);
             }
-            codesBuildr.append(itemBuildr);
+
+            if (TextUtils.isEmpty(itemBuildr)) {
+                codesBuildr.append(" ");
+            } else {
+                codesBuildr.append(itemBuildr);
+            }
 
             if (titleCount > 1) {
                 codesBuildr.append("|");
@@ -154,6 +160,37 @@ public class BetDigitalViewModel {
         } else {
             return codesBuildr.toString();
         }
+    }
+
+    /**
+     * 一组投注号码的解析
+     */
+    public ArrayList<List<String>> reFormatCode(String codes) {
+        ArrayList<List<String>> codeList = new ArrayList<>();
+        String[] parts = codes.split("\\|");
+        for (String s : parts) {
+            ArrayList<String> cs = new ArrayList<>();
+            if (TextUtils.isEmpty(s.replace("|", "").trim())) {
+                codeList.add(cs);
+            } else {
+                String[] c = s.split("&");
+                for (String s1 : c) {
+                    cs.add(s1);
+                }
+                codeList.add(cs);
+            }
+        }
+        return codeList;
+    }
+
+    /**
+     * 投注号码拼接的解析
+     */
+    public ArrayList<String> reFormatCode2(String codes) {
+        ArrayList<String> codeList = new ArrayList<>();
+        String[] parts = codes.split("&");
+        codeList.addAll(Arrays.asList(parts));
+        return codeList;
     }
 
     /**

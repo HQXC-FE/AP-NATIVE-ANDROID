@@ -27,6 +27,7 @@ public abstract class BetBaseView extends FrameLayout {
     private LotteryBetsModel model;
     private BasePopupView pop;
     public ObservableField<List<LotteryBetRequest.BetOrderData>> betData = new ObservableField<>();
+    public ObservableField<Object> betCodes = new ObservableField<>();
 
     public BetBaseView(@NonNull Context context) {
         super(context);

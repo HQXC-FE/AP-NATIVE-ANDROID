@@ -68,6 +68,7 @@ public class BetDxdsTagView extends BetBaseView {
 
             ArrayList<LotteryBetRequest.BetOrderData> orderList = new ArrayList<>();
             orderList.add(betOrderData);
+            betCodes.set(binding.getModel().reFormatCode(codes));
             betData.set(orderList);
         } else {
             betData.set(null);

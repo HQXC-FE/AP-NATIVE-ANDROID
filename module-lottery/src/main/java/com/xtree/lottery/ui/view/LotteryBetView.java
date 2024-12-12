@@ -31,7 +31,7 @@ public class LotteryBetView extends FrameLayout {
      * 投注号码监听
      */
     public interface OnLotteryBetListener{
-        void onBetChange(List<LotteryBetRequest.BetOrderData> betOrderList);
+        void onBetChange(List<LotteryBetRequest.BetOrderData> betOrderList, Object codes);
     }
 
     private OnLotteryBetListener onLotteryBetListener = null;
@@ -107,7 +107,7 @@ public class LotteryBetView extends FrameLayout {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
                 if (onLotteryBetListener != null) {
-                    onLotteryBetListener.onBetChange(betView.betData.get());
+                    onLotteryBetListener.onBetChange(betView.betData.get(), betView.betCodes.get());
                 }
             }
         });
