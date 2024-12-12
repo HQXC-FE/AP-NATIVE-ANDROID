@@ -10,10 +10,10 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 public class BtDomainUtil {
     public final static String KEY_PLATFORM = "KEY_PLATFORM";
     public final static String KEY_PLATFORM_NAME = "KEY_PLATFORM_NAME";
-    public final static String PLATFORM_FBXC = "fbxc";
-    public final static String PLATFORM_FB = "fb";
-    public final static String PLATFORM_PM = "obg";
-    public final static String PLATFORM_PMXC = "obgzy";
+    public final static String PLATFORM_FBXC = "fbxc";//杏彩体育旗舰版
+    public final static String PLATFORM_FB = "fb";//FB体育
+    public final static String PLATFORM_PM = "obg";//熊猫体育
+    public final static String PLATFORM_PMXC = "obgzy";//杏彩体育
     private static List<String> domainUrl = new ArrayList<>();
     private static List<String> fbDomainUrl = new ArrayList<>();
     private static List<String> fbxcDomainUrl = new ArrayList<>();
@@ -24,17 +24,19 @@ public class BtDomainUtil {
 
     /**
      * 是否支持多线路
+     *
      * @return
      */
-    public static boolean isMutiLine(){
+    public static boolean isMutiLine() {
         return domainUrl.size() > 1;
     }
 
     /**
      * 是否存在默认线路
+     *
      * @return
      */
-    public static boolean hasDefaultLine(String platform){
+    public static boolean hasDefaultLine(String platform) {
         if (TextUtils.equals(platform, PLATFORM_FBXC)) {
             return !TextUtils.isEmpty(defaultFbxcDomainUrl);
         } else if (TextUtils.equals(platform, PLATFORM_FB)) {
@@ -64,14 +66,14 @@ public class BtDomainUtil {
         }
     }
 
-    public static void addFbDomainUrl(String url){
+    public static void addFbDomainUrl(String url) {
         BtDomainUtil.fbDomainUrl.clear();
         BtDomainUtil.fbDomainUrl.add(url);
     }
 
     public static void setFbDomainUrl(List<String> fbDomainUrl) {
-        for (String url : fbDomainUrl){
-            if(!BtDomainUtil.fbDomainUrl.contains(url)){
+        for (String url : fbDomainUrl) {
+            if (!BtDomainUtil.fbDomainUrl.contains(url)) {
                 BtDomainUtil.fbDomainUrl.add(url);
             }
         }
@@ -81,14 +83,14 @@ public class BtDomainUtil {
         return fbDomainUrl;
     }
 
-    public static void addFbxcDomainUrl(String url){
+    public static void addFbxcDomainUrl(String url) {
         BtDomainUtil.fbxcDomainUrl.clear();
         BtDomainUtil.fbxcDomainUrl.add(url);
     }
 
     public static void setFbxcDomainUrl(List<String> fbDomainUrl) {
-        for (String url : fbDomainUrl){
-            if(!BtDomainUtil.fbxcDomainUrl.contains(url)){
+        for (String url : fbDomainUrl) {
+            if (!BtDomainUtil.fbxcDomainUrl.contains(url)) {
                 BtDomainUtil.fbxcDomainUrl.add(url);
             }
         }
