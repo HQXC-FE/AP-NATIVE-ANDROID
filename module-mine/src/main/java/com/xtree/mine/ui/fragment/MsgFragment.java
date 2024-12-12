@@ -19,6 +19,7 @@ import com.xtree.mine.R;
 import com.xtree.mine.databinding.FragmentMsgBinding;
 import com.xtree.mine.ui.viewmodel.MsgViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.mine.vo.SettingsVo;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,7 @@ public class MsgFragment extends BaseFragment<FragmentMsgBinding, MsgViewModel> 
     private ArrayList<Fragment> fragmentList = new ArrayList<>();
     private ArrayList<String> tabList = new ArrayList<>();
     private FragmentStateAdapter mAdapter;
+    private SettingsVo settingsVo ;
 
     @Override
     public void initView() {

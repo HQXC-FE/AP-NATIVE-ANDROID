@@ -19,6 +19,8 @@ public class SettingsVo implements Parcelable {
     public String[] customer_service_urls; //
     public String[] x9_customer_service_url; // ["https://www.hikefu01.net/im/index?appid=0NYEsh"]
 
+
+
     protected SettingsVo(Parcel in) {
         public_key = in.readString();
         barrage_api_url = in.readString();
@@ -27,6 +29,7 @@ public class SettingsVo implements Parcelable {
         customer_service_url = in.readString();
         customer_service_urls = in.createStringArray();
         x9_customer_service_url = in.createStringArray();
+
     }
 
     public static final Creator<SettingsVo> CREATOR = new Creator<SettingsVo>() {
@@ -57,16 +60,5 @@ public class SettingsVo implements Parcelable {
         parcel.writeStringArray(x9_customer_service_url);
     }
 
-    @Override
-    public String toString() {
-        return "SettingsVo{" +
-                "public_key='" + public_key + '\'' +
-                ", barrage_api_url='" + barrage_api_url + '\'' +
-                ", promption_code='" + promption_code + '\'' +
-                ", default_promption_code='" + default_promption_code + '\'' +
-                ", customer_service_url='" + customer_service_url + '\'' +
-                ", customer_service_urls=" + Arrays.toString(customer_service_urls) +
-                ", x9_customer_service_url=" + Arrays.toString(x9_customer_service_url) +
-                '}';
-    }
+
 }

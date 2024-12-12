@@ -319,14 +319,14 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public void getSettings() {
         HashMap<String, String> map = new HashMap();
         map.put("fields", "customer_service_url,public_key,barrage_api_url," +
-                "x9_customer_service_url," + "promption_code,default_promption_code");
+                "x9_customer_service_url," + "promption_code,default_promption_code,hichat_url_suffix");
         Disposable disposable = (Disposable) model.getApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<SettingsVo>() {
                     @Override
                     public void onResult(SettingsVo vo) {
-                        CfLog.i("****** ");
+                        CfLog.e ("******  --------------->" + vo.toString());
                         public_key = vo.public_key
                                 .replace("\n", "")
                                 .replace("\t", " ")
@@ -335,6 +335,13 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
                         SPUtils.getInstance().put(SPKeyGlobal.PUBLIC_KEY, public_key);
                         SPUtils.getInstance().put("customer_service_url", vo.customer_service_url);
+
+                        if (vo.customer_service_urls !=null && vo.customer_service_urls.length > 0){
+                            SPUtils.getInstance().put("customer_service_urls", vo.customer_service_urls[0]);
+                        }
+                        if (vo.hichat_url_suffix !=null && vo.hichat_url_suffix.length > 0){
+                            SPUtils.getInstance().put("hichat_url_suffix", vo.hichat_url_suffix[0]);
+                        }
 
                         liveDataSettings.setValue(vo);
                     }

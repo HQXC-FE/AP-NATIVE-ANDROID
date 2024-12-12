@@ -50,14 +50,14 @@ public class MsgChatFragment extends BaseFragment<FragmentMsgChatBinding, MsgVie
         binding.wvMain.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                CfLog.d("onPageStarted url:  " + url);
+                CfLog.e("onPageStarted url:  " + url);
                 //Log.d("---", "onPageStarted url:  " + url);
                 setCookieInside();
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                CfLog.d("onPageFinished url: " + url);
+                CfLog.e("onPageFinished url: " + url);
                 //Log.d("---", "onPageFinished url: " + url);
             }
 
@@ -91,7 +91,17 @@ public class MsgChatFragment extends BaseFragment<FragmentMsgChatBinding, MsgVie
         header.put("Cookie", cookie);
         header.put("Authorization", auth);
         header.put("App-RNID", "87jumkljo");
-        binding.wvMain.loadUrl(DomainUtil.getDomain2() + Constant.URL_MY_MESSAGES_CHAT, header);
+
+        String messageUrl ;
+        if (SPUtils.getInstance().getString("hichat_url_suffix") !=null){
+            messageUrl = SPUtils.getInstance().getString("hichat_url_suffix") ;
+        } else if (SPUtils.getInstance().getString("customer_service_urls") !=null) {
+            messageUrl = SPUtils.getInstance().getString("customer_service_urls") ;
+        } else {
+            messageUrl =Constant.URL_MY_MESSAGES_CHAT ;
+        }
+        CfLog.e("MsgChatFragment  initView ---> getDomain2 = " +DomainUtil.getDomain2() +messageUrl );
+        binding.wvMain.loadUrl(DomainUtil.getDomain2() + messageUrl, header);
     }
 
     @Override

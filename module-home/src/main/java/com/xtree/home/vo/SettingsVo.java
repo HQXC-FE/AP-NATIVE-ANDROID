@@ -17,6 +17,7 @@ public class SettingsVo implements Parcelable {
     // ["https://www.mjooh9i.com/service/chatlink.html", "https://www.5trfg4g.com/service/chatlink.html"]
     public String[] customer_service_urls; //
     public String[] x9_customer_service_url; // ["https://www.hikefu01.net/im/index?appid=0NYEsh"]
+    public String []hichat_url_suffix ;
 
     protected SettingsVo(Parcel in) {
         public_key = in.readString();
@@ -26,6 +27,7 @@ public class SettingsVo implements Parcelable {
         customer_service_url = in.readString();
         customer_service_urls = in.createStringArray();
         x9_customer_service_url = in.createStringArray();
+        hichat_url_suffix = in.createStringArray();
     }
 
     public static final Creator<SettingsVo> CREATOR = new Creator<SettingsVo>() {
@@ -54,6 +56,7 @@ public class SettingsVo implements Parcelable {
         parcel.writeString(customer_service_url);
         parcel.writeStringArray(customer_service_urls);
         parcel.writeStringArray(x9_customer_service_url);
+        parcel.writeStringArray(hichat_url_suffix);
     }
 
     @Override
@@ -66,6 +69,7 @@ public class SettingsVo implements Parcelable {
                 ", customer_service_url='" + customer_service_url + '\'' +
                 ", customer_service_urls=" + Arrays.toString(customer_service_urls) +
                 ", x9_customer_service_url=" + Arrays.toString(x9_customer_service_url) +
+                ", hichat_url_suffix=" + Arrays.toString(hichat_url_suffix) +
                 '}';
     }
 }
