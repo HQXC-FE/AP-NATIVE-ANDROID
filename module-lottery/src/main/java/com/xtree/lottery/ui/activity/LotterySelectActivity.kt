@@ -41,7 +41,6 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
     }
 
     override fun initView() {
-        EntryRule.getInstance().startEngine(Facts())
         binding.ivBack.setOnClickListener { finish() }
         binding.rvLottery.setHasFixedSize(true)
         binding.rvLottery.layoutManager = LinearLayoutManager(this)
