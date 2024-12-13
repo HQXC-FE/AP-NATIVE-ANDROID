@@ -26,6 +26,7 @@ import com.xtree.lottery.ui.view.LotteryBetView;
 import com.xtree.lottery.ui.view.LotteryDrawView;
 import com.xtree.lottery.ui.view.LotteryRoadMapDialog;
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.lottery.utils.AnimUtils;
 import com.xtree.lottery.utils.EventVo;
 import com.xtree.lottery.utils.LotteryAnalyzer;
 
@@ -105,8 +106,9 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
 
         binding.lotteryHandicapDrawview.setOnLotteryDrawListener(new LotteryDrawView.OnLotteryDrawListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(View view) {
                 binding.getModel().getBonusNumbers();
+                AnimUtils.rotateView(view);
             }
         });
 

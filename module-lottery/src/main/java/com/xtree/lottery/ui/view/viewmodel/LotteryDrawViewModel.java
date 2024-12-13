@@ -1,5 +1,7 @@
 package com.xtree.lottery.ui.view.viewmodel;
 
+import android.view.View;
+
 import androidx.databinding.ObservableField;
 
 import com.xtree.lottery.ui.view.LotteryDrawView;
@@ -23,9 +25,9 @@ public class LotteryDrawViewModel {
         this.listener = listener;
     }
 
-    public void refresh() {
+    public void refresh(View view) {
         if (listener != null) {
-            listener.onRefresh();
+            listener.onRefresh(view);
         }
     }
 }
