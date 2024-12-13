@@ -745,7 +745,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         }
 
         // 显示/隐藏银行卡 userBankList
-        if (vo.view_bank_card) {
+        if (vo.view_bank_card || vo.can_use_name_channel_status == true) {
             binding.llBankCard.setVisibility(View.VISIBLE);
             binding.tvwBankCard.setOnClickListener(v -> showBankCard(vo)); // 选择银行卡
             if (viewModel.isOnePayFix(vo)) {
@@ -1124,7 +1124,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         }
 
         // 普通银行卡充值 bankId非空; 极速充值 bankId,bankCode 至少要有一个非空
-        if (curRechargeVo.view_bank_card) {
+        if (curRechargeVo.view_bank_card || curRechargeVo.can_use_name_channel_status == true) {
             if (TextUtils.isEmpty(bankId) && TextUtils.isEmpty(bankCode)) {
                 return;
             }
