@@ -531,6 +531,7 @@
                         android:gravity="center"
                         android:textColor="@color/clr_white"
                         android:textSize="18sp"
+                        android:text="@string/txt_next"
                         android:textStyle="normal" />
 
                     <TextView
