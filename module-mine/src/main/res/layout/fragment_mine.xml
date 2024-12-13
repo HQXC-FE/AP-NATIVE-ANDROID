@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:src="@mipmap/me_icon_setting"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
             </LinearLayout>
 
             <LinearLayout
