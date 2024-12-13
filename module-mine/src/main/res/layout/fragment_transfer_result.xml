@@ -6,12 +6,16 @@
         <variable
             name="model"
             type="com.xtree.mine.ui.viewmodel.TransferResultViewModel" />
+
+        <import type="android.view.View" />
     </data>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:background="@color/clr_bg_main_black"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <include
             android:id="@+id/layout_toolbar"
@@ -19,47 +23,64 @@
             toolbarModel="@{model}" />
 
         <ImageView
+            imageUrl="@{model.statusImgData}"
             android:layout_width="124dp"
             android:layout_height="121dp"
-            imageUrl="@{model.statusImgData}"
-            tools:src="@mipmap/icon_transfer_success"
             android:layout_marginTop="80dp"
-            />
+            tools:src="@mipmap/icon_transfer_success" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="转账成功"
+            android:layout_marginTop="48dp"
             android:text="@{model.statusTitleData}"
+            android:textColor="@color/clr_txt_rebateagrt_title"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/clr_txt_title"
-            android:layout_marginTop="48dp"
-            />
+            tools:text="转账成功" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="您已从中心钱包转入沙巴体育9999.000元"
-            android:text="@{model.statusSubTitleData}"
-            android:textSize="12sp"
-            android:textColor="@color/clr_txt_mouse"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            />
-
-        <TextView
-            android:layout_width="128dp"
-            android:layout_height="42dp"
-            android:text="@{model.buttonTextData}"
-            android:textSize="16sp"
-            android:textColor="@color/clr_white"
-            android:background="@drawable/shape_gradient_main_c88"
             android:gravity="center"
-            android:layout_marginTop="48dp"
-            android:onClick="@{() -> model.onBack()}"
-            />
+            android:text="@{model.statusSubTitleData}"
+            android:textColor="@color/clr_txt_rebateagrt_title"
+            android:textSize="12sp"
+            tools:text="您已从中心钱包转入沙巴体育9999.000元" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp">
+
+            <TextView
+                android:layout_width="198dp"
+                android:layout_height="42dp"
+                android:background="@drawable/shape_gradient_main_c88"
+                android:drawableStart="@mipmap/cm_ic_back"
+                android:gravity="center_vertical"
+                android:onClick="@{() -> model.onBack()}"
+                android:visibility="@{model.statusData!=1?View.VISIBLE:View.GONE}"
+                android:paddingStart="48dp"
+                android:text="@{model.buttonTextData}"
+                android:textColor="@color/clr_white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="128dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_gradient_main_c88"
+                android:gravity="center"
+                android:onClick="@{() -> model.onBack()}"
+                android:visibility="@{model.statusData==1?View.VISIBLE:View.GONE}"
+                android:text="@{model.buttonTextData}"
+                android:textColor="@color/clr_white"
+                android:textSize="16sp" />
+        </FrameLayout>
+
     </LinearLayout>
 </layout>
