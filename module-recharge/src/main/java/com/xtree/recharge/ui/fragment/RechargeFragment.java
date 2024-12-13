@@ -55,6 +55,7 @@ import com.xtree.recharge.data.source.request.ExCreateOrderRequest;
 import com.xtree.recharge.databinding.FragmentRechargeBinding;
 import com.xtree.recharge.ui.viewmodel.RechargeViewModel;
 import com.xtree.recharge.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.recharge.ui.widget.AmountSpacesItem;
 import com.xtree.recharge.ui.widget.SpacesItemDecoration;
 import com.xtree.recharge.vo.BankCardVo;
 import com.xtree.recharge.vo.BannersVo;
@@ -252,7 +253,12 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         binding.rcvPayChannel.addItemDecoration(new SpacesItemDecoration(CommonUtil.dip2px(getContext(), 8), RecyclerView.HORIZONTAL));
         mAmountAdapter = new AmountAdapter(getContext(), str -> binding.edtAmount.setText(str));
         binding.rcvAmount.setAdapter(mAmountAdapter);
-        binding.rcvAmount.addItemDecoration(new SpacesItemDecoration(CommonUtil.dip2px(getContext(), 8), RecyclerView.HORIZONTAL));
+       /* binding.rcvAmount.addItemDecoration(new SpacesItemDecoration(CommonUtil.dip2px(getContext(), 8), RecyclerView.HORIZONTAL));*/
+
+        AmountSpacesItem amountSpacesItem = new AmountSpacesItem(6);
+        binding.rcvAmount.addItemDecoration(amountSpacesItem, RecyclerView.HORIZONTAL);
+
+
         binding.rcvAmount.setLayoutManager(new GridLayoutManager(getContext(), 4));
 
         binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
