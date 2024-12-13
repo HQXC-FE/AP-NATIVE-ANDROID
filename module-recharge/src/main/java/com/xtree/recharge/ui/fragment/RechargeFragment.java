@@ -55,7 +55,6 @@ import com.xtree.recharge.data.source.request.ExCreateOrderRequest;
 import com.xtree.recharge.databinding.FragmentRechargeBinding;
 import com.xtree.recharge.ui.viewmodel.RechargeViewModel;
 import com.xtree.recharge.ui.viewmodel.factory.AppViewModelFactory;
-import com.xtree.recharge.ui.widget.AmountSpacesItem;
 import com.xtree.recharge.ui.widget.SpacesItemDecoration;
 import com.xtree.recharge.vo.BankCardVo;
 import com.xtree.recharge.vo.BannersVo;
@@ -239,7 +238,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         binding.rcvPmt.setLayoutManager(new GridLayoutManager(getContext(), 4));
         //binding.rcvPmt.setAdapter(rechargeAdapter);
         binding.rcvPmt.setAdapter(mTypeAdapter);
-        binding.rcvPmt.addItemDecoration(new GridSpacingItemDecoration(4,CommonUtil.dip2px(getContext(), 5),false));
+        binding.rcvPmt.addItemDecoration(new GridSpacingItemDecoration(4, CommonUtil.dip2px(getContext(), 5), false));
         binding.rcvPmt.setNestedScrollingEnabled(false); // 禁止滑动
 
         mChannelAdapter = new RechargeChannelAdapter(getContext(), vo -> {
@@ -253,12 +252,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         binding.rcvPayChannel.addItemDecoration(new SpacesItemDecoration(CommonUtil.dip2px(getContext(), 8), RecyclerView.HORIZONTAL));
         mAmountAdapter = new AmountAdapter(getContext(), str -> binding.edtAmount.setText(str));
         binding.rcvAmount.setAdapter(mAmountAdapter);
-       /* binding.rcvAmount.addItemDecoration(new SpacesItemDecoration(CommonUtil.dip2px(getContext(), 8), RecyclerView.HORIZONTAL));*/
-
-        AmountSpacesItem amountSpacesItem = new AmountSpacesItem(6);
-        binding.rcvAmount.addItemDecoration(amountSpacesItem, RecyclerView.HORIZONTAL);
-
-
+        binding.rcvAmount.addItemDecoration(new GridSpacingItemDecoration(4, CommonUtil.dip2px(getContext(), 5), false));
         binding.rcvAmount.setLayoutManager(new GridLayoutManager(getContext(), 4));
 
         binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
