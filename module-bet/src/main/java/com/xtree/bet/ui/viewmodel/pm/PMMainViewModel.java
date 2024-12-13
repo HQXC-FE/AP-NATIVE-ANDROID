@@ -36,6 +36,7 @@ import com.xtree.bet.bean.ui.OptionList;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.constant.PMConstants;
 import com.xtree.bet.constant.SportTypeItem;
+import com.xtree.bet.data.ApiService;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.MainViewModel;
 import com.xtree.bet.ui.viewmodel.SportCacheType;
@@ -270,25 +271,47 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         pmListReq.setType(3);
         //CfLog.i("pmListReqHot   "+new Gson().toJson(pmListReq));
-        Flowable flowable =  createFlowable(pmListReq, false,false,false,false,playMethodType);
-        PMHttpCallBack pmHttpCallBack = new PMHttpCallBack<MatchListRsp>() {
+        Flowable flowable = getFlowableMatchesPagePB(pmListReq);
+        if (getSportCacheType().equals(SportCacheType.PM) || getSportCacheType().equals(SportCacheType.PMXC)) {
+            PMCacheHttpCallBack pmHttpCallBack = new PMCacheHttpCallBack<MatchListRsp>() {
 
-            @Override
-            public void onResult(MatchListRsp matchListRsp) {
-                hotMatchCountData.postValue(matchListRsp.data.size());
-            }
+                @Override
+                public void onResult(MatchListRsp matchListRsp) {
+                    hotMatchCountData.postValue(matchListRsp.data.size());
+                }
 
-            @Override
-            public void onError(Throwable t) {
+                @Override
+                public void onError(Throwable t) {
+                }
+            };
 
-            }
-        };
+            Disposable disposable = (Disposable) flowable
+                    .compose(RxUtils.schedulersTransformer()) //线程调度
+                    .compose(RxUtils.exceptionTransformer())
+                    .subscribeWith(pmHttpCallBack);
+            addSubscribe(disposable);
+        }else{
+            PMHttpCallBack pmHttpCallBack = new PMHttpCallBack<MatchListRsp>() {
 
-        Disposable disposable = (Disposable) flowable
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(pmHttpCallBack);
-        addSubscribe(disposable);
+                @Override
+                public void onResult(MatchListRsp matchListRsp) {
+                    System.out.println("============ PMMainViewModel getHotMatchCount ==================");
+                    hotMatchCountData.postValue(matchListRsp.data.size());
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    System.out.println("============ PMMainViewModel getHotMatchCount==================");
+                }
+            };
+
+            Disposable disposable = (Disposable) flowable
+                    .compose(RxUtils.schedulersTransformer()) //线程调度
+                    .compose(RxUtils.exceptionTransformer())
+                    .subscribeWith(pmHttpCallBack);
+            addSubscribe(disposable);
+        }
+
     }
 
     @Override
@@ -452,6 +475,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                 pmListReq.setMd(String.valueOf(TimeUtils.strFormatDate(time, TimeUtils.FORMAT_YY_MM_DD_HH_MM_SS).getTime()));
             }
         }
+
         String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
         String token;
         if(TextUtils.equals(platform, PLATFORM_PMXC)) {
@@ -461,102 +485,27 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         pmListReq.setToken(token);
-        Flowable flowable = createFlowable(pmListReq, isStepSecond, needSecondStep,isTimerRefresh, isRefresh, type);
+
+        Flowable flowable = getFlowableMatchesPagePB(pmListReq);
+        if (isStepSecond) {
+            flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
+        }
+        pmListReq.setCps(mPageSize);
+        if (type == 1) {// 滚球
+            if (needSecondStep) {
+                pmListReq.setCps(mGoingOnPageSize);
+                flowable = getFlowableLiveMatchesPB(pmListReq);
+            }
+        }
+
+        if (isTimerRefresh) {
+            flowable = getFlowableMatchBaseInfoByMidsPB(pmListReq);
+        }
+
+        if (isRefresh) {
+            mNoLiveheaderLeague = null;
+        }
         processFlowable(flowable,needSecondStep,type,isTimerRefresh, isRefresh,sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, finalType, isStepSecond);
-    }
-
-    private Flowable createFlowable(PMListReq pmListReq, boolean isStepSecond,boolean needSecondStep, boolean isTimerRefresh, boolean isRefresh, int type) {
-        Flowable flowable = null;
-
-        SportCacheType sportCacheType = getSportCacheType();
-        switch (sportCacheType) {
-            case PM:
-                flowable = getPmFlowable(pmListReq, isStepSecond, needSecondStep,isTimerRefresh, isRefresh, type);
-                break;
-            case PMXC:
-                flowable = getPmxcFlowable(pmListReq, isStepSecond, needSecondStep,isTimerRefresh, isRefresh, type);
-                break;
-            default:
-                flowable = getDefaultFlowable(pmListReq, isStepSecond, needSecondStep,isTimerRefresh, isRefresh, type);
-                break;
-        }
-
-        return flowable;
-    }
-
-    private Flowable getPmFlowable(PMListReq pmListReq, boolean isStepSecond,boolean needSecondStep, boolean isTimerRefresh, boolean isRefresh, int type) {
-        Flowable flowable = model.getBaseApiService().pmMatchesPagePB(pmListReq);
-
-        if (isStepSecond) {
-            flowable = model.getBaseApiService().pmNoLiveMatchesPagePB(pmListReq);
-        }
-
-        pmListReq.setCps(mPageSize);
-
-        if (type == 1 && needSecondStep) { // 滚球
-            pmListReq.setCps(mGoingOnPageSize);
-            flowable = model.getBaseApiService().pmLiveMatchesPB(pmListReq);
-        }
-
-        if (isTimerRefresh) {
-            flowable = model.getBaseApiService().pmGetMatchBaseInfoByMidsPB(pmListReq);
-        }
-
-        if (isRefresh) {
-            mNoLiveheaderLeague = null;
-        }
-
-        return flowable;
-    }
-
-    private Flowable getPmxcFlowable(PMListReq pmListReq, boolean isStepSecond,boolean needSecondStep, boolean isTimerRefresh, boolean isRefresh, int type) {
-        Flowable flowable = model.getBaseApiService().pmxcMatchesPagePB(pmListReq);
-
-        if (isStepSecond) {
-            flowable = model.getBaseApiService().pmxcNoLiveMatchesPagePB(pmListReq);
-        }
-
-        pmListReq.setCps(mPageSize);
-
-        if (type == 1 && needSecondStep) { // 滚球
-            pmListReq.setCps(mGoingOnPageSize);
-            flowable = model.getBaseApiService().pmxcLiveMatchesPB(pmListReq);
-        }
-
-        if (isTimerRefresh) {
-            flowable = model.getBaseApiService().pmxcGetMatchBaseInfoByMidsPB(pmListReq);
-        }
-
-        if (isRefresh) {
-            mNoLiveheaderLeague = null;
-        }
-
-        return flowable;
-    }
-
-    private Flowable getDefaultFlowable(PMListReq pmListReq, boolean isStepSecond, boolean needSecondStep,boolean isTimerRefresh, boolean isRefresh, int type) {
-        Flowable flowable = model.getPMApiService().matchesPagePB(pmListReq);
-
-        if (isStepSecond) {
-            flowable = model.getPMApiService().noLiveMatchesPagePB(pmListReq);
-        }
-
-        pmListReq.setCps(mPageSize);
-
-        if (type == 1 && needSecondStep) { // 滚球
-            pmListReq.setCps(mGoingOnPageSize);
-            flowable = model.getPMApiService().liveMatchesPB(pmListReq);
-        }
-
-        if (isTimerRefresh) {
-            flowable = model.getPMApiService().getMatchBaseInfoByMidsPB(pmListReq);
-        }
-
-        if (isRefresh) {
-            mNoLiveheaderLeague = null;
-        }
-
-        return flowable;
     }
 
     private void processFlowable(Flowable flowable, boolean needSecondStep, int type , boolean isTimerRefresh, boolean isRefresh,
@@ -690,8 +639,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             //    }
             //}
         }//再试试断网情况 和弱网情况
-
-        Disposable disposable = (Disposable) model.getPMApiService().noLiveMatchesPagePB(pmListReq)
+        Flowable flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
+        Disposable disposable = (Disposable) flowable
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new PMHttpCallBack<MatchListRsp>() {
@@ -778,7 +727,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
         }
         map.put("sys", "7");
-
         Disposable disposable = (Disposable) model.getPMApiService().initPB(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
@@ -799,6 +747,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                                     SportTypeItem item1 = new SportTypeItem();
                                     item1.id = 1111;
                                     item1.num = 0;
+                                    System.out.println("================ PMMainViewModel statistical item1.num = 0 ==================");
                                     sportTypeItemList.add(item1);
                                 } else if (menuInfo.menuType == 1) {//滚球 加全部
                                     SportTypeItem item2 = new SportTypeItem();
@@ -1127,4 +1076,74 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     public void onDestroy() {
         super.onDestroy();
     }
+
+    private Flowable getFlowableMatchesPagePB(PMListReq pmListReq) {
+        Flowable flowable;
+        if(isUseCacheApiService(getSportCacheType())){
+            if(getSportCacheType().equals(SportCacheType.PM) ){
+                flowable = model.getBaseApiService().pmMatchesPagePB(pmListReq);
+            }else{
+                flowable = model.getBaseApiService().pmxcMatchesPagePB(pmListReq);
+            }
+        }else{
+            flowable = model.getPMApiService().matchesPagePB(pmListReq);
+        }
+
+        return flowable;
+    }
+
+    private Flowable getFlowableLiveMatchesPB(PMListReq pmListReq) {
+        Flowable flowable;
+        if(isUseCacheApiService(getSportCacheType())){
+            if(getSportCacheType().equals(SportCacheType.PM) ){
+                flowable = model.getBaseApiService().pmLiveMatchesPB(pmListReq);
+            }else{
+                flowable = model.getBaseApiService().pmxcLiveMatchesPB(pmListReq);
+            }
+        }else{
+            flowable = model.getPMApiService().liveMatchesPB(pmListReq);
+        }
+
+        return flowable;
+    }
+
+    private Flowable getFlowableNoLiveMatchesPagePB(PMListReq pmListReq) {
+        Flowable flowable;
+        if(isUseCacheApiService(getSportCacheType())){
+            if(getSportCacheType().equals(SportCacheType.PM) ){
+                flowable = model.getBaseApiService().pmNoLiveMatchesPagePB(pmListReq);
+            }else{
+                flowable = model.getBaseApiService().pmxcNoLiveMatchesPagePB(pmListReq);
+            }
+        }else{
+            flowable = model.getPMApiService().noLiveMatchesPagePB(pmListReq);
+        }
+
+        return flowable;
+    }
+
+
+    private Flowable getFlowableMatchBaseInfoByMidsPB(PMListReq pmListReq) {
+        Flowable flowable;
+        if(isUseCacheApiService(getSportCacheType())){
+            if(getSportCacheType().equals(SportCacheType.PM) ){
+                flowable = model.getBaseApiService().pmGetMatchBaseInfoByMidsPB(pmListReq);
+            }else{
+                flowable = model.getBaseApiService().pmxcGetMatchBaseInfoByMidsPB(pmListReq);
+            }
+        }else{
+            flowable = model.getPMApiService().getMatchBaseInfoByMidsPB(pmListReq);
+        }
+
+        return flowable;
+    }
+
+    private boolean isUseCacheApiService(SportCacheType sportCacheType) {
+        if (sportCacheType.equals(SportCacheType.FB) || sportCacheType.equals(SportCacheType.FBXC) || sportCacheType.equals(SportCacheType.PM) || sportCacheType.equals(SportCacheType.PMXC)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
