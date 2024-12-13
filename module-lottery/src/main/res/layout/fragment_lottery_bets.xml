@@ -314,7 +314,7 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/lt_icon_lotterynum_refresh"
                 android:layout_marginStart="2dp"
-                android:onClick="@{() -> model.getUserBalance()}"
+                android:onClick="@{(view) -> model.getUserBalance(view)}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/lottery_bets_balance"

@@ -34,6 +34,7 @@ import com.xtree.lottery.ui.view.LotteryDrawView;
 import com.xtree.lottery.ui.view.LotteryMoneyView;
 import com.xtree.lottery.ui.view.model.LotteryMoneyModel;
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.lottery.utils.AnimUtils;
 import com.xtree.lottery.utils.EventVo;
 import com.xtree.lottery.utils.LotteryAnalyzer;
 
@@ -118,8 +119,9 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
 
         binding.lotteryBetsDrawview.setOnLotteryDrawListener(new LotteryDrawView.OnLotteryDrawListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(View view) {
                 binding.getModel().getBonusNumbers();
+                AnimUtils.rotateView(view);
             }
         });
 
@@ -214,7 +216,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        viewModel.getUserBalance();
+        viewModel.getUserBalance(null);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

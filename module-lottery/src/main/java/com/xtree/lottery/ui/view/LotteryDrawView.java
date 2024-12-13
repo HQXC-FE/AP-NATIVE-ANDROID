@@ -3,6 +3,7 @@ package com.xtree.lottery.ui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,7 +31,7 @@ public class LotteryDrawView extends LinearLayout {
      * 刷新上期开奖
      */
     public interface OnLotteryDrawListener{
-        void onRefresh();
+        void onRefresh(View view);
     }
 
     public LotteryDrawView(Context context) {

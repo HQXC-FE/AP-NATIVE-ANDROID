@@ -29,6 +29,7 @@ import com.xtree.lottery.ui.lotterybet.data.LotteryMoneyData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.lotterybet.model.LotteryOrderModel;
 import com.xtree.lottery.ui.lotterybet.model.LotteryPlayCollectionModel;
+import com.xtree.lottery.utils.AnimUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         setActivity(mActivity);
         lotteryLiveData.setValue(lottery);
         getMenuMethods();
-        getUserBalance();
+        getUserBalance(null);
     }
 
     private void setActivity(FragmentActivity mActivity) {
@@ -188,7 +189,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     /**
      * 获取用户余额
      */
-    public void getUserBalance() {
+    public void getUserBalance(View view) {
+        AnimUtils.rotateView(view);
         Disposable disposable = model.getUserBalance()
                 .subscribeWith(new HttpCallBack<BalanceResponse>() {
                     @Override
