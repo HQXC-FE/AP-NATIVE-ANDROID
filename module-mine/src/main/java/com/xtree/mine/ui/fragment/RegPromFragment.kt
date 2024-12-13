@@ -33,7 +33,9 @@ import me.xtree.mvvmhabit.utils.KLog
 import me.xtree.mvvmhabit.utils.SPUtils
 import me.xtree.mvvmhabit.utils.ToastUtils
 
-
+/**
+ * 推广链接
+ */
 class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(), RegInterface {
 
     private lateinit var ppw: BasePopupView
@@ -47,7 +49,9 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
     private lateinit var ppwSports1: BasePopupView
     private lateinit var ppwChess1: BasePopupView
     private lateinit var ppwGame1: BasePopupView
+    private lateinit var ppwFish: BasePopupView
 
+    private lateinit var ppwFish1: BasePopupView
 
     private lateinit var linkPpw: BasePopupView
 
@@ -56,6 +60,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
 
     override fun initView() {
         val json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE)
+        KLog.i("mProfileVo", json)
         mProfileVo = Gson().fromJson(json, ProfileVo::class.java)
         initDialog()
         saveUpdate()
@@ -97,6 +102,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
             map["sportpoint"] = bd.typeSports.removePercentage()
             map["pokerpoint"] = bd.typeChess.removePercentage()
             map["esportspoint"] = bd.typeGame.removePercentage()
+            map["fishingpoint"] = bd.typeFishing.removePercentage()  //捕鱼返点
 
             viewModel.postMarketing(map, requireContext())
 
@@ -267,108 +273,142 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                 }
             }
 
-            //状态等于0不显示
-            if (mProfileVo.liveStatus == 0) {
-                layoutReal.visibility = View.GONE
-            } else {
-                typeReal.text = vo.livePoint.plus("%")
-                tvRealRebate.text = getString(R.string.txt_reg_rebate)
-                    .plus(NumberUtils.sub(mProfileVo.maxLivePoint, vo.livePoint.toDouble()).toString() + "%")
-                typeReal.setOnClickListener {
-                    if (type == 0) {
-                        //未初始化，创建ppw
-                        if (!::ppwReal.isInitialized) {
-                            ppwReal = createPpw(mProfileVo.maxLivePoint, typeReal, tvRealRebate, getRebateList(mProfileVo.maxLivePoint))
-                            { ppwReal.dismiss() }
+            //userLevel大于4，且是代理，才显示三方返点
+            if (mProfileVo.userLevel >= 4 && type == 0) {
+
+                //状态等于0不显示
+                if (mProfileVo.liveStatus == 0) {
+                    layoutReal.visibility = View.GONE
+                } else {
+                    layoutReal.visibility = View.VISIBLE
+                    typeReal.text = vo.livePoint.plus("%")
+                    tvRealRebate.text = getString(R.string.txt_reg_rebate)
+                        .plus(NumberUtils.sub(mProfileVo.maxLivePoint, vo.livePoint.toDouble()).toString() + "%")
+                    typeReal.setOnClickListener {
+                        if (type == 0) {
+                            //未初始化，创建ppw
+                            if (!::ppwReal.isInitialized) {
+                                ppwReal = createPpw(mProfileVo.maxLivePoint, typeReal, tvRealRebate, getRebateList(mProfileVo.maxLivePoint))
+                                { ppwReal.dismiss() }
+                            }
+                            ppwReal.show()
+                        } else {
+                            if (!::ppwReal1.isInitialized) {
+                                ppwReal1 = createPpw(mProfileVo.maxLivePoint, typeReal, tvRealRebate, getRebateList(mProfileVo.maxLivePoint))
+                                { ppwReal1.dismiss() }
+                            }
+                            ppwReal1.show()
                         }
-                        ppwReal.show()
-                    } else {
-                        if (!::ppwReal1.isInitialized) {
-                            ppwReal1 = createPpw(mProfileVo.maxLivePoint, typeReal, tvRealRebate, getRebateList(mProfileVo.maxLivePoint))
-                            { ppwReal1.dismiss() }
-                        }
-                        ppwReal1.show()
                     }
                 }
-            }
 
-            //状态等于0不显示
-            if (mProfileVo.sportStatus == 0) {
-                layoutSports.visibility = View.GONE
-            } else {
-                typeSports.text = vo.sportPoint.plus("%")
-                tvSportsRebate.text = getString(R.string.txt_reg_rebate)
-                    .plus(NumberUtils.sub(mProfileVo.maxSportPoint, vo.sportPoint.toDouble()).toString() + "%")
-                typeSports.setOnClickListener {
-                    if (type == 0) {
-                        //未初始化，创建ppw
-                        if (!::ppwSports.isInitialized) {
-                            ppwSports =
-                                createPpw(mProfileVo.maxSportPoint, typeSports, tvSportsRebate, getRebateList(mProfileVo.maxSportPoint))
-                                { ppwSports.dismiss() }
+                //状态等于0不显示
+                if (mProfileVo.sportStatus == 0) {
+                    layoutSports.visibility = View.GONE
+                } else {
+                    layoutSports.visibility = View.VISIBLE
+                    typeSports.text = vo.sportPoint.plus("%")
+                    tvSportsRebate.text = getString(R.string.txt_reg_rebate)
+                        .plus(NumberUtils.sub(mProfileVo.maxSportPoint, vo.sportPoint.toDouble()).toString() + "%")
+                    typeSports.setOnClickListener {
+                        if (type == 0) {
+                            //未初始化，创建ppw
+                            if (!::ppwSports.isInitialized) {
+                                ppwSports =
+                                    createPpw(mProfileVo.maxSportPoint, typeSports, tvSportsRebate, getRebateList(mProfileVo.maxSportPoint))
+                                    { ppwSports.dismiss() }
+                            }
+                            ppwSports.show()
+                        } else {
+                            if (!::ppwSports1.isInitialized) {
+                                ppwSports1 =
+                                    createPpw(mProfileVo.maxSportPoint, typeSports, tvSportsRebate, getRebateList(mProfileVo.maxSportPoint))
+                                    { ppwSports1.dismiss() }
+                            }
+                            ppwSports1.show()
                         }
-                        ppwSports.show()
-                    } else {
-                        if (!::ppwSports1.isInitialized) {
-                            ppwSports1 =
-                                createPpw(mProfileVo.maxSportPoint, typeSports, tvSportsRebate, getRebateList(mProfileVo.maxSportPoint))
-                                { ppwSports1.dismiss() }
-                        }
-                        ppwSports1.show()
                     }
                 }
-            }
 
-            //状态等于0不显示
-            if (mProfileVo.pokerStatus == 0) {
-                layoutChess.visibility = View.GONE
-            } else {
-                typeChess.text = vo.chessPoint.plus("%")
-                tvChessRebate.text = getString(R.string.txt_reg_rebate)
-                    .plus(NumberUtils.sub(mProfileVo.maxPokerPoint, vo.chessPoint.toDouble()).toString() + "%")
-                typeChess.setOnClickListener {
-                    if (type == 0) {
-                        //未初始化，创建ppw
-                        if (!::ppwChess.isInitialized) {
-                            ppwChess =
-                                createPpw(mProfileVo.maxPokerPoint, typeChess, tvChessRebate, getRebateList(mProfileVo.maxPokerPoint))
-                                { ppwChess.dismiss() }
+                //状态等于0不显示
+                if (mProfileVo.pokerStatus == 0) {
+                    layoutChess.visibility = View.GONE
+                } else {
+                    layoutChess.visibility = View.VISIBLE
+                    typeChess.text = vo.chessPoint.plus("%")
+                    tvChessRebate.text = getString(R.string.txt_reg_rebate)
+                        .plus(NumberUtils.sub(mProfileVo.maxPokerPoint, vo.chessPoint.toDouble()).toString() + "%")
+                    typeChess.setOnClickListener {
+                        if (type == 0) {
+                            //未初始化，创建ppw
+                            if (!::ppwChess.isInitialized) {
+                                ppwChess =
+                                    createPpw(mProfileVo.maxPokerPoint, typeChess, tvChessRebate, getRebateList(mProfileVo.maxPokerPoint))
+                                    { ppwChess.dismiss() }
+                            }
+                            ppwChess.show()
+                        } else {
+                            if (!::ppwChess1.isInitialized) {
+                                ppwChess1 =
+                                    createPpw(mProfileVo.maxPokerPoint, typeChess, tvChessRebate, getRebateList(mProfileVo.maxPokerPoint))
+                                    { ppwChess1.dismiss() }
+                            }
+                            ppwChess1.show()
                         }
-                        ppwChess.show()
-                    } else {
-                        if (!::ppwChess1.isInitialized) {
-                            ppwChess1 =
-                                createPpw(mProfileVo.maxPokerPoint, typeChess, tvChessRebate, getRebateList(mProfileVo.maxPokerPoint))
-                                { ppwChess1.dismiss() }
-                        }
-                        ppwChess1.show()
                     }
                 }
-            }
 
-            //状态等于0不显示
-            if (mProfileVo.esportsStatus == 0) {
-                layoutGame.visibility = View.GONE
-            } else {
-                typeGame.text = vo.esportsPoint.plus("%")
-                tvGameRebate.text = getString(R.string.txt_reg_rebate)
-                    .plus(NumberUtils.sub(mProfileVo.maxEsportsPoint, vo.esportsPoint.toDouble()).toString() + "%")
-                typeGame.setOnClickListener {
-                    if (type == 0) {
-                        //未初始化，创建ppw
-                        if (!::ppwGame.isInitialized) {
-                            ppwGame =
-                                createPpw(mProfileVo.maxEsportsPoint, typeGame, tvGameRebate, getRebateList(mProfileVo.maxEsportsPoint))
-                                { ppwGame.dismiss() }
+                //状态等于0不显示
+                if (mProfileVo.esportsStatus == 0) {
+                    layoutGame.visibility = View.GONE
+                } else {
+                    layoutGame.visibility = View.VISIBLE
+                    typeGame.text = vo.esportsPoint.plus("%")
+                    tvGameRebate.text = getString(R.string.txt_reg_rebate)
+                        .plus(NumberUtils.sub(mProfileVo.maxEsportsPoint, vo.esportsPoint.toDouble()).toString() + "%")
+                    typeGame.setOnClickListener {
+                        if (type == 0) {
+                            //未初始化，创建ppw
+                            if (!::ppwGame.isInitialized) {
+                                ppwGame =
+                                    createPpw(mProfileVo.maxEsportsPoint, typeGame, tvGameRebate, getRebateList(mProfileVo.maxEsportsPoint))
+                                    { ppwGame.dismiss() }
+                            }
+                            ppwGame.show()
+                        } else {
+                            if (!::ppwGame1.isInitialized) {
+                                ppwGame1 =
+                                    createPpw(mProfileVo.maxEsportsPoint, typeGame, tvGameRebate, getRebateList(mProfileVo.maxEsportsPoint))
+                                    { ppwGame1.dismiss() }
+                            }
+                            ppwGame1.show()
                         }
-                        ppwGame.show()
-                    } else {
-                        if (!::ppwGame1.isInitialized) {
-                            ppwGame1 =
-                                createPpw(mProfileVo.maxEsportsPoint, typeGame, tvGameRebate, getRebateList(mProfileVo.maxEsportsPoint))
-                                { ppwGame1.dismiss() }
+                    }
+                }
+                //状态等于0不显示
+                if (mProfileVo.fishingStatus == 0) {
+                    layoutFishing.visibility = View.GONE
+                } else {
+                    layoutFishing.visibility = View.VISIBLE
+                    typeFishing.text = mProfileVo.maxFishingPoint.toString().plus("%")
+                    tvGameFishing.text = getString(R.string.txt_reg_rebate).plus("0.0%")
+                    typeFishing.setOnClickListener {
+                        if (type == 0) {
+                            //未初始化，创建ppw
+                            if (!::ppwFish.isInitialized) {
+                                ppwFish =
+                                    createPpw(mProfileVo.maxFishingPoint, typeFishing, tvGameFishing, getRebateList(mProfileVo.maxFishingPoint))
+                                    { ppwFish.dismiss() }
+                            }
+                            ppwFish.show()
+                        } else {
+                            if (!::ppwFish1.isInitialized) {
+                                ppwFish1 =
+                                    createPpw(mProfileVo.maxFishingPoint, typeFishing, tvGameFishing, getRebateList(mProfileVo.maxFishingPoint))
+                                    { ppwFish1.dismiss() }
+                            }
+                            ppwFish1.show()
                         }
-                        ppwGame1.show()
                     }
                 }
             }

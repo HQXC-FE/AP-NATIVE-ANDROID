@@ -28,6 +28,11 @@ public class APIManager {
     public static final String GAMEREBATEAGRT_EGAME_URL = "/compact/usersportgaming/";
     public static final String GAMESUBORDINATEAGRTE_EGAME_URL = "/compact/teamcompactgaming/";
 
+    //FISH
+    public static final String GAMEREBATEAGRT_FISH_URL = "/compact/userfishing/";
+    public static final String GAMESUBORDINATEAGRTE_FISH_URL = "/compact/teamcompactfishing/";
+    public static final String GAMESUBORDINATEREBATE_FISH_URL = "/compact/teamsalaryfishing/";
+
     //USER
     public static final String GAMEREBATEAGRT_USER_URL = "/compact/user/";
     public static final String GAMESUBORDINATEAGRTE_USER_URL = "/compact/teamcompact/";

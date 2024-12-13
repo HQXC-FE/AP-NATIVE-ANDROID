@@ -20,15 +20,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:visibility="gone"
+        android:src="@mipmap/ic_round"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/ckb_msg_check"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"  />
 
     <ImageView
         android:id="@+id/ivw_msg_point"
-        android:layout_width="6dp"
-        android:layout_height="6dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:src="@drawable/ic_red_point"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/ivw_msg_icon"

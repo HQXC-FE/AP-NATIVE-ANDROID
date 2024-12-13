@@ -30,6 +30,7 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 
 /**
@@ -40,6 +41,7 @@ public class ReportViewModel extends BaseViewModel<MineRepository> {
     public MutableLiveData<AccountChangeVo> liveDataAccountChange = new MutableLiveData<>(); // 账变
     public MutableLiveData<List<ThirdGameTypeVo>> liveDataGameType = new MutableLiveData<>(); // 平台列表(盈亏)
     public MutableLiveData<ProfitLossReportVo> liveDataProfitLoss = new MutableLiveData<>(); // 盈亏
+    public MutableLiveData<BusinessException> liveDataException = new MutableLiveData<>();//盈亏返回异常
     public MutableLiveData<RebateReportVo> liveDataRebateReport = new MutableLiveData<>(); // 返水
     public MutableLiveData<ThirdTransferReportVo> liveDataThirdTransferVo = new MutableLiveData<>(); // 三方
 
@@ -114,6 +116,13 @@ public class ReportViewModel extends BaseViewModel<MineRepository> {
                             vo.aProfitLoss = new ArrayList<>();
                         }
                         liveDataProfitLoss.setValue(vo);
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        super.onFail(t);
+                        CfLog.e("error, " + t.message);
+                        liveDataException.setValue(t);
                     }
 
                     @Override

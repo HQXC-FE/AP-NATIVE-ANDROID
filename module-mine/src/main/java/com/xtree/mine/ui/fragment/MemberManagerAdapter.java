@@ -25,6 +25,7 @@ public class MemberManagerAdapter extends CachedAutoRefreshAdapter<MemberUserInf
     public static final String BAT_RECORD = "bet_record";
     public static final String ACCOUNT_RECORD = "account_record";
     public static final String TRANSFER_MEMBER = "transfer_member";
+    public static final String SET_POINT = "set_point";
     Context ctx;
     ItemMemberManagerBinding binding;
     ICallBack mCallBack;
@@ -66,9 +67,11 @@ public class MemberManagerAdapter extends CachedAutoRefreshAdapter<MemberUserInf
         if (vo.userid.equals(SPUtils.getInstance().getString(SPKeyGlobal.USER_ID))) {
             binding.tvwSomeoneSelf.setVisibility(View.VISIBLE);
             binding.btnTransfor.setVisibility(View.GONE);
+            binding.btnPoint.setVisibility(View.GONE);
             binding.tvwUserName.setEnabled(false); //名字不可点击
         } else {
             binding.tvwSomeoneSelf.setVisibility(View.GONE);
+            binding.btnPoint.setVisibility(View.VISIBLE);
             binding.tvwUserName.setEnabled(true); //名字可点击
         }
 
@@ -97,6 +100,10 @@ public class MemberManagerAdapter extends CachedAutoRefreshAdapter<MemberUserInf
         binding.tvwMemberBalance.setText(vo.team_balance);
         binding.tvwRegisterTime.setText(vo.registertime);
         binding.tvwLastTime.setText(vo.lasttime);
+
+        binding.btnPoint.setOnClickListener(v -> {
+            mCallBack.onClick(vo, SET_POINT);
+        });
 
         binding.btnBet.setOnClickListener(v -> {
             mCallBack.onClick(vo, BAT_RECORD);

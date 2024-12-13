@@ -35,7 +35,7 @@ import com.xtree.mine.vo.MemberManagerVo;
 import com.xtree.mine.vo.MsgInfoVo;
 import com.xtree.mine.vo.MsgListVo;
 import com.xtree.mine.vo.MsgPersonInfoVo;
-import com.xtree.mine.vo.MsgPersonListVo;
+import com.xtree.base.vo.MsgPersonListVo;
 import com.xtree.mine.vo.OtherWebWithdrawVo;
 import com.xtree.mine.vo.PlatWithdrawConfirmVo;
 import com.xtree.mine.vo.PlatWithdrawVo;
@@ -773,4 +773,11 @@ public interface HttpApiService {
      */
     @GET("/api/report/easteregg?")
     Flowable<BaseResponse<EasterReportVo>> getEasterReport(@QueryMap Map<String, Object> qMap);
+
+    /**
+     * 返点设定
+     */
+    @PUT("/api/user/set-child-point")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<HashMap<String, String>> updateReturnPoint(@Body Map<String, String> map);
 }

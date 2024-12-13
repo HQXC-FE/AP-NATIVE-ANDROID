@@ -19,11 +19,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvw_password_title"
+            android:id="@+id/tvw_return_point_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layout_margin"
-            android:text="@string/txt_transfer_member"
+            android:text="设置返点"
             android:textColor="@color/clr_black"
             android:textSize="@dimen/bt_text_20sp"
             android:textStyle="bold"
@@ -36,10 +36,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/txt_member_account"
+            android:text="@string/txt_username_title"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/btn_cancel"
-            app:layout_constraintTop_toBottomOf="@id/tvw_password_title" />
+            app:layout_constraintStart_toStartOf="@id/btn_confirm"
+            app:layout_constraintTop_toBottomOf="@id/tvw_return_point_title" />
 
         <TextView
             android:id="@+id/tvw_user_account"
@@ -52,62 +52,38 @@
             app:layout_constraintTop_toTopOf="@id/tvw_user_account_title" />
 
         <TextView
-            android:id="@+id/tvw_user_balance_title"
+            android:id="@+id/tvw_user_point_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layout_margin"
-            android:text="@string/txt_account_balance"
+            android:text="@string/txt_current_point"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/btn_cancel"
+            app:layout_constraintStart_toStartOf="@id/btn_confirm"
             app:layout_constraintTop_toBottomOf="@id/tvw_user_account_title" />
 
         <TextView
-            android:id="@+id/tvw_user_balance"
+            android:id="@+id/tvw_user_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1000.0000"
+            android:text="0.0"
             android:textColor="@color/clr_orange_01"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/tvw_user_balance_title"
-            app:layout_constraintStart_toEndOf="@id/tvw_user_balance_title"
-            app:layout_constraintTop_toTopOf="@id/tvw_user_balance_title" />
+            app:layout_constraintBottom_toBottomOf="@id/tvw_user_point_title"
+            app:layout_constraintStart_toEndOf="@id/tvw_user_point_title"
+            app:layout_constraintTop_toTopOf="@id/tvw_user_point_title" />
 
         <TextView
-            android:id="@+id/tvw_transfer_title"
+            android:id="@+id/tvw_user_set_point_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/txt_transfer_kind"
+            android:text="@string/txt_lottery_point"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/tvw_transfer"
-            app:layout_constraintStart_toStartOf="@id/btn_cancel"
-            app:layout_constraintTop_toTopOf="@id/tvw_transfer" />
+            app:layout_constraintBottom_toBottomOf="@id/tvw_user_set_point"
+            app:layout_constraintStart_toStartOf="@id/btn_confirm"
+            app:layout_constraintTop_toTopOf="@id/tvw_user_set_point" />
 
         <TextView
-            android:id="@+id/tvw_transfer"
-            style="@style/style_cm_edt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="@dimen/layout_margin"
-            android:inputType="number"
-            android:text="@string/txt_input_output_transfer"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tvw_user_balance"
-            app:layout_constraintTop_toBottomOf="@id/tvw_user_balance" />
-
-        <TextView
-            android:id="@+id/tvw_user_money_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/txt_transfer_money"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/et_user_money"
-            app:layout_constraintStart_toStartOf="@id/btn_cancel"
-            app:layout_constraintTop_toTopOf="@id/et_user_money" />
-
-        <EditText
-            android:id="@+id/et_user_money"
+            android:id="@+id/tvw_user_set_point"
             style="@style/style_cm_edt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -116,44 +92,33 @@
             android:inputType="number"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/tvw_transfer"
-            app:layout_constraintTop_toBottomOf="@id/tvw_transfer" />
+            app:layout_constraintStart_toStartOf="@id/tvw_user_point"
+            app:layout_constraintTop_toBottomOf="@id/tvw_user_point" />
 
         <TextView
-            android:id="@+id/tvw_user_money_warning"
+            android:id="@+id/tvw_user_point_warning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layout_margin"
-            android:text="@string/txt_check_money"
+            android:text="@string/txt_lottery_point_warning"
             android:textColor="@color/clr_red_01"
-            app:layout_constraintStart_toStartOf="@id/et_user_money"
-            app:layout_constraintTop_toBottomOf="@id/et_user_money" />
-
-        <Button
-            android:id="@+id/btn_cancel"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/layout_margin"
-            android:background="@drawable/bg_stroke_main_r12"
-            android:text="@string/text_cancel"
-            android:textColor="@color/clr_bg_frame_21"
-            android:textSize="16dp"
-            app:layout_constraintEnd_toStartOf="@id/btn_confirm"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvw_user_money_warning" />
+            app:layout_constraintStart_toStartOf="@id/tvw_user_set_point"
+            app:layout_constraintTop_toBottomOf="@id/tvw_user_set_point" />
 
         <Button
             android:id="@+id/btn_confirm"
-            android:layout_width="120dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="@dimen/layout_margin"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/bg_main_r12"
             android:text="@string/text_confirm"
             android:textColor="@color/clr_white"
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_cancel"
-            app:layout_constraintTop_toBottomOf="@id/tvw_user_money_warning" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvw_user_point_warning" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

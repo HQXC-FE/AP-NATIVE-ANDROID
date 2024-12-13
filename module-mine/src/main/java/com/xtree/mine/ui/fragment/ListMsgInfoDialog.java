@@ -102,6 +102,7 @@ public class ListMsgInfoDialog extends BottomPopupView {
             try {
                 map = new Gson().fromJson(txt, new TypeToken<HashMap<String, Object>>() {
                 }.getType());
+                CfLog.e("map --->"+setMessageContent(map));
                 tvwMsgContent.setText(setMessageContent(map));
             } catch (JsonSyntaxException e) {
                 CfLog.e(e.getMessage());
@@ -157,7 +158,6 @@ public class ListMsgInfoDialog extends BottomPopupView {
                 }.getType());
             }
         }
-
         if (msgPersonInfoVo.type.equals("2") && !ruleRldyjttList.isEmpty()) {
             for (HashMap<String, Object> hashMap : ruleRldyjttList) {
                 content.append("日量阶梯").append("\n");
@@ -182,18 +182,49 @@ public class ListMsgInfoDialog extends BottomPopupView {
                     }
                     content.append("\n");
                 }
-            } else if (msgPersonInfoVo.type.equals("3") || msgPersonInfoVo.type.equals("4") || msgPersonInfoVo.type.equals("6") || msgPersonInfoVo.type.equals("7") || msgPersonInfoVo.type.equals("9")) {
+            } else if (msgPersonInfoVo.type.equals("3") || msgPersonInfoVo.type.equals("4")
+                    || msgPersonInfoVo.type.equals("6") || msgPersonInfoVo.type.equals("7")
+                    ) {
+                for (HashMap<String, Object> hashMap : ruleList) {
+
+                    String minPlayer = splitMinPlayer(String.valueOf(hashMap.get("min_player")));
+                    level = new Double((double) hashMap.get("level")).intValue();
+                    content.append("规则")
+                            .append(level).append(":")
+                            .append(unit.get(0))
+                            .append("日有效投注额≥").append(hashMap.get("min_bet"))
+                            .append("元，且活跃玩家人数≥").append(minPlayer)
+                            .append("人，返水").append(hashMap.get("ratio")).append("%").append("\n");
+                }
+            } else if ( msgPersonInfoVo.type.equals("10")) {
+                //捕鱼返水
+                for (HashMap<String, Object> hashMap : ruleList) {
+
+                    String minPlayer = splitMinPlayer(String.valueOf(hashMap.get("min_player")));
+                    level = new Double((double) hashMap.get("level")).intValue();
+                    content.append("规则")
+                            .append(level).append(":")
+                            /*.append(unit.get(0))*/
+                            .append("日有效投注额≥").append(hashMap.get("min_bet"))
+                            .append("元，且活跃玩家人数≥").append(minPlayer)
+                            .append("人，返水比例").append(hashMap.get("ratio")).append("%").append("\n");
+                }
+            }
+
+            else if (msgPersonInfoVo.type.equals("9")) {
                 for (HashMap<String, Object> hashMap : ruleList) {
                     level = new Double((double) hashMap.get("level")).intValue();
                     content.append("规则")
                             .append(level).append(":")
                             .append(unit.get(0))
                             .append("日有效投注额≥").append(hashMap.get("min_bet"))
-                            .append("元，且活跃玩家人数≥").append(hashMap.get("min_player"));
+                            .append("元，且活跃玩家人数≥").append(hashMap.get("min_player"))
+                            .append("人，返水").append(hashMap.get("ratio")).append("%").append("\n");
                 }
-            } else if (msgPersonInfoVo.type.equals("5")) {
+            }
+            else if (msgPersonInfoVo.type.equals("5")) {
                 for (HashMap<String, Object> hashMap : ruleList) {
-                    int loseStreak = new  Double((double) hashMap.get("lose_streak")).intValue();
+                    int loseStreak = new Double((double) hashMap.get("lose_streak")).intValue();
                     int people = new Double((double) hashMap.get("people")).intValue();
                     level = new Double((double) hashMap.get("level")).intValue();
                     content.append("规则").append(level).append("：\n");
@@ -224,5 +255,14 @@ public class ListMsgInfoDialog extends BottomPopupView {
         }
 
         return content.toString();
+    }
+
+    private static String splitMinPlayer(String minPlayer){
+        String [] list = minPlayer.split("\\.");
+        CfLog.e("splitMinPlayer == " +list.length);
+        if (list.length >1){
+            return list[0];
+        }
+        return minPlayer ;
     }
 }

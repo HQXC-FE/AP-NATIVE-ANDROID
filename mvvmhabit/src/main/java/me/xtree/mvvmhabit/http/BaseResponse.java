@@ -46,14 +46,12 @@ public class BaseResponse<T> {
         return status;
     }
 
-    public int getCode() {
-        return code;
-    }
-
     public void setStatus(int status) {
         this.status = status;
     }
-
+    public int getCode() {
+        return code;
+    }
     public T getData() {
         return data;
     }

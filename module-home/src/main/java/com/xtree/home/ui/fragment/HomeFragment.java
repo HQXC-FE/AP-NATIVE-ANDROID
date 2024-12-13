@@ -1,7 +1,6 @@
 package com.xtree.home.ui.fragment;
 
 import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_TO_ACT;
-
 import static com.xtree.home.ui.adapter.GameAdapter.PLATFORM_FB;
 import static com.xtree.home.ui.adapter.GameAdapter.PLATFORM_FBXC;
 
@@ -122,6 +121,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             CfLog.i("******");
             viewModel.getProfile();
             //checkRedPocket();
+            viewModel.getUnread();//获取 公告和上下级，站内信消息未读数
         }
     }
 
@@ -285,6 +285,21 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             //} else {
             //    binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member, 0, 0);
             //}
+        });
+        viewModel.liveDataMsgUnread.observe(getViewLifecycleOwner(), vo -> {
+            if (vo == 0) {
+                binding.ivNotice.setVisibility(View.GONE);
+                binding.tvNoticeNum.setVisibility(View.GONE);
+            } else {
+                binding.ivNotice.setVisibility(View.VISIBLE);
+                binding.tvNoticeNum.setVisibility(View.VISIBLE);
+                if (vo > 99) {
+                    binding.tvNoticeNum.setText("99+");
+                } else {
+                    binding.tvNoticeNum.setText(String.valueOf(vo));
+                }
+
+            }
         });
     }
 
@@ -514,6 +529,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 smoothToPosition(pid);
             });
         }
+        binding.ivNotice.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt("isMsgPerson", 1);
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_MSG, bundle);
+        });
 
     }
 

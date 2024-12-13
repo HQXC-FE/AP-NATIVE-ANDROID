@@ -137,6 +137,40 @@
                     app:layout_constraintVertical_bias="0" />
 
                 <TextView
+                    android:id="@+id/filter4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:gravity="bottom|start"
+                    android:text="状态"
+                    android:textColor="@color/clr_txt_03"
+                    android:textSize="14sp"
+                    android:visibility="@{m.showState?View.VISIBLE:View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guide1"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/filter3"
+                    app:layout_constraintVertical_bias="0" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:drawableEnd="@mipmap/bt_icon_expand"
+                    android:drawableBottom="@drawable/divider_horizontal"
+                    android:gravity="bottom|start"
+                    android:onClick="@{() -> m.selectStatus()}"
+                    android:text="@{m.state.title}"
+                    android:textColor="@color/clr_txt_black_cm"
+                    android:textSize="14sp"
+                    android:visibility="@{m.showState?View.VISIBLE:View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="@id/guide1"
+                    app:layout_constraintTop_toTopOf="@id/filter4"
+                    app:layout_constraintVertical_bias="0" />
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginStart="32dp"
@@ -152,7 +186,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/filter3"
+                    app:layout_constraintTop_toBottomOf="@id/filter4"
                     app:layout_constraintVertical_bias="1" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -222,5 +222,21 @@
             app:layout_constraintEnd_toStartOf="@id/btn_account"
             app:layout_constraintTop_toBottomOf="@id/ll_line" />
 
+        <Button
+            android:id="@+id/btn_point"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="@dimen/layout_margin"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="@dimen/layout_margin"
+            android:background="@drawable/bg_stroke_main_r24"
+            android:text="@string/me_set_point"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_bet"
+            app:layout_constraintTop_toBottomOf="@id/ll_line"
+            app:layout_constraintVertical_bias="0.0" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

@@ -56,6 +56,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_real"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content">
 
         <TextView
@@ -97,6 +98,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_sports"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -139,6 +141,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_chess"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -181,6 +184,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_game"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -219,5 +223,48 @@
             android:textSize="@dimen/bt_text_12sp"
             app:layout_constraintStart_toEndOf="@+id/tv_game"
             app:layout_constraintTop_toBottomOf="@+id/tv_game" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_fishing"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       >
+
+        <TextView
+            android:id="@+id/tv_fishing"
+            style="@style/style_filter_info_value"
+            android:layout_marginTop="6dp"
+            android:text="捕鱼返点"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/type_fishing"
+            style="@style/style_filter_info_spn"
+            android:layout_width="0dp"
+            android:textColor="@color/tv_color_reg_pro"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_fishing"
+            app:layout_constraintStart_toEndOf="@+id/tv_fishing"
+            app:layout_constraintTop_toTopOf="@+id/tv_fishing"
+            tools:text="4.0%" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/clr_grey_080"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/type_fishing"
+            app:layout_constraintTop_toBottomOf="@+id/type_fishing" />
+
+        <TextView
+            android:id="@+id/tv_game_fishing"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_reg_rebate"
+            android:textColor="@color/clr_txt_warn"
+            android:textSize="@dimen/bt_text_12sp"
+            app:layout_constraintStart_toEndOf="@+id/tv_fishing"
+            app:layout_constraintTop_toBottomOf="@+id/tv_fishing" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
