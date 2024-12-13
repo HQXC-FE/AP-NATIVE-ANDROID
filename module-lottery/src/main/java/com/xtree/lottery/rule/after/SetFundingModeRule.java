@@ -23,9 +23,9 @@ public class SetFundingModeRule {
         Object currentMethod = facts.get("currentMethod");
         Boolean mode = facts.get("mode");
 
-        // Ensure `modes` is present and has length > 0
+        // Ensure `money_modes` is present and has length > 0
         List<Map<String, Object>> modes = currentMethod instanceof Map
-                ? (List<Map<String, Object>>) ((Map<?, ?>) currentMethod).get("modes")
+                ? (List<Map<String, Object>>) ((Map<?, ?>) currentMethod).get("money_modes")
                 : null;
 
         return "ssc".equals(lotteryType) && mode == null && modes != null && !modes.isEmpty();
@@ -35,7 +35,7 @@ public class SetFundingModeRule {
     public void then(Facts facts) {
         Map<String, Object> bet = facts.get("bet");
         Object currentMethod = facts.get("currentMethod");
-        List<Map<String, Object>> modes = (List<Map<String, Object>>) ((Map<?, ?>) currentMethod).get("modes");
+        List<Map<String, Object>> modes = (List<Map<String, Object>>) ((Map<?, ?>) currentMethod).get("money_modes");
 
         // Find mode by modeid
         Map<String, Object> betMode = (Map<String, Object>) bet.get("mode");

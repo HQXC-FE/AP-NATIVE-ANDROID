@@ -1,5 +1,9 @@
 package com.xtree.lottery.rule;
 
+import com.xtree.lottery.data.source.response.MenuMethodsResponse;
+import com.xtree.lottery.data.source.response.UserMethodsResponse;
+import com.xtree.lottery.rule.data.RulesEntryData;
+
 import org.jeasy.rules.api.Facts;
 import org.jeasy.rules.api.Rules;
 import org.jeasy.rules.api.RulesEngine;
@@ -24,7 +28,6 @@ public class EntryRule {
     }
 
     public EntryRule() {
-        facts = new Facts();
         rules = new Rules();
         rulesEngine = new DefaultRulesEngine();
 
@@ -37,121 +40,124 @@ public class EntryRule {
         EndingRules.addRules(rules);
     }
 
-    public void startEngine(Facts facts) {
-        // 范例
-        Facts example = new Facts();
-        String lotteryType = "ssc";
-        String matcherName = "";
-        String betTimes = "1";
-        String betDisplayMoney = "2";
-        String betPrize = "2";
-        String currentCategoryName = "后三码";
-        String currentCategoryCateName = "后三码";
-        String currentCategorySelectareaType = "digital";
-        String currentCategoryFlag = "hn5fc";
-        String currentMethodGroupName = "后三直选";
-        String currentMethodName = "复式";
-        String currentMethodLotteryId = "14";
-        String currentMethodCodeSP = "";
-        String currentMethodCateTitle = "后三码";
-        String currentMethodDesc = "组选和值";
-        String currentMethodShowStr = "-,-,X,X,X";
-        List<List<String>> betCodes = new ArrayList<>();
-        List<String> betCodesItem11 = new ArrayList<>();
-        List<String> betCodesItem12 = new ArrayList<>();
-        List<String> betCodesItem13 = new ArrayList<>();
-        betCodesItem11.add("5");
-        betCodesItem12.add("6");
-        betCodesItem13.add("7");
-        betCodes.add(betCodesItem11);
-        betCodes.add(betCodesItem12);
-        betCodes.add(betCodesItem13);
-        String betPoschoose = "";
+    public void startEngine(RulesEntryData rulesEntryData) {
+        facts = new Facts();
+        Map<String, String> currentCategory = new HashMap<>();
+        Map<String, Object> currentMethod = new HashMap<>();
+        Map<String, Object> currentMethodSelectArea = new HashMap<>();
+        Map<String, Object> bet = new HashMap<>();
+        Map<String, String> betMode = new HashMap<>();
+        List<Map<String, String>> currentMethodSelectAreaLayout = new ArrayList<>();
+        List<Map<String, String>> currentMethodMoneyModes = new ArrayList<>();
+        List<Map<String, String>> currentMethodPrizeGroup = new ArrayList<>();
+        Map<String, Object> attached = new HashMap<>();
+        List<String> message = new ArrayList<>();
 
-        HashMap<String, Object> currentMethod = new HashMap<>();
-        HashMap<String, String> currentCategory = new HashMap<>();
-        List<Map<String, String>> currentMethodModes = new ArrayList<>();
-        Map<String, String> currentMethodModesitem1 = new HashMap<>();
-        Map<String, String> currentMethodModesitem2 = new HashMap<>();
-        Map<String, String> currentMethodModesitem3 = new HashMap<>();
-        Map<String, String> currentMethodModesitem4 = new HashMap<>();
-        List<Map<String, String>> currentMethodPrizeLevel = new ArrayList<>();
-        Map<String, String> currentMethodPrizeLevelItem1 = new HashMap<>();
-        HashMap<String, Object> currentMethodSelectarea = new HashMap<>();
-        List<Map<String, String>> currentMethodSelectareaLayout = new ArrayList<>();
-        HashMap<String, String> currentMethodSelectareaLayouTitem1 = new HashMap<>();
-        HashMap<String, String> currentMethodSelectareaLayouTitem2 = new HashMap<>();
-        HashMap<String, String> currentMethodSelectareaLayouTitem3 = new HashMap<>();
-        HashMap<String, Object> bet = new HashMap<>();
-        Map<String, String> betModeitem = new HashMap<>();
-        Map<String, String> betDisplay = new HashMap<>();
+        // currentCategory.name
+        currentCategory.put("name", rulesEntryData.getCurrentCategory().getName());
+        // currentCategory.flag
+        currentCategory.put("flag", rulesEntryData.getCurrentCategory().getFlag());
 
-        matcherName = currentCategoryCateName + "-" + currentMethodGroupName + "-" + currentMethodName;
+        // currentMethod.methodid
+        currentMethod.put("methodid", rulesEntryData.getCurrentMethod().getMethodid());
+        // currentMethod.lotteryId
+        currentMethod.put("lotteryId", rulesEntryData.getCurrentMethod().getLotteryId());
+        // currentMethod.name
+        currentMethod.put("name", rulesEntryData.getCurrentMethod().getName());
+        // currentMethod.originalName
+        currentMethod.put("originalName", rulesEntryData.getCurrentMethod().getOriginalName());
+        // currentMethod.cate_title
+        currentMethod.put("cate_title", rulesEntryData.getCurrentMethod().getCateTitle());
+        // currentMethod.categoryName
+        currentMethod.put("categoryName", rulesEntryData.getCurrentMethod().getCateTitle());
+        // currentMethod.desc
+        currentMethod.put("desc", rulesEntryData.getCurrentMethod().getDesc());
+        // currentMethod.show_str
+        currentMethod.put("show_str", rulesEntryData.getCurrentMethod().getShowStr());
+        // currentMethod.code_sp
+        currentMethod.put("code_sp", rulesEntryData.getCurrentMethod().getCodeSp());
+        // currentMethod.cateName
+        currentMethod.put("cateName", rulesEntryData.getCurrentMethod().getCateName());
+        // currentMethod.groupName
+        currentMethod.put("groupName", rulesEntryData.getCurrentMethod().getGroupName());
+        // currentMethod.money_modes
+        for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO item : rulesEntryData.getCurrentMethod().getMoneyModes()) {
+            Map<String, String> currentMethodMoneyModesItem = new HashMap<>();
+            currentMethodMoneyModesItem.put("modeid", String.valueOf(item.getModeid()));
+            currentMethodMoneyModesItem.put("name", item.getName());
+            currentMethodMoneyModesItem.put("rate", String.valueOf(item.getRate()));
+            currentMethodMoneyModes.add(currentMethodMoneyModesItem);
+        }
+        currentMethod.put("money_modes", currentMethodMoneyModes);
+        // currentMethod.prize_group
+        for (UserMethodsResponse.DataDTO.PrizeGroupDTO item : rulesEntryData.getCurrentMethod().getPrizeGroup()) {
+            Map<String, String> currentMethodPrizeGroupItem = new HashMap<>();
+            currentMethodPrizeGroupItem.put("value", String.valueOf(item.getValue()));
+            currentMethodPrizeGroupItem.put("label", item.getLabel());
+            currentMethodPrizeGroup.add(currentMethodPrizeGroupItem);
+        }
+        currentMethod.put("prize_group", currentMethodPrizeGroup);
+        // currentMethod.prize_level
+        currentMethod.put("prize_level", rulesEntryData.getCurrentMethod().getPrizeLevel());
+        // currentMethod.relationMethods
+        currentMethod.put("relationMethods", rulesEntryData.getCurrentMethod().getRelationMethods());
+        // currentMethod.selectarea.originType
+        // TODO 这个需要补全
+        // currentMethod.selectarea.type
+        currentMethodSelectArea.put("type", rulesEntryData.getCurrentMethod().getSelectarea().getType());
+        // currentMethod.selectarea.layout
+        for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO item : rulesEntryData.getCurrentMethod().getSelectarea().getLayout()) {
+            Map<String, String> currentMethodSelectAreaLayoutItem = new HashMap<>();
+            currentMethodSelectAreaLayoutItem.put("title", item.getTitle());
+            currentMethodSelectAreaLayoutItem.put("no", item.getNo());
+            currentMethodSelectAreaLayoutItem.put("place", String.valueOf(item.getPlace()));
+            currentMethodSelectAreaLayoutItem.put("cols", String.valueOf(item.getCols()));
+            currentMethodSelectAreaLayout.add(currentMethodSelectAreaLayoutItem);
+        }
+        currentMethodSelectArea.put("layout", currentMethodSelectAreaLayout);
+        // currentMethod.selectarea.selPosition
+        currentMethodSelectArea.put("selPosition", rulesEntryData.getCurrentMethod().getSelectarea().isSelPosition());
+        // currentMethod.selectarea
+        currentMethod.put("selectarea", currentMethodSelectArea);
 
-        currentMethod.put("name", currentMethodName);
-        currentMethod.put("groupName", currentMethodGroupName);
-        currentMethod.put("lotteryId", currentMethodLotteryId);
-        currentMethodSelectareaLayouTitem1.put("title", "百位");
-        currentMethodSelectareaLayouTitem1.put("no", "0|1|2|3|4|5|6|7|8|9");
-        currentMethodSelectareaLayouTitem1.put("place", "0");
-        currentMethodSelectareaLayouTitem1.put("cols", "1");
-        currentMethodSelectareaLayouTitem2.put("title", "十位");
-        currentMethodSelectareaLayouTitem2.put("no", "0|1|2|3|4|5|6|7|8|9");
-        currentMethodSelectareaLayouTitem2.put("place", "1");
-        currentMethodSelectareaLayouTitem2.put("cols", "1");
-        currentMethodSelectareaLayouTitem3.put("title", "个位");
-        currentMethodSelectareaLayouTitem3.put("no", "0|1|2|3|4|5|6|7|8|9");
-        currentMethodSelectareaLayouTitem3.put("place", "2");
-        currentMethodSelectareaLayouTitem3.put("cols", "1");
-        currentMethodSelectareaLayout.add(currentMethodSelectareaLayouTitem1);
-        currentMethodSelectareaLayout.add(currentMethodSelectareaLayouTitem2);
-        currentMethodSelectareaLayout.add(currentMethodSelectareaLayouTitem3);
-        currentMethodSelectarea.put("layout", currentMethodSelectareaLayout);
-        currentMethodSelectarea.put("type", currentCategorySelectareaType);
-        currentMethod.put("selectarea", currentMethodSelectarea);
-        currentMethodModesitem1.put("modeid", "1");
-        currentMethodModesitem1.put("name", "元");
-        currentMethodModesitem1.put("rate", "1");
-        currentMethodModesitem2.put("modeid", "2");
-        currentMethodModesitem2.put("name", "角");
-        currentMethodModesitem2.put("rate", "0.1");
-        currentMethodModesitem3.put("modeid", "3");
-        currentMethodModesitem3.put("name", "分");
-        currentMethodModesitem3.put("rate", "0.01");
-        currentMethodModesitem4.put("modeid", "4");
-        currentMethodModesitem4.put("name", "厘");
-        currentMethodModesitem4.put("rate", "0.001");
-        currentMethodModes.add(currentMethodModesitem1);
-        currentMethodModes.add(currentMethodModesitem2);
-        currentMethodModes.add(currentMethodModesitem3);
-        currentMethodModes.add(currentMethodModesitem4);
-        currentMethod.put("modes", currentMethodModes);
-        currentMethod.put("code_sp", currentMethodCodeSP);
-        currentMethodPrizeLevelItem1.put("1", "1900.00");
-        currentMethodPrizeLevel.add(currentMethodPrizeLevelItem1);
-        currentMethod.put("prize_level", currentMethodPrizeLevel);
-        currentMethod.put("cate_title", currentMethodCateTitle);
-        currentMethod.put("desc", currentMethodDesc);
-        currentMethod.put("show_str", currentMethodShowStr);
+        //bet.codes
+        if (rulesEntryData.getBet().getCodes() instanceof List) {
+            if (((List<?>) rulesEntryData.getBet().getCodes()).get(0) instanceof String) {
+                bet.put("codes", rulesEntryData.getBet().getCodes());
+            } else if (((List<?>) rulesEntryData.getBet().getCodes()).get(0) instanceof List<?>) {
+                List<List<String>> betCodes = new ArrayList<>();
+                for (List<String> item : (List<List<String>>) rulesEntryData.getBet().getCodes()) {
+                    betCodes.add(item);
+                }
+                bet.put("codes", betCodes);
+            }
+        }
+        //bet.mode
+        betMode.put("modeid", String.valueOf(rulesEntryData.getBet().getMode().getModeid()));
+        betMode.put("name", rulesEntryData.getBet().getMode().getName());
+        betMode.put("rate", String.valueOf(rulesEntryData.getBet().getMode().getRate()));
+        bet.put("mode", betMode);
+        //bet.times
+        bet.put("times", String.valueOf(rulesEntryData.getBet().getTimes()));
+        //bet.prize
+        bet.put("prize", String.valueOf(rulesEntryData.getBet().getPrize()));
+        //Todo bet.poschoose这个参数到最后还是无法知道
+        //bet.poschoose
+        bet.put("poschoose", null);
 
-        currentCategory.put("name", currentCategoryName);
-        currentCategory.put("flag", currentCategoryFlag);
-        bet.put("codes", betCodes);
-        bet.put("poschoose", betPoschoose);
-        betModeitem.put("modeid", "1");
-        betModeitem.put("name", "元");
-        betModeitem.put("rate", "1");
-        bet.put("mode", betModeitem);
-        bet.put("times", betTimes);
-        bet.put("prize", betPrize);
-        betDisplay.put("money", betDisplayMoney);
+        facts.put("lotteryType", rulesEntryData.getType());
+        facts.put("currentCategory", currentCategory);
+        facts.put("currentMethod", currentMethod);
+        facts.put("bet", bet);
+        facts.put("attached", attached);
+        facts.put("message", message);
+        if (currentMethod.get("originalName") != null && !((String) currentMethod.get("originalName")).isEmpty())
+            facts.put("matcherName", currentMethod.get("cateName") + "-" + currentMethod.get("groupName") + "-" + currentMethod.get("originalName"));
+        else {
+            facts.put("matcherName", currentMethod.get("cateName") + "-" + currentMethod.get("groupName") + "-" + currentMethod.get("name"));
+        }
 
-        example.put("lotteryType", lotteryType);
-        example.put("matcherName", matcherName);
-        example.put("currentMethod", currentMethod);
-        example.put("currentCategory", currentCategory);
-        example.put("bet", bet);
-
-        rulesEngine.fire(rules, example);
+        // enter the rules
+        rulesEngine.fire(rules, facts);
     }
 }

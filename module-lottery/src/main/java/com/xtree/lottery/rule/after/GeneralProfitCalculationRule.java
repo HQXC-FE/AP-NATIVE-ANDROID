@@ -74,7 +74,7 @@ public class GeneralProfitCalculationRule {
     }
 
     private double getRate(Map<String, Object> currentMethod, Map<String, Object> mode) {
-        return ((List<Map<String, Object>>) currentMethod.get("modes")).stream()
+        return ((List<Map<String, Object>>) currentMethod.get("money_modes")).stream()
                 .filter(m -> m.get("modeid").equals(mode.get("modeid")))
                 .map(m -> Double.parseDouble((String) m.get("rate")))
                 .findFirst()
@@ -83,7 +83,7 @@ public class GeneralProfitCalculationRule {
 
     private double getBaseBetRate() {
         // 模拟 CONFIG.BASE_BET_RATE()，根据实际情况替换
-        return 1.0;
+        return 2.0;
     }
 
     private double round(double value, int places) {
