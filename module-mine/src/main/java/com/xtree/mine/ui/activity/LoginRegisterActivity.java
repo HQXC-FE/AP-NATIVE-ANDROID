@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.Constant;
@@ -28,7 +29,6 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.SPUtil;
 import com.xtree.base.utils.TagUtils;
-import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
@@ -73,6 +73,15 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
     @Override
     public void initData() {
         viewModel.getSettings();
+    }
+
+    protected void initImmersionBar() {
+        //设置共同沉浸式样式
+        ImmersionBar.with(this)
+                .navigationBarColor(R.color.clr_main_17)
+                .fitsSystemWindows(false)
+                .statusBarDarkFont(true)
+                .init();
     }
 
     @Override
@@ -382,7 +391,6 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         showChangeLoginPSWPopView.show();
     }
 
-
     private void showRepDeviceLOut() {
         if (ppw == null) {
             ppw = new XPopup.Builder(this).asCustom(new MsgDialog(this, null, "当前账号在其他设备登录，请检查账号登陆情况后重试",
@@ -399,7 +407,6 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         }
         ppw.show();
     }
-
 
     private void goMain() {
         ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)

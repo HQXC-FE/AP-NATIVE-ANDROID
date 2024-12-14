@@ -22,7 +22,7 @@ android {
             dimension "channelName"
         }
         // 生产环境 发布用
-      /*  hx6_OL {
+      hx6_OL {
             applicationId "com.hengxing6.app"
             versionName "1.0.0"
             versionCode 100
@@ -68,7 +68,7 @@ android {
                     "https://h55.vvhoq.vip;"
             multiDexEnabled true
             dimension "channelName"
-        }*/
+        }
 
     }
 

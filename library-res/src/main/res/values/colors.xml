@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#420C0B</color>
-    <color name="colorPrimaryDark">#420C0B</color>
+    <color name="colorPrimaryDark">#1A1716</color>
     <color name="colorAccent">#FF4081</color>
     <color name="textColor">#333333</color>
     <color name="textColorVice">#6C6C6C</color>
@@ -30,6 +30,7 @@
     <color name="clr_main_14">#FFD9B2</color>
     <color name="clr_main_15">#CA9C6C</color>
     <color name="clr_main_16">#514242</color>
+    <color name="clr_main_17">#231D1B</color>
 
     <!-- ################ 配色 设计师提供 start ################ -->
     <!-- 主色 -->

@@ -120,7 +120,8 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private int mHotMatchCount;
     private String mSportName;
     private List<HotLeague> mLeagueItemList;
-
+    protected void initImmersionBar() {
+    }
     public List<League> getSettingLeagueList() {
         return settingLeagueList;
     }
@@ -177,16 +178,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
         SPUtils.getInstance().put(KEY_PLATFORM, mPlatform);
         SPUtils.getInstance().put(KEY_PLATFORM_NAME, mPlatformName);
-    }
-
-    @Override
-    protected void initImmersionBar() {
-        //设置共同沉浸式样式
-        ImmersionBar.with(this)
-                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color_1)
-                .fitsSystemWindows(true)
-                .statusBarDarkFont(true)
-                .init();
     }
 
     @Override
