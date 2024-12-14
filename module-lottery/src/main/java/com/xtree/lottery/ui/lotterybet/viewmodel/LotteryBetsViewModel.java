@@ -21,6 +21,7 @@ import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 import com.xtree.lottery.data.source.response.UserMethodsResponse;
+import com.xtree.lottery.rule.EntryRule;
 import com.xtree.lottery.rule.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.LotteryBetConfirmDialogFragment;
 import com.xtree.lottery.ui.lotterybet.LotteryOrderDialogFragment;
@@ -434,6 +435,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         betDTO.setDisplay(displayDTO);
         betDTO.setSubmit(new RulesEntryData.BetDTO.SubmitDTO());
         rulesEntryData.setBet(betDTO);
+        EntryRule.getInstance().startEngine(rulesEntryData);
     }
 
     @Override

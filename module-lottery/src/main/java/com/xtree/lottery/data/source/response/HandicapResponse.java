@@ -1,8 +1,11 @@
 package com.xtree.lottery.data.source.response;
 
+import android.text.TextUtils;
+
 import androidx.databinding.ObservableField;
 
 import com.google.gson.annotations.SerializedName;
+import com.xtree.base.utils.NumberUtils;
 
 import java.util.List;
 
@@ -160,6 +163,9 @@ public class HandicapResponse {
                 @SerializedName("rebate_prize")
                 private String rebatePrize;
 
+                //用于显示的赔率信息
+                public ObservableField<String> rebateData = new ObservableField<>("");
+
                 //是否选中
                 public ObservableField<Boolean> isChecked = new ObservableField<>(false);
 
@@ -217,6 +223,24 @@ public class HandicapResponse {
 
                 public void setRebatePrize(String rebatePrize) {
                     this.rebatePrize = rebatePrize;
+                }
+
+                public void setRebate(boolean isPrize) {
+                    if (isPrize) {
+                        if (!TextUtils.isEmpty(nonRebatePrize)) {
+                            float nonF = Float.parseFloat(nonRebatePrize);
+                            rebateData.set(NumberUtils.formatDown(nonF, 3));
+                        } else {
+                            rebateData.set("");
+                        }
+                    } else {
+                        if (!TextUtils.isEmpty(rebatePrize)) {
+                            float rF = Float.parseFloat(rebatePrize);
+                            rebateData.set(NumberUtils.formatDown(rF, 3));
+                        } else {
+                            rebateData.set("");
+                        }
+                    }
                 }
             }
         }
