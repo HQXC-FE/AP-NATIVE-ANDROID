@@ -829,7 +829,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/layout_margin</item>
         <item name="android:layout_marginEnd">@dimen/layout_margin</item>
-        <item name="android:background">@mipmap/cm_bg_input_wht</item>
+        <item name="android:background">@drawable/cm_bg_input_wht</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:hint"></item>
         <item name="android:inputType">text</item>
@@ -865,7 +865,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textCursorDrawable">@drawable/edt_cursor</item>
-        <item name="android:background">@mipmap/cm_bg_input_wht</item>
+        <item name="android:background">@drawable/cm_bg_input_wht</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:hint"></item>
         <item name="android:inputType">numberDecimal</item>
@@ -1495,7 +1495,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/layout_margin</item>
         <item name="android:layout_marginEnd">@dimen/layout_margin</item>
-        <item name="android:background">@mipmap/cm_bg_input_wht</item>
+        <item name="android:background">@drawable/cm_bg_input_wht</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:hint"></item>
         <item name="android:inputType">text</item>
@@ -1516,7 +1516,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/layout_margin</item>
         <item name="android:layout_marginEnd">@dimen/layout_margin</item>
-        <item name="android:background">@mipmap/cm_bg_input_wht</item>
+        <item name="android:background">@drawable/cm_bg_input_wht</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:hint"></item>
         <item name="android:inputType">text</item>

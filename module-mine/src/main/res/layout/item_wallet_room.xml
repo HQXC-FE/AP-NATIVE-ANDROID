@@ -45,6 +45,7 @@
     <ImageView
         android:id="@+id/ivw_check"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="match_parent"
         android:src="@drawable/cm_ck2_selector" />
 

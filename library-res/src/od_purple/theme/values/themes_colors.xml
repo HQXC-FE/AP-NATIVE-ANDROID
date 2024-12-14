@@ -96,6 +96,7 @@
     <color name="buttonShadowColor">#1A8869E6</color>
     <color name="dialogBackgroundShadowColor">#0D724E7F</color>
     <color name="strokeColor">#9179E7</color>
+    <color name="strokeDialogColor">#DFDFDF</color>
     <color name="parlayLabelColor">#95845A</color>
     <color name="parlayBackgroundColor">#33C8A54E</color>
     <color name="channelTextSelectColor">#775493</color>
