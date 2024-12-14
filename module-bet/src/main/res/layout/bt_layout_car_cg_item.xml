@@ -60,6 +60,7 @@
                     android:layout_marginEnd="10dp"
                     android:paddingEnd="10dp"
                     tools:hint="限额5.00-2600"
+                    android:textColor="@color/clr_txt_white_cm"
                     android:background="@drawable/bt_bg_bt_editview"
                     android:inputType="number"
                     android:textColorHint="@color/bt_color_hine_color"
