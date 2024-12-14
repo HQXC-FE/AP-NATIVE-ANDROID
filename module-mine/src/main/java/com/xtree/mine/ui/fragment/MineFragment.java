@@ -79,6 +79,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             setChildClickable(binding.llMenuClient01, false);
             setChildClickable(binding.llMenuClient02, true);
             setChildClickable(binding.llMenuClient03, true);
+            binding.tvwTransRecord.setVisibility(View.VISIBLE);
         } else {
             binding.ivwSetting.setClickable(true);
             binding.ivwMsg.setClickable(true);
@@ -108,6 +109,18 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                 binding.llMenu2.setVisibility(View.GONE);
                 binding.llMenu3.setVisibility(View.VISIBLE);
             }
+            if (mProfileVo !=null)
+            {
+                //usertype = 0 显示 不为0就都隐藏
+                if (mProfileVo.usertype == 0){
+                    binding.tvwTransRecord.setVisibility(View.VISIBLE);
+                }else {
+                    binding.tvwTransRecord.setVisibility(View.GONE);
+                }
+            }else{
+                binding.tvwTransRecord.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 
