@@ -69,6 +69,7 @@ public class RechargeOrderWebDialog extends BottomPopupView {
         binding.tvwMaxExpireTime.setText(HtmlCompat.fromHtml(txt, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         binding.tvwCopyMoney.setOnClickListener(v -> copy(mRechargePayVo.money));
+        binding.tvwCopy.setOnClickListener(v -> copy(mRechargePayVo.qrcodeurl));
         binding.tvwOk.setOnClickListener(v -> dismiss());
         binding.tvwShowPay.setOnClickListener(v -> showTipDialog());
 
