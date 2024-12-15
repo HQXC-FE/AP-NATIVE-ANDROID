@@ -4,6 +4,7 @@ import com.xtree.base.utils.AppUtil;
 
 import io.reactivex.subscribers.DisposableSubscriber;
 import me.xtree.mvvmhabit.http.PMBaseResponse;
+import me.xtree.mvvmhabit.http.PMCacheResponse;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -13,23 +14,31 @@ public abstract class PMHttpCallBack<T> extends DisposableSubscriber<T> {
 
     @Override
     public void onNext(T o) {
-
-        if (!(o instanceof PMBaseResponse)) {
+        if (!(o instanceof PMBaseResponse) && !(o instanceof PMCacheResponse)) {
             KLog.w("json is not normal");
             onResult(o);
             return;
         }
-        PMBaseResponse baseResponse = (PMBaseResponse) o;
-        ResponseThrowable ex = new ResponseThrowable(baseResponse.getCode(), baseResponse.getMsg());
+
+        if (o instanceof PMBaseResponse) {
+            handleResponse((PMBaseResponse) o);
+        } else if (o instanceof PMCacheResponse) {
+            handleCacheResponse((PMCacheResponse) o);
+        }
+    }
+
+    // 处理 PMBaseResponse 的通用逻辑
+    private void handleResponse(PMBaseResponse baseResponse) {
         int code = baseResponse.getCode();
+        ResponseThrowable ex = new ResponseThrowable(code, baseResponse.getMsg());
+
         switch (code) {
             case PMHttpCallBack.CodeRule.CODE_0:
-
-                //请求成功, 正确的操作方式
+                // 请求成功, 正确的操作方式
                 onResult((T) baseResponse.getData());
                 break;
-            case PMHttpCallBack.CodeRule.CODE_401013://账号已登出，请重新登录
-            case PMHttpCallBack.CodeRule.CODE_401026://账号已登出，请重新登录
+            case PMHttpCallBack.CodeRule.CODE_401013: // 账号已登出，请重新登录
+            case PMHttpCallBack.CodeRule.CODE_401026: // 账号已登出，请重新登录
             case PMHttpCallBack.CodeRule.CODE_400467:
             case PMHttpCallBack.CodeRule.CODE_401038:
             case PMHttpCallBack.CodeRule.CODE_400524:
@@ -37,6 +46,7 @@ public abstract class PMHttpCallBack<T> extends DisposableSubscriber<T> {
             case PMHttpCallBack.CodeRule.CODE_408028:
                 onError(ex);
                 break;
+            // 错误码处理集中在一个范围
             case PMHttpCallBack.CodeRule.CODE_400489:
             case PMHttpCallBack.CodeRule.CODE_400492:
             case PMHttpCallBack.CodeRule.CODE_400496:
@@ -44,7 +54,6 @@ public abstract class PMHttpCallBack<T> extends DisposableSubscriber<T> {
             case PMHttpCallBack.CodeRule.CODE_400522:
             case PMHttpCallBack.CodeRule.CODE_400528:
             case PMHttpCallBack.CodeRule.CODE_400529:
-
             case PMHttpCallBack.CodeRule.CODE_400493:
             case PMHttpCallBack.CodeRule.CODE_400494:
             case PMHttpCallBack.CodeRule.CODE_400500:
@@ -58,6 +67,50 @@ public abstract class PMHttpCallBack<T> extends DisposableSubscriber<T> {
                 break;
             default:
                 ToastUtils.showShort(baseResponse.getMsg());
+                break;
+        }
+    }
+
+    // 处理 PMCacheResponse 的通用逻辑
+    private void handleCacheResponse(PMCacheResponse cacheResponse) {
+        int code = cacheResponse.getData().getCode();
+        ResponseThrowable ex = new ResponseThrowable(code, cacheResponse.getMessage());
+
+        switch (code) {
+            case PMCacheHttpCallBack.CodeRule.CODE_0:
+                // 请求成功, 正确的操作方式
+                onResult((T) cacheResponse.getData().getData());
+                break;
+            case PMHttpCallBack.CodeRule.CODE_401013: // 账号已登出，请重新登录
+            case PMHttpCallBack.CodeRule.CODE_401026: // 账号已登出，请重新登录
+            case PMHttpCallBack.CodeRule.CODE_400467:
+            case PMHttpCallBack.CodeRule.CODE_401038:
+            case PMHttpCallBack.CodeRule.CODE_400524:
+            case PMHttpCallBack.CodeRule.CODE_400527:
+            case PMHttpCallBack.CodeRule.CODE_408028:
+                onError(ex);
+                break;
+            // 错误码处理集中在一个范围
+            case PMHttpCallBack.CodeRule.CODE_400489:
+            case PMHttpCallBack.CodeRule.CODE_400492:
+            case PMHttpCallBack.CodeRule.CODE_400496:
+            case PMHttpCallBack.CodeRule.CODE_400503:
+            case PMHttpCallBack.CodeRule.CODE_400522:
+            case PMHttpCallBack.CodeRule.CODE_400528:
+            case PMHttpCallBack.CodeRule.CODE_400529:
+            case PMHttpCallBack.CodeRule.CODE_400493:
+            case PMHttpCallBack.CodeRule.CODE_400494:
+            case PMHttpCallBack.CodeRule.CODE_400500:
+            case PMHttpCallBack.CodeRule.CODE_400501:
+            case PMHttpCallBack.CodeRule.CODE_400525:
+            case PMHttpCallBack.CodeRule.CODE_400531:
+            case PMHttpCallBack.CodeRule.CODE_400537:
+            case PMHttpCallBack.CodeRule.CODE_402038:
+                ex.code = PMHttpCallBack.CodeRule.CODE_10000001;
+                onError(ex);
+                break;
+            default:
+                ToastUtils.showShort(cacheResponse.getMessage());
                 break;
         }
     }
