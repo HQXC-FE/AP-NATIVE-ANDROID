@@ -40,7 +40,7 @@ public class EntryRule {
         EndingRules.addRules(rules);
     }
 
-    public void startEngine(RulesEntryData rulesEntryData) {
+    public HashMap<String, String> startEngine(RulesEntryData rulesEntryData) {
         facts = new Facts();
         Map<String, String> currentCategory = new HashMap<>();
         Map<String, Object> currentMethod = new HashMap<>();
@@ -60,6 +60,8 @@ public class EntryRule {
 
         // currentMethod.methodid
         currentMethod.put("methodid", rulesEntryData.getCurrentMethod().getMethodid());
+        // currentMethod.menuid
+        currentMethod.put("menuid", rulesEntryData.getCurrentMethod().getMenuid());
         // currentMethod.lotteryId
         currentMethod.put("lotteryId", rulesEntryData.getCurrentMethod().getLotteryId());
         // currentMethod.name
@@ -68,8 +70,6 @@ public class EntryRule {
         currentMethod.put("originalName", rulesEntryData.getCurrentMethod().getOriginalName());
         // currentMethod.cate_title
         currentMethod.put("cate_title", rulesEntryData.getCurrentMethod().getCateTitle());
-        // currentMethod.categoryName
-        currentMethod.put("categoryName", rulesEntryData.getCurrentMethod().getCateTitle());
         // currentMethod.desc
         currentMethod.put("desc", rulesEntryData.getCurrentMethod().getDesc());
         // currentMethod.show_str
@@ -145,7 +145,8 @@ public class EntryRule {
         //bet.poschoose
         bet.put("poschoose", null);
 
-        facts.put("lotteryType", rulesEntryData.getType());
+        //facts.put("lotteryType", rulesEntryData.getType());
+        facts.put("lotteryType", "ssc");
         facts.put("currentCategory", currentCategory);
         facts.put("currentMethod", currentMethod);
         facts.put("bet", bet);
@@ -159,5 +160,7 @@ public class EntryRule {
 
         // enter the rules
         rulesEngine.fire(rules, facts);
+
+        return facts.get("done");
     }
 }

@@ -26,8 +26,8 @@ public class PreserveOriginalFormatRule {
 
     @Action
     public void then(Facts facts) {
-        Map<String, List<String>> bet = facts.get("bet");
-        List<String> betCodes = bet.get("codes");
+        Map<String, Object> bet = facts.get("bet");
+        Object betCodes = bet.get("codes");
         facts.put("formatCodes", betCodes);  // 直接保持原有格式
     }
 }

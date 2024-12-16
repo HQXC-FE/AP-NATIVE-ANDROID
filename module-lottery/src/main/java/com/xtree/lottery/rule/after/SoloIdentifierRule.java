@@ -36,7 +36,7 @@ public class SoloIdentifierRule {
 
         Map<String, List<Boolean>> bet = facts.get("bet");
         List<Boolean> posChoose = bet.get("posChoose");
-        List<List<String>> formatCodes = facts.get("formatCodes");
+        List<Object> formatCodes = facts.get("formatCodes");
 
         boolean solo = false;
         int positionLength = 0;
@@ -48,9 +48,15 @@ public class SoloIdentifierRule {
                 }
             }
         } else if (formatCodes != null) {
-            for (List<String> code : formatCodes) {
-                if (code.size() > 0) {
-                    positionLength++;
+            if (formatCodes instanceof List) {
+                for (Object code : formatCodes) {
+                    if (code instanceof String) {
+                        positionLength++;
+                    } else {
+                        if (((List<String>) code).size() > 0) {
+                            positionLength++;
+                        }
+                    }
                 }
             }
         }

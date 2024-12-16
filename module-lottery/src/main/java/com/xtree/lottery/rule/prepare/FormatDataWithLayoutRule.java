@@ -32,22 +32,25 @@ public class FormatDataWithLayoutRule {
         Map<String, Object> currentMethod = facts.get("currentMethod");
         Map<String, Object> selectArea = (Map<String, Object>) currentMethod.get("selectarea");
         List<Map<String, Object>> layout = (List<Map<String, Object>>) selectArea.get("layout");
-        Map<String, List<List<String>>> bet = facts.get("bet");
-        List<List<String>> betCodes = bet.get("codes");
-        List<List<String>> formatCodes = new ArrayList<>();
+        Map<String, List<Object>> bet = facts.get("bet");
+        List<Object> betCodes = bet.get("codes");
+        List<Object> formatCodes = new ArrayList<>();
 
         // 遍历布局，根据 place 将代码分组到 formatCodes 中
         for (int index = 0; index < layout.size(); index++) {
             Map<String, Object> item = layout.get(index);
             Integer place = Integer.parseInt((String) item.get("place"));
 
-            // 确保 place 对应的列表已初始化
-            while (formatCodes.size() <= place) {
-                formatCodes.add(new ArrayList<>());
-            }
-
             // 将 bet.codes[index] 的内容追加到对应 place 的列表中
-            formatCodes.get(place).addAll(betCodes.get(index));
+            if (betCodes.get(0) instanceof String) {
+                formatCodes.add(betCodes.get(index));
+            } else {
+                // 确保 place 对应的列表已初始化
+                while (formatCodes.size() <= place) {
+                    formatCodes.add(new ArrayList<>());
+                }
+                ((List<String>) formatCodes.get(place)).addAll((List<String>) betCodes.get(index));
+            }
         }
         // 将格式化后的数据存入 facts
         facts.put("formatCodes", formatCodes);

@@ -48,10 +48,21 @@ public class TimesChosenRule {
 
         // 计算倍数逻辑
         int finalTimes = times;
-        int totalSum = formatCodes.stream()
-                .filter(code -> !code.isEmpty())
-                .mapToInt(code -> code.size() * finalTimes)
-                .sum();
+        int totalSum = 0;
+
+        if (formatCodes instanceof List) {
+            List<?> codesList = formatCodes;
+            if (!codesList.isEmpty() && codesList.get(0) instanceof String) {
+                // 处理 List<String>
+                totalSum = codesList.size() * finalTimes;
+            } else if (!codesList.isEmpty() && codesList.get(0) instanceof List) {
+                // 处理 List<List<String>>
+                totalSum = codesList.stream()
+                        .filter(item -> item instanceof List && !((List<?>) item).isEmpty())
+                        .mapToInt(item -> ((List<?>) item).size() * finalTimes)
+                        .sum();
+            }
+        }
 
         facts.put("num", totalSum);
     }

@@ -535,7 +535,7 @@ public class MenuMethodsResponse {
                          * rate
                          */
                         @SerializedName("rate")
-                        private int rate;
+                        private float rate;
 
                         public int getModeid() {
                             return modeid;
@@ -553,11 +553,11 @@ public class MenuMethodsResponse {
                             this.name = name;
                         }
 
-                        public int getRate() {
+                        public float getRate() {
                             return rate;
                         }
 
-                        public void setRate(int rate) {
+                        public void setRate(float rate) {
                             this.rate = rate;
                         }
                     }
