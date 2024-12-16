@@ -86,10 +86,32 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
     private final Observer<Boolean> prizeObserver = new Observer<Boolean>() {
         @Override
         public void onChanged(Boolean aBoolean) {
+
             if (aBoolean) {
                 prizeData.setValue(prizeMap.get(1));
+                //切换返水设置时修改赔率
+                if (currentBetModel.getValue() != null && currentBetModel.getValue().getHandicapMethodData() != null) {
+                    if (currentBetModel.getValue().getHandicapMethodData().getGroups() != null) {
+                        List<HandicapResponse.DataDTO.GroupsDTO> groups = currentBetModel.getValue().getHandicapMethodData().getGroups();
+                        for (HandicapResponse.DataDTO.GroupsDTO group : groups) {
+                            for (HandicapResponse.DataDTO.GroupsDTO.CodesDTO code : group.getCodes()) {
+                                code.setRebate(false);
+                            }
+                        }
+                    }
+                }
             } else {
                 prizeData.setValue(prizeMap.get(0));
+                if (currentBetModel.getValue() != null && currentBetModel.getValue().getHandicapMethodData() != null) {
+                    if (currentBetModel.getValue().getHandicapMethodData().getGroups() != null) {
+                        List<HandicapResponse.DataDTO.GroupsDTO> groups = currentBetModel.getValue().getHandicapMethodData().getGroups();
+                        for (HandicapResponse.DataDTO.GroupsDTO group : groups) {
+                            for (HandicapResponse.DataDTO.GroupsDTO.CodesDTO code : group.getCodes()) {
+                                code.setRebate(true);
+                            }
+                        }
+                    }
+                }
             }
         }
     };
@@ -121,6 +143,15 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
 
         for (HandicapResponse.DataDTO handicapMethodsDatum : handicapMethodsData) {
             String title = handicapMethodsDatum.getCategory();
+
+            //设置赔率
+            if (handicapMethodsDatum.getGroups() != null) {
+                for (HandicapResponse.DataDTO.GroupsDTO group : handicapMethodsDatum.getGroups()) {
+                    for (HandicapResponse.DataDTO.GroupsDTO.CodesDTO code : group.getCodes()) {
+                        code.setRebate(Boolean.FALSE.equals(prizeSwitchData.getValue()));
+                    }
+                }
+            }
             LotteryBetsModel lotteryBetsModel = new LotteryBetsModel();
             lotteryBetsModel.setHandicapMethodData(handicapMethodsDatum);
             lotteryBetsModel.setTitle(title);
@@ -257,6 +288,14 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
         LotteryBetsModel lotteryBetsModel = betModels.get(tab.getPosition());
         lotteryBetsModel.setPosition(tab.getPosition());
         currentBetModel.setValue(lotteryBetsModel);
+
+        //切换玩法时根据返水设置修改赔率
+        Boolean prizeSwitchDataValue = prizeSwitchData.getValue();
+        for (HandicapResponse.DataDTO.GroupsDTO group : lotteryBetsModel.getHandicapMethodData().getGroups()) {
+            for (HandicapResponse.DataDTO.GroupsDTO.CodesDTO code : group.getCodes()) {
+                code.setRebate(Boolean.FALSE.equals(prizeSwitchDataValue));
+            }
+        }
     }
 
     @Override

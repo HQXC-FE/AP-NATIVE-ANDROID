@@ -68,7 +68,14 @@ public class BetHandicap1ViewModel {
                     TextView odd = labelView.findViewById(R.id.label_odd);
 
                     name.setText(code.getName());
-                    odd.setText(code.getNonRebatePrize());
+                    odd.setText(code.rebateData.get());
+
+                    code.rebateData.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+                        @Override
+                        public void onPropertyChanged(Observable sender, int propertyId) {
+                            odd.setText(code.rebateData.get());
+                        }
+                    });
 
                     code.isChecked.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
                         @Override

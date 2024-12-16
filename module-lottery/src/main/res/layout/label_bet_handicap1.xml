@@ -32,15 +32,19 @@
 
             <TextView
                 android:id="@+id/label_odd"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="9.800"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/lt_color_text6"
-                android:gravity="center"
+                android:autoSizeMaxTextSize="14sp"
+                android:autoSizeMinTextSize="8sp"
+                android:lines="1"
+                android:gravity="center|end"
                 android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"/>
+                android:layout_alignParentEnd="true"
+                android:layout_toEndOf="@id/label_name"/>
 
         </RelativeLayout>
     </com.lihang.ShadowLayout>
