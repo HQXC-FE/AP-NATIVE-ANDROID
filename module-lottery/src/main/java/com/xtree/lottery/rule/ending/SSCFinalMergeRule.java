@@ -107,34 +107,50 @@ public class SSCFinalMergeRule {
         forDisplay.put("minPrize", facts.get("minPrize"));
         forDisplay.put("singleDesc", facts.get("singleDesc"));
 
+        // 处理不同类型的 codes 拼接逻辑
+        String finalCodes = "";
         // Generate codes for display
         if (List.of("input", "box").contains(((Map<String, String>) currentMethod.get("selectarea")).get("type"))) {
-            forDisplay.put("codes", betCodes.stream()
+            finalCodes = betCodes.stream()
                     .map(item -> String.join(sortSplit, item))
-                    .collect(Collectors.joining((String) currentMethod.get("code_sp"))));
+                    .collect(Collectors.joining((String) currentMethod.getOrDefault("code_sp", ",")));
         } else {
+            // 如果类型不是 "input" 或 "box"，按照 show_str 和数组进行对应
             List<String> displayCodes = new ArrayList<>();
             String showStr = (String) currentMethod.get("show_str");
             List<String> showStrSplit = Arrays.asList(showStr.split(","));
             int codeIndex = 0;
-            for (int i = 0; i < showStrSplit.size(); i++) {
-                if ("X".equals(showStrSplit.get(i))) {
-                    displayCodes.add(betCodes.get(codeIndex++));
+
+            for (String item : showStrSplit) {
+                if ("X".equals(item)) {
+                    if (codeIndex < betCodes.size()) {
+                        Object betCode = betCodes.get(codeIndex++);
+                        if (betCode instanceof List) {
+                            // 如果是 List<String>，拼接成一个字符串
+                            List<String> innerList = (List<String>) betCode;
+                            displayCodes.add(String.join("", innerList));
+                        } else if (betCode instanceof String && !((String) betCode).isEmpty()) {
+                            // 如果是 String，直接添加
+                            displayCodes.add(((String) betCode).replace(",", ""));
+                        } else {
+                            displayCodes.add("-");
+                        }
+                    } else {
+                        displayCodes.add("-");
+                    }
                 } else {
-                    displayCodes.add(showStrSplit.get(i));
+                    // 非 "X" 字符直接添加到 displayCodes
+                    displayCodes.add(item);
                 }
             }
-            String codeSp = currentMethod.get("code_sp") != null && !" ".equals(currentMethod.get("code_sp"))
-                    ? (String) currentMethod.get("code_sp")
-                    : ",";
-            forDisplay.put("codes", String.join(codeSp, displayCodes));
+
+            // 根据 code_sp 拼接最终结果
+            String codeSp = (String) currentMethod.getOrDefault("code_sp", ",");
+            finalCodes = String.join(codeSp.isBlank() ? "," : codeSp, displayCodes);
         }
 
-        // Translate codes
-        List<String> translatedCodes = Arrays.stream(((String) forDisplay.get("codes")).split(","))
-                .map(item -> translate(item))  // Replace `translate(item)` with your actual translation function
-                .collect(Collectors.toList());
-        forDisplay.put("codes", String.join(",", translatedCodes));
+        // 更新 forDisplay 的 codes 字段
+        forDisplay.put("codes", finalCodes);
 
         // Add description to submission object
         forBet.put("desc", (String) forDisplay.get("methodName") + forDisplay.get("codes"));
