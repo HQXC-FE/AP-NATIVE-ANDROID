@@ -14,23 +14,24 @@
         android:src="@drawable/hm_img_room"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@mipmap/hm_gm_ty_01" />
+        tools:src="@drawable/hm_gm_ty_01" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_fc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="20dp"
         tools:visibility="visible">
 
         <ImageView
             android:id="@+id/iv_fc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/hm_bt_fast"
+            android:background="@drawable/hm_bt_fast"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

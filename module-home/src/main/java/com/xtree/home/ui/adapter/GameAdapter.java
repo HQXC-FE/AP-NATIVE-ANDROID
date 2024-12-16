@@ -173,7 +173,7 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
         boolean isFast = SPUtils.getInstance().getBoolean(key, true);
         if (isFast) {
             //如果是极速版
-            binding.ivFc.setBackgroundResource(R.mipmap.hm_bt_fast);
+            binding.ivFc.setBackgroundResource(R.drawable.hm_bt_fast);
             binding.ivwImg.setOnClickListener(view -> jump(vo, true));
             binding.ivLeft.setOnClickListener(null);
             binding.ivRight.setOnClickListener(view -> {
@@ -183,7 +183,7 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
             });
         } else {
             //普通版
-            binding.ivFc.setBackgroundResource(R.mipmap.hm_bt_common);
+            binding.ivFc.setBackgroundResource(R.drawable.hm_bt_fast);
             binding.ivwImg.setOnClickListener(view -> jump(vo, false));
             binding.ivRight.setOnClickListener(null);
             binding.ivLeft.setOnClickListener(view -> {
