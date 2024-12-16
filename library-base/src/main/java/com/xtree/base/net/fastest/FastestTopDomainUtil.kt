@@ -22,6 +22,7 @@ import com.xtree.base.vo.TopSpeedDomain
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -70,6 +71,8 @@ class FastestTopDomainUtil private constructor() {
         @get:Synchronized
         var mIsFinish: Boolean = true
         val fastestDomain = SingleLiveData<TopSpeedDomain>()
+        //是否第一次测速
+        var isFirstTime: Boolean = true
         private lateinit var timerObservable: Observable<Long>
 
         val showTip = SingleLiveData<Boolean>()
@@ -149,16 +152,15 @@ class FastestTopDomainUtil private constructor() {
         }
     }
 
-
     private fun getFastestApiDomain(isThird: Boolean) {
 
-        apiScopeNet = scopeNet {
+        apiScopeNet = scopeNet(Dispatchers.IO) {
 
             // 并发请求本地配置的域名 命名参数 uid = "the fastest line" 用于库自动取消任务
             var curTime: Long = System.currentTimeMillis()
             val domainTasks = LineHelpUtil.makeUpApiListWithBMP(mCurApiDomainList).map { host ->
                 Get<Response>(host, block = {
-                //    setGroup(FASTEST_GOURP_NAME)
+//                    setGroup(FASTEST_GOURP_NAME)
                     FASTEST_BLOCK(this)
                 })
             }
@@ -172,14 +174,19 @@ class FastestTopDomainUtil private constructor() {
                         try {
                             val result = it.await()
                             mutex.withLock {
+
+                                if (isFirstTime) {
+                                    return@launch
+                                }
+
                                 val fullUrl = result.request.url.toString()
                                 CfLog.i("line make api get + $fullUrl")
                                 var topSpeedDomain = TopSpeedDomain()
                                 var url = ""
-                                if(fullUrl.contains(FASTEST_API)){
+                                if (fullUrl.contains(FASTEST_API)) {
                                     url = fullUrl.replace(FASTEST_API, "")
                                     topSpeedDomain.type = 0
-                                }else if(fullUrl.contains(FASTEST_API_BMP)){
+                                } else if (fullUrl.contains(FASTEST_API_BMP)) {
                                     url = LineHelpUtil.removePointBmpAndAfter(fullUrl)
                                     topSpeedDomain.type = 1
                                 }
@@ -188,7 +195,7 @@ class FastestTopDomainUtil private constructor() {
                                 topSpeedDomain.speedScore =
                                     FastestMonitorCache.getFastestScore(topSpeedDomain)
                                 CfLog.e("line make 域名：api------$url---${topSpeedDomain.speedSec}")
-                          //      mCurApiDomainList.remove(url)
+                                //      mCurApiDomainList.remove(url)
 
                                 //debug模式 显示所有测速线路 release模式 只显示4条
                                 if (mTopSpeedDomainList.size < 4 || BuildConfig.DEBUG) {
@@ -237,6 +244,14 @@ class FastestTopDomainUtil private constructor() {
                 jobs.joinAll()
                 mIsFinish = true
 
+                //第一次测速初始化线程池，不加入计算
+                if (isFirstTime) {
+                    isFirstTime = false
+                    delay(200)
+                    getFastestApiDomain(true)
+                    return@scopeNet
+                }
+
                 //如果请求后没有可用测速结果则测速失败
                 if (mTopSpeedDomainList.size < 4) {
                     EventBus.getDefault()
@@ -260,9 +275,14 @@ class FastestTopDomainUtil private constructor() {
                     val check = FastestMonitorCache.check(it)
                     if (check) {
                         val infoList =
-                            listOf<String>(it.url ?: "", it.speedSec.toString(),
-                                dateFormat,it.speedScore.toString(),it.isRecommend.toString()
-                                ,it.speedSecBmp.toString())
+                            listOf<String>(
+                                it.url ?: "",
+                                it.speedSec.toString(),
+                                dateFormat,
+                                it.speedScore.toString(),
+                                it.isRecommend.toString(),
+                                it.speedSecBmp.toString()
+                            )
                         highSpeedList.add(infoList)
                         FastestMonitorCache.put(it.apply { lastUploadMonitor = curTime })
                     }
@@ -319,7 +339,7 @@ class FastestTopDomainUtil private constructor() {
         }
         if (index < mThirdDomainList.size && !TextUtils.isEmpty(mThirdDomainList[index])) {
 
-            thirdApiScopeNet = scopeNet {
+            thirdApiScopeNet = scopeNet(Dispatchers.IO) {
 
                 try {
                     val data = Get<String>(mThirdDomainList[index], block = FASTEST_BLOCK).await()

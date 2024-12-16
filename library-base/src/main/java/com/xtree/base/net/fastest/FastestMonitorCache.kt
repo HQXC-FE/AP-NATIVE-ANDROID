@@ -3,7 +3,6 @@ package com.xtree.base.net.fastest
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.TypeReference
 import com.xtree.base.global.SPKeyGlobal
-import com.xtree.base.utils.CfLog
 import com.xtree.base.vo.TopSpeedDomain
 import me.xtree.mvvmhabit.utils.SPUtils
 
@@ -29,6 +28,8 @@ object FastestMonitorCache {
             }
         }
 
+    var app_response_speed_max = 0
+
     init {
         val fastest_monitor_timeout =
             SPUtils.getInstance().getInt(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT)
@@ -41,6 +42,8 @@ object FastestMonitorCache {
             scoreCacheList = JSON.parseObject<List<TopSpeedDomain>>(fastest_score_cache,
                 object : TypeReference<List<TopSpeedDomain>?>() {}).toMutableList();
         }
+
+        app_response_speed_max = SPUtils.getInstance().getInt(SPKeyGlobal.APP_Response_Speed_Max)
     }
 
     fun put(domain: TopSpeedDomain) {
@@ -83,7 +86,6 @@ object FastestMonitorCache {
 
     fun getFastestScore(domain: TopSpeedDomain): Long {
 
-        val app_response_speed_max = SPUtils.getInstance().getInt(SPKeyGlobal.APP_Response_Speed_Max)
    //     CfLog.i("****** SettingsVo app_response_speed_max " + app_response_speed_max)
 
         scoreCacheList.findLast {
