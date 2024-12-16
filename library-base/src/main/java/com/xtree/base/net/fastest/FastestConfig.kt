@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit
 
 //测速API
 const val FASTEST_API = "/?speedTest=1"
+const val FASTEST_API_BMP = "/point.bmp"
 const val FASTEST_H5_API = "/#/activity"
 const val FASTEST_CONFIG_API = "/xc/app_config.json"
 const val FASTEST_MONITOR_API = "/api/sports/speedmonitor"
