@@ -4,7 +4,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@mipmap/cm_bg_page"
+        android:background="@color/bt_bg_shape_alpha"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/layout_margin"
-                    android:drawableStart="@mipmap/me_wallet_yuan_icon"
+                    android:drawableStart="@drawable/me_wallet_yuan_icon"
                     android:drawablePadding="4dp"
                     android:text="@string/me_wallet_amount"
                     android:textColor="@color/black"
@@ -105,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:src="@mipmap/me_wallet_refresh_icon"
+                    android:src="@drawable/me_wallet_refresh_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tvw_balance"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -127,8 +127,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="@dimen/layout_margin"
-                android:drawableStart="@mipmap/me_wallet_lock"
-                android:drawableEnd="@mipmap/mine_wallet_hints"
+                android:drawableStart="@drawable/me_wallet_lock"
+                android:drawableEnd="@drawable/mine_wallet_hints"
                 android:drawablePadding="4dp"
                 android:gravity="center"
                 android:text="@string/me_wallet_amount"
@@ -147,7 +147,7 @@
                 <TextView
                     android:id="@+id/tvw_deposit"
                     style="@style/style_wallet_menu"
-                    android:drawableTop="@mipmap/me_wallet_save_icon"
+                    android:drawableTop="@drawable/me_wallet_save_icon"
                     android:text="@string/me_wallet_save" />
 
                 <TextView style="@style/style_wallet_space" />
@@ -155,7 +155,7 @@
                 <TextView
                     android:id="@+id/tvw_trans"
                     style="@style/style_wallet_menu"
-                    android:drawableTop="@mipmap/me_wallet_transfer_icon"
+                    android:drawableTop="@drawable/me_wallet_transfer_icon"
                     android:text="@string/me_wallet_transfer" />
 
                 <TextView style="@style/style_wallet_space" />
@@ -163,7 +163,7 @@
                 <TextView
                     android:id="@+id/tvw_withdraw"
                     style="@style/style_wallet_menu"
-                    android:drawableTop="@mipmap/me_wallet_withdraw_icon"
+                    android:drawableTop="@drawable/me_wallet_withdraw_icon"
                     android:text="@string/me_wallet_withdraw" />
 
                 <TextView style="@style/style_wallet_space" />
@@ -171,7 +171,7 @@
                 <TextView
                     android:id="@+id/tvw_mgmt"
                     style="@style/style_wallet_menu"
-                    android:drawableTop="@mipmap/me_wallet_account_icon"
+                    android:drawableTop="@drawable/me_wallet_account_icon"
                     android:text="@string/me_wallet_account" />
 
                 <TextView style="@style/style_wallet_space" />
@@ -179,7 +179,7 @@
                 <TextView
                     android:id="@+id/tvw_record"
                     style="@style/style_wallet_menu"
-                    android:drawableTop="@mipmap/me_wallet_record_icon"
+                    android:drawableTop="@drawable/me_wallet_record_icon"
                     android:text="@string/me_wallet_record" />
             </LinearLayout>
         </LinearLayout>
