@@ -160,7 +160,7 @@ public interface ApiService {
      */
     @POST("/api/sports/obg/forward?api=/yewu11/v1/m/matchesPagePB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> pmMatchesPagePB(@Body PMListReq pmListReq);
+    Flowable<PMCacheResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> pmMatchesPagePB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表 分页获取非滚球赛事信息
@@ -192,7 +192,7 @@ public interface ApiService {
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/matchesPagePB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> pmxcMatchesPagePB(@Body PMListReq pmListReq);
+    Flowable<PMCacheResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> pmxcMatchesPagePB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表 分页获取非滚球赛事信息
