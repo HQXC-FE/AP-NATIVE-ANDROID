@@ -94,7 +94,8 @@ public class ExceptionHandle {
             ex.message = "未知错误";
             // return ex;
         }
-        ex.message = ex.message + " [" + ex.getMessage() + "]";
+        //仅展示中文错误即可，所以注释下面拼接错误，ikun定的方案
+        //ex.message = ex.message + " [" + ex.getMessage() + "]";
         return ex;
     }
 
