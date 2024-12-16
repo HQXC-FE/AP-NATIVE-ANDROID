@@ -64,8 +64,6 @@ public class CgOddLimitSecAdapter extends CgOddLimitView.Adapter<CgOddLimit> {
         if (cgOddLimit == null) {
             return;
         }
-        System.out.println("=============== getItemCount() ================"+getItemCount());
-        System.out.println("=============== cgOddLimit.getCgName() ================"+cgOddLimit.getCgName());
         if (getItemCount() > 1 || !TextUtils.equals("单关", cgOddLimit.getCgName())) { // 串关
 
             itemView.findViewById(R.id.csl_cg_dan).setVisibility(View.GONE);

@@ -3,6 +3,7 @@ package com.xtree.bet.ui.viewmodel.fb;
 
 import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FB;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 
@@ -17,6 +18,7 @@ import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.FBHttpCallBack;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.vo.FBService;
+import com.xtree.bet.bean.response.SportsCacheSwitchInfo;
 import com.xtree.bet.bean.response.fb.MatchInfo;
 import com.xtree.bet.bean.response.fb.PlayTypeInfo;
 import com.xtree.bet.bean.ui.Category;
@@ -62,7 +64,7 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
         Map<String, String> map = new HashMap<>();
         map.put("languageType", "CMN");
         map.put("matchId", String.valueOf(matchId));
-        Flowable flowable = createMatchDetailFlowable(map);
+        Flowable flowable = getMatchDetailFlowable(map);
         Disposable disposable = (Disposable) flowable
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
@@ -256,72 +258,95 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
         addSubscribe(disposable);
     }
 
+    private Flowable getMatchDetailFlowable(Map<String, String> map) {
+        Flowable flowable;
+        if(isUseCacheApiService(getSportCacheType())){
+            String token;
+            if(getSportCacheType().equals(SportCacheType.FB) ){
+                token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
+                map.put("_accessToken",token);
+                flowable = model.getBaseApiService().fbGetMatchDetail(map);
+            }else{
+                token = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_TOKEN);
+                map.put("_accessToken",token);
+                flowable = model.getBaseApiService().fbxcGetMatchDetail(map);
+            }
+        }else{
+            flowable = model.getApiService().getMatchDetail(map);
+        }
+
+        return flowable;
+    }
+
+    private boolean isUseCacheApiService(SportCacheType sportCacheType) {
+        if (sportCacheType.equals(SportCacheType.FB) || sportCacheType.equals(SportCacheType.FBXC)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     //获取接口类型
     private SportCacheType getSportCacheType() {
         // 获取平台和缓存数据
         String platform = SPUtils.getInstance().getString("KEY_PLATFORM", "");
         String json = SPUtils.getInstance().getString(SPKeyGlobal.SPORT_MATCH_CACHE, "");
 
+        // 如果平台或数据为空，直接返回 NONE
         if (TextUtils.isEmpty(platform) || TextUtils.isEmpty(json)) {
-            return SportCacheType.NONE;  // 如果平台或缓存数据为空，直接返回 NONE
-        }
-
-        Type typeToken = new TypeToken<Map<String, List<Integer>>>() {}.getType();
-        Map<String, List<Integer>> sportMatchCache = new Gson().fromJson(json, typeToken);
-
-        // 如果 sportMatchCache 为空或不包含指定平台，返回 NONE
-        if (sportMatchCache == null || !sportMatchCache.containsKey(platform)) {
             return SportCacheType.NONE;
         }
 
-        List<Integer> platformCache = sportMatchCache.get(platform);
+        // 解析缓存数据
+        Type typeToken = new TypeToken<SportsCacheSwitchInfo>() {}.getType();
+        SportsCacheSwitchInfo sportCacheSwitchInfo = new Gson().fromJson(json, typeToken);
 
-        // 检查缓存数据并根据条件返回结果
-        if (platformCache != null && platformCache.size() > 0 && platformCache.contains(9)) {
-            // 检查平台并返回相应的 SportCacheType
-            if (TextUtils.equals(platform, PLATFORM_PM)) {
-                return SportCacheType.PM;
-            } else {
-                return SportCacheType.PMXC;
+        // 如果解析结果为空，返回 NONE
+        if (sportCacheSwitchInfo == null) {
+            return SportCacheType.NONE;
+        }
+
+        // 获取用户 ID 和对应的 sportCacheList
+        String userID = SPUtils.getInstance().getString(SPKeyGlobal.USER_ID);
+        List<Integer> sportCacheList = getSportCacheListByPlatform(platform, sportCacheSwitchInfo);
+
+        // 如果用户列表为空，表示面向全部用户，进行相关检查
+        if (sportCacheSwitchInfo.getUsers().isEmpty()) {
+            //场馆数据为空
+            if (sportCacheList.isEmpty()) {
+                return SportCacheType.NONE;
+            }
+        } else {
+            // 如果用户列表不为空，检查当前用户是否在用户列表内
+            if (!sportCacheSwitchInfo.getUsers().contains(userID)) {
+                return SportCacheType.NONE;
             }
         }
 
-        return SportCacheType.NONE;
+        // 最终检查缓存数据并返回 SportCacheType
+        return getSportCacheTypeForPlatform(platform, sportCacheList);
     }
 
-    private Flowable createMatchDetailFlowable(Map<String, String> map) {
-        Flowable flowable = null;
-
-        SportCacheType sportCacheType = getSportCacheType();
-        switch (sportCacheType) {
-            case PM:
-                flowable = getFbMatchDetailFlowable(map);
-                break;
-            case PMXC:
-                flowable = getFbxcMatchDetailFlowable(map);
-                break;
-            default:
-                flowable = getDefaultMatchDetailFlowable(map);
-                break;
+    // 根据平台获取对应的 sportCacheList
+    private List<Integer> getSportCacheListByPlatform(String platform, SportsCacheSwitchInfo sportCacheSwitchInfo) {
+        if (TextUtils.equals(platform, PLATFORM_FB)) {
+            return sportCacheSwitchInfo.getFb();
+        } else {
+            return sportCacheSwitchInfo.getFbxc();
         }
-
-        return flowable;
     }
 
-    private Flowable getFbMatchDetailFlowable(Map<String, String> map) {
-        Flowable flowable = model.getBaseApiService().fbGetMatchDetail(map);
-        return flowable;
-    }
-
-    private Flowable getFbxcMatchDetailFlowable(Map<String, String> map) {
-        Flowable flowable = model.getBaseApiService().fbxcGetMatchDetail(map);
-
-        return flowable;
-    }
-
-    private Flowable getDefaultMatchDetailFlowable(Map<String, String> map) {
-        Flowable flowable = model.getApiService().getMatchDetail(map);
-        return flowable;
+    // 根据平台返回相应的 SportCacheType
+    private SportCacheType getSportCacheTypeForPlatform(String platform, List<Integer> sportCacheList) {
+        if (sportCacheList.contains(9)) {
+            // 如果缓存数据包含 9，根据平台返回对应的 SportCacheType
+            if (TextUtils.equals(platform, PLATFORM_FB)) {
+                return SportCacheType.FB;
+            } else {
+                return SportCacheType.FBXC;
+            }
+        }
+        return SportCacheType.NONE;
     }
 
 }
