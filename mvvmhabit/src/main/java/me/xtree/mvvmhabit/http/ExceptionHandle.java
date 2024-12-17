@@ -87,17 +87,19 @@ public class ExceptionHandle {
             // return ex;
         } else if (e instanceof HijackedException) {
             ex = new ResponseThrowable(e, ERROR.HIJACKED_ERROR, true);
-            ex.message = e.getMessage();
+            ex.message = "主机地址未知";
             return ex;
         } else {
             ex = new ResponseThrowable(e, ERROR.UNKNOWN);
             ex.message = "未知错误";
-            // return ex;
+            //return ex;
         }
         //仅展示中文错误即可，所以注释下面拼接错误，ikun定的方案
         //ex.message = ex.message + " [" + ex.getMessage() + "]";
         return ex;
     }
+
+
 
     /**
      * 约定异常
