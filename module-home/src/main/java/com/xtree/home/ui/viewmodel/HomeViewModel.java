@@ -111,7 +111,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         } else if (list.size() == 1) {
                             list.add(new BannersVo("default"));
                         }
-                        SPUtils.getInstance().put(SPKeyGlobal.HOME_BANNER_LIST, new Gson().toJson(list));
+                        //SPUtils.getInstance().put(SPKeyGlobal.HOME_BANNER_LIST, new Gson().toJson(list));
                         liveDataBanner.setValue(list);
                     }
 
@@ -682,19 +682,19 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public void readCache() {
         CfLog.i("******");
         Gson gson = new Gson();
-        String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_BANNER_LIST, "[]");
-        List list = gson.fromJson(json, new TypeToken<List<BannersVo>>() {
-        }.getType());
-        if (list.isEmpty()) {
-            // 没有数据时,banner会占满手机屏幕/白屏;加2条数据显示默认图片
-            list.add(new BannersVo("default"));
-            list.add(new BannersVo("default"));
-        } else if (list.size() == 1) {
-            list.add(new BannersVo("default"));
-        }
-        liveDataBanner.setValue(list);
+        //String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_BANNER_LIST, "[]");
+        //List list = gson.fromJson(json, new TypeToken<List<BannersVo>>() {
+        //}.getType());
+        //if (list.isEmpty()) {
+        //    // 没有数据时,banner会占满手机屏幕/白屏;加2条数据显示默认图片
+        //    list.add(new BannersVo("default"));
+        //    list.add(new BannersVo("default"));
+        //} else if (list.size() == 1) {
+        //    list.add(new BannersVo("default"));
+        //}
+        //liveDataBanner.setValue(list);
 
-        json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_NOTICE_LIST, "[]");
+        String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_NOTICE_LIST, "[]");
         List list2 = gson.fromJson(json, new TypeToken<List<NoticeVo>>() {
         }.getType());
         liveDataNotice.setValue(list2);

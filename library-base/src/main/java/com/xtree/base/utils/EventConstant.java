@@ -8,4 +8,5 @@ public class EventConstant {
     public static final String EVENT_LOG_OUT = "log_out";
     public static final String EVENT_UPLOAD_EXCEPTION = "upload_exception";
 
+    public static final String EVENT_CHANGE_URL_FANZHA_FINSH = "EVENT_CHANGE_URL_FANZHA_FINSH";
 }

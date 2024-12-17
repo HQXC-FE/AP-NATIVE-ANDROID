@@ -68,10 +68,11 @@ fun initNet() {
     okHttpClientBuilder.addInterceptor(
         LoggingInterceptor.Builder()//构建者模式
             .loggable(BuildConfig.DEBUG) //是否开启日志打印
-            .setLevel(Level.BODY) //打印的等级
+            .setLevel(Level.BASIC) //打印的等级  测速部分信息详细点
             .log(Platform.INFO) // 打印类型
-            .request("Request") // request的Tag
-            .response("Response")// Response的Tag
+            .ifFastRequest(true)
+            .request("ReqFast") // request的Tag  测速部分打自己的tag
+            .response("RepFast")// Response的Tag  测速部分打自己的tag
             .build()
     )
 //    okHttpClientBuilder.addInterceptor(Interceptor { chain ->
