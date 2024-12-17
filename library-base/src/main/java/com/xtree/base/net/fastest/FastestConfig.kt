@@ -4,10 +4,8 @@ import com.drake.net.NetConfig
 import com.drake.net.okhttp.trustSSLCertificate
 import com.drake.net.request.UrlRequest
 import com.xtree.base.BuildConfig
-import com.xtree.base.utils.StringUtils
 import me.xtree.mvvmhabit.http.interceptor.logging.Level
 import me.xtree.mvvmhabit.http.interceptor.logging.LoggingInterceptor
-import me.xtree.mvvmhabit.utils.Utils
 import okhttp3.ConnectionPool
 import okhttp3.Dispatcher
 import okhttp3.MediaType
@@ -28,6 +26,7 @@ import java.util.concurrent.TimeUnit
 
 //测速API
 const val FASTEST_API = "/?speedTest=1"
+const val FASTEST_API_BMP = "/point.bmp"
 const val FASTEST_H5_API = "/#/activity"
 const val FASTEST_CONFIG_API = "/xc/app_config.json"
 const val FASTEST_MONITOR_API = "/api/sports/speedmonitor"
@@ -40,12 +39,12 @@ const val FASTEST_GOURP_NAME_H5 = "fstestaRequestH5"
 //测速接口配置
 val FASTEST_BLOCK: (UrlRequest.() -> Unit) = {
     addHeader("App-RNID", "87jumkljo")
-    addHeader("Source", "9")
-    addHeader(
-        "app-version", StringUtils.getVersionName(
-            Utils.getContext()
-        )
-    )
+//    addHeader("Source", "9")
+//    addHeader(
+//        "app-version", StringUtils.getVersionName(
+//            Utils.getContext()
+//        )
+//    )
 }
 
 //测速URL

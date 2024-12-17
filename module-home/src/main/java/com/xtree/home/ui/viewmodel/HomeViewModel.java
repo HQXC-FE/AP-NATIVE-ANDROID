@@ -463,7 +463,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         SPUtils.getInstance().put(SPKeyGlobal.APP_Response_Speed_Max, vo.app_response_speed_max);
                         //设置测速扣除百分比
                         FastestMonitorCache.INSTANCE.setSPEED_CALCULATION(vo.app_response_speed_calculation);
-
+                        //设置测速显示上限
+                        FastestMonitorCache.INSTANCE.setApp_response_speed_max(vo.app_response_speed_max);
 
                         liveDataSettings.setValue(vo);
                     }
