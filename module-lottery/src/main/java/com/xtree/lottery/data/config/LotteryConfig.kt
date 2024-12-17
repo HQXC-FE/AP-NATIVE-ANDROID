@@ -23,6 +23,7 @@ data class Lottery(
     val alias: String,
     val type: String? = null,
     val link: Int,
+    val linkType: String,//linkType 分为 ssc   animate  lhc   三种类型
     val curmid: String? = null,
     val newWindow: Boolean? = null
 ) : Parcelable
@@ -37,6 +38,7 @@ val lotteries = arrayListOf(
                 alias = "hn5fc",
                 type = "hot",
                 link = R.mipmap.lottery_ssc_1,
+                linkType = "ssc"
                 curmid = "2309"
             ),
             Lottery(
@@ -45,6 +47,7 @@ val lotteries = arrayListOf(
                 alias = "jdcqssc",
                 type = "new",
                 link = R.mipmap.lottery_ssc_2,
+                linkType = "ssc"
                 curmid = "400204"
             ),
             Lottery(
@@ -53,6 +56,7 @@ val lotteries = arrayListOf(
                 alias = "cq5fc",
                 type = "new",
                 link = R.mipmap.lottery_ssc_3,
+                linkType = "ssc"
                 curmid = "399867"
             ),
             Lottery(
@@ -60,6 +64,7 @@ val lotteries = arrayListOf(
                 name = "重庆时时彩",
                 alias = "cqssc",
                 link = R.mipmap.lottery_ssc_4,
+                linkType = "ssc"
                 curmid = "50"
             ),
             Lottery(
@@ -67,6 +72,7 @@ val lotteries = arrayListOf(
                 name = "新疆时时彩",
                 alias = "xjssc",
                 link = R.mipmap.lottery_ssc_5,
+                linkType = "ssc"
                 curmid = "220"
             ),
             Lottery(
@@ -75,6 +81,7 @@ val lotteries = arrayListOf(
                 alias = "txwfc",
                 type = "new",
                 link = R.mipmap.lottery_ssc_6,
+                linkType = "ssc"
                 curmid = "399350"
             ),
             Lottery(
@@ -82,6 +89,7 @@ val lotteries = arrayListOf(
                 name = "泰国300秒",
                 alias = "tg300s",
                 link = R.mipmap.lottery_ssc_7,
+                linkType = "ssc"
                 curmid = "376050"
             ),
         ),
@@ -96,6 +104,7 @@ val lotteries = arrayListOf(
                 alias = "hn1fc",
                 type = "hot",
                 link = R.mipmap.lottery_ffc_1,
+                linkType = "ssc"
                 curmid = "19000"
             ),
             Lottery(
@@ -104,6 +113,7 @@ val lotteries = arrayListOf(
                 alias = "txffc",
                 type = "hot",
                 link = R.mipmap.lottery_ffc_2,
+                linkType = "ssc"
                 curmid = "338050"
             ),
             Lottery(
@@ -112,6 +122,7 @@ val lotteries = arrayListOf(
                 alias = "tx30s",
                 type = "new",
                 link = R.mipmap.lottery_ffc_3,
+                linkType = "ssc"
                 curmid = "364050"
             ),
             Lottery(
@@ -119,6 +130,7 @@ val lotteries = arrayListOf(
                 name = "腾讯2分彩(双)",
                 alias = "txssq",
                 link = R.mipmap.lottery_ffc_4,
+                linkType = "ssc"
                 curmid = "399200"
             ),
             Lottery(
@@ -126,6 +138,7 @@ val lotteries = arrayListOf(
                 name = "日本分分彩",
                 alias = "rbffc",
                 link = R.mipmap.lottery_ffc_5,
+                linkType = "ssc"
                 curmid = "352050"
             ),
             Lottery(
@@ -133,6 +146,7 @@ val lotteries = arrayListOf(
                 name = "西贡分分彩",
                 alias = "xgffc",
                 link = R.mipmap.lottery_ffc_6,
+                linkType = "ssc"
                 curmid = "355050"
             ),
             Lottery(
@@ -141,6 +155,7 @@ val lotteries = arrayListOf(
                 alias = "ynffc",
                 type = "new",
                 link = R.mipmap.lottery_ffc_7,
+                linkType = "ssc"
                 curmid = "358050"
             ),
             Lottery(
@@ -149,6 +164,7 @@ val lotteries = arrayListOf(
                 alias = "jnd30m",
                 type = "hot",
                 link = R.mipmap.lottery_ffc_8,
+                linkType = "ssc"
                 curmid = "341050"
             ),
             Lottery(
@@ -157,6 +173,7 @@ val lotteries = arrayListOf(
                 alias = "cqffc",
                 type = "new",
                 link = R.mipmap.lottery_ffc_9,
+                linkType = "ssc"
                 curmid = "399507"
             ),
             Lottery(
@@ -164,6 +181,7 @@ val lotteries = arrayListOf(
                 name = "腾讯2分彩(单)",
                 alias = "txdsq",
                 link = R.mipmap.lottery_ffc_10,
+                linkType = "ssc"
                 curmid = "399050"
             ),
             Lottery(
@@ -172,6 +190,7 @@ val lotteries = arrayListOf(
                 alias = "cq30s",
                 type = "new",
                 link = R.mipmap.lottery_ffc_11,
+                linkType = "ssc"
                 curmid = "361050"
             ),
             Lottery(
@@ -179,6 +198,7 @@ val lotteries = arrayListOf(
                 name = "奇趣分分",
                 alias = "sytxffc",
                 link = R.mipmap.lottery_ffc_12,
+                linkType = "ssc"
                 curmid = "400500"
             ),
             Lottery(
@@ -186,6 +206,7 @@ val lotteries = arrayListOf(
                 name = "瑞典1分彩",
                 alias = "rd1fc",
                 link = R.mipmap.lottery_ffc_13,
+                linkType = "ssc"
                 curmid = "314050"
             ),
             Lottery(
@@ -193,6 +214,7 @@ val lotteries = arrayListOf(
                 name = "瑞典2分彩",
                 alias = "rd2fc",
                 link = R.mipmap.lottery_ffc_14,
+                linkType = "ssc"
                 curmid = "317050"
             ),
             Lottery(
@@ -200,6 +222,7 @@ val lotteries = arrayListOf(
                 name = "泰国60秒",
                 alias = "tg60s",
                 link = R.mipmap.lottery_ffc_15,
+                linkType = "ssc"
                 curmid = "379050"
             ),
             Lottery(
@@ -207,6 +230,7 @@ val lotteries = arrayListOf(
                 name = "意昂" + "秒秒彩",
                 alias = "mmc",
                 link = R.mipmap.lottery_ffc_16,
+                linkType = "ssc"
                 curmid = "311700"
             ),
         )
@@ -220,6 +244,7 @@ val lotteries = arrayListOf(
                 alias = "bnbtcffc",
                 type = "new",
                 link = R.mipmap.lottery_xnbc_1,
+                linkType = "ssc"
                 curmid = "404075"
             ),
             Lottery(
@@ -228,6 +253,7 @@ val lotteries = arrayListOf(
                 alias = "bnbtcwfc",
                 type = "new",
                 link = R.mipmap.lottery_xnbc_2,
+                linkType = "ssc"
                 curmid = "404278"
             ),
             Lottery(
@@ -236,6 +262,7 @@ val lotteries = arrayListOf(
                 alias = "bnethffc",
                 type = "new",
                 link = R.mipmap.lottery_xnbc_3,
+                linkType = "ssc"
                 curmid = "404481"
             ),
             Lottery(
@@ -244,6 +271,7 @@ val lotteries = arrayListOf(
                 alias = "bnethwfc",
                 type = "new",
                 link = R.mipmap.lottery_xnbc_4,
+                linkType = "ssc"
                 curmid = "404684"
             ),
             Lottery(
@@ -252,6 +280,7 @@ val lotteries = arrayListOf(
                 alias = "hashffc",
                 type = "new",
                 link = R.mipmap.lottery_xnbc_5,
+                linkType = "ssc"
                 curmid = "405699"
             ),
             Lottery(
@@ -260,6 +289,7 @@ val lotteries = arrayListOf(
                 alias = "hashsfc",
                 type = "new",
                 link = R.mipmap.lottery_xnbc_6,
+                linkType = "ssc"
                 curmid = "405902"
             ),
             Lottery(
@@ -268,6 +298,7 @@ val lotteries = arrayListOf(
                 alias = "hashwfc",
                 type = "new",
                 link = R.mipmap.lottery_xnbc_7,
+                linkType = "ssc"
                 curmid = "406105"
             ),
         )
@@ -281,6 +312,7 @@ val lotteries = arrayListOf(
                 alias = "jnd11x5",
                 type = "hot",
                 link = R.mipmap.lottery_11x5_1,
+                linkType = "ssc"
                 curmid = "351402"
             ),
             Lottery(
@@ -288,6 +320,7 @@ val lotteries = arrayListOf(
                 name = "广东11选5",
                 alias = "gd11x5",
                 link = R.mipmap.lottery_11x5_2,
+                linkType = "ssc"
                 curmid = "302"
             ),
             Lottery(
@@ -295,6 +328,7 @@ val lotteries = arrayListOf(
                 name = "江西11选5",
                 alias = "jx11x5",
                 link = R.mipmap.lottery_11x5_3,
+                linkType = "ssc"
                 curmid = "256"
             ),
             Lottery(
@@ -302,6 +336,7 @@ val lotteries = arrayListOf(
                 name = "山东11选5",
                 alias = "sd11x5",
                 link = R.mipmap.lottery_11x5_4,
+                linkType = "ssc"
                 curmid = "174"
             ),
             Lottery(
@@ -309,6 +344,7 @@ val lotteries = arrayListOf(
                 name = "江苏11选5",
                 alias = "js11x5",
                 link = R.mipmap.lottery_11x5_5,
+                linkType = "ssc"
                 curmid = "366420"
             ),
             Lottery(
@@ -316,6 +352,7 @@ val lotteries = arrayListOf(
                 name = "泰国11选5",
                 alias = "tg11x5",
                 link = R.mipmap.lottery_11x5_6,
+                linkType = "ssc"
                 curmid = "390402"
             ),
             Lottery(
@@ -323,6 +360,7 @@ val lotteries = arrayListOf(
                 name = "黑龙江11选5",
                 alias = "hlj11x5",
                 link = R.mipmap.lottery_11x5_7,
+                linkType = "ssc"
                 curmid = "403813"
             ),
             Lottery(
@@ -330,6 +368,7 @@ val lotteries = arrayListOf(
                 name = "湖北11选5",
                 alias = "hb11x5",
                 link = R.mipmap.lottery_11x5_8,
+                linkType = "ssc"
                 curmid = "403849"
             ),
             Lottery(
@@ -337,6 +376,7 @@ val lotteries = arrayListOf(
                 name = "辽宁11选5",
                 alias = "ln11x5",
                 link = R.mipmap.lottery_11x5_9,
+                linkType = "ssc"
                 curmid = "403885"
             ),
             Lottery(
@@ -344,6 +384,7 @@ val lotteries = arrayListOf(
                 name = "广西11选5",
                 alias = "gx11x5",
                 link = R.mipmap.lottery_11x5_10,
+                linkType = "ssc"
                 curmid = "403921"
             ),
             Lottery(
@@ -351,6 +392,7 @@ val lotteries = arrayListOf(
                 name = "云南11选5",
                 alias = "yn11x5",
                 link = R.mipmap.lottery_11x5_11,
+                linkType = "ssc"
                 curmid = "403957"
             ),
         )
@@ -364,6 +406,7 @@ val lotteries = arrayListOf(
                 alias = "xyft",
                 type = "new",
                 link = R.mipmap.lottery_pk10_1,
+                linkType = "animate",
                 curmid = "399000"
             ),
             Lottery(
@@ -372,6 +415,7 @@ val lotteries = arrayListOf(
                 alias = "pk10",
                 type = "hot",
                 link = R.mipmap.lottery_pk10_2,
+                linkType = "animate",
                 curmid = "313012"
             ),
             Lottery(
@@ -380,6 +424,7 @@ val lotteries = arrayListOf(
                 alias = "jssm",
                 type = "hot",
                 link = R.mipmap.lottery_pk10_3,
+                linkType = "animate",
                 curmid = "313212"
             ),
             Lottery(
@@ -388,6 +433,7 @@ val lotteries = arrayListOf(
                 alias = "ydl10",
                 type = "hot",
                 link = R.mipmap.lottery_pk10_4,
+                linkType = "animate",
                 curmid = "347712"
             ),
         )
@@ -401,6 +447,7 @@ val lotteries = arrayListOf(
                 alias = "3djnd",
                 type = "hot",
                 link = R.mipmap.lottery_other_1,
+                linkType = "ssc"
                 curmid = "351451"
             ),
 
@@ -409,6 +456,7 @@ val lotteries = arrayListOf(
                 name = "3D福彩",
                 alias = "3dfc",
                 link = R.mipmap.lottery_other_2,
+                linkType = "ssc"
                 curmid = "614"
             ),
             Lottery(
@@ -416,6 +464,7 @@ val lotteries = arrayListOf(
                 name = "排列3",
                 alias = "pl3",
                 link = R.mipmap.lottery_other_3,
+                linkType = "ssc"
                 curmid = "615"
             ),
             Lottery(
@@ -423,6 +472,7 @@ val lotteries = arrayListOf(
                 name = "香港六合彩",
                 alias = "xglhc",
                 link = R.mipmap.lottery_other_4,
+                linkType = "lhc",
                 curmid = "20000"
             ),
             Lottery(
@@ -430,6 +480,7 @@ val lotteries = arrayListOf(
                 name = "澳门六合彩",
                 alias = "amlhc",
                 link = R.mipmap.lottery_other_5,
+                linkType = "lhc",
                 curmid = "403649"
             ),
             Lottery(
@@ -437,6 +488,7 @@ val lotteries = arrayListOf(
                 name = "湖北快三",
                 alias = "hbk3",
                 link = R.mipmap.lottery_other_6,
+                linkType = "ssc"
                 curmid = "403993"
             ),
             Lottery(
@@ -444,6 +496,7 @@ val lotteries = arrayListOf(
                 name = "河南快三",
                 alias = "hnks",
                 link = R.mipmap.lottery_other_7,
+                linkType = "ssc"
                 curmid = "404016"
             ),
             Lottery(
@@ -451,6 +504,7 @@ val lotteries = arrayListOf(
                 name = "吉林快三",
                 alias = "jlks",
                 link = R.mipmap.lottery_other_8,
+                linkType = "ssc"
                 curmid = "404039"
             ),
         )
