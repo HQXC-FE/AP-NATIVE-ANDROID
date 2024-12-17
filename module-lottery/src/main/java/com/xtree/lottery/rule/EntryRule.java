@@ -166,16 +166,16 @@ public class EntryRule {
         HashMap<String, Object> done = facts.get("done");
         if (done != null) {
             HashMap<String, Object> submit = (HashMap<String, Object>) done.get("submit");
-            submitDTO.setMethodid(Integer.getInteger((String) submit.get("methodid")));
+            submitDTO.setMethodid(Integer.parseInt((String) submit.get("methodid")));
             submitDTO.setCodes((String) submit.get("codes"));
             submitDTO.setOmodel((int) submit.get("omodel"));
-            submitDTO.setMode((int) submit.get("mode"));
+            submitDTO.setMode(Integer.parseInt((String) submit.get("mode")));
             submitDTO.setTimes((int) submit.get("times"));
             submitDTO.setPoschoose(submit.get("poschoose"));
-            submitDTO.setMenuid((int) submit.get("menuid"));
+            submitDTO.setMenuid(Integer.parseInt((String) submit.get("menuid")));
             submitDTO.setType((String) submit.get("type"));
             submitDTO.setNums((int) submit.get("nums"));
-            submitDTO.setMoney((int) submit.get("money"));
+            submitDTO.setMoney((int) (Math.round((double) submit.get("money"))));
             submitDTO.setSolo((boolean) submit.get("solo"));
             submitDTO.setDesc((String) submit.get("desc"));
         }
