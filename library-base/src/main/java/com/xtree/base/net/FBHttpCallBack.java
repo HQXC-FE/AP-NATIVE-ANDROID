@@ -54,7 +54,7 @@ public abstract class FBHttpCallBack<T> extends DisposableSubscriber<T> {
                 AppUtil.goWeb403();
                 return;
             }
-            ToastUtils.showShort(rError.message);
+            //ToastUtils.showShort(rError.message);
             return;
         }
         //其他全部甩锅网络异常

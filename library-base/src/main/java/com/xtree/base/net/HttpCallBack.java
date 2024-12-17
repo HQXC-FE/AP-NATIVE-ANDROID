@@ -186,7 +186,8 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             return;
         } else if (t instanceof BusinessException) {
             BusinessException rError = (BusinessException) t;
-            ToastUtils.showLong(rError.message + " [" + rError.code + "]");
+            //产品要求去掉异常提示
+            //ToastUtils.showLong(rError.message + " [" + rError.code + "]");
             return;
         }
         //其他全部甩锅网络异常
@@ -201,7 +202,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             onFail41011(t);
             return;
         }
-        ToastUtils.showLong(t.message + " [" + t.code + "]");
+        //ToastUtils.showLong(t.message + " [" + t.code + "]");
     }
 
     /**
