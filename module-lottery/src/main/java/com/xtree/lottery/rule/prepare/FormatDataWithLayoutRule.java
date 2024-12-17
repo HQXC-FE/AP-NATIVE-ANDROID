@@ -43,7 +43,9 @@ public class FormatDataWithLayoutRule {
 
             // 将 bet.codes[index] 的内容追加到对应 place 的列表中
             if (betCodes.get(0) instanceof String) {
-                formatCodes.add(betCodes.get(index));
+                for (Object itemString : betCodes) {
+                    formatCodes.add(itemString);
+                }
             } else {
                 // 确保 place 对应的列表已初始化
                 while (formatCodes.size() <= place) {

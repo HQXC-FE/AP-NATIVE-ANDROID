@@ -7,7 +7,6 @@ import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
 import java.util.List;
-import java.util.Map;
 
 @Rule(name = "MultiRule", description = "复式玩法规则")
 public class MultiRule {
@@ -38,9 +37,7 @@ public class MultiRule {
 
         // 遍历 Map 的每个条目，计算所有 List 的长度乘积
         for (List<String> codes : formatCodes) {
-            if (codes != null && !codes.isEmpty()) {
-                num *= codes.size();
-            }
+            num *= codes.size();
         }
 
         // 将计算结果存入 facts

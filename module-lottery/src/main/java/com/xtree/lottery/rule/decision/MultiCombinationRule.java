@@ -30,7 +30,7 @@ public class MultiCombinationRule {
 
     @Action
     public void then(Facts facts) {
-        List<List<String>> formatCodes = facts.get("formatCodes");
+        List<Object> formatCodes = facts.get("formatCodes");
         Map<String, Map<String, List<Map<String, Object>>>> currentMethod = facts.get("currentMethod");
         Map<String, List<Map<String, Object>>> selectarea = currentMethod.get("selectarea");  // selectarea.layout 结构化为 Map
         List<Map<String, Object>> layout = selectarea.get("layout");
@@ -38,24 +38,59 @@ public class MultiCombinationRule {
 
         // 检查是否有任何行未达到最小选择数
         for (Map<String, Object> item : layout) {
-            int place = (int) item.get("place");
-            int minChosen = (int) item.get("minchosen");
+            int place = Integer.parseInt((String) item.get("place"));
+            int minChosen = Integer.parseInt((String) item.get("minchosen"));
 
-            if (formatCodes.get(place).size() < minChosen) {
-                noFinish = true;
-                break;
+            if (formatCodes.get(0) instanceof String) {
+                if ((formatCodes).size() < minChosen) {
+                    noFinish = true;
+                    break;
+                }
+            } else if (formatCodes.get(0) instanceof List) {
+                if (((List<String>) formatCodes.get(place)).size() < minChosen) {
+                    noFinish = true;
+                    break;
+                }
             }
         }
 
         if (noFinish) {
             facts.put("num", 0);
         } else {
-            // 计算组合数
-            List<List<List<String>>> eachCombination = IntStream.range(0, formatCodes.size())
-                    .mapToObj(index -> {
-                        int minChosen = (int) layout.get(index).get("minchosen");
-                        return getCombinations(formatCodes.get(index), minChosen);
-                    }).collect(Collectors.toList());
+            List<List<List<String>>> eachCombination = new ArrayList<>();
+            if (formatCodes.get(0) instanceof String) {
+                // 计算组合数
+                eachCombination = IntStream.range(0, 1)
+                        .mapToObj(index -> {
+                            int minChosen = Integer.parseInt((String) layout.get(index).get("minchosen"));
+                            Object element = formatCodes.get(index);
+
+                            // 检查类型：如果是 List<String>，直接使用；如果是 String，则将其包装成 List<String>
+                            List<String> currentList = new ArrayList<>();
+
+                            for (Object item : formatCodes) {
+                                currentList.add((String) item);
+                            }
+
+                            // 调用 getCombinations 计算组合
+                            return getCombinations(currentList, minChosen);
+                        })
+                        .collect(Collectors.toList());
+            } else if (formatCodes.get(0) instanceof List) {
+                // 计算组合数
+                eachCombination = IntStream.range(0, formatCodes.size())
+                        .mapToObj(index -> {
+                            int minChosen = Integer.parseInt((String) layout.get(index).get("minchosen"));
+                            Object element = formatCodes.get(index);
+
+                            // 检查类型：如果是 List<String>，直接使用；如果是 String，则将其包装成 List<String>
+                            List<String> currentList;
+                            currentList = (List<String>) element;  // 如果是 List<String>，直接赋值
+                            // 调用 getCombinations 计算组合
+                            return getCombinations(currentList, minChosen);
+                        })
+                        .collect(Collectors.toList());
+            }
 
             List<List<String>> allCombination = cartesianProduct(eachCombination);
 
@@ -63,7 +98,7 @@ public class MultiCombinationRule {
                     .filter(item -> item.size() == new HashSet<>(item).size())  // 去重判断
                     .count();
 
-            facts.put("num", (int) num);
+            facts.put("num",(int) num);
         }
     }
 
