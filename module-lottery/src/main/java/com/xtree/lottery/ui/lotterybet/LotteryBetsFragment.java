@@ -161,7 +161,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
                         betDTO.setMode(modeDTO);
                         betDTO.setTimes(factor);
                         betDTO.setDisplay(new RulesEntryData.BetDTO.DisplayDTO());
-                        betDTO.setSubmit(new RulesEntryData.BetDTO.SubmitDTO());
+                        betDTO.setSubmit(new RulesEntryData.SubmitDTO());
                         betDTO.setCodes(codes);
                         viewModel.rule(betDTO);
                     }

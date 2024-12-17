@@ -146,8 +146,8 @@ public class EntryRule {
         //bet.poschoose
         bet.put("poschoose", null);
 
-        facts.put("lotteryType", rulesEntryData.getType());
-        //facts.put("lotteryType", "ssc");
+        //facts.put("lotteryType", rulesEntryData.getType());
+        facts.put("lotteryType", "ssc");
         facts.put("currentCategory", currentCategory);
         facts.put("currentMethod", currentMethod);
         facts.put("bet", bet);
@@ -163,19 +163,23 @@ public class EntryRule {
         rulesEngine.fire(rules, facts);
 
         RulesEntryData.SubmitDTO submitDTO = new RulesEntryData.SubmitDTO();
-        HashMap<String, String> submit = facts.get("submit");
-        submitDTO.setMethodid(Integer.parseInt(submit.get("methodid")));
-        submitDTO.setCodes(submit.get("codes"));
-        submitDTO.setOmodel(Integer.parseInt(submit.get("omodel")));
-        submitDTO.setMode(Integer.parseInt(submit.get("mode")));
-        submitDTO.setTimes(Integer.parseInt(submit.get("times")));
-        submitDTO.setPoschoose(submit.get("poschoose"));
-        submitDTO.setMenuid(Integer.parseInt(submit.get("menuid")));
-        submitDTO.setType(submit.get("type"));
-        submitDTO.setNums(Integer.parseInt(submit.get("nums")));
-        submitDTO.setMoney(Integer.parseInt(submit.get("money")));
-        submitDTO.setSolo(Boolean.parseBoolean(submit.get("solo")));
-        submitDTO.setDesc(submit.get("desc"));
+        HashMap<String, Object> done = facts.get("done");
+        if (done != null) {
+            HashMap<String, Object> submit = (HashMap<String, Object>) done.get("submit");
+            submitDTO.setMethodid(Integer.getInteger((String) submit.get("methodid")));
+            submitDTO.setCodes((String) submit.get("codes"));
+            submitDTO.setOmodel((int) submit.get("omodel"));
+            submitDTO.setMode((int) submit.get("mode"));
+            submitDTO.setTimes((int) submit.get("times"));
+            submitDTO.setPoschoose(submit.get("poschoose"));
+            submitDTO.setMenuid((int) submit.get("menuid"));
+            submitDTO.setType((String) submit.get("type"));
+            submitDTO.setNums((int) submit.get("nums"));
+            submitDTO.setMoney((int) submit.get("money"));
+            submitDTO.setSolo((boolean) submit.get("solo"));
+            submitDTO.setDesc((String) submit.get("desc"));
+        }
+
         return submitDTO;
     }
 }

@@ -433,7 +433,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         displayDTO.setPrizeGroup(userMethodData.getPrizeGroup());
         displayDTO.setMoneyModes(currentl2.getMoneyModes());
         betDTO.setDisplay(displayDTO);
-        betDTO.setSubmit(new RulesEntryData.BetDTO.SubmitDTO());
+        betDTO.setSubmit(new RulesEntryData.SubmitDTO());
         rulesEntryData.setBet(betDTO);
         EntryRule.getInstance().startEngine(rulesEntryData);
     }

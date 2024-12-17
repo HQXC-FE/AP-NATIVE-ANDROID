@@ -485,6 +485,11 @@ public class MenuMethodsResponse {
                              */
                             @SerializedName("cols")
                             private int cols;
+                            /**
+                             * minchosen
+                             */
+                            @SerializedName("minchosen")
+                            private int minchosen;
 
                             public String getTitle() {
                                 return title;
@@ -516,6 +521,14 @@ public class MenuMethodsResponse {
 
                             public void setCols(int cols) {
                                 this.cols = cols;
+                            }
+
+                            public int getMinchosen() {
+                                return minchosen;
+                            }
+
+                            public void setMinchosen(int minchosen) {
+                                this.minchosen = minchosen;
                             }
                         }
                     }
