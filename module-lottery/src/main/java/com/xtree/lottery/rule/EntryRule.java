@@ -40,14 +40,14 @@ public class EntryRule {
         EndingRules.addRules(rules);
     }
 
-    public HashMap<String, String> startEngine(RulesEntryData rulesEntryData) {
+    public RulesEntryData.SubmitDTO startEngine(RulesEntryData rulesEntryData) {
         facts = new Facts();
         Map<String, String> currentCategory = new HashMap<>();
         Map<String, Object> currentMethod = new HashMap<>();
         Map<String, Object> currentMethodSelectArea = new HashMap<>();
         Map<String, Object> bet = new HashMap<>();
         Map<String, String> betMode = new HashMap<>();
-        List<Map<String, String>> currentMethodSelectAreaLayout = new ArrayList<>();
+        List<Map<String, Object>> currentMethodSelectAreaLayout = new ArrayList<>();
         List<Map<String, String>> currentMethodMoneyModes = new ArrayList<>();
         List<Map<String, String>> currentMethodPrizeGroup = new ArrayList<>();
         Map<String, Object> attached = new HashMap<>();
@@ -107,11 +107,12 @@ public class EntryRule {
         currentMethodSelectArea.put("type", rulesEntryData.getCurrentMethod().getSelectarea().getType());
         // currentMethod.selectarea.layout
         for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO item : rulesEntryData.getCurrentMethod().getSelectarea().getLayout()) {
-            Map<String, String> currentMethodSelectAreaLayoutItem = new HashMap<>();
+            Map<String, Object> currentMethodSelectAreaLayoutItem = new HashMap<>();
             currentMethodSelectAreaLayoutItem.put("title", item.getTitle());
             currentMethodSelectAreaLayoutItem.put("no", item.getNo());
             currentMethodSelectAreaLayoutItem.put("place", String.valueOf(item.getPlace()));
             currentMethodSelectAreaLayoutItem.put("cols", String.valueOf(item.getCols()));
+            currentMethodSelectAreaLayoutItem.put("minchosen", String.valueOf(item.getMinchosen()));
             currentMethodSelectAreaLayout.add(currentMethodSelectAreaLayoutItem);
         }
         currentMethodSelectArea.put("layout", currentMethodSelectAreaLayout);
@@ -145,8 +146,8 @@ public class EntryRule {
         //bet.poschoose
         bet.put("poschoose", null);
 
-        //facts.put("lotteryType", rulesEntryData.getType());
-        facts.put("lotteryType", "ssc");
+        facts.put("lotteryType", rulesEntryData.getType());
+        //facts.put("lotteryType", "ssc");
         facts.put("currentCategory", currentCategory);
         facts.put("currentMethod", currentMethod);
         facts.put("bet", bet);
@@ -161,6 +162,20 @@ public class EntryRule {
         // enter the rules
         rulesEngine.fire(rules, facts);
 
-        return facts.get("done");
+        RulesEntryData.SubmitDTO submitDTO = new RulesEntryData.SubmitDTO();
+        HashMap<String, String> submit = facts.get("submit");
+        submitDTO.setMethodid(Integer.parseInt(submit.get("methodid")));
+        submitDTO.setCodes(submit.get("codes"));
+        submitDTO.setOmodel(Integer.parseInt(submit.get("omodel")));
+        submitDTO.setMode(Integer.parseInt(submit.get("mode")));
+        submitDTO.setTimes(Integer.parseInt(submit.get("times")));
+        submitDTO.setPoschoose(submit.get("poschoose"));
+        submitDTO.setMenuid(Integer.parseInt(submit.get("menuid")));
+        submitDTO.setType(submit.get("type"));
+        submitDTO.setNums(Integer.parseInt(submit.get("nums")));
+        submitDTO.setMoney(Integer.parseInt(submit.get("money")));
+        submitDTO.setSolo(Boolean.parseBoolean(submit.get("solo")));
+        submitDTO.setDesc(submit.get("desc"));
+        return submitDTO;
     }
 }

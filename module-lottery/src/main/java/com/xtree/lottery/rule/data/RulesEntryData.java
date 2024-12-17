@@ -1126,164 +1126,164 @@ public class RulesEntryData {
                 this.singleDesc = singleDesc;
             }
         }
+    }
 
-        public static class SubmitDTO {
-            /**
-             * methodid
-             */
-            @SerializedName("methodid")
-            private int methodid;
-            /**
-             * codes
-             */
-            @SerializedName("codes")
-            private String codes;
-            /**
-             * omodel
-             */
-            @SerializedName("omodel")
-            private int omodel;
-            /**
-             * mode
-             */
-            @SerializedName("mode")
-            private int mode;
-            /**
-             * times
-             */
-            @SerializedName("times")
-            private int times;
-            /**
-             * poschoose
-             */
-            @SerializedName("poschoose")
-            private Object poschoose;
-            /**
-             * menuid
-             */
-            @SerializedName("menuid")
-            private int menuid;
-            /**
-             * type
-             */
-            @SerializedName("type")
-            private String type;
-            /**
-             * nums
-             */
-            @SerializedName("nums")
-            private int nums;
-            /**
-             * money
-             */
-            @SerializedName("money")
-            private int money;
-            /**
-             * solo
-             */
-            @SerializedName("solo")
-            private boolean solo;
-            /**
-             * desc
-             */
-            @SerializedName("desc")
-            private String desc;
+    public static class SubmitDTO {
+        /**
+         * methodid
+         */
+        @SerializedName("methodid")
+        private int methodid;
+        /**
+         * codes
+         */
+        @SerializedName("codes")
+        private String codes;
+        /**
+         * omodel
+         */
+        @SerializedName("omodel")
+        private int omodel;
+        /**
+         * mode
+         */
+        @SerializedName("mode")
+        private int mode;
+        /**
+         * times
+         */
+        @SerializedName("times")
+        private int times;
+        /**
+         * poschoose
+         */
+        @SerializedName("poschoose")
+        private Object poschoose;
+        /**
+         * menuid
+         */
+        @SerializedName("menuid")
+        private int menuid;
+        /**
+         * type
+         */
+        @SerializedName("type")
+        private String type;
+        /**
+         * nums
+         */
+        @SerializedName("nums")
+        private int nums;
+        /**
+         * money
+         */
+        @SerializedName("money")
+        private int money;
+        /**
+         * solo
+         */
+        @SerializedName("solo")
+        private boolean solo;
+        /**
+         * desc
+         */
+        @SerializedName("desc")
+        private String desc;
 
-            public int getMethodid() {
-                return methodid;
-            }
+        public int getMethodid() {
+            return methodid;
+        }
 
-            public void setMethodid(int methodid) {
-                this.methodid = methodid;
-            }
+        public void setMethodid(int methodid) {
+            this.methodid = methodid;
+        }
 
-            public String getCodes() {
-                return codes;
-            }
+        public String getCodes() {
+            return codes;
+        }
 
-            public void setCodes(String codes) {
-                this.codes = codes;
-            }
+        public void setCodes(String codes) {
+            this.codes = codes;
+        }
 
-            public int getOmodel() {
-                return omodel;
-            }
+        public int getOmodel() {
+            return omodel;
+        }
 
-            public void setOmodel(int omodel) {
-                this.omodel = omodel;
-            }
+        public void setOmodel(int omodel) {
+            this.omodel = omodel;
+        }
 
-            public int getMode() {
-                return mode;
-            }
+        public int getMode() {
+            return mode;
+        }
 
-            public void setMode(int mode) {
-                this.mode = mode;
-            }
+        public void setMode(int mode) {
+            this.mode = mode;
+        }
 
-            public int getTimes() {
-                return times;
-            }
+        public int getTimes() {
+            return times;
+        }
 
-            public void setTimes(int times) {
-                this.times = times;
-            }
+        public void setTimes(int times) {
+            this.times = times;
+        }
 
-            public Object getPoschoose() {
-                return poschoose;
-            }
+        public Object getPoschoose() {
+            return poschoose;
+        }
 
-            public void setPoschoose(Object poschoose) {
-                this.poschoose = poschoose;
-            }
+        public void setPoschoose(Object poschoose) {
+            this.poschoose = poschoose;
+        }
 
-            public int getMenuid() {
-                return menuid;
-            }
+        public int getMenuid() {
+            return menuid;
+        }
 
-            public void setMenuid(int menuid) {
-                this.menuid = menuid;
-            }
+        public void setMenuid(int menuid) {
+            this.menuid = menuid;
+        }
 
-            public String getType() {
-                return type;
-            }
+        public String getType() {
+            return type;
+        }
 
-            public void setType(String type) {
-                this.type = type;
-            }
+        public void setType(String type) {
+            this.type = type;
+        }
 
-            public int getNums() {
-                return nums;
-            }
+        public int getNums() {
+            return nums;
+        }
 
-            public void setNums(int nums) {
-                this.nums = nums;
-            }
+        public void setNums(int nums) {
+            this.nums = nums;
+        }
 
-            public int getMoney() {
-                return money;
-            }
+        public int getMoney() {
+            return money;
+        }
 
-            public void setMoney(int money) {
-                this.money = money;
-            }
+        public void setMoney(int money) {
+            this.money = money;
+        }
 
-            public boolean isSolo() {
-                return solo;
-            }
+        public boolean isSolo() {
+            return solo;
+        }
 
-            public void setSolo(boolean solo) {
-                this.solo = solo;
-            }
+        public void setSolo(boolean solo) {
+            this.solo = solo;
+        }
 
-            public String getDesc() {
-                return desc;
-            }
+        public String getDesc() {
+            return desc;
+        }
 
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
+        public void setDesc(String desc) {
+            this.desc = desc;
         }
     }
 }
