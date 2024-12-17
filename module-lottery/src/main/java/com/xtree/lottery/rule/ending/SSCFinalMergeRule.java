@@ -56,7 +56,7 @@ public class SSCFinalMergeRule {
             } else {
                 forBet.put("codes", formatCodes.stream()
                         .map(item -> String.join("&", (String) item))
-                        .collect(Collectors.joining("|")));
+                        .collect(Collectors.joining("&")));
             }
         }
 
@@ -84,14 +84,19 @@ public class SSCFinalMergeRule {
                                 .map(Object::toString)
                                 .collect(Collectors.joining(codeSp));
                     } else if (item instanceof String) {
-                        // 如果是字符串，直接返回
-                        return (String) item;
+                        // 因为show_str的显示，所以如果是字符串应该把里面全部加入进去
+                        String allCodes = "";
+                        for (Object itemString : formatCodes) {
+                            allCodes += allCodes.isEmpty() ? itemString : ";" + itemString;
+                        }
+                        return allCodes;
                     } else {
                         // 如果类型不符合预期，处理异常或返回默认值
                         return "";
                     }
                 })
                 .collect(Collectors.toList());
+
         forDisplay.put("prize", "");
         forDisplay.put("mode", mode.get("name"));
         forDisplay.put("rate", mode.get("rate"));
@@ -125,13 +130,9 @@ public class SSCFinalMergeRule {
                 if ("X".equals(item)) {
                     if (codeIndex < betCodes.size()) {
                         Object betCode = betCodes.get(codeIndex++);
-                        if (betCode instanceof List) {
-                            // 如果是 List<String>，拼接成一个字符串
-                            List<String> innerList = (List<String>) betCode;
-                            displayCodes.add(String.join("", innerList));
-                        } else if (betCode instanceof String && !((String) betCode).isEmpty()) {
+                        if (betCode instanceof String && !((String) betCode).isEmpty()) {
                             // 如果是 String，直接添加
-                            displayCodes.add(((String) betCode).replace(",", ""));
+                            displayCodes.add(((String) betCode).replace(",", "").replace(";", ","));
                         } else {
                             displayCodes.add("-");
                         }
