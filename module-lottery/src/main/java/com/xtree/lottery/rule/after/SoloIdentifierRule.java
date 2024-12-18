@@ -28,7 +28,7 @@ public class SoloIdentifierRule {
 
     @Action
     public void then(Facts facts) {
-        int num = facts.get("num");
+        int num = 0;
         Map<String, String> currentCategory = facts.get("currentCategory");
         Map<String, String> currentMethod = facts.get("currentMethod");
         String methodName = currentCategory.get("name") + currentMethod.get("name");
@@ -36,7 +36,7 @@ public class SoloIdentifierRule {
 
         Map<String, List<Boolean>> bet = facts.get("bet");
         List<Boolean> posChoose = bet.get("posChoose");
-        List<Object> formatCodes = facts.get("formatCodes");
+        Object formatCodes = facts.get("formatCodes");
 
         boolean solo = false;
         int positionLength = 0;
@@ -49,7 +49,9 @@ public class SoloIdentifierRule {
             }
         } else if (formatCodes != null) {
             if (formatCodes instanceof List) {
-                for (Object code : formatCodes) {
+                num = facts.get("num");
+                List<Object> formatCodesList = (List<Object>) formatCodes;
+                for (Object code : formatCodesList) {
                     if (code instanceof String) {
                         positionLength++;
                     } else {
@@ -58,6 +60,8 @@ public class SoloIdentifierRule {
                         }
                     }
                 }
+            } else if (formatCodes instanceof String) {
+
             }
         }
 

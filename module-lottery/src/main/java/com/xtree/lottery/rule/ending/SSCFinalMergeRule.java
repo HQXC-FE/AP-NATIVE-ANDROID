@@ -31,7 +31,7 @@ public class SSCFinalMergeRule {
     public void then(Facts facts) {
         Map<String, Object> currentMethod = facts.get("currentMethod");
         Map<String, Object> mode = facts.get("mode");
-        List<Object> formatCodes = facts.get("formatCodes");
+        List<Object> formatCodes = new ArrayList<>();
         Map<String, String> selectarea = (Map<String, String>) currentMethod.get("selectarea");
         String prize = facts.get("prize") != null ? facts.get("prize").toString() : null;
         int times = facts.get("times");
@@ -44,19 +44,22 @@ public class SSCFinalMergeRule {
         forBet.put("methodid", currentMethod.get("methodid"));
 
         // Generate codes for submission
-        if (List.of("input", "box").contains(selectarea.get("type"))) {
-            forBet.put("codes", formatCodes.stream()
-                    .map(item -> String.join(sortSplit, (String) item))
-                    .collect(Collectors.joining("&")));
-        } else {
-            if (formatCodes.get(0) instanceof List<?>) {
+        if (facts.get("formatCodes") instanceof List) {
+            formatCodes = facts.get("formatCodes");
+            if (List.of("input", "box").contains(selectarea.get("type"))) {
                 forBet.put("codes", formatCodes.stream()
-                        .map(item -> String.join("&", (List<String>) item))
-                        .collect(Collectors.joining("|")));
-            } else {
-                forBet.put("codes", formatCodes.stream()
-                        .map(item -> String.join("&", (String) item))
+                        .map(item -> String.join(sortSplit, (String) item))
                         .collect(Collectors.joining("&")));
+            } else {
+                    if (formatCodes.get(0) instanceof List<?>) {
+                        forBet.put("codes", formatCodes.stream()
+                                .map(item -> String.join("&", (List<String>) item))
+                                .collect(Collectors.joining("|")));
+                    } else {
+                        forBet.put("codes", formatCodes.stream()
+                                .map(item -> String.join("&", (String) item))
+                                .collect(Collectors.joining("&")));
+                    }
             }
         }
 
@@ -74,28 +77,32 @@ public class SSCFinalMergeRule {
 
         // Display object
         Map<String, Object> forDisplay = new HashMap<>();
-        List<String> betCodes = formatCodes.stream()
-                .map(item -> {
-                    if (item instanceof List<?>) {
-                        // 确保 `item` 是 List，并将其转换为字符串，同时使用指定分隔符
-                        String codeSp = (String) currentMethod.get("code_sp");
-                        codeSp = (codeSp != null && !codeSp.isEmpty()) ? codeSp : ",";
-                        return ((List<?>) item).stream()
-                                .map(Object::toString)
-                                .collect(Collectors.joining(codeSp));
-                    } else if (item instanceof String) {
-                        // 因为show_str的显示，所以如果是字符串应该把里面全部加入进去
-                        String allCodes = "";
-                        for (Object itemString : formatCodes) {
-                            allCodes += allCodes.isEmpty() ? itemString : ";" + itemString;
+        List<String> betCodes = new ArrayList<>();
+        if(facts.get("formatCodes") instanceof List) {
+            List<Object> finalFormatCodes = formatCodes;
+            betCodes = formatCodes.stream()
+                    .map(item -> {
+                        if (item instanceof List<?>) {
+                            // 确保 `item` 是 List，并将其转换为字符串，同时使用指定分隔符
+                            String codeSp = (String) currentMethod.get("code_sp");
+                            codeSp = (codeSp != null && !codeSp.isEmpty()) ? codeSp : ",";
+                            return ((List<?>) item).stream()
+                                    .map(Object::toString)
+                                    .collect(Collectors.joining(codeSp));
+                        } else if (item instanceof String) {
+                            // 因为show_str的显示，所以如果是字符串应该把里面全部加入进去
+                            String allCodes = "";
+                            for (Object itemString : finalFormatCodes) {
+                                allCodes += allCodes.isEmpty() ? itemString : ";" + itemString;
+                            }
+                            return allCodes;
+                        } else {
+                            // 如果类型不符合预期，处理异常或返回默认值
+                            return "";
                         }
-                        return allCodes;
-                    } else {
-                        // 如果类型不符合预期，处理异常或返回默认值
-                        return "";
-                    }
-                })
-                .collect(Collectors.toList());
+                    })
+                    .collect(Collectors.toList());
+        }
 
         forDisplay.put("prize", "");
         forDisplay.put("mode", mode.get("name"));
