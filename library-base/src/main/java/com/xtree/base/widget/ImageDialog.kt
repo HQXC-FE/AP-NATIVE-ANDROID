@@ -63,7 +63,9 @@ class ImageDialog(context: Context, private var mUrl: String, var needToken: Boo
                     .addHeader("UUID", TagUtils.getDeviceId(context))
                     .build()
             )
-            Glide.with(this).load(glideUrl).into(binding.ivCode)
+            Glide.with(this).load(glideUrl)
+                .error(R.mipmap.error_image)
+                .into(binding.ivCode)
         } else {
             //"https://jxpicture.b1k3q6.com/2024/12/09/极限救援H5.webp"
             //加载首页公共弹窗
