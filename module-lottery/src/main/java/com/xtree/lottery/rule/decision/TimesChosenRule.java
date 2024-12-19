@@ -34,8 +34,11 @@ public class TimesChosenRule {
         List<List<String>> formatCodes = facts.get("formatCodes");
         String categoryFlag = (String) ((Map<String, Object>) facts.get("currentCategory")).get("flag");
         String matchName = ((Map<String, Object>) facts.get("currentCategory")).get("name") + "-" + ((Map<String, Object>) facts.get("currentMethod")).get("groupName");
+        int times = 1;
 
-        int times = (int) attached.getOrDefault("number", 1);
+        if(attached.get("number") != null) {
+            times = Integer.parseInt((String) attached.getOrDefault("number", "1"));
+        }
 
         // 如果已存在 num 值，直接进行倍数运算
         if (num != null) {
