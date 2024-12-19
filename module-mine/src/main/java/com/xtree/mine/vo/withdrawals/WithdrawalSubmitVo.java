@@ -6,5 +6,5 @@ import me.xtree.mvvmhabit.http.BaseResponse2;
  * 提款提交结果
  */
 public class WithdrawalSubmitVo extends BaseResponse2 {
-    public int status;
+//    public int status;
 }
