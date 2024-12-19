@@ -12,10 +12,12 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.xtree.base.global.Constant;
+import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterActivityPath;
 
 import me.xtree.mvvmhabit.base.AppManager;
 import me.xtree.mvvmhabit.utils.SPUtils;
+
 
 public class AppUtil {
 
@@ -25,8 +27,18 @@ public class AppUtil {
      * @param ctx Context
      */
     public static void goCustomerService(Context ctx) {
+        String serviceLink ;
 
-        goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
+            serviceLink =SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK) ;
+        }else {
+            serviceLink =Constant.URL_CUSTOMER_SERVICE ;
+        }
+        /*CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
+
+        CfLog.e("goCustomerService  ---- sDomainUtil.getH5Domain2()" +DomainUtil.getH5Domain2() + serviceLink);*/
+      /*  goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);*/
+        goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink);
     }
 
     public static void goBrowser(Context ctx, String url) {

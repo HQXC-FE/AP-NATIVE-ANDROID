@@ -24,6 +24,8 @@ public class SettingsVo implements Parcelable {
     public long app_response_speed_calculation;
     //推荐测速上限设置
     public int app_response_speed_max = -1;
+    //新客服列表
+    public String []hichat_url_suffix ;
 
     // Constructor for Parcelable
     protected SettingsVo(Parcel in) {
@@ -40,6 +42,7 @@ public class SettingsVo implements Parcelable {
         ws_expire_time = in.readLong();
         app_response_speed_calculation = in.readLong();
         app_response_speed_max = in.readInt();
+        hichat_url_suffix = in.createStringArray();
     }
 
     public static final Creator<SettingsVo> CREATOR = new Creator<SettingsVo>() {
@@ -74,6 +77,7 @@ public class SettingsVo implements Parcelable {
         parcel.writeLong(ws_expire_time);
         parcel.writeLong(app_response_speed_calculation);
         parcel.writeInt(app_response_speed_max);
+        parcel.writeStringArray(hichat_url_suffix);
     }
 
     @Override
@@ -92,6 +96,7 @@ public class SettingsVo implements Parcelable {
                 ", ws_expire_time=" + ws_expire_time +
                 ", app_response_speed_calculation=" + app_response_speed_calculation +
                 ", app_response_speed_max=" + app_response_speed_max +
+                ", hichat_url_suffix=" + Arrays.toString(hichat_url_suffix) +
                 '}';
     }
 }

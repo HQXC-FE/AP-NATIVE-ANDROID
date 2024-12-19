@@ -92,6 +92,7 @@ public class SPKeyGlobal {
     public static final String APP_RESPONSE_SPEED_CALCULATION ="app_response_speed_calculation";
     //推荐测速上限设置
     public static final String APP_Response_Speed_Max ="app_response_speed_max";
-    //websocket
+    //客服链接
+    public static final String APP_SERVICE_LINK = "app_service_link";
 
 }
