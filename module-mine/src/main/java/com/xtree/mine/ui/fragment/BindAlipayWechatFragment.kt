@@ -65,6 +65,7 @@ class BindAlipayWechatFragment : BaseFragment<FragmentBindAwBinding, BindCardVie
                     when (mark) {
                         getString(R.string.txt_bind_zfb_type) -> {
                             binding2.tvwUserName.text = vo.user_id
+                            //wxzfb_id
                             binding2.tvDefaultAlipayPayCode.setText(R.string.txt_alipay_phone)
                             binding2.tvDefaultAlipayName.setText(R.string.txt_alipay_name_1)
 
@@ -86,7 +87,7 @@ class BindAlipayWechatFragment : BaseFragment<FragmentBindAwBinding, BindCardVie
 //                            binding2.tvCode.setText(R.string.txt_wechat_code)
                         }
                     }
-
+                    binding2.tvwUserName.text = vo.wxzfb_id
                     binding2.tvName.text = vo.wxzfb_username
                     binding2.tvNicknameContent.text = vo.nickname
                     binding2.tvwBindTime.text = vo.utime
