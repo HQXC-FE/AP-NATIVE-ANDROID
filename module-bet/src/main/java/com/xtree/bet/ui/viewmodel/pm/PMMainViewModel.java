@@ -469,7 +469,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         if ((type == 1 && needSecondStep) // 获取今日中的全部滚球赛事列表
                 || isTimerRefresh) { // 定时刷新赔率变更
-            PMListCallBack httpCallBack = new PMListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
+            PMCacheListCallBack httpCallBack = new PMCacheListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
                     orderBy, leagueIds, searchDatePos, oddType, matchidList);
             Disposable disposable = (Disposable) flowable
                     .compose(RxUtils.schedulersTransformer()) //线程调度
