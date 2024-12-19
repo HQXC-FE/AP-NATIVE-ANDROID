@@ -32,7 +32,13 @@ public class AddFlagRule {
                 .map(item -> item.split("add-flag-")[1])
                 .toList();
 
-        Map<String, List<String>> attached = new HashMap<>();
+        Map<String, List<String>> attached;
+
+        if (facts.get("attached") != null) {
+            attached = facts.get("attached");
+        } else {
+            attached = new HashMap<>();
+        }
         attached.put("flags", flags);
 
         facts.put("attached", attached);
