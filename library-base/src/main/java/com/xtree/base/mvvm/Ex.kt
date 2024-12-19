@@ -186,3 +186,23 @@ fun setImageUrl(
     }
     glide.into(view)
 }
+
+fun String?.plusDomainOrNot(domain: String): String {
+    if (this.isNullOrEmpty()) {
+        return ""
+    }
+    var target = this
+    if (!this.startsWith("http")) {
+        val separator = when {
+            domain.endsWith("/") && target.startsWith("/") -> {
+                target = target.substring(1)
+                ""
+            }
+
+            domain.endsWith("/") || target.startsWith("/") -> ""
+            else -> "/"
+        }
+        target = domain + separator + target
+    }
+    return target
+}
