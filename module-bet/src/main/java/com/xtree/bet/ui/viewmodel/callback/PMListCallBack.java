@@ -6,7 +6,7 @@ import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401038;
 
 import android.text.TextUtils;
 
-import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
@@ -29,7 +29,7 @@ import java.util.Map;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class PMListCallBack extends PMHttpCallBack<List<MatchInfo>> {
+public class PMListCallBack extends HttpCallBack<List<MatchInfo>> {
 
     private PMMainViewModel mViewModel;
     private boolean mHasCache;

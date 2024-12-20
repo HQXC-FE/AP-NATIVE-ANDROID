@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.PMCacheHttpCallBack;
 import com.xtree.base.net.PMHttpCallBack;
 import com.xtree.base.utils.TimeUtils;
@@ -25,6 +26,8 @@ import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.pm.FrontListInfo;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
+import com.xtree.bet.bean.response.pm.MatchLeagueListCacheRsp;
+import com.xtree.bet.bean.response.pm.MatchListCacheRsp;
 import com.xtree.bet.bean.response.pm.MatchListRsp;
 import com.xtree.bet.bean.response.pm.MenuInfo;
 import com.xtree.bet.bean.response.pm.PMResultBean;
@@ -72,8 +75,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     private List<MatchInfo> mChampionMatchInfoList = new ArrayList<>();
     private Map<String, List<SportTypeItem>> sportCountMap = new HashMap<>();
     private List<MenuInfo> mMenuInfoList = new ArrayList<>();
-    private PMHttpCallBack mPmHttpCallBack;
-    private PMCacheHttpCallBack mPmCacheHttpCallBack;
+    private PMLeagueListCallBack mPmLeagueCallBack;
+    private PMCacheLeagueListCallBack mPmCacheLeagueCallBack;
 
     private HashMap<Integer, SportTypeItem> mMatchGames = new HashMap<>();
 
@@ -264,25 +267,39 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         pmListReq.setType(3);
         //CfLog.i("pmListReqHot   "+new Gson().toJson(pmListReq));
         Flowable flowable = getFlowableMatchesPagePB(pmListReq);
-        PMHttpCallBack pmHttpCallBack = new PMHttpCallBack<MatchListRsp>() {
+        if(isUseCacheApiService()){
+            HttpCallBack pmHttpCallBack = new HttpCallBack<MatchLeagueListCacheRsp>() {
 
-            @Override
-            public void onResult(MatchListRsp matchListRsp) {
-                hotMatchCountData.postValue(matchListRsp.data.size());
-            }
+                @Override
+                public void onResult(MatchLeagueListCacheRsp matchListRsp) {
+                    hotMatchCountData.postValue(matchListRsp.data.getData().size());
+                }
 
-            @Override
-            public void onError(Throwable t) {
+                @Override
+                public void onError(Throwable t) {
 
-            }
-        };
+                }
+            };
+            Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()) //线程调度
+                    .compose(RxUtils.exceptionTransformer()).subscribeWith(pmHttpCallBack);
+            addSubscribe(disposable);
+        }else{
+            HttpCallBack pmHttpCallBack = new HttpCallBack<MatchListRsp>() {
 
-        Disposable disposable = (Disposable) flowable
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(pmHttpCallBack);
-        addSubscribe(disposable);
+                @Override
+                public void onResult(MatchListRsp matchListRsp) {
+                    hotMatchCountData.postValue(matchListRsp.data.size());
+                }
 
+                @Override
+                public void onError(Throwable t) {
+
+                }
+            };
+            Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()) //线程调度
+                    .compose(RxUtils.exceptionTransformer()).subscribeWith(pmHttpCallBack);
+            addSubscribe(disposable);
+        }
     }
 
     @Override
@@ -290,10 +307,10 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         mSearchWord = searchWord;
         mIsChampion = isChampion;
         if (!isChampion) {
-            if (mPmHttpCallBack != null) {
-                ((PMLeagueListCallBack) mPmHttpCallBack).searchMatch(searchWord);
-            }else if(mPmCacheHttpCallBack!= null) {
-                ((PMCacheLeagueListCallBack) mPmCacheHttpCallBack).searchMatch(searchWord);
+            if (mPmLeagueCallBack != null) {
+                mPmLeagueCallBack.searchMatch(searchWord);
+            } else if (mPmCacheLeagueCallBack != null) {
+                mPmCacheLeagueCallBack.searchMatch(searchWord);
             }
         } else {
             mChampionMatchList.clear();
@@ -469,23 +486,9 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         if ((type == 1 && needSecondStep) // 获取今日中的全部滚球赛事列表
                 || isTimerRefresh) { // 定时刷新赔率变更
-            PMCacheListCallBack httpCallBack = new PMCacheListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
-                    orderBy, leagueIds, searchDatePos, oddType, matchidList);
-            Disposable disposable = (Disposable) flowable
-                    .compose(RxUtils.schedulersTransformer()) //线程调度
-                    .compose(RxUtils.exceptionTransformer())
-                    .subscribeWith(httpCallBack);
-            addSubscribe(disposable);
-
+            setPMListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList,flowable);
         } else {
-            mPmHttpCallBack = new PMLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
-                    orderBy, leagueIds, searchDatePos, oddType, matchidList,
-                    finalType, isStepSecond);
-            Disposable disposable = (Disposable) flowable
-                    .compose(RxUtils.schedulersTransformer()) //线程调度
-                    .compose(RxUtils.exceptionTransformer())
-                    .subscribeWith(mPmHttpCallBack);
-            addSubscribe(disposable);
+            setPMLeagueListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, finalType, isStepSecond,flowable);
         }
     }
 
@@ -547,80 +550,152 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             //}
         }//再试试断网情况 和弱网情况
         Flowable flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
-        Disposable disposable = (Disposable) flowable
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<MatchListRsp>() {
-                    @Override
-                    protected void onStart() {
-                        super.onStart();
-                        if (!isTimerRefresh && !mHasCache) {
-                            getUC().getShowDialogEvent().postValue("");
-                        }
+        if(isUseCacheApiService()){
+            Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<MatchLeagueListCacheRsp>() {
+                @Override
+                protected void onStart() {
+                    super.onStart();
+                    if (!isTimerRefresh && !mHasCache) {
+                        getUC().getShowDialogEvent().postValue("");
+                    }
+                }
+
+                @Override
+                public void onResult(MatchLeagueListCacheRsp matchListRsp) {
+                    if (isTimerRefresh) {
+                        setChampionOptionOddChange(matchListRsp.data.getData());
+                        championMatchTimerListData.postValue(mChampionMatchList);
+                        return;
                     }
 
-                    @Override
-                    public void onResult(MatchListRsp matchListRsp) {
-                        if (isTimerRefresh) {
-                            setChampionOptionOddChange(matchListRsp.data);
-                            championMatchTimerListData.postValue(mChampionMatchList);
-                            return;
-                        }
-
-                        if (isRefresh) {
-                            mChampionMatchList.clear();
-                            mChampionMatchInfoList.clear();
-                        }
-
-                        getUC().getDismissDialogEvent().call();
-                        if (isRefresh) {
-                            if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
-                                loadMoreWithNoMoreData();
-                            } else {
-                                finishRefresh(true);
-                            }
-                        } else {
-                            if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
-                                loadMoreWithNoMoreData();
-                            } else {
-                                finishLoadMore(true);
-                            }
-                        }
-                        mChampionMatchInfoList.addAll(matchListRsp.data);
-                        if (TextUtils.isEmpty(mSearchWord)) {
-                            championLeagueList(matchListRsp.data);
-                            championMatchListData.postValue(mChampionMatchList);
-                        } else {
-                            searchMatch(mSearchWord, true);
-                        }
-                        if (mCurrentPage == 1) {
-                            SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + playMethodType + sportId, new Gson().toJson(mChampionMatchList));
-                        }
-                        mHasCache = false;
+                    if (isRefresh) {
+                        mChampionMatchList.clear();
+                        mChampionMatchInfoList.clear();
                     }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        getUC().getDismissDialogEvent().call();
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == CODE_401026 || error.code == CODE_401013) {
-                                getGameTokenApi();
-                            } else if (error.code == CODE_401038) {
-                                super.onError(t);
-                                tooManyRequestsEvent.call();
-                            } else {
-                                getChampionList(sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh);
-                            }
+                    getUC().getDismissDialogEvent().call();
+                    if (isRefresh) {
+                        if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
+                            loadMoreWithNoMoreData();
+                        } else {
+                            finishRefresh(true);
                         }
+                    } else {
+                        if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
+                            loadMoreWithNoMoreData();
+                        } else {
+                            finishLoadMore(true);
+                        }
+                    }
+                    mChampionMatchInfoList.addAll(matchListRsp.data.getData());
+                    if (TextUtils.isEmpty(mSearchWord)) {
+                        championLeagueList(matchListRsp.data.getData());
+                        championMatchListData.postValue(mChampionMatchList);
+                    } else {
+                        searchMatch(mSearchWord, true);
+                    }
+                    if (mCurrentPage == 1) {
+                        SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + playMethodType + sportId, new Gson().toJson(mChampionMatchList));
+                    }
+                    mHasCache = false;
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    getUC().getDismissDialogEvent().call();
+                    if (t instanceof ResponseThrowable) {
+                        ResponseThrowable error = (ResponseThrowable) t;
+                        if (error.code == CODE_401026 || error.code == CODE_401013) {
+                            getGameTokenApi();
+                        } else if (error.code == CODE_401038) {
+                            super.onError(t);
+                            tooManyRequestsEvent.call();
+                        } else {
+                            getChampionList(sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh);
+                        }
+                    }
                         /*if (isRefresh) {
                             finishRefresh(false);
                         } else {
                             finishLoadMore(false);
                         }*/
+                }
+            });
+            addSubscribe(disposable);
+        }else{
+            Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<MatchListRsp>() {
+                @Override
+                protected void onStart() {
+                    super.onStart();
+                    if (!isTimerRefresh && !mHasCache) {
+                        getUC().getShowDialogEvent().postValue("");
                     }
-                });
-        addSubscribe(disposable);
+                }
+
+                @Override
+                public void onResult(MatchListRsp matchListRsp) {
+                    if (isTimerRefresh) {
+                        setChampionOptionOddChange(matchListRsp.data);
+                        championMatchTimerListData.postValue(mChampionMatchList);
+                        return;
+                    }
+
+                    if (isRefresh) {
+                        mChampionMatchList.clear();
+                        mChampionMatchInfoList.clear();
+                    }
+
+                    getUC().getDismissDialogEvent().call();
+                    if (isRefresh) {
+                        if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
+                            loadMoreWithNoMoreData();
+                        } else {
+                            finishRefresh(true);
+                        }
+                    } else {
+                        if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
+                            loadMoreWithNoMoreData();
+                        } else {
+                            finishLoadMore(true);
+                        }
+                    }
+                    mChampionMatchInfoList.addAll(matchListRsp.data);
+                    if (TextUtils.isEmpty(mSearchWord)) {
+                        championLeagueList(matchListRsp.data);
+                        championMatchListData.postValue(mChampionMatchList);
+                    } else {
+                        searchMatch(mSearchWord, true);
+                    }
+                    if (mCurrentPage == 1) {
+                        SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + playMethodType + sportId, new Gson().toJson(mChampionMatchList));
+                    }
+                    mHasCache = false;
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    getUC().getDismissDialogEvent().call();
+                    if (t instanceof ResponseThrowable) {
+                        ResponseThrowable error = (ResponseThrowable) t;
+                        if (error.code == CODE_401026 || error.code == CODE_401013) {
+                            getGameTokenApi();
+                        } else if (error.code == CODE_401038) {
+                            super.onError(t);
+                            tooManyRequestsEvent.call();
+                        } else {
+                            getChampionList(sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh);
+                        }
+                    }
+                        /*if (isRefresh) {
+                            finishRefresh(false);
+                        } else {
+                            finishLoadMore(false);
+                        }*/
+                }
+            });
+            addSubscribe(disposable);
+        }
+
     }
 
     /**
@@ -634,10 +709,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
         }
         map.put("sys", "7");
-        Disposable disposable = (Disposable) model.getPMApiService().initPB(map)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<MenuInfo>>() {
+        Disposable disposable = (Disposable) model.getPMApiService().initPB(map).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<MenuInfo>>() {
                     @Override
                     public void onResult(List<MenuInfo> menuInfoList) {
                         mMenuInfoList = menuInfoList;
@@ -722,10 +795,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     public void postMerchant() {
         Map<String, String> map = new HashMap<>();
         map.put("languageType", "CMN");
-        Disposable disposable = (Disposable) model.getPMApiService().resultMenuPB(map)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<PMResultBean>>() {
+        Disposable disposable = (Disposable) model.getPMApiService().resultMenuPB(map).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<PMResultBean>>() {
                     @Override
                     public void onResult(List<PMResultBean> list) {
                         List<SportTypeItem> list1 = new ArrayList<>();
@@ -771,10 +842,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         } else {
             map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PM_USER_ID));
         }
-        Disposable disposable = (Disposable) model.getPMApiService().matcheResultPB(map)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<MatchInfo>>() {
+        Disposable disposable = (Disposable) model.getPMApiService().matcheResultPB(map).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<MatchInfo>>() {
                     @Override
                     public void onResult(List<MatchInfo> data) {
 
@@ -951,10 +1020,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
      * 公告列表集合
      */
     public void getAnnouncement() {
-        Disposable disposable = (Disposable) model.getPMApiService().frontListPB()
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<FrontListInfo>() {
+        Disposable disposable = (Disposable) model.getPMApiService().frontListPB().compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<FrontListInfo>() {
                     @Override
                     public void onResult(FrontListInfo info) {
                         KLog.i("FrontListInfo     " + info);
@@ -985,15 +1052,15 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     private Flowable getFlowableMatchesPagePB(PMListReq pmListReq) {
         Flowable flowable;
-        if(isUseCacheApiService(getSportCacheType())){
-            if(getSportCacheType().equals(SportCacheType.PM) ){
+        if (isUseCacheApiService()) {
+            if (getSportCacheType().equals(SportCacheType.PM)) {
                 pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN));
                 flowable = model.getBaseApiService().pmMatchesPagePB(pmListReq);
-            }else{
+            } else {
                 pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN));
                 flowable = model.getBaseApiService().pmxcMatchesPagePB(pmListReq);
             }
-        }else{
+        } else {
             flowable = model.getPMApiService().matchesPagePB(pmListReq);
         }
 
@@ -1002,15 +1069,15 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     private Flowable getFlowableLiveMatchesPB(PMListReq pmListReq) {
         Flowable flowable;
-        if(isUseCacheApiService(getSportCacheType())){
-            if(getSportCacheType().equals(SportCacheType.PM) ){
+        if (isUseCacheApiService()) {
+            if (getSportCacheType().equals(SportCacheType.PM)) {
                 pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN));
                 flowable = model.getBaseApiService().pmLiveMatchesPB(pmListReq);
-            }else{
+            } else {
                 pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN));
                 flowable = model.getBaseApiService().pmxcLiveMatchesPB(pmListReq);
             }
-        }else{
+        } else {
             flowable = model.getPMApiService().liveMatchesPB(pmListReq);
         }
 
@@ -1019,15 +1086,15 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     private Flowable getFlowableNoLiveMatchesPagePB(PMListReq pmListReq) {
         Flowable flowable;
-        if(isUseCacheApiService(getSportCacheType())){
-            if(getSportCacheType().equals(SportCacheType.PM) ){
+        if (isUseCacheApiService()) {
+            if (getSportCacheType().equals(SportCacheType.PM)) {
                 pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN));
                 flowable = model.getBaseApiService().pmNoLiveMatchesPagePB(pmListReq);
-            }else{
+            } else {
                 pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN));
                 flowable = model.getBaseApiService().pmxcNoLiveMatchesPagePB(pmListReq);
             }
-        }else{
+        } else {
             flowable = model.getPMApiService().noLiveMatchesPagePB(pmListReq);
         }
 
@@ -1036,22 +1103,23 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     private Flowable getFlowableMatchBaseInfoByMidsPB(PMListReq pmListReq) {
         Flowable flowable;
-        if(isUseCacheApiService(getSportCacheType())){
-            if(getSportCacheType().equals(SportCacheType.PM) ){
+        if (isUseCacheApiService()){
+            if (getSportCacheType().equals(SportCacheType.PM)) {
                 pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN));
                 flowable = model.getBaseApiService().pmGetMatchBaseInfoByMidsPB(pmListReq);
-            }else{
+            } else {
                 pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN));
                 flowable = model.getBaseApiService().pmxcGetMatchBaseInfoByMidsPB(pmListReq);
             }
-        }else{
+        } else {
             flowable = model.getPMApiService().getMatchBaseInfoByMidsPB(pmListReq);
         }
 
         return flowable;
     }
 
-    private boolean isUseCacheApiService(SportCacheType sportCacheType) {
+    private boolean isUseCacheApiService() {
+        SportCacheType sportCacheType = getSportCacheType();
         if (sportCacheType.equals(SportCacheType.PM) || sportCacheType.equals(SportCacheType.PMXC)) {
             return true;
         } else {
@@ -1071,7 +1139,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         // 解析缓存数据
-        Type typeToken = new TypeToken<SportsCacheSwitchInfo>() {}.getType();
+        Type typeToken = new TypeToken<SportsCacheSwitchInfo>() {
+        }.getType();
         SportsCacheSwitchInfo sportCacheSwitchInfo = new Gson().fromJson(json, typeToken);
 
         // 如果解析结果为空，返回 NONE
@@ -1121,5 +1190,38 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
         return SportCacheType.NONE;
     }
+
+    // 根据条件返回 HttpCallBack 类型的对象
+    public void setPMListCallback(boolean isTimerRefresh, boolean isRefresh, int sportPos, String sportId, int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchidList,Flowable flowable) {
+        if (isUseCacheApiService()) {
+            PMCacheListCallBack pmCacheListCallBack = new PMCacheListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList); // 返回 PMCacheListCallBack 类型的对象
+            Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()) //线程调度
+                    .compose(RxUtils.exceptionTransformer()).subscribeWith(pmCacheListCallBack);
+            addSubscribe(disposable);
+        } else {
+            PMListCallBack pmListCallBack = new PMListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList); // 返回 PMListCallBack 类型的对象
+            Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()) //线程调度
+                    .compose(RxUtils.exceptionTransformer()).subscribeWith(pmListCallBack);
+            addSubscribe(disposable);
+        }
+    }
+
+    // 根据条件返回 HttpCallBack 类型的对象
+    public void setPMLeagueListCallback(boolean isTimerRefresh, boolean isRefresh,
+                                            int sportPos, String sportId, int orderBy, List<Long> leagueIds,
+                                          int searchDatePos, int oddType, List<Long> matchidList, int finalType, boolean isStepSecond,Flowable flowable) {
+        if (isUseCacheApiService()) {
+            mPmCacheLeagueCallBack = new PMCacheLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, finalType, isStepSecond); // 返回 PMCacheListCallBack 类型的对象
+            Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()) //线程调度
+                    .compose(RxUtils.exceptionTransformer()).subscribeWith(mPmCacheLeagueCallBack);
+            addSubscribe(disposable);
+        } else {
+            mPmLeagueCallBack = new PMLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, finalType, isStepSecond); // 返回 PMListCallBack 类型的对象
+            Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()) //线程调度
+                    .compose(RxUtils.exceptionTransformer()).subscribeWith(mPmLeagueCallBack);
+            addSubscribe(disposable);
+        }
+    }
+
 
 }

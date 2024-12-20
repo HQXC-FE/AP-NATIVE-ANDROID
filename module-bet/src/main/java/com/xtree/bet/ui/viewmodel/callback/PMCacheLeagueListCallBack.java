@@ -12,13 +12,15 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.PMCacheHttpCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
-import com.xtree.bet.bean.response.pm.MatchListRsp;
+import com.xtree.bet.bean.response.pm.MatchLeagueListCacheRsp;
+import com.xtree.bet.bean.response.pm.MatchListCacheRsp;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.LeaguePm;
 import com.xtree.bet.bean.ui.Match;
@@ -34,7 +36,7 @@ import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class PMCacheLeagueListCallBack extends PMCacheHttpCallBack<MatchListRsp> {
+public class PMCacheLeagueListCallBack extends HttpCallBack<MatchLeagueListCacheRsp> {
 
     private PMMainViewModel mViewModel;
     private boolean mHasCache;
@@ -141,7 +143,7 @@ public class PMCacheLeagueListCallBack extends PMCacheHttpCallBack<MatchListRsp>
     }
 
     @Override
-    public void onResult(MatchListRsp matchListRsp) {
+    public void onResult(MatchLeagueListCacheRsp matchListRsp) {
         mViewModel.getUC().getDismissDialogEvent().call();
         if (mIsRefresh) {
             mNoliveMatchList.clear();
@@ -162,9 +164,9 @@ public class PMCacheLeagueListCallBack extends PMCacheHttpCallBack<MatchListRsp>
                 mViewModel.finishLoadMore(true);
             }
         }
-        mNoliveMatchList.addAll(matchListRsp.data);
+        mNoliveMatchList.addAll(matchListRsp.data.getData());
         if(TextUtils.isEmpty(mViewModel.mSearchWord)){
-            leagueAdapterList(matchListRsp.data);
+            leagueAdapterList(matchListRsp.data.getData());
             if (mFinalType == 1) { // 滚球
                 mViewModel.leagueLiveListData.postValue(mLeagueList);
             } else {

@@ -7,7 +7,6 @@ import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401038;
 import android.text.TextUtils;
 
 import com.xtree.base.net.HttpCallBack;
-import com.xtree.base.net.PMCacheHttpCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
@@ -128,13 +127,12 @@ public class PMCacheListCallBack extends HttpCallBack<MatchListCacheRsp> {
 
     @Override
     public void onResult(MatchListCacheRsp data) {
-        List<MatchInfo> list = data.getData().getData();
         if (mIsTimerRefresh) { // 定时刷新赔率变更
-            if (list.size() != mMatchids.size()) {
+            if (data.getData().size() != mMatchids.size()) {
                 //List<Long> matchIdList = new ArrayList<>();
                 mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);
             } else {
-                setOptionOddChange(list);
+                setOptionOddChange(data.getData());
                 mViewModel.leagueLiveTimerListData.postValue(mLeagueList);
             }
         } else {  // 获取今日中的全部滚球赛事列表
@@ -146,9 +144,9 @@ public class PMCacheListCallBack extends HttpCallBack<MatchListCacheRsp> {
             }
             mViewModel.firstNetworkFinishData.call();
             mIsStepSecond = true;
-            mLiveMatchList.addAll(list);
+            mLiveMatchList.addAll(data.getData());
             if(TextUtils.isEmpty(mViewModel.mSearchWord)) {
-                leagueGoingList(list);
+                leagueGoingList(data.getData());
             }
             mViewModel.saveLeague(this);
             mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, 2, mSearchDatePos, mOddType, false, mIsRefresh, mIsStepSecond);

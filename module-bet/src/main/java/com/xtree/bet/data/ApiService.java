@@ -3,11 +3,9 @@ package com.xtree.bet.data;
 import com.xtree.base.vo.BalanceVo;
 import com.xtree.base.vo.FBService;
 import com.xtree.base.vo.PMService;
-import com.xtree.bet.bean.request.fb.BtCarReq;
 import com.xtree.bet.bean.request.fb.FBListReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.HotLeagueInfo;
-import com.xtree.bet.bean.response.fb.BtConfirmInfo;
 import com.xtree.bet.bean.response.fb.MatchInfo;
 import com.xtree.bet.bean.response.fb.MatchListRsp;
 import com.xtree.bet.bean.response.fb.StatisticalInfo;
@@ -17,7 +15,6 @@ import java.util.Map;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.PMBaseResponse;
 import me.xtree.mvvmhabit.http.PMCacheResponse;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -160,7 +157,7 @@ public interface ApiService {
      */
     @POST("/api/sports/obg/forward?api=/yewu11/v1/m/matchesPagePB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMCacheResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> pmMatchesPagePB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListCacheRsp>> pmMatchesPagePB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表 分页获取非滚球赛事信息
@@ -168,7 +165,7 @@ public interface ApiService {
      */
     @POST("/api/sports/obg/forward?api=/yewu11/v1/m/noLiveMatchesPagePB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMCacheResponse<com.xtree.bet.bean.response.pm.MatchListRsp>> pmNoLiveMatchesPagePB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchLeagueListCacheRsp>> pmNoLiveMatchesPagePB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表
@@ -176,7 +173,7 @@ public interface ApiService {
      */
     @POST("/api/sports/obg/forward?api=/yewu11/v1/m/liveMatchesPB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMCacheResponse<List<com.xtree.bet.bean.response.pm.MatchInfo>>> pmLiveMatchesPB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListCacheRsp>> pmLiveMatchesPB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表
@@ -184,7 +181,7 @@ public interface ApiService {
      */
     @POST("/api/sports/obg/forward?api=/yewu11/v1/m/getMatchBaseInfoByMidsPB")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<PMCacheResponse<List<com.xtree.bet.bean.response.pm.MatchInfo>>> pmGetMatchBaseInfoByMidsPB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListCacheRsp>> pmGetMatchBaseInfoByMidsPB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表
@@ -192,7 +189,7 @@ public interface ApiService {
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/matchesPagePB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListCacheRsp>> pmxcMatchesPagePB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchLeagueListCacheRsp>> pmxcMatchesPagePB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表 分页获取非滚球赛事信息
@@ -200,7 +197,7 @@ public interface ApiService {
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/noLiveMatchesPagePB&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListCacheRsp>> pmxcNoLiveMatchesPagePB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchLeagueListCacheRsp>> pmxcNoLiveMatchesPagePB(@Body PMListReq pmListReq);
 
     /**
      * 获取 PM赛事列表
@@ -216,6 +213,6 @@ public interface ApiService {
      */
     @POST("/api/sports/obgzy/forward?api=/yewu11/v1/m/getMatchBaseInfoByMidsPB")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<List<com.xtree.bet.bean.response.pm.MatchListCacheRsp>>> pmxcGetMatchBaseInfoByMidsPB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<com.xtree.bet.bean.response.pm.MatchListCacheRsp>> pmxcGetMatchBaseInfoByMidsPB(@Body PMListReq pmListReq);
 
 }

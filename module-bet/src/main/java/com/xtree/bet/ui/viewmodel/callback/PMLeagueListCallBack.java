@@ -14,7 +14,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.base.request.UploadExcetionReq;
@@ -36,7 +36,7 @@ import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class PMLeagueListCallBack extends PMHttpCallBack<MatchListRsp> {
+public class PMLeagueListCallBack extends HttpCallBack<MatchListRsp> {
 
     private PMMainViewModel mViewModel;
     private boolean mHasCache;
