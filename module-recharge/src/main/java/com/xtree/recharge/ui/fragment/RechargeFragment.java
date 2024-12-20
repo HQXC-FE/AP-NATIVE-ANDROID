@@ -2197,9 +2197,9 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     }
 
     private void showOnePayBankTip(String realAmount) {
-        if (ppw5 != null && ppw5.isShow()) {
-            ppw5.dismiss();
-        }
+//        if (ppw5 != null && ppw5.isShow()) {
+//            ppw5.dismiss();
+//        }
         ppw5 = new XPopup.Builder(getContext()).dismissOnTouchOutside(false)
                 .dismissOnBackPressed(false).asCustom(new TipOnePayNextDialog(getContext(), new TipOnePayNextDialog.ICallBack() {
                     @Override
@@ -2212,9 +2212,9 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
     private void showOnePayBankAmount() {
         //隐藏极速充值iframe弹窗
-        if (ppw6 != null && ppw6.isShow()) {
-            ppw6.dismiss();
-        }
+//        if (ppw6 != null && ppw6.isShow()) {
+//            ppw6.dismiss();
+//        }
         ppw6 = new XPopup.Builder(getContext()
         ).dismissOnTouchOutside(false)
                 .moveUpToKeyboard(true)
