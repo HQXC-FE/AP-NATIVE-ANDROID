@@ -53,10 +53,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
@@ -98,69 +99,60 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     }
 
     public void getBanners() {
-        Disposable disposable = (Disposable) model.getApiService().getBanners()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<BannersVo>>() {
-                    @Override
-                    public void onResult(List<BannersVo> list) {
-                        CfLog.i("****** ");
-                        if (list.isEmpty()) {
-                            // 没有数据时,banner会占满手机屏幕/白屏;加2条数据显示默认图片
-                            list.add(new BannersVo("default"));
-                            list.add(new BannersVo("default"));
-                        } else if (list.size() == 1) {
-                            list.add(new BannersVo("default"));
-                        }
-                        //SPUtils.getInstance().put(SPKeyGlobal.HOME_BANNER_LIST, new Gson().toJson(list));
-                        liveDataBanner.setValue(list);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getBanners().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<BannersVo>>() {
+            @Override
+            public void onResult(List<BannersVo> list) {
+                CfLog.i("****** ");
+                if (list.isEmpty()) {
+                    // 没有数据时,banner会占满手机屏幕/白屏;加2条数据显示默认图片
+                    list.add(new BannersVo("default"));
+                    list.add(new BannersVo("default"));
+                } else if (list.size() == 1) {
+                    list.add(new BannersVo("default"));
+                }
+                //SPUtils.getInstance().put(SPKeyGlobal.HOME_BANNER_LIST, new Gson().toJson(list));
+                liveDataBanner.setValue(list);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e(t.toString());
-                        //super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e(t.toString());
+                //super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
     public void getECLink() {
-        Disposable disposable = (Disposable) model.getApiService().getECLink()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<BannersVo>>() {
-                    @Override
-                    public void onResult(List<BannersVo> list) {
-                        liveDataECLink.setValue(list);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getECLink().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<BannersVo>>() {
+            @Override
+            public void onResult(List<BannersVo> list) {
+                liveDataECLink.setValue(list);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e(t.toString());
-                        super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e(t.toString());
+                super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
     public void getPublicLink() {
-        Disposable disposable = (Disposable) model.getApiService().getPublicLink()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<PublicDialogVo>>() {
-                    @Override
-                    public void onResult(List<PublicDialogVo> list) {
-                        CfLog.i("publicLink        " + list);
-                        liveDataPublicLink.setValue(list);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getPublicLink().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<PublicDialogVo>>() {
+            @Override
+            public void onResult(List<PublicDialogVo> list) {
+                CfLog.i("publicLink        " + list);
+                liveDataPublicLink.setValue(list);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e(t.toString());
-                        super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e(t.toString());
+                super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -171,53 +163,47 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
             return;
         }
 
-        Disposable disposable = (Disposable) model.getApiService().getNotices()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<DataVo<NoticeVo>>() {
-                    @Override
-                    public void onResult(DataVo<NoticeVo> data) {
-                        CfLog.i("****** ");
-                        SPUtils.getInstance().put(SPKeyGlobal.HOME_NOTICE_LIST, new Gson().toJson(data.list));
-                        liveDataNotice.setValue(data.list);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getNotices().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<DataVo<NoticeVo>>() {
+            @Override
+            public void onResult(DataVo<NoticeVo> data) {
+                CfLog.i("****** ");
+                SPUtils.getInstance().put(SPKeyGlobal.HOME_NOTICE_LIST, new Gson().toJson(data.list));
+                liveDataNotice.setValue(data.list);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, Maybe no token. " + t.toString());
-                        //super.onError(t);
-                        //ToastUtils.showLong("获取公告失败");
-                        liveDataNotice.setValue(new ArrayList<>());
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e("error, Maybe no token. " + t.toString());
+                //super.onError(t);
+                //ToastUtils.showLong("获取公告失败");
+                liveDataNotice.setValue(new ArrayList<>());
+            }
+        });
         addSubscribe(disposable);
     }
 
     public void getGameStatus(Context ctx) {
-        Disposable disposable = (Disposable) model.getApiService().getGameStatus()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<GameStatusVo>>() {
-                    @Override
-                    public void onResult(List<GameStatusVo> list) {
-                        //ToastUtils.showLong("请求成功");
-                        CfLog.i("****** list.size: " + list.size()); // 37
-                        //CfLog.i(list.get(0).toString()); // GameStatusVo{cid=1, name='PT娱乐', alias='pt', status=1}
-                        String json = readFromRaw(ctx, R.raw.games);
-                        List<GameVo> mList = new Gson().fromJson(json, new TypeToken<List<GameVo>>() {
-                        }.getType());
-                        CfLog.i("mList.size: " + mList.size());
-                        mList = joinList(mList, list);
-                        SPUtils.getInstance().put(SPKeyGlobal.HOME_GAME_LIST, new Gson().toJson(mList));
-                        liveDataGames.setValue(mList);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getGameStatus().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<GameStatusVo>>() {
+            @Override
+            public void onResult(List<GameStatusVo> list) {
+                //ToastUtils.showLong("请求成功");
+                CfLog.i("****** list.size: " + list.size()); // 37
+                //CfLog.i(list.get(0).toString()); // GameStatusVo{cid=1, name='PT娱乐', alias='pt', status=1}
+                String json = readFromRaw(ctx, R.raw.games);
+                List<GameVo> mList = new Gson().fromJson(json, new TypeToken<List<GameVo>>() {
+                }.getType());
+                CfLog.i("mList.size: " + mList.size());
+                mList = joinList(mList, list);
+                SPUtils.getInstance().put(SPKeyGlobal.HOME_GAME_LIST, new Gson().toJson(mList));
+                liveDataGames.setValue(mList);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        //super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e("error, " + t.toString());
+                //super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -226,30 +212,26 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         if (TextUtils.isEmpty(token)) {
             return;
         }
-        Disposable disposable = (Disposable) model.getApiService().getFBGameTokenApi()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<FBService>() {
-                    @Override
-                    public void onResult(FBService fbService) {
-                        CfLog.i("****** ");
-                        SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, fbService.getToken());
-                        SPUtils.getInstance().put(SPKeyGlobal.FB_DISABLED, fbService.isDisabled);
-                        SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
-                        BtDomainUtil.setDefaultFbDomainUrl(fbService.getForward().getApiServerAddress());
-                        BtDomainUtil.addFbDomainUrl(fbService.getForward().getApiServerAddress());
-                        BtDomainUtil.setFbDomainUrl(fbService.getDomains());
-                        if (!isFirst) {
-                            ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).
-                                    withString("KEY_PLATFORM", BtDomainUtil.PLATFORM_FB).navigation();
-                        }
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getFBGameTokenApi().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<FBService>() {
+            @Override
+            public void onResult(FBService fbService) {
+                CfLog.i("****** ");
+                SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, fbService.getToken());
+                SPUtils.getInstance().put(SPKeyGlobal.FB_DISABLED, fbService.isDisabled);
+                SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
+                BtDomainUtil.setDefaultFbDomainUrl(fbService.getForward().getApiServerAddress());
+                BtDomainUtil.addFbDomainUrl(fbService.getForward().getApiServerAddress());
+                BtDomainUtil.setFbDomainUrl(fbService.getDomains());
+                if (!isFirst) {
+                    ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).withString("KEY_PLATFORM", BtDomainUtil.PLATFORM_FB).navigation();
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -258,29 +240,25 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         if (TextUtils.isEmpty(token)) {
             return;
         }
-        Disposable disposable = (Disposable) model.getApiService().getFBXCGameTokenApi()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<FBService>() {
-                    @Override
-                    public void onResult(FBService fbService) {
-                        SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, fbService.getToken());
-                        SPUtils.getInstance().put(SPKeyGlobal.FBXC_DISABLED, fbService.isDisabled);
-                        SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
-                        BtDomainUtil.setDefaultFbxcDomainUrl(fbService.getForward().getApiServerAddress());
-                        BtDomainUtil.addFbxcDomainUrl(fbService.getForward().getApiServerAddress());
-                        BtDomainUtil.setFbxcDomainUrl(fbService.getDomains());
-                        if (!isFirst) {
-                            ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).
-                                    withString("KEY_PLATFORM", BtDomainUtil.PLATFORM_FBXC).navigation();
-                        }
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getFBXCGameTokenApi().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<FBService>() {
+            @Override
+            public void onResult(FBService fbService) {
+                SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, fbService.getToken());
+                SPUtils.getInstance().put(SPKeyGlobal.FBXC_DISABLED, fbService.isDisabled);
+                SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
+                BtDomainUtil.setDefaultFbxcDomainUrl(fbService.getForward().getApiServerAddress());
+                BtDomainUtil.addFbxcDomainUrl(fbService.getForward().getApiServerAddress());
+                BtDomainUtil.setFbxcDomainUrl(fbService.getDomains());
+                if (!isFirst) {
+                    ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).withString("KEY_PLATFORM", BtDomainUtil.PLATFORM_FBXC).navigation();
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -289,29 +267,25 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         if (TextUtils.isEmpty(token)) {
             return;
         }
-        Disposable disposable = (Disposable) model.getApiService().getPMGameTokenApi()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<PMService>() {
-                    @Override
-                    public void onResult(PMService pmService) {
-                        SPUtils.getInstance().put(SPKeyGlobal.PM_TOKEN, pmService.getToken());
-                        SPUtils.getInstance().put(SPKeyGlobal.PM_DISABLED, pmService.isDisabled);
-                        SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, pmService.getApiDomain());
-                        SPUtils.getInstance().put(SPKeyGlobal.PM_IMG_SERVICE_URL, pmService.getImgDomain());
-                        SPUtils.getInstance().put(SPKeyGlobal.PM_USER_ID, pmService.getUserId());
-                        BtDomainUtil.setDefaultPmDomainUrl(pmService.getApiDomain());
-                        if (!isFirst) {
-                            ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).
-                                    withString("KEY_PLATFORM", BtDomainUtil.PLATFORM_PM).navigation();
-                        }
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getPMGameTokenApi().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<PMService>() {
+            @Override
+            public void onResult(PMService pmService) {
+                SPUtils.getInstance().put(SPKeyGlobal.PM_TOKEN, pmService.getToken());
+                SPUtils.getInstance().put(SPKeyGlobal.PM_DISABLED, pmService.isDisabled);
+                SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, pmService.getApiDomain());
+                SPUtils.getInstance().put(SPKeyGlobal.PM_IMG_SERVICE_URL, pmService.getImgDomain());
+                SPUtils.getInstance().put(SPKeyGlobal.PM_USER_ID, pmService.getUserId());
+                BtDomainUtil.setDefaultPmDomainUrl(pmService.getApiDomain());
+                if (!isFirst) {
+                    ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).withString("KEY_PLATFORM", BtDomainUtil.PLATFORM_PM).navigation();
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -320,29 +294,25 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         if (TextUtils.isEmpty(token)) {
             return;
         }
-        Disposable disposable = (Disposable) model.getApiService().getPMXCGameTokenApi()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<PMService>() {
-                    @Override
-                    public void onResult(PMService pmService) {
-                        SPUtils.getInstance().put(SPKeyGlobal.PMXC_TOKEN, pmService.getToken());
-                        SPUtils.getInstance().put(SPKeyGlobal.PMXC_DISABLED, pmService.isDisabled);
-                        SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, pmService.getApiDomain());
-                        SPUtils.getInstance().put(SPKeyGlobal.PMXC_IMG_SERVICE_URL, pmService.getImgDomain());
-                        SPUtils.getInstance().put(SPKeyGlobal.PMXC_USER_ID, pmService.getUserId());
-                        BtDomainUtil.setDefaultPmxcDomainUrl(pmService.getApiDomain());
-                        if (!isFirst) {
-                            ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).
-                                    withString("KEY_PLATFORM", BtDomainUtil.PLATFORM_PMXC).navigation();
-                        }
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getPMXCGameTokenApi().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<PMService>() {
+            @Override
+            public void onResult(PMService pmService) {
+                SPUtils.getInstance().put(SPKeyGlobal.PMXC_TOKEN, pmService.getToken());
+                SPUtils.getInstance().put(SPKeyGlobal.PMXC_DISABLED, pmService.isDisabled);
+                SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, pmService.getApiDomain());
+                SPUtils.getInstance().put(SPKeyGlobal.PMXC_IMG_SERVICE_URL, pmService.getImgDomain());
+                SPUtils.getInstance().put(SPKeyGlobal.PMXC_USER_ID, pmService.getUserId());
+                BtDomainUtil.setDefaultPmxcDomainUrl(pmService.getApiDomain());
+                if (!isFirst) {
+                    ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).withString("KEY_PLATFORM", BtDomainUtil.PLATFORM_PMXC).navigation();
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -367,7 +337,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                 // 原生的,或者需要请求接口的
                 CfLog.w("******: " + vo);
             }
-            if (vo.status == 2 || vo.cid == 17 || vo.cid == 33 ) {
+            if (vo.status == 2 || vo.cid == 17 || vo.cid == 33) {
                 //17:CQ9娱乐 33：MG电子
                 // 已下架,不要加到列表里面了
                 CfLog.w("not show: " + vo);
@@ -392,148 +362,130 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         map.put("h5judge", "1");
         map.put("id", gameId);
 
-        Disposable disposable = (Disposable) model.getApiService().getPlayUrl(gameAlias, map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<Map<String, Object>>() {
-                    @Override
-                    public void onResult(Map<String, Object> vo) {
-                        // "url": "https://user-h5-bw3.d91a21f.com?token=7c9c***039a"
-                        // "url": { "launch_url": "https://cdn-ali.***.com/h5V01/h5.html?sn=dy12&xxx" }
-                        //CfLog.i(vo.toString());
-                        if (!vo.containsKey("url")) {
-                            return;
-                        }
+        Disposable disposable = (Disposable) model.getApiService().getPlayUrl(gameAlias, map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<Map<String, Object>>() {
+            @Override
+            public void onResult(Map<String, Object> vo) {
+                // "url": "https://user-h5-bw3.d91a21f.com?token=7c9c***039a"
+                // "url": { "launch_url": "https://cdn-ali.***.com/h5V01/h5.html?sn=dy12&xxx" }
+                //CfLog.i(vo.toString());
+                if (!vo.containsKey("url")) {
+                    return;
+                }
 
-                        vo.put("name", name);
-                        Object obj = vo.get("url");
-                        if (obj instanceof String) {
-                            liveDataPlayUrl.setValue(vo);
-                        } else if (obj instanceof Map) {
-                            // BG真人 又包了一层
-                            if (((Map<String, ?>) obj).containsKey("launch_url")) {
-                                String launch_url = ((Map<String, String>) obj).get("launch_url");
-                                vo.put("url", launch_url);
-                                liveDataPlayUrl.setValue(vo);
-                            }
-                        }
-
+                vo.put("name", name);
+                Object obj = vo.get("url");
+                if (obj instanceof String) {
+                    liveDataPlayUrl.setValue(vo);
+                } else if (obj instanceof Map) {
+                    // BG真人 又包了一层
+                    if (((Map<String, ?>) obj).containsKey("launch_url")) {
+                        String launch_url = ((Map<String, String>) obj).get("launch_url");
+                        vo.put("url", launch_url);
+                        liveDataPlayUrl.setValue(vo);
                     }
+                }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        super.onError(t);
-                    }
+            }
 
-                    @Override
-                    public void onFail41011(BusinessException t) {
-                        super.onFail41011(t);
-                        liveDataFail41011.setValue(t.message);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e("error, " + t.toString());
+                super.onError(t);
+            }
+
+            @Override
+            public void onFail41011(BusinessException t) {
+                super.onFail41011(t);
+                liveDataFail41011.setValue(t.message);
+            }
+        });
         addSubscribe(disposable);
     }
 
     public void getSettings() {
         HashMap<String, String> map = new HashMap();
-        map.put("fields", "hichat_url_suffix,customer_service_url,public_key,barrage_api_url," +
-                "x9_customer_service_url," + "promption_code,default_promption_code,ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time,app_response_speed_calculation,app_response_speed_max");
-        Disposable disposable = (Disposable) model.getApiService().getSettings(map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<SettingsVo>() {
-                    @Override
-                    public void onResult(SettingsVo vo) {
-                        CfLog.i("****** SettingsVo " + vo.toString());
-                        public_key = vo.public_key
-                                .replace("\n", "")
-                                .replace("\t", " ")
-                                .replace("-----BEGIN PUBLIC KEY-----", "")
-                                .replace("-----END PUBLIC KEY-----", "");
+        map.put("fields", "hichat_url_suffix,customer_service_url,public_key,barrage_api_url," + "x9_customer_service_url," + "promption_code,default_promption_code,ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time,app_response_speed_calculation,app_response_speed_max");
+        Disposable disposable = (Disposable) model.getApiService().getSettings(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<SettingsVo>() {
+            @Override
+            public void onResult(SettingsVo vo) {
+                CfLog.i("****** SettingsVo " + vo.toString());
+                public_key = vo.public_key.replace("\n", "").replace("\t", " ").replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "");
 
-                        SPUtils.getInstance().put(SPKeyGlobal.PUBLIC_KEY, public_key);
-                        SPUtils.getInstance().put("customer_service_url", vo.customer_service_url);
-                        SPUtils.getInstance().put(SPKeyGlobal.WS_CHECK_INTERVAL, vo.ws_check_interval);
-                        SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_NUMBER, vo.ws_retry_number);
-                        SPUtils.getInstance().put(SPKeyGlobal.WS_EXPIRE_TIME, vo.ws_expire_time);
-                        SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_WAITING_TIME, vo.ws_retry_waiting_time);
-                        SPUtils.getInstance().put(SPKeyGlobal.HICHAT_URL_SUFFIX, Set.of(vo.hichat_url_suffix));
-                        //SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
+                SPUtils.getInstance().put(SPKeyGlobal.PUBLIC_KEY, public_key);
+                SPUtils.getInstance().put("customer_service_url", vo.customer_service_url);
+                SPUtils.getInstance().put(SPKeyGlobal.WS_CHECK_INTERVAL, vo.ws_check_interval);
+                SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_NUMBER, vo.ws_retry_number);
+                SPUtils.getInstance().put(SPKeyGlobal.WS_EXPIRE_TIME, vo.ws_expire_time);
+                SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_WAITING_TIME, vo.ws_retry_waiting_time);
+                SPUtils.getInstance().put(SPKeyGlobal.HICHAT_URL_SUFFIX, new LinkedHashSet(Arrays.asList(vo.hichat_url_suffix)));
+                //SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
 
-                        SPUtils.getInstance().put(SPKeyGlobal.APP_RESPONSE_SPEED_CALCULATION, vo.app_response_speed_calculation);
-                        SPUtils.getInstance().put(SPKeyGlobal.APP_Response_Speed_Max, vo.app_response_speed_max);
-                        //设置测速扣除百分比
-                        FastestMonitorCache.INSTANCE.setSPEED_CALCULATION(vo.app_response_speed_calculation);
-                        //设置测速显示上限
-                        FastestMonitorCache.INSTANCE.setApp_response_speed_max(vo.app_response_speed_max);
+                SPUtils.getInstance().put(SPKeyGlobal.APP_RESPONSE_SPEED_CALCULATION, vo.app_response_speed_calculation);
+                SPUtils.getInstance().put(SPKeyGlobal.APP_Response_Speed_Max, vo.app_response_speed_max);
+                //设置测速扣除百分比
+                FastestMonitorCache.INSTANCE.setSPEED_CALCULATION(vo.app_response_speed_calculation);
+                //设置测速显示上限
+                FastestMonitorCache.INSTANCE.setApp_response_speed_max(vo.app_response_speed_max);
 
-                        liveDataSettings.setValue(vo);
-                    }
+                liveDataSettings.setValue(vo);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        //super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e("error, " + t.toString());
+                //super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
     public void getCookie() {
-        Disposable disposable = (Disposable) model.getApiService().getCookie()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<CookieVo>() {
-                    @Override
-                    public void onResult(CookieVo vo) {
-                        CfLog.i(vo.toString());
-                        SPUtils.getInstance().put(SPKeyGlobal.USER_SHARE_COOKIE_NAME, vo.cookie_name);
-                        SPUtils.getInstance().put(SPKeyGlobal.USER_SHARE_SESSID, vo.sessid);
-                        RetrofitClient.init();
-                        liveDataCookie.setValue(vo);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getCookie().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<CookieVo>() {
+            @Override
+            public void onResult(CookieVo vo) {
+                CfLog.i(vo.toString());
+                SPUtils.getInstance().put(SPKeyGlobal.USER_SHARE_COOKIE_NAME, vo.cookie_name);
+                SPUtils.getInstance().put(SPKeyGlobal.USER_SHARE_SESSID, vo.sessid);
+                RetrofitClient.init();
+                liveDataCookie.setValue(vo);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        //super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e("error, " + t.toString());
+                //super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
+
     /**
      * 获取 个人信息
      */
     public void getProfile() {
-        Disposable disposable = (Disposable) model.getApiService().getProfile()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<ProfileVo>() {
-                    @Override
-                    public void onResult(ProfileVo vo) {
-                        CfLog.i(vo.toString());
-                        SPUtils.getInstance().put(SPKeyGlobal.USER_AUTO_THRAD_STATUS, vo.auto_thrad_status);
-                        SPUtils.getInstance().put(SPKeyGlobal.HOME_PROFILE, new Gson().toJson(vo));
-                        SPUtils.getInstance().put(SPKeyGlobal.USER_ID, vo.userid);
-                        SPUtils.getInstance().put(SPKeyGlobal.USER_NAME, vo.username);
-                        liveDataProfile.setValue(vo);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getProfile().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<ProfileVo>() {
+            @Override
+            public void onResult(ProfileVo vo) {
+                CfLog.i(vo.toString());
+                SPUtils.getInstance().put(SPKeyGlobal.USER_AUTO_THRAD_STATUS, vo.auto_thrad_status);
+                SPUtils.getInstance().put(SPKeyGlobal.HOME_PROFILE, new Gson().toJson(vo));
+                SPUtils.getInstance().put(SPKeyGlobal.USER_ID, vo.userid);
+                SPUtils.getInstance().put(SPKeyGlobal.USER_NAME, vo.username);
+                liveDataProfile.setValue(vo);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        //super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e("error, " + t.toString());
+                //super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
     public void getMessagePersonList() {
-        Disposable disposable = (Disposable) model.getApiService().getMessagePersonList()
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<MsgPersonListVo>() {
+        Disposable disposable = (Disposable) model.getApiService().getMessagePersonList().compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<MsgPersonListVo>() {
                     @Override
                     public void onResult(MsgPersonListVo vo) {
                         liveDataMsgUnread.setValue(vo.unread);
@@ -556,53 +508,47 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     }
 
     public void getVipInfo() {
-        Disposable disposable = (Disposable) model.getApiService().getVipInfo()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<VipInfoVo>() {
-                    @Override
-                    public void onResult(VipInfoVo vo) {
-                        CfLog.i(vo.toString());
-                        SPUtils.getInstance().put(SPKeyGlobal.HOME_VIP_INFO, new Gson().toJson(vo));
-                        liveDataVipInfo.setValue(vo);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getVipInfo().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<VipInfoVo>() {
+            @Override
+            public void onResult(VipInfoVo vo) {
+                CfLog.i(vo.toString());
+                SPUtils.getInstance().put(SPKeyGlobal.HOME_VIP_INFO, new Gson().toJson(vo));
+                liveDataVipInfo.setValue(vo);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        //super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e("error, " + t.toString());
+                //super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
     public void getAugList(Context context) {
         LoadingDialog.show(context);
-        Disposable disposable = (Disposable) model.getApiService().getAugList()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<AugVo>>() {
-                    @Override
-                    public void onResult(List<AugVo> list) {
-                        CfLog.i(list.toString());
-                        HashMap<String, ArrayList<AugVo>> augMap = new HashMap<>();
-                        for (AugVo value : list) {
-                            if (!augMap.containsKey(value.getOne_level())) {
-                                augMap.put(value.getOne_level(), new ArrayList<>());
-                            }
-                            augMap.get(value.getOne_level()).add(value);
-                        }
-                        Gson gson = new Gson();
-                        SPUtils.getInstance().put(SPKeyGlobal.AUG_LIST, gson.toJson(augMap));
-                        liveDataAug.setValue(augMap);
+        Disposable disposable = (Disposable) model.getApiService().getAugList().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<AugVo>>() {
+            @Override
+            public void onResult(List<AugVo> list) {
+                CfLog.i(list.toString());
+                HashMap<String, ArrayList<AugVo>> augMap = new HashMap<>();
+                for (AugVo value : list) {
+                    if (!augMap.containsKey(value.getOne_level())) {
+                        augMap.put(value.getOne_level(), new ArrayList<>());
                     }
+                    augMap.get(value.getOne_level()).add(value);
+                }
+                Gson gson = new Gson();
+                SPUtils.getInstance().put(SPKeyGlobal.AUG_LIST, gson.toJson(augMap));
+                liveDataAug.setValue(augMap);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e("error, " + t.toString());
+                super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -613,56 +559,48 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         map.put("per_page", pageSize);
         map.put("cate_id", cateId);
         map.put("is_hot", isHot);
-        Disposable disposable = (Disposable) model.getApiService().getEle(map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<EleVo>() {
-                    @Override
-                    public void onResult(EleVo vo) {
-                        CfLog.i(vo.toString().toString());
-                        liveDataEle.setValue(vo);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getEle(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<EleVo>() {
+            @Override
+            public void onResult(EleVo vo) {
+                CfLog.i(vo.toString());
+                liveDataEle.setValue(vo);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        super.onError(t);
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e("error, " + t.toString());
+                super.onError(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
     public void getRedPocket() {
-        Disposable disposable = (Disposable) model.getApiService().getRedPocket()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<RedPocketVo>() {
-                    @Override
-                    public void onResult(RedPocketVo vo) {
-                        CfLog.i(vo.toString());
-                        liveDataRedPocket.setValue(vo);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getRedPocket().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<RedPocketVo>() {
+            @Override
+            public void onResult(RedPocketVo vo) {
+                CfLog.i(vo.toString());
+                liveDataRedPocket.setValue(vo);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        //super.onError(t);
-                    }
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e("error, " + t.toString());
+                //super.onError(t);
+            }
 
-                    @Override
-                    public void onFail(BusinessException t) {
-                        CfLog.e("error, " + t.toString()); // 活动不存在
-                        //super.onFail(t);
-                    }
-                });
+            @Override
+            public void onFail(BusinessException t) {
+                CfLog.e("error, " + t.toString()); // 活动不存在
+                //super.onFail(t);
+            }
+        });
         addSubscribe(disposable);
     }
 
     public void getRewardRed() {
-        Disposable disposable = (Disposable) model.getApiService().getReward()
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<RewardRedVo>() {
+        Disposable disposable = (Disposable) model.getApiService().getReward().compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<RewardRedVo>() {
                     @Override
                     public void onResult(RewardRedVo vo) {
                         if (vo != null) {
@@ -724,24 +662,21 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
      * App更新接口
      */
     public void getUpdate() {
-        Disposable disposable = (Disposable) model.getApiService().getUpdate()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<AppUpdateVo>() {
-                    @Override
-                    public void onResult(AppUpdateVo updateVo) {
-                        if (updateVo == null) {
-                            CfLog.e("data is null");
-                            return;
-                        }
-                        liveDataUpdate.setValue(updateVo);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getUpdate().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<AppUpdateVo>() {
+            @Override
+            public void onResult(AppUpdateVo updateVo) {
+                if (updateVo == null) {
+                    CfLog.e("data is null");
+                    return;
+                }
+                liveDataUpdate.setValue(updateVo);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e("error, " + t.toString());
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -749,79 +684,73 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
      * 获取 充值列表
      */
     public void getPaymentsTypeList() {
-        Disposable disposable = (Disposable) model.getApiService().getPaymentsTypeList()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<PaymentDataVo>() {
-                    @Override
-                    public void onResult(PaymentDataVo vo) {
-                        CfLog.i(new Gson().toJson(vo));
-                        //CfLog.d("chongzhiListCount: " + vo.chongzhiListCount);
-                        if (vo == null || vo.chongzhiList == null || vo.chongzhiList.isEmpty()) {
-                            return;
-                        }
+        Disposable disposable = (Disposable) model.getApiService().getPaymentsTypeList().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<PaymentDataVo>() {
+            @Override
+            public void onResult(PaymentDataVo vo) {
+                CfLog.i(new Gson().toJson(vo));
+                //CfLog.d("chongzhiListCount: " + vo.chongzhiListCount);
+                if (vo == null || vo.chongzhiList == null || vo.chongzhiList.isEmpty()) {
+                    return;
+                }
 
-                        for (int i = 0; i < vo.chongzhiList.size(); i++) {
-                            PaymentDataVo.PaymentTypeVo t = vo.chongzhiList.get(i);
-                            if (t.payChannelList == null || t.payChannelList.isEmpty()) {
-                                continue;
-                            }
+                for (int i = 0; i < vo.chongzhiList.size(); i++) {
+                    PaymentDataVo.PaymentTypeVo t = vo.chongzhiList.get(i);
+                    if (t.payChannelList == null || t.payChannelList.isEmpty()) {
+                        continue;
+                    }
 
-                            for (int j = 0; j < t.payChannelList.size(); j++) {
-                                PaymentDataVo.RechargeVo vo2 = t.payChannelList.get(j);
-                                if (vo2.user_bank_info != null) {
-                                    if (vo2.user_bank_info instanceof Map) {
-                                        Map<String, String> map = (Map<String, String>) vo2.user_bank_info;
-                                        for (Map.Entry<String, String> entry : map.entrySet()) {
-                                            PaymentDataVo.RechargeVo.BankCardVo vo3 = new PaymentDataVo.RechargeVo.BankCardVo(entry.getKey(), entry.getValue());
-                                            vo2.userBankList.add(vo3);
-                                        }
-                                    }
-                                }
-                                if (vo2.op_thiriframe_use && !vo2.phone_needbind) {
-                                    getPaymentDetail(vo2.bid); // 查详情
+                    for (int j = 0; j < t.payChannelList.size(); j++) {
+                        PaymentDataVo.RechargeVo vo2 = t.payChannelList.get(j);
+                        if (vo2.user_bank_info != null) {
+                            if (vo2.user_bank_info instanceof Map) {
+                                Map<String, String> map = (Map<String, String>) vo2.user_bank_info;
+                                for (Map.Entry<String, String> entry : map.entrySet()) {
+                                    PaymentDataVo.RechargeVo.BankCardVo vo3 = new PaymentDataVo.RechargeVo.BankCardVo(entry.getKey(), entry.getValue());
+                                    vo2.userBankList.add(vo3);
                                 }
                             }
                         }
-                        SPUtils.getInstance().put(SPKeyGlobal.RC_PAYMENT_TYPE_OBJ, new Gson().toJson(vo));
+                        if (vo2.op_thiriframe_use && !vo2.phone_needbind) {
+                            getPaymentDetail(vo2.bid); // 查详情
+                        }
                     }
+                }
+                SPUtils.getInstance().put(SPKeyGlobal.RC_PAYMENT_TYPE_OBJ, new Gson().toJson(vo));
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e(t.toString());
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e(t.toString());
+            }
+        });
 
         addSubscribe(disposable);
     }
 
     public void getPaymentDetail(String bid) {
-        Disposable disposable = (Disposable) model.getApiService().getPayment(bid)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<PaymentDataVo.RechargeVo>() {
-                    @Override
-                    public void onResult(PaymentDataVo.RechargeVo vo) {
-                        CfLog.d(vo.toString());
-                        if (vo.user_bank_info != null && vo.user_bank_info instanceof Map) {
-                            Map<String, String> map = (Map<String, String>) vo.user_bank_info;
-                            for (Map.Entry<String, String> entry : map.entrySet()) {
-                                PaymentDataVo.RechargeVo.BankCardVo vo3 = new PaymentDataVo.RechargeVo.BankCardVo(entry.getKey(), entry.getValue());
-                                vo.userBankList.add(vo3);
-                            }
-                        }
-
-                        CfLog.d("****** op_thiriframe_url: " + vo.title + ", " + vo.op_thiriframe_url);
-                        CfLog.d("****** " + new Gson().toJson(vo));
-                        mapRechargeVo.put(vo.bid, vo);
-                        SPUtils.getInstance().put(SPKeyGlobal.RC_PAYMENT_THIRIFRAME, new Gson().toJson(mapRechargeVo));
+        Disposable disposable = (Disposable) model.getApiService().getPayment(bid).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<PaymentDataVo.RechargeVo>() {
+            @Override
+            public void onResult(PaymentDataVo.RechargeVo vo) {
+                CfLog.d(vo.toString());
+                if (vo.user_bank_info != null && vo.user_bank_info instanceof Map) {
+                    Map<String, String> map = (Map<String, String>) vo.user_bank_info;
+                    for (Map.Entry<String, String> entry : map.entrySet()) {
+                        PaymentDataVo.RechargeVo.BankCardVo vo3 = new PaymentDataVo.RechargeVo.BankCardVo(entry.getKey(), entry.getValue());
+                        vo.userBankList.add(vo3);
                     }
+                }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e(t.toString());
-                    }
-                });
+                CfLog.d("****** op_thiriframe_url: " + vo.title + ", " + vo.op_thiriframe_url);
+                CfLog.d("****** " + new Gson().toJson(vo));
+                mapRechargeVo.put(vo.bid, vo);
+                SPUtils.getInstance().put(SPKeyGlobal.RC_PAYMENT_THIRIFRAME, new Gson().toJson(mapRechargeVo));
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                CfLog.e(t.toString());
+            }
+        });
 
         addSubscribe(disposable);
     }
@@ -835,7 +764,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         InputStreamReader reader = new InputStreamReader(is);
         BufferedReader br = new BufferedReader(reader);
 
-        StringBuffer sb = new StringBuffer("");
+        StringBuffer sb = new StringBuffer();
         String str;
         try {
             while ((str = br.readLine()) != null) {
@@ -859,10 +788,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         map.put("device_type", "9");
         map.put("device_detail", SystemUtil.getDeviceBrand() + " " + SystemUtil.getDeviceModel() + " " + "Android " + SystemUtil.getSystemVersion());
         map.put("msg", uploadExcetionReq.getMsg());
-        Disposable disposable = (Disposable) model.getApiService().uploadExcetion(map)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<String>() {
+        Disposable disposable = (Disposable) model.getApiService().uploadExcetion(map).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<String>() {
                     @Override
                     public void onResult(String result) {
                     }
