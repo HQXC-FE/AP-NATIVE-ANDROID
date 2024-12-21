@@ -1,8 +1,8 @@
 package com.xtree.bet.ui.viewmodel.callback;
 
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401038;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
@@ -13,14 +13,12 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
-import com.xtree.base.net.PMCacheHttpCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
 import com.xtree.bet.bean.response.pm.MatchLeagueListCacheRsp;
-import com.xtree.bet.bean.response.pm.MatchListCacheRsp;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.LeaguePm;
 import com.xtree.bet.bean.ui.Match;

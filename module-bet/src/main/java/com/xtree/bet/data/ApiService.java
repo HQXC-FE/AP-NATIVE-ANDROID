@@ -15,7 +15,6 @@ import java.util.Map;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.PMCacheResponse;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;

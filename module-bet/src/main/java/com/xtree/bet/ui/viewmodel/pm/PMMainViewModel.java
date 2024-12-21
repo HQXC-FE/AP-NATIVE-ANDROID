@@ -1,8 +1,8 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401038;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
@@ -17,8 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
-import com.xtree.base.net.PMCacheHttpCallBack;
-import com.xtree.base.net.PMHttpCallBack;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.SportsCacheSwitchInfo;
@@ -27,7 +25,6 @@ import com.xtree.bet.bean.response.pm.FrontListInfo;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
 import com.xtree.bet.bean.response.pm.MatchLeagueListCacheRsp;
-import com.xtree.bet.bean.response.pm.MatchListCacheRsp;
 import com.xtree.bet.bean.response.pm.MatchListRsp;
 import com.xtree.bet.bean.response.pm.MenuInfo;
 import com.xtree.bet.bean.response.pm.PMResultBean;
@@ -1191,7 +1188,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         return SportCacheType.NONE;
     }
 
-    // 根据条件返回 HttpCallBack 类型的对象
+    // 根据条件设置 HttpCallBack 类型的对象
     public void setPMListCallback(boolean isTimerRefresh, boolean isRefresh, int sportPos, String sportId, int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchidList,Flowable flowable) {
         if (isUseCacheApiService()) {
             PMCacheListCallBack pmCacheListCallBack = new PMCacheListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList); // 返回 PMCacheListCallBack 类型的对象
