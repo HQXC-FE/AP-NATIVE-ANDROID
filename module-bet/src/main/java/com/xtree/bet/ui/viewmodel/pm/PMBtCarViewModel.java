@@ -19,6 +19,7 @@ import com.xtree.bet.bean.response.pm.BtConfirmInfo;
 import com.xtree.bet.bean.response.pm.BtResultInfo;
 import com.xtree.bet.bean.response.pm.BtResultOptionInfo;
 import com.xtree.bet.bean.response.pm.CgOddLimitInfo;
+import com.xtree.bet.bean.response.pm.PlayTypeInfo;
 import com.xtree.bet.bean.response.pm.SeriesOrderInfo;
 import com.xtree.bet.bean.ui.BetConfirmOption;
 import com.xtree.bet.bean.ui.BetConfirmOptionPm;
@@ -26,6 +27,7 @@ import com.xtree.bet.bean.ui.BtResult;
 import com.xtree.bet.bean.ui.BtResultPm;
 import com.xtree.bet.bean.ui.CgOddLimit;
 import com.xtree.bet.bean.ui.CgOddLimitPm;
+import com.xtree.bet.bean.ui.PlayTypePm;
 import com.xtree.bet.constant.SPKey;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.TemplateBtCarViewModel;
@@ -78,6 +80,16 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
             betMatchMarket.setMatchType(betConfirmOption.getOptionList().getMatchType());
             betMatchMarket.setSportId(Integer.valueOf(betConfirmOption.getMatch().getSportId()));
             betMatchMarket.setPlaceNum(betConfirmOption.getPlaceNum());
+
+            PlayTypePm playTypePm = (PlayTypePm) betConfirmOption.getPlayType();
+            PlayTypeInfo playTypeInfo = playTypePm.getPlayTypeInfo();
+            String chpid = "";
+            if(playTypeInfo.topKey != null){
+                chpid = playTypeInfo.topKey.replace("-","");
+            }else{
+                chpid = betConfirmOption.getPlayType().getId();
+            }
+            betMatchMarket.setChpid(chpid);
             betMatchMarketList.add(betMatchMarket);
         }
         btCarReq.setIdList(betMatchMarketList);
