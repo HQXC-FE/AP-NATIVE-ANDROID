@@ -180,7 +180,7 @@ public class EntryRule {
             submitDTO.setMenuid(Integer.parseInt((String) submit.get("menuid")));
             submitDTO.setType((String) submit.get("type"));
             submitDTO.setNums((int) submit.get("nums"));
-            submitDTO.setMoney((int) (Math.round((double) submit.get("money"))));
+            submitDTO.setMoney((double) submit.get("money"));
             submitDTO.setSolo((boolean) submit.get("solo"));
             submitDTO.setDesc((String) submit.get("desc"));
         }
