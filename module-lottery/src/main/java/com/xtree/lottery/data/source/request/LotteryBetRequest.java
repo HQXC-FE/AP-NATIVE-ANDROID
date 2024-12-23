@@ -160,7 +160,7 @@ public class LotteryBetRequest {
          * poschoose
          */
         @SerializedName("poschoose")
-        private String poschoose;
+        private String poschoose = null;
         /**
          * menuid
          */
@@ -180,7 +180,7 @@ public class LotteryBetRequest {
          * money
          */
         @SerializedName("money")
-        private int money;
+        private double money;
         /**
          * solo
          */
@@ -264,11 +264,11 @@ public class LotteryBetRequest {
             this.nums = nums;
         }
 
-        public int getMoney() {
+        public double getMoney() {
             return money;
         }
 
-        public void setMoney(int money) {
+        public void setMoney(double money) {
             this.money = money;
         }
 

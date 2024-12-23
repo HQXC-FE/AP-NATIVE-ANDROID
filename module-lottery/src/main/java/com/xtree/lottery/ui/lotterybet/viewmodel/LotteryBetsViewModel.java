@@ -327,6 +327,9 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public void onTabReselected(TabLayout.Tab tab) {
     }
 
+    /**
+     * 算法检测函数
+     */
     public void rule(RulesEntryData.BetDTO betDTO){
 
         Lottery lottery = lotteryLiveData.getValue();
@@ -435,7 +438,25 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         betDTO.setDisplay(displayDTO);
         betDTO.setSubmit(new RulesEntryData.SubmitDTO());
         rulesEntryData.setBet(betDTO);
-        EntryRule.getInstance().startEngine(rulesEntryData);
+        RulesEntryData.SubmitDTO submitDTO = EntryRule.getInstance().startEngine(rulesEntryData);
+
+        if (submitDTO.getMoney() > 0 && submitDTO.getNums() > 0) {
+            LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
+            betOrderData.setMoney(submitDTO.getMoney());
+            betOrderData.setOmodel(submitDTO.getOmodel());
+            betOrderData.setCodes(submitDTO.getCodes());
+            betOrderData.setTimes(submitDTO.getTimes());
+            betOrderData.setDesc(submitDTO.getDesc());
+            betOrderData.setMenuid(String.valueOf(submitDTO.getMenuid()));
+            betOrderData.setMethodid(String.valueOf(submitDTO.getMethodid()));
+            betOrderData.setNums(submitDTO.getNums());
+            betOrderData.setPoschoose((String) submitDTO.getPoschoose());
+            betOrderData.setSolo(submitDTO.isSolo());
+            betOrderData.setType(submitDTO.getType());
+            betLiveData.setValue(betOrderData);
+        } else {
+            betLiveData.setValue(null);
+        }
     }
 
     @Override

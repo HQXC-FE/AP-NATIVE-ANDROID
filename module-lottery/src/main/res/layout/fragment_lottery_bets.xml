@@ -10,8 +10,6 @@
             type="com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel" />
 
         <import type="android.view.View" />
-
-        <import type="android.R.string" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -228,31 +226,74 @@
                 app:layout_constraintEnd_toEndOf="@id/lottery_bets_order_view" />
 
             <!--            总注数-->
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="@color/lt_color_text6"
-                android:textStyle="bold"
-                tools:text="共0注"
+                android:orientation="horizontal"
                 app:layout_constraintTop_toTopOf="@id/lottery_bets_order_view"
                 app:layout_constraintBottom_toBottomOf="@id/guide2"
                 app:layout_constraintStart_toStartOf="@id/lottery_bets_order_view"
-                app:layout_constraintEnd_toEndOf="@id/lottery_bets_order_view" />
+                app:layout_constraintEnd_toEndOf="@id/lottery_bets_order_view">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/lt_color_text6"
+                    android:textStyle="bold"
+                    android:text="共"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/lt_color_text14"
+                    android:textStyle="bold"
+                    android:text="@{model.betLiveData==null?String.valueOf(0):String.valueOf(model.betLiveData.nums)}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/lt_color_text6"
+                    android:textStyle="bold"
+                    android:text="注"/>
+            </LinearLayout>
 
             <!--            总金额-->
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="@color/lt_color_text6"
-                android:textStyle="bold"
-                tools:text="共0注"
+                android:orientation="horizontal"
                 app:layout_constraintTop_toTopOf="@id/guide2"
                 app:layout_constraintBottom_toBottomOf="@id/lottery_bets_order_view"
                 app:layout_constraintStart_toStartOf="@id/lottery_bets_order_view"
-                app:layout_constraintEnd_toEndOf="@id/lottery_bets_order_view" />
+                app:layout_constraintEnd_toEndOf="@id/lottery_bets_order_view" >
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/lt_color_text6"
+                    android:textStyle="bold"
+                    android:text="共"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/lt_color_text14"
+                    android:textStyle="bold"
+                    android:text="@{model.betLiveData==null?String.valueOf(0):String.valueOf(model.betLiveData.money)}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/lt_color_text6"
+                    android:textStyle="bold"
+                    android:text="元"/>
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 <!--        金额-->

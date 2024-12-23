@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="20000"
-                android:text="@{m.money}"
+                android:text="@{String.valueOf(m.money)}"
                 android:textSize="12sp"
                 android:textColor="@color/lt_color_text14" />
 

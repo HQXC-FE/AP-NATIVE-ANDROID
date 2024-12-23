@@ -83,7 +83,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
 
         datas.set(bindModels);
 
-        int money = 0;
+        double money = 0;
         boolean solo = false;
         for (LotteryBetRequest.BetOrderData betOrderData : betList) {
             money += betOrderData.getMoney();
