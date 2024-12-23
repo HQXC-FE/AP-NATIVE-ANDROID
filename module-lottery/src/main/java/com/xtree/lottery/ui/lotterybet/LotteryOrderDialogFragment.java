@@ -50,7 +50,7 @@ public class LotteryOrderDialogFragment extends BaseDialogFragment<DialogLottery
     @Override
     public void initView() {
         binding.tvChasingNumber.setOnClickListener(v -> {
-            ArrayList<BindModel> list = viewModel.datas.get();
+            ArrayList<BindModel> list = viewModel.datas.getValue();
             if (list == null || list.isEmpty()) {
                 ToastUtils.showLong("请先选号");
                 return;

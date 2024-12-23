@@ -4,9 +4,9 @@ import android.app.Application;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableField;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import com.drake.brv.BindingAdapter;
 import com.lxj.xpopup.XPopup;
@@ -41,9 +41,9 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
         super(application, model);
     }
 
-    public final ObservableField<ArrayList<BindModel>> datas = new ObservableField<>(new ArrayList<>());
+    public final MutableLiveData<ArrayList<BindModel>> datas = new MutableLiveData<>(new ArrayList<>());
 
-    public final ObservableField<ArrayList<Integer>> itemType = new ObservableField<>(
+    public final MutableLiveData<ArrayList<Integer>> itemType = new MutableLiveData<>(
             new ArrayList<Integer>() {
                 {
                     add(R.layout.item_lottery_order);
@@ -60,7 +60,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
                     if (ClickUtil.isFastClick()) {
                         return;
                     }
-                    ArrayList<BindModel> bindModels = datas.get();
+                    ArrayList<BindModel> bindModels = datas.getValue();
                     int modelPosition = bindingViewHolder.getModelPosition();
                     LotteryOrderModel model = (LotteryOrderModel) bindModels.get(modelPosition);
                     ArrayList<LotteryOrderModel> betOrders = betsViewModel.betOrdersLiveData.getValue();
@@ -98,25 +98,32 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
 
     public LotteryBetsViewModel betsViewModel;
 
+    private final Observer<ArrayList<LotteryOrderModel>> orderObserver = new Observer<ArrayList<LotteryOrderModel>>() {
+        @Override
+        public void onChanged(ArrayList<LotteryOrderModel> lotteryOrderModels) {
+
+            bindModels.clear();
+
+            for (LotteryOrderModel orderData : lotteryOrderModels) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder
+                        .append(orderData.getBetOrderData().getNums()).append("注 x ")
+                        .append(orderData.getBetOrderData().getTimes()).append("倍 x ")
+                        .append(orderData.getMoneyData().getMoneyModel().getName()).append(" = ")
+                        .append(orderData.getBetOrderData().getMoney()).append("元");
+                orderData.betMoney.set(stringBuilder.toString());
+            }
+            bindModels.addAll(lotteryOrderModels);
+            datas.setValue(bindModels);
+
+            checkOrder();
+        }
+    };
+
     public void initData(FragmentActivity mActivity) {
         setActivity(mActivity);
 
-        bindModels.clear();
-
-        ArrayList<LotteryOrderModel> orderDatas = betsViewModel.betOrdersLiveData.getValue();
-        for (LotteryOrderModel orderData : orderDatas) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder
-                    .append(orderData.getBetOrderData().getNums()).append("注 x ")
-                    .append(orderData.getBetOrderData().getTimes()).append("倍 x ")
-                    .append(orderData.getMoneyData().getMoneyModel().getName()).append(" = ")
-                    .append(orderData.getBetOrderData().getMoney()).append("元");
-            orderData.betMoney.set(stringBuilder.toString());
-        }
-        bindModels.addAll(orderDatas);
-        datas.set(bindModels);
-
-        checkOrder();
+        betsViewModel.betOrdersLiveData.observeForever(orderObserver);
     }
 
     /**
@@ -167,7 +174,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
     }
 
     public void goChasing() {
-        ArrayList<BindModel> bindModels = datas.get();
+        ArrayList<BindModel> bindModels = datas.getValue();
         for (BindModel bindModel : bindModels) {
             LotteryOrderModel model = (LotteryOrderModel) bindModel;
             model.getBetOrderData().setTimes(1);
@@ -182,7 +189,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
         for (LotteryOrderModel lotteryOrderModel : betsViewModel.betOrdersLiveData.getValue()) {
             lotteryOrderModel.getBetOrderData().setTimes(1);
         }
-        datas.set(bindModels);
+        datas.setValue(bindModels);
 
         checkOrder();
     }
@@ -202,6 +209,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
     @Override
     protected void onCleared() {
         super.onCleared();
+        betsViewModel.betOrdersLiveData.removeObserver(orderObserver);
         betsViewModel = null;
         if (mActivity != null) {
             mActivity.clear();

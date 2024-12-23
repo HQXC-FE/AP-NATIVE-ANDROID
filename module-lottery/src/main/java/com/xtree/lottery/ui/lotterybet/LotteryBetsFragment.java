@@ -1,5 +1,6 @@
 package com.xtree.lottery.ui.lotterybet;
 
+import static com.xtree.lottery.utils.EventConstant.EVENT_CLEAR_SOLO;
 import static com.xtree.lottery.utils.EventConstant.EVENT_TIME_FINISH;
 
 import android.content.Context;
@@ -180,7 +181,10 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
                         int factor = binding.lotteryBetsMoneyView.getMoneyData().getFactor();
                         betOrderData.setMode(moneyModel.getModelId());
                         betOrderData.setTimes(factor);
-                        betOrderData.setOmodel(viewModel.prizeData.getValue().getValue());
+
+                        if (viewModel.prizeData.getValue() != null) {
+                            betOrderData.setOmodel(viewModel.prizeData.getValue().getValue());
+                        }
 
                         RulesEntryData.BetDTO betDTO = new RulesEntryData.BetDTO();
                         RulesEntryData.BetDTO.ModeDTO modeDTO = new RulesEntryData.BetDTO.ModeDTO();
@@ -252,6 +256,10 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
         switch (event.getEvent()) {
             case EVENT_TIME_FINISH:
                 binding.getModel().getBonusNumbers();
+                break;
+            case EVENT_CLEAR_SOLO:
+                binding.lotteryBetsBetlayout.clearBet();
+                viewModel.doClear();
                 break;
         }
     }

@@ -1,9 +1,10 @@
 package com.xtree.lottery.ui.lotterybet.viewmodel;
 
+import static com.xtree.lottery.utils.EventConstant.EVENT_CLEAR_SOLO;
+
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableField;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -15,6 +16,9 @@ import com.xtree.lottery.data.LotteryRepository;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel;
+import com.xtree.lottery.utils.EventVo;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,9 +41,9 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
         super(application, model);
     }
 
-    public final ObservableField<ArrayList<BindModel>> datas = new ObservableField<>(new ArrayList<>());
+    public final MutableLiveData<ArrayList<BindModel>> datas = new MutableLiveData<>(new ArrayList<>());
 
-    public final ObservableField<ArrayList<Integer>> itemType = new ObservableField<>(
+    public final MutableLiveData<ArrayList<Integer>> itemType = new MutableLiveData<>(
             new ArrayList<Integer>() {
                 {
                     add(R.layout.item_lottery_bet_confirm);
@@ -58,7 +62,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
     public void initData(FragmentActivity activity, ArrayList<LotteryBetRequest.BetOrderData> betList) {
 
         bindModels.clear();
-        datas.get().clear();
+        datas.getValue().clear();
         bonusNumberTitle.setValue("");
 
         betsViewModel.bonusNumbersLiveData.observe(activity, new Observer<BonusNumbersResponse>() {
@@ -81,7 +85,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
 
         bindModels.addAll(betList);
 
-        datas.set(bindModels);
+        datas.setValue(bindModels);
 
         double money = 0;
         boolean solo = false;
@@ -114,7 +118,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
 
         int money = 0;
         int nums = 0;
-        for (BindModel bindModel : datas.get()) {
+        for (BindModel bindModel : datas.getValue()) {
             LotteryBetRequest.BetOrderData data = (LotteryBetRequest.BetOrderData) bindModel;
             money += data.getMoney();
             nums += data.getNums();
@@ -147,5 +151,29 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
      */
     public void doClear() {
 
+        double money = 0;
+
+        for (int i = 0; i < bindModels.size(); i++) {
+            LotteryBetRequest.BetOrderData m = (LotteryBetRequest.BetOrderData) bindModels.get(i);
+            if (m.isSolo()) {
+                bindModels.remove(bindModels.get(i));
+            } else {
+                money += m.getMoney();
+            }
+        }
+
+        //清除单挑广播
+        EventBus.getDefault().post(new EventVo(EVENT_CLEAR_SOLO, ""));
+
+        if (bindModels.size() == 0) {
+            finish();
+            return;
+        }
+
+        containSolo.setValue(false);
+
+        totalMoney.setValue(String.valueOf(money));
+
+        datas.setValue(bindModels);
     }
 }

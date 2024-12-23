@@ -39,6 +39,7 @@ import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
+import me.xtree.mvvmhabit.bus.event.SingleLiveData;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
@@ -71,7 +72,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     //投注订单集
     public MutableLiveData<ArrayList<LotteryOrderModel>> betOrdersLiveData = new MutableLiveData<>(new ArrayList<>());
     //当前有效投注项
-    public MutableLiveData<LotteryBetRequest.BetOrderData> betLiveData = new MutableLiveData<>();
+    public SingleLiveData<LotteryBetRequest.BetOrderData> betLiveData = new SingleLiveData<>();
     //彩票信息
     public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
 
@@ -456,6 +457,31 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             betLiveData.setValue(betOrderData);
         } else {
             betLiveData.setValue(null);
+        }
+    }
+
+    /**
+     * 清除单挑
+     */
+    public void doClear() {
+
+        ArrayList<LotteryOrderModel> orderList = betOrdersLiveData.getValue();
+        LotteryBetRequest.BetOrderData curOrder = betLiveData.getValue();
+
+        if (orderList != null) {
+            for (int i = 0; i < orderList.size(); i++) {
+                LotteryOrderModel m = orderList.get(i);
+                if (m.betOrderData.isSolo()) {
+                    orderList.remove(m);
+                }
+            }
+            betOrdersLiveData.setValue(orderList);
+        }
+
+        if (curOrder != null) {
+            if (curOrder.isSolo()) {
+                betLiveData.setValue(null);
+            }
         }
     }
 

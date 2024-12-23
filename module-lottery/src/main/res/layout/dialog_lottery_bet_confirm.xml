@@ -6,6 +6,8 @@
         <variable
             name="model"
             type="com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetConfirmViewModel" />
+
+        <import type="android.view.View" />
     </data>
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -46,6 +48,16 @@
                     android:textColor="@color/clr_white" />
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/lot_txt_confirm_solo_tip"
+                android:layout_marginTop="6dp"
+                android:textSize="12sp"
+                android:textColor="@color/clr_main_19"
+                android:gravity="center"
+                android:visibility="@{model.containSolo?View.VISIBLE:View.GONE}" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -151,6 +163,7 @@
                     app:hl_shapeMode="pressed"
                     app:hl_textColor="@color/clr_white"
                     android:onClick="@{() -> model.doClear()}"
+                    android:visibility="@{model.containSolo?View.VISIBLE:View.GONE}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/bet_confirm_bt3"
