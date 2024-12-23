@@ -123,6 +123,13 @@ public class LotteryBetView extends FrameLayout {
     }
 
     /**
+     * 获取投注号码
+     */
+    public Object getCodes() {
+        return betView.betCodes.get();
+    }
+
+    /**
      * 设置开奖历史
      */
     public void setLotteryNumbsHistory(List<String> lotteryNumbsHistory) {

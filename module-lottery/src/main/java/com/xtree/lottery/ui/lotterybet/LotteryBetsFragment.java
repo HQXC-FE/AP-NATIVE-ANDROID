@@ -113,7 +113,36 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
         binding.lotteryBetsMoneyView.setOnChangeMoneyListener(new LotteryMoneyView.onChangeMoneyListener() {
             @Override
             public void onChange(LotteryMoneyData moneyData) {
+                //更新金额数据
                 binding.getModel().moneyLiveData.setValue(moneyData);
+
+                //更新投注数据
+                List<LotteryBetRequest.BetOrderData> betOrderList = binding.lotteryBetsBetlayout.getBet();
+                Object codes = binding.lotteryBetsBetlayout.getCodes();
+
+                if (betOrderList != null && betOrderList.size() > 0) {
+                    for (LotteryBetRequest.BetOrderData betOrderData : betOrderList) {
+                        LotteryMoneyModel moneyModel = binding.lotteryBetsMoneyView.getMoneyData().getMoneyModel();
+                        int factor = binding.lotteryBetsMoneyView.getMoneyData().getFactor();
+                        betOrderData.setMode(moneyModel.getModelId());
+                        betOrderData.setTimes(factor);
+                        betOrderData.setOmodel(viewModel.prizeData.getValue().getValue());
+
+                        RulesEntryData.BetDTO betDTO = new RulesEntryData.BetDTO();
+                        RulesEntryData.BetDTO.ModeDTO modeDTO = new RulesEntryData.BetDTO.ModeDTO();
+                        modeDTO.setModeid(moneyModel.getModelId());
+                        modeDTO.setName(moneyModel.getName());
+                        modeDTO.setRate(String.valueOf(moneyModel.getRate()));
+                        betDTO.setMode(modeDTO);
+                        betDTO.setTimes(factor);
+                        betDTO.setDisplay(new RulesEntryData.BetDTO.DisplayDTO());
+                        betDTO.setSubmit(new RulesEntryData.SubmitDTO());
+                        betDTO.setCodes(codes);
+                        viewModel.rule(betDTO);
+                    }
+                } else {
+                    binding.getModel().betLiveData.setValue(null);
+                }
             }
         });
 
@@ -165,7 +194,6 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
                         betDTO.setCodes(codes);
                         viewModel.rule(betDTO);
                     }
-                    binding.getModel().betLiveData.setValue(betOrderList.get(0));
                 } else {
                     binding.getModel().betLiveData.setValue(null);
                 }
