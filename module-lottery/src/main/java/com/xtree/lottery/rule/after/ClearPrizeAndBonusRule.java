@@ -25,7 +25,7 @@ public class ClearPrizeAndBonusRule {
     @Action
     public void then(Facts facts) {
         // 清除当前奖金和奖励
-        facts.put("currentPrize", null);
-        facts.put("currentBonus", null);
+        facts.put("currentPrize", "");
+        facts.put("currentBonus", "");
     }
 }

@@ -28,8 +28,9 @@ public class CommonLHCProcessingRule {
     public void then(Facts facts) {
         List<Map<String, Object>> forDisplay = new ArrayList<>();
         List<Map<String, Object>> forSubmit = new ArrayList<>();
+        HashMap<String, Object> bet = facts.get("bet");
 
-        List<Map<String, Object>> betCodes = facts.get("bet.codes");
+        List<Map<String, Object>> betCodes = (List<Map<String, Object>>) bet.get("codes");
         Map<String, Object> currentMethod = facts.get("currentMethod");
 
         betCodes.forEach(code -> {
@@ -43,12 +44,12 @@ public class CommonLHCProcessingRule {
                 displayItem.put("num", 1);
                 displayItem.put("money", Integer.parseInt(code.get("value").toString()));
                 displayItem.put("mode", "元");
-                displayItem.put("prize", facts.get("bet.prize") != null ?
+                displayItem.put("prize", bet.get("prize") != null ?
                         "模式:" + ((Map<String, Object>) ((List<?>) currentMethod.get("prize_group")).get(0))
                                 .get("label").toString().split("-")[0].substring(2) : "");
 
-                submitItem.put("omodel", facts.get("bet.prize"));
-                submitItem.put("mode", "CONFIG.LHC_SUBMIT_MODE");
+                submitItem.put("omodel", bet.get("prize"));
+                submitItem.put("mode", 1);
                 submitItem.put("times", code.get("value"));
                 submitItem.put("methodid", code.get("methodid"));
                 submitItem.put("codes", code.get("num"));
