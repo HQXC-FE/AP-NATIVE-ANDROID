@@ -85,11 +85,13 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
             PlayTypeInfo playTypeInfo = playTypePm.getPlayTypeInfo();
             String chpid = "";
             if(playTypeInfo.topKey != null){
-                chpid = playTypeInfo.topKey.replace("-","");
+                chpid = playTypeInfo.topKey;
             }else{
                 chpid = betConfirmOption.getPlayType().getId();
             }
-            betMatchMarket.setChpid(chpid);
+            if(!chpid.isEmpty()){
+                betMatchMarket.setChpid(chpid);
+            }
             betMatchMarketList.add(betMatchMarket);
         }
         btCarReq.setIdList(betMatchMarketList);
@@ -217,12 +219,24 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                     int marketType = SPUtils.getInstance().getInt(SPKey.BT_MATCH_LIST_ODDTYPE, 1);
                     orderDetail.setMarketTypeFinally(marketType == 1 ? "EU" : "HK");
                     orderDetailList.add(orderDetail);
+                    PlayTypePm playTypePm = (PlayTypePm) betConfirmOption.getPlayType();
+                    PlayTypeInfo playTypeInfo = playTypePm.getPlayTypeInfo();
+                    String chpid = "";
+                    if(playTypeInfo.topKey != null){
+                        chpid = playTypeInfo.topKey;
+                    }else{
+                        chpid = betConfirmOption.getPlayType().getId();
+                    }
+                    if(!chpid.isEmpty()){
+                        btReq.setChpid(chpid);
+                    }
                 }
                 seriesOrder.setOrderDetailList(orderDetailList);
                 seriesOrders.add(seriesOrder);
             }
         }
         btReq.setSeriesOrders(seriesOrders);
+        btReq.setCuid();
         if(seriesOrders.isEmpty()){
             noBetAmountDate.call();
             return;

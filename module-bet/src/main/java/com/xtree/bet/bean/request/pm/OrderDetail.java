@@ -43,6 +43,8 @@ public class OrderDetail {
      */
     private long matchId;
 
+    private String chpid;
+
     public long getPlayId() {
         return playId;
     }
@@ -121,5 +123,13 @@ public class OrderDetail {
 
     public void setPlaceNum(int placeNum) {
         this.placeNum = placeNum;
+    }
+
+    public String getChpid() {
+        return chpid;
+    }
+
+    public void setChpid(String chpid) {
+        this.chpid = chpid;
     }
 }
