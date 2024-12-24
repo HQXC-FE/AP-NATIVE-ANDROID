@@ -120,8 +120,8 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
 
         }
         viewModel.liveDataListIssue.observe(this) {
+            mIssues = it
             if (mIssues.isNotEmpty()) {
-                mIssues = it
                 countDownTimer(0)
             }
         }
