@@ -14,7 +14,6 @@ import com.xtree.lottery.R
 import com.xtree.lottery.data.config.Lottery
 import com.xtree.lottery.data.source.vo.IssueVo
 import com.xtree.lottery.data.source.vo.MethodMenus
-import com.xtree.lottery.data.source.vo.UserMethodsVo
 import com.xtree.lottery.databinding.ActivityLotteryBinding
 import com.xtree.lottery.inter.ParentChildCommunication
 import com.xtree.lottery.ui.fragment.ChaseBetReportFragment
@@ -37,10 +36,10 @@ import org.greenrobot.eventbus.EventBus
 class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>(), ParentChildCommunication {
     public var mIndex = 0
     public var mIssues = ArrayList<IssueVo>()
+    private var currentIssue: IssueVo? = null
     private lateinit var lotteryBetsFragment: LotteryBetsFragment
     private var methodMenus: MethodMenus? = null
     lateinit var lottery: Lottery
-    var userMethods = ArrayList<UserMethodsVo>()
     private val fragmentList = ArrayList<Fragment>()
 
     override fun initContentView(savedInstanceState: Bundle?): Int {
@@ -113,7 +112,6 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
     override fun initData() {
         viewModel.getMethodMenus(lottery.alias)
         viewModel.getCurrentIssue(lottery.id)
-        viewModel.getTrackingIssue(lottery.id)
     }
 
     override fun initViewObservable() {
@@ -121,12 +119,21 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
             methodMenus = it
         }
         viewModel.liveDataCurrentIssue.observe(this) {
-
+            currentIssue = it
+            currentIssue?.apply {
+                viewModel.getTrackingIssue(lottery.id)
+            }
         }
         viewModel.liveDataListIssue.observe(this) {
             mIssues = it
             if (mIssues.isNotEmpty()) {
-                countDownTimer(0)
+                for (i in mIssues.indices) {
+                    if (mIssues[i].issue == currentIssue?.issue) {
+                        countDownTimer(i)
+                        break
+                    }
+                }
+
             }
         }
     }

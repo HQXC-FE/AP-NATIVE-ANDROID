@@ -14,15 +14,12 @@ import com.xtree.lottery.BR
 import com.xtree.lottery.R
 import com.xtree.lottery.data.config.Lottery
 import com.xtree.lottery.data.config.lotteries
-import com.xtree.lottery.data.source.vo.UserMethodsVo
 import com.xtree.lottery.databinding.ActivityMainLtBinding
-import com.xtree.lottery.rule.EntryRule
 import com.xtree.lottery.ui.adapter.LotteryAdapter
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
 import me.xtree.mvvmhabit.base.BaseActivity
 import me.xtree.mvvmhabit.utils.SPUtils
-import org.jeasy.rules.api.Facts
 
 
 /**
@@ -30,7 +27,6 @@ import org.jeasy.rules.api.Facts
  */
 @Route(path = RouterActivityPath.Lottery.PAGER_LOTTERY_HOME)
 class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewModel>() {
-    private var userMethods = ArrayList<UserMethodsVo>()
     private lateinit var lottery: Lottery
     override fun initContentView(savedInstanceState: Bundle?): Int {
         return R.layout.activity_main_lt
@@ -58,8 +54,8 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
     }
 
     override fun initData() {
-   //     setLoginSucc()
-        //viewModel.getUserMethods()
+        //     setLoginSucc()
+        viewModel.getUserMethods()
     }
 
     override fun initViewObservable() {
@@ -75,10 +71,9 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
         //
         //}
 
-        //viewModel.liveDataUserList.observe(this) {
-        //    userMethods.addAll(it)
-        //    CfLog.i("userMethods    " + userMethods)
-        //}
+        viewModel.liveDataUserList.observe(this) {
+
+        }
     }
 
     override fun initViewModel(): LotteryViewModel? {
