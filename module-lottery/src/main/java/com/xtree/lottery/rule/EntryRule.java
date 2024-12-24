@@ -1,7 +1,7 @@
 package com.xtree.lottery.rule;
 
-import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 import com.xtree.lottery.data.source.response.UserMethodsResponse;
+import com.xtree.lottery.data.source.vo.MenuMethodsData;
 import com.xtree.lottery.rule.data.RulesEntryData;
 
 import org.jeasy.rules.api.Facts;
@@ -81,7 +81,7 @@ public class EntryRule {
         // currentMethod.groupName
         currentMethod.put("groupName", rulesEntryData.getCurrentMethod().getGroupName());
         // currentMethod.money_modes
-        for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO item : rulesEntryData.getCurrentMethod().getMoneyModes()) {
+        for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO item : rulesEntryData.getCurrentMethod().getMoneyModes()) {
             Map<String, String> currentMethodMoneyModesItem = new HashMap<>();
             currentMethodMoneyModesItem.put("modeid", String.valueOf(item.getModeid()));
             currentMethodMoneyModesItem.put("name", item.getName());
@@ -108,7 +108,7 @@ public class EntryRule {
         rulesEntryData.getCurrentMethod().getSelectarea().getLayout();
         // currentMethod.selectarea.layout
         if (rulesEntryData.getCurrentMethod().getSelectarea().getLayout() != null) {
-            for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO item : rulesEntryData.getCurrentMethod().getSelectarea().getLayout()) {
+            for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO item : rulesEntryData.getCurrentMethod().getSelectarea().getLayout()) {
                 Map<String, Object> currentMethodSelectAreaLayoutItem = new HashMap<>();
                 currentMethodSelectAreaLayoutItem.put("title", item.getTitle());
                 currentMethodSelectAreaLayoutItem.put("no", item.getNo());

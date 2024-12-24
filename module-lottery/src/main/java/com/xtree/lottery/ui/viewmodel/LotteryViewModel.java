@@ -5,12 +5,13 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
+import com.xtree.lottery.data.LotteryDataManager;
 import com.xtree.lottery.data.LotteryRepository;
+import com.xtree.lottery.data.source.response.UserMethodsResponse;
 import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.data.source.vo.LotteryChaseDetailVo;
 import com.xtree.lottery.data.source.vo.LotteryOrderVo;
@@ -76,17 +77,15 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
     }
 
     public void getUserMethods() {
-        Disposable disposable = (Disposable) model.getApiService().getUserMethods()
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<ArrayList<UserMethodsVo>>() {
+        Disposable disposable = model.getUserMethodsData()
+                .subscribeWith(new HttpCallBack<UserMethodsResponse>() {
                     @Override
-                    public void onResult(ArrayList<UserMethodsVo> list) {
-                        SPUtils.getInstance().put(SPKeyGlobal.USER_METHODS, new Gson().toJson(list));
-                        liveDataUserList.setValue(list);
+                    public void onResult(UserMethodsResponse response) {
+                        if (response.getData() != null) {
+                            LotteryDataManager.INSTANCE.setUserMethods(response);
+                        }
                     }
 
-                    @Override
                     public void onError(Throwable t) {
                         CfLog.e("error, " + t.toString());
                         super.onError(t);

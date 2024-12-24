@@ -1,8 +1,8 @@
 package com.xtree.lottery.rule.data;
 
 import com.google.gson.annotations.SerializedName;
-import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 import com.xtree.lottery.data.source.response.UserMethodsResponse;
+import com.xtree.lottery.data.source.vo.MenuMethodsData;
 
 import java.util.List;
 
@@ -184,7 +184,7 @@ public class RulesEntryData {
                  * selectarea
                  */
                 @SerializedName("selectarea")
-                private MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO selectarea;
+                private MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO selectarea;
                 /**
                  * showStr
                  */
@@ -259,7 +259,7 @@ public class RulesEntryData {
                  * moneyModes
                  */
                 @SerializedName("money_modes")
-                private List<MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> moneyModes;
+                private List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> moneyModes;
                 /**
                  * cateTitle
                  */
@@ -324,11 +324,11 @@ public class RulesEntryData {
                     this.maxcodecount = maxcodecount;
                 }
 
-                public MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO getSelectarea() {
+                public MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO getSelectarea() {
                     return selectarea;
                 }
 
-                public void setSelectarea(MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO selectarea) {
+                public void setSelectarea(MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO selectarea) {
                     this.selectarea = selectarea;
                 }
 
@@ -444,11 +444,11 @@ public class RulesEntryData {
                     this.description = description;
                 }
 
-                public List<MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> getMoneyModes() {
+                public List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> getMoneyModes() {
                     return moneyModes;
                 }
 
-                public void setMoneyModes(List<MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> moneyModes) {
+                public void setMoneyModes(List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> moneyModes) {
                     this.moneyModes = moneyModes;
                 }
 
@@ -514,7 +514,7 @@ public class RulesEntryData {
          * selectarea
          */
         @SerializedName("selectarea")
-        private MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO selectarea;
+        private MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO selectarea;
         /**
          * showStr
          */
@@ -589,7 +589,7 @@ public class RulesEntryData {
          * moneyModes
          */
         @SerializedName("money_modes")
-        private List<MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> moneyModes;
+        private List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> moneyModes;
         /**
          * cateTitle
          */
@@ -654,11 +654,11 @@ public class RulesEntryData {
             this.maxcodecount = maxcodecount;
         }
 
-        public MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO getSelectarea() {
+        public MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO getSelectarea() {
             return selectarea;
         }
 
-        public void setSelectarea(MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO selectarea) {
+        public void setSelectarea(MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO selectarea) {
             this.selectarea = selectarea;
         }
 
@@ -774,11 +774,11 @@ public class RulesEntryData {
             this.description = description;
         }
 
-        public List<MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> getMoneyModes() {
+        public List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> getMoneyModes() {
             return moneyModes;
         }
 
-        public void setMoneyModes(List<MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> moneyModes) {
+        public void setMoneyModes(List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> moneyModes) {
             this.moneyModes = moneyModes;
         }
 
@@ -1007,7 +1007,7 @@ public class RulesEntryData {
              * moneyModes
              */
             @SerializedName("money_modes")
-            private List<MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> moneyModes;
+            private List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> moneyModes;
             /**
              * singleDesc
              */
@@ -1110,11 +1110,11 @@ public class RulesEntryData {
                 this.relationMethods = relationMethods;
             }
 
-            public List<MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> getMoneyModes() {
+            public List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> getMoneyModes() {
                 return moneyModes;
             }
 
-            public void setMoneyModes(List<MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> moneyModes) {
+            public void setMoneyModes(List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO> moneyModes) {
                 this.moneyModes = moneyModes;
             }
 

@@ -89,7 +89,9 @@ public class BetDxdsView extends BetBaseView {
         binding.betDxdsExample.setVisibility(methodexample == null || methodexample.isEmpty() ? GONE : VISIBLE);
         binding.betDxdsHelp.setVisibility(methodhelp == null || methodhelp.isEmpty() ? GONE : VISIBLE);
 
-        binding.betDxdsTip.setText(String.valueOf(Html.fromHtml(methoddesc)));
+        if (!TextUtils.isEmpty(methoddesc)) {
+            binding.betDxdsTip.setText(String.valueOf(Html.fromHtml(methoddesc)));
+        }
         binding.betDxdsExample.setOnClickListener(v -> showTipDialog(String.valueOf(Html.fromHtml(methodexample))));
         binding.betDxdsHelp.setOnClickListener(v -> showTipDialog(String.valueOf(Html.fromHtml(methodhelp))));
     }

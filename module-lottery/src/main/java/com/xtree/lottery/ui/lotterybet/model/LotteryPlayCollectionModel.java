@@ -1,8 +1,8 @@
 package com.xtree.lottery.ui.lotterybet.model;
 
 import com.xtree.base.mvvm.recyclerview.BindModel;
-import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 import com.xtree.lottery.data.source.response.UserMethodsResponse;
+import com.xtree.lottery.data.source.vo.MenuMethodsData;
 
 /**
  * Created by KAKA on 2024/4/29.
@@ -10,8 +10,8 @@ import com.xtree.lottery.data.source.response.UserMethodsResponse;
  */
 public class LotteryPlayCollectionModel extends BindModel {
 
-    private MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO label;
-    private MenuMethodsResponse.DataDTO.LabelsDTO menulabel;
+    private MenuMethodsData.LabelsDTO.Labels1DTO label;
+    private MenuMethodsData.LabelsDTO menulabel;
     private UserMethodsResponse.DataDTO userMethods;
 
     public UserMethodsResponse.DataDTO getUserMethods() {
@@ -22,19 +22,19 @@ public class LotteryPlayCollectionModel extends BindModel {
         this.userMethods = userMethods;
     }
 
-    public MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO getLabel() {
+    public MenuMethodsData.LabelsDTO.Labels1DTO getLabel() {
         return label;
     }
 
-    public void setLabel(MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO label) {
+    public void setLabel(MenuMethodsData.LabelsDTO.Labels1DTO label) {
         this.label = label;
     }
 
-    public MenuMethodsResponse.DataDTO.LabelsDTO getMenulabel() {
+    public MenuMethodsData.LabelsDTO getMenulabel() {
         return menulabel;
     }
 
-    public void setMenulabel(MenuMethodsResponse.DataDTO.LabelsDTO menulabel) {
+    public void setMenulabel(MenuMethodsData.LabelsDTO menulabel) {
         this.menulabel = menulabel;
     }
 

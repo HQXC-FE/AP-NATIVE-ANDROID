@@ -12,7 +12,7 @@ import com.drake.brv.BindingAdapter;
 import com.xtree.base.mvvm.recyclerview.BaseDatabindingAdapter;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.lottery.R;
-import com.xtree.lottery.data.source.response.MenuMethodsResponse;
+import com.xtree.lottery.data.source.vo.MenuMethodsData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.view.LotteryPickView;
 import com.xtree.lottery.ui.view.model.BetDxdsModel;
@@ -72,7 +72,7 @@ public class BetDxdsViewModel {
 
         bindModels.clear();
 
-        for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layoutDTO : model.getMenuMethodLabelData().getSelectarea().getLayout()) {
+        for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layoutDTO : model.getMenuMethodLabelData().getSelectarea().getLayout()) {
             String[] split = layoutDTO.getNo().split(LAYOUT_NO_SPLIT);
             ArrayList<LotteryPickModel> picks = new ArrayList<>();
 

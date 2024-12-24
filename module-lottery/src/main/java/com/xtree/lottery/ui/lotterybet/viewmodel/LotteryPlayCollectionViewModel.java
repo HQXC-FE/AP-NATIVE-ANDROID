@@ -14,13 +14,12 @@ import com.xtree.base.mvvm.recyclerview.BaseDatabindingAdapter;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.LotteryRepository;
+import com.xtree.lottery.data.source.vo.MenuMethodsData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryPlayCollectionModel;
 
 import java.util.ArrayList;
 
 import me.xtree.mvvmhabit.base.BaseViewModel;
-
-import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 
 /**
  * Created by KAKA on 2024/4/26.
@@ -49,7 +48,7 @@ public class LotteryPlayCollectionViewModel extends BaseViewModel<LotteryReposit
 
                 LotteryPlayCollectionModel lotteryPlayCollectionModel = (LotteryPlayCollectionModel) bindModels.get(bindingViewHolder.getModelPosition());
 
-                for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO label : lotteryPlayCollectionModel.getLabel().getLabels()) {
+                for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO label : lotteryPlayCollectionModel.getLabel().getLabels()) {
                     View inflate = LayoutInflater.from(view.getContext()).inflate(R.layout.label_lottery_play_collection, null);
                     CheckBox labelBox = inflate.findViewById(R.id.label_box);
                     labelBox.setClickable(false);
@@ -96,7 +95,7 @@ public class LotteryPlayCollectionViewModel extends BaseViewModel<LotteryReposit
         int count = 0;
         for (BindModel bindModel : bindModels) {
             LotteryPlayCollectionModel m = (LotteryPlayCollectionModel) bindModel;
-            for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO label : m.getLabel().getLabels()) {
+            for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO label : m.getLabel().getLabels()) {
                 if (label.isUserPlay()) {
                     count++;
                 }

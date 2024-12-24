@@ -114,7 +114,9 @@ public class BetRacingView extends BetBaseView {
         binding.betRacingExample.setVisibility(methodexample == null || methodexample.isEmpty() ? GONE : VISIBLE);
         binding.betRacingHelp.setVisibility(methodhelp == null || methodhelp.isEmpty() ? GONE : VISIBLE);
 
-        binding.betRacingTip.setText(String.valueOf(Html.fromHtml(methoddesc)));
+        if (!TextUtils.isEmpty(methoddesc)) {
+            binding.betRacingTip.setText(String.valueOf(Html.fromHtml(methoddesc)));
+        }
         binding.betRacingExample.setOnClickListener(v -> showTipDialog(String.valueOf(Html.fromHtml(methodexample))));
         binding.betRacingHelp.setOnClickListener(v -> showTipDialog(String.valueOf(Html.fromHtml(methodhelp))));
     }

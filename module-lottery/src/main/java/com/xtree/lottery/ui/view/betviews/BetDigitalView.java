@@ -161,7 +161,9 @@ public class BetDigitalView extends BetBaseView {
         binding.betDigitalExample.setVisibility(methodexample == null || methodexample.isEmpty() ? GONE : VISIBLE);
         binding.betDigitalHelp.setVisibility(methodhelp == null || methodhelp.isEmpty() ? GONE : VISIBLE);
 
-        binding.betDigitalTip.setText(String.valueOf(Html.fromHtml(methoddesc)));
+        if (!TextUtils.isEmpty(methoddesc)) {
+            binding.betDigitalTip.setText(String.valueOf(Html.fromHtml(methoddesc)));
+        }
         binding.betDigitalExample.setOnClickListener(v -> showTipDialog(String.valueOf(Html.fromHtml(methodexample))));
         binding.betDigitalHelp.setOnClickListener(v -> showTipDialog(String.valueOf(Html.fromHtml(methodhelp))));
     }

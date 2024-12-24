@@ -11,16 +11,18 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.material.tabs.TabLayout;
-import com.xtree.lottery.data.config.Lottery;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.lottery.data.LotteryDataManager;
 import com.xtree.lottery.data.LotteryRepository;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.BonusNumbersRequest;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 import com.xtree.lottery.data.source.response.UserMethodsResponse;
+import com.xtree.lottery.data.source.vo.MenuMethodsData;
 import com.xtree.lottery.rule.EntryRule;
 import com.xtree.lottery.rule.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.LotteryBetConfirmDialogFragment;
@@ -35,6 +37,7 @@ import com.xtree.lottery.utils.AnimUtils;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
@@ -55,7 +58,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         super(application, model);
     }
 
-    private MenuMethodsResponse menuMethods;
+    private MenuMethodsData menuMethods;
     private UserMethodsResponse userMethods;
     public final ArrayList<BindModel> playModels = new ArrayList<BindModel>();
     public final ArrayList<LotteryBetsModel> betModels = new ArrayList<LotteryBetsModel>();
@@ -79,7 +82,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public void initData(FragmentActivity mActivity, Lottery lottery) {
         setActivity(mActivity);
         lotteryLiveData.setValue(lottery);
-        getMenuMethods();
+        initMethods(lottery);
         getUserBalance(null);
     }
 
@@ -91,18 +94,19 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
      * 初始化玩法数据
      */
     private void initPlayCollection() {
+        playModels.clear();
         List<UserMethodsResponse.DataDTO> userLabels = userMethods.getData();
-        List<MenuMethodsResponse.DataDTO.LabelsDTO> menuLabels = menuMethods.getData().getLabels();
-        for (MenuMethodsResponse.DataDTO.LabelsDTO label : menuLabels) {
+        List<MenuMethodsData.LabelsDTO> menuLabels = menuMethods.getLabels();
+        for (MenuMethodsData.LabelsDTO label : menuLabels) {
             if (label != null && label.getLabels() != null) {
-                for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO labels1DTO : label.getLabels()) {
+                for (MenuMethodsData.LabelsDTO.Labels1DTO labels1DTO : label.getLabels()) {
                     LotteryPlayCollectionModel model = new LotteryPlayCollectionModel();
                     model.setMenulabel(label);
-                    MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO la = new MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO();
+                    MenuMethodsData.LabelsDTO.Labels1DTO la = new MenuMethodsData.LabelsDTO.Labels1DTO();
                     la.setTitle(labels1DTO.getTitle());
                     la.setLabels(new ArrayList<>());
                     model.setLabel(la);
-                    for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO labels2DTO : labels1DTO.getLabels()) {
+                    for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTO : labels1DTO.getLabels()) {
                         for (UserMethodsResponse.DataDTO um : userLabels) {
                             if (Objects.equals(labels2DTO.getMenuid(), um.getMenuid()) && Objects.equals(labels2DTO.getMethodid(), um.getMethodid())) {
                                 model.getLabel().getLabels().add(labels2DTO);
@@ -131,7 +135,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         betModels.clear();
         for (BindModel playModel : playModels) {
             LotteryPlayCollectionModel m = (LotteryPlayCollectionModel) playModel;
-            for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO label : m.getLabel().getLabels()) {
+            for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO label : m.getLabel().getLabels()) {
                 if (label.isUserPlay()) {
                     String title = m.getLabel().getTitle() + "-" + label.getName();
                     tabList.add(title);
@@ -141,6 +145,24 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             }
         }
         tabs.set(tabList);
+    }
+
+    private void initMethods(Lottery lottery) {
+
+        Map<String, MenuMethodsData> lotteryMethodsData = LotteryDataManager.INSTANCE.getLotteryMethodsData();
+        if (lotteryMethodsData != null) {
+            MenuMethodsData menuMethodsData = lotteryMethodsData.get(lottery.getAlias());
+            UserMethodsResponse userMethodsData = LotteryDataManager.INSTANCE.getUserMethods();
+
+            //先使用本地数据初始化玩法
+            if (menuMethodsData != null && userMethodsData != null) {
+                menuMethods = menuMethodsData;
+                userMethods = userMethodsData;
+                initPlayCollection();
+            }
+        }
+        //加载网络数据初始化玩法
+        getMenuMethods();
     }
 
     private void getUserMethods() {
@@ -164,8 +186,15 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     @Override
                     public void onResult(MenuMethodsResponse response) {
                         if (response.getData() != null) {
-                            menuMethods = response;
-                            getUserMethods();
+                            menuMethods = response.getData();
+
+                            UserMethodsResponse userMethodsData = LotteryDataManager.INSTANCE.getUserMethods();
+                            if (userMethodsData == null) {
+                                getUserMethods();
+                            } else {
+                                userMethods = userMethodsData;
+                                initPlayCollection();
+                            }
                         }
                     }
                 });
@@ -336,8 +365,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         Lottery lottery = lotteryLiveData.getValue();
         LotteryBetsModel lotteryBetsModel = currentBetModel.getValue();
         UserMethodsResponse.DataDTO userMethodData = lotteryBetsModel.getUserMethodData();
-        MenuMethodsResponse.DataDTO.LabelsDTO menuMethodLabel = lotteryBetsModel.getMenuMethodLabel();
-        MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO currentl2 = lotteryBetsModel.getMenuMethodLabelData();
+        MenuMethodsData.LabelsDTO menuMethodLabel = lotteryBetsModel.getMenuMethodLabel();
+        MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO currentl2 = lotteryBetsModel.getMenuMethodLabelData();
         RulesEntryData rulesEntryData = new RulesEntryData();
         rulesEntryData.setType(lottery.getType());
 
@@ -347,12 +376,12 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
 
         ArrayList<RulesEntryData.CurrentCategoryDTO.CategoriesDTO> categoriesDTOS = new ArrayList<>();
 
-        for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO l1 : menuMethodLabel.getLabels()) {
+        for (MenuMethodsData.LabelsDTO.Labels1DTO l1 : menuMethodLabel.getLabels()) {
             RulesEntryData.CurrentCategoryDTO.CategoriesDTO categoriesDTO = new RulesEntryData.CurrentCategoryDTO.CategoriesDTO();
             categoriesDTO.setGroupName(l1.getTitle());
             categoriesDTO.setDyTitle(l1.getTitle());
             ArrayList<RulesEntryData.CurrentCategoryDTO.CategoriesDTO.MethodsDTO> methodsDTOS = new ArrayList<>();
-            for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO l2 : l1.getLabels()) {
+            for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO l2 : l1.getLabels()) {
                 //整理玩法
                 RulesEntryData.CurrentCategoryDTO.CategoriesDTO.MethodsDTO methodsDTO = new RulesEntryData.CurrentCategoryDTO.CategoriesDTO.MethodsDTO();
                 methodsDTO.setMenuid(l2.getMenuid());

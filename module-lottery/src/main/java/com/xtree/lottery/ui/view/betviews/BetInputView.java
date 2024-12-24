@@ -139,7 +139,9 @@ public class BetInputView extends BetBaseView {
         binding.betInputExample.setVisibility(methodexample == null || methodexample.isEmpty() ? GONE : VISIBLE);
         binding.betInputHelp.setVisibility(methodhelp == null || methodhelp.isEmpty() ? GONE : VISIBLE);
 
-        binding.betInputTip.setText(String.valueOf(Html.fromHtml(methoddesc)));
+        if (!TextUtils.isEmpty(methoddesc)) {
+            binding.betInputTip.setText(String.valueOf(Html.fromHtml(methoddesc)));
+        }
         binding.betInputExample.setOnClickListener(v -> showTipDialog(String.valueOf(Html.fromHtml(methodexample))));
         binding.betInputHelp.setOnClickListener(v -> showTipDialog(String.valueOf(Html.fromHtml(methodhelp))));
 

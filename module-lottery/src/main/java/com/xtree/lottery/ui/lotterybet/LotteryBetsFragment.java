@@ -22,8 +22,8 @@ import com.xtree.lottery.R;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
-import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 import com.xtree.lottery.data.source.vo.IssueVo;
+import com.xtree.lottery.data.source.vo.MenuMethodsData;
 import com.xtree.lottery.databinding.FragmentLotteryBetsBinding;
 import com.xtree.lottery.inter.ParentChildCommunication;
 import com.xtree.lottery.rule.data.RulesEntryData;
@@ -163,11 +163,13 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
                     binding.lotteryBetsBetlayout.setData(lotteryBetsModel);
 
                     //设置投注金额
-                    ArrayList<LotteryMoneyModel> moneyModelList = new ArrayList<>();
-                    for (MenuMethodsResponse.DataDTO.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO moneyMode : lotteryBetsModel.getMenuMethodLabelData().getMoneyModes()) {
-                        moneyModelList.add(new LotteryMoneyModel(moneyMode.getName(), moneyMode.getRate(), moneyMode.getModeid()));
+                    if (lotteryBetsModel.getMenuMethodLabelData() != null && lotteryBetsModel.getMenuMethodLabelData().getMoneyModes() != null) {
+                        ArrayList<LotteryMoneyModel> moneyModelList = new ArrayList<>();
+                        for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO moneyMode : lotteryBetsModel.getMenuMethodLabelData().getMoneyModes()) {
+                            moneyModelList.add(new LotteryMoneyModel(moneyMode.getName(), moneyMode.getRate(), moneyMode.getModeid()));
+                        }
+                        binding.lotteryBetsMoneyView.setMoneyUnit(moneyModelList);
                     }
-                    binding.lotteryBetsMoneyView.setMoneyUnit(moneyModelList);
                 }
             }
         });

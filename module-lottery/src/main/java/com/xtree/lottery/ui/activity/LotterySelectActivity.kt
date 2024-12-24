@@ -12,6 +12,7 @@ import com.xtree.base.router.RouterActivityPath
 import com.xtree.base.vo.ProfileVo
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
+import com.xtree.lottery.data.LotteryDataManager
 import com.xtree.lottery.data.config.Lottery
 import com.xtree.lottery.data.config.lotteries
 import com.xtree.lottery.databinding.ActivityMainLtBinding
@@ -55,6 +56,7 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
 
     override fun initData() {
         //     setLoginSucc()
+        LotteryDataManager
         viewModel.getUserMethods()
     }
 
