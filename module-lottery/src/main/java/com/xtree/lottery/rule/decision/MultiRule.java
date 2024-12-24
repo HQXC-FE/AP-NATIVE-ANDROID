@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.decision;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -24,23 +26,27 @@ public class MultiRule {
 
     @Action
     public void then(Facts facts) {
-        // 获取格式化后的代码集合
-        List<List<String>> formatCodes = facts.get("formatCodes");
+        try {
+            // 获取格式化后的代码集合
+            List<List<String>> formatCodes = facts.get("formatCodes");
 
-        // 检查 formatCodes 是否为空
-        if (formatCodes == null || formatCodes.isEmpty()) {
-            facts.put("num", 0); // 如果没有有效数据，则设置组合数为 0
-            return;
+            // 检查 formatCodes 是否为空
+            if (formatCodes == null || formatCodes.isEmpty()) {
+                facts.put("num", 0); // 如果没有有效数据，则设置组合数为 0
+                return;
+            }
+
+            int num = 1;
+
+            // 遍历 Map 的每个条目，计算所有 List 的长度乘积
+            for (List<String> codes : formatCodes) {
+                num *= codes.size();
+            }
+
+            // 将计算结果存入 facts
+            facts.put("num", num);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
-
-        int num = 1;
-
-        // 遍历 Map 的每个条目，计算所有 List 的长度乘积
-        for (List<String> codes : formatCodes) {
-            num *= codes.size();
-        }
-
-        // 将计算结果存入 facts
-        facts.put("num", num);
     }
 }

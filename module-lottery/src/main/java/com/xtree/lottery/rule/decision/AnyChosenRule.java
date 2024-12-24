@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.decision;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -28,35 +30,39 @@ public class AnyChosenRule {
 
     @Action
     public void then(Facts facts) {
-        List<List<String>> formatCodes = facts.get("formatCodes");
-        int number = (int) ((Map<String, Object>) facts.get("attached")).get("number");
+        try {
+            List<List<String>> formatCodes = facts.get("formatCodes");
+            int number = (int) ((Map<String, Object>) facts.get("attached")).get("number");
 
-        int num = 0;
-        List<Integer> eachNumbers = new ArrayList<>();
+            int num = 0;
+            List<Integer> eachNumbers = new ArrayList<>();
 
-        List<int[]> positionGroup = getCombinations(IntStream.range(0, formatCodes.size()).toArray(), number);
+            List<int[]> positionGroup = getCombinations(IntStream.range(0, formatCodes.size()).toArray(), number);
 
-        for (int[] positions : positionGroup) {
-            List<List<String>> currentCodeSet = new ArrayList<>();
-            boolean isFinish = true;
+            for (int[] positions : positionGroup) {
+                List<List<String>> currentCodeSet = new ArrayList<>();
+                boolean isFinish = true;
 
-            for (int index : positions) {
-                if (formatCodes.get(index).isEmpty()) {
-                    isFinish = false;
-                    break;
+                for (int index : positions) {
+                    if (formatCodes.get(index).isEmpty()) {
+                        isFinish = false;
+                        break;
+                    }
+                    currentCodeSet.add(formatCodes.get(index));
                 }
-                currentCodeSet.add(formatCodes.get(index));
+
+                if (isFinish) {
+                    int combinationCount = cartesianProduct(currentCodeSet).size();
+                    eachNumbers.add(combinationCount);
+                    num += combinationCount;
+                }
             }
 
-            if (isFinish) {
-                int combinationCount = cartesianProduct(currentCodeSet).size();
-                eachNumbers.add(combinationCount);
-                num += combinationCount;
-            }
+            facts.put("minNumber", eachNumbers.stream().min(Integer::compare).orElse(0));
+            facts.put("num", num);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
-
-        facts.put("minNumber", eachNumbers.stream().min(Integer::compare).orElse(0));
-        facts.put("num", num);
     }
 
     private List<int[]> getCombinations(int[] elements, int k) {

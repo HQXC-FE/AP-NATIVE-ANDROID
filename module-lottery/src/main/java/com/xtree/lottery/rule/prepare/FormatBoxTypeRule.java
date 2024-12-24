@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.prepare;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -29,16 +31,20 @@ public class FormatBoxTypeRule {
 
     @Action
     public void then(Facts facts) {
-        Map<String, List<String>> bet = facts.get("bet");
-        List<String> betCodes = bet.get("codes");
-        List<List<String>> formatCodes = new ArrayList<>();
+        try {
+            Map<String, List<String>> bet = facts.get("bet");
+            List<String> betCodes = bet.get("codes");
+            List<List<String>> formatCodes = new ArrayList<>();
 
-        for (String code : betCodes) {
-            List<String> singleCode = new ArrayList<>();
-            singleCode.add(code);
-            formatCodes.add(singleCode);
+            for (String code : betCodes) {
+                List<String> singleCode = new ArrayList<>();
+                singleCode.add(code);
+                formatCodes.add(singleCode);
+            }
+
+            facts.put("formatCodes", formatCodes);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
-
-        facts.put("formatCodes", formatCodes);
     }
 }

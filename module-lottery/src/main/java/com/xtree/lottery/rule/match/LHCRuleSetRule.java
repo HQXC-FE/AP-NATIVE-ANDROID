@@ -1,5 +1,6 @@
 package com.xtree.lottery.rule.match;
 
+import com.xtree.base.utils.CfLog;
 import com.xtree.lottery.rule.Matchers;
 
 import org.jeasy.rules.annotation.Action;
@@ -27,8 +28,12 @@ public class LHCRuleSetRule {
 
     @Action
     public void then(Facts facts) {
-        String lotteryId = ((Map<String, String>)facts.get("currentMethod")).get("lotteryId");
-        List<String> ruleSuite = Matchers.mathLhcRules(Integer.valueOf(lotteryId));
-        facts.put("ruleSuite", ruleSuite);
+        try {
+            String lotteryId = ((Map<String, String>) facts.get("currentMethod")).get("lotteryId");
+            List<String> ruleSuite = Matchers.mathLhcRules(Integer.valueOf(lotteryId));
+            facts.put("ruleSuite", ruleSuite);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 }

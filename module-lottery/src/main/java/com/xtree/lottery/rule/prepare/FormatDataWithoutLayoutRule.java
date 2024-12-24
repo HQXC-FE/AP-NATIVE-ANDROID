@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.prepare;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -26,9 +28,13 @@ public class FormatDataWithoutLayoutRule {
 
     @Action
     public void then(Facts facts) {
-        Map<String, String> bet = facts.get("bet");
-        String codes = bet.get("codes");
-        String formatCodes = codes.trim();  // 去除前后空格
-        facts.put("formatCodes", formatCodes);
+        try {
+            Map<String, String> bet = facts.get("bet");
+            String codes = bet.get("codes");
+            String formatCodes = codes.trim();  // 去除前后空格
+            facts.put("formatCodes", formatCodes);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.decision;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -26,27 +28,31 @@ public class CombinationChosenRule {
 
     @Action
     public void then(Facts facts) {
-        // 获取相关数据
-        List<List<String>> formatCodes = facts.get("formatCodes");
-        Map<String, Integer> attached = facts.get("attached");
-        Integer number = attached.get("attached");
+        try {
+            // 获取相关数据
+            List<List<String>> formatCodes = facts.get("formatCodes");
+            Map<String, Integer> attached = facts.get("attached");
+            Integer number = attached.get("attached");
 
-        // 检查输入的有效性
-        if (formatCodes == null || formatCodes.isEmpty() || number == null) {
-            facts.put("num", 0);
-            return;
-        }
+            // 检查输入的有效性
+            if (formatCodes == null || formatCodes.isEmpty() || number == null) {
+                facts.put("num", 0);
+                return;
+            }
 
-        // 获取第一组的长度
-        int m = formatCodes.get(0).size();
+            // 获取第一组的长度
+            int m = formatCodes.get(0).size();
 
-        // 检查是否满足最小选择值
-        if (m < number) {
-            facts.put("num", 0);
-        } else {
-            // 计算组合数 C(m, n)
-            int combinationCount = calculateCombination(m, number);
-            facts.put("num", combinationCount);
+            // 检查是否满足最小选择值
+            if (m < number) {
+                facts.put("num", 0);
+            } else {
+                // 计算组合数 C(m, n)
+                int combinationCount = calculateCombination(m, number);
+                facts.put("num", combinationCount);
+            }
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
     }
 

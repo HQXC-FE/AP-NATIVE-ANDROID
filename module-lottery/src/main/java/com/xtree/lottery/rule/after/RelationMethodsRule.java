@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -27,30 +29,34 @@ public class RelationMethodsRule {
 
     @Action
     public void then(Facts facts) throws Exception {
-        Map<String, Object> currentMethod = facts.get("currentMethod");
-        List<Integer> relationMethodsIds = (List<Integer>) currentMethod.get("relationMethods");
-        String currentCategoryFlag = (String) ((Map<String, Object>) facts.get("currentCategory")).get("flag");
-        String lotteryType = facts.get("lotteryType");
-        Map<String, Object> bet = facts.get("bet");
+        try {
+            Map<String, Object> currentMethod = facts.get("currentMethod");
+            List<Integer> relationMethodsIds = (List<Integer>) currentMethod.get("relationMethods");
+            String currentCategoryFlag = (String) ((Map<String, Object>) facts.get("currentCategory")).get("flag");
+            String lotteryType = facts.get("lotteryType");
+            Map<String, Object> bet = facts.get("bet");
 
-        // 模拟执行异步任务并收集结果
-        List<Map<String, Object>> relationMethods = relationMethodsIds.stream()
-                .map(methodId -> {
-                    Map<String, Object> methodData = findMethodData(currentCategoryFlag, methodId);
-                    Map<String, Object> betWithMethodId = new java.util.HashMap<>(bet);
-                    betWithMethodId.put("methodid", methodId);
+            // 模拟执行异步任务并收集结果
+            List<Map<String, Object>> relationMethods = relationMethodsIds.stream()
+                    .map(methodId -> {
+                        Map<String, Object> methodData = findMethodData(currentCategoryFlag, methodId);
+                        Map<String, Object> betWithMethodId = new java.util.HashMap<>(bet);
+                        betWithMethodId.put("methodid", methodId);
 
-                    // 模拟 execute() 回调逻辑
-                    Map<String, Object> callbackData = executeTask(currentCategoryFlag, methodData, lotteryType, betWithMethodId);
+                        // 模拟 execute() 回调逻辑
+                        Map<String, Object> callbackData = executeTask(currentCategoryFlag, methodData, lotteryType, betWithMethodId);
 
-                    Map<String, Object> result = new java.util.HashMap<>(betWithMethodId);
-                    result.putAll(callbackData);
-                    return result;
-                })
-                .toList();
+                        Map<String, Object> result = new java.util.HashMap<>(betWithMethodId);
+                        result.putAll(callbackData);
+                        return result;
+                    })
+                    .toList();
 
-        // 存储 relationMethods 结果
-        facts.put("relationMethods", relationMethods);
+            // 存储 relationMethods 结果
+            facts.put("relationMethods", relationMethods);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 
     // 查找方法数据

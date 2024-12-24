@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -33,17 +35,21 @@ public class SetFundingModeRule {
 
     @Action
     public void then(Facts facts) {
-        Map<String, Object> bet = facts.get("bet");
-        Object currentMethod = facts.get("currentMethod");
-        List<Map<String, Object>> modes = (List<Map<String, Object>>) ((Map<?, ?>) currentMethod).get("money_modes");
+        try {
+            Map<String, Object> bet = facts.get("bet");
+            Object currentMethod = facts.get("currentMethod");
+            List<Map<String, Object>> modes = (List<Map<String, Object>>) ((Map<?, ?>) currentMethod).get("money_modes");
 
-        // Find mode by modeid
-        Map<String, Object> betMode = (Map<String, Object>) bet.get("mode");
-        Map<String, Object> selectedMode = modes.stream()
-                .filter(mode -> mode.get("modeid").equals(betMode.get("modeid")))
-                .findFirst()
-                .orElse(null);
+            // Find mode by modeid
+            Map<String, Object> betMode = (Map<String, Object>) bet.get("mode");
+            Map<String, Object> selectedMode = modes.stream()
+                    .filter(mode -> mode.get("modeid").equals(betMode.get("modeid")))
+                    .findFirst()
+                    .orElse(null);
 
-        facts.put("mode", selectedMode);
+            facts.put("mode", selectedMode);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 }

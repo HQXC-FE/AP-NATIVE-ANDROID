@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -25,16 +27,20 @@ public class CalculateTotalBetAmountRule {
 
     @Action
     public void then(Facts facts) {
-        Integer num = facts.get("num");
-        Integer times = facts.get("times");
-        Map<String, Object> mode = facts.get("mode");
+        try {
+            Integer num = facts.get("num");
+            Integer times = facts.get("times");
+            Map<String, Object> mode = facts.get("mode");
 
-        if (num != null && times != null && mode != null) {
-            Double rate = Double.parseDouble((String) mode.get("rate"));
-            if (rate != null) {
-                Double money = Math.round(num * times * rate * 2 * 1000.0) / 1000.0;
-                facts.put("money", money);
+            if (num != null && times != null && mode != null) {
+                Double rate = Double.parseDouble((String) mode.get("rate"));
+                if (rate != null) {
+                    Double money = Math.round(num * times * rate * 2 * 1000.0) / 1000.0;
+                    facts.put("money", money);
+                }
             }
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
     }
 }

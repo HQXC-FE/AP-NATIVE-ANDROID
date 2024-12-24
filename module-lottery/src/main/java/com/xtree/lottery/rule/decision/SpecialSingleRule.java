@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.decision;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -12,7 +14,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -32,62 +33,66 @@ public class SpecialSingleRule {
 
     @Action
     public void then(Facts facts) {
-        Object rawFormatCodes = facts.get("formatCodes");
-        String matcherName = facts.get("matcherName");
-        Map<String, Object> attached = facts.get("attached");
-        String number = (String) attached.get("number");
-        List<String> flagList = (List<String>) attached.get("flags");
-        List<String> message = new ArrayList<>();
+        try {
+            Object rawFormatCodes = facts.get("formatCodes");
+            String matcherName = facts.get("matcherName");
+            Map<String, Object> attached = facts.get("attached");
+            String number = (String) attached.get("number");
+            List<String> flagList = (List<String>) attached.get("flags");
+            List<String> message = new ArrayList<>();
 
-        // 标准化 formatCodes 到 List<String>
-        List<String> formatCodes = normalizeFormatCodes(rawFormatCodes);
+            // 标准化 formatCodes 到 List<String>
+            List<String> formatCodes = normalizeFormatCodes(rawFormatCodes);
 
-        SpecialSingle specialSingle = SpecialSingle.getByName(matcherName);
+            SpecialSingle specialSingle = SpecialSingle.getByName(matcherName);
 
-        // 单式去重
-        List<String> realCode = filterCodes(formatCodes, specialSingle);
-        List<String> uniqueCode = new ArrayList<>(new HashSet<>(realCode));
+            // 单式去重
+            List<String> realCode = filterCodes(formatCodes, specialSingle);
+            List<String> uniqueCode = new ArrayList<>(new HashSet<>(realCode));
 
-        if (realCode.size() != uniqueCode.size()) {
-            message.add("以下号码重复，已进行自动去重");
-            message.add(realCode.stream()
-                    .filter(code -> Collections.frequency(realCode, code) > 1)
-                    .distinct()
-                    .collect(Collectors.joining(",")));
-        }
-
-        facts.put("formatCodes", uniqueCode);
-        facts.put("singleDesc", specialSingle.name());
-
-        // 正则过滤
-        List<String> errorCodes = new ArrayList<>();
-        List<String> currentCodes = new ArrayList<>();
-        Pattern regex = Pattern.compile(specialSingle.getRegex().replace("$", number));
-
-        for (String code : uniqueCode) {
-            if (!regex.matcher(code).matches()) {
-                errorCodes.add(code);
-            } else if (specialSingle.hasZero() && isValidWithZero(code, specialSingle.getSortSplit())) {
-                currentCodes.add(code);
-            } else {
-                currentCodes.add(code);
+            if (realCode.size() != uniqueCode.size()) {
+                message.add("以下号码重复，已进行自动去重");
+                message.add(realCode.stream()
+                        .filter(code -> Collections.frequency(realCode, code) > 1)
+                        .distinct()
+                        .collect(Collectors.joining(",")));
             }
+
+            facts.put("formatCodes", uniqueCode);
+            facts.put("singleDesc", specialSingle.name());
+
+            // 正则过滤
+            List<String> errorCodes = new ArrayList<>();
+            List<String> currentCodes = new ArrayList<>();
+            Pattern regex = Pattern.compile(specialSingle.getRegex().replace("$", number));
+
+            for (String code : uniqueCode) {
+                if (!regex.matcher(code).matches()) {
+                    errorCodes.add(code);
+                } else if (specialSingle.hasZero() && isValidWithZero(code, specialSingle.getSortSplit())) {
+                    currentCodes.add(code);
+                } else {
+                    currentCodes.add(code);
+                }
+            }
+
+            if (!errorCodes.isEmpty()) {
+                message.add("以下号码错误，已进行自动过滤");
+                message.add(String.join(",", errorCodes));
+            }
+
+            facts.put("formatCodes", currentCodes);
+
+            // 组选去重
+            if (flagList.contains("group")) {
+                handleGroupCodes(currentCodes, specialSingle, message, facts);
+            }
+
+            facts.put("num", currentCodes.size());
+            facts.put("message", message);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
-
-        if (!errorCodes.isEmpty()) {
-            message.add("以下号码错误，已进行自动过滤");
-            message.add(String.join(",", errorCodes));
-        }
-
-        facts.put("formatCodes", currentCodes);
-
-        // 组选去重
-        if (flagList.contains("group")) {
-            handleGroupCodes(currentCodes, specialSingle, message, facts);
-        }
-
-        facts.put("num", currentCodes.size());
-        facts.put("message", message);
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -30,24 +32,28 @@ public class PkTypeFormatRule {
 
     @Action
     public void then(Facts facts) {
-        List<List<String>> formatCodes = facts.get("formatCodes");
-        List<String> displayCodes = new ArrayList<>();
+        try {
+            List<List<String>> formatCodes = facts.get("formatCodes");
+            List<String> displayCodes = new ArrayList<>();
 
-        for (List<String> item : formatCodes) {
-            if (item.size() == 2) {
-                displayCodes.add(String.join("vs", item));
-            } else {
-                displayCodes.add("X");
+            for (List<String> item : formatCodes) {
+                if (item.size() == 2) {
+                    displayCodes.add(String.join("vs", item));
+                } else {
+                    displayCodes.add("X");
+                }
             }
+
+            String displayCodesStr = String.join(",", displayCodes);
+            facts.put("displayCodes", displayCodesStr);
+
+            // 去掉空数组
+            List<List<String>> filteredFormatCodes = formatCodes.stream()
+                    .filter(item -> item.size() == 2)
+                    .collect(Collectors.toList());
+            facts.put("formatCodes", filteredFormatCodes);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
-
-        String displayCodesStr = String.join(",", displayCodes);
-        facts.put("displayCodes", displayCodesStr);
-
-        // 去掉空数组
-        List<List<String>> filteredFormatCodes = formatCodes.stream()
-                .filter(item -> item.size() == 2)
-                .collect(Collectors.toList());
-        facts.put("formatCodes", filteredFormatCodes);
     }
 }

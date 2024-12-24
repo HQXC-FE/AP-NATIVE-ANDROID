@@ -1,5 +1,6 @@
 package com.xtree.lottery.rule.match;
 
+import com.xtree.base.utils.CfLog;
 import com.xtree.lottery.rule.Matchers;
 
 import org.jeasy.rules.annotation.Action;
@@ -27,8 +28,12 @@ public class MatchRuleTokenToSetRule {
 
     @Action
     public void then(Facts facts) {
-        String token = facts.get("token");
-        List<String> ruleSuite = Matchers.token2Rules(token);
-        facts.put("ruleSuite", ruleSuite);
+        try {
+            String token = facts.get("token");
+            List<String> ruleSuite = Matchers.token2Rules(token);
+            facts.put("ruleSuite", ruleSuite);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 }

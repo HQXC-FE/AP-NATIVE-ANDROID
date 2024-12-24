@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.match;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -25,7 +27,11 @@ public class NoRuleTokenFoundRule {
 
     @Action
     public void then(Facts facts) {
-        List<String> message = facts.get("message");
-        message.add("没有找到玩法对应的规则指纹");
+        try {
+            List<String> message = facts.get("message");
+            message.add("没有找到玩法对应的规则指纹");
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 }

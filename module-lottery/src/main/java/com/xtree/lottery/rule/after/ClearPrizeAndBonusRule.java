@@ -1,12 +1,12 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
-
-import java.util.Map;
 
 @Rule(name = "ClearPrizeAndBonusRule", description = "当没有当前奖金模式时清除奖金和奖励")
 public class ClearPrizeAndBonusRule {
@@ -24,8 +24,12 @@ public class ClearPrizeAndBonusRule {
 
     @Action
     public void then(Facts facts) {
-        // 清除当前奖金和奖励
-        facts.put("currentPrize", "");
-        facts.put("currentBonus", "");
+        try {
+            // 清除当前奖金和奖励
+            facts.put("currentPrize", "");
+            facts.put("currentBonus", "");
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 }

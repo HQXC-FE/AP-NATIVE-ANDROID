@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.attached;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -26,21 +28,25 @@ public class AddFlagRule {
 
     @Action
     public void then(Facts facts) {
-        List<String> ruleSuite = facts.get("ruleSuite");
-        List<String> flags = ruleSuite.stream()
-                .filter(item -> item.matches("^add-flag-.*$"))
-                .map(item -> item.split("add-flag-")[1])
-                .toList();
+        try {
+            List<String> ruleSuite = facts.get("ruleSuite");
+            List<String> flags = ruleSuite.stream()
+                    .filter(item -> item.matches("^add-flag-.*$"))
+                    .map(item -> item.split("add-flag-")[1])
+                    .toList();
 
-        Map<String, List<String>> attached;
+            Map<String, List<String>> attached;
 
-        if (facts.get("attached") != null) {
-            attached = facts.get("attached");
-        } else {
-            attached = new HashMap<>();
+            if (facts.get("attached") != null) {
+                attached = facts.get("attached");
+            } else {
+                attached = new HashMap<>();
+            }
+            attached.put("flags", flags);
+
+            facts.put("attached", attached);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
-        attached.put("flags", flags);
-
-        facts.put("attached", attached);
     }
 }

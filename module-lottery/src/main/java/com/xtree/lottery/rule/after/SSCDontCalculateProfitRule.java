@@ -1,5 +1,6 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
 import com.xtree.lottery.rule.Matchers;
 
 import org.jeasy.rules.annotation.Action;
@@ -27,29 +28,33 @@ public class SSCDontCalculateProfitRule {
 
     @Action
     public void then(Facts facts) {
-        Map<String, String> currentCategory = facts.get("currentCategory");
-        Map<String, String> currentMethod = facts.get("currentMethod");
-        String methodName = currentCategory.get("name") + currentMethod.get("name");
-        boolean disabled = false;
+        try {
+            Map<String, String> currentCategory = facts.get("currentCategory");
+            Map<String, String> currentMethod = facts.get("currentMethod");
+            String methodName = currentCategory.get("name") + currentMethod.get("name");
+            boolean disabled = false;
 
-        // 单式屏蔽
-        if (methodName.contains("单式")) {
-            disabled = true;
-        }
-
-        String currentCategoryFlag = currentCategory.get("flag");
-
-        if (Matchers.pk10Alias.contains(currentCategoryFlag) || Matchers.jssmAlias.contains(currentCategoryFlag)) {
-            List<String> disabledMethods = List.of("竞速竞速", "对决对决");
-            if (disabledMethods.contains(methodName)) {
+            // 单式屏蔽
+            if (methodName.contains("单式")) {
                 disabled = true;
             }
-        }
 
-        // 不计算盈利的，清除奖金和奖励
-        if (disabled) {
-            facts.put("currentBonus", null);
-            facts.put("currentPrize", null);
+            String currentCategoryFlag = currentCategory.get("flag");
+
+            if (Matchers.pk10Alias.contains(currentCategoryFlag) || Matchers.jssmAlias.contains(currentCategoryFlag)) {
+                List<String> disabledMethods = List.of("竞速竞速", "对决对决");
+                if (disabledMethods.contains(methodName)) {
+                    disabled = true;
+                }
+            }
+
+            // 不计算盈利的，清除奖金和奖励
+            if (disabled) {
+                facts.put("currentBonus", null);
+                facts.put("currentPrize", null);
+            }
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
     }
 }

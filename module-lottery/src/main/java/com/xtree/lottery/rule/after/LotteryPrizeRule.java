@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -33,11 +35,15 @@ public class LotteryPrizeRule {
 
     @Action
     public void then(Facts facts) {
-        // Assuming `bet` is an object stored in facts with a "prize" property
-        Map<String, Object> bet = facts.get("bet");
-        Object prize = bet != null ? bet.get("prize") : null;
+        try {
+            // Assuming `bet` is an object stored in facts with a "prize" property
+            Map<String, Object> bet = facts.get("bet");
+            Object prize = bet != null ? bet.get("prize") : null;
 
-        facts.put("prize", prize);
+            facts.put("prize", prize);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 }
 

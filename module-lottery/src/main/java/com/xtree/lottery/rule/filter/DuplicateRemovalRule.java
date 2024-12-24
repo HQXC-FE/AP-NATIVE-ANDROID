@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.filter;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -26,17 +28,21 @@ public class DuplicateRemovalRule {
 
     @Action
     public void then(Facts facts) {
-        List<String> formatCodes = facts.get("formatCodes");
-        List<String> realCode = Arrays.stream(String.join(",", formatCodes).split("[,; ]"))
-                .filter(s -> !s.isEmpty())
-                .collect(Collectors.toList());
-        List<String> uniqueCode = realCode.stream().distinct().collect(Collectors.toList());
+        try {
+            List<String> formatCodes = facts.get("formatCodes");
+            List<String> realCode = Arrays.stream(String.join(",", formatCodes).split("[,; ]"))
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.toList());
+            List<String> uniqueCode = realCode.stream().distinct().collect(Collectors.toList());
 
-        if (realCode.size() != uniqueCode.size()) {
-            List<String> message = facts.get("message");
-            message.add("已经自动去重");
+            if (realCode.size() != uniqueCode.size()) {
+                List<String> message = facts.get("message");
+                message.add("已经自动去重");
+            }
+
+            facts.put("formatCodes", uniqueCode);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
-
-        facts.put("formatCodes", uniqueCode);
     }
 }

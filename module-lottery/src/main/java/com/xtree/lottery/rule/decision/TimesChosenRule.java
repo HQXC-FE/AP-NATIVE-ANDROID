@@ -1,5 +1,6 @@
 package com.xtree.lottery.rule.decision;
 
+import com.xtree.base.utils.CfLog;
 import com.xtree.lottery.rule.Matchers;
 
 import org.jeasy.rules.annotation.Action;
@@ -29,45 +30,49 @@ public class TimesChosenRule {
 
     @Action
     public void then(Facts facts) {
-        Integer num = facts.get("num");
-        Map<String, Object> attached = facts.get("attached");
-        List<List<String>> formatCodes = facts.get("formatCodes");
-        String categoryFlag = (String) ((Map<String, Object>) facts.get("currentCategory")).get("flag");
-        String matchName = ((Map<String, Object>) facts.get("currentCategory")).get("name") + "-" + ((Map<String, Object>) facts.get("currentMethod")).get("groupName");
-        int times = 1;
+        try {
+            Integer num = facts.get("num");
+            Map<String, Object> attached = facts.get("attached");
+            List<List<String>> formatCodes = facts.get("formatCodes");
+            String categoryFlag = (String) ((Map<String, Object>) facts.get("currentCategory")).get("flag");
+            String matchName = ((Map<String, Object>) facts.get("currentCategory")).get("name") + "-" + ((Map<String, Object>) facts.get("currentMethod")).get("groupName");
+            int times = 1;
 
-        if(attached.get("number") != null) {
-            times = Integer.parseInt((String) attached.getOrDefault("number", "1"));
-        }
-
-        // 如果已存在 num 值，直接进行倍数运算
-        if (num != null) {
-            if (isSpecialCategory(categoryFlag, matchName)) {
-                times = getSpecialTimes(matchName);
+            if (attached.get("number") != null) {
+                times = Integer.parseInt((String) attached.getOrDefault("number", "1"));
             }
-            facts.put("num", num * times);
-            return;
-        }
 
-        // 计算倍数逻辑
-        int finalTimes = times;
-        int totalSum = 0;
-
-        if (formatCodes instanceof List) {
-            List<?> codesList = formatCodes;
-            if (!codesList.isEmpty() && codesList.get(0) instanceof String) {
-                // 处理 List<String>
-                totalSum = codesList.size() * finalTimes;
-            } else if (!codesList.isEmpty() && codesList.get(0) instanceof List) {
-                // 处理 List<List<String>>
-                totalSum = codesList.stream()
-                        .filter(item -> item instanceof List && !((List<?>) item).isEmpty())
-                        .mapToInt(item -> ((List<?>) item).size() * finalTimes)
-                        .sum();
+            // 如果已存在 num 值，直接进行倍数运算
+            if (num != null) {
+                if (isSpecialCategory(categoryFlag, matchName)) {
+                    times = getSpecialTimes(matchName);
+                }
+                facts.put("num", num * times);
+                return;
             }
-        }
 
-        facts.put("num", totalSum);
+            // 计算倍数逻辑
+            int finalTimes = times;
+            int totalSum = 0;
+
+            if (formatCodes instanceof List) {
+                List<?> codesList = formatCodes;
+                if (!codesList.isEmpty() && codesList.get(0) instanceof String) {
+                    // 处理 List<String>
+                    totalSum = codesList.size() * finalTimes;
+                } else if (!codesList.isEmpty() && codesList.get(0) instanceof List) {
+                    // 处理 List<List<String>>
+                    totalSum = codesList.stream()
+                            .filter(item -> item instanceof List && !((List<?>) item).isEmpty())
+                            .mapToInt(item -> ((List<?>) item).size() * finalTimes)
+                            .sum();
+                }
+            }
+
+            facts.put("num", totalSum);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 
     private boolean isSpecialCategory(String categoryFlag, String matchName) {

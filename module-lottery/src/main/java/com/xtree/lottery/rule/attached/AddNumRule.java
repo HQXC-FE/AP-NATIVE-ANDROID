@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.attached;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -26,13 +28,17 @@ public class AddNumRule {
 
     @Action
     public void then(Facts facts) {
-        Map<String, String> attached = facts.get("attached");
-        List<String> ruleSuite = facts.get("ruleSuite");
-        Optional<String> match = ruleSuite.stream().filter(item -> item.matches("^add-num-.*$")).findFirst();
-        match.ifPresent(item -> {
-            int number = Integer.parseInt(item.split("add-num-")[1]);
-            attached.put("number", number + "");
-            facts.put("attached", attached);
-        });
+        try {
+            Map<String, String> attached = facts.get("attached");
+            List<String> ruleSuite = facts.get("ruleSuite");
+            Optional<String> match = ruleSuite.stream().filter(item -> item.matches("^add-num-.*$")).findFirst();
+            match.ifPresent(item -> {
+                int number = Integer.parseInt(item.split("add-num-")[1]);
+                attached.put("number", number + "");
+                facts.put("attached", attached);
+            });
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 }
