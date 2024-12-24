@@ -46,6 +46,8 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
     public MutableLiveData<LotteryOrderVo> liveDataBtCpDetail = new MutableLiveData<>(); // 投注记录-详情(彩票)
     public MutableLiveData<TraceInfoVo> liveDataTraceinfo = new MutableLiveData<>(); // 追号记录-列表(彩票)
     public MutableLiveData<LotteryChaseDetailVo> liveDataBtChaseDetail = new MutableLiveData<>(); // 追号记录-详情(彩票)
+    //当前期号
+    public MutableLiveData<IssueVo> currentIssueLiveData = new MutableLiveData<>();
 
     public LotteryViewModel(@NonNull Application application) {
         super(application, null);

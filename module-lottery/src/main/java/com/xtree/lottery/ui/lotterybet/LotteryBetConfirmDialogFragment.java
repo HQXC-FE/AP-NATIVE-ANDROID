@@ -19,6 +19,7 @@ import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.databinding.DialogLotteryBetConfirmBinding;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetConfirmViewModel;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel;
+import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
 
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ public class LotteryBetConfirmDialogFragment extends BaseDialogFragment<DialogLo
         AppViewModelFactory instance = AppViewModelFactory.getInstance(getActivity().getApplication());
         viewmodel.setModel(instance.getmRepository());
         viewmodel.betsViewModel = new ViewModelProvider(getActivity()).get(LotteryBetsViewModel.class);
+        viewmodel.lotteryViewModel = new ViewModelProvider(getActivity()).get(LotteryViewModel.class);
         return viewmodel;
     }
 
