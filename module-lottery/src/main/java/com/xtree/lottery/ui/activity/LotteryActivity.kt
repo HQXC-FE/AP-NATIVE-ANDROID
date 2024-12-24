@@ -75,7 +75,9 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
 
         binding.tlLottery.addTab(binding.tlLottery.newTab().setText("近期开奖"))
         binding.tlLottery.addTab(binding.tlLottery.newTab().setText("彩种投注"))
-        binding.tlLottery.addTab(binding.tlLottery.newTab().setText("盘口玩法"))
+        if (lottery.handicap) {//是否显示盘口玩法
+            binding.tlLottery.addTab(binding.tlLottery.newTab().setText("盘口玩法"))
+        }
         binding.tlLottery.addTab(binding.tlLottery.newTab().setText("投注记录"))
         binding.tlLottery.addTab(binding.tlLottery.newTab().setText("追号记录"))
         binding.tlLottery.addOnTabSelectedListener(object : OnTabSelectedListener {
@@ -90,7 +92,9 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         fragmentList.add(RecentLotteryFragment.newInstance(lottery.id))
         lotteryBetsFragment = LotteryBetsFragment.newInstance(lottery)
         fragmentList.add(lotteryBetsFragment)
-        fragmentList.add(LotteryHandicapFragment.newInstance(lottery))
+        if (lottery.handicap) {//是否显示盘口玩法
+            fragmentList.add(LotteryHandicapFragment.newInstance(lottery))
+        }
         fragmentList.add(LotteryReportFragment())
         fragmentList.add(ChaseBetReportFragment())
 

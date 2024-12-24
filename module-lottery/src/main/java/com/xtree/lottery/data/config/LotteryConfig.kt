@@ -25,7 +25,7 @@ data class Lottery(
     val link: Int,
     val linkType: String,//linkType 分为 ssc   animate  lhc   三种类型
     val curmid: String? = null,
-    val newWindow: Boolean? = null
+    val handicap: Boolean = true
 ) : Parcelable
 
 val lotteries = arrayListOf(
@@ -39,7 +39,7 @@ val lotteries = arrayListOf(
                 type = "hot",
                 link = R.mipmap.lottery_ssc_1,
                 linkType = "ssc",
-                curmid = "2309"
+                curmid = "2309",
             ),
             Lottery(
                 id = 57,
@@ -48,7 +48,8 @@ val lotteries = arrayListOf(
                 type = "new",
                 link = R.mipmap.lottery_ssc_2,
                 linkType = "ssc",
-                curmid = "400204"
+                curmid = "400204",
+                handicap = false
             ),
             Lottery(
                 id = 55,
@@ -57,7 +58,8 @@ val lotteries = arrayListOf(
                 type = "new",
                 link = R.mipmap.lottery_ssc_3,
                 linkType = "ssc",
-                curmid = "399867"
+                curmid = "399867",
+                handicap = false
             ),
             Lottery(
                 id = 1,
@@ -65,7 +67,8 @@ val lotteries = arrayListOf(
                 alias = "cqssc",
                 link = R.mipmap.lottery_ssc_4,
                 linkType = "ssc",
-                curmid = "50"
+                curmid = "50",
+                handicap = false
             ),
             Lottery(
                 id = 6,
@@ -73,7 +76,8 @@ val lotteries = arrayListOf(
                 alias = "xjssc",
                 link = R.mipmap.lottery_ssc_5,
                 linkType = "ssc",
-                curmid = "220"
+                curmid = "220",
+                handicap = false
             ),
             Lottery(
                 id = 53,
@@ -90,7 +94,8 @@ val lotteries = arrayListOf(
                 alias = "tg300s",
                 link = R.mipmap.lottery_ssc_7,
                 linkType = "ssc",
-                curmid = "376050"
+                curmid = "376050",
+                handicap = false
             ),
         ),
     ),
@@ -125,7 +130,8 @@ val lotteries = arrayListOf(
                 type = "new",
                 link = R.mipmap.lottery_ffc_3,
                 linkType = "ssc",
-                curmid = "364050"
+                curmid = "364050",
+                handicap = false
             ),
             Lottery(
                 id = 52,
@@ -133,7 +139,8 @@ val lotteries = arrayListOf(
                 alias = "txssq",
                 link = R.mipmap.lottery_ffc_4,
                 linkType = "ssc",
-                curmid = "399200"
+                curmid = "399200",
+                handicap = false
             ),
             Lottery(
                 id = 38,
@@ -141,7 +148,8 @@ val lotteries = arrayListOf(
                 alias = "rbffc",
                 link = R.mipmap.lottery_ffc_5,
                 linkType = "ssc",
-                curmid = "352050"
+                curmid = "352050",
+                handicap = false
             ),
             Lottery(
                 id = 39,
@@ -149,7 +157,8 @@ val lotteries = arrayListOf(
                 alias = "xgffc",
                 link = R.mipmap.lottery_ffc_6,
                 linkType = "ssc",
-                curmid = "355050"
+                curmid = "355050",
+                handicap = false
             ),
             Lottery(
                 id = 40,
@@ -158,7 +167,8 @@ val lotteries = arrayListOf(
                 type = "new",
                 link = R.mipmap.lottery_ffc_7,
                 linkType = "ssc",
-                curmid = "358050"
+                curmid = "358050",
+                handicap = false
             ),
             Lottery(
                 id = 29,
@@ -167,7 +177,8 @@ val lotteries = arrayListOf(
                 type = "hot",
                 link = R.mipmap.lottery_ffc_8,
                 linkType = "ssc",
-                curmid = "341050"
+                curmid = "341050",
+                handicap = false
             ),
             Lottery(
                 id = 54,
@@ -176,7 +187,8 @@ val lotteries = arrayListOf(
                 type = "new",
                 link = R.mipmap.lottery_ffc_9,
                 linkType = "ssc",
-                curmid = "399507"
+                curmid = "399507",
+                handicap = false
             ),
             Lottery(
                 id = 51,
@@ -184,7 +196,8 @@ val lotteries = arrayListOf(
                 alias = "txdsq",
                 link = R.mipmap.lottery_ffc_10,
                 linkType = "ssc",
-                curmid = "399050"
+                curmid = "399050",
+                handicap = false
             ),
             Lottery(
                 id = 41,
@@ -201,7 +214,8 @@ val lotteries = arrayListOf(
                 alias = "sytxffc",
                 link = R.mipmap.lottery_ffc_12,
                 linkType = "ssc",
-                curmid = "400500"
+                curmid = "400500",
+                handicap = false
             ),
             Lottery(
                 id = 26,
@@ -209,7 +223,8 @@ val lotteries = arrayListOf(
                 alias = "rd1fc",
                 link = R.mipmap.lottery_ffc_13,
                 linkType = "ssc",
-                curmid = "314050"
+                curmid = "314050",
+                handicap = false
             ),
             Lottery(
                 id = 27,
@@ -225,7 +240,8 @@ val lotteries = arrayListOf(
                 alias = "tg60s",
                 link = R.mipmap.lottery_ffc_15,
                 linkType = "ssc",
-                curmid = "379050"
+                curmid = "379050",
+                handicap = false
             ),
             Lottery(
                 id = 23,
@@ -233,7 +249,8 @@ val lotteries = arrayListOf(
                 alias = "mmc",
                 link = R.mipmap.lottery_ffc_16,
                 linkType = "ssc",
-                curmid = "311700"
+                curmid = "311700",
+                handicap = false
             ),
         )
     ),
@@ -292,7 +309,8 @@ val lotteries = arrayListOf(
                 type = "new",
                 link = R.mipmap.lottery_xnbc_6,
                 linkType = "ssc",
-                curmid = "405902"
+                curmid = "405902",
+                handicap = false
             ),
             Lottery(
                 id = 93,
@@ -301,7 +319,8 @@ val lotteries = arrayListOf(
                 type = "new",
                 link = R.mipmap.lottery_xnbc_7,
                 linkType = "ssc",
-                curmid = "406105"
+                curmid = "406105",
+                handicap = false
             ),
         )
     ),
@@ -315,7 +334,8 @@ val lotteries = arrayListOf(
                 type = "hot",
                 link = R.mipmap.lottery_11x5_1,
                 linkType = "ssc",
-                curmid = "351402"
+                curmid = "351402",
+                handicap = false
             ),
             Lottery(
                 id = 8,
@@ -323,7 +343,8 @@ val lotteries = arrayListOf(
                 alias = "gd11x5",
                 link = R.mipmap.lottery_11x5_2,
                 linkType = "ssc",
-                curmid = "302"
+                curmid = "302",
+                handicap = false
             ),
             Lottery(
                 id = 7,
@@ -331,7 +352,8 @@ val lotteries = arrayListOf(
                 alias = "jx11x5",
                 link = R.mipmap.lottery_11x5_3,
                 linkType = "ssc",
-                curmid = "256"
+                curmid = "256",
+                handicap = false
             ),
             Lottery(
                 id = 5,
@@ -339,7 +361,8 @@ val lotteries = arrayListOf(
                 alias = "sd11x5",
                 link = R.mipmap.lottery_11x5_4,
                 linkType = "ssc",
-                curmid = "174"
+                curmid = "174",
+                handicap = false
             ),
             Lottery(
                 id = 43,
@@ -347,7 +370,8 @@ val lotteries = arrayListOf(
                 alias = "js11x5",
                 link = R.mipmap.lottery_11x5_5,
                 linkType = "ssc",
-                curmid = "366420"
+                curmid = "366420",
+                handicap = false
             ),
             Lottery(
                 id = 48,
@@ -355,7 +379,8 @@ val lotteries = arrayListOf(
                 alias = "tg11x5",
                 link = R.mipmap.lottery_11x5_6,
                 linkType = "ssc",
-                curmid = "390402"
+                curmid = "390402",
+                handicap = false
             ),
             Lottery(
                 id = 75,
@@ -363,7 +388,8 @@ val lotteries = arrayListOf(
                 alias = "hlj11x5",
                 link = R.mipmap.lottery_11x5_7,
                 linkType = "ssc",
-                curmid = "403813"
+                curmid = "403813",
+                handicap = false
             ),
             Lottery(
                 id = 76,
@@ -371,7 +397,8 @@ val lotteries = arrayListOf(
                 alias = "hb11x5",
                 link = R.mipmap.lottery_11x5_8,
                 linkType = "ssc",
-                curmid = "403849"
+                curmid = "403849",
+                handicap = false
             ),
             Lottery(
                 id = 77,
@@ -379,7 +406,8 @@ val lotteries = arrayListOf(
                 alias = "ln11x5",
                 link = R.mipmap.lottery_11x5_9,
                 linkType = "ssc",
-                curmid = "403885"
+                curmid = "403885",
+                handicap = false
             ),
             Lottery(
                 id = 78,
@@ -387,7 +415,8 @@ val lotteries = arrayListOf(
                 alias = "gx11x5",
                 link = R.mipmap.lottery_11x5_10,
                 linkType = "ssc",
-                curmid = "403921"
+                curmid = "403921",
+                handicap = false
             ),
             Lottery(
                 id = 79,
@@ -395,7 +424,8 @@ val lotteries = arrayListOf(
                 alias = "yn11x5",
                 link = R.mipmap.lottery_11x5_11,
                 linkType = "ssc",
-                curmid = "403957"
+                curmid = "403957",
+                handicap = false
             ),
         )
     ),
@@ -409,7 +439,8 @@ val lotteries = arrayListOf(
                 type = "new",
                 link = R.mipmap.lottery_pk10_1,
                 linkType = "animate",
-                curmid = "399000"
+                curmid = "399000",
+                handicap = false
             ),
             Lottery(
                 id = 24,
@@ -418,7 +449,8 @@ val lotteries = arrayListOf(
                 type = "hot",
                 link = R.mipmap.lottery_pk10_2,
                 linkType = "animate",
-                curmid = "313012"
+                curmid = "313012",
+                handicap = false
             ),
             Lottery(
                 id = 25,
@@ -427,7 +459,8 @@ val lotteries = arrayListOf(
                 type = "hot",
                 link = R.mipmap.lottery_pk10_3,
                 linkType = "animate",
-                curmid = "313212"
+                curmid = "313212",
+                handicap = false
             ),
             Lottery(
                 id = 34,
@@ -436,7 +469,8 @@ val lotteries = arrayListOf(
                 type = "hot",
                 link = R.mipmap.lottery_pk10_4,
                 linkType = "animate",
-                curmid = "347712"
+                curmid = "347712",
+                handicap = false
             ),
         )
     ),
@@ -450,7 +484,8 @@ val lotteries = arrayListOf(
                 type = "hot",
                 link = R.mipmap.lottery_other_1,
                 linkType = "ssc",
-                curmid = "351451"
+                curmid = "351451",
+                handicap = false
             ),
 
             Lottery(
@@ -459,7 +494,8 @@ val lotteries = arrayListOf(
                 alias = "3dfc",
                 link = R.mipmap.lottery_other_2,
                 linkType = "ssc",
-                curmid = "614"
+                curmid = "614",
+                handicap = false
             ),
             Lottery(
                 id = 12,
@@ -467,7 +503,8 @@ val lotteries = arrayListOf(
                 alias = "pl3",
                 link = R.mipmap.lottery_other_3,
                 linkType = "ssc",
-                curmid = "615"
+                curmid = "615",
+                handicap = false
             ),
             Lottery(
                 id = 20,
@@ -475,7 +512,8 @@ val lotteries = arrayListOf(
                 alias = "xglhc",
                 link = R.mipmap.lottery_other_4,
                 linkType = "lhc",
-                curmid = "20000"
+                curmid = "20000",
+                handicap = false
             ),
             Lottery(
                 id = 73,
@@ -483,7 +521,8 @@ val lotteries = arrayListOf(
                 alias = "amlhc",
                 link = R.mipmap.lottery_other_5,
                 linkType = "lhc",
-                curmid = "403649"
+                curmid = "403649",
+                handicap = false
             ),
             Lottery(
                 id = 80,
@@ -491,7 +530,8 @@ val lotteries = arrayListOf(
                 alias = "hbk3",
                 link = R.mipmap.lottery_other_6,
                 linkType = "ssc",
-                curmid = "403993"
+                curmid = "403993",
+                handicap = false
             ),
             Lottery(
                 id = 81,
@@ -499,7 +539,8 @@ val lotteries = arrayListOf(
                 alias = "hnks",
                 link = R.mipmap.lottery_other_7,
                 linkType = "ssc",
-                curmid = "404016"
+                curmid = "404016",
+                handicap = false
             ),
             Lottery(
                 id = 82,
@@ -507,7 +548,8 @@ val lotteries = arrayListOf(
                 alias = "jlks",
                 link = R.mipmap.lottery_other_8,
                 linkType = "ssc",
-                curmid = "404039"
+                curmid = "404039",
+                handicap = false
             ),
         )
     )
