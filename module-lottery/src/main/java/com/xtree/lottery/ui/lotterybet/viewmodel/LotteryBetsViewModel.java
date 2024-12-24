@@ -171,6 +171,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     @Override
                     public void onResult(UserMethodsResponse response) {
                         if (response.getData() != null && menuMethods != null) {
+                            LotteryDataManager.INSTANCE.setUserMethods(response);
                             userMethods = response;
                             initPlayCollection();
                         }

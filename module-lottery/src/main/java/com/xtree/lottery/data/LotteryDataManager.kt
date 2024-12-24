@@ -33,10 +33,10 @@ object LotteryDataManager {
                 )
                 emitter.onSuccess(methods)
             } catch (e: Exception) {
-                emitter.onError(e)  // 发生错误时发出错误信号
+                emitter.onError(e)
             }
-        } .subscribeOn(Schedulers.single())  // 在 IO 线程上执行 Single 操作
-            .observeOn(Schedulers.single()) // 在单独线程上处理结果（可以选择其他线程）
+        } .subscribeOn(Schedulers.single())
+            .observeOn(Schedulers.single())
             .subscribe(
                 { data -> lotteryMethodsData = data },
                 { error -> println("Error: ${error.message}") }

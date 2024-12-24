@@ -77,7 +77,7 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
     }
 
     public void getUserMethods() {
-        Disposable disposable = model.getUserMethodsData()
+        model.getUserMethodsData()
                 .subscribeWith(new HttpCallBack<UserMethodsResponse>() {
                     @Override
                     public void onResult(UserMethodsResponse response) {
@@ -91,7 +91,6 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
                         super.onError(t);
                     }
                 });
-        addSubscribe(disposable);
     }
 
     public void getMethodMenus(String alias) {
