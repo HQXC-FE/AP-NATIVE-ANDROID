@@ -32,85 +32,89 @@ public class SumPlusRule {
 
     @Action
     public void then(Facts facts) {
-        Map<String, Object> attached = facts.get("attached");
-        Object formatCodesObject = facts.get("formatCodes");
-        List<List<String>> formatCodes = normalizeFormatCodes(formatCodesObject);
-        List<Object> newFormatCodes = new ArrayList<>();
+        try {
+            Map<String, Object> attached = facts.get("attached");
+            Object formatCodesObject = facts.get("formatCodes");
+            List<List<String>> formatCodes = normalizeFormatCodes(formatCodesObject);
+            List<Object> newFormatCodes = new ArrayList<>();
 
-        // 初始化 scope
-        List<Integer> scope = (List<Integer>) attached.getOrDefault("scope", IntStream.rangeClosed(0, 9).boxed().collect(Collectors.toList()));
+            // 初始化 scope
+            List<Integer> scope = (List<Integer>) attached.getOrDefault("scope", IntStream.rangeClosed(0, 9).boxed().collect(Collectors.toList()));
 
-        // 获取待组合二维数组
-        int number = 0;
-        if (attached.get("number") != null) {
-            number = Integer.parseInt((String) attached.get("number"));
-        }
-        boolean isTail;
-        String flag = "";
-        List<List<Integer>> pendingArr = Collections.nCopies(number, scope);
-
-        // 获取全部组合类型
-        List<List<Integer>> allCombination = cartesianProduct(pendingArr);
-        if (attached.get("isTail") != null) {
-            isTail = (boolean) attached.get("isTail");
-        } else {
-            isTail = false;
-        }
-        if (attached.get("flag") != null) {
-            flag = (String) attached.get("flag");
-        }
-
-        int num = 0;
-
-        for (String codeStr : formatCodes.get(0)) {
-            int code;
-            if(codeStr != null && !codeStr.isEmpty() && !codeStr.equals(" ")){
-                code = Integer.parseInt(codeStr);
-            }else {
-                break;
+            // 获取待组合二维数组
+            int number = 0;
+            if (attached.get("number") != null) {
+                number = Integer.parseInt((String) attached.get("number"));
             }
-            List<List<Integer>> eachCombination = new ArrayList<>();
+            boolean isTail;
+            String flag = "";
+            List<List<Integer>> pendingArr = Collections.nCopies(number, scope);
 
-            for (List<Integer> codeSet : allCombination) {
-                int sum = codeSet.stream().mapToInt(Integer::intValue).sum();
-                if (!isTail && sum == code || isTail && sum % 10 == code) {
-                    eachCombination.add(codeSet.stream().sorted().collect(Collectors.toList()));
+            // 获取全部组合类型
+            List<List<Integer>> allCombination = cartesianProduct(pendingArr);
+            if (attached.get("isTail") != null) {
+                isTail = (boolean) attached.get("isTail");
+            } else {
+                isTail = false;
+            }
+            if (attached.get("flag") != null) {
+                flag = (String) attached.get("flag");
+            }
+
+            int num = 0;
+
+            for (String codeStr : formatCodes.get(0)) {
+                int code;
+                if (codeStr != null && !codeStr.isEmpty() && !codeStr.equals(" ")) {
+                    code = Integer.parseInt(codeStr);
+                } else {
+                    break;
+                }
+                List<List<Integer>> eachCombination = new ArrayList<>();
+
+                for (List<Integer> codeSet : allCombination) {
+                    int sum = codeSet.stream().mapToInt(Integer::intValue).sum();
+                    if (!isTail && sum == code || isTail && sum % 10 == code) {
+                        eachCombination.add(codeSet.stream().sorted().collect(Collectors.toList()));
+                    }
+                }
+
+                if (flag.contains("group")) {
+                    // 组选和值
+                    eachCombination = eachCombination.stream()
+                            .filter(item -> new HashSet<>(item).size() != 1)
+                            .collect(Collectors.toList());
+
+                    num += eachCombination.stream()
+                            .distinct()
+                            .collect(Collectors.toList())
+                            .size();
+                } else {
+                    num += eachCombination.size();
                 }
             }
 
-            if (flag.contains("group")) {
-                // 组选和值
-                eachCombination = eachCombination.stream()
-                        .filter(item -> new HashSet<>(item).size() != 1)
-                        .collect(Collectors.toList());
-
-                num += eachCombination.stream()
-                        .distinct()
-                        .collect(Collectors.toList())
-                        .size();
-            } else {
-                num += eachCombination.size();
+            // 排序
+            if (formatCodes != null && !formatCodes.isEmpty() && formatCodes.get(0) != null) {
+                List<String> firstList = formatCodes.get(0);
+                try {
+                    List<String> sortedList = firstList.stream()
+                            .filter(item -> item != null && !item.trim().isEmpty()) // 过滤 null 或空字符串
+                            .map(Integer::parseInt) // 将字符串转换为整数
+                            .sorted() // 排序
+                            .map(String::valueOf) // 转回字符串
+                            .collect(Collectors.toList());
+                    newFormatCodes.add(sortedList); // 更新第一个列表
+                } catch (Exception e) {
+                    CfLog.e(e.getMessage());
+                }
             }
-        }
 
-        // 排序
-        if (formatCodes != null && !formatCodes.isEmpty() && formatCodes.get(0) != null) {
-            List<String> firstList = formatCodes.get(0);
-            try {
-                List<String> sortedList = firstList.stream()
-                        .filter(item -> item != null && !item.trim().isEmpty()) // 过滤 null 或空字符串
-                        .map(Integer::parseInt) // 将字符串转换为整数
-                        .sorted() // 排序
-                        .map(String::valueOf) // 转回字符串
-                        .collect(Collectors.toList());
-                newFormatCodes.add(sortedList); // 更新第一个列表
-            } catch (Exception e) {
-                CfLog.e(e.getMessage());
-            }
+            facts.put("formatCodes", newFormatCodes);
+            facts.put("num", num);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
-
-        facts.put("formatCodes", newFormatCodes);
-        facts.put("num", num);
     }
 
     /**

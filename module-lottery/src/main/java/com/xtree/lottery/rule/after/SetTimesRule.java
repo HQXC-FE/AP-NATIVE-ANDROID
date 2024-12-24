@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -25,11 +27,15 @@ public class SetTimesRule {
 
     @Action
     public void then(Facts facts) {
-        Map<String, Object> bet = facts.get("bet");
-        if (bet.get("times") == null) {
-            facts.put("times", 1);
+        try {
+            Map<String, Object> bet = facts.get("bet");
+            if (bet.get("times") == null) {
+                facts.put("times", 1);
+            }
+            Integer times = Integer.parseInt((String) bet.get("times"));
+            facts.put("times", times);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
-        Integer times = Integer.parseInt((String) bet.get("times"));
-        facts.put("times", times);
     }
 }

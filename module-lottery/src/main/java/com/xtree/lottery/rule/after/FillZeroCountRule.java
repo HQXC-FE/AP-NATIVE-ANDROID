@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -22,6 +24,10 @@ public class FillZeroCountRule {
 
     @Action
     public void then(Facts facts) {
-        facts.put("num", 0);
+        try {
+            facts.put("num", 0);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 }

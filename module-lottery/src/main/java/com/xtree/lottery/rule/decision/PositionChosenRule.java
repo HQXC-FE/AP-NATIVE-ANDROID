@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.decision;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -26,29 +28,33 @@ public class PositionChosenRule {
 
     @Action
     public void then(Facts facts) {
-        // 从 facts 中获取相关数据
-        List<Boolean> poschoose = ((Map<String, List<Boolean>>) facts.get("betposchoose")).get("poschoose");
+        try {
+            // 从 facts 中获取相关数据
+            List<Boolean> poschoose = ((Map<String, List<Boolean>>) facts.get("betposchoose")).get("poschoose");
 
-        Integer posnum = (Integer) ((Map<String, Object>) facts.get("attached")).get("posnum");
-        Integer number = (Integer) ((Map<String, Object>) facts.get("attached")).get("number");
-        Integer num = facts.get("num");
+            Integer posnum = (Integer) ((Map<String, Object>) facts.get("attached")).get("posnum");
+            Integer number = (Integer) ((Map<String, Object>) facts.get("attached")).get("number");
+            Integer num = facts.get("num");
 
-        if (poschoose == null || num == null) {
-            throw new IllegalArgumentException("Missing required facts: poschoose or num");
-        }
+            if (poschoose == null || num == null) {
+                throw new IllegalArgumentException("Missing required facts: poschoose or num");
+            }
 
-        // 筛选出被选择的位置
-        long selectedCount = poschoose.stream().filter(item -> item).count();
+            // 筛选出被选择的位置
+            long selectedCount = poschoose.stream().filter(item -> item).count();
 
-        // 计算最小选择数
-        int minNumber = (posnum != null) ? posnum : (number != null ? number : 0);
+            // 计算最小选择数
+            int minNumber = (posnum != null) ? posnum : (number != null ? number : 0);
 
-        if (minNumber > selectedCount) {
-            facts.put("num", 0); // 如果选中的位数小于最小选择量，将 num 置为 0
-        } else {
-            // 计算排列组合
-            int combination = calculateCombination((int) selectedCount, minNumber);
-            facts.put("num", num * combination); // 更新 num
+            if (minNumber > selectedCount) {
+                facts.put("num", 0); // 如果选中的位数小于最小选择量，将 num 置为 0
+            } else {
+                // 计算排列组合
+                int combination = calculateCombination((int) selectedCount, minNumber);
+                facts.put("num", num * combination); // 更新 num
+            }
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
     }
 

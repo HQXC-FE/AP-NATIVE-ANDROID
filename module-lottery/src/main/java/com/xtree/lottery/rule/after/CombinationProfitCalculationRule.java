@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -28,30 +30,34 @@ public class CombinationProfitCalculationRule {
 
     @Action
     public void then(Facts facts) {
-        List<Map<String, Object>> currentPrizeModes = facts.get("currentPrizeModes");
-        Map<String, Object> currentMethod = facts.get("currentMethod");
-        Map<String, Object> mode = facts.get("mode");
-        int times = facts.get("times");
-        double money = facts.get("money");
-        int omodel = facts.get("prize") != null ? Integer.parseInt(facts.get("prize").toString()) : 1;
+        try {
+            List<Map<String, Object>> currentPrizeModes = facts.get("currentPrizeModes");
+            Map<String, Object> currentMethod = facts.get("currentMethod");
+            Map<String, Object> mode = facts.get("mode");
+            int times = facts.get("times");
+            double money = facts.get("money");
+            int omodel = facts.get("prize") != null ? Integer.parseInt(facts.get("prize").toString()) : 1;
 
-        // 计算 arrPrizeModes
-        List<Double> arrPrizeModes = currentPrizeModes.stream()
-                .filter(modeMap -> omodel == (int) modeMap.get("option"))
-                .flatMap(modeMap -> ((List<Double>) modeMap.get("value")).stream())
-                .map(value -> round(value * getRate(currentMethod, mode) * (2 / getBaseBetRate()) * times, 4))
-                .collect(Collectors.toList());
+            // 计算 arrPrizeModes
+            List<Double> arrPrizeModes = currentPrizeModes.stream()
+                    .filter(modeMap -> omodel == (int) modeMap.get("option"))
+                    .flatMap(modeMap -> ((List<Double>) modeMap.get("value")).stream())
+                    .map(value -> round(value * getRate(currentMethod, mode) * (2 / getBaseBetRate()) * times, 4))
+                    .collect(Collectors.toList());
 
-        // 设置 currentPrize
-        String currentPrize = formatRange(arrPrizeModes.get(0), round(arrPrizeModes.stream().mapToDouble(Double::doubleValue).sum(), 4));
-        facts.put("currentPrize", currentPrize);
+            // 设置 currentPrize
+            String currentPrize = formatRange(arrPrizeModes.get(0), round(arrPrizeModes.stream().mapToDouble(Double::doubleValue).sum(), 4));
+            facts.put("currentPrize", currentPrize);
 
-        // 设置 currentBonus
-        String currentBonus = formatRange(
-                round(arrPrizeModes.get(0) - money, 4),
-                round(arrPrizeModes.stream().mapToDouble(Double::doubleValue).sum() - money, 4)
-        );
-        facts.put("currentBonus", currentBonus);
+            // 设置 currentBonus
+            String currentBonus = formatRange(
+                    round(arrPrizeModes.get(0) - money, 4),
+                    round(arrPrizeModes.stream().mapToDouble(Double::doubleValue).sum() - money, 4)
+            );
+            facts.put("currentBonus", currentBonus);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 
     private double getRate(Map<String, Object> currentMethod, Map<String, Object> mode) {

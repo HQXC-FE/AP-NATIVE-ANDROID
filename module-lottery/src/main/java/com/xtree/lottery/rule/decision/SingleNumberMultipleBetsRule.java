@@ -1,5 +1,6 @@
 package com.xtree.lottery.rule.decision;
 
+import com.xtree.base.utils.CfLog;
 import com.xtree.lottery.rule.Matchers;
 
 import org.jeasy.rules.annotation.Action;
@@ -27,36 +28,40 @@ public class SingleNumberMultipleBetsRule {
 
     @Action
     public void then(Facts facts) {
-        List<String> ruleSuite = facts.get("ruleSuite");
-        Map<String, String> currentCategory = facts.get("currentCategory");
-        Map<String, String> currentMethod = facts.get("currentMethod");
-        String currentCategoryFlag = currentCategory.get("flag");
-        String currentCategoryName = currentCategory.get("name");
-        String currentMethodGroupName = currentMethod.get("groupName");
-        int num = facts.get("num");
+        try {
+            List<String> ruleSuite = facts.get("ruleSuite");
+            Map<String, String> currentCategory = facts.get("currentCategory");
+            Map<String, String> currentMethod = facts.get("currentMethod");
+            String currentCategoryFlag = currentCategory.get("flag");
+            String currentCategoryName = currentCategory.get("name");
+            String currentMethodGroupName = currentMethod.get("groupName");
+            int num = facts.get("num");
 
-        // 判断是否属于特定彩种
-        if (Matchers.vnmMidSouAlias.contains(currentCategoryFlag) || Matchers.vnmFastAlias.contains(currentCategoryFlag)) {
-            String matchName = (currentCategoryName + "-" + currentMethodGroupName).trim();
-            for (Map.Entry<String, Integer> item : Matchers.mapMatchNameToNumList.entrySet()) {
-                if (matchName.equals(item.getKey())) {
-                    num *= item.getValue();
-                    break;
+            // 判断是否属于特定彩种
+            if (Matchers.vnmMidSouAlias.contains(currentCategoryFlag) || Matchers.vnmFastAlias.contains(currentCategoryFlag)) {
+                String matchName = (currentCategoryName + "-" + currentMethodGroupName).trim();
+                for (Map.Entry<String, Integer> item : Matchers.mapMatchNameToNumList.entrySet()) {
+                    if (matchName.equals(item.getKey())) {
+                        num *= item.getValue();
+                        break;
+                    }
+                }
+            } else {
+                // 处理一般情况
+                String matchedRule = ruleSuite.stream()
+                        .filter(item -> item.matches("^add-bet-num-.*$"))
+                        .findFirst()
+                        .orElse(null);
+
+                if (matchedRule != null) {
+                    int multiplier = Integer.parseInt(matchedRule.split("add-bet-num-")[1]);
+                    num *= multiplier;
                 }
             }
-        } else {
-            // 处理一般情况
-            String matchedRule = ruleSuite.stream()
-                    .filter(item -> item.matches("^add-bet-num-.*$"))
-                    .findFirst()
-                    .orElse(null);
 
-            if (matchedRule != null) {
-                int multiplier = Integer.parseInt(matchedRule.split("add-bet-num-")[1]);
-                num *= multiplier;
-            }
+            facts.put("num", num);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
-
-        facts.put("num", num);
     }
 }

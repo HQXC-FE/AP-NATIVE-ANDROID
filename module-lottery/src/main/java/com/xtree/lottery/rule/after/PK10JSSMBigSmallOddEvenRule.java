@@ -1,5 +1,6 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
 import com.xtree.lottery.rule.Matchers;
 
 import org.jeasy.rules.annotation.Action;
@@ -33,67 +34,71 @@ public class PK10JSSMBigSmallOddEvenRule {
 
     @Action
     public void then(Facts facts) {
-        String methodName = ((Map<String, String>) facts.get("currentCategory")).get("name") + ((Map<String, String>) facts.get("currentMethod")).get("name");
-        List<List<String>> formatCodes = facts.get("formatCodes");
-        double currentPrize = facts.get("currentPrize");
-        double currentBonus = facts.get("currentBonus");
+        try {
+            String methodName = ((Map<String, String>) facts.get("currentCategory")).get("name") + ((Map<String, String>) facts.get("currentMethod")).get("name");
+            List<List<String>> formatCodes = facts.get("formatCodes");
+            double currentPrize = facts.get("currentPrize");
+            double currentBonus = facts.get("currentBonus");
 
-        switch (methodName) {
-            case "大小单双总和":
-            case "大小单双冠军":
-            case "大小单双亚军":
-            case "大小单双季军":
-            case "大小单双前三和值":
-            case "大小单双中三和值":
-            case "大小单双后三和值": {
-                String codeJoin = String.join("", formatCodes.get(0));
-                if (formatCodes.get(0).size() > 1 && !List.of("大小", "小大", "单双", "双单").contains(codeJoin)) {
-                    facts.put("currentBonus", currentBonus + "~" + round(currentPrize + currentBonus, 4));
-                    facts.put("currentPrize", currentPrize + "~" + round(currentPrize * 2, 4));
+            switch (methodName) {
+                case "大小单双总和":
+                case "大小单双冠军":
+                case "大小单双亚军":
+                case "大小单双季军":
+                case "大小单双前三和值":
+                case "大小单双中三和值":
+                case "大小单双后三和值": {
+                    String codeJoin = String.join("", formatCodes.get(0));
+                    if (formatCodes.get(0).size() > 1 && !List.of("大小", "小大", "单双", "双单").contains(codeJoin)) {
+                        facts.put("currentBonus", currentBonus + "~" + round(currentPrize + currentBonus, 4));
+                        facts.put("currentPrize", currentPrize + "~" + round(currentPrize * 2, 4));
+                    }
+                    break;
                 }
-                break;
+                case "大小单双后二":
+                case "大小单双前二": {
+                    calculateBonusAndPrize(formatCodes, currentPrize, currentBonus, facts);
+                    break;
+                }
+                case "大小单双后三":
+                case "大小单双前三": {
+                    calculateBonusAndPrize(formatCodes, currentPrize, currentBonus, facts);
+                    break;
+                }
+                case "大小单双前三大小个数":
+                case "大小单双中三大小个数":
+                case "大小单双后三大小个数":
+                    List<String> codeJoinCol1 = formatCodes.stream().flatMap(List::stream).toList();
+                    String codeJoin1 = String.join("", codeJoinCol1);
+                    int num1 = facts.get("num");
+                    if (num1 < 3 && List.of("全大", "全小", "全大全小").contains(codeJoin1)) {
+                        facts.put("currentBonus", splitBonusOrPrize(currentBonus, 1));
+                        facts.put("currentPrize", splitBonusOrPrize(currentPrize, 1));
+                    }
+                    if (num1 < 3 && List.of("2大1小", "1大2小", "1大2小2大1小").contains(codeJoin1)) {
+                        facts.put("currentBonus", splitBonusOrPrize(currentBonus, 0));
+                        facts.put("currentPrize", splitBonusOrPrize(currentPrize, 0));
+                    }
+                    break;
+                case "大小单双前三单双个数":
+                case "大小单双中三单双个数":
+                case "大小单双后三单双个数": {
+                    List<String> codeJoinCol2 = formatCodes.stream().flatMap(List::stream).toList();
+                    String codeJoin2 = String.join("", codeJoinCol2);
+                    int num2 = facts.get("num");
+                    if (num2 < 3 && List.of("全单", "全双", "全单全双").contains(codeJoin2)) {
+                        facts.put("currentBonus", splitBonusOrPrize(currentBonus, 1));
+                        facts.put("currentPrize", splitBonusOrPrize(currentPrize, 1));
+                    }
+                    if (num2 < 3 && List.of("2单1双", "1单2双", "1单2双2单1双").contains(codeJoin2)) {
+                        facts.put("currentBonus", splitBonusOrPrize(currentBonus, 0));
+                        facts.put("currentPrize", splitBonusOrPrize(currentPrize, 0));
+                    }
+                    break;
+                }
             }
-            case "大小单双后二":
-            case "大小单双前二": {
-                calculateBonusAndPrize(formatCodes, currentPrize, currentBonus, facts);
-                break;
-            }
-            case "大小单双后三":
-            case "大小单双前三": {
-                calculateBonusAndPrize(formatCodes, currentPrize, currentBonus, facts);
-                break;
-            }
-            case "大小单双前三大小个数":
-            case "大小单双中三大小个数":
-            case "大小单双后三大小个数":
-                List<String> codeJoinCol1 = formatCodes.stream().flatMap(List::stream).toList();
-                String codeJoin1 = String.join("", codeJoinCol1);
-                int num1 = facts.get("num");
-                if (num1 < 3 && List.of("全大", "全小", "全大全小").contains(codeJoin1)) {
-                    facts.put("currentBonus", splitBonusOrPrize(currentBonus, 1));
-                    facts.put("currentPrize", splitBonusOrPrize(currentPrize, 1));
-                }
-                if (num1 < 3 && List.of("2大1小", "1大2小", "1大2小2大1小").contains(codeJoin1)) {
-                    facts.put("currentBonus", splitBonusOrPrize(currentBonus, 0));
-                    facts.put("currentPrize", splitBonusOrPrize(currentPrize, 0));
-                }
-                break;
-            case "大小单双前三单双个数":
-            case "大小单双中三单双个数":
-            case "大小单双后三单双个数": {
-                List<String> codeJoinCol2 = formatCodes.stream().flatMap(List::stream).toList();
-                String codeJoin2 = String.join("", codeJoinCol2);
-                int num2 = facts.get("num");
-                if (num2 < 3 && List.of("全单", "全双", "全单全双").contains(codeJoin2)) {
-                    facts.put("currentBonus", splitBonusOrPrize(currentBonus, 1));
-                    facts.put("currentPrize", splitBonusOrPrize(currentPrize, 1));
-                }
-                if (num2 < 3 && List.of("2单1双", "1单2双", "1单2双2单1双").contains(codeJoin2)) {
-                    facts.put("currentBonus", splitBonusOrPrize(currentBonus, 0));
-                    facts.put("currentPrize", splitBonusOrPrize(currentPrize, 0));
-                }
-                break;
-            }
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
     }
 

@@ -1,5 +1,6 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
 import com.xtree.lottery.rule.Matchers;
 
 import org.jeasy.rules.annotation.Action;
@@ -32,28 +33,33 @@ public class DwdPositionRule {
 
     @Action
     public void then(Facts facts) {
-        Map<String, List<String>> bet = facts.get("bet");
-        List<String> betPosChoose = bet.get("PosChoose");
-        List<List<String>> formatCodes = facts.get("formatCodes");
-        String currentBonus = facts.get("currentBonus");
-        String currentPrize = facts.get("currentPrize");
+        try {
+            Map<String, List<String>> bet = facts.get("bet");
+            List<String> betPosChoose = bet.get("PosChoose");
+            List<List<String>> formatCodes = facts.get("formatCodes");
+            String currentBonus = facts.get("currentBonus");
+            String currentPrize = facts.get("currentPrize");
 
-        int posChooseNum = (betPosChoose != null)
-                ? (int) betPosChoose.stream().filter(item -> item != null && !item.isEmpty()).count()
-                : (int) formatCodes.stream().filter(item -> !item.isEmpty()).count();
+            int posChooseNum = (betPosChoose != null)
+                    ? (int) betPosChoose.stream().filter(item -> item != null && !item.isEmpty()).count()
+                    : (int) formatCodes.stream().filter(item -> !item.isEmpty()).count();
 
-        int differenceNum = (int) formatCodes.stream().filter(item -> !item.isEmpty()).count();
-        differenceNum = Math.min(differenceNum, posChooseNum);
+            int differenceNum = (int) formatCodes.stream().filter(item -> !item.isEmpty()).count();
+            differenceNum = Math.min(differenceNum, posChooseNum);
 
-        if (differenceNum > 1) {
-            double prize = Double.parseDouble(currentPrize);
-            double bonus = Double.parseDouble(currentBonus);
+            if (differenceNum > 1) {
+                double prize = Double.parseDouble(currentPrize);
+                double bonus = Double.parseDouble(currentBonus);
 
-            currentBonus = currentBonus + "~" + round(bonus + prize * (differenceNum - 1), 4);
-            currentPrize = currentPrize + "~" + round(prize * differenceNum, 4);
+                currentBonus = currentBonus + "~" + round(bonus + prize * (differenceNum - 1), 4);
+                currentPrize = currentPrize + "~" + round(prize * differenceNum, 4);
 
-            facts.put("currentBonus", currentBonus);
-            facts.put("currentPrize", currentPrize);
+                facts.put("currentBonus", currentBonus);
+                facts.put("currentPrize", currentPrize);
+
+            }
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
     }
 

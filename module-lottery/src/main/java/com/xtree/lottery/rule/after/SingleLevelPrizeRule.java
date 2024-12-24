@@ -1,5 +1,6 @@
 package com.xtree.lottery.rule.after;
 
+import com.xtree.base.utils.CfLog;
 import com.xtree.lottery.rule.Matchers;
 
 import org.jeasy.rules.annotation.Action;
@@ -36,17 +37,21 @@ public class SingleLevelPrizeRule {
 
     @Action
     public void then(Facts facts) {
-        double currentPrize = facts.get("currentPrize");
-        double money = facts.get("money");
-        Map<String, Integer> attached = facts.get("attached");
-        int attachedNumber = attached.get("number");
+        try {
+            double currentPrize = facts.get("currentPrize");
+            double money = facts.get("money");
+            Map<String, Integer> attached = facts.get("attached");
+            int attachedNumber = attached.get("number");
 
-        if (attachedNumber == 1) {
-            facts.put("currentBonus", currentPrize - money);
-        } else {
-            double bonusRange = currentPrize * attachedNumber - money;
-            facts.put("currentBonus", currentPrize + "~" + Math.round(bonusRange * 10000.0) / 10000.0);
-            facts.put("currentPrize", currentPrize + "~" + Math.round(currentPrize * attachedNumber * 10000.0) / 10000.0);
+            if (attachedNumber == 1) {
+                facts.put("currentBonus", currentPrize - money);
+            } else {
+                double bonusRange = currentPrize * attachedNumber - money;
+                facts.put("currentBonus", currentPrize + "~" + Math.round(bonusRange * 10000.0) / 10000.0);
+                facts.put("currentPrize", currentPrize + "~" + Math.round(currentPrize * attachedNumber * 10000.0) / 10000.0);
+            }
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
         }
     }
 }

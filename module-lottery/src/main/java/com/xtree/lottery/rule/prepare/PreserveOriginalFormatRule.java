@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule.prepare;
 
+import com.xtree.base.utils.CfLog;
+
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
 import org.jeasy.rules.annotation.Priority;
@@ -26,8 +28,12 @@ public class PreserveOriginalFormatRule {
 
     @Action
     public void then(Facts facts) {
-        Map<String, Object> bet = facts.get("bet");
-        Object betCodes = bet.get("codes");
-        facts.put("formatCodes", betCodes);  // 直接保持原有格式
+        try {
+            Map<String, Object> bet = facts.get("bet");
+            Object betCodes = bet.get("codes");
+            facts.put("formatCodes", betCodes);  // 直接保持原有格式
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 }

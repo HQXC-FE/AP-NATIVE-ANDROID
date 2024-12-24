@@ -1,5 +1,8 @@
 package com.xtree.lottery.rule.match;
 
+import android.util.Log;
+
+import com.xtree.base.utils.CfLog;
 import com.xtree.lottery.rule.Matchers;
 
 import org.jeasy.rules.annotation.Action;
@@ -26,8 +29,12 @@ public class MatchMethodIdRule {
 
     @Action
     public void then(Facts facts) {
-        String matcherName = facts.get("matcherName");
-        String token = Matchers.method2Token(matcherName);
-        facts.put("token", token);
+        try {
+            String matcherName = facts.get("matcherName");
+            String token = Matchers.method2Token(matcherName);
+            facts.put("token", token);
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
     }
 }
