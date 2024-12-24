@@ -14,18 +14,20 @@ import com.xtree.base.net.HttpCallBack;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.LotteryRepository;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
-import com.xtree.lottery.data.source.response.BonusNumbersResponse;
+import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel;
+import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 import com.xtree.lottery.utils.EventVo;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.http.BaseResponse;
+import me.xtree.mvvmhabit.http.BusinessException;
+import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
  * Created by KAKA on 2024/11/5.
@@ -56,32 +58,28 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
     public final MutableLiveData<Boolean> containSolo = new MutableLiveData<>(false);
     //追号入参
     public final MutableLiveData<ChasingNumberRequestModel> chasingNumberParams = new MutableLiveData<>();
+    public final MutableLiveData<IssueVo> issueLiveData = new MutableLiveData<>();
 
     public LotteryBetsViewModel betsViewModel;
+    public LotteryViewModel lotteryViewModel;
 
     public void initData(FragmentActivity activity, ArrayList<LotteryBetRequest.BetOrderData> betList) {
 
         bindModels.clear();
         datas.getValue().clear();
         bonusNumberTitle.setValue("");
+        issueLiveData.setValue(null);
 
-        betsViewModel.bonusNumbersLiveData.observe(activity, new Observer<BonusNumbersResponse>() {
+        lotteryViewModel.currentIssueLiveData.observe(activity, new Observer<IssueVo>() {
             @Override
-            public void onChanged(BonusNumbersResponse bonusNumbersResponse) {
+            public void onChanged(IssueVo issueVo) {
+                if (issueVo != null) {
+                    issueLiveData.setValue(issueVo);
 
-                if (bonusNumbersResponse != null && bonusNumbersResponse.getData() != null) {
-                    List<BonusNumbersResponse.DataDTO> bdatas = bonusNumbersResponse.getData();
-                    if (!bdatas.isEmpty()) {
-                        String issue = bdatas.get(0).getIssue();
-                        if (issue != null) {
-                            bonusNumberTitle.setValue("确认要加入" + issue + "期?");
-                        }
-                    }
+                    bonusNumberTitle.setValue("确认要加入" + issueVo.getIssue() + "期?");
                 }
-
             }
         });
-        betsViewModel.getBonusNumbers();
 
         bindModels.addAll(betList);
 
@@ -113,6 +111,12 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
      * 投注
      */
     public void bet() {
+
+        if (issueLiveData.getValue() == null) {
+            ToastUtils.showError("期数数据错误");
+            return;
+        }
+
         LotteryBetRequest lotteryBetRequest = new LotteryBetRequest();
         ArrayList<LotteryBetRequest.BetOrderData> betOrders = new ArrayList<>();
 
@@ -128,7 +132,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
         lotteryBetRequest.setLtProject(betOrders);
         lotteryBetRequest.setLotteryid(betsViewModel.lotteryLiveData.getValue().getId());
         lotteryBetRequest.setCurmid(betsViewModel.lotteryLiveData.getValue().getCurmid());
-        lotteryBetRequest.setLtIssueStart(bonusNumberTitle.getValue());
+        lotteryBetRequest.setLtIssueStart(issueLiveData.getValue().getIssue());
         lotteryBetRequest.setLtProject(betOrders);
         lotteryBetRequest.setLtTotalMoney(money);
         lotteryBetRequest.setLtTotalNums(nums);
@@ -142,6 +146,12 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
             @Override
             public void onResult(BaseResponse response) {
                 chasingNumberParams.setValue(null);
+            }
+
+            @Override
+            public void onFail(BusinessException t) {
+                super.onFail(t);
+
             }
         });
     }

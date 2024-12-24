@@ -37,7 +37,6 @@ import org.greenrobot.eventbus.EventBus
 class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>(), ParentChildCommunication {
     public var mIndex = 0
     public var mIssues = ArrayList<IssueVo>()
-    public var currentIssue = ""
     private lateinit var lotteryBetsFragment: LotteryBetsFragment
     private var methodMenus: MethodMenus? = null
     lateinit var lottery: Lottery
@@ -136,7 +135,9 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
     private fun countDownTimer(index: Int) {
         mIndex = index
         mIssues[index].apply {
-            currentIssue = issue
+
+            viewModel.currentIssueLiveData.value = this
+
             if (issue.contains("-")) {
                 binding.tvTitle.text = issue.split("-")[1].plus("期")
             } else {
@@ -155,7 +156,8 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
                     val hours = millisUntilFinished / (1000 * 60 * 60)
                     val minutes = millisUntilFinished % (1000 * 60 * 60) / (1000 * 60)
                     val seconds = millisUntilFinished % (1000 * 60) / 1000
-                    binding.tvTime.text = String.format(" %02d : %02d : %02d ", hours, minutes, seconds)
+                    binding.tvTime.text =
+                        String.format(" %02d : %02d : %02d ", hours, minutes, seconds)
 
                 }
 
