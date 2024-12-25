@@ -181,4 +181,10 @@ public class ExTransferPayeeFragment extends BaseFragment<FragmentExtransferPaye
 
         return true;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.getModel().setActivity(getActivity());
+    }
 }
