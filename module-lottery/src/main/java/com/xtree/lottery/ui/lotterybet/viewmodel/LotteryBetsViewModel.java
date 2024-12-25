@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.android.material.tabs.TabLayout;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.LotteryDataManager;
 import com.xtree.lottery.data.LotteryRepository;
 import com.xtree.lottery.data.config.Lottery;
@@ -21,7 +22,6 @@ import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
-import com.xtree.lottery.data.source.response.UserMethodsResponse;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
 import com.xtree.lottery.rule.EntryRule;
 import com.xtree.lottery.rule.data.RulesEntryData;
@@ -130,7 +130,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             }
         }
 
-        if (!hasUsePlay) {
+        if (!hasUsePlay && !playModels.isEmpty()) {
             //如果没有默认玩法 则默认第一条选中
             LotteryPlayCollectionModel m = (LotteryPlayCollectionModel) playModels.get(0);
             m.getLabel().getLabels().get(0).setUserPlay(true);

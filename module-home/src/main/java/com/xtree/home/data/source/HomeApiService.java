@@ -4,6 +4,7 @@ import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.FBService;
 import com.xtree.base.vo.PMService;
 import com.xtree.base.vo.ProfileVo;
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.home.vo.AugVo;
 import com.xtree.home.vo.BannersVo;
 import com.xtree.home.vo.CookieVo;
@@ -144,5 +145,11 @@ public interface HomeApiService {
      */
     @GET("/api/activity/vip/redenvelope")
     Flowable<BaseResponse<RedPocketVo>> getRedPocket();
+
+    /**
+     * 用户彩票数据
+     */
+    @GET("/api/lottery/user-methods")
+    Flowable<UserMethodsResponse> getUserMethods();
 
 }

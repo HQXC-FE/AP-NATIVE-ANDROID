@@ -9,9 +9,7 @@ import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
-import com.xtree.lottery.data.LotteryDataManager;
 import com.xtree.lottery.data.LotteryRepository;
-import com.xtree.lottery.data.source.response.UserMethodsResponse;
 import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.data.source.vo.LotteryChaseDetailVo;
 import com.xtree.lottery.data.source.vo.LotteryOrderVo;
@@ -19,7 +17,6 @@ import com.xtree.lottery.data.source.vo.LotteryReportVo;
 import com.xtree.lottery.data.source.vo.MethodMenus;
 import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.data.source.vo.TraceInfoVo;
-import com.xtree.lottery.data.source.vo.UserMethodsVo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,17 +28,19 @@ import java.util.HashMap;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.ToastUtils;
 
 public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
     //livedata只有在STARTED（onStart()到onPause()）和RESUMED才会接收数据
     //处于不可见但未销毁时，livedata会存储数据，观察者页面可见时，再传递给它
     //SingleLiveData，只有一名观察者会收到更改通知。
     public SingleLiveData<ArrayList<RecentLotteryVo>> liveDataRecentList = new SingleLiveData<>();
-    public SingleLiveData<ArrayList<UserMethodsVo>> liveDataUserList = new SingleLiveData<>();
     public SingleLiveData<MethodMenus> liveDataMethodMenus = new SingleLiveData<>();
     public MutableLiveData<IssueVo> liveDataCurrentIssue = new SingleLiveData<>();
+    public MutableLiveData<Boolean> liveDataCloseLotteryDetail = new SingleLiveData<>();
     public MutableLiveData<ArrayList<IssueVo>> liveDataListIssue = new SingleLiveData<>();
     public MutableLiveData<LotteryReportVo> liveDataCpReport = new MutableLiveData<>(); // 投注记录-列表(彩票)
     public MutableLiveData<LotteryOrderVo> liveDataBtCpDetail = new MutableLiveData<>(); // 投注记录-详情(彩票)
@@ -53,6 +52,7 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
     public LotteryViewModel(@NonNull Application application) {
         super(application, null);
     }
+
     public LotteryViewModel(@NonNull Application application, LotteryRepository repository) {
         super(application, repository);
     }
@@ -74,23 +74,6 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
                     }
                 });
         addSubscribe(disposable);
-    }
-
-    public void getUserMethods() {
-        model.getUserMethodsData()
-                .subscribeWith(new HttpCallBack<UserMethodsResponse>() {
-                    @Override
-                    public void onResult(UserMethodsResponse response) {
-                        if (response.getData() != null) {
-                            LotteryDataManager.INSTANCE.setUserMethods(response);
-                        }
-                    }
-
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        super.onError(t);
-                    }
-                });
     }
 
     public void getMethodMenus(String alias) {
@@ -126,6 +109,13 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
                     public void onError(Throwable t) {
                         CfLog.e("error, " + t.toString());
                         super.onError(t);
+                    }
+
+                    @Override
+                    public void onFail30103(BusinessException t) {
+                        super.onFail30103(t);
+                        ToastUtils.showLong(t.message);
+                        liveDataCloseLotteryDetail.setValue(true);
                     }
                 });
         addSubscribe(disposable);

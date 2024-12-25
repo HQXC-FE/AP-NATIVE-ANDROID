@@ -1,4 +1,4 @@
-package com.xtree.lottery.data.source.response;
+package com.xtree.base.vo;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -9,7 +9,6 @@ import java.util.List;
  * Describe:
  */
 public class UserMethodsResponse {
-
 
     /**
      * status

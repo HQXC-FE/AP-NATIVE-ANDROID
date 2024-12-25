@@ -1,7 +1,7 @@
 package com.xtree.lottery.ui.lotterybet.model;
 
 import com.xtree.lottery.data.source.response.HandicapResponse;
-import com.xtree.lottery.data.source.response.UserMethodsResponse;
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
 
 /**

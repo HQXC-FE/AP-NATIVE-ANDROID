@@ -7,7 +7,6 @@ import com.xtree.lottery.data.source.vo.LotteryReportVo;
 import com.xtree.lottery.data.source.vo.MethodMenus;
 import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.data.source.vo.TraceInfoVo;
-import com.xtree.lottery.data.source.vo.UserMethodsVo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +27,6 @@ public interface LotteryApiService {
      */
     @GET("/api/lottery/{id}/bonus-numbers?limit=100")
     Flowable<BaseResponse<List<RecentLotteryVo>>> getRecentLottery(@Path("id") int id);
-
-    /**
-     * 用户数据
-     */
-    @GET("/api/lottery/user-methods")
-    Flowable<BaseResponse<List<UserMethodsVo>>> getUserMethods();
 
     /**
      * 彩种数据
