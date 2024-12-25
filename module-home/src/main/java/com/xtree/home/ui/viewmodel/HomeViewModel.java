@@ -53,7 +53,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -459,6 +461,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_NUMBER, vo.ws_retry_number);
                         SPUtils.getInstance().put(SPKeyGlobal.WS_EXPIRE_TIME, vo.ws_expire_time);
                         SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_WAITING_TIME, vo.ws_retry_waiting_time);
+                        SPUtils.getInstance().put(SPKeyGlobal.HICHAT_URL_SUFFIX, new LinkedHashSet(Arrays.asList(vo.hichat_url_suffix)));
                         //SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
 
                         SPUtils.getInstance().put(SPKeyGlobal.APP_RESPONSE_SPEED_CALCULATION, vo.app_response_speed_calculation);
