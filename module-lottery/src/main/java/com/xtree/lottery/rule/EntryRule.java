@@ -1,6 +1,6 @@
 package com.xtree.lottery.rule;
 
-import com.xtree.lottery.data.source.response.UserMethodsResponse;
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
 import com.xtree.lottery.rule.data.RulesEntryData;
 

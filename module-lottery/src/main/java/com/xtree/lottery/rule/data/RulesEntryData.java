@@ -1,7 +1,7 @@
 package com.xtree.lottery.rule.data;
 
 import com.google.gson.annotations.SerializedName;
-import com.xtree.lottery.data.source.response.UserMethodsResponse;
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
 
 import java.util.List;

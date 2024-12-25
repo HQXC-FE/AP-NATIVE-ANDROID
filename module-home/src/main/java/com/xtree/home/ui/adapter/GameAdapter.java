@@ -39,6 +39,7 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
 
     public interface ICallBack {
         void onClick(GameVo vo); // String gameAlias, String gameId
+        void toLottery();
     }
 
     public GameAdapter(Context ctx, ICallBack mCallBack) {
@@ -142,7 +143,7 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
             if (vo.id.equals("601")) {
                 //playGame(DomainUtil.getDomain() + vo.playURL, vo.name, true); //
                 //playGame(DomainUtil.getApiUrl()+ "/" + vo.playURL, vo.name, vo.id.equals("601"));
-                ARouter.getInstance().build(RouterActivityPath.Lottery.PAGER_LOTTERY_HOME).navigation();
+                mCallBack.toLottery();
             } else {
                 playGame(DomainUtil.getDomain() + vo.playURL, vo.name);
             }

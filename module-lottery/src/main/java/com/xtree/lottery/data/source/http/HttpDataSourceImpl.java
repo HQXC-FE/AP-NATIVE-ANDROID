@@ -1,8 +1,8 @@
 package com.xtree.lottery.data.source.http;
 
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.APIManager;
 import com.xtree.lottery.data.source.HttpDataSource;
 import com.xtree.lottery.data.source.LotteryApiService;
@@ -12,8 +12,6 @@ import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
-import com.xtree.lottery.data.source.response.UserMethodsResponse;
-import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel;
 
 import java.util.Map;
 

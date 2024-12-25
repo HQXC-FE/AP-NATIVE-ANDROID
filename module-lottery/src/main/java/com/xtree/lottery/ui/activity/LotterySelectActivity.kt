@@ -10,10 +10,10 @@ import com.xtree.base.global.SPKeyGlobal
 import com.xtree.base.net.RetrofitClient
 import com.xtree.base.router.RouterActivityPath
 import com.xtree.base.vo.ProfileVo
+import com.xtree.base.vo.UserMethodsResponse
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
-import com.xtree.lottery.data.LotteryDataManager
-import com.xtree.lottery.data.config.Lottery
+import com.xtree.lottery.data.LotteryDataManager.userMethods
 import com.xtree.lottery.data.config.lotteries
 import com.xtree.lottery.databinding.ActivityMainLtBinding
 import com.xtree.lottery.ui.adapter.LotteryAdapter
@@ -28,7 +28,6 @@ import me.xtree.mvvmhabit.utils.SPUtils
  */
 @Route(path = RouterActivityPath.Lottery.PAGER_LOTTERY_HOME)
 class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewModel>() {
-    private lateinit var lottery: Lottery
     override fun initContentView(savedInstanceState: Bundle?): Int {
         return R.layout.activity_main_lt
     }
@@ -41,41 +40,25 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
         binding.ivBack.setOnClickListener { finish() }
         binding.rvLottery.setHasFixedSize(true)
         binding.rvLottery.layoutManager = LinearLayoutManager(this)
+    }
+
+    override fun initData() {
+
+        val json = SPUtils.getInstance().getString("mLotteryUser")
+        userMethods = Gson().fromJson(json, UserMethodsResponse::class.java)
+
         val adapter = LotteryAdapter(lotteries) {
-            lottery = it
-            //viewModel.getRecentLottery(it.id)
             val intent = Intent(this, LotteryActivity::class.java)
-            intent.putExtra("Lottery", lottery)
-            intent.putExtra("list", it)
-            //KLog.i("userMethods", userMethods)
-            //intent.putExtra("userMethods", userMethods)
+            intent.putExtra("Lottery", it)
             startActivity(intent)
+            //    ToastUtils.showLong("该彩种近期开通，敬请期待")
+
         }
         binding.rvLottery.adapter = adapter
     }
 
-    override fun initData() {
-        //     setLoginSucc()
-        LotteryDataManager
-        viewModel.getUserMethods()
-    }
-
     override fun initViewObservable() {
-        //viewModel.liveDataRecentList.observe(this) {
-        //    if (it.isNullOrEmpty()) {
-        //        ToastUtils.showLong("您未开通")
-        //        return@observe
-        //    }
-        //    if (userMethods.isEmpty()) {
-        //        ToastUtils.showLong("用户数据为空")
-        //        return@observe
-        //    }
-        //
-        //}
 
-        viewModel.liveDataUserList.observe(this) {
-
-        }
     }
 
     override fun initViewModel(): LotteryViewModel? {

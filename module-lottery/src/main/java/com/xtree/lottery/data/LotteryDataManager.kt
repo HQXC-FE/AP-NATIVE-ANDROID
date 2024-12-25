@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
-import com.xtree.lottery.data.source.response.UserMethodsResponse
+import com.xtree.base.vo.UserMethodsResponse
 import com.xtree.lottery.data.source.vo.MenuMethodsData
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers

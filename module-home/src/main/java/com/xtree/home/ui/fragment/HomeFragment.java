@@ -36,6 +36,7 @@ import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.ProfileVo;
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.base.widget.AppUpdateDialog;
 import com.xtree.base.widget.BrowserActivity;
 import com.xtree.base.widget.MsgDialog;
@@ -90,6 +91,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private int gameGroup = -1;
     private BasePopupView updateView;
     private String nativeAppUpdate;//App本地强制更新标志为 0不存在强更
+    private UserMethodsResponse mLotteryUser;
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -166,6 +168,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             viewModel.getFBGameTokenApi();
             viewModel.getFBXCGameTokenApi();
             viewModel.getPMGameTokenApi();
+            viewModel.getUserMethods();//获取彩票数据
         }
 
         HashMap<String, String> map = new HashMap<>();
@@ -274,13 +277,18 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
         });
 
-        viewModel.liveDataRedPocket.observe(getViewLifecycleOwner(), vo -> {
-            CfLog.e("Check has money : " + vo.money);
-            //if (vo.status == 0) {
-            //    binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member_has_red, 0, 0);
-            //} else {
-            //    binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member, 0, 0);
-            //}
+        //viewModel.liveDataRedPocket.observe(getViewLifecycleOwner(), vo -> {
+        //    CfLog.e("Check has money : " + vo.money);
+        //    //if (vo.status == 0) {
+        //    //    binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member_has_red, 0, 0);
+        //    //} else {
+        //    //    binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member, 0, 0);
+        //    //}
+        //});
+
+        viewModel.liveDataLotteryUser.observe(getViewLifecycleOwner(), vo -> {
+            KLog.i("json11+ " + new Gson().toJson(vo));
+            mLotteryUser = vo;
         });
     }
 
@@ -409,22 +417,37 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             //new XPopup.Builder(getContext()).asCustom(new BrowserDialog(getContext(), title, url, true)).show();
         });
 
-        GameAdapter.ICallBack mCallBack = vo -> {
-            if (ClickUtil.isFastClick()) {
-                return;
+        GameAdapter.ICallBack mCallBack = new GameAdapter.ICallBack() {
+            @Override
+            public void onClick(GameVo vo) {
+                if (ClickUtil.isFastClick()) {
+                    return;
+                }
+                CfLog.i(vo.toString());
+                if (vo.cid == 7) {
+                    startContainerFragment(RouterFragmentPath.Home.AUG);
+                    return;
+                }
+                if (vo.cid == 19 || vo.cid == 34 || vo.cid == 1) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("vo", vo);
+                    startContainerFragment(RouterFragmentPath.Home.ELE, bundle);
+                    return;
+                }
+                viewModel.getPlayUrl(vo.alias, vo.gameId, vo.name);
             }
-            CfLog.i(vo.toString());
-            if (vo.cid == 7) {
-                startContainerFragment(RouterFragmentPath.Home.AUG);
-                return;
+
+            @Override
+            public void toLottery() {
+                if (mLotteryUser == null || mLotteryUser.getData() == null || mLotteryUser.getData().isEmpty()) {
+                    ToastUtils.showLong("彩种数据加载失败,请稍后再试");
+                    return;
+                }
+                //ARouter无法传输mLotteryUser这种庞大的数据
+                SPUtils.getInstance().put("mLotteryUser", new Gson().toJson(mLotteryUser));
+                ARouter.getInstance().build(RouterActivityPath.Lottery.PAGER_LOTTERY_HOME)
+                        .navigation();
             }
-            if (vo.cid == 19 || vo.cid == 34 || vo.cid == 1) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("vo", vo);
-                startContainerFragment(RouterFragmentPath.Home.ELE, bundle);
-                return;
-            }
-            viewModel.getPlayUrl(vo.alias, vo.gameId, vo.name);
         };
 
         gameAdapter = new GameAdapter(getContext(), mCallBack);
@@ -662,7 +685,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         if (updateView != null && updateView.isShow()) {
             return;
         }
-        if (!vo.download_url.contains(".apk")){
+        if (!vo.download_url.contains(".apk")) {
             ToastUtils.showError("下载地址异常");
             return;
         }

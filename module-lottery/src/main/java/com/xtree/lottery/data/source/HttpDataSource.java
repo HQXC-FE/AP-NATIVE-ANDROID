@@ -1,14 +1,12 @@
 package com.xtree.lottery.data.source;
 
-
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.request.BonusNumbersRequest;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
-import com.xtree.lottery.data.source.response.UserMethodsResponse;
-import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel;
 
 import java.util.Map;
 

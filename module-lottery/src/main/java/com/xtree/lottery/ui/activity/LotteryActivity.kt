@@ -110,7 +110,7 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
     }
 
     override fun initData() {
-        viewModel.getMethodMenus(lottery.alias)
+        //viewModel.getMethodMenus(lottery.alias)
         viewModel.getCurrentIssue(lottery.id)
     }
 
@@ -135,6 +135,9 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
                 }
 
             }
+        }
+        viewModel.liveDataCloseLotteryDetail.observe(this) {
+            finish()
         }
     }
 

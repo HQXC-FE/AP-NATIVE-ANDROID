@@ -115,6 +115,10 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                 // 谷歌验证
                 onFail(ex);
                 break;
+            case HttpCallBack.CodeRule.CODE_30103:
+                // 该彩种近期开通，敬请期待
+                onFail30103(ex);
+                break;
             default:
                 KLog.e("status is not normal: " + baseResponse);
                 onFail(ex);
@@ -144,6 +148,10 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         LoadingDialog.finish();
         KLog.e("error: " + t.toString());
         ToastUtils.showShort(t.message);
+    }
+
+    public void onFail30103(BusinessException t) {
+        LoadingDialog.finish();
     }
 
     @Override
@@ -181,6 +189,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         static final int CODE_20106 = 20106; // KICKED = '账号已在其他地方登录，请重新登录',
         static final int CODE_20107 = 20107; // 长时间未操作，请重新登录
         static final int CODE_20111 = 20111;
+        public static final int CODE_30103 = 30103; // 该彩种近期开通，敬请期待
         public static final int CODE_20208 = 20208; // 异地登录(本次登录并非常用设备或地区， 需要进行安全验证)
         public static final int CODE_30018 = 30018; // 谷歌验证
         static final int CODE_30003 = 30003;
