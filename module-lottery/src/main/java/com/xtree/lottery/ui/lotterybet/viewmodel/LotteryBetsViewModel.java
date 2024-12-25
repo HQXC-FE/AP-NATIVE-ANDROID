@@ -97,6 +97,9 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         playModels.clear();
         List<UserMethodsResponse.DataDTO> userLabels = userMethods.getData();
         List<MenuMethodsData.LabelsDTO> menuLabels = menuMethods.getLabels();
+
+        boolean hasUsePlay = false;
+
         for (MenuMethodsData.LabelsDTO label : menuLabels) {
             if (label != null && label.getLabels() != null) {
                 for (MenuMethodsData.LabelsDTO.Labels1DTO labels1DTO : label.getLabels()) {
@@ -109,6 +112,11 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTO : labels1DTO.getLabels()) {
                         for (UserMethodsResponse.DataDTO um : userLabels) {
                             if (Objects.equals(labels2DTO.getMenuid(), um.getMenuid()) && Objects.equals(labels2DTO.getMethodid(), um.getMethodid())) {
+                                //只取第一条玩法
+                                if (!hasUsePlay && label.isIsdefault()) {
+                                    hasUsePlay = true;
+                                    labels2DTO.setUserPlay(true);
+                                }
                                 model.getLabel().getLabels().add(labels2DTO);
                                 model.setUserMethods(um);
                                 break;
@@ -122,9 +130,11 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             }
         }
 
-        //默认第一条选中
-        LotteryPlayCollectionModel m = (LotteryPlayCollectionModel) playModels.get(0);
-        m.getLabel().getLabels().get(0).setUserPlay(true);
+        if (!hasUsePlay) {
+            //如果没有默认玩法 则默认第一条选中
+            LotteryPlayCollectionModel m = (LotteryPlayCollectionModel) playModels.get(0);
+            m.getLabel().getLabels().get(0).setUserPlay(true);
+        }
 
         initTabs();
     }
