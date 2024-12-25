@@ -95,7 +95,6 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
     //总金额
     public MutableLiveData<String> moneyNums = new MutableLiveData<>();
     private WeakReference<FragmentActivity> mActivity = null;
-
     public LotteryBetsViewModel betsViewModel;
 
     private final Observer<ArrayList<LotteryOrderModel>> orderObserver = new Observer<ArrayList<LotteryOrderModel>>() {

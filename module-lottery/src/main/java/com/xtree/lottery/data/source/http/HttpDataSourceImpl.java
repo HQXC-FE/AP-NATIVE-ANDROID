@@ -118,7 +118,7 @@ public class HttpDataSourceImpl implements HttpDataSource {
         if (params != null) {
             map.putAll(params);
         }
-        return apiService.post(APIManager.BET_URL, map).map(new Function<ResponseBody, BaseResponse>() {
+        return apiService.post(APIManager.BET_URL, map, "application/vnd.sc-api.v1.json").map(new Function<ResponseBody, BaseResponse>() {
             @Override
             public BaseResponse apply(ResponseBody responseBody) throws Exception {
                 return JSON.parseObject(responseBody.string(),

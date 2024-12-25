@@ -17,6 +17,7 @@ import me.xtree.mvvmhabit.http.BaseResponse;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
@@ -116,4 +117,25 @@ public interface LotteryApiService {
     @POST("{url}")
     Flowable<ResponseBody> post(@Path(value = "url", encoded = true) String url, @QueryMap(encoded = true) Map<String, Object> qmap, @Body Map<String, Object> map);
 
+    /**
+     * POST
+     *
+     * @param url 接口名称
+     * @param map body
+     * @return 返回体
+     */
+    @POST("{url}")
+    Flowable<ResponseBody> post(@Path(value = "url", encoded = true) String url, @Body Map<String, Object> map, @Header("Content-Type") String contentType);
+
+
+    /**
+     * POST
+     *
+     * @param url  接口名称
+     * @param qmap 拼接参数
+     * @param map  body
+     * @return 返回体
+     */
+    @POST("{url}")
+    Flowable<ResponseBody> post(@Path(value = "url", encoded = true) String url, @QueryMap(encoded = true) Map<String, Object> qmap, @Body Map<String, Object> map, @Header("Content-Type") String contentType);
 }

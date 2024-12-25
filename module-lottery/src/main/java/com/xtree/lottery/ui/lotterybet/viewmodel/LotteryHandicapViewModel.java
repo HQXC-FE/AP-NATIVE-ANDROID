@@ -1,6 +1,7 @@
 package com.xtree.lottery.ui.lotterybet.viewmodel;
 
 import android.app.Application;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -10,9 +11,13 @@ import androidx.lifecycle.Observer;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.vo.ProfileVo;
+import com.xtree.base.widget.MsgDialog;
+import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.data.LotteryRepository;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.BonusNumbersRequest;
@@ -23,6 +28,7 @@ import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.ui.lotterybet.LotteryChipSettingDialogFragment;
 import com.xtree.lottery.ui.lotterybet.data.LotteryHandicapPrizeData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
+import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -31,6 +37,7 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
+import me.xtree.mvvmhabit.bus.event.SingleLiveData;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -74,6 +81,10 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
     public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
     //返点数据
     public static ArrayList<LotteryHandicapPrizeData> prizeMap = new ArrayList<>();
+    //清除投注框事件
+    public SingleLiveData<String> clearBetEvent = new SingleLiveData<>();
+    private BasePopupView popupView;
+    public LotteryViewModel lotteryViewModel;
 
     public void initData(FragmentActivity mActivity, Lottery lottery) {
         setActivity(mActivity);
@@ -240,9 +251,14 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
     /**
      * 投注
      */
-    public void handicapBet() {
+    public void handicapBet(View view) {
 
         List<LotteryBetRequest.BetOrderData> betOrders = betLiveData.getValue();
+
+        if (lotteryViewModel == null || lotteryViewModel.currentIssueLiveData.getValue() == null) {
+            ToastUtils.showError("获取投注期号失败");
+            return;
+        }
 
         if (betOrders == null || betOrders.isEmpty()) {
             ToastUtils.showError("请选择投注号码");
@@ -264,14 +280,13 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
             return;
         }
 
-        lotteryBetRequest.setLtProject(betOrders);
+        lotteryBetRequest.setLt_project(betOrders);
         lotteryBetRequest.setLotteryid(lotteryLiveData.getValue().getId());
         lotteryBetRequest.setCurmid(lotteryLiveData.getValue().getCurmid());
-        lotteryBetRequest.setLtIssueStart(bonusNumbersLiveData.getValue().getData().get(0).getIssue());
-        lotteryBetRequest.setLtProject(betOrders);
-        lotteryBetRequest.setLtTotalMoney(money);
-        lotteryBetRequest.setLtTotalNums(nums);
-        lotteryBetRequest.setPlaySource(6);
+        lotteryBetRequest.setLt_issue_start(lotteryViewModel.currentIssueLiveData.getValue().getIssue());
+        lotteryBetRequest.setLt_total_money(money);
+        lotteryBetRequest.setLt_total_nums(nums);
+        lotteryBetRequest.setPlay_source(6);
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("lt_trace_if", "no");
@@ -279,14 +294,50 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
         model.bet(lotteryBetRequest, params).subscribe(new HttpCallBack<BaseResponse>() {
             @Override
             public void onResult(BaseResponse response) {
-                if (response != null && response.getCode() == 10000) {
 
-                }
+                betLiveData.setValue(null);
+                clearBetEvent.setValue(null);
+                MsgDialog dialog = new MsgDialog(view.getContext(), "", "投注成功", true, new TipDialog.ICallBack() {
+                    @Override
+                    public void onClickLeft() {
+
+                    }
+
+                    @Override
+                    public void onClickRight() {
+                        if (popupView != null) {
+                            popupView.dismiss();
+                        }
+                    }
+                });
+
+                popupView = new XPopup.Builder(view.getContext())
+                        .dismissOnTouchOutside(true)
+                        .dismissOnBackPressed(true)
+                        .asCustom(dialog).show();
             }
 
             @Override
             public void onFail(BusinessException t) {
                 super.onFail(t);
+                MsgDialog dialog = new MsgDialog(view.getContext(), "", t.message, true, new TipDialog.ICallBack() {
+                    @Override
+                    public void onClickLeft() {
+
+                    }
+
+                    @Override
+                    public void onClickRight() {
+                        if (popupView != null) {
+                            popupView.dismiss();
+                        }
+                    }
+                });
+
+                popupView = new XPopup.Builder(view.getContext())
+                        .dismissOnTouchOutside(true)
+                        .dismissOnBackPressed(true)
+                        .asCustom(dialog).show();
             }
         });
     }

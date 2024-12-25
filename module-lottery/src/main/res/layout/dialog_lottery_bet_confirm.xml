@@ -193,7 +193,7 @@
                     app:hl_layoutBackground_clickFalse="@drawable/lt_shape_solide_white"
                     app:hl_shapeMode="pressed"
                     app:hl_textColor="@color/clr_white"
-                    android:onClick="@{() -> model.bet()}"
+                    android:onClick="@{model::bet}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -1,6 +1,5 @@
 package com.xtree.lottery.ui.lotterybet;
 
-import static com.xtree.lottery.utils.EventConstant.EVENT_CLEAR_SOLO;
 import static com.xtree.lottery.utils.EventConstant.EVENT_TIME_FINISH;
 
 import android.content.Context;
@@ -236,6 +235,17 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
     }
 
     @Override
+    public void initViewObservable() {
+        super.initViewObservable();
+        viewModel.clearBetEvent.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                binding.lotteryBetsBetlayout.clearBet();
+            }
+        });
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -258,10 +268,6 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
         switch (event.getEvent()) {
             case EVENT_TIME_FINISH:
                 binding.getModel().getBonusNumbers();
-                break;
-            case EVENT_CLEAR_SOLO:
-                binding.lotteryBetsBetlayout.clearBet();
-                viewModel.doClear();
                 break;
         }
     }

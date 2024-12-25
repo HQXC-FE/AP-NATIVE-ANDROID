@@ -76,6 +76,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public MutableLiveData<ArrayList<LotteryOrderModel>> betOrdersLiveData = new MutableLiveData<>(new ArrayList<>());
     //当前有效投注项
     public SingleLiveData<LotteryBetRequest.BetOrderData> betLiveData = new SingleLiveData<>();
+    //清除投注框事件
+    public SingleLiveData<String> clearBetEvent = new SingleLiveData<>();
     //彩票信息
     public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
 

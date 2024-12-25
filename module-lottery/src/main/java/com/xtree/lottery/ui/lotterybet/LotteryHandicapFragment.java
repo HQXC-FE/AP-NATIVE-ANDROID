@@ -25,6 +25,7 @@ import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryHandicapViewModel;
 import com.xtree.lottery.ui.view.LotteryBetView;
 import com.xtree.lottery.ui.view.LotteryDrawView;
 import com.xtree.lottery.ui.view.LotteryRoadMapDialog;
+import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.lottery.utils.AnimUtils;
 import com.xtree.lottery.utils.EventVo;
@@ -87,6 +88,7 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
         LotteryHandicapViewModel viewmodel = new ViewModelProvider(getActivity()).get(LotteryHandicapViewModel.class);
         AppViewModelFactory instance = AppViewModelFactory.getInstance(getActivity().getApplication());
         viewmodel.setModel(instance.getmRepository());
+        viewmodel.lotteryViewModel = new ViewModelProvider(getActivity()).get(LotteryViewModel.class);
         return viewmodel;
     }
 
@@ -187,14 +189,17 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
                 viewModel.betLiveData.setValue(null);
             }
         });
+    }
 
-        binding.lotteryHandicapBuy.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void initViewObservable() {
+        super.initViewObservable();
+        viewModel.clearBetEvent.observe(this, new Observer<String>() {
             @Override
-            public void onClick(View v) {
-                viewModel.handicapBet();
+            public void onChanged(String s) {
+                binding.lotteryHandicapBetlayout.clearBet();
             }
         });
-
     }
 
     @Override

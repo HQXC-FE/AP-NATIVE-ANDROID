@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.utils.UuidUtil;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,42 +28,32 @@ public class LotteryBetRequest {
      * ltIssueStart
      */
     @SerializedName("lt_issue_start")
-    private String ltIssueStart;
+    private String lt_issue_start;
     /**
      * ltProject
      */
     @SerializedName("lt_project")
-    private List<BetOrderData> ltProject;
+    private List<BetOrderData> lt_project;
     /**
      * ltTotalMoney
      */
     @SerializedName("lt_total_money")
-    private int ltTotalMoney;
+    private int lt_total_money;
     /**
      * ltTotalNums
      */
     @SerializedName("lt_total_nums")
-    private int ltTotalNums;
+    private int lt_total_nums;
     /**
      * playSource
      */
     @SerializedName("play_source")
-    private int playSource;
+    private int play_source;
     /**
      * nonce
      */
     @SerializedName("nonce")
     private String nonce;
-    @SerializedName("lt_trace_count_input")
-    public int lt_trace_count_input;
-    @SerializedName("lt_trace_if")
-    public String lt_trace_if;
-    @SerializedName("lt_trace_issues")
-    public HashMap<String, Integer> lt_trace_issues;
-    @SerializedName("lt_trace_money")
-    public String lt_trace_money;
-    @SerializedName("lt_trace_stop")
-    public String lt_trace_stop;
 
     public String getCurmid() {
         return curmid;
@@ -82,52 +71,52 @@ public class LotteryBetRequest {
         this.lotteryid = lotteryid;
     }
 
-    public String getLtIssueStart() {
-        return ltIssueStart;
-    }
-
-    public void setLtIssueStart(String ltIssueStart) {
-        this.ltIssueStart = ltIssueStart;
-    }
-
-    public List<BetOrderData> getLtProject() {
-        return ltProject;
-    }
-
-    public void setLtProject(List<BetOrderData> ltProject) {
-        this.ltProject = ltProject;
-    }
-
-    public int getLtTotalMoney() {
-        return ltTotalMoney;
-    }
-
-    public void setLtTotalMoney(int ltTotalMoney) {
-        this.ltTotalMoney = ltTotalMoney;
-    }
-
-    public int getLtTotalNums() {
-        return ltTotalNums;
-    }
-
-    public void setLtTotalNums(int ltTotalNums) {
-        this.ltTotalNums = ltTotalNums;
-    }
-
-    public int getPlaySource() {
-        return playSource;
-    }
-
-    public void setPlaySource(int playSource) {
-        this.playSource = playSource;
-    }
-
     public String getNonce() {
         return UuidUtil.getID24();
     }
 
     public void setNonce(String nonce) {
         this.nonce = nonce;
+    }
+
+    public String getLt_issue_start() {
+        return lt_issue_start;
+    }
+
+    public void setLt_issue_start(String lt_issue_start) {
+        this.lt_issue_start = lt_issue_start;
+    }
+
+    public List<BetOrderData> getLt_project() {
+        return lt_project;
+    }
+
+    public void setLt_project(List<BetOrderData> lt_project) {
+        this.lt_project = lt_project;
+    }
+
+    public int getLt_total_money() {
+        return lt_total_money;
+    }
+
+    public void setLt_total_money(int lt_total_money) {
+        this.lt_total_money = lt_total_money;
+    }
+
+    public int getLt_total_nums() {
+        return lt_total_nums;
+    }
+
+    public void setLt_total_nums(int lt_total_nums) {
+        this.lt_total_nums = lt_total_nums;
+    }
+
+    public int getPlay_source() {
+        return play_source;
+    }
+
+    public void setPlay_source(int play_source) {
+        this.play_source = play_source;
     }
 
     public static class BetOrderData extends BindModel {

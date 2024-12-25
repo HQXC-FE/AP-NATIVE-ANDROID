@@ -116,6 +116,7 @@
                 app:hl_shapeMode="pressed"
                 app:hl_textColor="@color/clr_white"
                 app:clickable="@{model.betLiveData!=null}"
+                android:onClick="@{model::handicapBet}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

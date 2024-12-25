@@ -1,25 +1,25 @@
 package com.xtree.lottery.ui.lotterybet.viewmodel;
 
-import static com.xtree.lottery.utils.EventConstant.EVENT_CLEAR_SOLO;
-
 import android.app.Application;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.widget.MsgDialog;
+import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.LotteryRepository;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
-import com.xtree.lottery.utils.EventVo;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
     //追号入参
     public final MutableLiveData<ChasingNumberRequestModel> chasingNumberParams = new MutableLiveData<>();
     public final MutableLiveData<IssueVo> issueLiveData = new MutableLiveData<>();
-
+    private BasePopupView popupView;
     public LotteryBetsViewModel betsViewModel;
     public LotteryViewModel lotteryViewModel;
 
@@ -110,7 +110,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
     /**
      * 投注
      */
-    public void bet() {
+    public void bet(View view) {
 
         if (issueLiveData.getValue() == null) {
             ToastUtils.showError("期数数据错误");
@@ -129,14 +129,13 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
             betOrders.add(data);
         }
 
-        lotteryBetRequest.setLtProject(betOrders);
+        lotteryBetRequest.setLt_project(betOrders);
         lotteryBetRequest.setLotteryid(betsViewModel.lotteryLiveData.getValue().getId());
         lotteryBetRequest.setCurmid(betsViewModel.lotteryLiveData.getValue().getCurmid());
-        lotteryBetRequest.setLtIssueStart(issueLiveData.getValue().getIssue());
-        lotteryBetRequest.setLtProject(betOrders);
-        lotteryBetRequest.setLtTotalMoney(money);
-        lotteryBetRequest.setLtTotalNums(nums);
-        lotteryBetRequest.setPlaySource(6);
+        lotteryBetRequest.setLt_issue_start(issueLiveData.getValue().getIssue());
+        lotteryBetRequest.setLt_total_money(money);
+        lotteryBetRequest.setLt_total_nums(nums);
+        lotteryBetRequest.setPlay_source(6);
 
         HashMap<String, Object> parmes = new HashMap<>();
         if (chasingNumberParams.getValue() != null && chasingNumberParams.getValue().getParmes() != null) {
@@ -146,12 +145,34 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
             @Override
             public void onResult(BaseResponse response) {
                 chasingNumberParams.setValue(null);
+                betsViewModel.betLiveData.setValue(null);
+                betsViewModel.betOrdersLiveData.setValue(null);
+                betsViewModel.clearBetEvent.setValue(null);
+                finish();
+                ToastUtils.showSuccess("投注成功");
             }
 
             @Override
             public void onFail(BusinessException t) {
                 super.onFail(t);
+                MsgDialog dialog = new MsgDialog(view.getContext(), "", t.message, true, new TipDialog.ICallBack() {
+                    @Override
+                    public void onClickLeft() {
 
+                    }
+
+                    @Override
+                    public void onClickRight() {
+                        if (popupView != null) {
+                            popupView.dismiss();
+                        }
+                    }
+                });
+
+                popupView = new XPopup.Builder(view.getContext())
+                        .dismissOnTouchOutside(true)
+                        .dismissOnBackPressed(true)
+                        .asCustom(dialog).show();
             }
         });
     }
@@ -172,8 +193,9 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
             }
         }
 
-        //清除单挑广播
-        EventBus.getDefault().post(new EventVo(EVENT_CLEAR_SOLO, ""));
+        //清除单挑取消选注
+        betsViewModel.clearBetEvent.setValue(null);
+        betsViewModel.doClear();
 
         if (bindModels.size() == 0) {
             finish();
