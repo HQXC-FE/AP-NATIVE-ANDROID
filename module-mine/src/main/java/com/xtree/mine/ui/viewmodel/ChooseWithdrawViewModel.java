@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.xtree.base.net.HttpCallBack;
-import com.xtree.base.net.HttpWithdrawalCallBack;
 import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.StringUtils;
@@ -596,9 +595,13 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().getWithdrawalQuota()
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpWithdrawalCallBack<WithdrawalQuotaVo>() {
+                .subscribeWith(new HttpCallBack<WithdrawalQuotaVo>() {
                     @Override
-                    public void onResult(WithdrawalQuotaVo vo) {
+                    public void onResult(WithdrawalQuotaVo vo, BusinessException ex) {
+                        if (vo == null) {
+                            onFail(ex);
+                            return;
+                        }
                         quotaVoMutableLiveData.setValue(vo);
                     }
 
@@ -638,9 +641,13 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().getWithdrawalList()
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpWithdrawalCallBack<ArrayList<WithdrawalListVo>>() {
+                .subscribeWith(new HttpCallBack<ArrayList<WithdrawalListVo>>() {
                     @Override
-                    public void onResult(ArrayList<WithdrawalListVo> withdrawalListVos) {
+                    public void onResult(ArrayList<WithdrawalListVo> withdrawalListVos, BusinessException exception) {
+                        if (withdrawalListVos == null) {
+                            onFail(exception);
+                            return;
+                        }
                         withdrawalListVoMutableLiveData.setValue(withdrawalListVos);
                     }
 
@@ -669,9 +676,13 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().getWithdrawalInfo(name)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpWithdrawalCallBack<WithdrawalInfoVo>() {
+                .subscribeWith(new HttpCallBack<WithdrawalInfoVo>() {
                     @Override
-                    public void onResult(WithdrawalInfoVo vo) {
+                    public void onResult(WithdrawalInfoVo vo, BusinessException exception) {
+                        if (vo == null) {
+                            onFail(exception);
+                            return;
+                        }
                         withdrawalInfoVoMutableLiveData.setValue(vo);
                     }
 
@@ -706,9 +717,13 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().getWithdrawalBankInfo(name)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpWithdrawalCallBack<WithdrawalBankInfoVo>() {
+                .subscribeWith(new HttpCallBack<WithdrawalBankInfoVo>() {
                     @Override
-                    public void onResult(WithdrawalBankInfoVo vo) {
+                    public void onResult(WithdrawalBankInfoVo vo, BusinessException exception) {
+                        if (vo == null) {
+                            onFail(exception);
+                            return;
+                        }
                         //开启固额
                         if (vo.money_fixed) {
                             if (vo.money_options instanceof ArrayList) {
@@ -763,9 +778,13 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().postWithdrawalVerify(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpWithdrawalCallBack<WithdrawalVerifyVo>() {
+                .subscribeWith(new HttpCallBack<WithdrawalVerifyVo>() {
                     @Override
-                    public void onResult(WithdrawalVerifyVo vo) {
+                    public void onResult(WithdrawalVerifyVo vo, BusinessException exception) {
+                        if (vo == null) {
+                            onFail(exception);
+                            return;
+                        }
                         CfLog.e("postWithdrawalVerify  vo .getStatus = " + vo);
                         verifyVoMutableLiveData.setValue(vo);
                     }
@@ -801,9 +820,13 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().postWithdrawalSubmit(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpWithdrawalCallBack<WithdrawalSubmitVo>() {
+                .subscribeWith(new HttpCallBack<WithdrawalSubmitVo>() {
                     @Override
-                    public void onResult(WithdrawalSubmitVo vo) {
+                    public void onResult(WithdrawalSubmitVo vo, BusinessException exception) {
+                        if (vo == null) {
+                            onFail(exception);
+                            return;
+                        }
                         CfLog.e("withdrawalInfoVoMutableLiveData  vo .getStatus = " + vo);
                         submitVoMutableLiveData.setValue(vo);
                     }

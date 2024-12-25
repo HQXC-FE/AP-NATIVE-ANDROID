@@ -1,21 +1,20 @@
 package com.xtree.bet.ui.viewmodel.fb;
 
-import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.xtree.base.net.FBHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
+import com.xtree.bet.bean.request.fb.BtCarReq;
+import com.xtree.bet.bean.request.fb.BtCgReq;
 import com.xtree.bet.bean.request.fb.BtMultipleListReq;
 import com.xtree.bet.bean.request.fb.BtOptionReq;
 import com.xtree.bet.bean.request.fb.SingleBtListReq;
-import com.xtree.bet.bean.request.fb.BtCgReq;
 import com.xtree.bet.bean.response.fb.BtConfirmInfo;
 import com.xtree.bet.bean.response.fb.BtConfirmOptionInfo;
 import com.xtree.bet.bean.response.fb.BtResultInfo;
 import com.xtree.bet.bean.response.fb.CgOddLimitInfo;
-import com.xtree.bet.bean.request.fb.BtCarReq;
 import com.xtree.bet.bean.ui.BetConfirmOption;
 import com.xtree.bet.bean.ui.BetConfirmOptionFb;
 import com.xtree.bet.bean.ui.BtResult;
@@ -66,7 +65,7 @@ public class FBBtCarViewModel extends TemplateBtCarViewModel {
         Disposable disposable = (Disposable) model.getApiService().batchBetMatchMarketOfJumpLine(btCarReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FBHttpCallBack<BtConfirmInfo>() {
+                .subscribeWith(new HttpCallBack<BtConfirmInfo>() {
                     @Override
                     public void onResult(BtConfirmInfo btConfirmInfo) {
                         List<BetConfirmOption> betConfirmOptionList = new ArrayList<>();
@@ -90,7 +89,7 @@ public class FBBtCarViewModel extends TemplateBtCarViewModel {
                     @Override
                     public void onError(Throwable t) {
                         if (t instanceof ResponseThrowable) {
-                            if (((ResponseThrowable) t).code == CODE_14010) {
+                            if (((ResponseThrowable) t).code == HttpCallBack.CodeRule.CODE_14010) {
                                 batchBetMatchMarketOfJumpLine(betConfirmOptionList);
                             }
                         }
@@ -123,7 +122,7 @@ public class FBBtCarViewModel extends TemplateBtCarViewModel {
         singleBetReq.addBetOptionList(betOptionReq);
         singleBetListReq.addSingleBetList(singleBetReq);
 
-        if(singleBetReq.getUnitStake() <= 0){
+        if (singleBetReq.getUnitStake() <= 0) {
             noBetAmountDate.call();
             return;
         }
@@ -131,7 +130,7 @@ public class FBBtCarViewModel extends TemplateBtCarViewModel {
         Disposable disposable = (Disposable) model.getApiService().singlePass(singleBetListReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FBHttpCallBack<List<BtResultInfo>>() {
+                .subscribeWith(new HttpCallBack<List<BtResultInfo>>() {
                     @Override
                     public void onResult(List<BtResultInfo> btResultRspList) {
                         List<BtResult> btResultList = new ArrayList<>();
@@ -186,7 +185,7 @@ public class FBBtCarViewModel extends TemplateBtCarViewModel {
         Disposable disposable = (Disposable) model.getApiService().betMultiple(btMultipleListReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FBHttpCallBack<List<BtResultInfo>>() {
+                .subscribeWith(new HttpCallBack<List<BtResultInfo>>() {
                     @Override
                     public void onResult(List<BtResultInfo> btResultRspList) {
                         List<BtResult> btResultList = new ArrayList<>();

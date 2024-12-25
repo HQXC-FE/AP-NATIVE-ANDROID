@@ -2,9 +2,7 @@ package com.xtree.mine.vo;
 
 import java.util.ArrayList;
 
-import me.xtree.mvvmhabit.http.BaseResponse2;
-
-public class VirtualCashVo extends BaseResponse2 {
+public class VirtualCashVo {
     public String count;//今日提款次数
     public String rest;//今日提款额度
     public String id;
@@ -22,13 +20,14 @@ public class VirtualCashVo extends BaseResponse2 {
     public String usdt_type; //已经提款次数
     public WrapTime wraptime;
     public String availablebalance; //可提款金额
+    public ArrayList<UsdtInfo> usdtinfo;
+    public User user;
+
     public class WrapTime {
         public String starttime;
         public String endtime;
 
     }
-
-    public ArrayList<UsdtInfo> usdtinfo;
 
     public class UsdtInfo {
 
@@ -88,8 +87,6 @@ public class VirtualCashVo extends BaseResponse2 {
                     '}';
         }
     }
-
-    public User user;
 
     public class User {
         public String nickname;

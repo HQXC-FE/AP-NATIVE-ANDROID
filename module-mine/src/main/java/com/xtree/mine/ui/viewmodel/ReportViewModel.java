@@ -15,6 +15,7 @@ import com.xtree.mine.vo.AccountChangeVo;
 import com.xtree.mine.vo.BtDetailVo;
 import com.xtree.mine.vo.BtPlatformVo;
 import com.xtree.mine.vo.BtReportVo;
+import com.xtree.mine.vo.CancelGame;
 import com.xtree.mine.vo.GameChangeVo;
 import com.xtree.mine.vo.LotteryDetailVo;
 import com.xtree.mine.vo.LotteryOrderVo;
@@ -33,7 +34,6 @@ import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.http.BaseResponse2;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -357,9 +357,9 @@ public class ReportViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().cancelGame(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<BaseResponse2>() {
+                .subscribeWith(new HttpCallBack<CancelGame>() {
                     @Override
-                    public void onResult(BaseResponse2 vo) {
+                    public void onResult(CancelGame vo) {
                         CfLog.d("******");
                         liveDataDeleteCp.setValue(vo.message);
                     }

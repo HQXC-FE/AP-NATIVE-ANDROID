@@ -1144,37 +1144,37 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     /**
      * 刷新提交点订单后页面
      */
-    private void refreshWithdrawConfirmView(PlatWithdrawConfirmVo vo) {
-        binding.llShowChooseCard.setVisibility(View.GONE);//顶部通用、大额提现View隐藏
-        binding.llShowNoticeInfo.setVisibility(View.GONE); //顶部提示信息隐藏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.black));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.black));
-            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-        }
-        binding.nsErrorView.setVisibility(View.GONE);//展示错误信息页面
-        binding.nsSetWithdrawalRequest.setVisibility(View.GONE);//单数据页面展示
-        binding.nsSetWithdrawalRequestMore.setVisibility(View.GONE);//多金额页面隐藏
-        binding.nsH5View.setVisibility(View.GONE);//h5隐藏
-        binding.nsConfirmWithdrawalRequest.setVisibility(View.GONE); //确认提款页面隐藏
-        binding.nsOverView.setVisibility(View.VISIBLE);
-        CfLog.i("refreshWithdrawConfirmView = " + vo.toString());
-        //msg_type 1 2 状态均为成功
-        if (vo.msg_type == 1 || vo.msg_type == 2) {
-            //成功
-            binding.nsOverView.setVisibility(View.VISIBLE); //订单结果页面
-            binding.llOverViewApply.tvOverMsg.setText(vo.msg_detail);
-        } else if (vo.msg_type == 4) {
-            //稍后刷新重试
-            binding.nsOverView.setVisibility(View.VISIBLE); //订单结果页面展示
-            binding.llOverViewApply.tvOverMsg.setText(vo.msg_detail);
-        } else {
-            //失败
-            binding.nsOverView.setVisibility(View.VISIBLE); //订单结果页面展示
-            binding.llOverViewApply.tvOverMsg.setText(vo.msg_detail);
-        }
-    }
+//    private void refreshWithdrawConfirmView(PlatWithdrawConfirmVo vo) {
+//        binding.llShowChooseCard.setVisibility(View.GONE);//顶部通用、大额提现View隐藏
+//        binding.llShowNoticeInfo.setVisibility(View.GONE); //顶部提示信息隐藏
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//
+//            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.black));
+//            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.black));
+//            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+//        }
+//        binding.nsErrorView.setVisibility(View.GONE);//展示错误信息页面
+//        binding.nsSetWithdrawalRequest.setVisibility(View.GONE);//单数据页面展示
+//        binding.nsSetWithdrawalRequestMore.setVisibility(View.GONE);//多金额页面隐藏
+//        binding.nsH5View.setVisibility(View.GONE);//h5隐藏
+//        binding.nsConfirmWithdrawalRequest.setVisibility(View.GONE); //确认提款页面隐藏
+//        binding.nsOverView.setVisibility(View.VISIBLE);
+//        CfLog.i("refreshWithdrawConfirmView = " + vo.toString());
+//        //msg_type 1 2 状态均为成功
+//        if (vo.msg_type == 1 || vo.msg_type == 2) {
+//            //成功
+//            binding.nsOverView.setVisibility(View.VISIBLE); //订单结果页面
+//            binding.llOverViewApply.tvOverMsg.setText(vo.msg_detail);
+//        } else if (vo.msg_type == 4) {
+//            //稍后刷新重试
+//            binding.nsOverView.setVisibility(View.VISIBLE); //订单结果页面展示
+//            binding.llOverViewApply.tvOverMsg.setText(vo.msg_detail);
+//        } else {
+//            //失败
+//            binding.nsOverView.setVisibility(View.VISIBLE); //订单结果页面展示
+//            binding.llOverViewApply.tvOverMsg.setText(vo.msg_detail);
+//        }
+//    }
 
     /**
      * 刷新显示没有提款次数
