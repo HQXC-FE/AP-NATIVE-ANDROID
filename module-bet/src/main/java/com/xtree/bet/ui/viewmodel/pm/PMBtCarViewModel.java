@@ -19,6 +19,7 @@ import com.xtree.bet.bean.response.pm.BtConfirmInfo;
 import com.xtree.bet.bean.response.pm.BtResultInfo;
 import com.xtree.bet.bean.response.pm.BtResultOptionInfo;
 import com.xtree.bet.bean.response.pm.CgOddLimitInfo;
+import com.xtree.bet.bean.response.pm.PlayTypeInfo;
 import com.xtree.bet.bean.response.pm.SeriesOrderInfo;
 import com.xtree.bet.bean.ui.BetConfirmOption;
 import com.xtree.bet.bean.ui.BetConfirmOptionPm;
@@ -26,6 +27,7 @@ import com.xtree.bet.bean.ui.BtResult;
 import com.xtree.bet.bean.ui.BtResultPm;
 import com.xtree.bet.bean.ui.CgOddLimit;
 import com.xtree.bet.bean.ui.CgOddLimitPm;
+import com.xtree.bet.bean.ui.PlayTypePm;
 import com.xtree.bet.constant.SPKey;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.TemplateBtCarViewModel;
@@ -78,6 +80,18 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
             betMatchMarket.setMatchType(betConfirmOption.getOptionList().getMatchType());
             betMatchMarket.setSportId(Integer.valueOf(betConfirmOption.getMatch().getSportId()));
             betMatchMarket.setPlaceNum(betConfirmOption.getPlaceNum());
+
+            PlayTypePm playTypePm = (PlayTypePm) betConfirmOption.getPlayType();
+            PlayTypeInfo playTypeInfo = playTypePm.getPlayTypeInfo();
+            String chpid = "";
+            if(playTypeInfo.topKey != null){
+                chpid = playTypeInfo.topKey;
+            }else{
+                chpid = betConfirmOption.getPlayType().getId();
+            }
+            if(!chpid.isEmpty()){
+                betMatchMarket.setChpid(chpid);
+            }
             betMatchMarketList.add(betMatchMarket);
         }
         btCarReq.setIdList(betMatchMarketList);
@@ -205,12 +219,24 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                     int marketType = SPUtils.getInstance().getInt(SPKey.BT_MATCH_LIST_ODDTYPE, 1);
                     orderDetail.setMarketTypeFinally(marketType == 1 ? "EU" : "HK");
                     orderDetailList.add(orderDetail);
+                    PlayTypePm playTypePm = (PlayTypePm) betConfirmOption.getPlayType();
+                    PlayTypeInfo playTypeInfo = playTypePm.getPlayTypeInfo();
+                    String chpid = "";
+                    if(playTypeInfo.topKey != null){
+                        chpid = playTypeInfo.topKey;
+                    }else{
+                        chpid = betConfirmOption.getPlayType().getId();
+                    }
+                    if(!chpid.isEmpty()){
+                        btReq.setChpid(chpid);
+                    }
                 }
                 seriesOrder.setOrderDetailList(orderDetailList);
                 seriesOrders.add(seriesOrder);
             }
         }
         btReq.setSeriesOrders(seriesOrders);
+        btReq.setCuid();
         if(seriesOrders.isEmpty()){
             noBetAmountDate.call();
             return;
