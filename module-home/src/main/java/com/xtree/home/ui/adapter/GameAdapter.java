@@ -22,11 +22,9 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.widget.BrowserActivity;
-import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.TipGameDialog;
 import com.xtree.home.R;
 import com.xtree.home.databinding.HmItemGameBinding;
-import com.xtree.home.ui.custom.view.TipPMDialog;
 import com.xtree.home.vo.GameVo;
 
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -45,7 +43,10 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
 
     public interface ICallBack {
         void onClick(GameVo vo); // String gameAlias, String gameId
+
         void getToken(GameVo vo);
+
+        boolean getIsFrozen();
     }
 
     public GameAdapter(Context ctx, ICallBack mCallBack) {
@@ -199,6 +200,11 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
         if (vo.cid == 7 || vo.cid == 19 || vo.cid == 34 || vo.cid == 52 || (vo.cid == 1 && vo.cateId.equals("4"))) {
             mCallBack.onClick(vo);
             return;
+        }
+        if (vo.cid == 42 || vo.cid == 5 || vo.cid == 41 || vo.cid == 26) {
+            if (mCallBack.getIsFrozen()) {//杏彩体育 熊猫体育 杏彩体育旗舰 FB体育账户无法操作
+                return;
+            }
         }
         if (vo.twoImage) {
             if (isLeft) {
