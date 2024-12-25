@@ -17,6 +17,7 @@ import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.FBService;
 import com.xtree.base.vo.PMService;
 import com.xtree.base.vo.ProfileVo;
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.home.R;
 import com.xtree.home.data.HomeRepository;
@@ -43,6 +44,8 @@ import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
+import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -66,6 +69,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<EleVo> liveDataEle = new MutableLiveData<>();
     public MutableLiveData<RedPocketVo> liveDataRedPocket = new MutableLiveData<>();
     public MutableLiveData<AppUpdateVo> liveDataUpdate = new MutableLiveData<>();//更新
+    public SingleLiveData<UserMethodsResponse> liveDataLotteryUser = new SingleLiveData<>();
 
     String public_key;
 
@@ -561,6 +565,26 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                             return;
                         }
                         liveDataUpdate.setValue(vo);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        //super.onError(t);
+                        CfLog.e("error, " + t.toString());
+                        //liveDataUpdate.setValue(null);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    public void getUserMethods() {
+        Disposable disposable = (Disposable) model.getApiService().getUserMethods()
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<UserMethodsResponse>() {
+                    @Override
+                    public void onResult(UserMethodsResponse response) {
+                        liveDataLotteryUser.setValue(response);
                     }
 
                     @Override
