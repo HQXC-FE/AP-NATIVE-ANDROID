@@ -1398,6 +1398,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             binding.tvwFxRate.setText(R.string.txt_rate_okpay_cny);
         } else if (vo.paycode.equals("hqppaygopay")) {
             binding.tvwFxRate.setText(R.string.txt_rate_gopay_cny);
+        } else if (vo.paycode.equals("hqppaybobi")) {
+            binding.tvwFxRate.setText(R.string.txt_rate_bobi_cny);
         } else {
             binding.tvwFxRate.setText("");
             binding.llRate.setVisibility(View.GONE);
@@ -1430,6 +1432,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             type = "OKG";
         } else if (vo.paycode.equals("hqppaygopay")) {
             type = "GOP";
+        } else if (vo.paycode.equals("hqppaybobi")) {
+            type = "波币";
         } else {
             binding.tvwPrePay.setVisibility(View.GONE);
         }

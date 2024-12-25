@@ -64,8 +64,11 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         super.onViewCreated(view, savedInstanceState);
 
         binding.tvwTitle.setText(mUserUsdtJumpVo.title);
-        binding.tvwTipAddress.setText(mUserUsdtJumpVo.remind);
-
+        //非USDT的三方钱包只有一个协议选项
+        if (mUserUsdtJumpVo != null && !TextUtils.isEmpty(mUserUsdtJumpVo.type) && !mUserUsdtJumpVo.type.contains("USDT")) {
+            binding.tvwTipAddress.setText(mUserUsdtJumpVo.remind);
+            binding.tvwTipAddress.setVisibility(View.VISIBLE);
+        }
         if (mUserUsdtJumpVo != null && mUserUsdtJumpVo.isShowType) {
             binding.tvwChoose.setVisibility(View.VISIBLE);
             binding.tvwChooseTitle.setVisibility(View.VISIBLE);

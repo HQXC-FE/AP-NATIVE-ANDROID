@@ -482,6 +482,11 @@ public class VerifyViewModel extends BaseViewModel<MineRepository> {
                 remind = ctx.getString(R.string.txt_remind_okpay);
                 //url = DomainUtil.getDomain2() + "/user/userokpayinfo?check=" + vo.tokenSign + "&mark=" + vo.mark;
                 break;
+            case Constant.BIND_BOBI:
+                title = ctx.getString(R.string.txt_bind_bobi); //"绑定BOBI";
+                remind = ctx.getString(R.string.txt_remind_bobi);
+                //url = DomainUtil.getDomain2() + "/user/userbobiinfo?check=" + vo.tokenSign + "&mark=" + vo.mark;
+                break;
             case Constant.BIND_ALIPAY:
             case Constant.BIND_WECHAT:
                 // "绑定支付宝" 或 "绑定微信"
