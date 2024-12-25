@@ -194,6 +194,7 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                     LotteryBetConfirmViewModel::class.java
                 )
                 viewmodel.chasingNumberParams.value = chasingNumberRequestModel
+                dismissAllowingStateLoss()
             }
 
 
