@@ -6,10 +6,9 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.xtree.base.net.HttpCallBack;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
@@ -52,10 +51,8 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
         btRecordReq.setOrderStatus(isSettled ? 1 : 0);
         btRecordReq.setTimeType(isSettled ? 1 : 4);
         long requestTime = System.currentTimeMillis();
-        Disposable disposable = (Disposable) model.getPMApiService().betRecord(btRecordReq)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<BtRecordRsp>() {
+        Disposable disposable = (Disposable) model.getPMApiService().betRecord(btRecordReq).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<BtRecordRsp>() {
                     @Override
                     public void onResult(BtRecordRsp btRecordRsp) {
                         List<BtRecordTime> btRecordTimeList = new ArrayList<>();
@@ -80,7 +77,6 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                             btRecordTime.addBtResultList(new BtRecordBeanPm(recordsBean));
                         }
                         btRecordTimeDate.postValue(btRecordTimeList);
-
 
 
                         //请求投注记录getOrderListV4PB接口时，如果有注单是确认中且是1分钟后，
@@ -125,9 +121,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                                 uploadExcetionReq.setLogTag("getOrderListV4PB");
                                 uploadExcetionReq.setApiUrl(DomainUtil.getApiUrl() + "/yewu13/v1/betOrder/client/getOrderListV4PB");
                                 uploadExcetionReq.setLogType("-");
-                                String msg = "orderList:" + orderList +
-                                        ";       request:" + gson.toJson(btRecordReq) + ";       return:" + gson.toJson(btRecordRsp) +
-                                        ";       requestTime:" + requestTime + ";       returnTime:" + btRecordRsp.ts;
+                                String msg = "orderList:" + orderList + ";       request:" + gson.toJson(btRecordReq) + ";       return:" + gson.toJson(btRecordRsp) + ";       requestTime:" + requestTime + ";       returnTime:" + btRecordRsp.ts;
                                 CfLog.i("msg1   " + msg);
                                 uploadExcetionReq.setMsg(msg);
                                 uploadException(uploadExcetionReq);
@@ -153,7 +147,7 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
 
     @Override
     public void cashOutPrice() {
-        if(mOrderIdList.isEmpty()){
+        if (mOrderIdList.isEmpty()) {
             return;
         }
         Map<String, String> map = new HashMap<>();
@@ -161,15 +155,12 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
         for (String orderId : mOrderIdList) {
             orderNo += orderId + ",";
         }
-        if(!TextUtils.isEmpty(orderNo)) {
+        if (!TextUtils.isEmpty(orderNo)) {
             orderNo = orderNo.substring(0, orderNo.length() - 1);
         }
         map.put("orderNo", orderNo);
-        Disposable disposable = (Disposable) model.getPMApiService()
-                .getCashoutMaxAmountList(map)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<BtCashOutPriceInfo>>() {
+        Disposable disposable = (Disposable) model.getPMApiService().getCashoutMaxAmountList(map).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<BtCashOutPriceInfo>>() {
                     @Override
                     public void onResult(List<BtCashOutPriceInfo> btCashOutPriceInfoList) {
                         for (BtCashOutPriceInfo btCashOutPriceInfo : btCashOutPriceInfoList) {
@@ -203,11 +194,8 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
         btCashOutBetReq.setOrderNo(orderId);
         btCashOutBetReq.setSettleAmount(String.valueOf(cashOutStake));
         btCashOutBetReq.setFrontSettleAmount(unitCashOutPayoutStake);
-        Disposable disposable = (Disposable) model.getPMApiService()
-                .orderPreSettle(btCashOutBetReq)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<BtCashOutPriceInfo>>() {
+        Disposable disposable = (Disposable) model.getPMApiService().orderPreSettle(btCashOutBetReq).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<BtCashOutPriceInfo>>() {
                     @Override
                     public void onResult(List<BtCashOutPriceInfo> btCashOutPriceInfoList) {
 
@@ -241,11 +229,8 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
 
     @Override
     public void getCashOutsByIds(String id) {
-        Disposable disposable = (Disposable) model.getPMApiService()
-                .queryOrderPreSettleConfirm()
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<BtCashOutStatusInfo>>() {
+        Disposable disposable = (Disposable) model.getPMApiService().queryOrderPreSettleConfirm().compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<BtCashOutStatusInfo>>() {
                     @Override
                     public void onResult(List<BtCashOutStatusInfo> btCashOutStatusInfoList) {
                         if (btCashOutStatusInfoList != null && !btCashOutStatusInfoList.isEmpty()) {
