@@ -16,7 +16,6 @@ public class SettingsVo implements Parcelable {
     public String customer_service_url; // "https://www.mjooh9i.com/service/chatlink.html"
     public String[] customer_service_urls; // ["https://www.mjooh9i.com/service/chatlink.html", "https://www.5trfg4g.com/service/chatlink.html"]
     public String[] x9_customer_service_url; // ["https://www.hikefu01.net/im/index?appid=0NYEsh"]
-    public String[] hichat_url_suffix; // ["\/im\/chat?platformCode=THRB&channelLink=OKGV5vPNGc", "\/im\/chat?platformCode=THRB&channelLink=OKGV5vPNGc"]
     public long ws_check_interval; // "30"若为30, 则代表需在收到后端上一次type为open讯息30秒后再发一次确认讯息给后端
     public long ws_retry_number; // "3"//每次最大重连尝试次数
     public long ws_retry_waiting_time; // "300"超过最大尝试次数后的等待时间(秒), 需度过等待时间才能在发起连线尝试
@@ -26,7 +25,7 @@ public class SettingsVo implements Parcelable {
     //推荐测速上限设置
     public int app_response_speed_max = -1;
     //新客服列表
-    public String []hichat_url_suffix ;
+    public String []hichat_url_suffix ;//// ["\/im\/chat?platformCode=THRB&channelLink=OKGV5vPNGc", "\/im\/chat?platformCode=THRB&channelLink=OKGV5vPNGc"]
 
     // Constructor for Parcelable
     protected SettingsVo(Parcel in) {
