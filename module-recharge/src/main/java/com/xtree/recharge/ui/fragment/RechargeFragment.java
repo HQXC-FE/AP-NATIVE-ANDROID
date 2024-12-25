@@ -59,6 +59,7 @@ import com.xtree.recharge.ui.fragment.guide.RechargeNameComponent;
 import com.xtree.recharge.ui.fragment.guide.RechargeNextComponent;
 import com.xtree.recharge.ui.viewmodel.RechargeViewModel;
 import com.xtree.recharge.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.recharge.ui.widget.RealNameDialog;
 import com.xtree.recharge.ui.widget.TipBindCardDialog;
 import com.xtree.recharge.vo.BankCardVo;
 import com.xtree.recharge.vo.BannersVo;
@@ -96,9 +97,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     private static final int MSG_ADD_PAYMENT = 1002;
     private static final long REFRESH_DELAY = 30 * 60 * 1000L; // 刷新间隔等待时间(如果长时间没刷新)
     private static final String KEY_MANUAL = "manual"; // 人工充值
-
-    private Method method;
-    private Object object;
+    public static BasePopupView bindPhonePPW = null;
     //RechargeAdapter rechargeAdapter;
     RechargeTypeAdapter mTypeAdapter;
     RechargeChannelAdapter mChannelAdapter;
@@ -112,8 +111,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     BasePopupView ppw = null; // 底部弹窗
     BasePopupView ppw2 = null; // 底部弹窗 (二层弹窗)
     BasePopupView ppw3 = null; // 极速充值绑定银行卡弹窗
+    BasePopupView ppw4 = null; // 实名认证弹窗
     BasePopupView bindCardPPW = null;//绑定银行卡PopView
-    public static BasePopupView bindPhonePPW = null;
     String bankId = ""; // 用户绑定的银行卡ID
     String bankCode = ""; // 付款银行编号 (极速充值用) ABC
     String hiWalletUrl; // 一键进入 HiWallet钱包
@@ -132,9 +131,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     String[] arrayBrowser = new String[]{"onepayfix3", "onepayfix4", "onepayfix5", "onepayfix6"};
     List<String> payCodeList = new ArrayList<>(); // 含弹出支付窗口的充值渠道类型列表(从缓存加载用)
     long lastRefresh = System.currentTimeMillis(); // 上次刷新时间
-
-    private BasePopupView showGuideView;//显示充值引导
-
     Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -164,6 +160,13 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             }
         }
     };
+    private Method method;
+    private Object object;
+    private BasePopupView showGuideView;//显示充值引导
+    private Guide bankGuide;
+    private Guide nameGuide;
+    private Guide moneyGuide;
+    private Guide nextGuide;
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -404,7 +407,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             // 下一步
             if (curRechargeVo.paycode.equals(KEY_MANUAL)) {
                 goNextManual(); // 人工充值
-            } else if (viewModel.isOnePayFix(curRechargeVo)) {
+            } else if (viewModel.isOnePayFix(curRechargeVo)//极速充值增加实名即可充值【HQAP2-4857】
+                    || ((curRechargeVo.paycode.contains(viewModel.ONE_PAY_FIX) && curRechargeVo.can_use_name_channel_status == true))) {
                 goNext2(); // 极速充值
             } else if (curRechargeVo.paycode.contains("hiwallet")) {
                 goHiWallet(); // 嗨钱包
@@ -648,8 +652,12 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             return;
         }*/
         //if (vo.op_thiriframe_use && vo.userBankList.isEmpty() && vo.view_bank_card && !vo.phone_needbind) {
-        //极速充值在详情里面判断绑卡
-        if (vo.view_bank_card && vo.userBankList.isEmpty() && !vo.paycode.contains(viewModel.ONE_PAY_FIX)) {
+
+        //极速充值,需要实名
+        if (vo.userBankList.isEmpty() && !checkRealName(vo) && vo.paycode.contains(viewModel.ONE_PAY_FIX)) {
+            return;
+        }
+        if (vo.view_bank_card && vo.userBankList.isEmpty() && !vo.paycode.contains(viewModel.ONE_PAY_FIX)) {        //极速充值在详情里面判断绑卡
             // 绑定YHK
             CfLog.i("****** 绑定YHK");
             toBindCard();
@@ -659,13 +667,18 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         if ("false".equalsIgnoreCase(vo.bankcardstatus_onepayzfb) && vo.paycode.contains("zfb")) {
             // 请先绑定您的支付宝账号
             CfLog.i("****** 绑定ZFB");
-            toBindAlipay();
+            //检查实名就可以充值
+            if (checkRealName(vo)) {
+                toBindAlipay();
+            }
             return;
         }
         if ("false".equalsIgnoreCase(vo.bankcardstatus_onepaywx) && vo.paycode.contains("wx")) {
             // 请先绑定您的微信账号
             CfLog.i("****** 绑定WX");
-            toBindWeChat();
+            if (checkRealName(vo)) {
+                toBindWeChat();
+            }
             return;
         }
 
@@ -732,7 +745,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         }
 
         // 显示/隐藏银行卡 userBankList
-        if (vo.view_bank_card) {
+        if (vo.view_bank_card || vo.can_use_name_channel_status == true) {
             binding.llBankCard.setVisibility(View.VISIBLE);
             binding.tvwBankCard.setOnClickListener(v -> showBankCard(vo)); // 选择银行卡
             if (viewModel.isOnePayFix(vo)) {
@@ -866,31 +879,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
     }
 
-    private void toBindPhoneOrCard() {
-        String msg = getString(R.string.txt_rc_bind_personal_info);
-        String left = getString(R.string.txt_rc_bind_phone_now);
-        String right = getString(R.string.txt_rc_bind_bank_card_now);
-        MsgDialog dialog = new MsgDialog(getContext(), null, msg, left, right, new MsgDialog.ICallBack() {
-            @Override
-            public void onClickLeft() {
-                toBindPhoneNumber();
-                ppw.dismiss();
-            }
-
-            @Override
-            public void onClickRight() {
-                toBindCard();
-                ppw.dismiss();
-            }
-        });
-        ppw = new XPopup.Builder(getContext())
-                .dismissOnTouchOutside(false)
-                .dismissOnBackPressed(false)
-                .asCustom(dialog);
-        ppw.show();
-    }
-
-    public  void  toBindPhoneNumber() {
+    public void toBindPhoneNumber() {
         if (bindPhonePPW == null) {
             String msg = getString(R.string.txt_rc_bind_phone_pls);
             String left = getString(R.string.txt_cancel);
@@ -898,18 +887,18 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             MsgDialog dialog = new MsgDialog(getContext(), null, msg, left, right, new MsgDialog.ICallBack() {
                 @Override
                 public void onClickLeft() {
-                    if (bindPhonePPW !=null){
+                    if (bindPhonePPW != null) {
                         bindPhonePPW.dismiss();
                         bindPhonePPW = null;
                     }
 
-                   // bindPhonePPW = null;
+                    // bindPhonePPW = null;
                 }
 
                 @Override
                 public void onClickRight() {
                     toBindPhonePage();
-                    if (bindPhonePPW !=null){
+                    if (bindPhonePPW != null) {
                         bindPhonePPW.dismiss();
                         bindPhonePPW = null;
                     }
@@ -931,7 +920,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             MsgDialog dialog = new MsgDialog(getContext(), null, msg, left, right, new MsgDialog.ICallBack() {
                 @Override
                 public void onClickLeft() {
-                    if (bindPhonePPW !=null){
+                    if (bindPhonePPW != null) {
                         bindPhonePPW.dismiss();
                         bindPhonePPW = null;
                     }
@@ -942,7 +931,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                 @Override
                 public void onClickRight() {
                     toBindPhonePage();
-                    if (bindPhonePPW !=null){
+                    if (bindPhonePPW != null) {
                         bindPhonePPW.dismiss();
                         bindPhonePPW = null;
                     }
@@ -958,6 +947,45 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             bindPhonePPW.show();
         }
 
+    }
+
+    /**
+     * @param vo
+     * @return true 检查通过 false 需要填写实名，弹出实名弹窗
+     */
+    private boolean checkRealName(RechargeVo vo) {
+//        如果用户有绑卡，就走绑卡的名字
+//        没绑卡，但是渠道可以用实名就能充值，就是用户实名，没有绑卡信息
+        if (vo.can_use_name_channel_status == true && vo.need_fill_real_name == true && TextUtils.isEmpty(vo.accountname)) {
+            toRealName();
+            return false;
+        }
+        return true;
+    }
+
+    private void toRealName() {
+        if (ppw4 != null && ppw4.isShow()) {
+            ppw4.dismiss();
+        }
+        ppw4 = new XPopup.Builder(getContext()).dismissOnTouchOutside(false)
+                .dismissOnBackPressed(false).asCustom(new RealNameDialog(getContext(), "", new RealNameDialog.ICallBack() {
+                    @Override
+                    public void onClickConfirm(String realname) {
+                        LoadingDialog.show(getContext());
+                        viewModel.setRealName(realname);
+                    }
+
+                    @Override
+                    public void showTutorial() {
+                        showWebDialog(getString(R.string.txt_recharge_tutorial), Constant.URL_RC_CNYT_TUTORIAL);
+                    }
+
+                    @Override
+                    public void showCs() {
+                        AppUtil.goCustomerService(getContext());
+                    }
+                }));
+        ppw4.show();
     }
 
     private void toBindCard() {
@@ -1012,7 +1040,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
     }
 
-    private  void toBindPhonePage() {
+    private void toBindPhonePage() {
         String type = Constant.BIND_PHONE; // VERIFY_BIND_PHONE
         if (mProfileVo != null && mProfileVo.is_binding_email) {
             type = Constant.VERIFY_BIND_PHONE;
@@ -1096,7 +1124,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         }
 
         // 普通银行卡充值 bankId非空; 极速充值 bankId,bankCode 至少要有一个非空
-        if (curRechargeVo.view_bank_card) {
+        if (curRechargeVo.view_bank_card || curRechargeVo.can_use_name_channel_status == true) {
             if (TextUtils.isEmpty(bankId) && TextUtils.isEmpty(bankCode)) {
                 return;
             }
@@ -1175,7 +1203,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         map.put("payName", realName); // 付款人
         map.put("nonce", UuidUtil.getID16());
         CfLog.i(map.toString());
-        viewModel.createOrderCheck(map,getContext());
+        viewModel.createOrderCheck(map, getContext());
     }
 
     private void goHiWallet() {
@@ -1420,6 +1448,16 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         binding.tvwPrePay.setText(usdt);
     }
 
+    /*private void setHiWallet(PaymentVo vo) {
+        binding.llHiWallet.setVisibility(View.GONE);
+        for (RechargeVo t : vo.chongzhiList) {
+            if (!TextUtils.isEmpty(t.paycode) && t.paycode.contains("hiwallet")) {
+                binding.llHiWallet.setVisibility(View.VISIBLE);
+                return;
+            }
+        }
+    }*/
+
     /**
      * 重新设置选中的充值渠道 (加载缓存后,选中某个渠道,接口返回的数据回来,重设)
      */
@@ -1553,16 +1591,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
     }
 
-    /*private void setHiWallet(PaymentVo vo) {
-        binding.llHiWallet.setVisibility(View.GONE);
-        for (RechargeVo t : vo.chongzhiList) {
-            if (!TextUtils.isEmpty(t.paycode) && t.paycode.contains("hiwallet")) {
-                binding.llHiWallet.setVisibility(View.VISIBLE);
-                return;
-            }
-        }
-    }*/
-
     private void setHiWallet(PaymentDataVo vo) {
         binding.llHiWallet.setVisibility(View.GONE);
         for (PaymentTypeVo typeVo : vo.chongzhiList) {
@@ -1658,10 +1686,12 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             //&&isOnePayFix(vo)  去除银行判定
             /* if (vo.view_bank_card && vo.userBankList.isEmpty())  == false{*/
 
-            if (vo.view_bank_card  && vo.userBankList.isEmpty()) {
+            if (vo.view_bank_card && vo.userBankList.isEmpty()) {
                 // 绑定YHK
                 CfLog.i("****** 绑定YHK");
-                toBindCard();
+                if (checkRealName(vo)) {
+                    toBindCard();
+                }
                 return;
             }
 
@@ -1672,8 +1702,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             curRechargeVo = vo;
             viewModel.curRechargeLiveData.setValue(curRechargeVo);
 
-            // 极速充值
-            if (viewModel.isOnePayFix(vo)) {
+            // 极速充值 极速充值增加实名即可充值HQAP2-4857
+            if (viewModel.isOnePayFix(vo) || (vo.paycode.contains(viewModel.ONE_PAY_FIX) && vo.can_use_name_channel_status == true)) {
                 // 银行列表,搜索页会用到
                 onClickPayment3(vo);
                 return;
@@ -1808,6 +1838,16 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         viewModel.liveDataProfile.observe(this, vo -> {
             mProfileVo = vo;
         });
+
+        //实名填写
+        viewModel.liveRealNameData.observe(this, vo -> {
+            if (ppw4 != null && ppw4.isShow()) {
+                ppw4.dismiss();
+            }
+            ToastUtils.showShort(R.string.txt_submitted_suc);
+            isNeedRefresh = true;
+            refresh();
+        });
     }
 
     @Override
@@ -1820,7 +1860,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         });
         super.onDestroyView();
     }
-
 
     /**
      * 显示网页版的充值界面 <br/>
@@ -2072,6 +2111,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                     .show();
         }
     }
+    /*  显示充值引导页面流程*/
 
     private void showWebDialog(String title, String path) {
         String url = path.startsWith("/") ? DomainUtil.getH5Domain2() + path : path;
@@ -2112,7 +2152,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         //CfLog.d("amount: " + amount);
         return amount;
     }
-    /*  显示充值引导页面流程*/
 
     /**
      * 显示充值引导弹窗
@@ -2134,8 +2173,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                 }));
         showGuideView.show();
     }
-
-    private Guide bankGuide;
 
     /**
      * 显示付款银行卡引导页面
@@ -2177,8 +2214,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             bankGuide = null;
         }
     }
-
-    private Guide nameGuide;
 
     /**
      * 显示充值引导页面
@@ -2234,8 +2269,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         }
     }
 
-    private Guide moneyGuide;
-
     /**
      * 显示充值金额页面
      */
@@ -2290,8 +2323,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             moneyGuide = null;
         }
     }
-
-    private Guide nextGuide;
 
     /**
      * 显示充值 下一步 引导页面
