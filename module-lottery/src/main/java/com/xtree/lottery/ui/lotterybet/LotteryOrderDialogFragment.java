@@ -16,8 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.lottery.BR;
 import com.xtree.lottery.R;
+import com.xtree.lottery.data.LotteryDetailManager;
 import com.xtree.lottery.databinding.DialogLotteryOrderBinding;
-import com.xtree.lottery.ui.activity.LotteryActivity;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryOrderViewModel;
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
@@ -56,13 +56,11 @@ public class LotteryOrderDialogFragment extends BaseDialogFragment<DialogLottery
                 return;
             }
 
-            if (getActivity() != null) {
-                LotteryActivity lotteryActivity = (LotteryActivity) getActivity();
-                if (!lotteryActivity.getMIssues().isEmpty()) {
-                    LotteryChasingNumberFragment.show(requireActivity(), binding.getModel().betNums.getValue(), binding.getModel().moneyNums.getValue());
-                    viewModel.goChasing();
-                }
+            if (!LotteryDetailManager.INSTANCE.getMIssues().isEmpty()) {
+                LotteryChasingNumberFragment.show(requireActivity(), binding.getModel().betNums.getValue(), binding.getModel().moneyNums.getValue());
+                viewModel.goChasing();
             }
+
         });
     }
 
