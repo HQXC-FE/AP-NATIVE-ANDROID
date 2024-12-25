@@ -51,8 +51,6 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
             val intent = Intent(this, LotteryActivity::class.java)
             intent.putExtra("Lottery", it)
             startActivity(intent)
-            //    ToastUtils.showLong("该彩种近期开通，敬请期待")
-
         }
         binding.rvLottery.adapter = adapter
     }

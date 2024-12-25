@@ -13,8 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.xtree.lottery.R
+import com.xtree.lottery.data.LotteryDetailManager
 import com.xtree.lottery.databinding.DialogChasingNumberBinding
-import com.xtree.lottery.ui.activity.LotteryActivity
 import com.xtree.lottery.ui.adapter.ChasingAdapter
 import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetConfirmViewModel
@@ -90,11 +90,10 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
             val plus3 = binding.plus3.getNumber()
             val plus4 = binding.plus4.getNumber()
             val plus5 = binding.plus5.getNumber()
-            val lotteryActivity = activity as LotteryActivity
-            val issues = if (lotteryActivity.mIssues.size < lotteryActivity.mIndex + 200) {
-                lotteryActivity.mIssues.subList(lotteryActivity.mIndex, lotteryActivity.mIndex + 200)
+            val issues = if (LotteryDetailManager.mIssues.size < LotteryDetailManager.mIndex + 200) {
+                LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIndex + 200)
             } else {
-                lotteryActivity.mIssues.subList(lotteryActivity.mIndex, lotteryActivity.mIssues.size)
+                LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIssues.size)
             }
             // 使用 map 深拷贝每个对象
             val newList = issues.map { it.copy() }
@@ -153,11 +152,10 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
         if (activity != null) {
             betNums = requireArguments().getString("betNums")!!
             money = requireArguments().getString("money")!!.toDouble()
-            val lotteryActivity = activity as LotteryActivity
-            val issues = if (lotteryActivity.mIssues.size < lotteryActivity.mIndex + 200) {
-                lotteryActivity.mIssues.subList(lotteryActivity.mIndex, lotteryActivity.mIndex + 200)
+            val issues = if (LotteryDetailManager.mIssues.size < LotteryDetailManager.mIndex + 200) {
+                LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIndex + 200)
             } else {
-                lotteryActivity.mIssues.subList(lotteryActivity.mIndex, lotteryActivity.mIssues.size)
+                LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIssues.size)
             }
             // 使用 map 深拷贝每个对象  使newList和旧list无关联
             val newList = issues.map { it.copy() }.toMutableList()
@@ -196,6 +194,7 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                     LotteryBetConfirmViewModel::class.java
                 )
                 viewmodel.chasingNumberParams.value = chasingNumberRequestModel
+                dismissAllowingStateLoss()
             }
 
 
@@ -255,11 +254,10 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
         when (event.event) {
             EventConstant.EVENT_TIME_FINISH -> {
 
-                val lotteryActivity = activity as LotteryActivity
-                val issues = if (lotteryActivity.mIssues.size < lotteryActivity.mIndex + 200) {
-                    lotteryActivity.mIssues.subList(lotteryActivity.mIndex, lotteryActivity.mIndex + 200)
+                val issues = if (LotteryDetailManager.mIssues.size < LotteryDetailManager.mIndex + 200) {
+                    LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIndex + 200)
                 } else {
-                    lotteryActivity.mIssues.subList(lotteryActivity.mIndex, lotteryActivity.mIssues.size)
+                    LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIssues.size)
                 }
                 // 使用 map 深拷贝每个对象
                 val newList = issues.map { it.copy() }

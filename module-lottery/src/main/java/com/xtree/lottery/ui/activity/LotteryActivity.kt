@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.xtree.base.utils.CfLog
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
+import com.xtree.lottery.data.LotteryDetailManager
 import com.xtree.lottery.data.config.Lottery
 import com.xtree.lottery.data.source.vo.IssueVo
 import com.xtree.lottery.data.source.vo.MethodMenus
@@ -34,8 +35,6 @@ import org.greenrobot.eventbus.EventBus
  * 彩票详情
  */
 class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>(), ParentChildCommunication {
-    public var mIndex = 0
-    public var mIssues = ArrayList<IssueVo>()
     private var currentIssue: IssueVo? = null
     private lateinit var lotteryBetsFragment: LotteryBetsFragment
     private var methodMenus: MethodMenus? = null
@@ -69,7 +68,7 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         binding.tvBack.setOnClickListener { finish() }
 
         binding.vpLottery.isUserInputEnabled = false
-        //binding.vpLottery.offscreenPageLimit = 1 预加载  viewModel默认不预加载
+        //binding.vpLottery.offscreenPageLimit = 1 预加载  ViewPager2默认不预加载
 
         binding.tlLottery.addTab(binding.tlLottery.newTab().setText("近期开奖"))
         binding.tlLottery.addTab(binding.tlLottery.newTab().setText("彩种投注"))
@@ -125,10 +124,10 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
             }
         }
         viewModel.liveDataListIssue.observe(this) {
-            mIssues = it
-            if (mIssues.isNotEmpty()) {
-                for (i in mIssues.indices) {
-                    if (mIssues[i].issue == currentIssue?.issue) {
+            LotteryDetailManager.mIssues = it
+            if (it.isNotEmpty()) {
+                for (i in it.indices) {
+                    if (it[i].issue == currentIssue?.issue) {
                         countDownTimer(i)
                         break
                     }
@@ -143,8 +142,8 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
 
     //倒计时的方式
     private fun countDownTimer(index: Int) {
-        mIndex = index
-        mIssues[index].apply {
+        LotteryDetailManager.mIndex = index
+        LotteryDetailManager.mIssues[index].apply {
 
             viewModel.currentIssueLiveData.value = this
 
@@ -189,7 +188,8 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
 
     override fun onDestroy() {
         super.onDestroy()
-
+        //清空当前彩种的共享数据
+        LotteryDetailManager.clearData()
         timer?.cancel()
     }
 
