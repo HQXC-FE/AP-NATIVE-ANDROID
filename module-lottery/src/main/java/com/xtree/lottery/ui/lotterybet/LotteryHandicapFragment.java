@@ -140,6 +140,7 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
                         betOrderData.setMoney(money);
                         betOrderData.setTimes((int) (money / 0.02));
                         betOrderData.setOmodel(viewModel.prizeData.getValue().getMode());
+                        betOrderData.setNums(1);
                     }
                     binding.getModel().betLiveData.setValue(betOrderList);
                 } else {

@@ -307,7 +307,7 @@ public class BetHandicap1ViewModel {
                         codeStr.append(code.getName());
                     }
                     betOrderData.setCodes(codeStr.toString());
-                    betOrderData.setDesc(handicapModel.getData().getName() + "@" + code.getName());
+                    betOrderData.setDesc("[" + handicapModel.getData().getName() + "@" + code.getName() + "]");
                     betOrderData.setMenuid(code.getMenuid());
                     betOrderData.setMethodid(code.getMethodid());
                     betOrderData.setType(code.getType());

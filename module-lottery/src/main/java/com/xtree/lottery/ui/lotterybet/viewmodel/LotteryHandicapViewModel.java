@@ -32,6 +32,7 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.http.BaseResponse;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -256,7 +257,6 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
         for (LotteryBetRequest.BetOrderData data : betOrders) {
             money += data.getMoney();
             nums += data.getNums();
-            betOrders.add(data);
         }
 
         if (money == 0 || nums == 0) {
@@ -279,6 +279,14 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
         model.bet(lotteryBetRequest, params).subscribe(new HttpCallBack<BaseResponse>() {
             @Override
             public void onResult(BaseResponse response) {
+                if (response != null && response.getCode() == 10000) {
+
+                }
+            }
+
+            @Override
+            public void onFail(BusinessException t) {
+                super.onFail(t);
             }
         });
     }

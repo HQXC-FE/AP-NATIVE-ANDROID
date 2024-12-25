@@ -229,14 +229,14 @@ public class HandicapResponse {
                     if (isPrize) {
                         if (!TextUtils.isEmpty(nonRebatePrize)) {
                             float nonF = Float.parseFloat(nonRebatePrize);
-                            rebateData.set(NumberUtils.formatDown(nonF, 3));
+                            rebateData.set(NumberUtils.formatDown(nonF / 2, 3));
                         } else {
                             rebateData.set("");
                         }
                     } else {
                         if (!TextUtils.isEmpty(rebatePrize)) {
                             float rF = Float.parseFloat(rebatePrize);
-                            rebateData.set(NumberUtils.formatDown(rF, 3));
+                            rebateData.set(NumberUtils.formatDown(rF / 2, 3));
                         } else {
                             rebateData.set("");
                         }
