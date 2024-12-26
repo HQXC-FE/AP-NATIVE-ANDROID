@@ -104,6 +104,7 @@ public class RetrofitClient {
                 .addInterceptor(new UrlModifyingInterceptor())
                 .addInterceptor(new ExceptionInterceptor())
                 .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+                .addInterceptor(new TokenAuthenticator())
                 .addInterceptor(new HttpLoggingInterceptor(message -> KLog.d(message)).setLevel(HttpLoggingInterceptor.Level.BODY))
 //                .addInterceptor(new LoggingInterceptor
 //                        .Builder()//构建者模式
