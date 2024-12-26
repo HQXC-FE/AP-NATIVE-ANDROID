@@ -1,11 +1,15 @@
 package com.xtree.bet.data
 
 import android.text.TextUtils
+import com.google.gson.Gson
 import com.xtree.base.global.SPKeyGlobal
 import com.xtree.base.net.FBRetrofitClient
 import com.xtree.base.net.RetrofitClient
 import com.xtree.base.utils.BtDomainUtil
 import com.xtree.base.vo.FBService
+import com.xtree.bet.bean.response.fb.FbMatchListCacheRsp
+import com.xtree.bet.bean.response.fb.FbStatisticalInfoCacheRsp
+import com.xtree.bet.bean.response.fb.StatisticalInfo
 import com.xtree.bet.data.source.HttpDataSource
 import com.xtree.bet.data.source.LocalDataSource
 import com.xtree.bet.data.source.http.HttpDataSourceImpl
@@ -41,8 +45,16 @@ class TokenAuthenticator : Interceptor {
         }
 
         val response = chain.proceed(authenticatedRequest)
-        val code = response.body!!.string()
-        System.out.println("=============== TokenAuthenticator code =====================" + code)
+
+        if(!request.url.toString().contains("fb/forward?api")){
+            return response
+        }
+        System.out.println("================= TokenAuthenticator request.url.toString() ==================="+request.url.toString())
+        // 解析响应体为 BaseResponse<StatisticalInfo>
+        val responseBody = response.body?.string()  // 获取响应体内容
+        System.out.println("================= TokenAuthenticator responseBody ==================="+responseBody)
+
+        System.out.println("=============== TokenAuthenticator code ====================="+responseBody.toString().contains("14010"))
         // 处理特定状态码
         when (response.code) {
             401, 423 -> {
@@ -81,11 +93,44 @@ class TokenAuthenticator : Interceptor {
             500 -> handleServerError() // 处理 500
         }
 
+        if(responseBody.toString().contains("14010")){
+            lock.lock()
+            try {
+                System.out.println("=============== TokenAuthenticator 重新请求Token =====================")
+                val currentToken = token
+
+                // 检查 Token 是否已被其他线程刷新
+                if (currentToken == token) {
+                    // 执行 Token 刷新操作
+                    val newToken = refreshLiveToken()
+                    if (!newToken.isNullOrEmpty()) {
+                        token = newToken
+                        System.out.println("================== 新 token ==================" + token)
+                        if (TextUtils.equals(mPlatform, BtDomainUtil.PLATFORM_FBXC)) {
+                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, token)
+                        } else {
+                            SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, token)
+                        }
+                        // 使用新 Token 重试请求
+                        return chain.proceed(
+                            request.newBuilder().header("x-live-Token", newToken).build()
+                        )
+                    } else {
+                        // 如果刷新失败，直接返回原响应
+                        return response
+                    }
+                }
+            } finally {
+                lock.unlock()
+            }
+        }
+
         return response
     }
 
     private fun refreshLiveToken(): String? {
         return try {
+            System.out.println("================== refreshLiveToken  ==================")
             //网络API服务
             val apiService = RetrofitClient.getInstance().create(
                 ApiService::class.java
@@ -100,9 +145,9 @@ class TokenAuthenticator : Interceptor {
             val localDataSource: LocalDataSource = LocalDataSourceImpl.getInstance()
             // 使用同步方式刷新 Token
             val response = BetRepository.getInstance(httpDataSource, localDataSource)
-                .baseApiService.fbGameTokenApi.compose(RxUtils.schedulersTransformer())
+                .baseApiService.fbGameZeroTokenApi.compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer()).blockingFirst() // 阻塞当前线程，等待刷新结果
-
+            System.out.println("================== refreshLiveToken  response =================="+response)
             (response as? BaseResponse<FBService>)?.data?.let {
                 it.token
             } ?: run { null }
@@ -112,6 +157,8 @@ class TokenAuthenticator : Interceptor {
         }
         return ""
     }
+
+
 
     private fun handleForbidden() {
         // 自定义逻辑，比如跳转到错误页或提示对话框

@@ -6,6 +6,8 @@ import com.xtree.base.vo.PMService;
 import com.xtree.bet.bean.request.fb.FBListReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.HotLeagueInfo;
+import com.xtree.bet.bean.response.fb.FbMatchListCacheRsp;
+import com.xtree.bet.bean.response.fb.FbStatisticalInfoCacheRsp;
 import com.xtree.bet.bean.response.fb.MatchInfo;
 import com.xtree.bet.bean.response.fb.MatchListRsp;
 import com.xtree.bet.bean.response.fb.StatisticalInfo;
@@ -42,6 +44,14 @@ public interface ApiService {
     @POST("/api/sports/fb/getToken?cachedToken=1")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<FBService>> getFBGameTokenApi();
+
+    /**
+     * 获取 FB体育请求服务地址
+     * @return
+     */
+    @POST("/api/sports/fb/getToken?cachedToken=0")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<FBService>> getFBGameZeroTokenApi();
 
     /**
      * 获取 FB杏彩体育请求服务地址
@@ -106,7 +116,7 @@ public interface ApiService {
      */
     @POST("/api/sports/fb/forward?api=/v1/match/getList&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<MatchListRsp>> fbGetFBList(@Body FBListReq FBListReq);
+    Flowable<BaseResponse<FbMatchListCacheRsp>> fbGetFBList(@Body FBListReq FBListReq);
 
     /**
      * 按运动、分类类型统计可投注的赛事个数
@@ -114,7 +124,7 @@ public interface ApiService {
      */
     @POST("/api/sports/fb/forward?api=/v1/match/statistical&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<StatisticalInfo>> fbStatistical(@Body Map<String, String> map);
+    Flowable<BaseResponse<FbStatisticalInfoCacheRsp>> fbStatistical(@Body Map<String, String> map);
 
     /**
      * 按运动、分类类型统计可投注的赛事个数
@@ -129,7 +139,7 @@ public interface ApiService {
      * 获取 FB体育请求服务地址
      * @return
      */
-    @POST("/api/sports/fbxc/xforward?api=/v1/match/getList&method=post")
+    @POST("/api/sports/fbxc/forward?api=/v1/match/getList&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<MatchListRsp>> fbxcGetFBList(@Body FBListReq FBListReq);
 
