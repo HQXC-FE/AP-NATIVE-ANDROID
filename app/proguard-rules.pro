@@ -53,6 +53,7 @@
 -keep class me.xtree.mvvmhabit.http.BaseResponse3 { *; }
 -keep class me.xtree.mvvmhabit.http.PMBaseResponse { *; }
 -keep class me.xtree.mvvmhabit.http.ValidateResponse { *; }
+-keep class com.xtree.bet.data.TokenAuthenticator { *; }
 
 -keep class com.xtree.base.vo.**{*;}
 -keep class com.xtree.activity.vo.**{*;}

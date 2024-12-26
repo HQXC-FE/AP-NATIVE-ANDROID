@@ -1,12 +1,11 @@
-package com.xtree.base.net
+package com.xtree.bet.data
 
 import android.text.TextUtils
 import com.xtree.base.global.SPKeyGlobal
+import com.xtree.base.net.FBRetrofitClient
+import com.xtree.base.net.RetrofitClient
 import com.xtree.base.utils.BtDomainUtil
 import com.xtree.base.vo.FBService
-import com.xtree.bet.data.ApiService
-import com.xtree.bet.data.BetRepository
-import com.xtree.bet.data.FBApiService
 import com.xtree.bet.data.source.HttpDataSource
 import com.xtree.bet.data.source.LocalDataSource
 import com.xtree.bet.data.source.http.HttpDataSourceImpl
@@ -18,7 +17,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import java.util.concurrent.locks.ReentrantLock
 
-class TokenAuthenticator() : Interceptor {
+class TokenAuthenticator : Interceptor {
 
     private val lock = ReentrantLock()
     private val mPlatform = ""
@@ -43,7 +42,7 @@ class TokenAuthenticator() : Interceptor {
 
         val response = chain.proceed(authenticatedRequest)
         val code = response.body!!.string()
-        System.out.println("=============== TokenAuthenticator code ====================="+code)
+        System.out.println("=============== TokenAuthenticator code =====================" + code)
         // 处理特定状态码
         when (response.code) {
             401, 423 -> {
@@ -58,13 +57,11 @@ class TokenAuthenticator() : Interceptor {
                         val newToken = refreshLiveToken()
                         if (!newToken.isNullOrEmpty()) {
                             token = newToken
-                            System.out.println("================== token =================="+token)
+                            System.out.println("================== token ==================" + token)
                             if (TextUtils.equals(mPlatform, BtDomainUtil.PLATFORM_FBXC)) {
-                                SPUtils.getInstance()
-                                    .put(SPKeyGlobal.FBXC_TOKEN, token)
+                                SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, token)
                             } else {
-                                SPUtils.getInstance()
-                                    .put(SPKeyGlobal.FB_TOKEN, token)
+                                SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, token)
                             }
                             // 使用新 Token 重试请求
                             return chain.proceed(
@@ -102,9 +99,9 @@ class TokenAuthenticator() : Interceptor {
             //本地数据源
             val localDataSource: LocalDataSource = LocalDataSourceImpl.getInstance()
             // 使用同步方式刷新 Token
-            val response = BetRepository.getInstance(httpDataSource,localDataSource).getBaseApiService().fbGameTokenApi
-                .compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer())
-                .blockingFirst() // 阻塞当前线程，等待刷新结果
+            val response = BetRepository.getInstance(httpDataSource, localDataSource)
+                .baseApiService.fbGameTokenApi.compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer()).blockingFirst() // 阻塞当前线程，等待刷新结果
 
             (response as? BaseResponse<FBService>)?.data?.let {
                 it.token
