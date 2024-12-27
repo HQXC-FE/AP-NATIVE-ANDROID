@@ -40,7 +40,7 @@ public abstract class FBHttpCallBack<T> extends DisposableSubscriber<T> {
                 break;
             default:
                 KLog.e("status is not normal: " + baseResponse);
-                ToastUtils.showShort(baseResponse.getMessage());
+                ToastUtils.showShort(filterChineseCharacters(baseResponse.getMessage()));
                 break;
         }
     }
@@ -54,7 +54,7 @@ public abstract class FBHttpCallBack<T> extends DisposableSubscriber<T> {
                 AppUtil.goWeb403();
                 return;
             }
-            //ToastUtils.showShort(rError.message);
+            ToastUtils.showShort(filterChineseCharacters(rError.message));
             return;
         }
         //其他全部甩锅网络异常
@@ -71,6 +71,11 @@ public abstract class FBHttpCallBack<T> extends DisposableSubscriber<T> {
         static final int CODE_0 = 0;
         static final int CODE_10000 = 10000;
         public static final int CODE_14010 = 14010;
+    }
+
+    private String filterChineseCharacters(String input) {
+        // 使用正则表达式，匹配所有非中文字符并替换为空字符串
+        return input.replaceAll("[^\\p{IsHan}]", "");
     }
 
 }
