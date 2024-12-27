@@ -11,9 +11,12 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterActivityPath;
+import com.xtree.base.widget.CustomerServiceDialogActivity;
 
 import me.xtree.mvvmhabit.base.AppManager;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -27,6 +30,56 @@ public class AppUtil {
      * @param ctx Context
      */
     public static void goCustomerService(Context ctx) {
+
+        ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_CUSTOMER_SERVICE).navigation();
+      /* BasePopupView basePopupView = new XPopup.Builder(ctx).dismissOnBackPressed(true)
+                .dismissOnTouchOutside(false)
+                .asCustom(CustomerServiceDialog.newInstance(ctx, "登录密码总是不正确"));
+        basePopupView.show();*/
+       /* String serviceLink ;
+
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
+            serviceLink =SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK) ;
+        }else {
+            serviceLink =Constant.URL_CUSTOMER_SERVICE ;
+        }
+        *//*CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
+
+        CfLog.e("goCustomerService  ---- sDomainUtil.getH5Domain2()" +DomainUtil.getH5Domain2() + serviceLink);*//*
+      *//*  goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);*//*
+        goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink);*/
+    }
+
+    /**
+     * 跳转Dialog形式客服
+     * @param ctx
+     */
+    public static void goCustomerServiceDialog(Context ctx) {
+       BasePopupView basePopupView = new XPopup.Builder(ctx).dismissOnBackPressed(true)
+                .dismissOnTouchOutside(false)
+                .asCustom( CustomerServiceDialogActivity.newInstance(ctx));
+        basePopupView.show();
+       /* String serviceLink ;
+
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
+            serviceLink =SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK) ;
+        }else {
+            serviceLink =Constant.URL_CUSTOMER_SERVICE ;
+        }
+        *//*CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
+
+        CfLog.e("goCustomerService  ---- sDomainUtil.getH5Domain2()" +DomainUtil.getH5Domain2() + serviceLink);*//*
+         *//*  goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);*//*
+        goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink);*/
+    }
+
+
+    /**
+     * 跳转到客服
+     *
+     * @param ctx Context
+     */
+    public static void goCustomerServiceWeb(Context ctx) {
         String serviceLink ;
 
         if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
@@ -34,12 +87,13 @@ public class AppUtil {
         }else {
             serviceLink =Constant.URL_CUSTOMER_SERVICE ;
         }
-        /*CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
+    /*    CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
 
-        CfLog.e("goCustomerService  ---- sDomainUtil.getH5Domain2()" +DomainUtil.getH5Domain2() + serviceLink);*/
-      /*  goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);*/
+        CfLog.e("goCustomerService  ---- sDomainUtil.getH5Domain2()" +DomainUtil.getH5Domain2() + serviceLink);
+           goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);*/
         goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink);
     }
+
 
     public static void goBrowser(Context ctx, String url) {
         if (ctx == null || url == null || url.isEmpty()) {
