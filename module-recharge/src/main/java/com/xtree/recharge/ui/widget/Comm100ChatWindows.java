@@ -67,7 +67,7 @@ public class Comm100ChatWindows extends FloatingWindows {
 
                 String newChatUrl = oldChatUrl;
                 Map<String, String> remark = null;
-                Set newChatUrlSet = SPUtils.getInstance().getStringSet(SPKeyGlobal.HICHAT_URL_SUFFIX, Set.of());
+                Set newChatUrlSet = SPUtils.getInstance().getStringSet(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, Set.of());
 
                 if (!newChatUrlSet.isEmpty()) {
                     newChatUrl = (String) newChatUrlSet.iterator().next();
