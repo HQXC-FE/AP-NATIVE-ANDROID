@@ -228,8 +228,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             return;
         } else if (t instanceof BusinessException) {
             BusinessException rError = (BusinessException) t;
-            //产品要求去掉异常提示
-            //ToastUtils.showLong(rError.message + " [" + rError.code + "]");
+            ToastUtils.showLong(filterChineseCharacters(rError.message) + " [" + rError.code + "]");
             return;
         }
         //其他全部甩锅网络异常
@@ -244,7 +243,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             onFail41011(t);
             return;
         }
-        //ToastUtils.showLong(t.message + " [" + t.code + "]");
+        ToastUtils.showLong(filterChineseCharacters(t.message) + " [" + t.code + "]");
     }
 
     /**
@@ -411,4 +410,8 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
 
     }
 
+    private String filterChineseCharacters(String input) {
+        // 使用正则表达式，匹配所有非中文字符并替换为空字符串
+        return input.replaceAll("[^\\p{IsHan}]", "");
+    }
 }
