@@ -117,7 +117,8 @@ public class FeedbackEditFragment extends BaseFragment<FragmentFeedbackEditBindi
 
         binding.tvUsername.setText(mProfileVo.username);
         //我的客服
-        binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
+        binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerServiceDialog(getContext()));
+
         //消息中心
         binding.ivwMsg.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_MSG);
