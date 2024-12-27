@@ -1,8 +1,12 @@
 package com.xtree.base.mvvm
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.text.TextWatcher
 import android.widget.EditText
@@ -24,8 +28,20 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
+import com.xtree.base.R
 import com.xtree.base.mvvm.recyclerview.BaseDatabindingAdapter
 import com.xtree.base.mvvm.recyclerview.BindModel
+import com.xtree.base.net.HeaderInterceptor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import me.xtree.mvvmhabit.utils.ToastUtils
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import java.io.IOException
 
 /**
  *Created by KAKA on 2024/3/8.
@@ -205,4 +221,65 @@ fun String?.plusDomainOrNot(domain: String): String {
         target = domain + separator + target
     }
     return target
+}
+
+/**
+ * 加载图片时，需要鉴权
+ */
+fun loadImageAuthentication(url: String, imageView: ImageView) {
+    if (!isNetworkAvailable(imageView.context)) {
+        // 没有网络，直接显示错误图片
+        GlobalScope.launch(Dispatchers.Main) {
+            ToastUtils.showLong("网络不可用，请检查网络连接")
+            imageView.setImageResource(R.mipmap.error_image)
+        }
+        return
+    }
+
+    val client = OkHttpClient.Builder()
+        .addInterceptor(HeaderInterceptor())
+        .build()
+
+    val request = Request.Builder()
+        .url(url)
+        .build()
+
+    client.newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            // 加载失败
+            GlobalScope.launch(Dispatchers.Main) {
+                imageView.setImageResource(R.mipmap.error_image)
+            }
+        }
+
+        override fun onResponse(call: Call, response: Response) {
+            if (response.isSuccessful) {
+                val inputStream = response.body?.byteStream()
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                inputStream?.close()
+                // 切换到主线程更新UI
+                GlobalScope.launch(Dispatchers.Main) {
+                    imageView.setImageBitmap(bitmap)
+                }
+            } else {
+                // 加载失败
+                GlobalScope.launch(Dispatchers.Main) {
+                    imageView.setImageResource(R.mipmap.error_image)
+                }
+            }
+        }
+    })
+}
+
+private fun isNetworkAvailable(context: Context): Boolean {
+    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val network = connectivityManager.activeNetwork ?: return false
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return activeNetwork.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    } else {
+        @Suppress("DEPRECATION")
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
 }
