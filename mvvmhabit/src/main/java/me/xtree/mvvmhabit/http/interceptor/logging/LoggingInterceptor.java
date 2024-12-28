@@ -3,6 +3,7 @@ package me.xtree.mvvmhabit.http.interceptor.logging;
 import android.text.TextUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -74,7 +75,14 @@ public class LoggingInterceptor implements Interceptor {
         long st = System.nanoTime();
         Response response = chain.proceed(request);
 
-        List<String> segmentList = request.url().encodedPathSegments();
+        List<String> segmentList;
+        if(builder.getIsFastLog()){ //如果是测速请求，希望响应的log中带有全路径的url用来分析
+            segmentList = new ArrayList<>();
+            segmentList.add(request.url().toString());
+        }else { //普通业务请求，响应的log中只需path
+           segmentList = request.url().encodedPathSegments();
+        }
+
         long chainMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - st);
         String header = response.headers().toString();
         int code = response.code();
@@ -109,6 +117,7 @@ public class LoggingInterceptor implements Interceptor {
 
         private static String TAG = "LoggingI";
         private boolean isDebug;
+        private boolean isFastLog;//如果是测速请求的log
         private int type = Platform.INFO;
         private String requestTag;
         private String responseTag;
@@ -122,6 +131,10 @@ public class LoggingInterceptor implements Interceptor {
 
         int getType() {
             return type;
+        }
+
+        boolean getIsFastLog() {
+            return isFastLog;
         }
 
         Level getLevel() {
@@ -204,6 +217,12 @@ public class LoggingInterceptor implements Interceptor {
          */
         public Builder loggable(boolean isDebug) {
             this.isDebug = isDebug;
+            return this;
+        }
+
+        //是否测速请求
+        public Builder ifFastRequest(boolean isFastest) {
+            this.isFastLog = isFastest;
             return this;
         }
 

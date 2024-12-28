@@ -59,4 +59,27 @@ public class DomainUtil {
         }
     }
 
+    /**
+     * 获取域名, 网页/图片 使用
+     * 有 / 结尾
+     *
+     * @return url
+     */
+    public static String getH5Domain() {
+        return getDomain();
+    }
+
+    /**
+     * 获取域名, 网页/图片 使用
+     *
+     * @return url
+     */
+    public static String getH5Domain2() {
+        return getDomain2();
+    }
+
+    public static void setH5Url(String url) {
+        setDomainUrl(url);
+    }
+
 }

@@ -1,5 +1,8 @@
 package com.xtree.mine.ui.activity;
 
+import static com.xtree.base.vo.EventConstant.EVENT_TOP_SPEED_FAILED;
+import static com.xtree.base.vo.EventConstant.EVENT_TOP_SPEED_FINISH;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,6 +13,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -18,6 +22,7 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.Constant;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AESUtil;
@@ -25,6 +30,7 @@ import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.SPUtil;
 import com.xtree.base.utils.TagUtils;
+import com.xtree.base.vo.EventVo;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.data.Spkey;
@@ -35,6 +41,10 @@ import com.xtree.mine.ui.fragment.GoogleAuthDialog;
 import com.xtree.mine.ui.viewmodel.LoginViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.mine.vo.LoginResultVo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 
@@ -54,6 +64,7 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
     private int clickCount = 0; // 点击次数 debug model
     private BasePopupView ppw;
     private BasePopupView showChangeLoginPSWPopView;
+    private TopSpeedDomainFloatingWindows mTopSpeedDomainFloatingWindows;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -66,12 +77,28 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
     }
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public void initData() {
         viewModel.getSettings();
     }
 
     @Override
     public void initView() {
+
+        mTopSpeedDomainFloatingWindows = new TopSpeedDomainFloatingWindows(this);
+        mTopSpeedDomainFloatingWindows.show();
+
         binding.llRoot.setOnClickListener(v -> hideKeyBoard());
         binding.loginSubHeader.setOnClickListener(v -> {
             if (clickCount++ > 5) {
@@ -389,6 +416,19 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
             SPUtil.get(getApplication()).put(Spkey.KEY, key);
         }
         return new SecretKeySpec(Base64.decode(key, Base64.DEFAULT), "AES");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventVo event) {
+        switch (event.getEvent()) {
+            case EVENT_TOP_SPEED_FINISH:
+                CfLog.e("EVENT_TOP_SPEED_FINISH竞速完成。。。");
+                mTopSpeedDomainFloatingWindows.refresh();
+                break;
+            case EVENT_TOP_SPEED_FAILED:
+                mTopSpeedDomainFloatingWindows.onError();
+                break;
+        }
     }
 
 }

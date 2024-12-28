@@ -42,11 +42,18 @@ import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.databinding.ActivityBrowserBinding;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.vo.EventConstant;
+import com.xtree.base.vo.EventVo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -98,6 +105,7 @@ public class BrowserActivity extends AppCompatActivity {
     ValueCallback<Uri> mUploadCallbackBelow;
     ValueCallback<Uri[]> mUploadCallbackAboveL;
     ActivityBrowserBinding binding;
+    private TopSpeedDomainFloatingWindows mTopSpeedDomainFloatingWindows;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +113,8 @@ public class BrowserActivity extends AppCompatActivity {
         binding = ActivityBrowserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         //setContentView(R.layout.activity_browser);
+
+        EventBus.getDefault().register(this);
 
         initView();
         title = getIntent().getStringExtra(ARG_TITLE);
@@ -205,6 +215,9 @@ public class BrowserActivity extends AppCompatActivity {
         ivwBack.setOnClickListener(v -> finish());
 
         mWebView.setFitsSystemWindows(true);
+
+        mTopSpeedDomainFloatingWindows = new TopSpeedDomainFloatingWindows(this);
+        mTopSpeedDomainFloatingWindows.show();
     }
 
     @Override
@@ -214,6 +227,8 @@ public class BrowserActivity extends AppCompatActivity {
             agentWeb.destroy();
         }
         super.onDestroy();
+
+        EventBus.getDefault().unregister(this);
     }
 
     private void initAgentWeb(String url, Map<String, String> header) {
@@ -579,5 +594,17 @@ public class BrowserActivity extends AppCompatActivity {
         it.putExtra(BrowserActivity.ARG_IS_SHOW_LOADING, isShowLoading);
         it.putExtra(BrowserActivity.ARG_IS_HELP_CENTTAL, isHelpCentral);
         ctx.startActivity(it);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventVo event) {
+        switch (event.getEvent()) {
+            case EventConstant.EVENT_TOP_SPEED_FINISH:
+                mTopSpeedDomainFloatingWindows.refresh();
+                break;
+            case EventConstant.EVENT_TOP_SPEED_FAILED:
+                mTopSpeedDomainFloatingWindows.onError();
+                break;
+        }
     }
 }
