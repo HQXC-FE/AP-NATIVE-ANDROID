@@ -106,7 +106,7 @@ public abstract class FloatingWindows extends RelativeLayout {
     protected void initView(int layout) {
         mWindowManager = (WindowManager) mContext.getSystemService(WINDOW_SERVICE);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-        floatView = inflater.inflate(R.layout.floating_icon, null);
+        floatView = inflater.inflate(R.layout.floating_icon_base, null);
         if (layout != 0) {
             secondaryLayout = inflater.inflate(layout, null);
         }
