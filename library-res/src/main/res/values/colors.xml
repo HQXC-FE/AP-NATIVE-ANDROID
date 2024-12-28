@@ -560,4 +560,43 @@
     <!-- 充值弹窗 注意字体颜色   -->
     <color name="clr_txt_recharge_tip">#121B47</color>
 
+
+    <color name="clr_txt_edittext_input_stroke">#38373C</color>
+    <color name="clr_txt_edittext_input">#313035</color>
+    <!--取消按钮 暗色系 开始颜色-->
+    <color name="clr_txt_left_dark_start">#3F3F3F</color>
+    <!--取消按钮 暗色系 结束颜色-->
+    <color name="clr_txt_left_dark_end">#363636</color>
+
+    <color name="clr_txt_right_dark_start">#78E6AF</color>
+    <color name="clr_txt_right_dark_center">#2F7653</color>
+    <color name="clr_txt_right_dark_end">#66CC99</color>
+
+    <color name="clr_txt_withdraw_left_dark_start">#222322</color>
+    <color name="clr_txt_withdraw_left_dark_end">#5A5A5A</color>
+    <!--重置登录密码暗色系 结束颜色-->
+    <color name="clr_reset_bg_dark">#242424</color>
+    <color name="clr_withdraw_bg_dark">#2C2C2C</color>
+    <color name="clr_dialog_left">#676767</color>
+    <!--提款固额金额未选中颜色 暗色系 -->
+    <color name="clr_withdraw_no_selector">#3E3E40</color>
+    <color name="clr_withdraw_selector_start">#81CEA7</color>
+    <color name="clr_withdraw_selector_end">#66CC99</color>
+    <color name="clr_re_feedback_right_txt_hint">#868686</color>
+    <!--充值页面 字体颜色 暗色系 -->
+    <color name="clr_re_txt">#BCBCBC</color>
+    <color name="clr_re_channels_txt">#3FD0FF</color>
+    <color name="clr_re_bottom_txt">#E3E3E3</color>
+    <color name="clr_re_bottom_bt_start">#82EAB6</color>
+    <color name="clr_re_bottom_bt_end">#66CC99</color>
+
+    <!-- 按钮背景 左中右/上中下 -->
+    <color name="clr_purple_bg01">#E5BFFC</color>
+    <color name="clr_purple_bg03">#AF8BE6</color>
+    <color name="clr_purple_bg05">#8869E6</color>
+
+    <!-- 测速浮窗-->
+    <color name="clr_txt_fastest_high">#EE1A34</color>
+    <color name="clr_txt_fastest_medium">#FFE145</color>
+    <color name="clr_txt_fastest_low">#51FF6D</color>
 </resources>

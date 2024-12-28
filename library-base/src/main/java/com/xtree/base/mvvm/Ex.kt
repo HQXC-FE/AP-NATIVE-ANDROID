@@ -109,7 +109,7 @@ fun RecyclerView.init(
 
 
 @BindingAdapter(
-    value = ["typeData", "statuData", "queryListener"],
+    value = ["typeData", "statData", "queryListener"],
     requireAll = false
 )
 fun FilterView.initData(
