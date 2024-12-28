@@ -552,8 +552,6 @@
     <!-- 充值弹窗 注意字体颜色   -->
     <color name="clr_txt_recharge_tip">#121B47</color>
 
-
-
     <!-- 测速浮窗-->
     <color name="clr_txt_fastest_high">#EE1A34</color>
     <color name="clr_txt_fastest_medium">#FFE145</color>
