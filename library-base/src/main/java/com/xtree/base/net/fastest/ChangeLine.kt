@@ -2,16 +2,17 @@ package com.xtree.base.net.fastest
 
 import com.alibaba.android.arouter.utils.TextUtils
 import com.drake.net.Get
-import com.drake.net.okhttp.trustSSLCertificate
 import com.drake.net.transform.transform
 import com.drake.net.utils.fastest
 import com.drake.net.utils.runMain
 import com.drake.net.utils.scopeNet
 import com.google.gson.Gson
 import com.xtree.base.R
+import com.xtree.base.net.fastest.ChangeH5LineUtil.Companion.mCurH5DomainList
 import com.xtree.base.utils.AESUtil
 import com.xtree.base.utils.CfLog
 import com.xtree.base.utils.DomainUtil
+import com.xtree.base.vo.Domain
 import me.xtree.mvvmhabit.http.NetworkUtil
 import me.xtree.mvvmhabit.utils.ToastUtils
 import me.xtree.mvvmhabit.utils.Utils
@@ -85,9 +86,8 @@ abstract class ChangeLine {
             mCurApiDomainList.clear()
             mThirdApiDomainList.clear()
             mIsRunning = true
-//            setThirdFasterDomain
-            setFasterApiDomain()
-            getFastestApiDomain()
+            setThirdFasterDomain()
+            getThirdFastestDomain()
         }
     }
 
@@ -112,16 +112,15 @@ abstract class ChangeLine {
         }
     }
 
-//    /**
-//     * 设置三方存储domain域名地址
-//     */
-//    private fun setThirdFasterDomain() {
-//        val urls = Utils.getContext().getString(R.string.domain_url_list_third)
-//        val list = listOf(*urls.split(";".toRegex()).dropLastWhile { it.isEmpty() }
-//            .toTypedArray())
-//        addThirdDomainList(list)
-//        getThirdFastestDomain()
-//    }
+    /**
+     * 设置三方存储domain域名地址
+     */
+    private fun setThirdFasterDomain() {
+        val urls = Utils.getContext().getString(R.string.domain_url_list_third)
+        val list = listOf(*urls.split(";".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray())
+        addThirdDomainList(list)
+    }
 
     /**
      * 线路竞速
@@ -151,7 +150,7 @@ abstract class ChangeLine {
                         if (mIsApi) {
                             DomainUtil.setApiUrl(host)
                         } else {
-//                            DomainUtil.setH5Url(host)
+                            DomainUtil.setH5Url(host)
                         }
                         onSuccessed()
                         mIsRunning = false
@@ -172,51 +171,60 @@ abstract class ChangeLine {
         }
     }
 
-//    /**
-//     * 三方域名存储地址竞速
-//     */
-//    private fun getThirdFastestDomain() {
-//        if (index == mThirdApiDomainList.size - 1) {
-//            setFasterApiDomain()
-//            CfLog.e("mCurApiDomainList.size==" + mCurApiDomainList.size)
-//            if (mCurApiDomainList.isEmpty()) {
-//                onAllDomainHijacked()
-//            } else {
-//                getFastestApiDomain()
-//            }
-//        }
-//        //mCurApiDomainList.clear()
-//        if (index < mThirdApiDomainList.size && !TextUtils.isEmpty(mThirdApiDomainList[index])) {
-//            scopeNet {
-//                try {
-//                    val data =
-//                        Get<String>(mThirdApiDomainList[index], block = FASTEST_BLOCK).await()
-//
-//                    var domainJson = AESUtil.decryptData(
-//                        data,
-//                        "wnIem4HOB2RKzhiqpaqbZuxtp7T36afAHH88BUht/2Y="
-//                    )
-//                    val domain: Domain = Gson().fromJson(domainJson, Domain::class.java)
-//                    if (mIsApi) {
-//                        addApiDomainList(domain.api)
-//                    } else {
-//                        addApiDomainList(domain.h5)
-//                    }
-//                    if (mCurApiDomainList.isNotEmpty()) {
-//                        setFasterApiDomain()
-//                        CfLog.e("mCurApiDomainList.size==" + mCurApiDomainList.size)
-//                        if (mCurApiDomainList.isEmpty()) {
-//                            onAllDomainHijacked()
-//                        } else {
-//                            getFastestApiDomain()
-//                        }
-//                    }
-//                } catch (e: Exception) {
-//                    CfLog.e("Exception==$e")
-//                    index++
-//                    getThirdFastestDomain()
-//                }
-//            }
-//        }
-//    }
+    /**
+     * 三方域名存储地址竞速
+     */
+    private fun getThirdFastestDomain() {
+        if (index == mThirdApiDomainList.size - 1) {
+            setFasterApiDomain()
+            CfLog.e("mCurApiDomainList.size==" + mCurApiDomainList.size)
+            if (mCurApiDomainList.isEmpty()) {
+                onAllDomainHijacked()
+            } else {
+                getFastestApiDomain()
+            }
+        }
+        //mCurApiDomainList.clear()
+        if (index < mThirdApiDomainList.size && !TextUtils.isEmpty(mThirdApiDomainList[index])) {
+            scopeNet {
+                try {
+                    val data =
+                        Get<String>(mThirdApiDomainList[index], block = FASTEST_BLOCK).await()
+
+                    var domainJson = AESUtil.decryptData(
+                        data,
+                        "wnIem4HOB2RKzhiqpaqbZuxtp7T36afAHH88BUht/2Y="
+                    )
+                    val domain: Domain = Gson().fromJson(domainJson, Domain::class.java)
+                    if (mIsApi) {
+                        if (!domain.api.isNullOrEmpty()) {
+                            mCurApiDomainList.clear()
+                        }
+                        addApiDomainList(domain.api)
+                    } else {
+                        if (!domain.h5.isNullOrEmpty()) {
+                            mCurH5DomainList.clear()
+                        }
+                        addApiDomainList(domain.h5)
+                    }
+                    if (mCurApiDomainList.isNotEmpty()) {
+                        setFasterApiDomain()
+                        CfLog.e("mCurApiDomainList.size==" + mCurApiDomainList.size)
+                        if (mCurApiDomainList.isEmpty()) {
+                            onAllDomainHijacked()
+                        } else {
+                            getFastestApiDomain()
+                        }
+                    } else {
+                        index++
+                        getThirdFastestDomain()
+                    }
+                } catch (e: Exception) {
+                    CfLog.e("Exception==$e")
+                    index++
+                    getThirdFastestDomain()
+                }
+            }
+        }
+    }
 }
