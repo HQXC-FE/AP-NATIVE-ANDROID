@@ -1,8 +1,7 @@
-package com.xtree.base.widget;
+package com.xtree.base.net.fastest;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
-
 import static com.xtree.base.net.fastest.FastestConfigKt.FASTEST_GOURP_NAME;
 
 import android.annotation.SuppressLint;
@@ -30,11 +29,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.drake.net.Net;
 import com.xtree.base.R;
-import com.xtree.base.adapter.MainDomainAdapter;
 import com.xtree.base.databinding.MainLayoutTopSpeedDomainBinding;
-import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.utils.TagUtils;
-import com.xtree.base.vo.TopSpeedDomain;
+import com.xtree.base.widget.FloatingWindows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,12 +72,16 @@ public class TopSpeedDomainFloatingWindows extends FloatingWindows {
 
                 TextView fastestStatusTime = iconView.findViewById(R.id.fastest_status_time);
                 ImageView fastestStatusImg = iconView.findViewById(R.id.fastest_status_img);
-                fastestStatusTime.setText(topSpeedDomain.speedSec + "ms");
 
-                if (topSpeedDomain.speedSec <= 500) {
+                //显示的测速时间，比较真实时间和优化时间取最短
+                long speedTime = Math.min(topSpeedDomain.speedScore, topSpeedDomain.speedSec);
+
+                fastestStatusTime.setText(speedTime + "ms");
+
+                if (speedTime <= 500) {
                     fastestStatusTime.setTextColor(mContext.getResources().getColor(R.color.clr_txt_fastest_low));
                     fastestStatusImg.setImageResource(R.mipmap.icon_fastest_status_low);
-                } else if (topSpeedDomain.speedSec < 1000) {
+                } else if (speedTime < 1000) {
                     fastestStatusTime.setTextColor(mContext.getResources().getColor(R.color.clr_txt_fastest_medium));
                     fastestStatusImg.setImageResource(R.mipmap.icon_fastest_status_medium);
                 } else {
@@ -161,7 +162,7 @@ public class TopSpeedDomainFloatingWindows extends FloatingWindows {
     public TopSpeedDomainFloatingWindows(Context context) {
         super(context);
         onCreate(R.layout.main_layout_top_speed_domain);
-        setIcon(R.mipmap.main_icon_shadow);
+        setIcon(0);
     }
 
     @Override
@@ -213,6 +214,7 @@ public class TopSpeedDomainFloatingWindows extends FloatingWindows {
                 mainDomainAdapter.setChecking(true);
                 mainDomainAdapter.setNewData(datas);
                 FastestTopDomainUtil.getInstance().start();
+                ChangeH5LineUtil.getInstance().start();
             } else {
                 ToastUtils.show("测速过于频繁，请稍后再试!", Toast.LENGTH_SHORT, 0);
             }
@@ -265,6 +267,7 @@ public class TopSpeedDomainFloatingWindows extends FloatingWindows {
                 mainDomainAdapter.setNewData(datas);
             }
             FastestTopDomainUtil.getInstance().start();
+            ChangeH5LineUtil.getInstance().start();
         }
     }
 
@@ -322,7 +325,7 @@ public class TopSpeedDomainFloatingWindows extends FloatingWindows {
      */
     private Bitmap getBitmapFromView(View view) {
         // 测量并布局视图
-        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
 
         // 创建 Bitmap
@@ -356,6 +359,7 @@ public class TopSpeedDomainFloatingWindows extends FloatingWindows {
                     TopSpeedDomain oldData = datas.get(i);
                     oldData.url = newData.url;
                     oldData.speedSec = newData.speedSec;
+                    oldData.speedScore = newData.speedScore;
                     mainDomainAdapter.notifyItemChanged(i);
                 } else {
                     datas.add(newData);

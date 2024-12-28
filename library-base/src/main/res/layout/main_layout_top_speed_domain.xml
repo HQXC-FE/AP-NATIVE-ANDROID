@@ -23,7 +23,7 @@
             android:layout_marginStart="@dimen/layout_margin"
             android:layout_marginTop="@dimen/layout_margin"
             android:text="线路选择"
-            android:textColor="@color/clr_txt_grey_10"
+            android:textColor="@color/clr_txt_06"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
