@@ -1,19 +1,20 @@
 package com.xtree.bet.ui.viewmodel.callback;
 
 import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
-import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FB;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
+import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.FBHttpCallBack;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
-import com.xtree.base.request.UploadExcetionReq;
+import com.xtree.bet.bean.response.fb.FbMatchListCacheRsp;
 import com.xtree.bet.bean.response.fb.MatchInfo;
 import com.xtree.bet.bean.response.fb.MatchListRsp;
 import com.xtree.bet.bean.ui.League;
@@ -36,7 +37,7 @@ import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class LeagueListCallBack extends FBHttpCallBack<MatchListRsp> {
+public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp> {
     private FBMainViewModel mViewModel;
     private boolean mHasCache;
     private boolean mIsTimerRefresh;
@@ -123,10 +124,10 @@ public class LeagueListCallBack extends FBHttpCallBack<MatchListRsp> {
         }
     }
 
-    public LeagueListCallBack(FBMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
-                              int currentPage, int playMethodType, int sportPos, String sportId,
-                              int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchids,
-                              boolean needSecondStep, int finalType, boolean isStepSecond) {
+    public LeagueListCacheCallBack(FBMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
+                                   int currentPage, int playMethodType, int sportPos, String sportId,
+                                   int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchids,
+                                   boolean needSecondStep, int finalType, boolean isStepSecond) {
         mViewModel = viewModel;
         mHasCache = hasCache;
         mIsTimerRefresh = isTimerRefresh;
@@ -155,8 +156,9 @@ public class LeagueListCallBack extends FBHttpCallBack<MatchListRsp> {
     }
 
     @Override
-    public void onResult(MatchListRsp matchListRsp) {
+    public void onResult(FbMatchListCacheRsp fbMatchListCacheRsp) {
         System.out.println("================= LeagueListCallBack onResult ====================");
+        MatchListRsp  matchListRsp = fbMatchListCacheRsp.getData();
         if (mIsTimerRefresh) {
             if (matchListRsp.records.size() != mMatchids.size()) {
                 List<Long> matchIdList = new ArrayList<>();
@@ -239,7 +241,7 @@ public class LeagueListCallBack extends FBHttpCallBack<MatchListRsp> {
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("================= LeagueListCallBack onError ====================");
+        System.out.println("================= LeagueListCacheCallBack onError ====================");
         mViewModel.getUC().getDismissDialogEvent().call();
         if (t instanceof ResponseThrowable) {
             if(((ResponseThrowable) t).isHttpError){

@@ -1,19 +1,15 @@
 package com.xtree.bet.ui.viewmodel.callback;
 
-import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
-import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FB;
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.FBHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
-import com.xtree.base.request.UploadExcetionReq;
+import com.xtree.bet.bean.response.fb.FbMatchListCacheRsp;
 import com.xtree.bet.bean.response.fb.MatchInfo;
 import com.xtree.bet.bean.response.fb.MatchListRsp;
 import com.xtree.bet.bean.ui.League;
@@ -32,11 +28,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class LeagueListCallBack extends FBHttpCallBack<MatchListRsp> {
+public class FBChampionListCacheCallBack extends HttpCallBack<FbMatchListCacheRsp> {
     private FBMainViewModel mViewModel;
     private boolean mHasCache;
     private boolean mIsTimerRefresh;
@@ -50,8 +45,6 @@ public class LeagueListCallBack extends FBHttpCallBack<MatchListRsp> {
     private int mSearchDatePos;
     private int mOddType;
     private List<Long> mMatchids;
-    private boolean mNeedSecondStep;
-    private int mFinalType;
     /**
      * 是否获取今日中未开赛比赛列表
      */
@@ -123,10 +116,9 @@ public class LeagueListCallBack extends FBHttpCallBack<MatchListRsp> {
         }
     }
 
-    public LeagueListCallBack(FBMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
-                              int currentPage, int playMethodType, int sportPos, String sportId,
-                              int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchids,
-                              boolean needSecondStep, int finalType, boolean isStepSecond) {
+    public FBChampionListCacheCallBack(FBMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
+                                       int currentPage, int playMethodType, int sportPos, String sportId,
+                                       int orderBy, List<Long> leagueIds, int oddType, List<Long> matchids) {
         mViewModel = viewModel;
         mHasCache = hasCache;
         mIsTimerRefresh = isTimerRefresh;
@@ -137,12 +129,8 @@ public class LeagueListCallBack extends FBHttpCallBack<MatchListRsp> {
         mSportId = sportId;
         mOrderBy = orderBy;
         mLeagueIds = leagueIds;
-        mSearchDatePos = searchDatePos;
         mOddType = oddType;
         mMatchids = matchids;
-        mNeedSecondStep = needSecondStep;
-        mFinalType = finalType;
-        mIsStepSecond = isStepSecond;
         saveLeague();
     }
 
@@ -155,114 +143,47 @@ public class LeagueListCallBack extends FBHttpCallBack<MatchListRsp> {
     }
 
     @Override
-    public void onResult(MatchListRsp matchListRsp) {
+    public void onResult(FbMatchListCacheRsp matchListRsp) {
         System.out.println("================= LeagueListCallBack onResult ====================");
         if (mIsTimerRefresh) {
-            if (matchListRsp.records.size() != mMatchids.size()) {
-                List<Long> matchIdList = new ArrayList<>();
-                mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, matchIdList, mPlayMethodType, mSearchDatePos, mOddType, false, true);
-            } else {
-                setOptionOddChange(matchListRsp.records);
-                mViewModel.leagueLiveTimerListData.postValue(mLeagueList);
-            }
+            mViewModel.setChampionOptionOddChange(matchListRsp.data.records);
+            mViewModel.championMatchTimerListData.postValue(mViewModel.mChampionMatchList);
             return;
         }
-        mViewModel.firstNetworkFinishData.call();
-        synchronized (this) {
-            if(mIsRefresh){
-                mNoLiveheaderLeague = null;
-            }
-            if (mIsRefresh && !mNeedSecondStep) {
-                mLeagueList.clear();
-                mMapLeague.clear();
-                mMapSportType.clear();
-            }
 
-            if (!mNeedSecondStep) {
-                mViewModel.getUC().getDismissDialogEvent().call();
-                if (mIsRefresh) {
-                    if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
-                        mViewModel.loadMoreWithNoMoreData();
-                    } else {
-                        mViewModel.finishRefresh(true);
-                    }
-                } else {
-                    if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
-                        mViewModel.loadMoreWithNoMoreData();
-                    } else {
-                        mViewModel.finishLoadMore(true);
-                    }
-                }
-            }
-
-            if (mFinalType == 1) { // 滚球
-                if (mNeedSecondStep) {
-                    mIsStepSecond = true;
-                    mLiveMatchList.addAll(matchListRsp.records);
-                    if(TextUtils.isEmpty(mViewModel.mSearchWord)) {
-                        leagueGoingList(matchListRsp.records);
-                    }
-                    mViewModel.saveLeague(this);
-                    mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, 3, mSearchDatePos, mOddType, false, mIsRefresh, mIsStepSecond);
-                } else {
-                    mNoliveMatchList.addAll(matchListRsp.records);
-                    if(TextUtils.isEmpty(mViewModel.mSearchWord)){
-                        leagueAdapterList(matchListRsp.records);
-                        mViewModel.leagueLiveListData.postValue(mLeagueList);
-                    }else{
-                        searchMatch(mViewModel.mSearchWord);
-                    }
-
-                    if (mCurrentPage == 1) {
-                        SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + mPlayMethodType + mSearchDatePos + mSportId, new Gson().toJson(mLeagueList));
-                    }
-                    mViewModel.saveLeague(this);
-                }
+        mViewModel.getUC().getDismissDialogEvent().call();
+        if (mIsRefresh) {
+            mViewModel.mChampionMatchList.clear();
+            mViewModel.mChampionMatchInfoList.clear();
+            mViewModel.mChampionMatchMap.clear();
+            if (matchListRsp != null && mCurrentPage == matchListRsp.data.getPages()) {
+                mViewModel.loadMoreWithNoMoreData();
             } else {
-                mNoliveMatchList.addAll(matchListRsp.records);
-                if(TextUtils.isEmpty(mViewModel.mSearchWord)){
-                    leagueAdapterList(matchListRsp.records);
-                    mViewModel.leagueNoLiveListData.postValue(mLeagueList);
-                }else{
-                    searchMatch(mViewModel.mSearchWord);
-                }
-
-                mViewModel.saveLeague(this);
-                if (mCurrentPage == 1) {
-                    SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + mPlayMethodType + mSearchDatePos + mSportId, new Gson().toJson(mLeagueList));
-                }
-                mIsStepSecond = false;
+                mViewModel.finishRefresh(true);
             }
-            mHasCache = false;
+        } else {
+            if (matchListRsp != null && mCurrentPage == matchListRsp.data.getPages()) {
+                mViewModel.loadMoreWithNoMoreData();
+            } else {
+                mViewModel.finishLoadMore(true);
+            }
         }
+        mViewModel.mChampionMatchInfoList.addAll(matchListRsp.data.records);
+        if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
+            mViewModel.championLeagueList(matchListRsp.data.records);
+            mViewModel.championMatchListData.postValue(mViewModel.mChampionMatchList);
+        } else {
+            mViewModel.searchMatch(mViewModel.mSearchWord, true);
+        }
+        if (mCurrentPage == 1) {
+            SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + mPlayMethodType + mSportId, new Gson().toJson(mViewModel.mChampionMatchList));
+        }
+        mHasCache = false;
     }
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("================= LeagueListCallBack onError ====================");
-        mViewModel.getUC().getDismissDialogEvent().call();
-        if (t instanceof ResponseThrowable) {
-            if(((ResponseThrowable) t).isHttpError){
-                UploadExcetionReq uploadExcetionReq = new UploadExcetionReq();
-                String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
-                String domainUrl = null;
-                if (TextUtils.equals(platform, PLATFORM_FBXC)) {
-                    domainUrl = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_API_SERVICE_URL);
-                    uploadExcetionReq.setLogTag("fbxc_url_error");
-                } else if (TextUtils.equals(platform, PLATFORM_FB)) {
-                    domainUrl = SPUtils.getInstance().getString(SPKeyGlobal.FB_API_SERVICE_URL);
-                    uploadExcetionReq.setLogTag("fb_url_error");
-                }
-                uploadExcetionReq.setApiUrl(domainUrl);
-                uploadExcetionReq.setLogType("" + ((ResponseThrowable) t).code);
-                uploadExcetionReq.setMsg(((ResponseThrowable) t).message);
-                mViewModel.firstNetworkExceptionData.postValue(uploadExcetionReq);
-            }else if (((ResponseThrowable) t).code == CODE_14010) {
-                mViewModel.getGameTokenApi();
-            } else {
-                mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, mPlayMethodType, mSearchDatePos, mOddType, mIsTimerRefresh, mIsRefresh, mIsStepSecond);
-            }
-        }
+
     }
 
     public void searchMatch(String searchWord){

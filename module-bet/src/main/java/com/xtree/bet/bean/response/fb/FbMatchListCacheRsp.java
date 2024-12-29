@@ -1,17 +1,11 @@
 package com.xtree.bet.bean.response.fb;
 
-
-import com.xtree.bet.bean.response.pm.MatchInfo;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class FbMatchListCacheRsp {
     private int code;
     private String msg;
-    public List<MatchInfo> data = new ArrayList<>();
+    public MatchListRsp data = new MatchListRsp();
 
-    public List<MatchInfo> getData() {
+    public MatchListRsp getData() {
         return data;
     }
 

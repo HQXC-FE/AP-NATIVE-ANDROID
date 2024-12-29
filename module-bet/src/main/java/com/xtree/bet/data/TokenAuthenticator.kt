@@ -7,166 +7,134 @@ import com.xtree.base.net.FBRetrofitClient
 import com.xtree.base.net.RetrofitClient
 import com.xtree.base.utils.BtDomainUtil
 import com.xtree.base.vo.FBService
-import com.xtree.bet.bean.response.fb.FbMatchListCacheRsp
-import com.xtree.bet.bean.response.fb.FbStatisticalInfoCacheRsp
-import com.xtree.bet.bean.response.fb.StatisticalInfo
 import com.xtree.bet.data.source.HttpDataSource
 import com.xtree.bet.data.source.LocalDataSource
 import com.xtree.bet.data.source.http.HttpDataSourceImpl
 import com.xtree.bet.data.source.local.LocalDataSourceImpl
 import me.xtree.mvvmhabit.http.BaseResponse
+import me.xtree.mvvmhabit.utils.KLog
 import me.xtree.mvvmhabit.utils.RxUtils
 import me.xtree.mvvmhabit.utils.SPUtils
+import okhttp3.FormBody
 import okhttp3.Interceptor
+import okhttp3.RequestBody
 import okhttp3.Response
+import org.json.JSONObject
 import java.util.concurrent.locks.ReentrantLock
 
 class TokenAuthenticator : Interceptor {
 
     private val lock = ReentrantLock()
-    private val mPlatform = ""
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        val mPlatform = SPUtils.getInstance().getString(BtDomainUtil.KEY_PLATFORM)
-        var token = ""
-        if (TextUtils.equals(mPlatform, BtDomainUtil.PLATFORM_FBXC)) {
-            token = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_TOKEN)
-        } else {
-            token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN)
+
+        // 获取 Token
+        val token = getTokenForPlatform()
+
+        // 如果 token 为空，直接返回原始请求
+        if (token.isNullOrEmpty()) {
+            return chain.proceed(request)
         }
+
         // 添加 Authorization Header
+//        val authenticatedRequest = request.newBuilder()
+//            .header("Authorization", token)
+//            .build()
 
-        val authenticatedRequest = if (!token.isNullOrEmpty()) {
-            //request.newBuilder().header("x-live-Token", token).build()
-            request
-        } else {
-            request
-        }
+        val response = chain.proceed(request)
 
-        val response = chain.proceed(authenticatedRequest)
+        // 处理特殊的 API 请求
+        if (isForwardApiRequest(request.url.toString())) {
+            val responseBody = response.body?.string()
+            val jsonObject = JSONObject(responseBody)
+            val codeValue = jsonObject.optInt("code")
+            val successValue = jsonObject.optBoolean("success")
 
-        if(!request.url.toString().contains("fb/forward?api")){
-            return response
-        }
-        System.out.println("================= TokenAuthenticator request.url.toString() ==================="+request.url.toString())
-        // 解析响应体为 BaseResponse<StatisticalInfo>
-        val responseBody = response.body?.string()  // 获取响应体内容
-        System.out.println("================= TokenAuthenticator responseBody ==================="+responseBody)
-
-        System.out.println("=============== TokenAuthenticator code ====================="+responseBody.toString().contains("14010"))
-        // 处理特定状态码
-        when (response.code) {
-            401, 423 -> {
-                // 确保刷新 Token 的操作是线程安全的
+            if (codeValue == 14010 && !successValue) {
+                System.out.println("============ Token 14010 Error===============")
+                KLog.i("***** 账号登出错误 14010 重新请求token *****" )
                 lock.lock()
                 try {
-                    val currentToken = token
+                    if (token == getTokenForPlatform()) {
+                        val newToken = refreshLiveToken() ?: return response
+                        saveToken(newToken)
 
-                    // 检查 Token 是否已被其他线程刷新
-                    if (currentToken == token) {
-                        // 执行 Token 刷新操作
-                        val newToken = refreshLiveToken()
-                        if (!newToken.isNullOrEmpty()) {
-                            token = newToken
-                            System.out.println("================== token ==================" + token)
-                            if (TextUtils.equals(mPlatform, BtDomainUtil.PLATFORM_FBXC)) {
-                                SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, token)
-                            } else {
-                                SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, token)
-                            }
-                            // 使用新 Token 重试请求
-                            return chain.proceed(
-                                request.newBuilder().header("x-live-Token", newToken).build()
-                            )
-                        } else {
-                            // 如果刷新失败，直接返回原响应
-                            return response
-                        }
+                        val authenticatedRequest = request.newBuilder()
+                            .addHeader("Authorization", newToken)
+                            .build()
+
+                        // 使用新 Token 重试请求
+                        KLog.i("***** 重新请求token *****" )
+                        return chain.proceed(authenticatedRequest)
                     }
                 } finally {
                     lock.unlock()
                 }
-            }
-
-            403 -> handleForbidden() // 处理 403
-            500 -> handleServerError() // 处理 500
-        }
-
-        if(responseBody.toString().contains("14010")){
-            lock.lock()
-            try {
-                System.out.println("=============== TokenAuthenticator 重新请求Token =====================")
-                val currentToken = token
-
-                // 检查 Token 是否已被其他线程刷新
-                if (currentToken == token) {
-                    // 执行 Token 刷新操作
-                    val newToken = refreshLiveToken()
-                    if (!newToken.isNullOrEmpty()) {
-                        token = newToken
-                        System.out.println("================== 新 token ==================" + token)
-                        if (TextUtils.equals(mPlatform, BtDomainUtil.PLATFORM_FBXC)) {
-                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, token)
-                        } else {
-                            SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, token)
-                        }
-                        // 使用新 Token 重试请求
-                        return chain.proceed(
-                            request.newBuilder().header("x-live-Token", newToken).build()
-                        )
-                    } else {
-                        // 如果刷新失败，直接返回原响应
-                        return response
-                    }
-                }
-            } finally {
-                lock.unlock()
             }
         }
 
         return response
     }
 
-    private fun refreshLiveToken(): String? {
-        return try {
-            System.out.println("================== refreshLiveToken  ==================")
-            //网络API服务
-            val apiService = RetrofitClient.getInstance().create(
-                ApiService::class.java
-            )
-            //网络API服务
-            val fbApiService = FBRetrofitClient.getInstance().create(FBApiService::class.java)
-            //网络数据源
-            val httpDataSource: HttpDataSource =
-                HttpDataSourceImpl.getInstance(fbApiService, apiService, false)
+    private fun getTokenForPlatform(): String? {
+        val mPlatform = SPUtils.getInstance().getString(BtDomainUtil.KEY_PLATFORM)
+        return when {
+            TextUtils.equals(mPlatform, BtDomainUtil.PLATFORM_FBXC) -> {
+                SPUtils.getInstance().getString(SPKeyGlobal.FBXC_TOKEN)
+            }
+            else -> {
+                SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN)
+            }
+        }
+    }
 
-            //本地数据源
+    private fun isForwardApiRequest(url: String): Boolean {
+        return url.contains("fb/forward?api") || url.contains("fbxc/forward?api")
+    }
+
+    private fun refreshLiveToken(): String? {
+        System.out.println("============ Token 14010 refreshLiveToken ===============")
+        return try {
+            val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
+            val fbApiService = FBRetrofitClient.getInstance().create(FBApiService::class.java)
+            val httpDataSource: HttpDataSource = HttpDataSourceImpl.getInstance(fbApiService, apiService, false)
             val localDataSource: LocalDataSource = LocalDataSourceImpl.getInstance()
-            // 使用同步方式刷新 Token
-            val response = BetRepository.getInstance(httpDataSource, localDataSource)
-                .baseApiService.fbGameZeroTokenApi.compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer()).blockingFirst() // 阻塞当前线程，等待刷新结果
-            System.out.println("================== refreshLiveToken  response =================="+response)
-            (response as? BaseResponse<FBService>)?.data?.let {
-                it.token
-            } ?: run { null }
+            if(getTokenForPlatform().equals(BtDomainUtil.PLATFORM_FBXC)){
+                val response = BetRepository.getInstance(httpDataSource, localDataSource)
+                    .baseApiService.fbxcGameZeroTokenApi
+                    .compose(RxUtils.schedulersTransformer())
+                    .compose(RxUtils.exceptionTransformer())
+                    .blockingFirst() // 阻塞当前线程，等待刷新结果
+                (response as? BaseResponse<FBService>)?.data?.token
+            }else{
+                val response = BetRepository.getInstance(httpDataSource, localDataSource)
+                    .baseApiService.fbGameZeroTokenApi
+                    .compose(RxUtils.schedulersTransformer())
+                    .compose(RxUtils.exceptionTransformer())
+                    .blockingFirst() // 阻塞当前线程，等待刷新结果
+                (response as? BaseResponse<FBService>)?.data?.token
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             null
         }
-        return ""
     }
 
-
-
-    private fun handleForbidden() {
-        // 自定义逻辑，比如跳转到错误页或提示对话框
-        println("403 Forbidden: 权限不足")
+    private fun saveToken(newToken: String) {
+        val mPlatform = SPUtils.getInstance().getString(BtDomainUtil.KEY_PLATFORM)
+        if (TextUtils.equals(mPlatform, BtDomainUtil.PLATFORM_FBXC)) {
+            SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, newToken)
+        } else {
+            SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, newToken)
+        }
     }
 
-    private fun handleServerError() {
-        // 自定义逻辑，比如提示用户重试
-        println("500 Server Error: 服务端异常")
+    private fun buildFormBody(params: Map<String, String>): RequestBody {
+        val formBodyBuilder = FormBody.Builder()
+        for ((key, value) in params) {
+            formBodyBuilder.add(key, value)
+        }
+        return formBodyBuilder.build()
     }
 }

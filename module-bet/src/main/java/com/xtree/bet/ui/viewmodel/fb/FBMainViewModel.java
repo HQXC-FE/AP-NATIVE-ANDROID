@@ -1,7 +1,9 @@
 package com.xtree.bet.ui.viewmodel.fb;
 
 import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_14010;
+import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FB;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 
 import android.app.Application;
@@ -17,6 +19,8 @@ import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.request.fb.FBListReq;
 import com.xtree.bet.bean.response.SportsCacheSwitchInfo;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
+import com.xtree.bet.bean.response.fb.FbMatchListCacheRsp;
+import com.xtree.bet.bean.response.fb.FbStatisticalInfoCacheRsp;
 import com.xtree.bet.bean.response.fb.LeagueInfo;
 import com.xtree.bet.bean.response.fb.MatchInfo;
 import com.xtree.bet.bean.response.fb.MatchListRsp;
@@ -39,7 +43,16 @@ import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.MainViewModel;
 import com.xtree.bet.ui.viewmodel.SportCacheType;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
+import com.xtree.bet.ui.viewmodel.callback.FBChampionListCacheCallBack;
+import com.xtree.bet.ui.viewmodel.callback.FBChampionListCallBack;
+import com.xtree.bet.ui.viewmodel.callback.FBStatisticalCacheCallBack;
+import com.xtree.bet.ui.viewmodel.callback.FBStatisticalCallBack;
+import com.xtree.bet.ui.viewmodel.callback.FBhotMatchCacheCallBack;
+import com.xtree.bet.ui.viewmodel.callback.FBhotMatchCallBack;
+import com.xtree.bet.ui.viewmodel.callback.LeagueListCacheCallBack;
 import com.xtree.bet.ui.viewmodel.callback.LeagueListCallBack;
+
+import org.reactivestreams.Subscriber;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -50,7 +63,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
@@ -60,13 +72,14 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 
 public class FBMainViewModel extends TemplateMainViewModel implements MainViewModel {
     private LeagueListCallBack mLeagueListCallBack;
+    private LeagueListCacheCallBack mLeagueListCacheCallBack;
     private Map<String, League> mMapLeague = new HashMap<>();
     private List<Match> mMatchList = new ArrayList<>();
     private Map<String, Match> mMapMatch = new HashMap<>();
 
-    private List<Match> mChampionMatchList = new ArrayList<>();
-    private List<MatchInfo> mChampionMatchInfoList = new ArrayList<>();
-    private Map<String, Match> mChampionMatchMap = new HashMap<>();
+    public List<Match> mChampionMatchList = new ArrayList<>();
+    public List<MatchInfo> mChampionMatchInfoList = new ArrayList<>();
+    public Map<String, Match> mChampionMatchMap = new HashMap<>();
     private StatisticalInfo mStatisticalInfo;
     private ConcurrentHashMap<String, List<SportTypeItem>> sportCountMap = new ConcurrentHashMap<>();
     private int goingOnPageSize = 300;
@@ -83,6 +96,42 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         mNoLiveheaderLeague = leagueListCallBack.getNoLiveheaderLeague();
         mLiveMatchList = leagueListCallBack.getLiveMatchList();
         mNoliveMatchList = leagueListCallBack.getNoliveMatchList();
+    }
+
+    public void saveLeague(LeagueListCacheCallBack leagueListCacheCallBack) {
+        mLeagueList = leagueListCacheCallBack.getLeagueList();
+        mGoingOnLeagueList = leagueListCacheCallBack.getGoingOnLeagueList();
+        mMapLeague = leagueListCacheCallBack.getMapLeague();
+        mMatchList = leagueListCacheCallBack.getMatchList();
+        mMapMatch = leagueListCacheCallBack.getMapMatch();
+        mMapSportType = leagueListCacheCallBack.getMapSportType();
+        mNoLiveheaderLeague = leagueListCacheCallBack.getNoLiveheaderLeague();
+        mLiveMatchList = leagueListCacheCallBack.getLiveMatchList();
+        mNoliveMatchList = leagueListCacheCallBack.getNoliveMatchList();
+    }
+
+    public void saveLeague(FBChampionListCallBack leagueListCacheCallBack) {
+        mLeagueList = leagueListCacheCallBack.getLeagueList();
+        mGoingOnLeagueList = leagueListCacheCallBack.getGoingOnLeagueList();
+        mMapLeague = leagueListCacheCallBack.getMapLeague();
+        mMatchList = leagueListCacheCallBack.getMatchList();
+        mMapMatch = leagueListCacheCallBack.getMapMatch();
+        mMapSportType = leagueListCacheCallBack.getMapSportType();
+        mNoLiveheaderLeague = leagueListCacheCallBack.getNoLiveheaderLeague();
+        mLiveMatchList = leagueListCacheCallBack.getLiveMatchList();
+        mNoliveMatchList = leagueListCacheCallBack.getNoliveMatchList();
+    }
+
+    public void saveLeague(FBChampionListCacheCallBack leagueListCacheCallBack) {
+        mLeagueList = leagueListCacheCallBack.getLeagueList();
+        mGoingOnLeagueList = leagueListCacheCallBack.getGoingOnLeagueList();
+        mMapLeague = leagueListCacheCallBack.getMapLeague();
+        mMatchList = leagueListCacheCallBack.getMatchList();
+        mMapMatch = leagueListCacheCallBack.getMapMatch();
+        mMapSportType = leagueListCacheCallBack.getMapSportType();
+        mNoLiveheaderLeague = leagueListCacheCallBack.getNoLiveheaderLeague();
+        mLiveMatchList = leagueListCacheCallBack.getLiveMatchList();
+        mNoliveMatchList = leagueListCacheCallBack.getNoliveMatchList();
     }
 
     public Map<String, League> getMapLeague() {
@@ -189,21 +238,11 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         fBListReq.setType(6);
         fBListReq.setLeagueIds(leagueIds);
 
-        Disposable disposable = (Disposable) getFbListFlowable(fBListReq)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<MatchListRsp>() {
+        Object callBack = isUseCacheApiService(getSportCacheType())
+                ? new FBhotMatchCacheCallBack(this)
+                : new FBhotMatchCallBack(this);
 
-                    @Override
-                    public void onResult(MatchListRsp matchListRsp) {
-                        hotMatchCountData.postValue(matchListRsp.getTotal());
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-
-                    }
-                });
+        Disposable disposable = createDisposable(getFbListFlowable(fBListReq), callBack);
         addSubscribe(disposable);
     }
 
@@ -289,17 +328,27 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
             fBListReq.setSize(pageSize);
         }
 
-        mLeagueListCallBack = new LeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
-                orderBy, leagueIds, searchDatePos, oddType, matchids,
-                needSecondStep, finalType, isStepSecond);
-
-
-        Flowable flowable = getFbListFlowable(fBListReq);
-        Disposable disposable = (Disposable) flowable
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(mLeagueListCallBack);
-        addSubscribe(disposable);
+        if(isUseCacheApiService(getSportCacheType())){
+            mLeagueListCacheCallBack = new LeagueListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
+                    orderBy, leagueIds, searchDatePos, oddType, matchids,
+                    needSecondStep, finalType, isStepSecond);
+            Flowable flowable = getFbListFlowable(fBListReq);
+            Disposable disposable = (Disposable) flowable
+                    .compose(RxUtils.schedulersTransformer()) //线程调度
+                    .compose(RxUtils.exceptionTransformer())
+                    .subscribeWith(mLeagueListCacheCallBack);
+            addSubscribe(disposable);
+        }else{
+            mLeagueListCallBack = new LeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
+                    orderBy, leagueIds, searchDatePos, oddType, matchids,
+                    needSecondStep, finalType, isStepSecond);
+            Flowable flowable = getFbListFlowable(fBListReq);
+            Disposable disposable = (Disposable) flowable
+                    .compose(RxUtils.schedulersTransformer()) //线程调度
+                    .compose(RxUtils.exceptionTransformer())
+                    .subscribeWith(mLeagueListCallBack);
+            addSubscribe(disposable);
+        }
     }
 
     public void searchMatch(String searchWord, boolean isChampion) {
@@ -308,6 +357,9 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         if (!isChampion) {
             if (mLeagueListCallBack != null) {
                 mLeagueListCallBack.searchMatch(searchWord);
+            }
+            if (mLeagueListCacheCallBack != null) {
+                mLeagueListCacheCallBack.searchMatch(searchWord);
             }
         } else {
             mChampionMatchList.clear();
@@ -371,68 +423,13 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         //}
 
         Flowable flowable = getFbListFlowable(fbListReq);
-        Disposable disposable = (Disposable) flowable
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<MatchListRsp>() {
-                    @Override
-                    protected void onStart() {
-                        super.onStart();
-                        if (!isTimerRefresh && !mHasCache) {
-                            getUC().getShowDialogEvent().postValue("");
-                        }
-                    }
 
-                    @Override
-                    public void onResult(MatchListRsp matchListRsp) {
-                        if (isTimerRefresh) {
-                            setChampionOptionOddChange(matchListRsp.records);
-                            championMatchTimerListData.postValue(mChampionMatchList);
-                            return;
-                        }
+        Object callBack = isUseCacheApiService(getSportCacheType())
+                ? new FBChampionListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId, orderBy, leagueIds, oddType, matchids)
+                : new FBChampionListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId, orderBy, leagueIds, oddType, matchids);
 
-                        getUC().getDismissDialogEvent().call();
-                        if (isRefresh) {
-                            mChampionMatchList.clear();
-                            mChampionMatchInfoList.clear();
-                            mChampionMatchMap.clear();
-                            if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
-                                loadMoreWithNoMoreData();
-                            } else {
-                                finishRefresh(true);
-                            }
-                        } else {
-                            if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
-                                loadMoreWithNoMoreData();
-                            } else {
-                                finishLoadMore(true);
-                            }
-                        }
-                        mChampionMatchInfoList.addAll(matchListRsp.records);
-                        if (TextUtils.isEmpty(mSearchWord)) {
-                            championLeagueList(matchListRsp.records);
-                            championMatchListData.postValue(mChampionMatchList);
-                        } else {
-                            searchMatch(mSearchWord, true);
-                        }
-                        if (mCurrentPage == 1) {
-                            SPUtils.getInstance().put(BT_LEAGUE_LIST_CACHE + playMethodType + sportId, new Gson().toJson(mChampionMatchList));
-                        }
-                        mHasCache = false;
-                    }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        getUC().getDismissDialogEvent().call();
-                        if (t instanceof ResponseThrowable) {
-                            if (((ResponseThrowable) t).code == CODE_14010) {
-                                getGameTokenApi();
-                            } else {
-                                getChampionList(sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh);
-                            }
-                        }
-                    }
-                });
+        Disposable disposable = createDisposable(flowable, callBack);
         addSubscribe(disposable);
     }
 
@@ -445,57 +442,14 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         map.put("languageType", "CMN");
 
         Flowable flowable = getFbStatisticalFlowable(map);
-        Disposable disposable = (Disposable) flowable
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<StatisticalInfo>() {
-                    @Override
-                    public synchronized void onResult(StatisticalInfo statisticalInfo) {
-                        if (mMatchGames.isEmpty()) {
-                            mMatchGames = FBConstants.getMatchGames();
-                        }
-                        mStatisticalInfo = statisticalInfo;
-                        for (MatchTypeInfo matchTypeInfo : statisticalInfo.sl) {
-                            //"6", "1", "4", "2", "7"; 只有"今日", "滚球", "早盘", "串关", "冠军"数据才添加，提升效率
-                            if (matchTypeInfo.ty == 6 || matchTypeInfo.ty == 1 || matchTypeInfo.ty == 4 || matchTypeInfo.ty == 2 || matchTypeInfo.ty == 7) {
-                                //Map<String, Integer> sslMap = new HashMap<>();
-                                ArrayList<SportTypeItem> sportTypeItemList = new ArrayList<>();
-                                if (matchTypeInfo.ty == 6 || matchTypeInfo.ty == 2) {//今日 串关 加热门
-                                    SportTypeItem item1 = new SportTypeItem();
-                                    item1.id = 1111;
-                                    item1.num = 0;
-                                    sportTypeItemList.add(item1);
-                                } else if (matchTypeInfo.ty == 1) {//滚球 加全部
-                                    SportTypeItem item2 = new SportTypeItem();
-                                    item2.id = 0;
-                                    item2.num = matchTypeInfo.tc;
-                                    sportTypeItemList.add(item2);
-                                }
-                                for (MatchTypeStatisInfo matchTypeStatisInfo : matchTypeInfo.ssl) {
-                                    SportTypeItem item = new SportTypeItem();
-                                    item.id = matchTypeStatisInfo.sid;
-                                    item.num = matchTypeStatisInfo.c;
-                                    if (item.num <= 0 || mMatchGames.get(item.id) == null) {
-                                        continue;
-                                    }
-                                    sportTypeItemList.add(item);
-                                    //sslMap.put(String.valueOf(matchTypeStatisInfo.sid), matchTypeStatisInfo.c);
-                                }
 
-                                sportCountMap.put(String.valueOf(matchTypeInfo.ty), sportTypeItemList);
-                                //CfLog.i("num223   " + String.valueOf(6) + "  " + new Gson().toJson(sportCountMap.get(String.valueOf(6))));
-                            }
-                        }
-                        //CfLog.i("num22   " + 6 + "  " + new Gson().toJson(sportCountMap.get(String.valueOf(6))));
-                        //CfLog.i("num22   " + new Gson().toJson(sportCountMap));
-                        statisticalData.postValue(sportCountMap);
-                    }
+        // 根据缓存类型决定回调类
+        Object callBack = isUseCacheApiService(getSportCacheType())
+                ? new FBStatisticalCacheCallBack(this, mMatchGames, sportCountMap)
+                : new FBStatisticalCallBack(this, mMatchGames, sportCountMap);
 
-                    @Override
-                    public void onError(Throwable t) {
-                        //super.onError(t);
-                    }
-                });
+        // 创建 Disposable，并进行订阅
+        Disposable disposable = createDisposable(flowable, callBack);
         addSubscribe(disposable);
     }
 
@@ -636,7 +590,7 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
      * @param matchInfoList
      * @return
      */
-    private void championLeagueList(List<MatchInfo> matchInfoList) {
+    public void championLeagueList(List<MatchInfo> matchInfoList) {
         if (!matchInfoList.isEmpty()) {
             Match header = new MatchFb();
             header.setHead(true);
@@ -654,7 +608,7 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
      *
      * @param matchInfoList
      */
-    private void setChampionOptionOddChange(List<MatchInfo> matchInfoList) {
+    public void setChampionOptionOddChange(List<MatchInfo> matchInfoList) {
         List<Match> newMatchList = new ArrayList<>();
 
         for (MatchInfo matchInfo : matchInfoList) {
@@ -891,5 +845,11 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
             }
         }
         return SportCacheType.NONE;
+    }
+
+    private Disposable createDisposable(Flowable flowable, Object callBack) {
+        return (Disposable) flowable.compose(RxUtils.schedulersTransformer()) // 线程调度
+                .compose(RxUtils.exceptionTransformer()) // 异常处理
+                .subscribeWith((Subscriber) callBack); // 订阅并返回 Disposable
     }
 }

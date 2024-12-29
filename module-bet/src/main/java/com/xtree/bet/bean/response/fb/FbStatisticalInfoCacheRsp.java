@@ -1,12 +1,5 @@
 package com.xtree.bet.bean.response.fb;
 
-import android.annotation.SuppressLint;
-import android.os.Parcel;
-
-import androidx.annotation.NonNull;
-
-import com.xtree.base.vo.BaseBean;
-
 /**
  * 赛事统计缓存接口请求数据
  */

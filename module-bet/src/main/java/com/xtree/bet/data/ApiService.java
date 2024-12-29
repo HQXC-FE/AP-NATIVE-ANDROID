@@ -9,10 +9,7 @@ import com.xtree.bet.bean.response.HotLeagueInfo;
 import com.xtree.bet.bean.response.fb.FbMatchListCacheRsp;
 import com.xtree.bet.bean.response.fb.FbStatisticalInfoCacheRsp;
 import com.xtree.bet.bean.response.fb.MatchInfo;
-import com.xtree.bet.bean.response.fb.MatchListRsp;
-import com.xtree.bet.bean.response.fb.StatisticalInfo;
 
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
@@ -38,7 +35,7 @@ public interface ApiService {
     Flowable<BaseResponse<HotLeagueInfo>> getSettings(@QueryMap(encoded = true) Map<String, String> filters);
 
     /**
-     * 获取 FB体育请求服务地址
+     * 获取 FB token 参数 cachedToken=1
      * @return
      */
     @POST("/api/sports/fb/getToken?cachedToken=1")
@@ -46,7 +43,7 @@ public interface ApiService {
     Flowable<BaseResponse<FBService>> getFBGameTokenApi();
 
     /**
-     * 获取 FB体育请求服务地址
+     * 获取 FB token 参数 cachedToken=0
      * @return
      */
     @POST("/api/sports/fb/getToken?cachedToken=0")
@@ -54,12 +51,20 @@ public interface ApiService {
     Flowable<BaseResponse<FBService>> getFBGameZeroTokenApi();
 
     /**
-     * 获取 FB杏彩体育请求服务地址
+     * 获取 FBXC token 参数 cachedToken=1
      * @return
      */
     @POST("/api/sports/fbxc/getToken?cachedToken=1")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<FBService>> getFBXCGameTokenApi();
+
+    /**
+     * 获取 FBXC token 参数 cachedToken=0
+     * @return
+     */
+    @POST("/api/sports/fbxc/getToken?cachedToken=0")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<FBService>> getFBXCGameZeroTokenApi();
 
     /**
      * 获取 PM体育请求服务地址
@@ -141,7 +146,7 @@ public interface ApiService {
      */
     @POST("/api/sports/fbxc/forward?api=/v1/match/getList&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<MatchListRsp>> fbxcGetFBList(@Body FBListReq FBListReq);
+    Flowable<BaseResponse<FbStatisticalInfoCacheRsp>> fbxcGetFBList(@Body FBListReq FBListReq);
 
     /**
      * 按运动、分类类型统计可投注的赛事个数
@@ -149,7 +154,7 @@ public interface ApiService {
      */
     @POST("/api/sports/fbxc/forward?api=/v1/match/statistical&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<StatisticalInfo>> fbxcStatistical(@Body Map<String, String> map);
+    Flowable<BaseResponse<FbStatisticalInfoCacheRsp>> fbxcStatistical(@Body Map<String, String> map);
 
     /**
      * 按运动、分类类型统计可投注的赛事个数
