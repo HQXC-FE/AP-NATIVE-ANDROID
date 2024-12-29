@@ -52,4 +52,12 @@ public class MatchTypeStatisInfo implements BaseBean {
             return new MatchTypeStatisInfo[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "MatchTypeStatisInfo {" +
+                "sid=" + sid +
+                ", c ='" + c + '\'' +
+                '}';
+    }
 }

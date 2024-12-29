@@ -328,27 +328,16 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
             fBListReq.setSize(pageSize);
         }
 
-        if(isUseCacheApiService(getSportCacheType())){
-            mLeagueListCacheCallBack = new LeagueListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
-                    orderBy, leagueIds, searchDatePos, oddType, matchids,
-                    needSecondStep, finalType, isStepSecond);
-            Flowable flowable = getFbListFlowable(fBListReq);
-            Disposable disposable = (Disposable) flowable
-                    .compose(RxUtils.schedulersTransformer()) //线程调度
-                    .compose(RxUtils.exceptionTransformer())
-                    .subscribeWith(mLeagueListCacheCallBack);
-            addSubscribe(disposable);
-        }else{
-            mLeagueListCallBack = new LeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
-                    orderBy, leagueIds, searchDatePos, oddType, matchids,
-                    needSecondStep, finalType, isStepSecond);
-            Flowable flowable = getFbListFlowable(fBListReq);
-            Disposable disposable = (Disposable) flowable
-                    .compose(RxUtils.schedulersTransformer()) //线程调度
-                    .compose(RxUtils.exceptionTransformer())
-                    .subscribeWith(mLeagueListCallBack);
-            addSubscribe(disposable);
-        }
+        // 根据是否使用缓存选择回调类
+        Object callBack = isUseCacheApiService(getSportCacheType())
+                ? new LeagueListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
+                orderBy, leagueIds, searchDatePos, oddType, matchids, needSecondStep, finalType, isStepSecond)
+                : new LeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
+                orderBy, leagueIds, searchDatePos, oddType, matchids, needSecondStep, finalType, isStepSecond);
+
+        Flowable flowable = getFbListFlowable(fBListReq);
+        Disposable disposable = createDisposable(flowable, callBack);
+        addSubscribe(disposable);
     }
 
     public void searchMatch(String searchWord, boolean isChampion) {

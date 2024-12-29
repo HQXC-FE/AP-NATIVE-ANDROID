@@ -25,6 +25,7 @@ import java.util.concurrent.locks.ReentrantLock
 class TokenAuthenticator : Interceptor {
 
     private val lock = ReentrantLock()
+    private var isTokenRefreshing = false  // 标志变量，确保只有一次刷新请求
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
@@ -37,12 +38,12 @@ class TokenAuthenticator : Interceptor {
             return chain.proceed(request)
         }
 
-        // 添加 Authorization Header
-//        val authenticatedRequest = request.newBuilder()
-//            .header("Authorization", token)
-//            .build()
-
         val response = chain.proceed(request)
+
+        // 如果已经刷新过 token，直接返回当前响应
+        if (isTokenRefreshing) {
+            return response
+        }
 
         // 处理特殊的 API 请求
         if (isForwardApiRequest(request.url.toString())) {
@@ -94,8 +95,9 @@ class TokenAuthenticator : Interceptor {
     }
 
     private fun refreshLiveToken(): String? {
-        System.out.println("============ Token 14010 refreshLiveToken ===============")
         return try {
+            // 标记为正在刷新 token
+            isTokenRefreshing = true
             val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
             val fbApiService = FBRetrofitClient.getInstance().create(FBApiService::class.java)
             val httpDataSource: HttpDataSource = HttpDataSourceImpl.getInstance(fbApiService, apiService, false)

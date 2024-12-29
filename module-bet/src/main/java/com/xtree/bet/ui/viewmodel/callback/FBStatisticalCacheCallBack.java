@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.utils.KLog;
 
 public class FBStatisticalCacheCallBack extends HttpCallBack<FbStatisticalInfoCacheRsp> {
 
@@ -29,10 +30,10 @@ public class FBStatisticalCacheCallBack extends HttpCallBack<FbStatisticalInfoCa
 
     @Override
     public synchronized void onResult(FbStatisticalInfoCacheRsp statisticalInfo) {
-        System.out.println("============= FBStatisticalCacheCallBack onResult statistical =============");
         if (mMatchGames.isEmpty()) {
             mMatchGames = FBConstants.getMatchGames();
         }
+        KLog.i("##### FBStatisticalCacheCallBack statisticalInfo: ", statisticalInfo+" #####");
         for (MatchTypeInfo matchTypeInfo : statisticalInfo.data.sl) {
             //"6", "1", "4", "2", "7"; 只有"今日", "滚球", "早盘", "串关", "冠军"数据才添加，提升效率
             if (matchTypeInfo.ty == 6 || matchTypeInfo.ty == 1 || matchTypeInfo.ty == 4 || matchTypeInfo.ty == 2 || matchTypeInfo.ty == 7) {
@@ -71,10 +72,10 @@ public class FBStatisticalCacheCallBack extends HttpCallBack<FbStatisticalInfoCa
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("============= FBStatisticalCacheCallBack onError statistical =============");
         super.onError(t);
         if (t instanceof ResponseThrowable) {
             ResponseThrowable rError = (ResponseThrowable) t;
+            KLog.e("##### FBStatisticalCacheCallBack onError: ", rError+" #####");
         }
     }
 }

@@ -69,4 +69,14 @@ public class MatchTypeInfo implements BaseBean {
             return new MatchTypeInfo[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "BaseResponse{" +
+                "ty=" + ty +
+                ", des='" + des + '\'' +
+                ", ssl=" + ssl +
+                ", tc=" + tc +
+                '}';
+    }
 }
