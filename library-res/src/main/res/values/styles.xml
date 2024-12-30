@@ -1631,4 +1631,9 @@
         <item name="android:paddingStart">10dp</item>
         <item name="android:drawablePadding">10dp</item>
     </style>
+
+    <style name="style_item_ll_row_0" parent="style_item_ll_row">
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
 </resources>
