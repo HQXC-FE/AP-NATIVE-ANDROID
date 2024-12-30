@@ -48,30 +48,33 @@ class TokenAuthenticator : Interceptor {
         // 处理特殊的 API 请求
         if (isForwardApiRequest(request.url.toString())) {
             val responseBody = response.body?.string()
-            val jsonObject = JSONObject(responseBody)
-            val codeValue = jsonObject.optInt("code")
-            val successValue = jsonObject.optBoolean("success")
+            if (responseBody != null) {
+                val jsonObject = JSONObject(responseBody)
+                val codeValue = jsonObject.optInt("code", -1)
+                val successValue = jsonObject.optBoolean("success", false)
+                if (codeValue == 14010 && !successValue) {
+                    KLog.i("***** 账号登出错误 14010 重新请求token *****" )
+                    lock.lock()
+                    try {
+                        if (token == getTokenForPlatform()) {
+                            val newToken = refreshLiveToken() ?: return response
+                            saveToken(newToken)
 
-            if (codeValue == 14010 && !successValue) {
-                System.out.println("============ Token 14010 Error===============")
-                KLog.i("***** 账号登出错误 14010 重新请求token *****" )
-                lock.lock()
-                try {
-                    if (token == getTokenForPlatform()) {
-                        val newToken = refreshLiveToken() ?: return response
-                        saveToken(newToken)
+                            val authenticatedRequest = request.newBuilder()
+                                .addHeader("Authorization", newToken)
+                                .build()
 
-                        val authenticatedRequest = request.newBuilder()
-                            .addHeader("Authorization", newToken)
-                            .build()
-
-                        // 使用新 Token 重试请求
-                        KLog.i("***** 重新请求token *****" )
-                        return chain.proceed(authenticatedRequest)
+                            // 使用新 Token 重试请求
+                            KLog.i("***** 重新请求token *****" )
+                            return chain.proceed(authenticatedRequest)
+                        }
+                    } finally {
+                        lock.unlock()
                     }
-                } finally {
-                    lock.unlock()
                 }
+            } else {
+                // 如果 responseBody 为空，处理错误
+                KLog.i("##### Response body is null #####")
             }
         }
 
@@ -95,31 +98,39 @@ class TokenAuthenticator : Interceptor {
     }
 
     private fun refreshLiveToken(): String? {
-        return try {
-            // 标记为正在刷新 token
-            isTokenRefreshing = true
+        isTokenRefreshing = true
+        try {
+            // 创建 API 服务实例
             val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
             val fbApiService = FBRetrofitClient.getInstance().create(FBApiService::class.java)
             val httpDataSource: HttpDataSource = HttpDataSourceImpl.getInstance(fbApiService, apiService, false)
             val localDataSource: LocalDataSource = LocalDataSourceImpl.getInstance()
-            if(getTokenForPlatform().equals(BtDomainUtil.PLATFORM_FBXC)){
-                val response = BetRepository.getInstance(httpDataSource, localDataSource)
-                    .baseApiService.fbxcGameZeroTokenApi
-                    .compose(RxUtils.schedulersTransformer())
-                    .compose(RxUtils.exceptionTransformer())
-                    .blockingFirst() // 阻塞当前线程，等待刷新结果
-                (response as? BaseResponse<FBService>)?.data?.token
-            }else{
-                val response = BetRepository.getInstance(httpDataSource, localDataSource)
-                    .baseApiService.fbGameZeroTokenApi
-                    .compose(RxUtils.schedulersTransformer())
-                    .compose(RxUtils.exceptionTransformer())
-                    .blockingFirst() // 阻塞当前线程，等待刷新结果
-                (response as? BaseResponse<FBService>)?.data?.token
+
+            // 根据平台选择调用的 API
+            val tokenApi = if (getTokenForPlatform().equals(BtDomainUtil.PLATFORM_FBXC, ignoreCase = true)) {
+                BetRepository.getInstance(httpDataSource, localDataSource).baseApiService.fbxcGameZeroTokenApi
+            } else {
+                BetRepository.getInstance(httpDataSource, localDataSource).baseApiService.fbGameZeroTokenApi
             }
+
+            // 获取 token 响应
+            val response = tokenApi.compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .blockingFirst() // 阻塞当前线程，等待刷新结果
+
+            // 使用安全调用，避免空指针异常
+            val token = (response as? BaseResponse<FBService>)?.data?.token ?: return null
+
+            KLog.i("##### Response type: ${response::class.java.name} #####")
+
+            return token
         } catch (e: Exception) {
             e.printStackTrace()
-            null
+            KLog.e("Error refreshing live token: ${e.message}")
+            return null // 异常时返回 null
+        } finally {
+            // 无论是否发生异常，都恢复标志
+            isTokenRefreshing = false
         }
     }
 
@@ -132,11 +143,11 @@ class TokenAuthenticator : Interceptor {
         }
     }
 
-    private fun buildFormBody(params: Map<String, String>): RequestBody {
-        val formBodyBuilder = FormBody.Builder()
-        for ((key, value) in params) {
-            formBodyBuilder.add(key, value)
-        }
-        return formBodyBuilder.build()
-    }
+//    private fun buildFormBody(params: Map<String, String>): RequestBody {
+//        val formBodyBuilder = FormBody.Builder()
+//        for ((key, value) in params) {
+//            formBodyBuilder.add(key, value)
+//        }
+//        return formBodyBuilder.build()
+//    }
 }
