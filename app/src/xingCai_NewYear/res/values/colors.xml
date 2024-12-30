@@ -2,6 +2,6 @@
 <resources>
 
     <!-- 主页底部按钮文字颜色 -->
-    <color name="main_bottom_unselect">#C7C7C7</color>
-    <color name="main_bottom_select">#ffffff</color>
+    <color name="main_bottom_unselect">#D87204</color>
+    <color name="main_bottom_select">#D40D00</color>
 </resources>
