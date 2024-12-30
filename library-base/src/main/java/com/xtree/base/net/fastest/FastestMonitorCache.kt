@@ -28,6 +28,8 @@ object FastestMonitorCache {
             }
         }
 
+    var app_response_speed_max = 0
+
     init {
         val fastest_monitor_timeout =
             SPUtils.getInstance().getInt(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT)
@@ -40,6 +42,8 @@ object FastestMonitorCache {
             scoreCacheList = JSON.parseObject<List<TopSpeedDomain>>(fastest_score_cache,
                 object : TypeReference<List<TopSpeedDomain>?>() {}).toMutableList();
         }
+
+        app_response_speed_max = SPUtils.getInstance().getInt(SPKeyGlobal.APP_Response_Speed_Max)
     }
 
     fun put(domain: TopSpeedDomain) {
@@ -81,6 +85,9 @@ object FastestMonitorCache {
     }
 
     fun getFastestScore(domain: TopSpeedDomain): Long {
+
+   //     CfLog.i("****** SettingsVo app_response_speed_max " + app_response_speed_max)
+
         scoreCacheList.findLast {
             it.url.equals(domain.url)
         }?.let {
@@ -92,6 +99,10 @@ object FastestMonitorCache {
                 domain.speedScore = it.speedScore - (it.speedScore * SPEED_CALCULATION).toLong()
             }
 
+            if(domain.speedScore > app_response_speed_max && app_response_speed_max > 0){
+                domain.speedScore = app_response_speed_max.toLong();
+            }
+
             scoreCacheList.remove(it)
 
             scoreCacheList.add(domain)
@@ -99,6 +110,9 @@ object FastestMonitorCache {
             return domain.speedScore
         } ?: run {
             domain.speedScore = domain.speedSec
+            if(domain.speedScore > app_response_speed_max && app_response_speed_max > 0){
+                domain.speedScore = app_response_speed_max.toLong();
+            }
             scoreCacheList.add(domain)
             return domain.speedScore
         }

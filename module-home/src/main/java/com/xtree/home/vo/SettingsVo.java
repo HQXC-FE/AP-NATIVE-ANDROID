@@ -26,6 +26,10 @@ public class SettingsVo implements Parcelable {
     public Map<String, List<Integer>> sport_match_cache;
     // 测速扣除百分比
     public long app_response_speed_calculation;
+    //推荐测速上限设置
+    public int app_response_speed_max = -1;
+    //新客服列表
+    public String []hichat_url_suffix ;//// ["\/im\/chat?platformCode=THRB&channelLink=OKGV5vPNGc", "\/im\/chat?platformCode=THRB&channelLink=OKGV5vPNGc"]
 
     // Constructor for Parcelable
     protected SettingsVo(Parcel in) {
@@ -36,11 +40,14 @@ public class SettingsVo implements Parcelable {
         customer_service_url = in.readString();
         customer_service_urls = in.createStringArray();
         x9_customer_service_url = in.createStringArray();
+        hichat_url_suffix = in.createStringArray();
         ws_check_interval = in.readLong();
         ws_retry_number = in.readLong();
         ws_retry_waiting_time = in.readLong();
         ws_expire_time = in.readLong();
         app_response_speed_calculation = in.readLong();
+        app_response_speed_max = in.readInt();
+        hichat_url_suffix = in.createStringArray();
         // 读取 Map
         int mapSize = in.readInt();  // 读取 Map 的大小
         if (mapSize > 0) {
@@ -81,11 +88,14 @@ public class SettingsVo implements Parcelable {
         parcel.writeString(customer_service_url);
         parcel.writeStringArray(customer_service_urls);
         parcel.writeStringArray(x9_customer_service_url);
+        parcel.writeStringArray(hichat_url_suffix);
         parcel.writeLong(ws_check_interval);
         parcel.writeLong(ws_retry_number);
         parcel.writeLong(ws_retry_waiting_time);
         parcel.writeLong(ws_expire_time);
         parcel.writeLong(app_response_speed_calculation);
+        parcel.writeInt(app_response_speed_max);
+        parcel.writeStringArray(hichat_url_suffix);
         // 处理 Map<String, List<Integer>> sport_match_cache
         if (sport_match_cache != null) {
             parcel.writeInt(sport_match_cache.size());  // 写入 Map 的大小
@@ -108,11 +118,14 @@ public class SettingsVo implements Parcelable {
                 ", customer_service_url='" + customer_service_url + '\'' +
                 ", customer_service_urls=" + Arrays.toString(customer_service_urls) +
                 ", x9_customer_service_url=" + Arrays.toString(x9_customer_service_url) +
+                ", hichat_url_suffix=" + Arrays.toString(hichat_url_suffix) +
                 ", ws_check_interval=" + ws_check_interval +
                 ", ws_retry_number=" + ws_retry_number +
                 ", ws_retry_waiting_time=" + ws_retry_waiting_time +
                 ", ws_expire_time=" + ws_expire_time +
                 ", app_response_speed_calculation=" + app_response_speed_calculation +
+                ", app_response_speed_max=" + app_response_speed_max +
+                ", hichat_url_suffix=" + Arrays.toString(hichat_url_suffix) +
                 '}';
     }
 }

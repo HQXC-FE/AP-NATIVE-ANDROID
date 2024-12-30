@@ -1,8 +1,5 @@
 package com.xtree.bet.ui.viewmodel.callback;
 
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
 
 import android.text.TextUtils;
 
@@ -51,6 +48,32 @@ public class PMListCallBack extends HttpCallBack<List<MatchInfo>> {
     private List<League> mGoingOnLeagueList = new ArrayList<>();
     private Map<String, Match> mMapMatch = new HashMap<>();
     private List<Match> mMatchList = new ArrayList<>();
+    /**
+     * 正在进行中的比赛
+     */
+    private List<BaseBean> mLiveMatchList = new ArrayList<>();
+    /**
+     * 未开始的比赛
+     */
+    private List<BaseBean> mNoliveMatchList = new ArrayList<>();
+
+    public PMListCallBack(PMMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
+                          int playMethodType, int sportPos, String sportId, int orderBy, List<Long> leagueIds,
+                          int searchDatePos, int oddType, List<Long> matchids/*, boolean isStepSecond*/) {
+        mViewModel = viewModel;
+        mHasCache = hasCache;
+        mIsTimerRefresh = isTimerRefresh;
+        mIsRefresh = isRefresh;
+        mPlayMethodType = playMethodType;
+        mSportPos = sportPos;
+        mSportId = sportId;
+        mOrderBy = orderBy;
+        mLeagueIds = leagueIds;
+        mSearchDatePos = searchDatePos;
+        mOddType = oddType;
+        mMatchids = matchids;
+        saveLeague();
+    }
 
     public Map<String, League> getMapSportType() {
         return mMapSportType;
@@ -76,15 +99,6 @@ public class PMListCallBack extends HttpCallBack<List<MatchInfo>> {
         return mMatchList;
     }
 
-    /**
-     * 正在进行中的比赛
-     */
-    private List<BaseBean> mLiveMatchList = new ArrayList<>();
-    /**
-     * 未开始的比赛
-     */
-    private List<BaseBean> mNoliveMatchList = new ArrayList<>();
-
     public void saveLeague() {
         mLiveMatchList = mViewModel.getLiveMatchList();
         if (!mIsRefresh) {
@@ -96,24 +110,6 @@ public class PMListCallBack extends HttpCallBack<List<MatchInfo>> {
             mMapSportType = mViewModel.getMapSportType();
             mNoliveMatchList = mViewModel.getNoliveMatchList();
         }
-    }
-
-    public PMListCallBack(PMMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
-                          int playMethodType, int sportPos, String sportId, int orderBy, List<Long> leagueIds,
-                          int searchDatePos, int oddType, List<Long> matchids/*, boolean isStepSecond*/) {
-        mViewModel = viewModel;
-        mHasCache = hasCache;
-        mIsTimerRefresh = isTimerRefresh;
-        mIsRefresh = isRefresh;
-        mPlayMethodType = playMethodType;
-        mSportPos = sportPos;
-        mSportId = sportId;
-        mOrderBy = orderBy;
-        mLeagueIds = leagueIds;
-        mSearchDatePos = searchDatePos;
-        mOddType = oddType;
-        mMatchids = matchids;
-        saveLeague();
     }
 
     @Override
@@ -144,7 +140,7 @@ public class PMListCallBack extends HttpCallBack<List<MatchInfo>> {
             mViewModel.firstNetworkFinishData.call();
             mIsStepSecond = true;
             mLiveMatchList.addAll(data);
-            if(TextUtils.isEmpty(mViewModel.mSearchWord)) {
+            if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
                 leagueGoingList(data);
             }
             mViewModel.saveLeague(this);
@@ -156,17 +152,17 @@ public class PMListCallBack extends HttpCallBack<List<MatchInfo>> {
     public void onError(Throwable t) {
         mViewModel.getUC().getDismissDialogEvent().call();
         //if (!mIsTimerRefresh) {
-            if (t instanceof ResponseThrowable) {
-                ResponseThrowable error = (ResponseThrowable) t;
-                if (error.code == CODE_401026 || error.code == CODE_401013) {
-                    mViewModel.getGameTokenApi();
-                } else if (error.code == CODE_401038) {
-                    super.onError(t);
-                    mViewModel.tooManyRequestsEvent.call();
-                } else {
-                    //mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, mPlayMethodType, mSearchDatePos, mOddType, mIsTimerRefresh, mIsRefresh);
-                }
+        if (t instanceof ResponseThrowable) {
+            ResponseThrowable error = (ResponseThrowable) t;
+            if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
+                mViewModel.getGameTokenApi();
+            } else if (error.code == HttpCallBack.CodeRule.CODE_401038) {
+                super.onError(t);
+                mViewModel.tooManyRequestsEvent.call();
+            } else {
+                //mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, mPlayMethodType, mSearchDatePos, mOddType, mIsTimerRefresh, mIsRefresh);
             }
+        }
         //}
     }
 

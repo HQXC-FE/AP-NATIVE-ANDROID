@@ -8,6 +8,7 @@ import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.HmacSHA256Utils;
+import com.xtree.base.utils.StringUtils;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.utils.UuidUtil;
 
@@ -45,6 +46,7 @@ public class HeaderInterceptor implements Interceptor {
         builder.addHeader("Content-Type", "application/vnd.sc-api.v1.json");
         builder.addHeader("App-RNID", "87jumkljo"); //
         builder.addHeader("Source", "9");
+        builder.addHeader("app-version", StringUtils.getVersionName(Utils.getContext()));
         builder.addHeader("UUID", TagUtils.getDeviceId(Utils.getContext()));
         builder.addHeader("X-Crypto", BuildConfig.DEBUG ? "no" : "yes");
         addUserAgentHeader(chain, builder);

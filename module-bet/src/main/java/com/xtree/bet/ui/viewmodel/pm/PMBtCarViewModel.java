@@ -1,10 +1,6 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
 
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_400467;
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
-
 import android.app.Application;
 
 import androidx.annotation.NonNull;
@@ -19,6 +15,7 @@ import com.xtree.bet.bean.response.pm.BtConfirmInfo;
 import com.xtree.bet.bean.response.pm.BtResultInfo;
 import com.xtree.bet.bean.response.pm.BtResultOptionInfo;
 import com.xtree.bet.bean.response.pm.CgOddLimitInfo;
+import com.xtree.bet.bean.response.pm.PlayTypeInfo;
 import com.xtree.bet.bean.response.pm.SeriesOrderInfo;
 import com.xtree.bet.bean.ui.BetConfirmOption;
 import com.xtree.bet.bean.ui.BetConfirmOptionPm;
@@ -26,6 +23,7 @@ import com.xtree.bet.bean.ui.BtResult;
 import com.xtree.bet.bean.ui.BtResultPm;
 import com.xtree.bet.bean.ui.CgOddLimit;
 import com.xtree.bet.bean.ui.CgOddLimitPm;
+import com.xtree.bet.bean.ui.PlayTypePm;
 import com.xtree.bet.constant.SPKey;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.TemplateBtCarViewModel;
@@ -34,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -78,6 +77,18 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
             betMatchMarket.setMatchType(betConfirmOption.getOptionList().getMatchType());
             betMatchMarket.setSportId(Integer.valueOf(betConfirmOption.getMatch().getSportId()));
             betMatchMarket.setPlaceNum(betConfirmOption.getPlaceNum());
+
+            PlayTypePm playTypePm = (PlayTypePm) betConfirmOption.getPlayType();
+            PlayTypeInfo playTypeInfo = playTypePm.getPlayTypeInfo();
+            String chpid = "";
+            if(playTypeInfo.topKey != null){
+                chpid = playTypeInfo.topKey;
+            }else{
+                chpid = betConfirmOption.getPlayType().getId();
+            }
+            if(!chpid.isEmpty()){
+                betMatchMarket.setChpid(chpid);
+            }
             betMatchMarketList.add(betMatchMarket);
         }
         btCarReq.setIdList(betMatchMarketList);
@@ -87,8 +98,9 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<List<BtConfirmInfo>>() {
                     @Override
-                    public void onResult(List<BtConfirmInfo> btConfirmInfoList) {
+                    public void onResult(List<BtConfirmInfo> btConfirmInfoList, BusinessException exception) {
                         if (btConfirmInfoList == null || btConfirmInfoList.isEmpty()) {
+                            onFail(exception);
                             return;
                         }
                         mBetConfirmOptionList = new ArrayList<>();
@@ -103,7 +115,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                         //super.onError(t);
                         if (t instanceof ResponseThrowable) {
                             ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == CODE_401026 || error.code == CODE_401013) {
+                            if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
                                 batchBetMatchMarketOfJumpLine(betConfirmOptionList);
                             }
                         }
@@ -184,7 +196,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
         btReq.setAcceptOdds(acceptOdds);
         List<SeriesOrder> seriesOrders = new ArrayList<>();
         for (CgOddLimit cgOddLimit : cgOddLimitList) {
-            if(cgOddLimit.getBtAmount() > 0) {
+            if (cgOddLimit.getBtAmount() > 0) {
                 SeriesOrder seriesOrder = new SeriesOrder();
                 seriesOrder.setSeriesSum(cgOddLimit.getBtCount());
                 seriesOrder.setSeriesType(cgOddLimit.getCgType());
@@ -205,12 +217,24 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                     int marketType = SPUtils.getInstance().getInt(SPKey.BT_MATCH_LIST_ODDTYPE, 1);
                     orderDetail.setMarketTypeFinally(marketType == 1 ? "EU" : "HK");
                     orderDetailList.add(orderDetail);
+                    PlayTypePm playTypePm = (PlayTypePm) betConfirmOption.getPlayType();
+                    PlayTypeInfo playTypeInfo = playTypePm.getPlayTypeInfo();
+                    String chpid = "";
+                    if(playTypeInfo.topKey != null){
+                        chpid = playTypeInfo.topKey;
+                    }else{
+                        chpid = betConfirmOption.getPlayType().getId();
+                    }
+                    if(!chpid.isEmpty()){
+                        btReq.setChpid(chpid);
+                    }
                 }
                 seriesOrder.setOrderDetailList(orderDetailList);
                 seriesOrders.add(seriesOrder);
             }
         }
         btReq.setSeriesOrders(seriesOrders);
+        btReq.setCuid();
         if(seriesOrders.isEmpty()){
             noBetAmountDate.call();
             return;
@@ -243,7 +267,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                     public void onError(Throwable t) {
                         super.onError(t);
                         if (t instanceof ResponseThrowable) {
-                            if (((ResponseThrowable) t).code == CODE_400467) {
+                            if (((ResponseThrowable) t).code == HttpCallBack.CodeRule.CODE_400467) {
                                 batchBetMatchMarketOfJumpLine(mSearchBetConfirmOptionList);
                             }
                         }

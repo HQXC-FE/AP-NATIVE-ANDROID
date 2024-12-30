@@ -38,6 +38,7 @@ import com.lxj.xpopup.core.BasePopupView;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
@@ -51,7 +52,6 @@ import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.TipDialog;
 import com.xtree.bet.BR;
 import com.xtree.bet.R;
-import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.fb.HotLeague;
 import com.xtree.bet.bean.response.pm.MatchInfo;
@@ -1068,21 +1068,34 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         UploadExcetionReq uploadExcetionReq = new UploadExcetionReq();
         String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
         String domainUrl;
+        String logType;
         if (TextUtils.equals(platform, PLATFORM_FBXC)) {
+            //杏彩体育旗舰
             domainUrl = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_API_SERVICE_URL);
             uploadExcetionReq.setLogTag("fbxc_url_" + (isChangeDomain ? "swithapiaddress" : "swithdelegate"));
+            logType = "杏彩体育旗舰";
         } else if (TextUtils.equals(platform, PLATFORM_FB)) {
+            //FB体育
             domainUrl = SPUtils.getInstance().getString(SPKeyGlobal.FB_API_SERVICE_URL);
             uploadExcetionReq.setLogTag("fb_url_" + (isChangeDomain ? "swithapiaddress" : "swithdelegate"));
+            logType = "FB体育";
         } else if (TextUtils.equals(platform, PLATFORM_PMXC)) {
+            //杏彩体育
             domainUrl = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_API_SERVICE_URL);
             uploadExcetionReq.setLogTag("pmzy_url_" + (isChangeDomain ? "swithapiaddress" : "swithdelegate"));
+            logType = "杏彩体育";
         } else {
+            //熊猫体育
             domainUrl = SPUtils.getInstance().getString(SPKeyGlobal.PM_API_SERVICE_URL);
             uploadExcetionReq.setLogTag("pm_url_" + (isChangeDomain ? "swithapiaddress" : "swithdelegate"));
+            logType = "熊猫体育";
+        }
+        if (isChangeDomain) {
+            uploadExcetionReq.setLogType(logType + "切换线路");
+        } else {
+            uploadExcetionReq.setLogType(logType + "关闭默认代理服务器");
         }
         uploadExcetionReq.setApiUrl(domainUrl);
-        uploadExcetionReq.setLogType("-");
         uploadExcetionReq.setMsg(isChangeDomain ? "切换线路" + (useLinePosition + 1) : useAgent ? "开启默认代理服务器" : "关闭默认代理服务器");
         CfLog.e("==============" + uploadExcetionReq.getMsg());
         viewModel.uploadException(uploadExcetionReq);

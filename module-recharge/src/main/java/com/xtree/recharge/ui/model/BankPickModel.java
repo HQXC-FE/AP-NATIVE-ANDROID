@@ -15,6 +15,7 @@ public class BankPickModel extends BindModel {
     //三方银行卡code
     private String bankCode;
     private String bankName;
+    private String type;
 
     @Override
     public String toString() {
@@ -22,6 +23,7 @@ public class BankPickModel extends BindModel {
                 "bankId='" + bankId + '\'' +
                 ", bankCode='" + bankCode + '\'' +
                 ", bankName='" + bankName + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 
@@ -43,6 +45,14 @@ public class BankPickModel extends BindModel {
 
     public String getBankName() {
         return bankName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setBankName(String bankName) {

@@ -8,6 +8,8 @@ public class SPKeyGlobal {
     public static final String USER_CODE_MSG ="inviteCodeSourceMsg";
     public static final String KEY_API_URL = "key_api_url";
     public static final String KEY_H5_URL = "key_h5_url";
+    public static final String KEY_H5_URL_RECORD_BY_FANZHA = "KEY_H5_URL_RECORD_BY_FANZHA";
+    public static final String KEY_H5_URL_ALL = "KEY_H5_URL_ALL";
     public static final String USER_INFO = "user_info";
     public static final String USER_ID = "user_id";
     public static final String USER_NAME = "user_name";
@@ -28,6 +30,7 @@ public class SPKeyGlobal {
     public static final String RC_PAYMENT_OBJ = "rc_payment_obj";
     public static final String RC_PAYMENT_TYPE_OBJ = "rc_payment_type_obj";
     public static final String RC_NOT_TIP_TODAY_COUNT = "rc_not_tip_today_count"; // 充值 今日不再提示 次数
+    public static final String RC_NOT_RC_EXP_TIP_TODAY_COUNT = "rc_not_rc_exp_tip_today_count"; // 充值第一步 今日不再提示 次数
     public static final String RC_NOT_TIP_TODAY_LOW = "rc_not_tip_today_low"; // 充值 今日不再提示 低成功率
     public static final String PM_NOT_TIP_TODAY = "pm_not_tip_today"; // 熊猫体育 今日不再提示
     public static final String PMXC_NOT_TIP_TODAY = "pmxc_not_tip_today"; // 杏彩体育旗舰 今日不再提示
@@ -87,8 +90,15 @@ public class SPKeyGlobal {
     public static final String WS_RETRY_NUMBER ="ws_retry_number";
     public static final String WS_RETRY_WAITING_TIME ="ws_retry_waiting_time";
     public static final String WS_EXPIRE_TIME ="ws_expire_time";
+
+    //极速充值客服
+    public static final String HICHAT_URL_SUFFIX ="hichat_url_suffix";
+
     // 测速扣除百分比
     public static final String APP_RESPONSE_SPEED_CALCULATION ="app_response_speed_calculation";
-    //websocket
+    //推荐测速上限设置
+    public static final String APP_Response_Speed_Max ="app_response_speed_max";
+    //客服链接
+    public static final String APP_SERVICE_LINK = "app_service_link";
 
 }

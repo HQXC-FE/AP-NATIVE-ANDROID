@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StepProgressView">
+        <!-- 当前步骤 -->
+        <attr name="currentStep" format="integer" />
+        <!-- 节点总数 -->
+        <attr name="stepCount" format="integer" />
+        <!-- 已完成颜色 -->
+        <attr name="activeColor" format="color" />
+        <attr name="activeDrawable" format="reference" /> <!-- Drawable 类型 -->
+        <!-- 默认颜色 -->
+        <attr name="defaultColor" format="color" />
+        <!-- 圆形节点半径 -->
+        <attr name="circleRadius" format="dimension" />
+        <!-- 线条宽度 -->
+        <attr name="lineWidth" format="dimension" />
+        <!-- 文本大小 -->
+        <attr name="textSize" format="dimension" />
+        <!-- 步骤文本 -->
+        <attr name="stepTexts" format="reference" />
+        <!--左右端padding-->
+        <attr name="horizontalPadding" format="dimension" />
+    </declare-styleable>
+</resources>

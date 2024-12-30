@@ -51,10 +51,10 @@ public class PMBtSettingLeagueModel extends TemplateBtSettingLeagueModel {
                     public void onResult(List<LeagueAreaInfo> leagueAreas) {
                         List<League> leagueList = new ArrayList<>();
                         for (LeagueAreaInfo leagueArea : leagueAreas) {
-                            if(leagueArea.sportVOs != null && !leagueArea.sportVOs.isEmpty()) {
-                                for (LeagueInfo leagueInfo :leagueArea.sportVOs.get(0).tournamentList){
+                            if (leagueArea.sportVOs != null && !leagueArea.sportVOs.isEmpty()) {
+                                for (LeagueInfo leagueInfo : leagueArea.sportVOs.get(0).tournamentList) {
                                     leagueInfo.regionName = leagueArea.introduction;
-                                    if(TextUtils.equals("HOT", leagueArea.spell)){
+                                    if (TextUtils.equals("HOT", leagueArea.spell)) {
                                         leagueInfo.regionId = Integer.valueOf(leagueArea.id);
                                     }
                                     leagueList.add(new LeaguePm(leagueInfo));

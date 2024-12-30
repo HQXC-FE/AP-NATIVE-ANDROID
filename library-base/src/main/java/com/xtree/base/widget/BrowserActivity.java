@@ -1,11 +1,10 @@
 package com.xtree.base.widget;
 
+import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FAILED;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FINISH;
 import static com.xtree.base.utils.EventConstant.EVENT_UPLOAD_EXCEPTION;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,13 +18,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,12 +40,14 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.just.agentweb.AgentWeb;
+import com.just.agentweb.AgentWebConfig;
 import com.just.agentweb.WebChromeClient;
 import com.just.agentweb.WebViewClient;
 import com.luck.picture.lib.basic.PictureSelector;
 import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
+import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
@@ -55,6 +57,7 @@ import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.EventVo;
 import com.xtree.weight.TopSpeedDomainFloatingWindows;
@@ -130,7 +133,7 @@ public class BrowserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browser);
 
         EventBus.getDefault().register(this);
-
+        FightFanZhaUtils.init();
         initView();
         title = getIntent().getStringExtra(ARG_TITLE);
         isContainTitle = getIntent().getBooleanExtra(ARG_IS_CONTAIN_TITLE, false);
@@ -182,8 +185,8 @@ public class BrowserActivity extends AppCompatActivity {
             header.put("Cache-Control", "no-cache");
             header.put("Pragme", "no-cache");
         }
-//        header.put("Content-Type", "application/vnd.sc-api.v1.json");
-//        header.put("App-RNID", "87jumkljo"); //
+        //header.put("Content-Type", "application/vnd.sc-api.v1.json");
+        //header.put("App-RNID", "87jumkljo"); //
 
         //header.put("Source", "8");
         //header.put("UUID", TagUtils.getDeviceId(Utils.getContext()));
@@ -231,6 +234,11 @@ public class BrowserActivity extends AppCompatActivity {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_loading);
         animation.setRepeatMode(Animation.RESTART);
         animation.setDuration(20 * 1000);
+
+        //todo test
+        if(BuildConfig.DEBUG && FightFanZhaUtils.isOpenTest){
+            FightFanZhaUtils.mockJumpFanZha(agentWeb.getWebCreator().getWebView(),url);
+        }
     }
 
     private void initView() {
@@ -262,6 +270,11 @@ public class BrowserActivity extends AppCompatActivity {
         cookieManager.setCookie(url, "auth=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN) + ";" + "_sessionHandler=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID));
         cookieManager.flush();
 
+        // debug模式
+        if (BuildConfig.DEBUG) {
+            AgentWebConfig.debug();
+        }
+
         agentWeb = AgentWeb.with(this)
                 .setAgentWebParent(findViewById(R.id.wv_main), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
                 .useDefaultIndicator() // 使用默认的加载进度条
@@ -269,6 +282,13 @@ public class BrowserActivity extends AppCompatActivity {
                 .setWebViewClient(new CustomWebViewClient()) // 设置 WebViewClient
                 .addJavascriptInterface("android", new WebAppInterface(this, ivwBack, getCallBack()))
                 .setWebChromeClient(new WebChromeClient() {
+
+                    @Override
+                    public void onReceivedTitle(WebView webView, String s) {
+                        super.onReceivedTitle(webView, s);
+                        FightFanZhaUtils.checkHeadTitle(webView,s,isGame,url);
+                    }
+
                     @Override
                     public void onProgressChanged(WebView view, int newProgress) {
                         super.onProgressChanged(view, newProgress);
@@ -277,6 +297,16 @@ public class BrowserActivity extends AppCompatActivity {
                             LoadingDialog.finish();
                         }
                     }
+
+                    // debug模式
+                    @Override
+                    public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                        CfLog.d("AgentWeb", consoleMessage.message() + " -- From line "
+                                + consoleMessage.lineNumber() + " of "
+                                + consoleMessage.sourceId());
+                        return true;
+                    }
+
 
                     /**
                      * For Android >= 4.1
@@ -307,6 +337,9 @@ public class BrowserActivity extends AppCompatActivity {
                 .ready()
                 .go(url); // 加载网页
 
+        WebView webView = agentWeb.getWebCreator().getWebView();
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setUserAgentString(WebSettings.getDefaultUserAgent(this) + " Chrome/100.0.4896.127 Mobile Safari/537.36");
     }
 
     /**
@@ -401,22 +434,6 @@ public class BrowserActivity extends AppCompatActivity {
         LoadingDialog.finish();
     }
 
-    private void tipSsl(WebView view, SslErrorHandler handler) {
-        Activity activity = (Activity) view.getContext();
-        activity.runOnUiThread(() -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setMessage(R.string.ssl_failed_will_u_continue); // SSL认证失败，是否继续访问？
-            builder.setPositiveButton(R.string.ok, (dialog, which) -> handler.proceed()); // 接受https所有网站的证书
-
-            builder.setNegativeButton(R.string.cancel, (dialog, which) -> handler.cancel());
-
-            AlertDialog dialog = builder.create();
-            if (!isFinishing()) {
-                dialog.show();
-            }
-        });
-    }
-
     /**
      * 图片选择
      */
@@ -455,31 +472,6 @@ public class BrowserActivity extends AppCompatActivity {
 
                     }
                 });
-    }
-
-    private void setCookie(String cookie, String url) {
-        CookieSyncManager.createInstance(this);
-        CookieManager cm = CookieManager.getInstance();
-        cm.removeSessionCookies(null);
-        cm.removeAllCookies(null);
-        cm.flush();
-        //cm.removeSessionCookie();
-        //CookieSyncManager.getInstance().sync();
-        cm.setAcceptCookie(true);
-        cm.setCookie(url, cookie);
-    }
-
-    private void setWebCookie() {
-        CfLog.i("******");
-        if (isLottery) {
-            setLotteryCookieInside();
-        } else if (is3rdLink) {
-            CfLog.d("not need cookie.");
-        } else {
-            if (!TextUtils.isEmpty(token)) {
-                setCookieInside();
-            }
-        }
     }
 
     private void setCookieInside() {
@@ -629,6 +621,7 @@ public class BrowserActivity extends AppCompatActivity {
         }
         super.onDestroy();
 
+        FightFanZhaUtils.reset();
         EventBus.getDefault().unregister(this);
 
         if (mTopSpeedDomainFloatingWindows != null) {
@@ -645,6 +638,22 @@ public class BrowserActivity extends AppCompatActivity {
             case EVENT_TOP_SPEED_FAILED:
                 mTopSpeedDomainFloatingWindows.onError();
                 break;
+            case EVENT_CHANGE_URL_FANZHA_FINSH:
+                if(!isGame && !is3rdLink){
+                    //只有自己的h5域名站作更换域名，重新Load
+                    String newBaseUrl = DomainUtil.getH5Domain2();
+                    if(TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(url)){
+                        return;
+                    }
+                    String oldBaseUrl = FightFanZhaUtils.getDomain(url);
+                    if(!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)){
+                        return;
+                    }
+                    String goUrl = url.replace(oldBaseUrl,newBaseUrl);
+                    CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
+                    agentWeb.getUrlLoader().loadUrl(goUrl);
+                }
+                break;
         }
     }
 
@@ -652,36 +661,36 @@ public class BrowserActivity extends AppCompatActivity {
         private boolean isInitialUrl = true; // 是否是初始 URL 的标识
         private final String initialUrl = url; // 替换为你的初始 URL
         private String mUrl;
-//        private OkHttpClient client;
-//
-//        public CustomWebViewClient() throws UnknownHostException {
-//            // 初始化 OkHttpClient 并配置自定义的 DNS 解析
-//            client = new OkHttpClient.Builder()
-//                    .dns(new DnsOverHttps.Builder()
-//                            .client(new OkHttpClient())
-//                            .url(HttpUrl.get(ARG_SEARCH_DNS_URL))
-//                            .bootstrapDnsHosts(InetAddress.getByName("8.8.8.8"), InetAddress.getByName("114.114.114.114"))
-//                            .build())
-//                    .build();
-//        }
-//
-//        @Override
-//        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-//            String url = request.getUrl().toString();
-//            Request httpRequest = new Request.Builder().url(url).build();
-//
-//            try {
-//                Response response = client.newCall(httpRequest).execute();
-//                return new WebResourceResponse(
-//                        response.header("content-type"),
-//                        response.header("content-encoding"),
-//                        response.body().byteStream()
-//                );
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return super.shouldInterceptRequest(view, request);
-//            }
-//        }
+        //        private OkHttpClient client;
+        //
+        //        public CustomWebViewClient() throws UnknownHostException {
+        //            // 初始化 OkHttpClient 并配置自定义的 DNS 解析
+        //            client = new OkHttpClient.Builder()
+        //                    .dns(new DnsOverHttps.Builder()
+        //                            .client(new OkHttpClient())
+        //                            .url(HttpUrl.get(ARG_SEARCH_DNS_URL))
+        //                            .bootstrapDnsHosts(InetAddress.getByName("8.8.8.8"), InetAddress.getByName("114.114.114.114"))
+        //                            .build())
+        //                    .build();
+        //        }
+        //
+        //        @Override
+        //        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        //            String url = request.getUrl().toString();
+        //            Request httpRequest = new Request.Builder().url(url).build();
+        //
+        //            try {
+        //                Response response = client.newCall(httpRequest).execute();
+        //                return new WebResourceResponse(
+        //                        response.header("content-type"),
+        //                        response.header("content-encoding"),
+        //                        response.body().byteStream()
+        //                );
+        //            } catch (IOException e) {
+        //                e.printStackTrace();
+        //                return super.shouldInterceptRequest(view, request);
+        //            }
+        //        }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -713,14 +722,7 @@ public class BrowserActivity extends AppCompatActivity {
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            //handler.proceed();
-            hideLoading();
-            if (sslErrorCount < 4) {
-                sslErrorCount++;
-                tipSsl(view, handler);
-            } else {
-                handler.proceed();
-            }
+            handler.proceed();
         }
 
         @Override
@@ -775,6 +777,23 @@ public class BrowserActivity extends AppCompatActivity {
             }
         }
 
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
+            if(FightFanZhaUtils.checkRequest(getBaseContext(),webResourceRequest,isGame,url)){
+                return FightFanZhaUtils.replaceLoadingHtml(isGame);
+            }
+            return super.shouldInterceptRequest(webView, webResourceRequest);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
+            if(FightFanZhaUtils.checkRequest(getBaseContext(),webResourceRequest,isGame,url)){
+                return false;
+            }
+            return super.shouldOverrideUrlLoading(webView, webResourceRequest);
+        }
+
+
     }
 
     private void uploadH5Error(String msg, String url) {
@@ -783,8 +802,10 @@ public class BrowserActivity extends AppCompatActivity {
             req.setLogTag("thirdgame_domain_exception");
             req.setApiUrl(url);
             req.setMsg(msg);
+            req.setLogType("三方游戏打开失败/初始 URL错误处理");
             EventBus.getDefault().post(new EventVo(EVENT_UPLOAD_EXCEPTION, req));
         }
+
     }
 
     public boolean isGame() {

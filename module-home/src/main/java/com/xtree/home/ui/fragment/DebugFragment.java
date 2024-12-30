@@ -19,16 +19,19 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.lxj.xpopup.XPopup;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.fastest.FastestMonitorCache;
 import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.TopSpeedDomain;
+import com.xtree.base.widget.BrowserDialog;
 import com.xtree.home.BR;
 import com.xtree.home.BuildConfig;
 import com.xtree.home.R;
@@ -160,6 +163,26 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
                 }
             }
         });
+
+        binding.tvStatFz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FightFanZhaUtils.startMockFanZha(getActivity());
+            }
+        });
+
+        binding.tvStatFz.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                FightFanZhaUtils.isOpenTest = true;
+                new XPopup.Builder(getActivity()).moveUpToKeyboard(false)
+                        .isViewMode(true)
+                        .asCustom(BrowserDialog.newInstance(getActivity(),
+                                DomainUtil.getH5Domain2() + "/webapp/?isNative=1#/activity/298")).show();
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -186,6 +209,7 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
         if (mTopSpeedDomainFloatingWindows != null) {
             mTopSpeedDomainFloatingWindows.removeView();
         }
+        FightFanZhaUtils.isOpenTest = false ;
     }
 
     @Override

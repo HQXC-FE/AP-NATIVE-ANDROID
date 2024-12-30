@@ -396,7 +396,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         binding.bnrTop.setIndicator(new CircleIndicator(getContext())); // 增加小圆点
         //binding.bnrTop.setBannerGalleryEffect(20, 12, 0.8f);// 画廊效果
         //binding.bnrTop.setBannerRound2(20);
-        binding.bnrTop.setAdapter(new BannerImageAdapter<BannersVo>(new ArrayList<>()) {
+        ArrayList list = new ArrayList<>();
+        list.add(new BannersVo("default"));
+        list.add(new BannersVo("default"));
+        binding.bnrTop.setAdapter(new BannerImageAdapter<BannersVo>(list) {
             @Override
             public void onBindView(BannerImageHolder holder, BannersVo data, int position, int size) {
                 holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -550,6 +553,15 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     viewModel.getPMGameTokenApi(false);
                     return;
                 }
+            }
+
+            @Override
+            public boolean getIsFrozen() {
+                if (mProfileVo != null && mProfileVo.isFrozen != 0) {
+                    showFreezePpw();
+                    return true;
+                }
+                return false;
             }
         };
 

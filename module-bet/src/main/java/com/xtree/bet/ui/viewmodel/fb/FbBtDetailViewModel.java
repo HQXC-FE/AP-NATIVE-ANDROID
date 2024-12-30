@@ -1,7 +1,6 @@
 package com.xtree.bet.ui.viewmodel.fb;
 
 
-import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FB;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
@@ -15,8 +14,8 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.net.FBHttpCallBack;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.vo.FBService;
 import com.xtree.bet.bean.response.SportsCacheSwitchInfo;
 import com.xtree.bet.bean.response.fb.MatchInfo;
@@ -33,7 +32,6 @@ import com.xtree.bet.constant.FBMarketTag;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.SportCacheType;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
-import com.xtree.base.utils.BtDomainUtil;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -68,7 +66,7 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
         Disposable disposable = (Disposable) flowable
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FBHttpCallBack<MatchInfo>() {
+                .subscribeWith(new HttpCallBack<MatchInfo>() {
                     @Override
                     public void onResult(MatchInfo matchInfo) {
                         Match match = new MatchFb(matchInfo);
@@ -82,7 +80,7 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (((ResponseThrowable) t).code == CODE_14010) {
+                        if (((ResponseThrowable) t).code == HttpCallBack.CodeRule.CODE_14010) {
                             getGameTokenApi();
                         }
                     }
@@ -144,16 +142,16 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
                 categoryMap.get(type).addPlayTypeList(playType);
             }
         }
-        if(mCategoryMap.isEmpty()) {
+        if (mCategoryMap.isEmpty()) {
             mCategoryMap = categoryMap;
             mCategoryList = categoryList;
-        }else{
-            if(categoryMap.size() <= mCategoryMap.size()) {
+        } else {
+            if (categoryMap.size() <= mCategoryMap.size()) {
                 for (String key : mCategoryMap.keySet()) {
                     Category oldCategory = mCategoryMap.get(key);
                     int index = mCategoryList.indexOf(oldCategory);
                     Category newCategory = categoryMap.get(key);
-                    if(index > -1) {
+                    if (index > -1) {
                         mCategoryList.set(index, newCategory);
                         mCategoryMap.put(key, newCategory);
                     }

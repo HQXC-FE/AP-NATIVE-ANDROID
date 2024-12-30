@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.xtree.base.net.HttpCallBack;
 import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
@@ -63,6 +64,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
+import me.xtree.mvvmhabit.http.BusinessException;
+import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
@@ -85,6 +88,13 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
     private int goingOnPageSize = 300;
     private int pageSize = 50;
     private HashMap<Integer, SportTypeItem> mMatchGames = new HashMap<>();
+
+    public FBMainViewModel(@NonNull Application application, BetRepository repository) {
+        super(application, repository);
+        //SPORT_NAMES = SPORT_NAMES_TODAY_CG;
+        //SPORT_IDS = SPORT_IDS_ALL;
+        sportItemData.postValue(new String[]{});
+    }
 
     public void saveLeague(LeagueListCallBack leagueListCallBack) {
         mLeagueList = leagueListCallBack.getLeagueList();
@@ -144,13 +154,6 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     public Map<String, Match> getMapMatch() {
         return mMapMatch;
-    }
-
-    public FBMainViewModel(@NonNull Application application, BetRepository repository) {
-        super(application, repository);
-        //SPORT_NAMES = SPORT_NAMES_TODAY_CG;
-        //SPORT_IDS = SPORT_IDS_ALL;
-        sportItemData.postValue(new String[]{});
     }
 
     //@Override

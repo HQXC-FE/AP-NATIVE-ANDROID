@@ -76,12 +76,16 @@ public class TopSpeedDomainFloatingWindows extends FloatingWindows {
 
                 TextView fastestStatusTime = iconView.findViewById(R.id.fastest_status_time);
                 ImageView fastestStatusImg = iconView.findViewById(R.id.fastest_status_img);
-                fastestStatusTime.setText(topSpeedDomain.speedScore + "ms");
 
-                if (topSpeedDomain.speedScore <= 500) {
+                //显示的测速时间，比较真实时间和优化时间取最短
+                long speedTime = Math.min(topSpeedDomain.speedScore, topSpeedDomain.speedSec);
+
+                fastestStatusTime.setText(speedTime + "ms");
+
+                if (speedTime <= 500) {
                     fastestStatusTime.setTextColor(mContext.getResources().getColor(R.color.clr_txt_fastest_low));
                     fastestStatusImg.setImageResource(R.mipmap.icon_fastest_status_low);
-                } else if (topSpeedDomain.speedScore < 1000) {
+                } else if (speedTime < 1000) {
                     fastestStatusTime.setTextColor(mContext.getResources().getColor(R.color.clr_txt_fastest_medium));
                     fastestStatusImg.setImageResource(R.mipmap.icon_fastest_status_medium);
                 } else {
@@ -358,6 +362,7 @@ public class TopSpeedDomainFloatingWindows extends FloatingWindows {
                 if (oldSize >= (i + 1)) {
                     TopSpeedDomain oldData = datas.get(i);
                     oldData.url = newData.url;
+                    oldData.speedSec = newData.speedSec;
                     oldData.speedScore = newData.speedScore;
                     mainDomainAdapter.notifyItemChanged(i);
                 } else {

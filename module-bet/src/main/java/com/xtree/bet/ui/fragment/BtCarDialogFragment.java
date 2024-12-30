@@ -21,7 +21,6 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.CfLog;
-import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.NumberUtils;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.widget.MsgDialog;
@@ -81,6 +80,7 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
     private BasePopupView ppw;
 
     private String mBanlance = "-1";
+    private long lastBetClickTime;
 
     private KeyBoardListener mKeyBoardListener = new KeyBoardListener() {
         @Override
@@ -136,10 +136,6 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
         mBanlance = SPUtils.getInstance().getString(SPKeyGlobal.WLT_CENTRAL_BLC, "-1");
         binding.tvBalance.setText(NumberUtils.formatDown(Double.valueOf(mBanlance), 2));
         binding.btBet.setOnClickListener(v -> {
-            //4秒内禁止重复投注，防止弱网情况重复投注
-            if (ClickUtil.isFastClick(4000)) {
-                return;
-            }
             int acceptOdds = binding.cbAccept.isChecked() ? 1 : 2;
             if (TextUtils.equals(mBanlance, "-1")) {
                 ToastUtils.showLong("正在获取余额信息，请稍候");
@@ -154,7 +150,15 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
                 return;
             }
             //viewModel.showLoading(requireContext());
-            viewModel.bet(betConfirmOptionList, cgOddLimitList, acceptOdds);
+            synchronized (this) {
+                long curClickTime = System.currentTimeMillis();
+                //当前投注Dialog没有消失前，7秒内禁止重复投注，防止弱网情况重复投注
+                if (Math.abs((curClickTime - lastBetClickTime)) < 7000) {
+                    return;
+                }
+                lastBetClickTime = curClickTime;
+                viewModel.bet(betConfirmOptionList, cgOddLimitList, acceptOdds);
+            }
         });
         binding.llRoot.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             if (BtCarManager.isCg()) {
