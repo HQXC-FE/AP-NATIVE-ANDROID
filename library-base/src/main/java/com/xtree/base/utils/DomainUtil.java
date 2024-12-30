@@ -2,6 +2,10 @@ package com.xtree.base.utils;
 
 import android.text.TextUtils;
 
+import com.xtree.base.global.SPKeyGlobal;
+
+import me.xtree.mvvmhabit.utils.SPUtils;
+
 public class DomainUtil {
 
     private static String apiUrl = "https://www.eon2.org"; // API 用
@@ -15,13 +19,23 @@ public class DomainUtil {
     public static String getApiUrl() {
         //apiUrl = "https://pre-dsport.oxldkm.com"; // 测试/内网 环境
         //apiUrl = "https://app1.vcchgk.com"; // 生产环境
-        return apiUrl;
+
+        String url = SPUtils.getInstance().getString(SPKeyGlobal.KEY_API_URL, apiUrl);
+
+        //有调试域名优先使用调试域名
+        String debugUrl = SPUtils.getInstance().getString(SPKeyGlobal.DEBUG_APPLY_DOMAIN);
+        if (!TextUtils.isEmpty(debugUrl)) {
+            return debugUrl;
+        }
+
+        return url;
     }
 
     public static void setApiUrl(String url) {
         CfLog.i("url: " + url);
         if (!TextUtils.isEmpty(url) && url.startsWith("http")) {
             apiUrl = url;
+            SPUtils.getInstance().put(SPKeyGlobal.KEY_API_URL, apiUrl);
         }
     }
 
@@ -32,8 +46,13 @@ public class DomainUtil {
      * @return url
      */
     public static String getDomain() {
+        String url = SPUtils.getInstance().getString(SPKeyGlobal.KEY_H5_URL, domainUrl);
+        String debugUrl = SPUtils.getInstance().getString(SPKeyGlobal.DEBUG_APPLY_DOMAIN);
+        if (!TextUtils.isEmpty(debugUrl)) {
+            return debugUrl+ "/";
+        }
 
-        return domainUrl + "/";
+        return url + "/";
     }
 
     /**
@@ -42,7 +61,12 @@ public class DomainUtil {
      * @return url
      */
     public static String getDomain2() {
-        return domainUrl; //.substring(0, domainUrl.length() - 1);
+        String url = SPUtils.getInstance().getString(SPKeyGlobal.KEY_H5_URL, domainUrl);
+        String debugUrl = SPUtils.getInstance().getString(SPKeyGlobal.DEBUG_APPLY_DOMAIN);
+        if (!TextUtils.isEmpty(debugUrl)) {
+            return debugUrl;
+        }
+        return url; //.substring(0, domainUrl.length() - 1);
     }
 
     public static void setDomainUrl(String url) {
@@ -54,7 +78,7 @@ public class DomainUtil {
             } else {
                 domainUrl = url;
             }
-
+            SPUtils.getInstance().put(SPKeyGlobal.KEY_H5_URL, domainUrl);
             CfLog.i("domainUrl: " + domainUrl);
         }
     }
