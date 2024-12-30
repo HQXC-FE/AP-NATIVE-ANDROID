@@ -21,9 +21,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/layout_margin"
-            android:layout_marginTop="@dimen/layout_margin"
             android:text="线路选择"
-            android:textColor="@color/clr_txt_06"
+            android:textColor="@color/clr_txt_02"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,6 +35,8 @@
             android:layout_marginStart="@dimen/layout_margin"
             android:layout_marginTop="5dp"
             android:text="请选择需要切换的线路"
+            android:textColor="@color/clr_txt_09"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
@@ -66,10 +68,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/bg_btn_xc_c16"
+        android:background="@mipmap/fastest_speed_btn_bg"
         android:drawableStart="@mipmap/main_icon_top_speed_reflesh"
         android:drawablePadding="5dp"
-        android:paddingStart="10dp"
+        android:paddingStart="15dp"
         android:paddingTop="5dp"
         android:paddingEnd="10dp"
         android:paddingBottom="5dp"
