@@ -49,7 +49,7 @@
                     android:layout_weight="11"
                     android:background="@mipmap/me_login_area_bg"
                     android:visibility="gone"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/me_login_title"
@@ -261,7 +261,7 @@
                     android:layout_weight="11"
                     android:background="@mipmap/me_register_area_bg"
                     android:visibility="gone"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                     <TextView
                         android:id="@+id/me_register_title"
@@ -426,7 +426,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="15dp"
-                            android:background="@drawable/bg_register_unable"
+                            android:background="@mipmap/me_login_logout_bg"
                             android:text="@string/me_register"
                             android:textColor="@color/white" />
                     </LinearLayout>
