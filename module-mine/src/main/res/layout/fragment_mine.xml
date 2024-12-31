@@ -262,7 +262,7 @@
                     android:elevation="1dp"
                     android:orientation="vertical"
                     android:padding="@dimen/layout_margin"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imv_menu_2">
@@ -376,6 +376,30 @@
                             android:drawableTop="@mipmap/me_gr_easter"
                             android:text="@string/txt_easter_report" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_menu_04"
+                        style="@style/style_ll_row_2">
+
+                        <TextView
+                            android:id="@+id/tvw_bonus_pool"
+                            style="@style/style_menu_black"
+                            android:drawableTop="@mipmap/me_gr_bonus_pool"
+                            android:text="@string/txt_bonus_pool_title"
+                            android:visibility="gone" />
+
+                        <TextView style="@style/style_wallet_space" />
+
+                        <TextView style="@style/style_menu_black" />
+
+                        <TextView style="@style/style_wallet_space" />
+
+                        <TextView style="@style/style_menu_black" />
+
+                        <TextView style="@style/style_wallet_space" />
+
+                        <TextView style="@style/style_menu_black" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -386,6 +410,7 @@
                     android:elevation="1dp"
                     android:orientation="vertical"
                     android:padding="@dimen/layout_margin"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imv_menu_2">

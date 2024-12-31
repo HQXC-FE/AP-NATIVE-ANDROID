@@ -22,6 +22,7 @@ import com.xtree.base.widget.LoadingDialog;
 import com.xtree.mine.data.MineRepository;
 import com.xtree.mine.vo.AdduserVo;
 import com.xtree.mine.vo.BalanceVo;
+import com.xtree.mine.vo.BonusPoolReportVo;
 import com.xtree.mine.vo.EasterReportVo;
 import com.xtree.mine.vo.LotteryAllVo;
 import com.xtree.mine.vo.LotteryItemVo;
@@ -68,6 +69,7 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
     public SingleLiveData<List<LotteryItemVo>> liveDataLotteryAll = new SingleLiveData<>();
     public SingleLiveData<EasterReportVo> liveDataEasterReport = new SingleLiveData<>();
     public SingleLiveData<Boolean> liveDataSetPoint = new SingleLiveData<>(); // 设置返点
+    public SingleLiveData<BonusPoolReportVo> liveDataBonusPoolReport = new SingleLiveData<>(); // 奖金池
 
     public MineViewModel(@NonNull Application application, MineRepository repository) {
         super(application, repository);
@@ -387,6 +389,26 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
                     public void onResult(EasterReportVo vo) {
                         CfLog.d(vo.toString());
                         liveDataEasterReport.setValue(vo);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        super.onError(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    public void getBonusPoolReport(HashMap map) {
+        Disposable disposable = (Disposable) model.getApiService().getBonusPoolReport(map)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<BonusPoolReportVo>() {
+                    @Override
+                    public void onResult(BonusPoolReportVo vo) {
+                        CfLog.d(vo.toString());
+                        liveDataBonusPoolReport.setValue(vo);
                     }
 
                     @Override

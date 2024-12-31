@@ -101,6 +101,9 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                     if (mProfileVo.getUserLevel() == 1) {
                         binding.tvwEaster.setVisibility(View.INVISIBLE);
                     }
+                    if (mProfileVo.getUserLevel() == 2) {
+                        binding.tvwBonusPool.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     binding.llMenu2.setVisibility(View.GONE);
                     binding.llMenu3.setVisibility(View.VISIBLE);
@@ -109,15 +112,14 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                 binding.llMenu2.setVisibility(View.GONE);
                 binding.llMenu3.setVisibility(View.VISIBLE);
             }
-            if (mProfileVo !=null)
-            {
+            if (mProfileVo != null) {
                 //usertype = 0 显示 不为0就都隐藏
-                if (mProfileVo.usertype == 0){
+                if (mProfileVo.usertype == 0) {
                     binding.tvwTransRecord.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     binding.tvwTransRecord.setVisibility(View.GONE);
                 }
-            }else{
+            } else {
                 binding.tvwTransRecord.setVisibility(View.VISIBLE);
             }
 
@@ -343,6 +345,10 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
 
         binding.tvwEaster.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_EASTER_REPORT);
+        });
+
+        binding.tvwBonusPool.setOnClickListener(v -> {
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_BONUS_POOL);
         });
     }
 

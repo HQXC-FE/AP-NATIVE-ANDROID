@@ -10,6 +10,7 @@ import com.xtree.mine.vo.AwardsRecordVo;
 import com.xtree.mine.vo.BalanceVo;
 import com.xtree.mine.vo.BankCardCashVo;
 import com.xtree.mine.vo.BankCardVo;
+import com.xtree.mine.vo.BonusPoolReportVo;
 import com.xtree.mine.vo.BtDetailVo;
 import com.xtree.mine.vo.BtPlatformVo;
 import com.xtree.mine.vo.BtReportVo;
@@ -780,4 +781,10 @@ public interface HttpApiService {
     @PUT("/api/user/set-child-point")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<HashMap<String, String>> updateReturnPoint(@Body Map<String, String> map);
+
+    /**
+     * 奖金池报表
+     */
+    @GET("/api/activity/pool?")
+    Flowable<BaseResponse<BonusPoolReportVo>> getBonusPoolReport(@QueryMap Map<String, String> qMap);
 }
