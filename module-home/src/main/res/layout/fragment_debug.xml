@@ -452,8 +452,7 @@
                         android:layout_marginEnd="@dimen/layout_margin"
                         android:hint="请输入域名"
                         android:paddingTop="6dp"
-                        android:paddingBottom="6dp"
-                        android:text="https://apptest.oxldkm.com" />
+                        android:paddingBottom="6dp" />
                 </LinearLayout>
 
                 <LinearLayout style="@style/style_item_ll_row_0">
