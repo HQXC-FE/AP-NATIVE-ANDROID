@@ -19,6 +19,7 @@ import com.xtree.lottery.ui.view.viewmodel.BetRacingViewModel;
 import com.xtree.lottery.utils.LotteryAnalyzer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -89,8 +90,14 @@ public class BetRacingView extends BetBaseView {
             betData.set(null);
             return;
         }
-
-        String codes = String.join("&", validNumbers);
+        Set<String> updatedNumbers = new HashSet<>();
+        for (String n : validNumbers) {
+            updatedNumbers.add(n.replaceAll(" ", "&"));
+        }
+        //替换原集合内容
+        validNumbers = updatedNumbers;
+        //07&08|01&06|03&09|04&05|10&04
+        String codes = String.join("|", validNumbers);
 
         LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
         betOrderData.setCodes(codes);
@@ -101,6 +108,7 @@ public class BetRacingView extends BetBaseView {
 
         ArrayList<LotteryBetRequest.BetOrderData> orderList = new ArrayList<>();
         orderList.add(betOrderData);
+        betCodes.set(binding.getModel().reFormatCode(codes));
         betData.set(orderList);
     }
 

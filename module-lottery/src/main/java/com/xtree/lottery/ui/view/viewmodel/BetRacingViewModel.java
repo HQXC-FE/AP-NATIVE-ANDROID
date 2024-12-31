@@ -1,5 +1,6 @@
 package com.xtree.lottery.ui.view.viewmodel;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.xtree.lottery.ui.view.model.BetRacingBetTitleModel;
 import com.xtree.lottery.ui.view.model.BetRacingNumModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -24,86 +26,72 @@ import java.util.ArrayList;
  */
 public class BetRacingViewModel {
     public final ObservableField<String> lotteryNumbs = new ObservableField<>("");
-    private BasePopupView pop;
-    private LotteryBetsModel betModel;
-    private final ArrayList<BindModel> carModels = new ArrayList<>(
-            new ArrayList<BindModel>() {
-                {
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_1, BetRacingNumModel.TYPE_CAR));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_2, BetRacingNumModel.TYPE_CAR));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_3, BetRacingNumModel.TYPE_CAR));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_4, BetRacingNumModel.TYPE_CAR));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_5, BetRacingNumModel.TYPE_CAR));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_6, BetRacingNumModel.TYPE_CAR));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_7, BetRacingNumModel.TYPE_CAR));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_8, BetRacingNumModel.TYPE_CAR));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_9, BetRacingNumModel.TYPE_CAR));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_10, BetRacingNumModel.TYPE_CAR));
-                }
-            }
-    );
-    private final ArrayList<BindModel> jssmModels = new ArrayList<>(
-            new ArrayList<BindModel>() {
-                {
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_1, BetRacingNumModel.TYPE_JSSM));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_2, BetRacingNumModel.TYPE_JSSM));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_3, BetRacingNumModel.TYPE_JSSM));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_4, BetRacingNumModel.TYPE_JSSM));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_5, BetRacingNumModel.TYPE_JSSM));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_6, BetRacingNumModel.TYPE_JSSM));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_7, BetRacingNumModel.TYPE_JSSM));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_8, BetRacingNumModel.TYPE_JSSM));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_9, BetRacingNumModel.TYPE_JSSM));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_10, BetRacingNumModel.TYPE_JSSM));
-                }
-            }
-    );
-    private final ArrayList<BindModel> xyftModels = new ArrayList<>(
-            new ArrayList<BindModel>() {
-                {
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_1, BetRacingNumModel.TYPE_XYFT));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_2, BetRacingNumModel.TYPE_XYFT));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_3, BetRacingNumModel.TYPE_XYFT));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_4, BetRacingNumModel.TYPE_XYFT));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_5, BetRacingNumModel.TYPE_XYFT));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_6, BetRacingNumModel.TYPE_XYFT));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_7, BetRacingNumModel.TYPE_XYFT));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_8, BetRacingNumModel.TYPE_XYFT));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_9, BetRacingNumModel.TYPE_XYFT));
-                    add(new BetRacingNumModel(BetRacingNumModel.NUM_10, BetRacingNumModel.TYPE_XYFT));
-                }
-            }
-    );
-    private final ArrayList<BindModel> numBindModels = new ArrayList<>();
-    private final ArrayList<BindModel> betBindModels = new ArrayList<>(
-            new ArrayList<BindModel>() {
-                {
-                    add(new BetRacingBetTitleModel());
-                    add(new BetRacingBetModel());
-                    add(new BetRacingBetModel());
-                    add(new BetRacingBetModel());
-                    add(new BetRacingBetModel());
-                    add(new BetRacingBetModel());
-                }
-            }
-    );
     public final ObservableField<ArrayList<BindModel>> numDatas = new ObservableField<>();
     public final ObservableField<ArrayList<BindModel>> betDatas = new ObservableField<>();
-    public final ObservableField<ArrayList<Integer>> numItemType = new ObservableField<>(
-            new ArrayList<Integer>() {
-                {
-                    add(R.layout.item_bet_racing_nums);
-                }
-            });
-
-    public final ObservableField<ArrayList<Integer>> betItemType = new ObservableField<>(
-            new ArrayList<Integer>() {
-                {
-                    add(R.layout.item_bet_racing_bets);
-                    add(R.layout.item_bet_racing_bet_title);
-                }
-            });
-
+    public final ObservableField<ArrayList<Integer>> numItemType = new ObservableField<>(new ArrayList<Integer>() {
+        {
+            add(R.layout.item_bet_racing_nums);
+        }
+    });
+    public final ObservableField<ArrayList<Integer>> betItemType = new ObservableField<>(new ArrayList<Integer>() {
+        {
+            add(R.layout.item_bet_racing_bets);
+            add(R.layout.item_bet_racing_bet_title);
+        }
+    });
+    private final ArrayList<BindModel> carModels = new ArrayList<>(new ArrayList<BindModel>() {
+        {
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_1, BetRacingNumModel.TYPE_CAR));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_2, BetRacingNumModel.TYPE_CAR));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_3, BetRacingNumModel.TYPE_CAR));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_4, BetRacingNumModel.TYPE_CAR));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_5, BetRacingNumModel.TYPE_CAR));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_6, BetRacingNumModel.TYPE_CAR));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_7, BetRacingNumModel.TYPE_CAR));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_8, BetRacingNumModel.TYPE_CAR));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_9, BetRacingNumModel.TYPE_CAR));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_10, BetRacingNumModel.TYPE_CAR));
+        }
+    });
+    private final ArrayList<BindModel> jssmModels = new ArrayList<>(new ArrayList<BindModel>() {
+        {
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_1, BetRacingNumModel.TYPE_JSSM));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_2, BetRacingNumModel.TYPE_JSSM));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_3, BetRacingNumModel.TYPE_JSSM));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_4, BetRacingNumModel.TYPE_JSSM));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_5, BetRacingNumModel.TYPE_JSSM));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_6, BetRacingNumModel.TYPE_JSSM));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_7, BetRacingNumModel.TYPE_JSSM));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_8, BetRacingNumModel.TYPE_JSSM));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_9, BetRacingNumModel.TYPE_JSSM));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_10, BetRacingNumModel.TYPE_JSSM));
+        }
+    });
+    private final ArrayList<BindModel> xyftModels = new ArrayList<>(new ArrayList<BindModel>() {
+        {
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_1, BetRacingNumModel.TYPE_XYFT));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_2, BetRacingNumModel.TYPE_XYFT));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_3, BetRacingNumModel.TYPE_XYFT));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_4, BetRacingNumModel.TYPE_XYFT));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_5, BetRacingNumModel.TYPE_XYFT));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_6, BetRacingNumModel.TYPE_XYFT));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_7, BetRacingNumModel.TYPE_XYFT));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_8, BetRacingNumModel.TYPE_XYFT));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_9, BetRacingNumModel.TYPE_XYFT));
+            add(new BetRacingNumModel(BetRacingNumModel.NUM_10, BetRacingNumModel.TYPE_XYFT));
+        }
+    });
+    private final ArrayList<BindModel> numBindModels = new ArrayList<>();
+    private final ArrayList<BindModel> betBindModels = new ArrayList<>(new ArrayList<BindModel>() {
+        {
+            add(new BetRacingBetTitleModel());
+            add(new BetRacingBetModel());
+            add(new BetRacingBetModel());
+            add(new BetRacingBetModel());
+            add(new BetRacingBetModel());
+            add(new BetRacingBetModel());
+        }
+    });
     public final BaseDatabindingAdapter.onBindListener numOnBindListener = new BaseDatabindingAdapter.onBindListener() {
         @Override
         public void onBind(@NonNull BindingAdapter.BindingViewHolder bindingViewHolder, @NonNull View view, int itemViewType) {
@@ -123,9 +111,9 @@ public class BetRacingViewModel {
                     break;
                 }
             }
+            lotteryNumbs.set(formatCode());
         }
     };
-
     public final BaseDatabindingAdapter.onBindListener betOnBindListener = new BaseDatabindingAdapter.onBindListener() {
         @Override
         public void onBind(@NonNull BindingAdapter.BindingViewHolder bindingViewHolder, @NonNull View view, int itemViewType) {
@@ -139,6 +127,7 @@ public class BetRacingViewModel {
                             BetRacingBetModel bData = (BetRacingBetModel) betBindModels.get(i);
                             bData.clearV1();
                             bData.clearV2();
+                            lotteryNumbs.set(formatCode());
                         }
                     }
                 });
@@ -150,12 +139,14 @@ public class BetRacingViewModel {
                     @Override
                     public void onClick(View v) {
                         bData.clearV1();
+                        lotteryNumbs.set(formatCode());
                     }
                 });
                 view.findViewById(R.id.item_racing_bet_bt2).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         bData.clearV2();
+                        lotteryNumbs.set(formatCode());
                     }
                 });
                 view.findViewById(R.id.item_racing_bet_bt3).setOnClickListener(new View.OnClickListener() {
@@ -163,6 +154,7 @@ public class BetRacingViewModel {
                     public void onClick(View v) {
                         bData.clearV1();
                         bData.clearV2();
+                        lotteryNumbs.set(formatCode());
                     }
                 });
             }
@@ -174,6 +166,74 @@ public class BetRacingViewModel {
 
         }
     };
+    private BasePopupView pop;
+    private LotteryBetsModel betModel;
+
+    /**
+     * 格式化投注号码
+     */
+    public String formatCode() {
+        StringBuilder codesBuildr = new StringBuilder();
+
+        for (int i = 0; i < betBindModels.size(); i++) {
+
+            //排除title
+            if (!(betBindModels.get(i) instanceof BetRacingBetModel)) {
+                continue;
+            }
+
+            //获取投注号
+            BetRacingBetModel bData = (BetRacingBetModel) betBindModels.get(i);
+
+            StringBuilder itemBuildrV1 = new StringBuilder();
+            StringBuilder itemBuildrV2 = new StringBuilder();
+            if (bData.number_v1.get() != null) {
+                itemBuildrV1.append(bData.number_v1.get().number);
+            }
+            if (bData.number_v2.get() != null) {
+                itemBuildrV2.append(bData.number_v2.get().number);
+            }
+
+            if (!TextUtils.isEmpty(itemBuildrV1)) {
+                codesBuildr.append(itemBuildrV1);
+            } else {
+                codesBuildr.append(" ");
+            }
+            codesBuildr.append(" ");
+            if (!TextUtils.isEmpty(itemBuildrV2)) {
+                codesBuildr.append(itemBuildrV2);
+            } else {
+                codesBuildr.append(" ");
+            }
+            codesBuildr.append(",");
+        }
+        if (codesBuildr.length() > 1) {
+            return codesBuildr.deleteCharAt(codesBuildr.length() - 1).toString();
+        } else {
+            return codesBuildr.toString();
+        }
+    }
+
+    /**
+     * 一组投注号码的解析
+     */
+    public ArrayList<List<String>> reFormatCode(String codes) {
+        ArrayList<List<String>> codeList = new ArrayList<>();
+        String[] parts = codes.split("\\|");
+        for (String s : parts) {
+            ArrayList<String> cs = new ArrayList<>();
+            if (TextUtils.isEmpty(s.replace("|", "").trim())) {
+                codeList.add(cs);
+            } else {
+                String[] c = s.split("&");
+                for (String s1 : c) {
+                    cs.add(s1);
+                }
+                codeList.add(cs);
+            }
+        }
+        return codeList;
+    }
 
     public void initData(LotteryBetsModel model) {
         this.betModel = model;
