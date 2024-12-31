@@ -46,6 +46,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.ToastUtils;
 
 @Route(path = RouterFragmentPath.Home.PG_DEBUG)
 public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewModel> {
@@ -112,7 +113,10 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
         binding.edtFastestMonitorTimeout.setText(String.valueOf(FastestMonitorCache.INSTANCE.getMAX_UPLOAD_TIME()));
 
         String debugUrl = SPUtils.getInstance().getString(SPKeyGlobal.DEBUG_APPLY_DOMAIN);
-        binding.tvwVfGlobe.setChecked(!TextUtils.isEmpty(debugUrl));
+        if (!TextUtils.isEmpty(debugUrl)) {
+            binding.tvwVfGlobe.setChecked(true);
+            binding.edtVfIp.setText(debugUrl);
+        }
 
         int fastest_monitor_timeout = SPUtils.getInstance().getInt(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT);
         binding.tvwFastestMonitorTimeout.setChecked(fastest_monitor_timeout > 0);
@@ -139,7 +143,11 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
 
                 if (isChecked) {
                     String url = binding.edtVfIp.getText().toString().trim();
-                    SPUtils.getInstance().put(SPKeyGlobal.DEBUG_APPLY_DOMAIN, url);
+                    if (!TextUtils.isEmpty(url)) {
+                        SPUtils.getInstance().put(SPKeyGlobal.DEBUG_APPLY_DOMAIN, url);
+                    } else {
+                        ToastUtils.showError("域名配置失败");
+                    }
                 } else {
                     SPUtils.getInstance().remove(SPKeyGlobal.DEBUG_APPLY_DOMAIN);
                 }
