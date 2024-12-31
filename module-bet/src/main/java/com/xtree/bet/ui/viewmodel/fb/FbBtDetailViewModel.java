@@ -62,8 +62,8 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
         Map<String, String> map = new HashMap<>();
         map.put("languageType", "CMN");
         map.put("matchId", String.valueOf(matchId));
-        Flowable flowable = getMatchDetailFlowable(map);
-        Disposable disposable = (Disposable) flowable
+
+        Disposable disposable = (Disposable) model.getApiService().getMatchDetail(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<MatchInfo>() {
@@ -255,96 +255,4 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
                 });
         addSubscribe(disposable);
     }
-
-    private Flowable getMatchDetailFlowable(Map<String, String> map) {
-        Flowable flowable;
-        if(isUseCacheApiService(getSportCacheType())){
-            String token;
-            if(getSportCacheType().equals(SportCacheType.FB) ){
-                token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
-                map.put("_accessToken",token);
-                flowable = model.getBaseApiService().fbGetMatchDetail(map);
-            }else{
-                token = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_TOKEN);
-                map.put("_accessToken",token);
-                flowable = model.getBaseApiService().fbxcGetMatchDetail(map);
-            }
-        }else{
-            flowable = model.getApiService().getMatchDetail(map);
-        }
-
-        return flowable;
-    }
-
-    private boolean isUseCacheApiService(SportCacheType sportCacheType) {
-        if (sportCacheType.equals(SportCacheType.FB) || sportCacheType.equals(SportCacheType.FBXC)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    //获取接口类型
-    private SportCacheType getSportCacheType() {
-        // 获取平台和缓存数据
-        String platform = SPUtils.getInstance().getString("KEY_PLATFORM", "");
-        String json = SPUtils.getInstance().getString(SPKeyGlobal.SPORT_MATCH_CACHE, "");
-
-        // 如果平台或数据为空，直接返回 NONE
-        if (TextUtils.isEmpty(platform) || TextUtils.isEmpty(json)) {
-            return SportCacheType.NONE;
-        }
-
-        // 解析缓存数据
-        Type typeToken = new TypeToken<SportsCacheSwitchInfo>() {}.getType();
-        SportsCacheSwitchInfo sportCacheSwitchInfo = new Gson().fromJson(json, typeToken);
-
-        // 如果解析结果为空，返回 NONE
-        if (sportCacheSwitchInfo == null) {
-            return SportCacheType.NONE;
-        }
-
-        // 获取用户 ID 和对应的 sportCacheList
-        String userID = SPUtils.getInstance().getString(SPKeyGlobal.USER_ID);
-        List<Integer> sportCacheList = getSportCacheListByPlatform(platform, sportCacheSwitchInfo);
-
-        // 如果用户列表为空，表示面向全部用户，进行相关检查
-        if (sportCacheSwitchInfo.getUsers().isEmpty()) {
-            //场馆数据为空
-            if (sportCacheList.isEmpty()) {
-                return SportCacheType.NONE;
-            }
-        } else {
-            // 如果用户列表不为空，检查当前用户是否在用户列表内
-            if (!sportCacheSwitchInfo.getUsers().contains(userID)) {
-                return SportCacheType.NONE;
-            }
-        }
-
-        // 最终检查缓存数据并返回 SportCacheType
-        return getSportCacheTypeForPlatform(platform, sportCacheList);
-    }
-
-    // 根据平台获取对应的 sportCacheList
-    private List<Integer> getSportCacheListByPlatform(String platform, SportsCacheSwitchInfo sportCacheSwitchInfo) {
-        if (TextUtils.equals(platform, PLATFORM_FB)) {
-            return sportCacheSwitchInfo.getFb();
-        } else {
-            return sportCacheSwitchInfo.getFbxc();
-        }
-    }
-
-    // 根据平台返回相应的 SportCacheType
-    private SportCacheType getSportCacheTypeForPlatform(String platform, List<Integer> sportCacheList) {
-        if (sportCacheList.contains(9)) {
-            // 如果缓存数据包含 9，根据平台返回对应的 SportCacheType
-            if (TextUtils.equals(platform, PLATFORM_FB)) {
-                return SportCacheType.FB;
-            } else {
-                return SportCacheType.FBXC;
-            }
-        }
-        return SportCacheType.NONE;
-    }
-
 }
