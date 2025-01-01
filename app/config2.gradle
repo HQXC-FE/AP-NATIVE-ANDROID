@@ -21,6 +21,7 @@ android {
             // 后面可能会改成 https://preyiang22test.oxldkm.com 如后续有连线问题 尝试看看
             resValue "string", "domain_api_list", "https://preyiang.oxldkm.com;"
             resValue "string", "domain_url_list", "https://preyiang.oxldkm.com;"
+            resValue "string", "domain_url_list_third", "https://e1aliapp.axhuy.vip/e1/app_config_e1.json"
             multiDexEnabled true
             dimension "channelName"
         }
@@ -72,6 +73,8 @@ android {
                     "https://h53.vpagk.vip;" +
                     "https://h54.ibmhh.vip;" +
                     "https://h55.dvbwe.vip;"
+            resValue "string", "domain_url_list_third", "https://e1aliapp.axhuy.vip/e1/app_config_e1.json"
+
             multiDexEnabled true
             dimension "channelName"
         }
