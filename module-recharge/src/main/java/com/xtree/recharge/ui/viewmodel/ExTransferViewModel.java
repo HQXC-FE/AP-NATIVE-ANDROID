@@ -1162,7 +1162,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             return;
         }
         String url = DomainUtil.getH5Domain2() + Constant.URL_RC_TRANSFER_TUTORIAL;
-        new XPopup.Builder(mActivity.get()).asCustom(new BrowserDialog(mActivity.get(), mActivity.get().getString(R.string.txt_transfer_tutorial), url)).show();
+        new XPopup.Builder(mActivity.get()).asCustom(new BrowserDialog(mActivity.get(), mActivity.get().getString(R.string.txt_transfer_receipt), url)).show();
     }
 
     /**
