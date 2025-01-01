@@ -262,7 +262,7 @@
                     android:elevation="1dp"
                     android:orientation="vertical"
                     android:padding="@dimen/layout_margin"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imv_menu_2">
@@ -410,7 +410,7 @@
                     android:elevation="1dp"
                     android:orientation="vertical"
                     android:padding="@dimen/layout_margin"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imv_menu_2">

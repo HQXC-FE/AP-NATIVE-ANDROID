@@ -44,7 +44,11 @@ public class BonusPoolFragment extends BaseFragment<FragmentBonusPoolBinding, Mi
 
         binding.ivwBack.setOnClickListener(v -> getActivity().finish());
 
-        binding.btnSearch.setOnClickListener(v -> requestData());
+        binding.btnSearch.setOnClickListener(v -> {
+            curPage = 1;
+            binding.tvwDown.setVisibility(View.GONE);
+            requestData();
+        });
 
         binding.refreshLayout.setOnRefreshListener(refreshLayout -> {
             if (ClickUtil.isFastClick()) {
@@ -54,6 +58,7 @@ public class BonusPoolFragment extends BaseFragment<FragmentBonusPoolBinding, Mi
             binding.refreshLayout.setEnableRefresh(true);
             curPage = 1;
             adapter.clear();
+            binding.tvwDown.setVisibility(View.GONE);
             requestData();
         });
 
@@ -95,20 +100,25 @@ public class BonusPoolFragment extends BaseFragment<FragmentBonusPoolBinding, Mi
             binding.refreshLayout.finishRefresh();
             binding.refreshLayout.finishLoadMore();
 
-            if (null == vo.getList()) {
+            if (null == vo.getList() || vo.getList().isEmpty()) {
                 binding.refreshLayout.setEnableLoadMore(false);
                 binding.refreshLayout.setEnableRefresh(false);
                 binding.tvwNoData.setVisibility(View.VISIBLE);
+                binding.tvwDown.setVisibility(View.GONE);
                 return;
             }
 
-            binding.refreshLayout.setEnableLoadMore(vo.getP() != vo.getTotalPage());
+            binding.tvwNoData.setVisibility(View.GONE);
 
-            if (vo.getList() != null && !vo.getList().isEmpty()) {
-                binding.tvwNoData.setVisibility(View.GONE);
-                adapter.addAll(vo.getList());
+            if (vo.getP() != vo.getTotalPage()) {
+                binding.refreshLayout.setEnableLoadMore(true);
+                binding.tvwDown.setVisibility(View.GONE);
+            } else {
+                binding.refreshLayout.setEnableLoadMore(false);
+                binding.tvwDown.setVisibility(View.VISIBLE);
             }
 
+            adapter.addAll(vo.getList());
             binding.tvwReturnMoney.setText(vo.getAmount());
         });
     }
