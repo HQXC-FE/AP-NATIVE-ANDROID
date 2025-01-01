@@ -771,33 +771,34 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                         bankCode = userBankList.get(0).getBankCode();
                         binding.tvwBankCard.setText(userBankList.get(0).getBankName());
                     }
-                } else if (!vo.userBankList.isEmpty()) {
-                    //去掉工商银行
-                    ArrayList<BankCardVo> userBankList = new ArrayList<>();
-                    for (BankCardVo bankCardVo : vo.userBankList) {
-                        if (!TextUtils.isEmpty(bankCardVo.name) && bankCardVo.name.indexOf("工商银行") == -1) {
-                            userBankList.add(bankCardVo);
-                        }
-                    }
-                    if (userBankList.isEmpty()) {
-                        ppw3 = new XPopup.Builder(getContext()).dismissOnTouchOutside(false)
-                                .dismissOnBackPressed(false).asCustom(new TipBindCardDialog(getContext(), "", new TipBindCardDialog.ICallBack() {
-                                    @Override
-                                    public void onClickConfirm() {
-                                        toBindPage(Constant.BIND_CARD);
-                                    }
-                                }));
-                        ppw3.show();
-                    } else {
-                        String txt = userBankList.get(0).name;
-                        if (txt.contains("--")) {
-                            txt = txt.split("--")[0];
-                        }
-                        bankId = userBankList.get(0).id;
-                        binding.tvwBankCard.setText(txt);
-                    }
-
                 }
+//                else if (!vo.userBankList.isEmpty()) {
+//                    //去掉工商银行
+//                    ArrayList<BankCardVo> userBankList = new ArrayList<>();
+//                    for (BankCardVo bankCardVo : vo.userBankList) {
+//                        if (!TextUtils.isEmpty(bankCardVo.name) && bankCardVo.name.indexOf("工商银行") == -1) {
+//                            userBankList.add(bankCardVo);
+//                        }
+//                    }
+//                    if (userBankList.isEmpty()) {
+//                        ppw3 = new XPopup.Builder(getContext()).dismissOnTouchOutside(false)
+//                                .dismissOnBackPressed(false).asCustom(new TipBindCardDialog(getContext(), "", new TipBindCardDialog.ICallBack() {
+//                                    @Override
+//                                    public void onClickConfirm() {
+//                                        toBindPage(Constant.BIND_CARD);
+//                                    }
+//                                }));
+//                        ppw3.show();
+//                    } else {
+//                        String txt = userBankList.get(0).name;
+//                        if (txt.contains("--")) {
+//                            txt = txt.split("--")[0];
+//                        }
+//                        bankId = userBankList.get(0).id;
+//                        binding.tvwBankCard.setText(txt);
+//                    }
+//
+//                }
             } else if (!vo.userBankList.isEmpty()) {
                 bankId = vo.userBankList.get(0).id;
                 binding.tvwBankCard.setText(vo.userBankList.get(0).name);
