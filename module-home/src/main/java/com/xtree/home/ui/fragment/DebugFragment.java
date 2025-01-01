@@ -1,25 +1,36 @@
 package com.xtree.home.ui.fragment;
 
+import static com.xtree.base.vo.EventConstant.EVENT_TOP_SPEED_FAILED;
+import static com.xtree.base.vo.EventConstant.EVENT_TOP_SPEED_FINISH;
+
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowMetrics;
+import android.widget.CompoundButton;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.fastest.FastestMonitorCache;
+import com.xtree.base.net.fastest.FastestTopDomainUtil;
+import com.xtree.base.net.fastest.TopSpeedDomain;
+import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.TagUtils;
+import com.xtree.base.vo.EventVo;
 import com.xtree.home.BR;
 import com.xtree.home.BuildConfig;
 import com.xtree.home.R;
@@ -27,13 +38,22 @@ import com.xtree.home.databinding.FragmentDebugBinding;
 import com.xtree.home.ui.viewmodel.HomeViewModel;
 import com.xtree.home.ui.viewmodel.factory.AppViewModelFactory;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.ToastUtils;
 
 @Route(path = RouterFragmentPath.Home.PG_DEBUG)
 public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewModel> {
 
     private int clickCount = 0; // 点击次数 debug model
+
+    private TopSpeedDomainFloatingWindows mTopSpeedDomainFloatingWindows;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -77,8 +97,8 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
         binding.tvwPkgName.setText(getActivity().getPackageName());
         binding.tvwRelease.setText(!BuildConfig.DEBUG + "");
         binding.tvwChannel.setText(R.string.channel_name);
-        binding.tvwApi.setText(DomainUtil.getApiUrl()); // API
-        binding.tvwDomain.setText(DomainUtil.getDomain()); // 网页域名
+        binding.tvwApi.setText(DomainUtil.getApiUrl());
+        binding.tvwH5.setText(DomainUtil.getH5Domain());
         binding.tvwUsername.setText(SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME, ""));
         binding.tvwSession.setText(SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID, ""));
         binding.tvwToken.setText(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN, ""));
@@ -88,13 +108,24 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
         binding.tvwModel.setText(Build.MODEL);
         binding.tvwScreen.setText(width + " x " + height);
         binding.tvwTag.setText(TagUtils.isTag() + "");
-        binding.tvwApiList.setText(getString(R.string.domain_api_list).replace(";", "; \t").trim());
-        binding.tvwDomainList.setText(getString(R.string.domain_url_list).replace(";", "; \t").trim());
+        binding.tvwApiList.setText(getString(R.string.domain_api_list).replace(";", "\n").trim());
+        binding.tvwH5List.setText(getString(R.string.domain_url_list).replace(";", "\n").trim());
+        binding.edtFastestMonitorTimeout.setText(String.valueOf(FastestMonitorCache.INSTANCE.getMAX_UPLOAD_TIME()));
 
+        String debugUrl = SPUtils.getInstance().getString(SPKeyGlobal.DEBUG_APPLY_DOMAIN);
+        if (!TextUtils.isEmpty(debugUrl)) {
+            binding.tvwVfGlobe.setChecked(true);
+            binding.edtVfIp.setText(debugUrl);
+        }
+
+        int fastest_monitor_timeout = SPUtils.getInstance().getInt(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT);
+        binding.tvwFastestMonitorTimeout.setChecked(fastest_monitor_timeout > 0);
     }
-
     @Override
     public void initView() {
+        mTopSpeedDomainFloatingWindows = new TopSpeedDomainFloatingWindows(getContext());
+        mTopSpeedDomainFloatingWindows.show();
+
         binding.ivwBack.setOnClickListener(v -> getActivity().finish());
         binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
 
@@ -104,6 +135,59 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
                 binding.llMain.setVisibility(View.VISIBLE);
             }
         });
+
+        binding.tvwVfGlobe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                CfLog.i("**************");
+
+                if (isChecked) {
+                    String url = binding.edtVfIp.getText().toString().trim();
+                    if (!TextUtils.isEmpty(url)) {
+                        SPUtils.getInstance().put(SPKeyGlobal.DEBUG_APPLY_DOMAIN, url);
+                    } else {
+                        ToastUtils.showError("域名配置失败");
+                    }
+                } else {
+                    SPUtils.getInstance().remove(SPKeyGlobal.DEBUG_APPLY_DOMAIN);
+                }
+            }
+        });
+
+        binding.tvwFastestMonitorTimeout.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    String timeout = binding.edtFastestMonitorTimeout.getText().toString().trim();
+                    int i = Integer.parseInt(timeout);
+                    SPUtils.getInstance().put(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT, i);
+                    FastestMonitorCache.INSTANCE.setMAX_UPLOAD_TIME(i);
+                } else {
+                    SPUtils.getInstance().remove(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT);
+                    FastestMonitorCache.INSTANCE.setMAX_UPLOAD_TIME(FastestMonitorCache.TIME_OUT);
+                }
+            }
+        });
+
+        binding.tvStatFz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FightFanZhaUtils.startMockFanZha(getActivity());
+            }
+        });
+
+//        binding.tvStatFz.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                FightFanZhaUtils.isOpenTest = true;
+//                new XPopup.Builder(getActivity()).moveUpToKeyboard(false)
+//                        .isViewMode(true)
+//                        .asCustom(BrowserDialog.newInstance(getActivity(),
+//                                DomainUtil.getH5Domain2() + "/webapp/?isNative=1#/activity/298")).show();
+//                return false;
+//            }
+//        });
 
     }
 
@@ -122,6 +206,42 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
         //使用自定义的ViewModelFactory来创建ViewModel，如果不重写该方法，则默认会调用LoginViewModel(@NonNull Application application)构造方法
         AppViewModelFactory factory = AppViewModelFactory.getInstance(getActivity().getApplication());
         return new ViewModelProvider(this, factory).get(HomeViewModel.class);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        if (mTopSpeedDomainFloatingWindows != null) {
+            mTopSpeedDomainFloatingWindows.removeView();
+        }
+        FightFanZhaUtils.isOpenTest = false ;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventVo event) {
+        switch (event.getEvent()) {
+            case EVENT_TOP_SPEED_FINISH:
+                CfLog.e("EVENT_TOP_SPEED_FINISH竞速完成。。。");
+                mTopSpeedDomainFloatingWindows.refresh();
+
+                binding.tvwLog.setText("");
+
+                CopyOnWriteArrayList<TopSpeedDomain> topSpeedDomain = new CopyOnWriteArrayList<>(FastestTopDomainUtil.getInstance().getTopSpeedDomain());
+                for (TopSpeedDomain speedDomain : topSpeedDomain) {
+                    binding.tvwLog.append("url: " + speedDomain.url + "  耗时：" + speedDomain.speedSec + "ms" + "\n");
+                }
+                break;
+            case EVENT_TOP_SPEED_FAILED:
+                mTopSpeedDomainFloatingWindows.onError();
+                break;
+        }
     }
 
 }

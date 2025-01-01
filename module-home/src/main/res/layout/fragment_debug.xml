@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="64dp"
             android:src="@mipmap/ic_launcher" />
 
         <TextView
@@ -87,7 +87,7 @@
                 tools:visibility="visible">
 
                 <LinearLayout
-                    style="@style/style_item_ll_row"
+                    style="@style/style_item_ll_row_0"
                     android:layout_marginTop="24dp"
                     android:visibility="gone">
 
@@ -103,7 +103,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    style="@style/style_item_ll_row"
+                    style="@style/style_item_ll_row_0"
                     android:visibility="gone">
 
                     <TextView
@@ -119,7 +119,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    style="@style/style_item_ll_row"
+                    style="@style/style_item_ll_row_0"
                     android:visibility="gone">
 
                     <TextView
@@ -134,7 +134,7 @@
                         tools:text="Demo" />
                 </LinearLayout>
 
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
@@ -148,7 +148,7 @@
                         tools:text="2024-02-28 1530" />
                 </LinearLayout>
 
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
@@ -162,49 +162,7 @@
                         tools:text="com.xxx.xxx" />
                 </LinearLayout>
 
-                <LinearLayout style="@style/style_item_ll_row">
-
-                    <TextView
-                        style="@style/style_item_report_title"
-                        android:layout_marginStart="@dimen/layout_margin"
-                        android:layout_weight="0"
-                        android:text="渠道编号：" />
-
-                    <TextView
-                        android:id="@+id/tvw_channel"
-                        style="@style/style_item_report_value"
-                        tools:text="Demo" />
-                </LinearLayout>
-
-                <LinearLayout style="@style/style_item_ll_row">
-
-                    <TextView
-                        style="@style/style_item_report_title"
-                        android:layout_marginStart="@dimen/layout_margin"
-                        android:layout_weight="0"
-                        android:text="API地址：" />
-
-                    <TextView
-                        android:id="@+id/tvw_api"
-                        style="@style/style_item_report_value"
-                        tools:text="Demo" />
-                </LinearLayout>
-
-                <LinearLayout style="@style/style_item_ll_row">
-
-                    <TextView
-                        style="@style/style_item_report_title"
-                        android:layout_marginStart="@dimen/layout_margin"
-                        android:layout_weight="0"
-                        android:text="域名地址：" />
-
-                    <TextView
-                        android:id="@+id/tvw_domain"
-                        style="@style/style_item_report_value"
-                        tools:text="Demo" />
-                </LinearLayout>
-
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
@@ -218,7 +176,53 @@
                         tools:text="true" />
                 </LinearLayout>
 
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
+
+                    <TextView
+                        style="@style/style_item_report_title"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_weight="0"
+                        android:text="渠道编号：" />
+
+                    <TextView
+                        android:id="@+id/tvw_channel"
+                        style="@style/style_item_report_value"
+                        tools:text="Demo" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/style_item_ll_row_0">
+
+                    <TextView
+                        style="@style/style_item_report_title"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_weight="0"
+                        android:text="API地址：" />
+
+                    <TextView
+                        android:id="@+id/tvw_api"
+                        style="@style/style_item_report_value"
+                        android:autoLink="web"
+                        android:textColorLink="@color/clr_blue_03"
+                        tools:text="Demo" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/style_item_ll_row_0">
+
+                    <TextView
+                        style="@style/style_item_report_title"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_weight="0"
+                        android:text="H5地址：" />
+
+                    <TextView
+                        android:id="@+id/tvw_h5"
+                        style="@style/style_item_report_value"
+                        android:autoLink="web"
+                        android:textColorLink="@color/clr_blue_03"
+                        tools:text="Demo" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
@@ -232,7 +236,7 @@
                         tools:text="true" />
                 </LinearLayout>
 
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
@@ -246,7 +250,7 @@
                         tools:text="Demo" />
                 </LinearLayout>
 
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
@@ -260,7 +264,7 @@
                         tools:text="13 (33)" />
                 </LinearLayout>
 
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
@@ -274,7 +278,7 @@
                         tools:text="Xiaomi" />
                 </LinearLayout>
 
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
@@ -288,7 +292,7 @@
                         tools:text="2203129G" />
                 </LinearLayout>
 
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
@@ -302,7 +306,7 @@
                         tools:text="1080x2400" />
                 </LinearLayout>
 
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
@@ -316,7 +320,56 @@
                         tools:text="kite" />
                 </LinearLayout>
 
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
+
+                    <TextView
+                        style="@style/style_item_report_title"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_weight="0"
+                        android:text="登录SESSION：" />
+
+                    <TextView
+                        android:id="@+id/tvw_session"
+                        style="@style/style_item_report_value"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        tools:text="Demo" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/style_item_ll_row_0">
+
+                    <TextView
+                        style="@style/style_item_report_title"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_weight="0"
+                        android:text="登录TOKEN：" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tvw_token"
+                    style="@style/style_item_report_value"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="@dimen/layout_margin"
+                    android:layout_marginEnd="@dimen/layout_margin"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    tools:text="Demo" />
+
+                <LinearLayout style="@style/style_item_ll_row_0">
+
+                    <TextView
+                        style="@style/style_item_report_title"
+                        android:id="@+id/tv_statFz"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_weight="0"
+                        android:textStyle="bold"
+                        android:text="反诈模拟/长按是dialog/点按是activity" />
+                </LinearLayout>
+
+
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
@@ -332,58 +385,106 @@
                     android:layout_marginStart="@dimen/layout_margin"
                     android:layout_marginEnd="@dimen/layout_margin"
                     android:layout_weight="0"
+                    android:ellipsize="end"
+                    android:maxLines="4"
                     tools:text="Demo" />
 
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
                         android:layout_marginStart="@dimen/layout_margin"
                         android:layout_weight="0"
-                        android:text="域名列表：" />
+                        android:text="H5列表：" />
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tvw_domain_list"
+                    android:id="@+id/tvw_h5_list"
                     style="@style/style_item_report_value"
                     android:layout_width="match_parent"
                     android:layout_marginStart="@dimen/layout_margin"
                     android:layout_marginEnd="@dimen/layout_margin"
                     android:layout_weight="0"
+                    android:ellipsize="end"
+                    android:maxLines="4"
                     tools:text="Demo" />
 
-                <LinearLayout style="@style/style_item_ll_row">
+                <LinearLayout style="@style/style_item_ll_row_0">
 
                     <TextView
                         style="@style/style_item_report_title"
                         android:layout_marginStart="@dimen/layout_margin"
                         android:layout_weight="0"
-                        android:text="登录SESSION：" />
+                        android:text="测速日志：" />
+                </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tvw_session"
+                <TextView
+                    android:id="@+id/tvw_log"
+                    style="@style/style_item_report_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/layout_margin"
+                    android:layout_marginEnd="@dimen/layout_margin"
+                    android:ellipsize="end"
+                    tools:text="LOG" />
+
+                <LinearLayout style="@style/style_item_ll_row_0">
+
+                    <CheckBox
+                        android:id="@+id/tvw_vf_globe"
                         style="@style/style_item_report_value"
-                        android:layout_marginEnd="@dimen/layout_margin"
-                        tools:text="Demo" />
-                </LinearLayout>
-
-                <LinearLayout style="@style/style_item_ll_row">
-
-                    <TextView
-                        style="@style/style_item_report_title"
+                        android:layout_width="match_parent"
                         android:layout_marginStart="@dimen/layout_margin"
-                        android:layout_weight="0"
-                        android:text="登录TOKEN：" />
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:layout_weight="2"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="配置域名"
+                        android:textColor="@color/clr_blue_03" />
+
+                    <EditText
+                        android:id="@+id/edt_vf_ip"
+                        style="@style/style_item_report_value"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:hint="请输入域名"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvw_token"
-                    style="@style/style_item_report_value"
-                    android:layout_width="match_parent"
-                    android:layout_marginStart="@dimen/layout_margin"
-                    android:layout_marginEnd="@dimen/layout_margin"
-                    android:layout_weight="0"
-                    tools:text="Demo" />
+                <LinearLayout style="@style/style_item_ll_row_0">
+
+                    <CheckBox
+                        android:id="@+id/tvw_fastest_monitor_timeout"
+                        style="@style/style_item_report_value"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:layout_weight="2"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="配置测速超时上传时间"
+                        android:textColor="@color/clr_blue_03" />
+
+                    <EditText
+                        android:id="@+id/edt_fastest_monitor_timeout"
+                        style="@style/style_item_report_value"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:inputType="number"
+                        android:maxEms="14"
+                        android:hint="请输入时间(ms)"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="https://apptest.oxldkm.com" />
+                </LinearLayout>
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
