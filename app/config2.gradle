@@ -22,6 +22,7 @@ android {
             // 后面可能会改成 https://preyiang22test.oxldkm.com 如后续有连线问题 尝试看看
             resValue "string", "domain_api_list", "https://preyiang2test.oxldkm.com;"
             resValue "string", "domain_url_list", "https://preyiang2test.oxldkm.com;"
+            resValue "string", "domain_url_list_third", "https://e2cn2app.wrumc.vip/e2/app_config_e2.json"
             multiDexEnabled true
             dimension "channelName"
         }
@@ -66,6 +67,12 @@ android {
                     "https://www.h4r3a2.xyz;" +
                     "https://www.j9b1x3.xyz;" +
                     "https://www.n5q2b8.xyz;"
+            resValue "string", "domain_url_list_third", "https://e2cn2app.wrumc.vip/e2/app_config_e2.json;" +
+                    "https://e2cn2app.xzdzm.vip/e2/app_config_e2.json;" +
+                    "https://e2aliapp.rglob.vip/e2/app_config_e2.json;" +
+                    "https://e2aliapp.nhjcu.vip/e2/app_config_e2.json;" +
+                    "https://e2scdnapp.nqncs.vip/e2/app_config_e2.json;" +
+                    "https://e2scdnapp.whjer.vip/e2/app_config_e2.json"
             multiDexEnabled true
             dimension "channelName"
         }
