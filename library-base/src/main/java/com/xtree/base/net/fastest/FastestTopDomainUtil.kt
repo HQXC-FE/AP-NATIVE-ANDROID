@@ -1,5 +1,6 @@
 package com.xtree.base.net.fastest
 
+import android.os.Build
 import com.alibaba.android.arouter.utils.TextUtils
 import com.drake.net.Get
 import com.drake.net.Net
@@ -11,6 +12,7 @@ import com.xtree.base.BuildConfig
 import com.xtree.base.R
 import com.xtree.base.net.RetrofitClient
 import com.xtree.base.utils.AESUtil
+import com.xtree.base.utils.AppUtil
 import com.xtree.base.utils.CfLog
 import com.xtree.base.utils.DomainUtil
 import com.xtree.base.utils.EventConstant
@@ -28,6 +30,7 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import me.xtree.mvvmhabit.base.BaseApplication
 import me.xtree.mvvmhabit.bus.event.SingleLiveData
 import me.xtree.mvvmhabit.http.NetworkUtil
 import me.xtree.mvvmhabit.utils.ToastUtils
@@ -63,6 +66,7 @@ class FastestTopDomainUtil private constructor() {
         private lateinit var mThirdApiDomainList: MutableList<String>
         private lateinit var mCurApiDomainList: MutableList<String>
         private lateinit var mThirdDomainList: MutableList<String>
+
         @set:Synchronized
         @get:Synchronized
         private lateinit var mTopSpeedDomainList: MutableList<TopSpeedDomain>
@@ -71,6 +75,7 @@ class FastestTopDomainUtil private constructor() {
         @get:Synchronized
         var mIsFinish: Boolean = true
         val fastestDomain = SingleLiveData<TopSpeedDomain>()
+
         //是否第一次测速
         var isFirstTime: Boolean = true
         private lateinit var timerObservable: Observable<Long>
@@ -82,7 +87,7 @@ class FastestTopDomainUtil private constructor() {
         private lateinit var allTest: MutableList<TopSpeedDomain>
     }
 
-    lateinit var thirdApiScopeNet : AndroidScope
+    lateinit var thirdApiScopeNet: AndroidScope
     lateinit var apiScopeNet: AndroidScope
 
     fun start() {
@@ -274,6 +279,13 @@ class FastestTopDomainUtil private constructor() {
                     //如果符合上传规则加入上传信息集合
                     val check = FastestMonitorCache.check(it)
                     if (check) {
+                        val systemInfo = AppUtil.getSysName(
+                            BaseApplication.getInstance().applicationContext
+                        ) + " " + android.os.Build.VERSION.RELEASE
+                        val productName = ("" + Build.PRODUCT).toUpperCase()
+                        val sdkVersion = "" + Build.VERSION.SDK_INT
+                        val brand = ("" + Build.BRAND).toUpperCase()
+                        val model = ("" + Build.MODEL).toUpperCase()
                         val infoList =
                             listOf<String>(
                                 it.url ?: "",
@@ -281,7 +293,12 @@ class FastestTopDomainUtil private constructor() {
                                 dateFormat,
                                 it.speedScore.toString(),
                                 it.isRecommend.toString(),
-                                it.speedSecBmp.toString()
+                                it.speedSecBmp.toString(),
+                                systemInfo,
+                                productName,
+                                sdkVersion,
+                                brand,
+                                model
                             )
                         highSpeedList.add(infoList)
                         FastestMonitorCache.put(it.apply { lastUploadMonitor = curTime })

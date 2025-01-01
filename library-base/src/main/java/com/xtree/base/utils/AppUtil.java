@@ -27,17 +27,17 @@ public class AppUtil {
      * @param ctx Context
      */
     public static void goCustomerService(Context ctx) {
-        String serviceLink ;
+        String serviceLink;
 
-        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
-            serviceLink =SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK) ;
-        }else {
-            serviceLink =Constant.URL_CUSTOMER_SERVICE ;
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))) {
+            serviceLink = SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK);
+        } else {
+            serviceLink = Constant.URL_CUSTOMER_SERVICE;
         }
         /*CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
 
         CfLog.e("goCustomerService  ---- sDomainUtil.getH5Domain2()" +DomainUtil.getH5Domain2() + serviceLink);*/
-      /*  goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);*/
+        /*  goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);*/
         goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink);
     }
 
@@ -128,32 +128,34 @@ public class AppUtil {
 
     /**
      * 检测邮箱是否符合多端(HQAP2-4526)
-     *
+     * <p>
      * 依据Email正则表达式 ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?$
      *
      * @param num 邮箱
      * @return true:是 false:否
      */
-    public static boolean isMultiSegmentEmail(String num){
+    public static boolean isMultiSegmentEmail(String num) {
         String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$"; // 多段邮箱
         return num.matches(regex);
     }
 
     /**
      * 是否是微信号
+     *
      * @return
      */
-    public static boolean isWechatAccount(String num){
+    public static boolean isWechatAccount(String num) {
         String regex = "^[a-zA-Z_-][a-zA-Z0-9_-]{5,19}$"; //
         return num.matches(regex);
     }
 
     /**
-     *是否是支付宝账号,和微信号同样
+     * 是否是支付宝账号,和微信号同样
+     *
      * @param ctx
      * @param tvw
      */
-    public static boolean isAlipayAccount(String num){
+    public static boolean isAlipayAccount(String num) {
         String regex = "^[a-zA-Z_-][a-zA-Z0-9_-]{5,19}$"; //
         return num.matches(regex);
     }
@@ -176,6 +178,33 @@ public class AppUtil {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return "";
+        }
+    }
+
+    public static String getSysName(Context context) {
+        if (isHarmonyServiceInstalled(context)) {
+            return "HarmonyOS";
+        } else {
+            return "Android";
+        }
+    }
+
+    private static boolean isHarmonyServiceInstalled(Context context) {
+        try {
+            context.getPackageManager().getPackageInfo("com.huawei.harmonyos", 0);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static String getDeviceName() {
+        try {
+            String productName = System.getProperty("ro.product.name");
+            return productName != null ? productName : "Unknown";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unknown";
         }
     }
 
