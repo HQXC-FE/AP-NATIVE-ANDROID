@@ -24,6 +24,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.comm100.livechat.core.VisitorClientCore;
 import com.comm100.livechat.view.ChatWindowWebView;
 import com.comm100.livechat.view.VisitorClientCustomJS;
+import com.just.agentweb.WebChromeClient;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.widget.LoadingDialog;
@@ -94,6 +95,15 @@ public class CommChatFragment extends BaseFragment<FragmentCommChatBinding, ExTr
                 super.onReceivedError(view, request, error);
                 CfLog.i("ChatWindowWebView onReceivedError " + error.toString());
                 LoadingDialog.finish();
+            }
+        });
+        // 设置 WebChromeClient，监听 window.close()
+        mChatWindow.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onCloseWindow(WebView window) {
+                super.onCloseWindow(window);
+                // 当 window.close() 被调用时，关闭 Activity
+                getActivity().finish(); // 结束当前 Activity
             }
         });
 
