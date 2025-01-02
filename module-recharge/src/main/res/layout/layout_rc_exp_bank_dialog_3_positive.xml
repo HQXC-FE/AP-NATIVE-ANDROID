@@ -160,8 +160,8 @@
                         style="@style/style_cm_edit"
                         android:layout_marginStart="4dp"
                         android:layout_marginEnd="@dimen/layout_margin"
+                        android:enabled="false"
                         android:layout_marginTop="4dp"
-                        android:drawableEnd="@mipmap/cm_ic_expand"
                         android:onClick="@{() -> model.showBankList()}"
                         android:text="@{model.bankNameOfPayment}"
                         tools:text="XX银行" />
