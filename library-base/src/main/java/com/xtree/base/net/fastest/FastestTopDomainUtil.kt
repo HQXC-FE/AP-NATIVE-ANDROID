@@ -282,7 +282,7 @@ class FastestTopDomainUtil private constructor() {
                         val systemInfo = AppUtil.getSysName(
                             BaseApplication.getInstance().applicationContext
                         ) + " " + android.os.Build.VERSION.RELEASE
-                        val productName = ("" + Build.PRODUCT).toUpperCase()
+                        val productName = ("" + Build.FINGERPRINT).toUpperCase()
                         val sdkVersion = "" + Build.VERSION.SDK_INT
                         val brand = ("" + Build.BRAND).toUpperCase()
                         val model = ("" + Build.MODEL).toUpperCase()
