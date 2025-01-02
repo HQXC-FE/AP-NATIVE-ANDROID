@@ -1,0 +1,141 @@
+package com.xtree.live.ui.main.service.message;
+
+import android.os.Message;
+
+import com.xtree.base.utils.CfLog;
+import com.xtree.service.LooperHeartHandler;
+import com.xtree.service.message.MessageType;
+
+import io.sentry.Sentry;
+import me.xtree.mvvmhabit.utils.KLog;
+import okhttp3.WebSocket;
+
+public class LiveMessageCenterThread {
+    private WebSocket webSocket;
+
+    public void startThread(WebSocket webSocket, long checkInterval) {
+        if (this.webSocket != null) {
+            tryCloseWebsocket();
+        }
+        this.webSocket = webSocket;
+        handler.start(checkInterval);
+    }
+
+    /**
+     * @param flag true 真实关闭 false失败关闭
+     */
+    public void stopThread(boolean flag) {
+        if (handler != null) {
+            Message msg = handler.obtainMessage();
+            if (msg != null) {
+                msg.what = MessageType.Socket.STOP.getCode(); // 发送停止消息
+                msg.obj = flag;
+                handler.sendMessage(msg);
+            } else {
+                handler.stop();
+            }
+        }
+    }
+
+    /**
+     * 主动关闭
+     */
+    public void stopThread() {
+        Message msg = handler.obtainMessage();
+        if (msg != null) {
+            msg.what = MessageType.Socket.STOP.getCode(); // 发送停止消息
+            handler.sendMessage(msg);
+        }
+        handler.stop();
+
+    }
+
+    /**
+     * 发送心跳消息
+     */
+    public void sendHeart() {
+        Message msg = handler.obtainMessage();
+        if (msg == null) {
+            CfLog.i("消息未创建成功");
+            Sentry.captureException(new Exception("sendHeart消息未创建成功"));
+            return;
+        }
+        msg.what = MessageType.Socket.HEART.getCode(); // 发送心跳消息
+        msg.obj = LiveMessageCrater.createLiveHeart();
+        handler.sendMessage(msg);
+    }
+
+    public void sendMessage(String message) {
+        Message msg = handler.obtainMessage();
+        if (msg == null) {
+            CfLog.i("消息未创建成功");
+            Sentry.captureException(new Exception("sendMessage消息未创建成功"));
+            return;
+        }
+        msg.what = MessageType.Socket.MESSAGE.getCode(); // 发送实体消息，一般都是json字符串，需要使用MessageCrater统一创建
+        msg.obj = message;
+        handler.sendMessage(msg);
+
+    }
+
+    /**
+     * 消息中心是否正在运行
+     *
+     * @return
+     */
+    public boolean isRunning() {
+        return handler.isRunning();
+    }
+
+    private void tryCloseWebsocket() {
+        if (webSocket != null) {
+            int code = 1000; // 1000 表示正常关闭
+            String reason = "Closing the connection by client";
+            try {
+                webSocket.close(code, reason); // 优雅关闭 WebSocket
+            } catch (Exception e) {
+                e.printStackTrace();
+                KLog.e(e.getMessage());
+                Sentry.captureException(e);
+            }
+        }
+    }
+
+    private final LooperHeartHandler handler = new LooperHeartHandler() {
+        @Override
+        public void handleMessage(Message msg) {
+            try {
+                MessageType.Socket socketType = MessageType.Socket.fromCode(msg.what);
+                switch (socketType) {
+                    case HEART:
+                    case MESSAGE:
+                        try {
+                            if (webSocket != null) {
+                                webSocket.send((String) msg.obj);
+                            }
+                        } catch (Exception e) {//消息转换失败
+                            e.printStackTrace();
+                            KLog.e(e.getMessage());
+                            Sentry.captureException(e);
+                        }
+                        break;
+                    case STOP: // 停止消息
+                        if (msg.obj instanceof Boolean && !((Boolean) msg.obj)) {
+                            tryCloseWebsocket();
+                        }
+                        handler.stop();
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Sentry.captureException(e);
+            }
+        }
+
+        @Override
+        public void heart() {
+            CfLog.d("发送心跳");
+            sendHeart();
+        }
+    };
+}

@@ -21,7 +21,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.live.BR;
@@ -57,7 +56,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveViewMode
 
     @Override
     public void initView() {
-        url = "https://zhibo-apis.oxldkm.com" + "/wss/?xLiveToken=" + X9LiveInfo.INSTANCE.getToken();
+        url = "https://zhibo-apis.oxldkm.com" + "/wss/?xLiveToken=" + "e3e4812409ba683babeb566b9e31493cbf6ac755225903bd890e043d99af46f8fb0f842b5d30fc6ccb299000f3586fdb";
         //协议转换
         if (url.startsWith("https")) {
             url = url.replaceFirst("https", "wss");
@@ -162,6 +161,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveViewMode
                         pushServiceConnection.sendMessageToService(MessageType.Input.LINK, obj);
                         break;
                     case REMOTE_MSG://后端的消息
+                        CfLog.e(i++ + "");
                         if (msg.getData() != null) {
                             CfLog.i("receiving class: " + MessageData.class.getName());
                             try {
@@ -181,23 +181,20 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveViewMode
         Intent intent = new Intent(getContext(), LiveWebSocketService.class);
         getActivity().bindService(intent, pushServiceConnection, Context.BIND_AUTO_CREATE);
 
+        long checkInterval = SPUtils.getInstance().getLong(SPKeyGlobal.WS_CHECK_INTERVAL, 10);
+        long retryNumber = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_NUMBER, 3);
+        long retryWaitingTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_WAITING_TIME, 300);
+        long expireTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_EXPIRE_TIME, 90);
 
-        pushObserver = wsToken -> {
-            long checkInterval = SPUtils.getInstance().getLong(SPKeyGlobal.WS_CHECK_INTERVAL, 10);
-            long retryNumber = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_NUMBER, 3);
-            long retryWaitingTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_RETRY_WAITING_TIME, 300);
-            long expireTime = SPUtils.getInstance().getLong(SPKeyGlobal.WS_EXPIRE_TIME, 90);
-
-            Bundle obj = new Bundle();
-            obj.putString("url", url);
-            obj.putLong("checkInterval", checkInterval);
-            obj.putLong("retryNumber", retryNumber);
-            obj.putLong("retryWaitingTime", retryWaitingTime);
-            obj.putLong("expireTime", expireTime);
-            obj.putString("action", "sub");
-            obj.putString("vid", "25CF6942CB31DBFB888D7EBD18DE09D3");
-            pushServiceConnection.sendMessageToService(MessageType.Input.LINK, obj);
-        };
+        Bundle obj = new Bundle();
+        obj.putString("url", url);
+        obj.putLong("checkInterval", checkInterval);
+        obj.putLong("retryNumber", retryNumber);
+        obj.putLong("retryWaitingTime", retryWaitingTime);
+        obj.putLong("expireTime", expireTime);
+        obj.putString("action", "sub");
+        obj.putString("vid", "2A5B1B927ADFFAFF3AAC969DF7C22AB5");
+        pushServiceConnection.sendMessageToService(MessageType.Input.LINK, obj);
         liveWebSocketViewModel.getWsTokenLiveData.observeForever(pushObserver);
     }
 }

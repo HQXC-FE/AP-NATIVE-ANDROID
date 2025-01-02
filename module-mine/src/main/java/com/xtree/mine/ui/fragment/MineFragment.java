@@ -271,8 +271,8 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                 Intent toLogin = new Intent(getContext(), LoginRegisterActivity.class);
                 toLogin.putExtra(LoginRegisterActivity.ENTER_TYPE, LoginRegisterActivity.LOGIN_TYPE);
                 startActivity(toLogin);
-            }else{
-                startContainerFragment(RouterFragmentPath.Live.PAGER_LIVE_ATTENTION);
+            } else {
+                startContainerFragment(RouterFragmentPath.Live.PAGER_LIVE_MAIN);
             }
 
         });

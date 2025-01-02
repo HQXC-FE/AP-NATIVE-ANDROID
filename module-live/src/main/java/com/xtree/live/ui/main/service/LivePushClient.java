@@ -9,9 +9,9 @@ import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xtree.base.utils.CfLog;
+import com.xtree.live.ui.main.service.message.LiveMessageCenterThread;
 import com.xtree.service.IWebSocket;
 import com.xtree.service.WebSocketManager;
-import com.xtree.service.message.MessageCenterThread;
 import com.xtree.service.messenger.IInputMessenger;
 
 import java.lang.reflect.Type;
@@ -23,7 +23,7 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 public class LivePushClient implements IWebSocket {
-    private MessageCenterThread messageCenter;
+    private LiveMessageCenterThread messageCenter;
     HashMap<String, Object> map;
 
     //应用内消息传递
@@ -38,7 +38,7 @@ public class LivePushClient implements IWebSocket {
         if (messageCenter != null) {
             stopSocket();
         }
-        messageCenter = new MessageCenterThread();
+        messageCenter = new LiveMessageCenterThread();
         CfLog.i(String.format("长链接开始 \t%s,\t%d", url, checkInterval));
         WebSocketManager.getInstance().newWebSocket(url, new WebSocketListener() {
 
@@ -103,6 +103,11 @@ public class LivePushClient implements IWebSocket {
                     e.printStackTrace();
                     Sentry.captureException(e);
                 }
+            }
+
+            @Override
+            public void onClosing(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
+                super.onClosing(webSocket, code, reason);
             }
 
             @Override
