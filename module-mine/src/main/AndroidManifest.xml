@@ -27,11 +27,6 @@
             android:name=".ui.activity.CustomerServiceActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.CustomerServiceDialogActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Dialog"/>
     </application>
 
 </manifest>

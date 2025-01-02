@@ -90,27 +90,63 @@ public class CustomerServiceActivity extends BaseActivity<ActivityCustomerServic
             }
         });
         //教学
+        binding.llQAdigitalTeaching.setOnClickListener(v -> {
+            showDialog( binding.tvQAdigitalTeaching.getText().toString().trim());
+        });
         binding.tvQAdigitalTeaching.setOnClickListener(v -> {
             showDialog( binding.tvQAdigitalTeaching.getText().toString().trim());
         });
+        binding.ivtvQAdigitalTeaching.setOnClickListener(v -> {
+            showDialog( binding.tvQAdigitalTeaching.getText().toString().trim());
+        });
         //绑定银行卡
+        binding.llQABindCard.setOnClickListener(v -> {
+            showDialog( binding.tvQABindCard.getText().toString().trim());
+        });
         binding.tvQABindCard.setOnClickListener(v -> {
             showDialog( binding.tvQABindCard.getText().toString().trim());
         });
+        binding.ivQABindCard.setOnClickListener(v -> {
+            showDialog( binding.tvQABindCard.getText().toString().trim());
+        });
         //忘记密码
+        binding.llQAForgetLoginPassword.setOnClickListener(v -> {
+            showDialog( binding.tvQAForgetLoginPassword.getText().toString().trim());
+        });
         binding.tvQAForgetLoginPassword.setOnClickListener(v -> {
             showDialog( binding.tvQAForgetLoginPassword.getText().toString().trim());
         });
+        binding.ivQAForgetLoginPassword.setOnClickListener(v -> {
+            showDialog( binding.tvQAForgetLoginPassword.getText().toString().trim());
+        });
         //下载App
+        binding.llQADownApp.setOnClickListener(v -> {
+            showDialog( binding.tvQADownApp.getText().toString().trim());
+        });
         binding.tvQADownApp.setOnClickListener(v -> {
             showDialog( binding.tvQADownApp.getText().toString().trim());
         });
+        binding.ivQADownApp.setOnClickListener(v -> {
+            showDialog( binding.tvQADownApp.getText().toString().trim());
+        });
         //登录密码不正确
+        binding.llQALoginPassword.setOnClickListener(v -> {
+            showDialog( binding.tvQALoginPassword.getText().toString().trim());
+        });
         binding.tvQALoginPassword.setOnClickListener(v -> {
             showDialog( binding.tvQALoginPassword.getText().toString().trim());
         });
+        binding.ivQALoginPassword.setOnClickListener(v -> {
+            showDialog( binding.tvQALoginPassword.getText().toString().trim());
+        });
         //新增USDT
+        binding.llQAAddUSDT.setOnClickListener(v -> {
+            showDialog( binding.tvQAAddUSDT.getText().toString().trim());
+        });
         binding.tvQAAddUSDT.setOnClickListener(v -> {
+            showDialog( binding.tvQAAddUSDT.getText().toString().trim());
+        });
+        binding.ivQAAddUSDT.setOnClickListener(v -> {
             showDialog( binding.tvQAAddUSDT.getText().toString().trim());
         });
     }

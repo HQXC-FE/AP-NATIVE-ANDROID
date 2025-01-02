@@ -90,13 +90,12 @@ public class CustomerServiceDialogActivity extends BottomPopupView {
             showDialog( binding.tvQABindCard.getText().toString().trim());
         });
         binding.ivQABindCard.setOnClickListener(v -> {
-            showDialog( binding.tvQAdigitalTeaching.getText().toString().trim());
+            showDialog( binding.tvQABindCard.getText().toString().trim());
         });
         //忘记密码
         binding.tvQAForgetLoginPassword.setOnClickListener(v -> {
             showDialog( binding.tvQAForgetLoginPassword.getText().toString().trim());
         });
-        //忘记密码
         binding.ivQAForgetLoginPassword.setOnClickListener(v -> {
             showDialog( binding.tvQAForgetLoginPassword.getText().toString().trim());
         });
@@ -121,7 +120,6 @@ public class CustomerServiceDialogActivity extends BottomPopupView {
         binding.ivQAAddUSDT.setOnClickListener(v -> {
             showDialog( binding.tvQAAddUSDT.getText().toString().trim());
         });
-
     }
     @Override
     protected int getImplLayoutId() {

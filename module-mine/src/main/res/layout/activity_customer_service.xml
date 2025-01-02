@@ -208,167 +208,223 @@
                             android:layout_marginStart="20dp"
                             app:layout_constraintStart_toEndOf="@id/custom_app_icon_qa"
                             app:layout_constraintTop_toTopOf="@id/custom_app_icon_qa"/>
-                        <TextView
-                            android:id="@+id/tvQAdigitalTeaching"
-                           style="@style/style_qa_txt"
-                            android:text="@string/txt_qa_digital_teaching"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
-                            app:layout_constraintTop_toBottomOf="@id/tvQA"/>
-
-                        <ImageView
-                            android:id="@+id/ivtvQAdigitalTeaching"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@mipmap/custom_arrow_left"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tvQAdigitalTeaching"
-                            android:layout_marginRight="4dp" />
-
-                        <View
-                            android:id="@+id/ivtvQAdigitalTeachingLine"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/llQAdigitalTeaching"
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="10dp"
-                            android:background="#E8E8E8"
-                            app:layout_constraintStart_toStartOf="@id/tvQAdigitalTeaching"
-                            app:layout_constraintTop_toBottomOf="@id/tvQAdigitalTeaching"
-                            />
-                        <TextView
-                            android:id="@+id/tvQABindCard"
-                            style="@style/style_qa_txt"
-                            android:text="@string/txt_qa_bind_bank_card"
-                            android:layout_marginTop="10dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="4dp"
                             app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
-                            app:layout_constraintTop_toBottomOf="@id/ivtvQAdigitalTeachingLine"/>
+                            app:layout_constraintTop_toBottomOf="@id/tvQA">
+                            <TextView
+                                android:id="@+id/tvQAdigitalTeaching"
+                                style="@style/style_qa_txt"
+                                android:text="@string/txt_qa_digital_teaching"
+                                android:layout_marginTop="10dp"
+                                app:layout_constraintStart_toStartOf="@id/llQAdigitalTeaching"
+                                app:layout_constraintTop_toTopOf="parent"
+                                />
 
-                        <ImageView
-                            android:id="@+id/ivQABindCard"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@mipmap/custom_arrow_left"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tvQABindCard"
-                            android:layout_marginRight="4dp"  />
+                            <ImageView
+                                android:id="@+id/ivtvQAdigitalTeaching"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@mipmap/custom_arrow_left"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tvQAdigitalTeaching"
+                                android:layout_marginRight="4dp" />
 
-                        <View
-                            android:id="@+id/ivQABindCardLine"
+                            <View
+                                android:id="@+id/ivtvQAdigitalTeachingLine"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#E8E8E8"
+                                app:layout_constraintStart_toStartOf="@id/tvQAdigitalTeaching"
+                                app:layout_constraintBottom_toBottomOf="@id/llQAdigitalTeaching"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/llQABindCard"
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="10dp"
-                            android:background="#E8E8E8"
-                            app:layout_constraintStart_toStartOf="@id/tvQABindCard"
-                            app:layout_constraintTop_toBottomOf="@id/tvQABindCard"
-                            />
-                        <TextView
-                            android:id="@+id/tvQAForgetLoginPassword"
-                            style="@style/style_qa_txt"
-                            android:text="@string/txt_qa_forget_login_password"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
-                            app:layout_constraintTop_toBottomOf="@id/ivQABindCardLine"/>
+                            android:layout_height="40dp"
+                            android:layout_marginTop="4dp"
+                            app:layout_constraintStart_toStartOf="@id/llQAdigitalTeaching"
+                            app:layout_constraintTop_toBottomOf="@id/llQAdigitalTeaching">
+                            <TextView
+                                android:id="@+id/tvQABindCard"
+                                style="@style/style_qa_txt"
+                                android:text="@string/txt_qa_bind_bank_card"
+                                android:layout_marginTop="10dp"
+                                app:layout_constraintStart_toStartOf="@id/llQABindCard"
+                                app:layout_constraintTop_toTopOf="parent"
+                                />
 
-                        <ImageView
-                            android:id="@+id/ivQAForgetLoginPassword"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@mipmap/custom_arrow_left"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tvQAForgetLoginPassword"
-                            android:layout_marginRight="4dp" />
+                            <ImageView
+                                android:id="@+id/ivQABindCard"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@mipmap/custom_arrow_left"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tvQABindCard"
+                                android:layout_marginRight="4dp" />
 
-                        <View
-                            android:id="@+id/ivQAForgetLoginPasswordLine"
+                            <View
+                                android:id="@+id/ivQABindCardLine"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#E8E8E8"
+                                app:layout_constraintStart_toStartOf="@id/llQABindCard"
+                                app:layout_constraintBottom_toBottomOf="@id/llQABindCard"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/llQAForgetLoginPassword"
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="10dp"
-                            android:background="#E8E8E8"
-                            app:layout_constraintStart_toStartOf="@id/ivQAForgetLoginPassword"
-                            app:layout_constraintTop_toBottomOf="@id/ivQAForgetLoginPassword"
-                            />
-                        <TextView
-                            android:id="@+id/tvQADownApp"
-                            style="@style/style_qa_txt"
-                            android:text="@string/txt_qa_down_app"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
-                            app:layout_constraintTop_toBottomOf="@id/ivQAForgetLoginPasswordLine"/>
+                            android:layout_height="40dp"
+                            android:layout_marginTop="4dp"
+                            app:layout_constraintStart_toStartOf="@id/llQABindCard"
+                            app:layout_constraintTop_toBottomOf="@id/llQABindCard">
+                            <TextView
+                                android:id="@+id/tvQAForgetLoginPassword"
+                                style="@style/style_qa_txt"
+                                android:text="@string/txt_qa_forget_login_password"
+                                android:layout_marginTop="10dp"
+                                app:layout_constraintStart_toStartOf="@id/llQAForgetLoginPassword"
+                                app:layout_constraintTop_toTopOf="parent"
+                                />
 
-                        <ImageView
-                            android:id="@+id/ivQADownApp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@mipmap/custom_arrow_left"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tvQADownApp"
-                            android:layout_marginRight="4dp"  />
+                            <ImageView
+                                android:id="@+id/ivQAForgetLoginPassword"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@mipmap/custom_arrow_left"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tvQAForgetLoginPassword"
+                                android:layout_marginRight="4dp" />
 
-                        <View
-                            android:id="@+id/ivQADownAppLine"
+                            <View
+                                android:id="@+id/ivQAForgetLoginPasswordLine"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#E8E8E8"
+                                app:layout_constraintStart_toStartOf="@id/llQAForgetLoginPassword"
+                                app:layout_constraintBottom_toBottomOf="@id/llQAForgetLoginPassword"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/llQADownApp"
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="10dp"
-                            android:background="#E8E8E8"
-                            app:layout_constraintStart_toStartOf="@id/ivQADownApp"
-                            app:layout_constraintTop_toBottomOf="@id/ivQADownApp"
-                            />
-                        <TextView
-                            android:id="@+id/tvQALoginPassword"
-                            style="@style/style_qa_txt"
-                            android:text="@string/txt_qa_login_password"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
-                            app:layout_constraintTop_toBottomOf="@id/ivQADownAppLine"/>
+                            android:layout_height="40dp"
+                            android:layout_marginTop="4dp"
+                            app:layout_constraintStart_toStartOf="@id/llQAForgetLoginPassword"
+                            app:layout_constraintTop_toBottomOf="@id/llQAForgetLoginPassword">
+                            <TextView
+                                android:id="@+id/tvQADownApp"
+                                style="@style/style_qa_txt"
+                                android:text="@string/txt_qa_down_app"
+                                android:layout_marginTop="10dp"
+                                app:layout_constraintStart_toStartOf="@id/llQADownApp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                />
 
-                        <ImageView
-                            android:id="@+id/ivQALoginPassword"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@mipmap/custom_arrow_left"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tvQALoginPassword"
-                            android:layout_marginRight="4dp"  />
+                            <ImageView
+                                android:id="@+id/ivQADownApp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@mipmap/custom_arrow_left"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tvQADownApp"
+                                android:layout_marginRight="4dp" />
 
-                        <View
-                            android:id="@+id/ivQALoginPasswordLine"
+                            <View
+                                android:id="@+id/ivQADownAppLine"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#E8E8E8"
+                                app:layout_constraintStart_toStartOf="@id/llQADownApp"
+                                app:layout_constraintBottom_toBottomOf="@id/llQADownApp"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/llQALoginPassword"
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="10dp"
-                            android:background="#E8E8E8"
-                            app:layout_constraintStart_toStartOf="@id/ivQALoginPassword"
-                            app:layout_constraintTop_toBottomOf="@id/ivQALoginPassword"
-                            />
-                        <TextView
-                            android:id="@+id/tvQAAddUSDT"
-                            style="@style/style_qa_txt"
-                            android:text="@string/txt_qa_add_usdt"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
-                            app:layout_constraintTop_toBottomOf="@id/ivQALoginPasswordLine"/>
+                            android:layout_height="40dp"
+                            android:layout_marginTop="4dp"
+                            app:layout_constraintStart_toStartOf="@id/llQADownApp"
+                            app:layout_constraintTop_toBottomOf="@id/llQADownApp">
+                            <TextView
+                                android:id="@+id/tvQALoginPassword"
+                                style="@style/style_qa_txt"
+                                android:text="@string/txt_qa_login_password"
+                                android:layout_marginTop="10dp"
+                                app:layout_constraintStart_toStartOf="@id/llQALoginPassword"
+                                app:layout_constraintTop_toTopOf="parent"
+                                />
 
-                        <ImageView
-                            android:id="@+id/ivQAAddUSDT"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@mipmap/custom_arrow_left"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tvQAAddUSDT"
-                            android:layout_marginRight="4dp"  />
+                            <ImageView
+                                android:id="@+id/ivQALoginPassword"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@mipmap/custom_arrow_left"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tvQALoginPassword"
+                                android:layout_marginRight="4dp" />
 
-                        <View
-                            android:id="@+id/ivQAAddUSDTLine"
+                            <View
+                                android:id="@+id/ivQALoginPasswordLine"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#E8E8E8"
+                                app:layout_constraintStart_toStartOf="@id/llQALoginPassword"
+                                app:layout_constraintBottom_toBottomOf="@id/llQALoginPassword"
+                                />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/llQAAddUSDT"
                             android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="10dp"
-                            android:background="#E8E8E8"
-                            app:layout_constraintStart_toStartOf="@id/tvQAAddUSDT"
-                            app:layout_constraintTop_toBottomOf="@id/tvQAAddUSDT"
-                            />
+                            android:layout_height="40dp"
+                            android:layout_marginTop="4dp"
+                            app:layout_constraintStart_toStartOf="@id/llQALoginPassword"
+                            app:layout_constraintTop_toBottomOf="@id/llQALoginPassword">
+                            <TextView
+                                android:id="@+id/tvQAAddUSDT"
+                                style="@style/style_qa_txt"
+                                android:text="@string/txt_qa_add_usdt"
+                                android:layout_marginTop="10dp"
+                                app:layout_constraintStart_toStartOf="@id/llQAAddUSDT"
+                                app:layout_constraintTop_toTopOf="parent"
+                                />
+
+                            <ImageView
+                                android:id="@+id/ivQAAddUSDT"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@mipmap/custom_arrow_left"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/tvQAAddUSDT"
+                                android:layout_marginRight="4dp" />
+
+                            <View
+                                android:id="@+id/ivQAAddUSDTLine"
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#E8E8E8"
+                                app:layout_constraintStart_toStartOf="@id/llQAAddUSDT"
+                                app:layout_constraintBottom_toBottomOf="@id/llQAAddUSDT"
+                                />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                         <View
                             android:layout_height="20dp"
                             android:layout_width="match_parent"
-                            app:layout_constraintStart_toStartOf="@id/ivQAAddUSDTLine"
-                            app:layout_constraintTop_toBottomOf="@id/ivQAAddUSDTLine"
+                            app:layout_constraintStart_toStartOf="@id/custom_app_qa"
+                            app:layout_constraintTop_toBottomOf="@id/llQAAddUSDT"
                             />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
