@@ -92,6 +92,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private BasePopupView updateView;
     private String nativeAppUpdate;//App本地强制更新标志为 0不存在强更
     private UserMethodsResponse mLotteryUser;
+    private boolean isFirstToLottery = true;
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -439,8 +440,16 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
             @Override
             public void toLottery() {
+                if (ClickUtil.isFastClick3000()) {
+                    return;
+                }
                 if (mLotteryUser == null || mLotteryUser.getData() == null || mLotteryUser.getData().isEmpty()) {
-                    ToastUtils.showLong("彩种数据加载失败,请稍后再试");
+                    if (isFirstToLottery) {
+                        isFirstToLottery = false;
+                        binding.rcvList.postDelayed(() -> toLottery(), 3000);
+                    } else {
+                        ToastUtils.showLong("彩种数据加载失败,请重启再试");
+                    }
                     return;
                 }
                 //ARouter无法传输mLotteryUser这种庞大的数据
