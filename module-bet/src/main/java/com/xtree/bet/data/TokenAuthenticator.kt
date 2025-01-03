@@ -1,7 +1,6 @@
 package com.xtree.bet.data
 
 import android.text.TextUtils
-import com.google.gson.Gson
 import com.xtree.base.global.SPKeyGlobal
 import com.xtree.base.net.FBRetrofitClient
 import com.xtree.base.net.RetrofitClient
@@ -15,38 +14,41 @@ import me.xtree.mvvmhabit.http.BaseResponse
 import me.xtree.mvvmhabit.utils.KLog
 import me.xtree.mvvmhabit.utils.RxUtils
 import me.xtree.mvvmhabit.utils.SPUtils
-import okhttp3.FormBody
 import okhttp3.Interceptor
-import okhttp3.RequestBody
 import okhttp3.Response
 import org.json.JSONObject
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.locks.ReentrantLock
 
 class TokenAuthenticator : Interceptor {
 
     private val lock = ReentrantLock()
-    private var isTokenRefreshing = false  // 标志变量，确保只有一次刷新请求
+
+    private val refreshRequestCount = AtomicInteger(0)  // 使用 AtomicInteger 来记录请求次数
 
     override fun intercept(chain: Interceptor.Chain): Response {
+
         val request = chain.request()
-
-        // 获取 Token
-        val token = getTokenForPlatform()
-
-        // 如果 token 为空，直接返回原始请求
-        if (token.isNullOrEmpty()) {
-            return chain.proceed(request)
-        }
 
         val response = chain.proceed(request)
 
-        // 如果已经刷新过 token，直接返回当前响应
-        if (isTokenRefreshing) {
-            return response
-        }
-
         // 处理特殊的 API 请求
         if (isForwardApiRequest(request.url.toString())) {
+
+            // 获取 Token
+            val token = getTokenForPlatform()
+
+            // 如果 token 为空，直接返回原始请求
+            if (token.isNullOrEmpty()) {
+                return chain.proceed(request)
+            }
+
+            // 如果请求次数超过 5 次，则不再进行 token 刷新
+            if (refreshRequestCount.get() >= 5) {
+                KLog.i("***** Token 刷新次数已达到上限，返回原始响应 *****")
+                return response
+            }
+
             val responseBody = response.body?.string()
             if (responseBody != null) {
                 val jsonObject = JSONObject(responseBody)
@@ -75,6 +77,7 @@ class TokenAuthenticator : Interceptor {
             } else {
                 // 如果 responseBody 为空，处理错误
                 KLog.i("##### Response body is null #####")
+                return response
             }
         }
 
@@ -98,7 +101,7 @@ class TokenAuthenticator : Interceptor {
     }
 
     private fun refreshLiveToken(): String? {
-        isTokenRefreshing = true
+        refreshRequestCount.incrementAndGet()
         try {
             // 创建 API 服务实例
             val apiService = RetrofitClient.getInstance().create(ApiService::class.java)
@@ -129,8 +132,8 @@ class TokenAuthenticator : Interceptor {
             KLog.e("Error refreshing live token: ${e.message}")
             return null // 异常时返回 null
         } finally {
-            // 无论是否发生异常，都恢复标志
-            isTokenRefreshing = false
+            // 刷新完后可以重置请求次数
+            refreshRequestCount.set(0)
         }
     }
 
@@ -142,12 +145,4 @@ class TokenAuthenticator : Interceptor {
             SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, newToken)
         }
     }
-
-//    private fun buildFormBody(params: Map<String, String>): RequestBody {
-//        val formBodyBuilder = FormBody.Builder()
-//        for ((key, value) in params) {
-//            formBodyBuilder.add(key, value)
-//        }
-//        return formBodyBuilder.build()
-//    }
 }
