@@ -51,13 +51,13 @@ class TokenAuthenticator : Interceptor {
 
             val responseBody = response.body?.string()
             if (responseBody != null) {
-                val jsonObject = JSONObject(responseBody)
-                val codeValue = jsonObject.optInt("code", -1)
-                val successValue = jsonObject.optBoolean("success", false)
-                if (codeValue == 14010 && !successValue) {
-                    KLog.i("***** 账号登出错误 14010 重新请求token *****" )
-                    lock.lock()
-                    try {
+                try {
+                    val jsonObject = JSONObject(responseBody)
+                    val codeValue = jsonObject.optInt("code", -1)
+                    val successValue = jsonObject.optBoolean("success", false)
+                    if (codeValue == 14010 && !successValue) {
+                        KLog.i("***** 账号登出错误 14010 重新请求token *****")
+                        lock.lock()
                         if (token == getTokenForPlatform()) {
                             val newToken = refreshLiveToken() ?: return response
                             saveToken(newToken)
@@ -67,12 +67,12 @@ class TokenAuthenticator : Interceptor {
                                 .build()
 
                             // 使用新 Token 重试请求
-                            KLog.i("***** 重新请求token *****" )
+                            KLog.i("***** 重新请求token *****")
                             return chain.proceed(authenticatedRequest)
                         }
-                    } finally {
-                        lock.unlock()
                     }
+                } finally {
+                    lock.unlock()
                 }
             } else {
                 // 如果 responseBody 为空，处理错误
