@@ -54,6 +54,7 @@ import com.xtree.mine.vo.UserUsdtConfirmVo;
 import com.xtree.mine.vo.UserUsdtTypeVo;
 import com.xtree.mine.vo.VerificationCodeVo;
 import com.xtree.mine.vo.VerifyVo;
+import com.xtree.mine.vo.VipInfoVo;
 import com.xtree.mine.vo.VipUpgradeInfoVo;
 import com.xtree.mine.vo.VirtualCashVo;
 import com.xtree.mine.vo.VirtualConfirmVo;
@@ -674,4 +675,9 @@ public interface HttpApiService {
     @PUT("/api/activity/reward/{key}")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse3> getOffer(@Path("key") String key, @Body Map<String, String> map);
+    /**
+     * 获取 VIP信息
+     */
+    @GET("/api/account/vipinfo")
+    Flowable<BaseResponse<VipInfoVo>> getVipInfo();
 }
