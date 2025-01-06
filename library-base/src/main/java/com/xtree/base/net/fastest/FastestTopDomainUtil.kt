@@ -268,10 +268,9 @@ class FastestTopDomainUtil private constructor() {
                 //对同一个域名的 接口测速和资源测速 进行数据上的融合
                 allTest = LineHelpUtil.getUploadList(allTest)
 
-                allTest.forEach {
-                    //如果符合上传规则加入上传信息集合
-                    val check = FastestMonitorCache.check(it)
-                    if (check) {
+                if (FastestMonitorCache.last_upload_time <= 0 || curTime > FastestMonitorCache.last_upload_time + (60 * 5 * 1000)) {
+                    allTest.forEach {
+                        //如果符合上传规则加入上传信息集合
                         val infoList =
                             listOf<String>(
                                 it.url ?: "",
@@ -289,6 +288,9 @@ class FastestTopDomainUtil private constructor() {
                 CfLog.e("line make highSpeedList " + Gson().toJson(highSpeedList))
 
                 if (highSpeedList.isNotEmpty()) {
+
+                    FastestMonitorCache.last_upload_time = curTime
+
                     val request: Request = Request.Builder()
                         .url(DomainUtil.getApiUrl() + FASTEST_MONITOR_API)
                         .post(cjson("device_type" to "9", "data" to highSpeedList))
