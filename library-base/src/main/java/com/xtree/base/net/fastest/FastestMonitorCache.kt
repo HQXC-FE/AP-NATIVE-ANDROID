@@ -29,6 +29,8 @@ object FastestMonitorCache {
 
     var app_response_speed_max = 0
 
+    var last_upload_time = 0L
+
     init {
         val fastest_monitor_timeout =
             SPUtils.getInstance().getInt(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT)
