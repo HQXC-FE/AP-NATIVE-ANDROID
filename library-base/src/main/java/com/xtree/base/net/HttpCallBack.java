@@ -1,19 +1,29 @@
 package com.xtree.base.net;
 
+import static me.xtree.mvvmhabit.http.ExceptionHandle.ERROR.HIJACKED_ERROR;
+
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.fastest.ChangeApiLineUtil;
+import com.xtree.base.net.fastest.FastestTopDomainUtil;
+import com.xtree.base.net.fastest.SpeedApiLine;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.TagUtils;
 import com.xtree.base.widget.LoadingDialog;
 
 import io.reactivex.subscribers.DisposableSubscriber;
+import io.sentry.Sentry;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BaseResponse2;
 import me.xtree.mvvmhabit.http.BusinessException;
+import me.xtree.mvvmhabit.http.HijackedException;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
+import me.xtree.mvvmhabit.utils.Utils;
 
 public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
     public abstract void onResult(T t);
@@ -126,6 +136,11 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                 // 谷歌验证
                 onFail(ex);
                 break;
+            case HttpCallBack.CodeRule.CODE_100002:
+                TagUtils.tagEvent(Utils.getContext(), "API JSON数据转换失败", DomainUtil.getApiUrl());
+                ToastUtils.showShort("当前网络环境异常，切换线路中..."); // ("域名被劫持"  + "，切换线路中...");
+                ChangeApiLineUtil.getInstance().start();
+                break;
             default:
                 KLog.e("status is not normal: " + baseResponse);
                 onFail(ex);
@@ -137,14 +152,43 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
     public void onError(Throwable t) {
         LoadingDialog.finish();
         KLog.e("error: " + t.toString());
+        Sentry.captureException(t);
         //t.printStackTrace();
         if (t instanceof ResponseThrowable) {
             ResponseThrowable rError = (ResponseThrowable) t;
-            ToastUtils.showShort(rError.message);
+            ToastUtils.showLong(rError.message + " [" + rError.code + "]");
+            KLog.e("code: " + rError.code);
+            if (rError.code == 403) {
+                TagUtils.tagEvent(Utils.getContext(), "403");
+                FastestTopDomainUtil.getInstance().start();
+            } else if (rError.code == HIJACKED_ERROR) {
+                HijackedException hijackedException = (HijackedException) t.getCause();
+                TagUtils.tagEvent(Utils.getContext(), "API JSON数据转换失败", hijackedException.getUrl());
+                TagUtils.tagEvent(Utils.getContext(), "event_hijacked", t.getMessage());
+                TagUtils.tagEvent(Utils.getContext(), "event_change_api_line_start", " [" + rError.code + "]域名被劫持，切换线路开始...");
+                if (!SpeedApiLine.INSTANCE.isRunning()) {
+                    ToastUtils.showShort("当前网络环境异常" + " [" + rError.code + "]，切换线路中..."); // ("域名被劫持"  + "，切换线路中...");
+                    SpeedApiLine.INSTANCE.addHijeckedDomainList(((HijackedException) t.getCause()).getHost());
+                }
+                SpeedApiLine.INSTANCE.start();
+            } else if (rError.code == 401) {
+                TagUtils.tagEvent(Utils.getContext(), "401 鉴权失败");
+                FastestTopDomainUtil.getInstance().start();
+            } else {
+                TagUtils.tagEvent(Utils.getContext(), "API 测速失败", DomainUtil.getApiUrl());
+                TagUtils.tagEvent(Utils.getContext(), "event_network_error", DomainUtil.getApiUrl() + "：" + t.getMessage());
+                TagUtils.tagEvent(Utils.getContext(), "event_change_api_line_start", " [" + rError.code + "]域名无法访问，切换线路开始...");
+                if (!SpeedApiLine.INSTANCE.isRunning()) {
+                    ToastUtils.showShort("当前网络环境异常" + " [" + rError.code + "]，切换线路中...");
+                    ToastUtils.showShort("切换线路中...");
+                    SpeedApiLine.INSTANCE.addHijeckedDomainList(DomainUtil.getApiUrl());
+                }
+                SpeedApiLine.INSTANCE.start();
+            }
             return;
         } else if (t instanceof BusinessException) {
             BusinessException rError = (BusinessException) t;
-            ToastUtils.showShort(rError.message);
+            ToastUtils.showLong(rError.message + " [" + rError.code + "]");
             return;
         }
         //其他全部甩锅网络异常
@@ -153,6 +197,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
 
     public void onFail(BusinessException t) {
         LoadingDialog.finish();
+        Sentry.captureException(t);
         KLog.e("error: " + t.toString());
         if (t.code != CodeRule.CODE_30321){
             ToastUtils.showShort(t.message);
@@ -172,6 +217,10 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         //请求成功, 正确的操作方式
         static final int CODE_0 = 0;
         static final int CODE_10000 = 10000;
+        /**
+         * 返回数据非json
+         */
+        static final int CODE_100002 = 100002;
         //请求失败，不打印Message
         static final int CODE_300 = 300;
         //请求失败，打印Message

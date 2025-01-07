@@ -75,13 +75,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding?, SplashViewModel?>() 
         val url = getString(R.string.domain_url) // 如果为空或者不正确,转用API的
 
         if (api.startsWith("http://") || api.startsWith("https://")) {
-            DomainUtil.setApiUrl(url)
-            RetrofitClient.init() // 重置URL
+            DomainUtil.setApiUrl(api)
         }
 
         if (url.startsWith("http://") || url.startsWith("https://")) {
             DomainUtil.setDomainUrl(url)
-            //RetrofitClient.init() // 重置URL
         } else {
             DomainUtil.setDomainUrl(api)
         }
