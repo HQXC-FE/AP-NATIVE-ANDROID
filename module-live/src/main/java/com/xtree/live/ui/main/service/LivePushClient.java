@@ -25,38 +25,52 @@ import okhttp3.WebSocketListener;
 public class LivePushClient implements IWebSocket {
     private LiveMessageCenterThread messageCenter;
     HashMap<String, Object> map;
+    //private boolean isManualClose = false; // 标记是否为主动关闭
+    //String url = "";
+    //long checkInterval;
+    //private ScheduledExecutorService watchdogExecutor; // Watchdog 定时任务
+    //private int retryCount = 0; // 重连次数
+    //private static final int MAX_RETRIES = 3; // 最大重连次数
 
     //应用内消息传递
     private IInputMessenger inputMessenger;
 
     public LivePushClient(IInputMessenger inputMessenger) {
         this.inputMessenger = inputMessenger;
+        //watchdogExecutor = Executors.newSingleThreadScheduledExecutor(); // Watchdog 定时任务线程池
     }
 
     @Override
     public void connectSocket(String url, long checkInterval) {
+        //this.url = url;
+        //this.checkInterval = checkInterval;
+        //if (retryCount > MAX_RETRIES) {
+        //    CfLog.e("超过最大重连次数，停止重连并通知用户！");
+        //    stopWatchdog();
+        //    return;
+        //}
         if (messageCenter != null) {
             stopSocket();
         }
         messageCenter = new LiveMessageCenterThread();
         CfLog.i(String.format("长链接开始 \t%s,\t%d", url, checkInterval));
         WebSocketManager.getInstance().newWebSocket(url, new WebSocketListener() {
-
             @Override
             public void onOpen(@NonNull WebSocket webSocket, @NonNull Response response) {
                 messageCenter.startThread(webSocket, checkInterval);
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                new Handler(Looper.getMainLooper()).post(() -> {
                     if (messageCenter != null) {
                         messageCenter.sendHeart();
                         CfLog.d("发送心跳");
                     }
-                }, 10000);
-
+                });
             }
 
             @Override
             public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
-
+                //isManualClose = false; // 重置主动关闭标志
+                //retryCount = 0; // 重置重连计数
+                //startWatchdog(); // 开始监测
                 try {
                     //text="{\"type\":\"message\",\"fd\":9197,\"data\":{\"subject\":\"\\u5145\\u503c\\u7533\\u8bf7\",\"messageid\":41450873},\"timestamp\":1730360802}";
                     if (text == null || text.isEmpty()) {
@@ -85,9 +99,9 @@ public class LivePushClient implements IWebSocket {
                             break;
                         case "msg":
                             CfLog.i("消息");
-                            //                            if (inputMessenger != null && remoteMessage.getData() != null && remoteMessage.getData().size() > 0) {
-                            //                                inputMessenger.sendMessage(MessageType.Output.REMOTE_MSG, remoteMessage.getData().get(0));
-                            //                            }
+                            //if (inputMessenger != null && remoteMessage.getData() != null && remoteMessage.getData().size() > 0) {
+                            //    inputMessenger.sendMessage(MessageType.Output.REMOTE_MSG, remoteMessage.getData().get(0));
+                            //}
                             break;
                         case "send":
                             CfLog.i("消息");
@@ -106,19 +120,17 @@ public class LivePushClient implements IWebSocket {
             }
 
             @Override
-            public void onClosing(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
-                super.onClosing(webSocket, code, reason);
-            }
-
-            @Override
             public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
                 messageCenter.stopThread(true);
+                messageCenter = null;
                 CfLog.i(String.format("服务器关闭%s", reason));
             }
 
             @Override
             public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable Response response) {
                 messageCenter.stopThread(false);
+                // 原先的无法使用，最后在此去除掉messageCenter的Reference后，运行正常
+                messageCenter = null;
                 CfLog.i(String.format("服务失败%s,%s", t, response));
             }
         });
@@ -130,6 +142,7 @@ public class LivePushClient implements IWebSocket {
         if (messageCenter != null) {
             messageCenter.stopThread();
             messageCenter = null;
+            //isManualClose = true;
         }
     }
 
@@ -148,4 +161,34 @@ public class LivePushClient implements IWebSocket {
         return false;
     }
 
+    //private void handleDisconnection() {
+    //    if (!isManualClose && retryCount < MAX_RETRIES) {
+    //        retryCount++;
+    //        CfLog.e("非主动断线，开始第 " + retryCount + " 次重连...");
+    //        connectSocket(url, checkInterval);
+    //    } else if (retryCount >= MAX_RETRIES) {
+    //        CfLog.e("达到最大重连次数，停止所有操作！");
+    //        stopSocket();
+    //    }
+    //}
+
+    //// 启动 Watchdog 监测连接状态
+    //private void startWatchdog() {
+    //    stopWatchdog(); // 确保没有重复的任务
+    //    watchdogExecutor.scheduleWithFixedDelay(() -> {
+    //        CfLog.e("检测中...");
+    //        if (messageCenter == null) {
+    //            CfLog.e("连接异常，尝试重连...");
+    //            handleDisconnection();
+    //        }
+    //    }, 5, 5, TimeUnit.SECONDS); // 每 5 秒检查一次连接状态
+    //}
+
+    //// 停止 Watchdog
+    //public void stopWatchdog() {
+    //    if (watchdogExecutor != null && !watchdogExecutor.isShutdown()) {
+    //        watchdogExecutor.shutdownNow();
+    //        watchdogExecutor = Executors.newSingleThreadScheduledExecutor(); // 重置线程池
+    //    }
+    //}
 }

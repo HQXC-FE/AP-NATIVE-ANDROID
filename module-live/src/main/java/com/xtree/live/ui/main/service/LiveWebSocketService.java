@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 
 import com.xtree.base.utils.CfLog;
 import com.xtree.service.LooperHeartHandler;
-import com.xtree.service.PushClient;
 import com.xtree.service.message.MessageType;
 import com.xtree.service.messenger.IInputMessenger;
 import com.xtree.service.messenger.InputMessenger;
@@ -40,8 +39,7 @@ public class LiveWebSocketService extends Service {
                 //往外发送请求url消息
                 if (messenger != null) {
                     currentRetryNumber++;
-                    if (currentRetryNumber > retryNumber && (currentRetryNumber - retryNumber) > (retryWaitingTime / checkInterval) &&
-                            isLogin) {//出现重连异常
+                    if (currentRetryNumber > retryNumber && (currentRetryNumber - retryNumber) > (retryWaitingTime / checkInterval) && isLogin) {//出现重连异常
                         messenger.sendMessage(MessageType.Output.OBTAIN_LINK, null);
                     } else {
                         messenger.sendMessage(MessageType.Output.OBTAIN_LINK, null);
@@ -81,6 +79,7 @@ public class LiveWebSocketService extends Service {
                         break;
                     case LOGOUT:
                         pushClient.stopSocket();
+                        //pushClient.stopWatchdog();
                         isLogin = false;
                         break;
                     default:
@@ -112,5 +111,6 @@ public class LiveWebSocketService extends Service {
         if (pushClient != null) {
             pushClient.stopSocket();
         }
+        //pushClient.stopWatchdog();
     }
 }
