@@ -46,7 +46,6 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 
 public class PMBtCarViewModel extends TemplateBtCarViewModel {
 
-    private List<BetConfirmOption> mBetConfirmOptionList;
     private List<BetConfirmOption> mSearchBetConfirmOptionList;
 
     public PMBtCarViewModel(@NonNull Application application, BetRepository repository) {
@@ -95,7 +94,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
             betMatchMarketList.add(betMatchMarket);
         }
         btCarReq.setIdList(betMatchMarketList);
-
+        queryMarketMaxMinBetMoney(betConfirmOptionList);
         Disposable disposable = (Disposable) model.getPMApiService().batchBetMatchMarketOfJumpLine(btCarReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
@@ -105,11 +104,11 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                         if (btConfirmInfoList == null || btConfirmInfoList.isEmpty()) {
                             return;
                         }
-                        mBetConfirmOptionList = new ArrayList<>();
+                        List<BetConfirmOption> mBetConfirmOptionList = new ArrayList<>();
                         for (BtConfirmInfo btConfirmInfo : btConfirmInfoList) {
                             mBetConfirmOptionList.add(new BetConfirmOptionPm(btConfirmInfo, ""));
                         }
-                        queryMarketMaxMinBetMoney(betConfirmOptionList);
+                        btConfirmInfoDate.postValue(mBetConfirmOptionList);
                     }
 
                     @Override
@@ -167,7 +166,6 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                             }
                         }
 
-                        btConfirmInfoDate.postValue(mBetConfirmOptionList);
                         cgOddLimitDate.postValue(cgOddLimitInfoList);
                     }
 
