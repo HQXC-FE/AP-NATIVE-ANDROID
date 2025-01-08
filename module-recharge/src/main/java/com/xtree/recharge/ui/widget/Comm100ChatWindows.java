@@ -61,9 +61,7 @@ public class Comm100ChatWindows extends FloatingWindows {
         if (cancleView != null) {
             cancleView.setOnClickListener(v -> hideTip());
         }
-        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.ONEPAY_CUSTOMER_SERVICE_LINK, "")) && SPUtils.getInstance().getStringSet(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, Set.of()).isEmpty()) {
-            ivwIcon.setVisibility(GONE);
-        }
+
 
         if (floatView != null) {
             floatView.setOnClickListener(v -> {
@@ -107,6 +105,15 @@ public class Comm100ChatWindows extends FloatingWindows {
      */
     public void showTip() {
         setBottomLocation();
+    }
+
+    @Override
+    public void show() {
+        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.ONEPAY_CUSTOMER_SERVICE_LINK, "")) && SPUtils.getInstance().getStringSet(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, Set.of()).isEmpty()) {
+        } else {
+            super.show();
+        }
+
     }
 
     /**
