@@ -90,6 +90,9 @@
     <!-- 通用字颜色 主色/5级字 -->
     <color name="clr_txt_05">#4F4439</color>
     <color name="clr_txt_06">#E3C3A2</color>
+    <color name="clr_txt_07">#5B5B6A</color>
+    <color name="clr_txt_08">#979797</color>
+    <color name="clr_txt_09">#958E89</color>
     <!-- 通用黑色 1E -->
     <color name="clr_txt_black_cm">#FFF8F8</color>
     <color name="clr_txt_white_cm">#FFF8F8</color>
@@ -424,7 +427,7 @@
     <color name="clr_green_01">#20B56E</color>
 
     <!--<color name="clr_blue_02">#247BF4</color>-->
-    <!--<color name="clr_blue_03">#119BFF</color>-->
+    <color name="clr_blue_03">#119BFF</color>
     <!--<color name="clr_blue_04">#C7E3FF</color>-->
     <!--<color name="clr_blue_05">#376CAA</color>-->
     <!--<color name="clr_blue_05a">#415AB0</color>-->
@@ -574,7 +577,6 @@
     <!--  金额已选中  -->
     <color name="clr_purple_05">#9179E7</color>
     <color name="clr_rc_txt_hi">#5B5768</color>
-    <color name="clr_blue_03">#119BFF</color>
 
     <color name="clr_rc_manual_1">#CC6A74</color>
     <!-- 分隔线 -->

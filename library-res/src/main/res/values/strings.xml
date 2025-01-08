@@ -9,6 +9,19 @@
     <string name="txt_msg_center">消息中心</string>
     <string name="txt_kind_tips">温馨提示</string>
 
+    <string name="domain_url_list_third">http;http</string>
+    <string name="domain_url">http</string>
+    <string name="domain_url_list">http;http</string>
+    <string name="domain_api">http</string>
+    <string name="domain_api_list">http;http</string>
+    <string name="channel_name">demo</string>
+    <string name="platform_set"></string>
+    <string name="build_time">20240112</string>
+    <string name="mixpanel_token">abc123</string>
+    <string name="ms_secret_key">abc123</string>
+    <string name="sentry_dsn">abc123</string>
+    <bool name="is_tag">false</bool>
+
     <string name="txt_bind_card_type">bindcard</string>
     <string name="txt_bind_usdt_type">bindusdt</string>
     <string name="txt_bind_ebpay_type">bindebpay</string>
@@ -207,16 +220,6 @@
     <string name="txt_update_down_fail_tip">下载失败，请稍候重试</string>
     <string name="txt_update_version">已经是最新版本</string>
     <string name="txt_network_error">网络异常，请稍后重试</string>
-
-    <string name="domain_url">http</string>
-    <string name="domain_url_list">http;http</string>
-    <string name="domain_api">http</string>
-    <string name="domain_api_list">http;http</string>
-    <string name="channel_name">demo</string>
-    <string name="build_time">20240112</string>
-    <string name="mixpanel_token">abc123</string>
-    <string name="ms_secret_key">abc123</string>
-    <bool name="is_tag">false</bool>
 
     <!-- 我的 -->
     <string name="txt_profit">盈亏报表</string>

@@ -52,4 +52,19 @@ public class SPKeyGlobal {
     public static final String TYPE_RECHARGE_WITHDRAW = "type_recharge_withdraw";//去充值or去提款
     public static final String RC_PAYMENT_TYPE_OBJ = "rc_payment_type_obj";
 
+    public static final String KEY_API_URL = "key_api_url";
+    public static final String KEY_H5_URL = "key_h5_url";
+
+    public static final String KEY_H5_URL_RECORD_BY_FANZHA = "KEY_H5_URL_RECORD_BY_FANZHA";
+    public static final String KEY_H5_URL_ALL = "KEY_H5_URL_ALL";
+    //测速超时上传时间
+    public static final String DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT ="debug_apply_fastest_monitor_timeout";
+    //测速评分缓存
+    public static final String FASTEST_SCORE_CACHE = "fastest_score_cache";
+    // 测速扣除百分比
+    public static final String APP_RESPONSE_SPEED_CALCULATION ="app_response_speed_calculation";
+    //推荐测速上限设置
+    public static final String APP_Response_Speed_Max ="app_response_speed_max";
+    public static final String DEBUG_APPLY_DOMAIN ="debug_apply_domain";//debug 设置指定域名
+
 }
