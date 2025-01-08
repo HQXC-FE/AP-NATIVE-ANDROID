@@ -196,7 +196,7 @@ class FastestTopDomainUtil private constructor() {
                                 //      mCurApiDomainList.remove(url)
 
                                 //debug模式 显示所有测速线路 release模式 只显示4条
-                                if (mTopSpeedDomainList.size < 4 || BuildConfig.DEBUG) {
+                                if (mTopSpeedDomainList.none { it.url == topSpeedDomain.url } && mTopSpeedDomainList.size < 4 || BuildConfig.DEBUG) {
                                     topSpeedDomain.isRecommend = 1;
                                     mTopSpeedDomainList.add(topSpeedDomain)
                                     mTopSpeedDomainList.sort()

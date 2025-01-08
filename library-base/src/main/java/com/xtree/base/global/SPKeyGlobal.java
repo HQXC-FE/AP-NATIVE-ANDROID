@@ -53,6 +53,8 @@ public class SPKeyGlobal {
     public static final String RC_PAYMENT_TYPE_OBJ = "rc_payment_type_obj";
 
     public static final String KEY_API_URL = "key_api_url";
+    public static final String KEY_H5_URL = "key_h5_url";
+
     public static final String KEY_H5_URL_RECORD_BY_FANZHA = "KEY_H5_URL_RECORD_BY_FANZHA";
     public static final String KEY_H5_URL_ALL = "KEY_H5_URL_ALL";
     //测速超时上传时间
