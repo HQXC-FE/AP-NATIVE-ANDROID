@@ -81,6 +81,7 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
     private BasePopupView ppw;
 
     private String mBanlance = "-1";
+    private boolean haveRealData = false;
 
     private KeyBoardListener mKeyBoardListener = new KeyBoardListener() {
         @Override
@@ -143,6 +144,10 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
             int acceptOdds = binding.cbAccept.isChecked() ? 1 : 2;
             if (TextUtils.equals(mBanlance, "-1")) {
                 ToastUtils.showLong("正在获取余额信息，请稍候");
+                return;
+            }
+            if (!haveRealData) {
+                ToastUtils.showLong("正在获取最新赔率数据，请稍候");
                 return;
             }
             double betAmount = 0;
@@ -228,8 +233,6 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
         }
     }
 
-    int index = 0;
-
     @Override
     public void onResume() {
         super.onResume();
@@ -274,6 +277,7 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
                     }
                 }
             }
+            haveRealData = true;
 
             if (hasCloseOption) {
                 binding.btBet.setEnabled(false);
