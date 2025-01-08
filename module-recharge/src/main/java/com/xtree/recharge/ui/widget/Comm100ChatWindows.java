@@ -2,6 +2,7 @@ package com.xtree.recharge.ui.widget;
 
 import android.content.Context;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.google.gson.Gson;
@@ -60,18 +61,22 @@ public class Comm100ChatWindows extends FloatingWindows {
         if (cancleView != null) {
             cancleView.setOnClickListener(v -> hideTip());
         }
+        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.ONEPAY_CUSTOMER_SERVICE_LINK, "")) && SPUtils.getInstance().getStringSet(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, Set.of()).isEmpty()) {
+            ivwIcon.setVisibility(GONE);
+        }
 
         if (floatView != null) {
             floatView.setOnClickListener(v -> {
                 //旧客服处理
                 String oldChatUrl = SPUtils.getInstance().getString(SPKeyGlobal.ONEPAY_CUSTOMER_SERVICE_LINK, "");
-                if (!oldChatUrl.contains("?")) {
-                    oldChatUrl += "?orderid=";
-                } else {
-                    oldChatUrl += "&orderid=";
+                if (!TextUtils.isEmpty(oldChatUrl)) {
+                    if (!oldChatUrl.contains("?")) {
+                        oldChatUrl += "?orderid=";
+                    } else {
+                        oldChatUrl += "&orderid=";
+                    }
+                    oldChatUrl = ExKt.plusDomainOrNot(oldChatUrl, DomainUtil.getApiUrl());
                 }
-                oldChatUrl= ExKt.plusDomainOrNot(oldChatUrl, DomainUtil.getApiUrl());
-
                 //新客服处理
                 String newChatUrl = oldChatUrl;
                 Map<String, String> remark = null;
