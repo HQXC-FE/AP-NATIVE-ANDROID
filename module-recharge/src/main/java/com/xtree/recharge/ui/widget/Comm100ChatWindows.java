@@ -69,9 +69,9 @@ public class Comm100ChatWindows extends FloatingWindows {
                 String oldChatUrl = SPUtils.getInstance().getString(SPKeyGlobal.ONEPAY_CUSTOMER_SERVICE_LINK, "");
                 if (!TextUtils.isEmpty(oldChatUrl)) {
                     if (!oldChatUrl.contains("?")) {
-                        oldChatUrl += "?orderid=";
+                        oldChatUrl += "?CUSTOM!orderid=";
                     } else {
-                        oldChatUrl += "&orderid=";
+                        oldChatUrl += "&CUSTOM!orderid=";
                     }
                     oldChatUrl = ExKt.plusDomainOrNot(oldChatUrl, DomainUtil.getApiUrl());
                 }
