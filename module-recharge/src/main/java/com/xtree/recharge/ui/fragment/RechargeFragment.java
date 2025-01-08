@@ -1675,6 +1675,9 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
             // 极速充值
             if (viewModel.isOnePayFix(vo)) {
+                //充值op客服链接
+                SPUtils.getInstance().put(SPKeyGlobal.ONEPAY_CUSTOMER_SERVICE_LINK, vo.onepay_customer_service_link);
+
                 // 银行列表,搜索页会用到
                 onClickPayment3(vo);
                 return;
@@ -1702,12 +1705,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             }
             CfLog.d(vo.title + ", jump: " + url);
             showWebPayDialog(vo.title, url);
-
-            //充值op客服链接
-            if (viewModel.isOnePayFix(vo)) {
-                SPUtils.getInstance().put(SPKeyGlobal.ONEPAY_CUSTOMER_SERVICE_LINK, vo.onepay_customer_service_link);
-            }
-
         });
 
         viewModel.liveDataRechargePay.observe(getViewLifecycleOwner(), vo -> {
