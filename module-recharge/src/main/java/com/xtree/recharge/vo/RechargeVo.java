@@ -68,6 +68,7 @@ public class RechargeVo {
     public int tips_recommended; // 0,
     public String bankcardstatus_onepaywx; // false 时需要弹窗提示绑定WX, 默认为null
     public String bankcardstatus_onepayzfb; // false 时需要弹窗提示绑定ZFB, 默认为null
+    public String onepay_customer_service_link; // op客服链接
 
     /**
      * opBankList

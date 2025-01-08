@@ -63,8 +63,16 @@ public class Comm100ChatWindows extends FloatingWindows {
 
         if (floatView != null) {
             floatView.setOnClickListener(v -> {
-                String oldChatUrl = "https://psowoexvd.n2vu8zpu2f6.com/chatWindow.aspx?planId=" + planId + "&siteId=" + siteId + "&CUSTOM!orderid=";
+                //旧客服处理
+                String oldChatUrl = SPUtils.getInstance().getString(SPKeyGlobal.ONEPAY_CUSTOMER_SERVICE_LINK, "");
+                if (!oldChatUrl.contains("?")) {
+                    oldChatUrl += "?orderid=";
+                } else {
+                    oldChatUrl += "&orderid=";
+                }
+                oldChatUrl= ExKt.plusDomainOrNot(oldChatUrl, DomainUtil.getApiUrl());
 
+                //新客服处理
                 String newChatUrl = oldChatUrl;
                 Map<String, String> remark = null;
                 Set newChatUrlSet = SPUtils.getInstance().getStringSet(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, Set.of());
