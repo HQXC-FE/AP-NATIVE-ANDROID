@@ -38,7 +38,6 @@ import java.util.HashMap;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
@@ -514,8 +513,8 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                         //链接超时
                         awardrecordVo.networkStatus = 1;
 
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable rError = (ResponseThrowable) t;
+                        if (t instanceof BusinessException) {
+                            BusinessException rError = (BusinessException) t;
                             if (rError.code == 401) {
                                 awardrecordVo.networkStatus = 2;
 

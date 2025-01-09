@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
@@ -88,8 +88,8 @@ public class FBBtCarViewModel extends TemplateBtCarViewModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t instanceof ResponseThrowable) {
-                            if (((ResponseThrowable) t).code == HttpCallBack.CodeRule.CODE_14010) {
+                        if (t instanceof BusinessException) {
+                            if (((BusinessException) t).code == HttpCallBack.CodeRule.CODE_14010) {
                                 batchBetMatchMarketOfJumpLine(betConfirmOptionList);
                             }
                         }

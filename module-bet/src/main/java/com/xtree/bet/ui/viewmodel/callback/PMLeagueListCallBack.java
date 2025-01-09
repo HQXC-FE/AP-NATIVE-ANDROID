@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
@@ -181,8 +181,8 @@ public class PMLeagueListCallBack extends HttpCallBack<MatchListRsp> {
     @Override
     public void onError(Throwable t) {
         mViewModel.getUC().getDismissDialogEvent().call();
-        if (t instanceof ResponseThrowable) {
-            ResponseThrowable error = (ResponseThrowable) t;
+        if (t instanceof BusinessException) {
+            BusinessException error = (BusinessException) t;
             if (error.isHttpError) {
                 UploadExcetionReq uploadExcetionReq = new UploadExcetionReq();
 
@@ -198,8 +198,8 @@ public class PMLeagueListCallBack extends HttpCallBack<MatchListRsp> {
 
                 uploadExcetionReq.setLogTag("pm_url_error");
                 uploadExcetionReq.setApiUrl(domainUrl);
-                uploadExcetionReq.setLogType("" + ((ResponseThrowable) t).code);
-                uploadExcetionReq.setMsg(((ResponseThrowable) t).message);
+                uploadExcetionReq.setLogType("" + ((BusinessException) t).code);
+                uploadExcetionReq.setMsg(((BusinessException) t).message);
                 mViewModel.firstNetworkExceptionData.postValue(uploadExcetionReq);
             } else if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
                 mViewModel.getGameTokenApi();

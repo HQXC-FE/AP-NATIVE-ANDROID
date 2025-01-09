@@ -31,7 +31,7 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
@@ -99,8 +99,8 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                     @Override
                     public void onError(Throwable t) {
                         //super.onError(t);
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
+                        if (t instanceof BusinessException) {
+                            BusinessException error = (BusinessException) t;
                             if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
                                 batchBetMatchMarketOfJumpLine(betConfirmOptionList);
                             }
@@ -240,8 +240,8 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
-                        if (t instanceof ResponseThrowable) {
-                            if (((ResponseThrowable) t).code == HttpCallBack.CodeRule.CODE_400467) {
+                        if (t instanceof BusinessException) {
+                            if (((BusinessException) t).code == HttpCallBack.CodeRule.CODE_400467) {
                                 batchBetMatchMarketOfJumpLine(mSearchBetConfirmOptionList);
                             }
                         }

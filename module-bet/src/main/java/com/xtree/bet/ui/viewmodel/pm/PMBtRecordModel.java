@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -76,8 +76,8 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
+                        if (t instanceof BusinessException) {
+                            BusinessException error = (BusinessException) t;
                             if (error.code == HttpCallBack.CodeRule.CODE_401038) {
                                 ToastUtils.showShort("请求速度太快，请稍候重试");
                             } else if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
@@ -120,8 +120,8 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
+                        if (t instanceof BusinessException) {
+                            BusinessException error = (BusinessException) t;
                             if (error.code == HttpCallBack.CodeRule.CODE_401038) {
                                 ToastUtils.showShort("请求速度太快，请稍候重试");
                             } else if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
@@ -154,9 +154,9 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
                     @Override
                     public void onError(Throwable t) {
 
-                        if (t instanceof ResponseThrowable) {
+                        if (t instanceof BusinessException) {
 
-                            ResponseThrowable error = (ResponseThrowable) t;
+                            BusinessException error = (BusinessException) t;
                             if (error.code == HttpCallBack.CodeRule.CODE_400524) {
                                 btUpdateCashOutBet.postValue(orderId);
                             } else if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
@@ -206,10 +206,10 @@ public class PMBtRecordModel extends TemplateBtRecordModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t instanceof ResponseThrowable) {
+                        if (t instanceof BusinessException) {
                             super.onError(t);
-                            if (t instanceof ResponseThrowable) {
-                                ResponseThrowable error = (ResponseThrowable) t;
+                            if (t instanceof BusinessException) {
+                                BusinessException error = (BusinessException) t;
                                 if (error.code == HttpCallBack.CodeRule.CODE_401038) {
                                     ToastUtils.showShort("请求速度太快，请稍候重试");
                                 } else if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {

@@ -22,7 +22,6 @@ import io.sentry.Sentry;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.http.HijackedException;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -48,8 +47,8 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             return;
         }
         BaseResponse baseResponse = (BaseResponse) o;
-        BusinessException ex = new BusinessException(baseResponse.getStatus(), baseResponse.getMessage(), baseResponse.getData());
         int status = baseResponse.getStatus() == -1 ? baseResponse.getCode() : baseResponse.getStatus();
+        BusinessException ex = new BusinessException(status, baseResponse.getMessage(), baseResponse.getData());
         switch (status) {
             case HttpCallBack.CodeRule.CODE_0:
             case HttpCallBack.CodeRule.CODE_10000:
@@ -195,8 +194,8 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         KLog.e("error: " + t.toString());
         Sentry.captureException(t);
         //t.printStackTrace();
-        if (t instanceof ResponseThrowable) {
-            ResponseThrowable rError = (ResponseThrowable) t;
+        if (t instanceof BusinessException) {
+            BusinessException rError = (BusinessException) t;
             //ToastUtils.showLong(rError.message + " [" + rError.code + "]");
             KLog.e("code: " + rError.code);
             if (rError.code == 403) {
@@ -268,6 +267,92 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         public static final int CODE_20206 = 20206;
         public static final int CODE_900001 = 900001; // 全局验证
         public static final int CODE_14010 = 14010; //投注TOKEN失效
+        /**
+         * 提前结算错误统一出口
+         */
+        public static final int CODE_10000001 = 10000001;
+        /**
+         * token失效
+         */
+        public static final int CODE_401026 = 401026;
+        /**
+         * token失效
+         */
+        public static final int CODE_401013 = 401013;
+        public static final int CODE_400467 = 400467;
+        public static final int CODE_401038 = 401038;
+        /**
+         * 提前结算提交申请成功,请等待确认
+         */
+        public static final int CODE_400524 = 400524;
+        /**
+         * 提前结算功能暂不可用，请稍后再试
+         */
+        public static final int CODE_400527 = 400527;
+        /**
+         * 订单不存在 需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400489 = 400489;
+        /**
+         * 目前只支持足球提前结算 需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400492 = 400492;
+        /**
+         * 不符合提前结算条件，订单非待结算状态  需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400496 = 400496;
+        /**
+         * 用户不支持提前结算  需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400503 = 400503;
+        /**
+         * 目前只支持单关提前结算 需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400522 = 400522;
+        /**
+         * 投注项赛果已确认，不可提前结算 需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400528 = 400528;
+        /**
+         * 赛事已结束 需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400529 = 400529;
+        /**
+         * 提前结算金额不能超过注单金额
+         */
+        public static final int CODE_400493 = 400493;
+        /**
+         * 提前结算金额小数位超出限制
+         */
+        public static final int CODE_400494 = 400494;
+        /**
+         * 提交申请失败,请重试
+         */
+        public static final int CODE_400500 = 400500;
+        /**
+         * 最低提前结算金额为1
+         */
+        public static final int CODE_400501 = 400501;
+        /**
+         * 提前结算未通过
+         */
+        public static final int CODE_400525 = 400525;
+        /**
+         * 提交申请失败,提前结算时比分已变更
+         */
+        public static final int CODE_400531 = 400531;
+        /**
+         * 提交申请失败,提前结算金额已变更
+         */
+        public static final int CODE_400537 = 400537;
+        /**
+         * 提前结算异常
+         */
+        public static final int CODE_402038 = 402038;
+        /**
+         * 没开通视频权限
+         */
+        public static final int CODE_408028 = 408028;
         //请求成功, 正确的操作方式
         static final int CODE_0 = 0;
         //无效的Token
@@ -304,109 +389,6 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         static final int CODE_30713 = 30713;
         static final int CODE_20203 = 20203; //用户名或密码错误
         static final int CODE_20217 = 20217; //已修改密码或被踢出
-
-        /**
-         * 提前结算错误统一出口
-         */
-        public static final int CODE_10000001 = 10000001;
-        /**
-         * token失效
-         */
-        public static final int CODE_401026 = 401026;
-        /**
-         * token失效
-         */
-        public static final int CODE_401013 = 401013;
-        public static final int CODE_400467 = 400467;
-        public static final int CODE_401038 = 401038;
-        /**
-         * 提前结算提交申请成功,请等待确认
-         */
-        public static final int CODE_400524 = 400524;
-        /**
-         * 提前结算功能暂不可用，请稍后再试
-         */
-        public static final int CODE_400527 = 400527;
-
-        /**
-         * 订单不存在 需隐藏提前结算按钮，不支持的提前结算请求
-         */
-        public static final int CODE_400489 = 400489;
-
-        /**
-         * 目前只支持足球提前结算 需隐藏提前结算按钮，不支持的提前结算请求
-         */
-        public static final int CODE_400492 = 400492;
-
-        /**
-         * 不符合提前结算条件，订单非待结算状态  需隐藏提前结算按钮，不支持的提前结算请求
-         */
-        public static final int CODE_400496 = 400496;
-
-        /**
-         * 用户不支持提前结算  需隐藏提前结算按钮，不支持的提前结算请求
-         */
-        public static final int CODE_400503 = 400503;
-
-        /**
-         * 目前只支持单关提前结算 需隐藏提前结算按钮，不支持的提前结算请求
-         */
-        public static final int CODE_400522 = 400522;
-
-        /**
-         * 投注项赛果已确认，不可提前结算 需隐藏提前结算按钮，不支持的提前结算请求
-         */
-        public static final int CODE_400528 = 400528;
-
-        /**
-         * 赛事已结束 需隐藏提前结算按钮，不支持的提前结算请求
-         */
-        public static final int CODE_400529 = 400529;
-
-        /**
-         * 提前结算金额不能超过注单金额
-         */
-        public static final int CODE_400493 = 400493;
-
-        /**
-         * 提前结算金额小数位超出限制
-         */
-        public static final int CODE_400494 = 400494;
-
-        /**
-         * 提交申请失败,请重试
-         */
-        public static final int CODE_400500 = 400500;
-
-        /**
-         * 最低提前结算金额为1
-         */
-        public static final int CODE_400501 = 400501;
-
-        /**
-         * 提前结算未通过
-         */
-        public static final int CODE_400525 = 400525;
-
-        /**
-         * 提交申请失败,提前结算时比分已变更
-         */
-        public static final int CODE_400531 = 400531;
-
-        /**
-         * 提交申请失败,提前结算金额已变更
-         */
-        public static final int CODE_400537 = 400537;
-
-        /**
-         * 提前结算异常
-         */
-        public static final int CODE_402038 = 402038;
-
-        /**
-         * 没开通视频权限
-         */
-        public static final int CODE_408028 = 408028;
 
     }
 

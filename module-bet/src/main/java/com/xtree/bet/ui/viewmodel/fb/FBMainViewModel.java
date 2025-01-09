@@ -43,7 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
@@ -418,8 +418,8 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
                     @Override
                     public void onError(Throwable t) {
                         getUC().getDismissDialogEvent().call();
-                        if (t instanceof ResponseThrowable) {
-                            if (((ResponseThrowable) t).code == CodeRule.CODE_14010) {
+                        if (t instanceof BusinessException) {
+                            if (((BusinessException) t).code == CodeRule.CODE_14010) {
                                 getGameTokenApi();
                             } else {
                                 getChampionList(sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh);

@@ -35,7 +35,7 @@ import java.util.Map;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
@@ -73,7 +73,7 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (((ResponseThrowable) t).code == HttpCallBack.CodeRule.CODE_14010) {
+                        if (((BusinessException) t).code == HttpCallBack.CodeRule.CODE_14010) {
                             getGameTokenApi();
                         }
                     }
@@ -104,7 +104,7 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
         //
         //            @Override
         //            public void onError(Throwable t) {
-        //                if (((ResponseThrowable) t).code == CODE_14010) {
+        //                if (((BusinessException) t).code == CODE_14010) {
         //                    getGameTokenApi();
         //                }
         //            }

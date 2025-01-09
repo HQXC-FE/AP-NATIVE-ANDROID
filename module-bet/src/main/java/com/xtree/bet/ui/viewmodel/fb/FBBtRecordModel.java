@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 
 /**
@@ -87,8 +87,8 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
+                        if (t instanceof BusinessException) {
+                            BusinessException error = (BusinessException) t;
                             if (error.code == HttpCallBack.CodeRule.CODE_14010) {
                                 getGameTokenApi();
                             } else {
@@ -129,8 +129,8 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
+                        if (t instanceof BusinessException) {
+                            BusinessException error = (BusinessException) t;
                             if (error.code == HttpCallBack.CodeRule.CODE_14010) {
                                 getGameTokenApi();
                             } else {
@@ -171,8 +171,8 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
+                        if (t instanceof BusinessException) {
+                            BusinessException error = (BusinessException) t;
                             if (error.code == HttpCallBack.CodeRule.CODE_14010) {
                                 getGameTokenApi();
                             } else {
@@ -213,8 +213,8 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
+                        if (t instanceof BusinessException) {
+                            BusinessException error = (BusinessException) t;
                             if (error.code == HttpCallBack.CodeRule.CODE_14010) {
                                 getGameTokenApi();
                             } else {
