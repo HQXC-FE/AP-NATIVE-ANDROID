@@ -857,12 +857,12 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         setPrePay(vo, amount); // 设置预计支付
         setNextButton();
         //只有是极速充值 才显示充值引导
-        if (viewModel.isOnePayFix(vo)) {
-            if (ppw3 != null && ppw3.isShow()) {
-                return;
-            }
-            showGuideDialog(vo);
-        }
+//        if (viewModel.isOnePayFix(vo)) {
+//            if (ppw3 != null && ppw3.isShow()) {
+//                return;
+//            }
+//            showGuideDialog(vo);
+//        }
 
     }
 
