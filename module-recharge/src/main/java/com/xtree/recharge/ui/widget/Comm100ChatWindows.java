@@ -2,6 +2,7 @@ package com.xtree.recharge.ui.widget;
 
 import android.content.Context;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.google.gson.Gson;
@@ -61,13 +62,23 @@ public class Comm100ChatWindows extends FloatingWindows {
             cancleView.setOnClickListener(v -> hideTip());
         }
 
+
         if (floatView != null) {
             floatView.setOnClickListener(v -> {
-                String oldChatUrl = "https://psowoexvd.n2vu8zpu2f6.com/chatWindow.aspx?planId=" + planId + "&siteId=" + siteId + "&CUSTOM!orderid=";
-
+                //旧客服处理
+                String oldChatUrl = SPUtils.getInstance().getString(SPKeyGlobal.ONEPAY_CUSTOMER_SERVICE_LINK, "");
+                if (!TextUtils.isEmpty(oldChatUrl)) {
+                    if (!oldChatUrl.contains("?")) {
+                        oldChatUrl += "?CUSTOM!orderid=";
+                    } else {
+                        oldChatUrl += "&CUSTOM!orderid=";
+                    }
+                    oldChatUrl = ExKt.plusDomainOrNot(oldChatUrl, DomainUtil.getApiUrl());
+                }
+                //新客服处理
                 String newChatUrl = oldChatUrl;
                 Map<String, String> remark = null;
-                Set newChatUrlSet = SPUtils.getInstance().getStringSet(SPKeyGlobal.HICHAT_URL_SUFFIX, Set.of());
+                Set newChatUrlSet = SPUtils.getInstance().getStringSet(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, Set.of());
 
                 if (!newChatUrlSet.isEmpty()) {
                     newChatUrl = (String) newChatUrlSet.iterator().next();
@@ -94,6 +105,15 @@ public class Comm100ChatWindows extends FloatingWindows {
      */
     public void showTip() {
         setBottomLocation();
+    }
+
+    @Override
+    public void show() {
+        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.ONEPAY_CUSTOMER_SERVICE_LINK, "")) && SPUtils.getInstance().getStringSet(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, Set.of()).isEmpty()) {
+        } else {
+            super.show();
+        }
+
     }
 
     /**

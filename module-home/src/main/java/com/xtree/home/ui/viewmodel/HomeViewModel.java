@@ -441,7 +441,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         map.put("fields", "customer_service_url,public_key,barrage_api_url," +
                 "x9_customer_service_url," + "promption_code,default_promption_code," +
                 "ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time," +
-                "app_response_speed_calculation,app_response_speed_max,hichat_url_suffix");
+                "app_response_speed_calculation,app_response_speed_max,op_hichat_url_suffix,hichat_url_suffix");
         Disposable disposable = (Disposable) model.getApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
@@ -461,7 +461,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_NUMBER, vo.ws_retry_number);
                         SPUtils.getInstance().put(SPKeyGlobal.WS_EXPIRE_TIME, vo.ws_expire_time);
                         SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_WAITING_TIME, vo.ws_retry_waiting_time);
-                        SPUtils.getInstance().put(SPKeyGlobal.HICHAT_URL_SUFFIX, new LinkedHashSet(Arrays.asList(vo.hichat_url_suffix)));
+                        SPUtils.getInstance().put(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, new LinkedHashSet(Arrays.asList(vo.op_hichat_url_suffix)));
                         //SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
 
                         SPUtils.getInstance().put(SPKeyGlobal.APP_RESPONSE_SPEED_CALCULATION, vo.app_response_speed_calculation);

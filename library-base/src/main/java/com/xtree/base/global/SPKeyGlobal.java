@@ -90,7 +90,9 @@ public class SPKeyGlobal {
     public static final String WS_EXPIRE_TIME ="ws_expire_time";
 
     //极速充值客服
-    public static final String HICHAT_URL_SUFFIX ="hichat_url_suffix";
+    public static final String OP_HICHAT_URL_SUFFIX ="op_hichat_url_suffix";
+    //极速充值客服-详情链接（旧）
+    public static final String ONEPAY_CUSTOMER_SERVICE_LINK ="onepay_customer_service_link";
 
     // 测速扣除百分比
     public static final String APP_RESPONSE_SPEED_CALCULATION ="app_response_speed_calculation";
