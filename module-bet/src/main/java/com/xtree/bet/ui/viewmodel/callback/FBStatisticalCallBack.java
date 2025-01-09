@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 
 public class FBStatisticalCallBack extends HttpCallBack<StatisticalInfo> {
@@ -75,8 +76,8 @@ public class FBStatisticalCallBack extends HttpCallBack<StatisticalInfo> {
     @Override
     public void onError(Throwable t) {
         super.onError(t);
-        if (t instanceof ResponseThrowable) {
-            if (((ResponseThrowable) t).code == CODE_14010) {
+        if (t instanceof BusinessException) {
+            if (((BusinessException) t).code == CODE_14010) {
                 mViewModel.getGameTokenApi();
             }
         }
