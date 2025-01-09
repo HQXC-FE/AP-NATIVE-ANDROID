@@ -441,7 +441,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         map.put("fields", "customer_service_url,public_key,barrage_api_url," +
                 "x9_customer_service_url," + "promption_code,default_promption_code," +
                 "ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time," +
-                "app_response_speed_calculation,app_response_speed_max,hichat_url_suffix");
+                "app_response_speed_calculation,app_response_speed_max,hichat_url_suffix,sport_match_cache");
         Disposable disposable = (Disposable) model.getApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())

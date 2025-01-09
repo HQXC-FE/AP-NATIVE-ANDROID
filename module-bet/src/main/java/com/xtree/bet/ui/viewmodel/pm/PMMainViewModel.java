@@ -103,7 +103,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     }
 
     public void saveLeague(PMListCallBack pmListCallBack) {
-        System.out.println("=============== PMListCallBack saveLeague ==================");
         mLeagueList = pmListCallBack.getLeagueList();
         mGoingOnLeagueList = pmListCallBack.getGoingOnLeagueList();
         mMapLeague = pmListCallBack.getMapLeague();
@@ -113,7 +112,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     }
 
     public void saveLeague(PMLeagueListCallBack pmListCallBack) {
-        System.out.println("=============== PMLeagueListCallBack saveLeague ==================");
         mLeagueList = pmListCallBack.getLeagueList();
         mGoingOnLeagueList = pmListCallBack.getGoingOnLeagueList();
         mMapLeague = pmListCallBack.getMapLeague();
@@ -281,9 +279,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         pmListReq.setType(3);
-        //CfLog.i("pmListReqHot   "+new Gson().toJson(pmListReq));
-        //Flowable flowable = model.getPMApiService().matchesPagePB(pmListReq);
-        //HttpCallBack pmHttpCallBack = new HttpCallBack<MatchListRsp>() {
         Flowable flowable = getFlowableMatchesPagePB(pmListReq);
         if(isUseCacheApiService()){
             HttpCallBack pmHttpCallBack = new HttpCallBack<MatchLeagueListCacheRsp>() {
@@ -295,7 +290,17 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
                 @Override
                 public void onError(Throwable t) {
+                    getUC().getDismissDialogEvent().call();
+                    if (t instanceof ResponseThrowable) {
+                        ResponseThrowable error = (ResponseThrowable) t;
+                        if (error.code == CODE_401026 || error.code == CODE_401013 || error.code == CODE_401013) {
+                            getGameTokenApi();
 
+                        } else if (error.code == CODE_401038) {
+                            super.onError(t);
+                            tooManyRequestsEvent.call();
+                        }
+                    }
                 }
             };
             Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()) //线程调度
@@ -311,20 +316,17 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
                 @Override
                 public void onError(Throwable t) {
-                getGameTokenApi();
-                getUC().getDismissDialogEvent().call();
-                if (t instanceof ResponseThrowable) {
-                    ResponseThrowable error = (ResponseThrowable) t;
-                    if (error.code == CODE_401026 || error.code == CODE_401013) {
-                        getGameTokenApi();
+                    getUC().getDismissDialogEvent().call();
+                    if (t instanceof ResponseThrowable) {
+                        ResponseThrowable error = (ResponseThrowable) t;
+                        if (error.code == CODE_401026 || error.code == CODE_401013 || error.code == CODE_401013) {
+                            getGameTokenApi();
 
-                    } else if (error.code == CODE_401038) {
-                        super.onError(t);
-                        tooManyRequestsEvent.call();
-                    } else {
-
+                        } else if (error.code == CODE_401038) {
+                            super.onError(t);
+                            tooManyRequestsEvent.call();
+                        }
                     }
-                }
                 }
             };
             Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()) //线程调度
@@ -490,6 +492,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                 flowable = getFlowableLiveMatchesPB(pmListReq);
             }
         }
+
         if (isTimerRefresh) {
             flowable = getFlowableMatchBaseInfoByMidsPB(pmListReq);
         }
@@ -500,24 +503,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         if ((type == 1 && needSecondStep) // 获取今日中的全部滚球赛事列表
                 || isTimerRefresh) { // 定时刷新赔率变更
-            PMCacheListCallBack httpCallBack = new PMCacheListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType, sportPos, sportId,
-                    orderBy, leagueIds, searchDatePos, oddType, matchidList);
-            Disposable disposable = (Disposable) flowable
-                    .compose(RxUtils.schedulersTransformer()) //线程调度
-                    .compose(RxUtils.exceptionTransformer())
-                    .subscribeWith(httpCallBack);
-            addSubscribe(disposable);
-
             setPMListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList,flowable);
         } else {
-            mPmHttpCallBack = new PMCacheLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
-                    orderBy, leagueIds, searchDatePos, oddType, matchidList,
-                    finalType, isStepSecond);
-            Disposable disposable = (Disposable) flowable
-                    .compose(RxUtils.schedulersTransformer()) //线程调度
-                    .compose(RxUtils.exceptionTransformer())
-                    .subscribeWith(mPmHttpCallBack);
-            addSubscribe(disposable);
             setPMLeagueListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, finalType, isStepSecond,flowable);
         }
     }
@@ -702,20 +689,20 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                     mHasCache = false;
                 }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        getUC().getDismissDialogEvent().call();
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == CODE_401026 || error.code == CODE_401013 || error.code == CODE_14010 ) {
-                                getGameTokenApi();
-                            } else if (error.code == HttpCallBack.CodeRule.CODE_401038) {
-                                super.onError(t);
-                                tooManyRequestsEvent.call();
-                            } else {
-                                getChampionList(sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh);
-                            }
+                @Override
+                public void onError(Throwable t) {
+                    getUC().getDismissDialogEvent().call();
+                    if (t instanceof ResponseThrowable) {
+                        ResponseThrowable error = (ResponseThrowable) t;
+                        if (error.code == CODE_401026 || error.code == CODE_401013 || error.code == CODE_14010 ) {
+                            getGameTokenApi();
+                        } else if (error.code == HttpCallBack.CodeRule.CODE_401038) {
+                            super.onError(t);
+                            tooManyRequestsEvent.call();
+                        } else {
+                            getChampionList(sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh);
                         }
+                    }
                         /*if (isRefresh) {
                             finishRefresh(false);
                         } else {
@@ -1247,8 +1234,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     // 根据条件返回 HttpCallBack 类型的对象
     public void setPMLeagueListCallback(boolean isTimerRefresh, boolean isRefresh,
-                                            int sportPos, String sportId, int orderBy, List<Long> leagueIds,
-                                          int searchDatePos, int oddType, List<Long> matchidList, int finalType, boolean isStepSecond,Flowable flowable) {
+                                        int sportPos, String sportId, int orderBy, List<Long> leagueIds,
+                                        int searchDatePos, int oddType, List<Long> matchidList, int finalType, boolean isStepSecond,Flowable flowable) {
         if (isUseCacheApiService()) {
             mPmCacheLeagueCallBack = new PMCacheLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, finalType, isStepSecond); // 返回 PMCacheListCallBack 类型的对象
             Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()) //线程调度
@@ -1261,6 +1248,4 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             addSubscribe(disposable);
         }
     }
-
-
 }
