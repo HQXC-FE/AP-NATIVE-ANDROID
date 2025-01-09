@@ -19,11 +19,11 @@ public class ClickUtil {
         return false;
     }
     /**
-     * 限制投注快速点击（可设置时间），只有投注按钮可用
+     * 限制投注快速点击，4秒内禁止重复点击
      */
-    public static boolean isFastClick(long time) {
+    public static boolean isFastClick4000() {
         long curClickTime = System.currentTimeMillis();
-        if (Math.abs((curClickTime - lastClickTime2)) < time) {
+        if (Math.abs((curClickTime - lastClickTime2)) < 4000) {
             return true;
         }
         lastClickTime2 = curClickTime;
