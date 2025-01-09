@@ -356,6 +356,9 @@
     <color name="cl_over_tip">#8F8F8F</color>
     <color name="cl_awards_end">#FFFFFF</color>
     <color name="cl_awards_start">#ECE6F9</color>
+    <color name="cl_custmoer_line_end">#D8E3F8</color>
+    <color name="cl_custmoer_line_center">#EDEBF7</color>
+    <color name="cl_custmoer_line_start">#F5F8FF</color>
 
     <color name="clr_f3f5f6">#F3F5F6</color>
     <color name="clr_rc_manual_1">#CC6A74</color>

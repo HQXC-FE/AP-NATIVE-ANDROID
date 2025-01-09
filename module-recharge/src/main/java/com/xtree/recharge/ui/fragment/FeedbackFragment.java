@@ -32,18 +32,15 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.adapter.CacheViewHolder;
 import com.xtree.base.adapter.CachedAutoRefreshAdapter;
-import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
-import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.ImageUploadUtil;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.base.utils.UuidUtil;
 import com.xtree.base.vo.ProfileVo;
-import com.xtree.base.widget.BrowserDialog;
 import com.xtree.base.widget.DateTimePickerDialog;
 import com.xtree.base.widget.GlideEngine;
 import com.xtree.base.widget.ImageFileCompressEngine;
@@ -161,7 +158,7 @@ public class FeedbackFragment extends BaseFragment<FragmentFeedbackBinding, Rech
             v -> AppUtil.goCustomerService(getContext())
         });*/
         //我的客服
-        binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
+        binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerServiceDialog(getContext()));
         //消息中心
         binding.ivwMsg.setOnClickListener(v -> {
             //增加限制用户多次快速点击
