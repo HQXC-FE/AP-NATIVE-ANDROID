@@ -59,7 +59,9 @@ import com.xtree.recharge.ui.fragment.guide.RechargeNameComponent;
 import com.xtree.recharge.ui.fragment.guide.RechargeNextComponent;
 import com.xtree.recharge.ui.viewmodel.RechargeViewModel;
 import com.xtree.recharge.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.recharge.ui.widget.OnePayNextDialog;
 import com.xtree.recharge.ui.widget.TipBindCardDialog;
+import com.xtree.recharge.ui.widget.TipOnePayNextDialog;
 import com.xtree.recharge.vo.BankCardVo;
 import com.xtree.recharge.vo.BannersVo;
 import com.xtree.recharge.vo.HiWalletVo;
@@ -110,6 +112,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     BasePopupView ppw = null; // 底部弹窗
     BasePopupView ppw2 = null; // 底部弹窗 (二层弹窗)
     BasePopupView ppw3 = null; // 极速充值绑定银行卡弹窗
+    BasePopupView ppw5 = null; // 极速充值银行卡提示语弹窗
+    BasePopupView ppw6 = null; // 极速充值银行卡金额选项弹窗
     BasePopupView bindCardPPW = null;//绑定银行卡PopView
     String bankId = ""; // 用户绑定的银行卡ID
     String bankCode = ""; // 付款银行编号 (极速充值用) ABC
@@ -402,11 +406,14 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         });
 
         binding.btnNext.setOnClickListener(v -> {
+
             // 下一步
             if (curRechargeVo.paycode.equals(KEY_MANUAL)) {
                 goNextManual(); // 人工充值
             } else if (viewModel.isOnePayFix(curRechargeVo)) {
-                goNext2(); // 极速充值
+//                goNext2(); // 极速充值
+//                showOnePayBankTip();
+                showOnePayBankAmount();
             } else if (curRechargeVo.paycode.contains("hiwallet")) {
                 goHiWallet(); // 嗨钱包
             } else {
@@ -728,7 +735,11 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             return;
         } else {
             binding.llName.setVisibility(View.VISIBLE);
-            binding.llAmount.setVisibility(View.VISIBLE);
+            if (viewModel.isOnePayFix(vo)) {
+                binding.llAmount.setVisibility(View.GONE);
+            } else {
+                binding.llAmount.setVisibility(View.VISIBLE);
+            }
             binding.llManual.setVisibility(View.GONE);
         }
 
@@ -760,33 +771,34 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                         bankCode = userBankList.get(0).getBankCode();
                         binding.tvwBankCard.setText(userBankList.get(0).getBankName());
                     }
-                } else if (!vo.userBankList.isEmpty()) {
-                    //去掉工商银行
-                    ArrayList<BankCardVo> userBankList = new ArrayList<>();
-                    for (BankCardVo bankCardVo : vo.userBankList) {
-                        if (!TextUtils.isEmpty(bankCardVo.name) && bankCardVo.name.indexOf("工商银行") == -1) {
-                            userBankList.add(bankCardVo);
-                        }
-                    }
-                    if (userBankList.isEmpty()) {
-                        ppw3 = new XPopup.Builder(getContext()).dismissOnTouchOutside(false)
-                                .dismissOnBackPressed(false).asCustom(new TipBindCardDialog(getContext(), "", new TipBindCardDialog.ICallBack() {
-                                    @Override
-                                    public void onClickConfirm() {
-                                        toBindPage(Constant.BIND_CARD);
-                                    }
-                                }));
-                        ppw3.show();
-                    } else {
-                        String txt = userBankList.get(0).name;
-                        if (txt.contains("--")) {
-                            txt = txt.split("--")[0];
-                        }
-                        bankId = userBankList.get(0).id;
-                        binding.tvwBankCard.setText(txt);
-                    }
-
                 }
+//                else if (!vo.userBankList.isEmpty()) {
+//                    //去掉工商银行
+//                    ArrayList<BankCardVo> userBankList = new ArrayList<>();
+//                    for (BankCardVo bankCardVo : vo.userBankList) {
+//                        if (!TextUtils.isEmpty(bankCardVo.name) && bankCardVo.name.indexOf("工商银行") == -1) {
+//                            userBankList.add(bankCardVo);
+//                        }
+//                    }
+//                    if (userBankList.isEmpty()) {
+//                        ppw3 = new XPopup.Builder(getContext()).dismissOnTouchOutside(false)
+//                                .dismissOnBackPressed(false).asCustom(new TipBindCardDialog(getContext(), "", new TipBindCardDialog.ICallBack() {
+//                                    @Override
+//                                    public void onClickConfirm() {
+//                                        toBindPage(Constant.BIND_CARD);
+//                                    }
+//                                }));
+//                        ppw3.show();
+//                    } else {
+//                        String txt = userBankList.get(0).name;
+//                        if (txt.contains("--")) {
+//                            txt = txt.split("--")[0];
+//                        }
+//                        bankId = userBankList.get(0).id;
+//                        binding.tvwBankCard.setText(txt);
+//                    }
+//
+//                }
             } else if (!vo.userBankList.isEmpty()) {
                 bankId = vo.userBankList.get(0).id;
                 binding.tvwBankCard.setText(vo.userBankList.get(0).name);
@@ -1110,17 +1122,19 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             }
         }
 
-        String txt = binding.tvwRealAmount.getText().toString();
-        double amount = Double.parseDouble(0 + txt);
-        if (amount < loadMin || amount > loadMax) {
-            return;
-        }
-
-        if (curRechargeVo.fixedamount_channelshow && curRechargeVo.fixedamount_info.length > 0) {
-            // 固额 如果输入框的金额不是固额列表中的其中一个
-            if (!txt.isEmpty() && !Arrays.asList(curRechargeVo.fixedamount_info).contains(txt)) {
-                // "充值金额异常,请选择列表中的固定金额！",
+        if (!viewModel.isOnePayFix(curRechargeVo)) {
+            String txt = binding.tvwRealAmount.getText().toString();
+            double amount = Double.parseDouble(0 + txt);
+            if (amount < loadMin || amount > loadMax) {
                 return;
+            }
+
+            if (curRechargeVo.fixedamount_channelshow && curRechargeVo.fixedamount_info.length > 0) {
+                // 固额 如果输入框的金额不是固额列表中的其中一个
+                if (!txt.isEmpty() && !Arrays.asList(curRechargeVo.fixedamount_info).contains(txt)) {
+                    // "充值金额异常,请选择列表中的固定金额！",
+                    return;
+                }
             }
         }
 
@@ -1158,7 +1172,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     /**
      * 极速充值
      */
-    private void goNext2() {
+    private void goNext2(String realAmount) {
         TagUtils.tagEvent(getContext(), "rc", curRechargeVo.bid); // 打点
 //        LoadingDialog.show(getContext()); // Loading
 
@@ -1167,7 +1181,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
         Map<String, String> map = new HashMap<>();
         map.put("pid", curRechargeVo.bid); // 渠道ID
-        map.put("payAmount", txt); // 金额
+        map.put("payAmount", realAmount); // 金额
         if (TextUtils.isEmpty(bankCode)) {
             map.put("userBankId", bankId); // 用户绑定的银行卡id【可选】 1283086
         } else {
@@ -1641,6 +1655,10 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
         viewModel.liveDataRecharge.observe(getViewLifecycleOwner(), vo -> {
             CfLog.d(vo.toString());
+            //隐藏极速充值iframe弹窗
+            if (ppw6 != null && ppw6.isShow()) {
+                ppw6.dismiss();
+            }
 
             //工商银行显示处理
             if (vo.op_disable_bank_status && vo.userBankList != null && vo.userBankList.isEmpty()) {
@@ -1734,6 +1752,11 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
             RxBus.getDefault().postSticky(request);
             startContainerFragment(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_COMMIT);
+
+            //隐藏极速充值iframe弹窗
+            if (ppw6 != null && ppw6.isShow()) {
+                ppw6.dismiss();
+            }
         });
 
         //当前是否有极速订单
@@ -1778,6 +1801,11 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                 default:
                     CfLog.w("status: " + status);
                     break;
+            }
+
+            //隐藏极速充值iframe弹窗
+            if (ppw6 != null && ppw6.isShow()) {
+                ppw6.dismiss();
             }
         });
 
@@ -2170,6 +2198,36 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         bankGuide = builder.createGuide();
         bankGuide.show(getActivity());
         bankGuide.setShouldCheckLocInWindow(false);
+    }
+
+    private void showOnePayBankTip(String realAmount) {
+//        if (ppw5 != null && ppw5.isShow()) {
+//            ppw5.dismiss();
+//        }
+        ppw5 = new XPopup.Builder(getContext()).dismissOnTouchOutside(false)
+                .dismissOnBackPressed(false).asCustom(new TipOnePayNextDialog(getContext(), new TipOnePayNextDialog.ICallBack() {
+                    @Override
+                    public void onClickConfirm() {
+                        goNext2(realAmount);
+                    }
+                }));
+        ppw5.show();
+    }
+
+    private void showOnePayBankAmount() {
+        //隐藏极速充值iframe弹窗
+//        if (ppw6 != null && ppw6.isShow()) {
+//            ppw6.dismiss();
+//        }
+        ppw6 = new XPopup.Builder(getContext()
+        ).dismissOnTouchOutside(false)
+                .moveUpToKeyboard(true)
+                .autoOpenSoftInput(true)
+                .autoFocusEditText(false)
+                .dismissOnBackPressed(false).asCustom(new OnePayNextDialog(getContext(), mAmountAdapter, loadMin, loadMax, binding.tvwTipBottom.getText(), curRechargeVo, (realAmount) -> {
+                    showOnePayBankTip(realAmount);
+                }));
+        ppw6.show();
     }
 
     private void dismissBankGuide() {

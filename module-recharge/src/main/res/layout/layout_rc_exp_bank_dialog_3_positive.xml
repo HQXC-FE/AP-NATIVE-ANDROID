@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.xtree.recharge.ui.viewmodel.ExTransferViewModel" />
+
+        <import type="androidx.core.content.ContextCompat" />
+
+        <import type="com.xtree.recharge.R" />
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/ll_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/bg_rc_tip_dialog"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/ivw_empty"
+                android:layout_width="24dp"
+                android:layout_height="16dp"
+                android:background="@color/clr_transparent"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivw_bell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/cm_dialog_bell"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ivw_empty" />
+
+            <ImageView
+                android:id="@+id/ivw_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="20dp"
+                android:src="@mipmap/ic_pop_close"
+                app:layout_constraintBottom_toTopOf="@+id/tvw_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/tvw_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:gravity="center"
+                android:text="上传付款凭证"
+                android:textColor="@color/clr_black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <TextView
+                    android:id="@+id/tvInfoTips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="为加速处理请按下面指示上传存款凭证与填写信息，并记得点击下方【确认提交】按钮才算完成！"
+                    android:textColor="@color/clr_grey_00"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+                    app:layout_constraintStart_toStartOf="@id/ivw_bg"
+                    app:layout_constraintTop_toBottomOf="@id/tvw_title" />
+
+
+                <FrameLayout
+                    android:id="@+id/flReceiptTutorial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+                    app:layout_constraintStart_toStartOf="@id/ivw_bg"
+                    app:layout_constraintTop_toBottomOf="@+id/tvInfoTips">
+
+                    <TextView
+                        android:id="@+id/tvReceiptTutorialTips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:minEms="6"
+                        android:textColor="@color/clr_grey_00"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+                        app:layout_constraintStart_toStartOf="@id/ivw_bg"
+                        app:layout_constraintTop_toBottomOf="@id/tvw_title"
+                        tools:text="请选择银行及输入您的付款账号" />
+
+                    <TextView
+                        android:id="@+id/tvShowReceiptTutorial"
+                        style="@style/style_btn_short"
+                        android:layout_width="80dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:gravity="center"
+                        android:onClick="@{() -> model.showReceiptExample()}"
+                        android:text="@string/txt_transfer_receipt"
+                        android:textColor="@color/clr_white"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivw_pic"
+                        app:layout_constraintStart_toStartOf="@+id/tvw_21" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:id="@+id/llBank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+                    app:layout_constraintStart_toStartOf="@id/ivw_bg"
+                    app:layout_constraintTop_toBottomOf="@+id/flReceiptTutorial"
+                    tools:visibility="visible">
+
+                    <TextView
+                        style="@style/style_rc_title"
+                        android:layout_marginStart="0dp"
+                        android:text="*请选择正确的付款银行和账号，否则将无法到账"
+                        android:textColor="@color/clr_sec_verify_warn" />
+
+                    <TextView
+                        android:id="@+id/tvw_bank_card"
+                        style="@style/style_cm_edit"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:enabled="false"
+                        android:layout_marginTop="4dp"
+                        android:onClick="@{() -> model.showBankList()}"
+                        android:text="@{model.bankNameOfPayment}"
+                        tools:text="XX银行" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAcc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+                    app:layout_constraintStart_toStartOf="@id/ivw_bg"
+                    app:layout_constraintTop_toBottomOf="@+id/llBank"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tvw_choose_bank_card"
+                        style="@style/style_rc_title"
+                        android:layout_marginStart="0dp"
+                        android:text="*付款账号"
+                        android:textColor="@color/clr_sec_verify_warn" />
+
+                    <EditText
+                        android:id="@+id/tvw_bank_acc"
+                        style="@style/style_cm_edit"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:inputType="number"
+                        android:maxLength="19"
+                        android:layout_marginTop="4dp"
+                        android:text="@={model.bankNumberOfPayment}"
+                        tools:text="1234 5678 9000 1234" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvReceiptTips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="请填写您的回单号码（电子回单编号、订单流水号、电子印章编号、指令序号、传票组序号、传票组内序号、客户验证码…等）"
+                    android:textColor="@color/clr_txt_grey_09"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+                    app:layout_constraintStart_toStartOf="@id/ivw_bg"
+                    app:layout_constraintTop_toBottomOf="@+id/llAcc" />
+
+                <LinearLayout
+                    android:id="@+id/llAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+                    app:layout_constraintStart_toStartOf="@id/ivw_bg"
+                    app:layout_constraintTop_toBottomOf="@+id/tvReceiptTips"
+                    tools:visibility="visible">
+
+                    <TextView
+                        style="@style/style_rc_title"
+                        android:layout_marginStart="0dp"
+                        android:text="*转账流水号"
+                        android:textColor="@color/clr_sec_verify_warn" />
+
+                    <EditText
+                        style="@style/style_cm_edit"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:inputType="number"
+                        android:maxLength="19"
+                        android:layout_marginTop="4dp"
+                        android:text="@={model.receiptIdOfPayment}"
+                        tools:text="1234 5678 9000 1234" />
+                </LinearLayout>
+
+
+                <FrameLayout
+                    android:id="@+id/flReceiptSimple"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+                    app:layout_constraintStart_toStartOf="@id/ivw_bg"
+                    app:layout_constraintTop_toBottomOf="@+id/llAccount">
+
+                    <TextView
+                        android:id="@+id/tvRequestTips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:minEms="6"
+                        android:textColor="@color/clr_grey_00"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+                        app:layout_constraintStart_toStartOf="@id/ivw_bg"
+                        app:layout_constraintTop_toBottomOf="@id/tvw_title"
+                        tools:text="上传转账电子凭证（必传项）" />
+
+                    <TextView
+                        android:id="@+id/tvShowExample"
+                        style="@style/style_btn_short"
+                        android:layout_width="80dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:gravity="center"
+                        android:onClick="@{() -> model.showExample()}"
+                        android:text="回执单示例"
+                        android:textColor="@color/clr_white"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivw_pic"
+                        app:layout_constraintStart_toStartOf="@+id/tvw_21" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tvWarnTips"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="需含银行戳章、交易时间与金额、收/付款人名、完整卡号(卡号***要点开完整显示)"
+                    android:textColor="@color/clr_red_19"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+                    app:layout_constraintStart_toStartOf="@id/ivw_bg"
+                    app:layout_constraintTop_toBottomOf="@+id/flReceiptSimple" />
+
+                <ImageView
+                    android:id="@+id/ivReceipt"
+                    imageUrl="@{model.voucher}"
+                    placeholder="@{ContextCompat.getDrawable(context,R.mipmap.icon_ereplyslip_tips)}"
+                    android:layout_width="match_parent"
+                    android:layout_height="118dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="12dp"
+                    android:onClick="@{() -> model.gotoSelectMedia()}"
+                    android:scaleType="fitXY"
+                    app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+                    app:layout_constraintStart_toStartOf="@id/ivw_bg"
+                    app:layout_constraintTop_toBottomOf="@+id/tvWarnTips"
+                    tools:src="@mipmap/icon_ereplyslip_tips" />
+
+                <TextView
+                    android:id="@+id/tvwRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@mipmap/cm_btn_long2"
+                    android:gravity="center"
+                    android:onClick="@{() -> model.uploadVoucherPositive()}"
+                    android:text="确认提交"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/ivw_bg"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintTop_toBottomOf="@+id/ivReceipt" />
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+</layout>

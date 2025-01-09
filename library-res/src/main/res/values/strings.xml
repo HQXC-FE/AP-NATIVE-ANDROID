@@ -6,6 +6,8 @@
     <string name="txt_custom_center">客服中心</string>
     <string name="txt_contact_custom">联系客服</string>
     <string name="txt_recharge_tutorial">充值教程</string>
+    <string name="txt_transfer_tutorial">回执单示例</string>
+    <string name="txt_transfer_receipt">回单验证教程</string>
     <string name="txt_msg_center">消息中心</string>
     <string name="txt_customer_service">我的客服</string>
     <string name="txt_offer">优惠中心</string>
@@ -293,6 +295,7 @@
     <string name="txt_verification_is_empty">验证码不能为空</string>
     <!--充值引导  -->
     <string name="txt_recharge_bind_card">查看到您绑定工商银行卡，目前对应工行的渠道正在维护，请前往绑定其他银行卡或使用其他充值渠道</string>
+    <string name="txt_recharge_one_pay_next">公司银行卡不定期更换，每次充值请依据提交订单，生成的银行卡转账，切勿直接转账至之前转入的银行卡，并且不要使用微信进行转账存款，否则无法到账，概不负责！</string>
     <string name="txt_recharge_bank">请选择付款银行卡</string>
     <string name="txt_recharge_name">充值姓名需要和您绑定提款银行卡 \n时的姓名一致</string>
     <string name="txt_recharge_money">请输入充值金额，建议使用下方快捷金额按钮</string>

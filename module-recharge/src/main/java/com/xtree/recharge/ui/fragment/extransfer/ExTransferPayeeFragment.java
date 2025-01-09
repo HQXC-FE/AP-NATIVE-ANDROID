@@ -16,8 +16,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.comm100.livechat.VisitorClientInterface;
+import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
+import com.xtree.base.utils.TimeUtils;
 import com.xtree.recharge.BR;
 import com.xtree.recharge.R;
 import com.xtree.recharge.data.source.request.ExCreateOrderRequest;
@@ -36,6 +38,7 @@ import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.base.ContainerActivity;
 import me.xtree.mvvmhabit.bus.RxBus;
+import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
  * Created by KAKA on 2024/5/28.
@@ -70,6 +73,15 @@ public class ExTransferPayeeFragment extends BaseFragment<FragmentExtransferPaye
             viewModel.close();
         });
         serviceChatFlow.show();
+
+        showExTransferKindTipsDialogFragment();
+    }
+
+    private void showExTransferKindTipsDialogFragment() {
+        binding.getModel().setActivity(getActivity());
+        if (isTipTodayCount()) {
+            ExTransferKindTipsDialogFragment.show(getActivity());
+        }
     }
 
     @Override
@@ -116,7 +128,7 @@ public class ExTransferPayeeFragment extends BaseFragment<FragmentExtransferPaye
         ExCreateOrderRequest createOrderInfo = RxBus.getDefault().getStickyEvent(ExCreateOrderRequest.class);
         if (createOrderInfo != null) {
             RxBus.getDefault().removeAllStickyEvents();
-            binding.getModel().initData(requireActivity(),createOrderInfo);
+            binding.getModel().initData(requireActivity(), createOrderInfo);
             binding.getModel().serviceChatTimeKeeping();
         }
     }
@@ -135,10 +147,17 @@ public class ExTransferPayeeFragment extends BaseFragment<FragmentExtransferPaye
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        binding.getModel().setActivity(getActivity());
+
+    /**
+     * 是否弹窗(充值次数)
+     * 单号: 2684, 2024-03-15
+     *
+     * @return true:默认弹提示, false:今日不弹提示
+     */
+    private boolean isTipTodayCount() {
+        String cacheDay = SPUtils.getInstance().getString(SPKeyGlobal.RC_NOT_RC_EXP_TIP_TODAY_COUNT, "");
+        String today = TimeUtils.getCurDate();
+        return !today.equals(cacheDay);
     }
 
     @Override
@@ -158,5 +177,11 @@ public class ExTransferPayeeFragment extends BaseFragment<FragmentExtransferPaye
         }
 
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.getModel().setActivity(getActivity());
     }
 }

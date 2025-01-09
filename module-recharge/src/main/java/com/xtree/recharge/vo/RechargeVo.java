@@ -251,6 +251,12 @@ public class RechargeVo {
             @SerializedName("bank_name")
             private String bankName;
 
+            /**
+             * type
+             */
+            @SerializedName("type") //type0和2是不需要用户填写确认付款账号
+            private String type;
+
             public String getBankCode() {
                 return bankCode;
             }
@@ -265,6 +271,14 @@ public class RechargeVo {
 
             public void setBankName(String bankName) {
                 this.bankName = bankName;
+            }
+
+            public String getType() {
+                return type;
+            }
+
+            public void setType(String type) {
+                this.type = type;
             }
         }
     }

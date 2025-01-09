@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -11,15 +11,31 @@
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <ImageView
-            style="@style/style_rc_exp_bank_top"
-            android:src="@mipmap/rc_exp_bank_step_4" />
+        <!--        <ImageView-->
+        <!--            style="@style/style_rc_exp_bank_top"-->
+        <!--            android:src="@mipmap/rc_exp_bank_step_4" />-->
+        <com.xtree.recharge.ui.widget.StepProgressView
+            android:id="@+id/stepProgress"
+            app:activeColor="#A17DF5"
+            app:activeDrawable="@drawable/rc_step_progress_circle"
+            app:circleRadius="6dp"
+            app:currentStep="3"
+            app:defaultColor="#C6C6C6"
+            app:horizontalPadding="40dp"
+            app:lineWidth="2dp"
+            app:stepCount="3"
+            app:stepTexts="@array/step_texts"
+            app:textSize="14sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp" />
 
         <TextView
             style="@style/style_rc_exp_bank_status"
@@ -27,18 +43,19 @@
             android:text="待确认付款" />
 
         <View style="@style/style_dividing_line" />
+
         <LinearLayout
             android:id="@+id/ll_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            >
+            android:orientation="vertical">
+
             <TextView
                 style="@style/style_rc_exp_bank_info_title"
-                android:text="您已确认付款，请耐心等待到账"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:text="您已确认付款，请耐心等待到账" />
 
             <LinearLayout style="@style/style_rc_dlg_ll">
 
@@ -49,13 +66,11 @@
                 <TextView
                     style="@style/style_rc_dlg_value"
                     android:text="PAY00123456789"
-                    android:textColor="@color/clr_black"
-                    />
+                    android:textColor="@color/clr_black" />
 
                 <TextView
                     style="@style/style_rc_dlg_copy"
-                    android:text="@string/txt_copy"
-                    />
+                    android:text="@string/txt_copy" />
 
             </LinearLayout>
 
@@ -68,14 +83,12 @@
                 <TextView
                     android:id="@+id/tvw_to_bank_name"
                     style="@style/style_rc_dlg_value"
-                    android:text="中国银行"
-                    />
+                    android:text="中国银行" />
 
                 <TextView
                     android:id="@+id/tvw_copy_bank_name"
                     style="@style/style_rc_dlg_copy"
-                    android:text="@string/txt_copy"
-                    />
+                    android:text="@string/txt_copy" />
 
             </LinearLayout>
 
@@ -88,14 +101,12 @@
                 <TextView
                     android:id="@+id/tvw_to_bank_name_detail"
                     style="@style/style_rc_dlg_value"
-                    android:text="黑龙江省牡丹江市牡丹支行东安区"
-                    />
+                    android:text="黑龙江省牡丹江市牡丹支行东安区" />
 
                 <TextView
                     android:id="@+id/tvw_copy_branch"
                     style="@style/style_rc_dlg_copy"
-                    android:text="@string/txt_copy"
-                    />
+                    android:text="@string/txt_copy" />
             </LinearLayout>
 
             <LinearLayout style="@style/style_rc_dlg_ll">
@@ -107,14 +118,12 @@
                 <TextView
                     android:id="@+id/tvw_bank_acct_name"
                     style="@style/style_rc_dlg_value"
-                    android:text="马斯"
-                    />
+                    android:text="马斯" />
 
                 <TextView
                     android:id="@+id/tvw_copy_acc_name"
                     style="@style/style_rc_dlg_copy"
-                    android:text="@string/txt_copy"
-                    />
+                    android:text="@string/txt_copy" />
             </LinearLayout>
 
             <LinearLayout style="@style/style_rc_dlg_ll">
@@ -126,14 +135,12 @@
                 <TextView
                     android:id="@+id/tvw_bank_acct_card"
                     style="@style/style_rc_dlg_value"
-                    android:text="9876543210"
-                    />
+                    android:text="9876543210" />
 
                 <TextView
                     android:id="@+id/tvw_copy_acc_num"
                     style="@style/style_rc_dlg_copy"
-                    android:text="@string/txt_copy"
-                    />
+                    android:text="@string/txt_copy" />
             </LinearLayout>
 
             <LinearLayout style="@style/style_rc_dlg_ll">
@@ -145,14 +152,12 @@
                 <TextView
                     android:id="@+id/tvw_money2"
                     style="@style/style_rc_dlg_value"
-                    android:text="100"
-                    />
+                    android:text="100" />
 
                 <TextView
                     android:id="@+id/tvw_copy_money2"
                     style="@style/style_rc_dlg_copy"
-                    android:text="@string/txt_copy"
-                    />
+                    android:text="@string/txt_copy" />
             </LinearLayout>
 
             <TextView
@@ -169,8 +174,7 @@
         <TextView
             android:id="@+id/tvw_ok"
             style="@style/style_btn_long"
-            android:text="关闭"
-           />
+            android:text="关闭" />
 
         <TextView
             style="@style/style_cm_tip_small_grey"
