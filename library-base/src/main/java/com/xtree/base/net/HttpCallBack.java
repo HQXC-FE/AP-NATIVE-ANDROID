@@ -29,7 +29,15 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
 public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
-    public abstract void onResult(T t);
+    public void onResult(T t) {
+    }
+
+    ;
+
+    public void onResult(T t, BusinessException ex) {
+    }
+
+    ;
 
     @Override
     public void onNext(T o) {
@@ -51,6 +59,8 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                 }
                 //请求成功, 正确的操作方式
                 onResult((T) baseResponse.getData());
+                //为空 携带业务异常message
+                onResult((T) baseResponse.getData(), ex);
                 break;
             case HttpCallBack.CodeRule.CODE_300:
                 //请求失败，不打印Message
@@ -73,6 +83,35 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                 //没有数据
                 KLog.e("没有数据");
                 break;
+            case HttpCallBack.CodeRule.CODE_401013://账号已登出，请重新登录
+            case HttpCallBack.CodeRule.CODE_401026://账号已登出，请重新登录
+            case HttpCallBack.CodeRule.CODE_400467:
+            case HttpCallBack.CodeRule.CODE_401038:
+            case HttpCallBack.CodeRule.CODE_400524:
+            case HttpCallBack.CodeRule.CODE_400527:
+            case HttpCallBack.CodeRule.CODE_408028:
+                onError(ex);
+                break;
+            case HttpCallBack.CodeRule.CODE_400489:
+            case HttpCallBack.CodeRule.CODE_400492:
+            case HttpCallBack.CodeRule.CODE_400496:
+            case HttpCallBack.CodeRule.CODE_400503:
+            case HttpCallBack.CodeRule.CODE_400522:
+            case HttpCallBack.CodeRule.CODE_400528:
+            case HttpCallBack.CodeRule.CODE_400529:
+
+            case HttpCallBack.CodeRule.CODE_400493:
+            case HttpCallBack.CodeRule.CODE_400494:
+            case HttpCallBack.CodeRule.CODE_400500:
+            case HttpCallBack.CodeRule.CODE_400501:
+            case HttpCallBack.CodeRule.CODE_400525:
+            case HttpCallBack.CodeRule.CODE_400531:
+            case HttpCallBack.CodeRule.CODE_400537:
+            case HttpCallBack.CodeRule.CODE_402038:
+                ex.code = HttpCallBack.CodeRule.CODE_10000001;
+                onError(ex);
+                break;
+
             case CodeRule.CODE_10003:
             case CodeRule.CODE_10039:
             case CodeRule.CODE_20203:
@@ -125,8 +164,11 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                 // 谷歌验证
                 onFail(ex);
                 break;
+            case HttpCallBack.CodeRule.CODE_14010:
+                //TOKEN失效
+                onError(ex);
+                break;
             case CodeRule.CODE_900001:
-
 //                ValidateResponse validateResponse = new Gson().fromJson(baseResponse.getDataString(), ValidateResponse.class);
 //
 //                if (validateResponse != null && validateResponse.getData() != null && validateResponse.getData().containsKey("ip")) {
@@ -186,8 +228,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             return;
         } else if (t instanceof BusinessException) {
             BusinessException rError = (BusinessException) t;
-            //产品要求去掉异常提示
-            //ToastUtils.showLong(rError.message + " [" + rError.code + "]");
+            ToastUtils.showLong(filterChineseCharacters(rError.message) + " [" + rError.code + "]");
             return;
         }
         //其他全部甩锅网络异常
@@ -202,7 +243,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             onFail41011(t);
             return;
         }
-        //ToastUtils.showLong(t.message + " [" + t.code + "]");
+        ToastUtils.showLong(filterChineseCharacters(t.message) + " [" + t.code + "]");
     }
 
     /**
@@ -219,8 +260,22 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
     }
 
     public static final class CodeRule {
+        public static final int CODE_20208 = 20208; // 异地登录(本次登录并非常用设备或地区， 需要进行安全验证)
+        public static final int CODE_30018 = 30018; // 谷歌验证
+        public static final int CODE_30004 = 30004; // 被踢下线, 禁止登录
+        public static final int CODE_20204 = 20204;//需要用户获取登录验证码
+        public static final int CODE_20205 = 20205;
+        public static final int CODE_20206 = 20206;
+        public static final int CODE_900001 = 900001; // 全局验证
+        public static final int CODE_14010 = 14010; //投注TOKEN失效
         //请求成功, 正确的操作方式
         static final int CODE_0 = 0;
+        //无效的Token
+        //static final int CODE_510 = 510;
+        //未登录
+        //static final int CODE_530 = 530;
+        //请求的操作异常终止：未知的页面类型
+        //static final int CODE_551 = 551;
         static final int CODE_10000 = 10000;
         /**
          * 返回数据非json
@@ -236,13 +291,6 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         static final int CODE_503 = 503;
         //没有数据
         static final int CODE_502 = 502;
-        //无效的Token
-        //static final int CODE_510 = 510;
-        //未登录
-        //static final int CODE_530 = 530;
-        //请求的操作异常终止：未知的页面类型
-        //static final int CODE_551 = 551;
-
         static final int CODE_10003 = 10003; // TOO_MANY_REQ = '请求太频繁',
         static final int CODE_10039 = 10039; // SAME_REQ = '重复提交',
         // 登出状态,销毁当前 token
@@ -252,17 +300,118 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         static final int CODE_20106 = 20106; // KICKED = '账号已在其他地方登录，请重新登录',
         static final int CODE_20107 = 20107; // 长时间未操作，请重新登录
         static final int CODE_20111 = 20111;
-        public static final int CODE_20208 = 20208; // 异地登录(本次登录并非常用设备或地区， 需要进行安全验证)
-        public static final int CODE_30018 = 30018; // 谷歌验证
         static final int CODE_30003 = 30003;
-        public static final int CODE_30004 = 30004; // 被踢下线, 禁止登录
         static final int CODE_30713 = 30713;
         static final int CODE_20203 = 20203; //用户名或密码错误
         static final int CODE_20217 = 20217; //已修改密码或被踢出
-        public static final int CODE_20204 = 20204;//需要用户获取登录验证码
-        public static final int CODE_20205 = 20205;
-        public static final int CODE_20206 = 20206;
-        public static final int CODE_900001 = 900001; // 全局验证
+
+        /**
+         * 提前结算错误统一出口
+         */
+        public static final int CODE_10000001 = 10000001;
+        /**
+         * token失效
+         */
+        public static final int CODE_401026 = 401026;
+        /**
+         * token失效
+         */
+        public static final int CODE_401013 = 401013;
+        public static final int CODE_400467 = 400467;
+        public static final int CODE_401038 = 401038;
+        /**
+         * 提前结算提交申请成功,请等待确认
+         */
+        public static final int CODE_400524 = 400524;
+        /**
+         * 提前结算功能暂不可用，请稍后再试
+         */
+        public static final int CODE_400527 = 400527;
+
+        /**
+         * 订单不存在 需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400489 = 400489;
+
+        /**
+         * 目前只支持足球提前结算 需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400492 = 400492;
+
+        /**
+         * 不符合提前结算条件，订单非待结算状态  需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400496 = 400496;
+
+        /**
+         * 用户不支持提前结算  需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400503 = 400503;
+
+        /**
+         * 目前只支持单关提前结算 需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400522 = 400522;
+
+        /**
+         * 投注项赛果已确认，不可提前结算 需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400528 = 400528;
+
+        /**
+         * 赛事已结束 需隐藏提前结算按钮，不支持的提前结算请求
+         */
+        public static final int CODE_400529 = 400529;
+
+        /**
+         * 提前结算金额不能超过注单金额
+         */
+        public static final int CODE_400493 = 400493;
+
+        /**
+         * 提前结算金额小数位超出限制
+         */
+        public static final int CODE_400494 = 400494;
+
+        /**
+         * 提交申请失败,请重试
+         */
+        public static final int CODE_400500 = 400500;
+
+        /**
+         * 最低提前结算金额为1
+         */
+        public static final int CODE_400501 = 400501;
+
+        /**
+         * 提前结算未通过
+         */
+        public static final int CODE_400525 = 400525;
+
+        /**
+         * 提交申请失败,提前结算时比分已变更
+         */
+        public static final int CODE_400531 = 400531;
+
+        /**
+         * 提交申请失败,提前结算金额已变更
+         */
+        public static final int CODE_400537 = 400537;
+
+        /**
+         * 提前结算异常
+         */
+        public static final int CODE_402038 = 402038;
+
+        /**
+         * 没开通视频权限
+         */
+        public static final int CODE_408028 = 408028;
+
     }
 
+    private String filterChineseCharacters(String input) {
+        // 使用正则表达式，匹配所有非中文字符并替换为空字符串
+        return input.replaceAll("[^\\p{IsHan}]", "");
+    }
 }
