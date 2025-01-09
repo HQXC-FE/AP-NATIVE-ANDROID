@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -106,6 +107,13 @@ public class CommChatFragment extends BaseFragment<FragmentCommChatBinding, ExTr
                 getActivity().finish(); // 结束当前 Activity
             }
         });
+
+        //清除历史记录
+        mChatWindow.clearHistory();
+
+        WebSettings settings = mChatWindow.getSettings();
+
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         binding.webgroup.addView(mChatWindow);
         this.mChatWindow.loadUrl(VisitorClientCore.getInstance().getChatUrl());
