@@ -384,9 +384,6 @@
     <color name="main_bottom_unselect">@color/textColorVice</color>
     <color name="main_bottom_select">@color/colorPrimary</color>
 
-    <color name="main_bottom_xmas_unselect">#FFFFFF</color>
-    <color name="main_bottom_xmas_select">#96F61D</color>
-
     <!-- 分隔线 -->
     <color name="clr_div_line">#F2F3F7</color>
 

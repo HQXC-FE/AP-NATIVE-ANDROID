@@ -224,6 +224,7 @@ android {
             multiDexEnabled true
             dimension "channelName"
         }
+
     }
 
     applicationVariants.all { variant ->
