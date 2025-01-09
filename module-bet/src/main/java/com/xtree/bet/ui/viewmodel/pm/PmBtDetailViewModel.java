@@ -1,7 +1,5 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
@@ -12,7 +10,6 @@ import androidx.annotation.NonNull;
 
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
-import com.xtree.base.net.PMHttpCallBack;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.vo.PMService;
 import com.xtree.bet.bean.response.pm.MatchInfo;
@@ -38,7 +35,7 @@ import java.util.Map;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -69,7 +66,7 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().getMatchDetail(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<MatchInfo>() {
+                .subscribeWith(new HttpCallBack<MatchInfo>() {
                     @Override
                     public void onResult(MatchInfo matchInfo) {
                         if (matchInfo == null) {
@@ -83,8 +80,8 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        ResponseThrowable error = (ResponseThrowable) t;
-                        if (error.code == CODE_401026 || error.code == CODE_401013) {
+                        BusinessException error = (BusinessException) t;
+                        if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
                             getGameTokenApi();
                         } else {
                             ToastUtils.showShort(error.message);
@@ -104,7 +101,7 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().getMatchDetailResult(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<MatchInfo>() {
+                .subscribeWith(new HttpCallBack<MatchInfo>() {
                     @Override
                     public void onResult(MatchInfo matchInfo) {
                         if (matchInfo == null) {
@@ -117,8 +114,8 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        ResponseThrowable error = (ResponseThrowable) t;
-                        if (error.code == CODE_401026 || error.code == CODE_401013) {
+                        BusinessException error = (BusinessException) t;
+                        if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
                             getGameTokenApi();
                         } else {
                             ToastUtils.showShort(error.message);
@@ -141,7 +138,7 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().videoAnimationUrlPB(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<VideoAnimationInfo>() {
+                .subscribeWith(new HttpCallBack<VideoAnimationInfo>() {
                     @Override
                     public void onResult(VideoAnimationInfo videoAnimationInfo) {
                         if (mMatchInfo != null && mMatchInfo.mid != null) {
@@ -191,7 +188,7 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().getMatchResultPB(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<PlayTypeInfo>>() {
+                .subscribeWith(new HttpCallBack<List<PlayTypeInfo>>() {
                     @Override
                     public void onResult(List<PlayTypeInfo> categoryPms) {
                         List<PlayType> list = new ArrayList<>();
@@ -219,7 +216,7 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().getCategoryList(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<CategoryPm>>() {
+                .subscribeWith(new HttpCallBack<List<CategoryPm>>() {
                     @Override
                     public void onResult(List<CategoryPm> categoryPms) {
                         Map<String, Category> categoryMap = new HashMap<>();
@@ -260,7 +257,7 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().getMatchOddsInfoPB(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<PlayTypeInfo>>() {
+                .subscribeWith(new HttpCallBack<List<PlayTypeInfo>>() {
                     @Override
                     public void onResult(List<PlayTypeInfo> playTypeList) {
 

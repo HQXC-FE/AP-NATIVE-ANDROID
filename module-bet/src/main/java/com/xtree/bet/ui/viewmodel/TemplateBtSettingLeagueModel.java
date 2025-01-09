@@ -5,13 +5,10 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.xtree.base.net.FBHttpCallBack;
 import com.xtree.base.utils.StringUtils;
-import com.xtree.bet.bean.response.fb.LeagueInfo;
 import com.xtree.bet.bean.ui.InitialLeagueArea;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.LeagueArea;
-import com.xtree.bet.bean.ui.LeagueFb;
 import com.xtree.bet.contract.BetContract;
 import com.xtree.bet.data.BetRepository;
 
@@ -25,14 +22,12 @@ import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
-import me.xtree.mvvmhabit.utils.RxUtils;
 
 /**
  * Created by marquis
  */
 
 public abstract class TemplateBtSettingLeagueModel extends BaseViewModel<BetRepository> implements BtSettingLeagueModel {
-    private Disposable mSubscription;
     public SingleLiveData<List<InitialLeagueArea>> settingInitialLeagueAreaData = new SingleLiveData<>();
     public SingleLiveData<List<InitialLeagueArea>> settingSearchInitialLeagueAreaData = new SingleLiveData<>();
     public SingleLiveData<List<League>> settingLeagueData = new SingleLiveData<>();
@@ -40,6 +35,7 @@ public abstract class TemplateBtSettingLeagueModel extends BaseViewModel<BetRepo
      * 检查是否选中所有联赛
      */
     public SingleLiveData<BetContract> betContractIsCheckedAllLeagueData = new SingleLiveData<>();
+    private Disposable mSubscription;
 
     public TemplateBtSettingLeagueModel(@NonNull Application application, BetRepository repository) {
         super(application, repository);
@@ -53,7 +49,7 @@ public abstract class TemplateBtSettingLeagueModel extends BaseViewModel<BetRepo
         addSubscribe(mSubscription);
     }
 
-    public void getLeagueAreaList(List<League> leagueList, boolean isSearch, List<Long> leagueIdList){
+    public void getLeagueAreaList(List<League> leagueList, boolean isSearch, List<Long> leagueIdList) {
 
         // 把后台查询到的联赛列表按地区分组 begin
         List<LeagueArea> leagueAreaList = new ArrayList<>();
@@ -68,26 +64,26 @@ public abstract class TemplateBtSettingLeagueModel extends BaseViewModel<BetRepo
 
         LeagueArea leagueArea;
         for (League league : leagueList) {
-            if(leagueIdList != null){
+            if (leagueIdList != null) {
                 league.setSelected(leagueIdList.contains(league.getId()));
             }
             leagueArea = leagueAreaMap.get(String.valueOf(league.getAreaId()));
-            if(leagueArea == null){
+            if (leagueArea == null) {
                 leagueArea = new LeagueArea();
                 leagueArea.setName(league.getLeagueAreaName());
                 leagueAreaMap.put(String.valueOf(league.getAreaId()), leagueArea);
                 leagueAreaList.add(leagueArea);
             }
             leagueArea.addLeagueList(league);
-            if(league.isHot()){
+            if (league.isHot()) {
                 hotLeagueArea.addLeagueList(league);
             }
         }
 
-        for(LeagueArea area : leagueAreaMap.values()){
+        for (LeagueArea area : leagueAreaMap.values()) {
             boolean isCheckAll = true;
-            for (League league : area.getLeagueList()){
-                if(!league.isSelected()){
+            for (League league : area.getLeagueList()) {
+                if (!league.isSelected()) {
                     isCheckAll = false;
                     break;
                 }
@@ -96,8 +92,8 @@ public abstract class TemplateBtSettingLeagueModel extends BaseViewModel<BetRepo
         }
 
         boolean isCheckAll = true;
-        for (League league : hotLeagueArea.getLeagueList()){
-            if(!league.isSelected()){
+        for (League league : hotLeagueArea.getLeagueList()) {
+            if (!league.isSelected()) {
                 isCheckAll = false;
                 break;
             }
@@ -110,12 +106,12 @@ public abstract class TemplateBtSettingLeagueModel extends BaseViewModel<BetRepo
         TreeMap<String, InitialLeagueArea> initialLeagueAreaMap = new TreeMap<>();
         for (LeagueArea area : leagueAreaList) {
 
-            if(!TextUtils.isEmpty(area.getName())) {
+            if (!TextUtils.isEmpty(area.getName())) {
 
                 String initial = StringUtils.getPinYinInitials(area.getName())[0]; // 首字母
                 InitialLeagueArea initialLeagueArea = initialLeagueAreaMap.get(initial);
 
-                if(initialLeagueArea == null) {
+                if (initialLeagueArea == null) {
                     initialLeagueArea = new InitialLeagueArea();
                     initialLeagueArea.setName(initial);
                     initialLeagueAreaMap.put(initial, initialLeagueArea);
@@ -127,28 +123,28 @@ public abstract class TemplateBtSettingLeagueModel extends BaseViewModel<BetRepo
         // 把得到的地区分组按首字母分组 end
 
         List<InitialLeagueArea> initialLeagueAreaList = new ArrayList<>();
-        if(!hotInitialLeagueArea.getLeagueAreaList().isEmpty() && !hotLeagueArea.getLeagueList().isEmpty()){
+        if (!hotInitialLeagueArea.getLeagueAreaList().isEmpty() && !hotLeagueArea.getLeagueList().isEmpty()) {
             initialLeagueAreaList.add(hotInitialLeagueArea);
         }
         for (Map.Entry<String, InitialLeagueArea> entry : initialLeagueAreaMap.entrySet()) {
             System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
-            if(TextUtils.equals("R", entry.getKey())){
-                for (LeagueArea area : entry.getValue().getLeagueAreaList()){
-                    if(TextUtils.equals("热门联赛", area.getName())){
+            if (TextUtils.equals("R", entry.getKey())) {
+                for (LeagueArea area : entry.getValue().getLeagueAreaList()) {
+                    if (TextUtils.equals("热门联赛", area.getName())) {
                         entry.getValue().getLeagueAreaList().remove(area);
                         break;
                     }
                 }
             }
-            if(!entry.getValue().getLeagueAreaList().isEmpty()) {
+            if (!entry.getValue().getLeagueAreaList().isEmpty()) {
                 initialLeagueAreaList.add(entry.getValue());
             }
         }
 
-        if(!initialLeagueAreaMap.isEmpty()) {
-            if(isSearch){
+        if (!initialLeagueAreaMap.isEmpty()) {
+            if (isSearch) {
                 settingSearchInitialLeagueAreaData.postValue(initialLeagueAreaList);
-            }else {
+            } else {
                 settingInitialLeagueAreaData.postValue(initialLeagueAreaList);
             }
         }

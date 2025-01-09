@@ -3,12 +3,10 @@ package com.xtree.mine.vo.WithdrawVo;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.http.BaseResponse2;
-
 /**
  * 銀行卡提款 渠道信息
  */
-public class WithdrawalBankInfoVo  {
+public class WithdrawalBankInfoVo {
     public String code;
     /*
        "is_digital": false,
@@ -26,7 +24,7 @@ public class WithdrawalBankInfoVo  {
         "fee": 0,
         "rate": 0,
      */
-    public  String fast_iframe_url;//三方web加载地址
+    public String fast_iframe_url;//三方web加载地址
     public Object money_options; //多金额选项
     public List<String> fixamountList = new ArrayList<>(); // 自己加的
     public ArrayList<WithdrawalAmountVo> amountVoList = new ArrayList<>();//针对固额 多金额封装对象
@@ -90,10 +88,14 @@ public class WithdrawalBankInfoVo  {
         public String atime;
 
     }
+
     /**
      * 固额 金额选项
      */
     public static class WithdrawalAmountVo {
+
+        public String amount;
+        public boolean flag;//是否被选中的标记
 
         @Override
         public String toString() {
@@ -102,8 +104,5 @@ public class WithdrawalBankInfoVo  {
                     ", flag=" + flag +
                     '}';
         }
-
-        public String amount ;
-        public boolean flag;//是否被选中的标记
     }
 }

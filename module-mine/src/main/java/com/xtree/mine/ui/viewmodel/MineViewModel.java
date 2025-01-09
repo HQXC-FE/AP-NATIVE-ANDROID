@@ -12,7 +12,6 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
-import com.xtree.base.net.HttpWithdrawalCallBack;
 import com.xtree.base.net.RetrofitClient;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.CfLog;
@@ -34,7 +33,7 @@ import java.util.HashMap;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
-import me.xtree.mvvmhabit.http.BaseResponse3;
+import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -312,12 +311,14 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().getOfferList(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpWithdrawalCallBack<OfferVo>() {
+                .subscribeWith(new HttpCallBack<OfferVo>() {
                     @Override
-                    public void onResult(OfferVo vo) {
-                        if (vo != null) {
-                            offerVoMutableLiveData.setValue(vo);
+                    public void onResult(OfferVo vo, BusinessException exception) {
+                        if (vo == null) {
+                            onFail(exception);
+                            return;
                         }
+                        offerVoMutableLiveData.setValue(vo);
                     }
 
                     @Override
@@ -344,9 +345,9 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().getOffer(key, map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<BaseResponse3>() {
+                .subscribeWith(new HttpCallBack<BaseResponse>() {
                     @Override
-                    public void onResult(BaseResponse3 response) {
+                    public void onResult(BaseResponse response) {
                         ToastUtils.showSuccess(response.getMessage());
                         getOfferList(offerListMap);
                     }

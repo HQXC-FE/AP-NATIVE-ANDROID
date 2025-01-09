@@ -1,8 +1,5 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401038;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
@@ -14,7 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
@@ -47,7 +44,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -64,12 +61,32 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     private List<MatchInfo> mChampionMatchInfoList = new ArrayList<>();
     private Map<String, List<SportTypeItem>> sportCountMap = new HashMap<>();
     private List<MenuInfo> mMenuInfoList = new ArrayList<>();
-    private PMHttpCallBack mPmHttpCallBack;
+    private HttpCallBack mPmHttpCallBack;
 
     private HashMap<Integer, SportTypeItem> mMatchGames = new HashMap<>();
 
     private int mGoingOnPageSize = 300;
     private int mPageSize = 20;
+    /**
+     * 获取赛事列表
+     *
+     * @param sportId
+     * @param orderBy
+     * @param leagueIds
+     * @param matchidList
+     * @param playMethodType
+     * @param searchDatePos  查询时间列表中的位置
+     * @param oddType        盘口类型
+     * @param isTimedRefresh 是否定时刷新 true-是，false-否
+     * @param isRefresh      是否刷新 true-是, false-否
+     */
+
+    private int mPlayType;
+
+    public PMMainViewModel(@NonNull Application application, BetRepository repository) {
+        super(application, repository);
+        sportItemData.postValue(new String[]{});
+    }
 
     public void saveLeague(PMListCallBack pmListCallBack) {
         mLeagueList = pmListCallBack.getLeagueList();
@@ -98,15 +115,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         return mMatchList;
     }
 
-    public Map<String, Match> getMapMatch() {
-        return mMapMatch;
-    }
-
-    public PMMainViewModel(@NonNull Application application, BetRepository repository) {
-        super(application, repository);
-        sportItemData.postValue(new String[]{});
-    }
-
     //@Override
     //public void setSportIds(int playMethodPos) {
     //    if (playMethodPos == 0 || playMethodPos == 3 || playMethodPos == 1) {
@@ -132,6 +140,10 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     //        }
     //    }
     //}
+
+    public Map<String, Match> getMapMatch() {
+        return mMapMatch;
+    }
 
     public void setSportItems(int playMethodPos, int playMethodType) {
         sportItemData.postValue(new String[]{});
@@ -236,7 +248,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         pmListReq.setType(3);
         //CfLog.i("pmListReqHot   "+new Gson().toJson(pmListReq));
         Flowable flowable = model.getPMApiService().matchesPagePB(pmListReq);
-        PMHttpCallBack pmHttpCallBack = new PMHttpCallBack<MatchListRsp>() {
+        HttpCallBack pmHttpCallBack = new HttpCallBack<MatchListRsp>() {
 
             @Override
             public void onResult(MatchListRsp matchListRsp) {
@@ -281,22 +293,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             championMatchListData.postValue(mChampionMatchList);
         }
     }
-
-    /**
-     * 获取赛事列表
-     *
-     * @param sportId
-     * @param orderBy
-     * @param leagueIds
-     * @param matchidList
-     * @param playMethodType
-     * @param searchDatePos  查询时间列表中的位置
-     * @param oddType        盘口类型
-     * @param isTimedRefresh 是否定时刷新 true-是，false-否
-     * @param isRefresh      是否刷新 true-是, false-否
-     */
-
-    private int mPlayType;
 
     public void getLeagueList(int sportPos, String sportId, int orderBy, List<Long> leagueIds, List<Long> matchidList, int playMethodType, int searchDatePos, int oddType, boolean isTimerRefresh, boolean isRefresh) {
         getLeagueList(sportPos, sportId, orderBy, leagueIds, matchidList, playMethodType, searchDatePos, oddType, isTimerRefresh, isRefresh, false);
@@ -519,7 +515,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         Disposable disposable = (Disposable) model.getPMApiService().noLiveMatchesPagePB(pmListReq)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<MatchListRsp>() {
+                .subscribeWith(new HttpCallBack<MatchListRsp>() {
                     @Override
                     protected void onStart() {
                         super.onStart();
@@ -571,11 +567,11 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                     @Override
                     public void onError(Throwable t) {
                         getUC().getDismissDialogEvent().call();
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == CODE_401026 || error.code == CODE_401013) {
+                        if (t instanceof BusinessException) {
+                            BusinessException error = (BusinessException) t;
+                            if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
                                 getGameTokenApi();
-                            } else if (error.code == CODE_401038) {
+                            } else if (error.code == HttpCallBack.CodeRule.CODE_401038) {
                                 super.onError(t);
                                 tooManyRequestsEvent.call();
                             } else {
@@ -607,7 +603,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         Disposable disposable = (Disposable) model.getPMApiService().initPB(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<MenuInfo>>() {
+                .subscribeWith(new HttpCallBack<List<MenuInfo>>() {
                     @Override
                     public void onResult(List<MenuInfo> menuInfoList) {
                         mMenuInfoList = menuInfoList;
@@ -695,7 +691,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         Disposable disposable = (Disposable) model.getPMApiService().resultMenuPB(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<PMResultBean>>() {
+                .subscribeWith(new HttpCallBack<List<PMResultBean>>() {
                     @Override
                     public void onResult(List<PMResultBean> list) {
                         List<SportTypeItem> list1 = new ArrayList<>();
@@ -744,7 +740,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         Disposable disposable = (Disposable) model.getPMApiService().matcheResultPB(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<MatchInfo>>() {
+                .subscribeWith(new HttpCallBack<List<MatchInfo>>() {
                     @Override
                     public void onResult(List<MatchInfo> data) {
 
@@ -924,7 +920,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         Disposable disposable = (Disposable) model.getPMApiService().frontListPB()
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<FrontListInfo>() {
+                .subscribeWith(new HttpCallBack<FrontListInfo>() {
                     @Override
                     public void onResult(FrontListInfo info) {
                         KLog.i("FrontListInfo     " + info);

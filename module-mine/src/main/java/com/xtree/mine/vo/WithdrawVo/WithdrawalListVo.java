@@ -2,10 +2,7 @@ package com.xtree.mine.vo.WithdrawVo;
 
 import androidx.annotation.Nullable;
 
-import java.util.Comparator;
 import java.util.Objects;
-
-import me.xtree.mvvmhabit.http.BaseResponse2;
 
 /**
  * 选择提款模式

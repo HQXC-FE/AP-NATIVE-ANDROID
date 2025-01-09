@@ -1,18 +1,13 @@
 package com.xtree.bet.ui.viewmodel.fb;
 
 import android.app.Application;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.xtree.base.net.FBHttpCallBack;
-import com.xtree.base.utils.StringUtils;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.bet.bean.response.fb.LeagueInfo;
-import com.xtree.bet.bean.ui.InitialLeagueArea;
 import com.xtree.bet.bean.ui.League;
-import com.xtree.bet.bean.ui.LeagueArea;
 import com.xtree.bet.bean.ui.LeagueFb;
-import com.xtree.bet.contract.BetContract;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.TemplateBtSettingLeagueModel;
 
@@ -20,12 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.bus.event.SingleLiveData;
 import me.xtree.mvvmhabit.utils.RxUtils;
 
 /**
@@ -51,7 +42,7 @@ public class FBBtSettingLeagueModel extends TemplateBtSettingLeagueModel {
         Disposable disposable = (Disposable) model.getApiService().getOnSaleLeagues(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FBHttpCallBack<List<LeagueInfo>>() {
+                .subscribeWith(new HttpCallBack<List<LeagueInfo>>() {
                     @Override
                     public void onResult(List<LeagueInfo> leagueInfoList) {
                         List<League> leagueList = new ArrayList<>();

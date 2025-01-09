@@ -24,11 +24,11 @@ public class ExceptionHandle {
     private static final int INTERNAL_SERVER_ERROR = 500;
     private static final int SERVICE_UNAVAILABLE = 503;
 
-    public static ResponseThrowable handleException(Throwable e) {
-        ResponseThrowable ex;
+    public static BusinessException handleException(Throwable e) {
+        BusinessException ex;
         if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
-            ex = new ResponseThrowable(e, ERROR.HTTP_ERROR, true);
+            ex = new BusinessException(e, ERROR.HTTP_ERROR, true);
             switch (httpException.code()) {
                 case UNAUTHORIZED:
                     ex.message = "操作未授权";
@@ -58,39 +58,39 @@ public class ExceptionHandle {
         } else if (e instanceof JsonParseException
                 || e instanceof JSONException
                 || e instanceof ParseException || e instanceof MalformedJsonException) {
-            ex = new ResponseThrowable(e, ERROR.PARSE_ERROR);
+            ex = new BusinessException(e, ERROR.PARSE_ERROR);
             ex.message = "解析错误";
             // return ex;
         } else if (e instanceof ConnectException) {
-            ex = new ResponseThrowable(e, ERROR.NETWORD_ERROR, true);
+            ex = new BusinessException(e, ERROR.NETWORD_ERROR, true);
             ex.message = "连接失败";
             // return ex;
         } else if (e instanceof javax.net.ssl.SSLException) {
-            ex = new ResponseThrowable(e, ERROR.SSL_ERROR, true);
+            ex = new BusinessException(e, ERROR.SSL_ERROR, true);
             ex.message = "证书验证失败";
             // return ex;
         } else if (e instanceof ConnectTimeoutException) {
-            ex = new ResponseThrowable(e, ERROR.TIMEOUT_ERROR, true);
+            ex = new BusinessException(e, ERROR.TIMEOUT_ERROR, true);
             ex.message = "连接超时";
             // return ex;
         } else if (e instanceof java.net.SocketTimeoutException) {
-            ex = new ResponseThrowable(e, ERROR.TIMEOUT_ERROR, true);
+            ex = new BusinessException(e, ERROR.TIMEOUT_ERROR, true);
             ex.message = "连接超时";
             // return ex;
         } else if (e instanceof java.net.UnknownHostException) {
-            ex = new ResponseThrowable(e, ERROR.HOST_ERROR, true);
+            ex = new BusinessException(e, ERROR.HOST_ERROR, true);
             ex.message = "主机地址未知";
             // return ex;
         } else if (e instanceof NullPointerException) {
-            ex = new ResponseThrowable(e, ERROR.TIMEOUT_ERROR, true);
+            ex = new BusinessException(e, ERROR.TIMEOUT_ERROR, true);
             ex.message = "主机地址未知";
             // return ex;
         } else if (e instanceof HijackedException) {
-            ex = new ResponseThrowable(e, ERROR.HIJACKED_ERROR, true);
+            ex = new BusinessException(e, ERROR.HIJACKED_ERROR, true);
             ex.message = "主机地址未知";
             return ex;
         } else {
-            ex = new ResponseThrowable(e, ERROR.UNKNOWN);
+            ex = new BusinessException(e, ERROR.UNKNOWN);
             ex.message = "未知错误";
             //return ex;
         }

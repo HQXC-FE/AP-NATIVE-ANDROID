@@ -22,7 +22,6 @@ import io.sentry.Sentry;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.http.HijackedException;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -48,8 +47,8 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             return;
         }
         BaseResponse baseResponse = (BaseResponse) o;
-        BusinessException ex = new BusinessException(baseResponse.getStatus(), baseResponse.getMessage(), baseResponse.getData());
         int status = baseResponse.getStatus() == -1 ? baseResponse.getCode() : baseResponse.getStatus();
+        BusinessException ex = new BusinessException(status, baseResponse.getMessage(), baseResponse.getData());
         switch (status) {
             case HttpCallBack.CodeRule.CODE_0:
             case HttpCallBack.CodeRule.CODE_10000:
@@ -195,8 +194,8 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         KLog.e("error: " + t.toString());
         Sentry.captureException(t);
         //t.printStackTrace();
-        if (t instanceof ResponseThrowable) {
-            ResponseThrowable rError = (ResponseThrowable) t;
+        if (t instanceof BusinessException) {
+            BusinessException rError = (BusinessException) t;
             //ToastUtils.showLong(rError.message + " [" + rError.code + "]");
             KLog.e("code: " + rError.code);
             if (rError.code == 403) {
@@ -304,6 +303,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         static final int CODE_30713 = 30713;
         static final int CODE_20203 = 20203; //用户名或密码错误
         static final int CODE_20217 = 20217; //已修改密码或被踢出
+
 
         /**
          * 提前结算错误统一出口
