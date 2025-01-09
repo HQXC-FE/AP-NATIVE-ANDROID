@@ -90,10 +90,10 @@ android {
             dimension "channelName"
         }*/
         // 圣诞节生产环境 发布用
-        xingCai_Xmans {
+        /**xingCai_Xmans {
             applicationId "com.sptxc.app" // xcsport
-            versionName "1.4.2"
-            versionCode 142
+            versionName "1.4.3"
+            versionCode 143
             resValue "string", "app_name", "XC Sports"
             resValue "string", "domain_api", "http://175.27.143.79:16803"
             resValue "string", "domain_url", "https://h61.saaen.com:16801"
@@ -155,7 +155,7 @@ android {
                     ";https://aliapp.r2z5zy.xyz/xc/app_config.json"
             multiDexEnabled true
             dimension "channelName"
-        }
+        }*/
 
         // 春节生产环境 发布用
         xingCai_NewYear {
