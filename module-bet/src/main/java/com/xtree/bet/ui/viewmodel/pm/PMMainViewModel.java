@@ -1,5 +1,6 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
 import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
 import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
@@ -604,7 +605,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                     getUC().getDismissDialogEvent().call();
                     if (t instanceof ResponseThrowable) {
                         ResponseThrowable error = (ResponseThrowable) t;
-                        if (error.code == CODE_401026 || error.code == CODE_401013) {
+                        if (error.code == CODE_401026 || error.code == CODE_401013 || error.code == CODE_14010) {
                             getGameTokenApi();
                         } else if (error.code == CODE_401038) {
                             super.onError(t);
@@ -676,7 +677,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                         getUC().getDismissDialogEvent().call();
                         if (t instanceof ResponseThrowable) {
                             ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
+                            if (error.code == CODE_401026 || error.code == CODE_401013 || error.code == CODE_14010 ) {
                                 getGameTokenApi();
                             } else if (error.code == HttpCallBack.CodeRule.CODE_401038) {
                                 super.onError(t);

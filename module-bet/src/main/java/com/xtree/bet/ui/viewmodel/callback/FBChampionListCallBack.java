@@ -5,7 +5,6 @@ import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.xtree.base.net.FBHttpCallBack;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.bean.response.fb.MatchListRsp;
@@ -133,7 +132,6 @@ public class FBChampionListCallBack extends HttpCallBack<MatchListRsp> {
 
     @Override
     public void onResult(MatchListRsp matchListRsp) {
-        System.out.println("================= LeagueListCallBack onResult ====================");
         if (mIsTimerRefresh) {
             mViewModel.setChampionOptionOddChange(matchListRsp.records);
             mViewModel.championMatchTimerListData.postValue(mViewModel.mChampionMatchList);

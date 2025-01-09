@@ -1,5 +1,7 @@
 package com.xtree.bet.ui.viewmodel.callback;
 
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_14010;
+
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.bet.bean.response.fb.FbStatisticalInfoCacheRsp;
 import com.xtree.bet.bean.response.fb.MatchListRsp;
@@ -16,7 +18,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import me.xtree.mvvmhabit.http.ResponseThrowable;
-import me.xtree.mvvmhabit.utils.KLog;
 
 public class FBStatisticalCallBack extends HttpCallBack<StatisticalInfo> {
 
@@ -32,7 +33,6 @@ public class FBStatisticalCallBack extends HttpCallBack<StatisticalInfo> {
 
     @Override
     public synchronized void onResult(StatisticalInfo statisticalInfo) {
-        System.out.println("============= FBStatisticalCallBack onResult statistical =============");
         if (mMatchGames.isEmpty()) {
             mMatchGames = FBConstants.getMatchGames();
         }
@@ -74,11 +74,11 @@ public class FBStatisticalCallBack extends HttpCallBack<StatisticalInfo> {
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("============= FBStatisticalCallBack onError statistical =============");
         super.onError(t);
         if (t instanceof ResponseThrowable) {
-            ResponseThrowable rError = (ResponseThrowable) t;
-            KLog.e("******"+rError.message);
+            if (((ResponseThrowable) t).code == CODE_14010) {
+                mViewModel.getGameTokenApi();
+            }
         }
     }
 }

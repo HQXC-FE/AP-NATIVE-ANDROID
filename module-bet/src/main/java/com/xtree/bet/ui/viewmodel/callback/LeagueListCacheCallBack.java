@@ -157,7 +157,6 @@ public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp>
 
     @Override
     public void onResult(FbMatchListCacheRsp fbMatchListCacheRsp) {
-        System.out.println("================= LeagueListCallBack onResult ====================");
         MatchListRsp  matchListRsp = fbMatchListCacheRsp.getData();
         if (mIsTimerRefresh) {
             if (matchListRsp.records.size() != mMatchids.size()) {
@@ -241,7 +240,6 @@ public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp>
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("================= LeagueListCacheCallBack onError ====================");
         mViewModel.getUC().getDismissDialogEvent().call();
         if (t instanceof ResponseThrowable) {
             if(((ResponseThrowable) t).isHttpError){

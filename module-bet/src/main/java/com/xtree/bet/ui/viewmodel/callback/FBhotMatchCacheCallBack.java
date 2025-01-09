@@ -7,7 +7,6 @@ import com.xtree.bet.ui.viewmodel.fb.FBMainViewModel;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.KLog;
 
-
 public class FBhotMatchCacheCallBack extends HttpCallBack<FbMatchListCacheRsp> {
     private FBMainViewModel mViewModel;
 
@@ -17,13 +16,11 @@ public class FBhotMatchCacheCallBack extends HttpCallBack<FbMatchListCacheRsp> {
 
     @Override
     public void onResult(FbMatchListCacheRsp matchListRsp) {
-        System.out.println("=================== FBhotMatchCacheCallBack getFbListFlowable onResult ==================");
         mViewModel.hotMatchCountData.postValue(matchListRsp.data.getTotal());
     }
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("=================== FBhotMatchCacheCallBack getFbListFlowable onError ==================");
         if (t instanceof ResponseThrowable) {
             ResponseThrowable rError = (ResponseThrowable) t;
             KLog.e("code: " + rError.code);

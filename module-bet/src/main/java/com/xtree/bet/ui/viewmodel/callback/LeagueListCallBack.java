@@ -156,7 +156,6 @@ public class LeagueListCallBack extends HttpCallBack<MatchListRsp> {
 
     @Override
     public void onResult(MatchListRsp matchListRsp) {
-        System.out.println("================= LeagueListCallBack onResult ====================");
         if (mIsTimerRefresh) {
             if (matchListRsp.records.size() != mMatchids.size()) {
                 List<Long> matchIdList = new ArrayList<>();
@@ -239,7 +238,6 @@ public class LeagueListCallBack extends HttpCallBack<MatchListRsp> {
 
     @Override
     public void onError(Throwable t) {
-        System.out.println("================= LeagueListCallBack onError ====================");
         mViewModel.getUC().getDismissDialogEvent().call();
         if (t instanceof ResponseThrowable) {
             if(((ResponseThrowable) t).isHttpError){
