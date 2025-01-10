@@ -7,7 +7,6 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
 import android.app.Application;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -27,7 +26,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.tabs.TabLayout;
@@ -38,12 +36,11 @@ import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.BtRecordTime;
 import com.xtree.bet.bean.ui.BtResult;
 import com.xtree.bet.databinding.BtDialogBtRecordBinding;
-import com.xtree.bet.ui.activity.MainActivity;
 import com.xtree.bet.ui.adapter.BtRecordAdapter;
 import com.xtree.bet.ui.viewmodel.TemplateBtRecordModel;
+import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FBBtRecordModel;
-import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.pm.PMBtRecordModel;
 import com.xtree.bet.weight.AnimatedExpandableListViewMax;
 
@@ -114,6 +111,12 @@ public class BtRecordDialogFragment extends BaseDialogFragment<BtDialogBtRecordB
         binding.tabTitle.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                // 禁用选项卡点击
+                setTabsClickable(binding.tabTitle, false);
+
+                // 延迟恢复点击功能
+                binding.tabTitle.postDelayed(() -> setTabsClickable(binding.tabTitle, true), 1500);
+
                 viewModel.betRecord(tab.getPosition() != 0);
                 isSettled = tab.getPosition() != 0;
             }
@@ -130,6 +133,15 @@ public class BtRecordDialogFragment extends BaseDialogFragment<BtDialogBtRecordB
         });
         binding.tvClose.setOnClickListener(this);
         initToRecordText();
+    }
+
+    private void setTabsClickable(TabLayout tabLayout, boolean clickable) {
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            View tabView = ((ViewGroup) tabLayout.getChildAt(0)).getChildAt(i);
+            if (tabView != null) {
+                tabView.setEnabled(clickable);
+            }
+        }
     }
 
     private void initToRecordText() {

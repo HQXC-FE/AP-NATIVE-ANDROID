@@ -44,7 +44,7 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
     }
 
     /**
-     * 投注前查询指定玩法赔率
+     * 投注记录接口
      */
     public void betRecord(boolean isSettled) {
         mIsSettled = isSettled;
