@@ -45,6 +45,10 @@ public class PMListReq {
      */
     private String device;
     /**
+     * 三方token
+     */
+    private String _accessToken;
+    /**
      * 页数
      */
     private int cpn;
@@ -64,6 +68,7 @@ public class PMListReq {
     public String getEuid() {
         return euid;
     }
+
 
     public void setEuid(String euid) {
         this.euid = euid;
@@ -122,6 +127,14 @@ public class PMListReq {
         }
     }
 
+    public String getToken() {
+        return this._accessToken;
+    }
+
+    public void setToken(String token) {
+        this._accessToken = token;
+    }
+
     @Override
     public String toString() {
         return "PMListReq{" +
@@ -136,6 +149,7 @@ public class PMListReq {
                 ", cps=" + cps +
                 ", csid='" + csid + '\'' +
                 ", mids='" + mids + '\'' +
+                ", _accessToken='" + _accessToken + '\'' +
                 '}';
     }
 }

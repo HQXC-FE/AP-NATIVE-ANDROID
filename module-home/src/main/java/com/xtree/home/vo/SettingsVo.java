@@ -6,6 +6,9 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SettingsVo implements Parcelable {
 
@@ -21,6 +24,7 @@ public class SettingsVo implements Parcelable {
     public long ws_retry_number; // "3"//每次最大重连尝试次数
     public long ws_retry_waiting_time; // "300"超过最大尝试次数后的等待时间(秒), 需度过等待时间才能在发起连线尝试
     public long ws_expire_time; // "90"若检测到距离上次收到后端确认成功讯息(type为open)超过90秒, 這中間都沒有訊息傳入或是成功訊息, 则需主动断开连线然后重新连接。
+    public Map<String, List<Integer>> sport_match_cache;
     // 测速扣除百分比
     public long app_response_speed_calculation;
     //推荐测速上限设置
@@ -45,6 +49,18 @@ public class SettingsVo implements Parcelable {
         app_response_speed_calculation = in.readLong();
         app_response_speed_max = in.readInt();
         hichat_url_suffix = in.createStringArray();
+        // 读取 Map
+        int mapSize = in.readInt();  // 读取 Map 的大小
+        if (mapSize > 0) {
+            sport_match_cache = new HashMap<>();
+            for (int i = 0; i < mapSize; i++) {
+                String key = in.readString();  // 读取 key
+                List<Integer> value = in.readArrayList(Integer.class.getClassLoader());  // 读取 value (List<Integer>)
+                sport_match_cache.put(key, value);  // 添加到 Map 中
+            }
+        } else {
+            sport_match_cache = null;  // 如果 mapSize 是 0，设置为 null
+        }
     }
 
     public static final Creator<SettingsVo> CREATOR = new Creator<SettingsVo>() {
@@ -81,6 +97,16 @@ public class SettingsVo implements Parcelable {
         parcel.writeLong(app_response_speed_calculation);
         parcel.writeInt(app_response_speed_max);
         parcel.writeStringArray(hichat_url_suffix);
+        // 处理 Map<String, List<Integer>> sport_match_cache
+        if (sport_match_cache != null) {
+            parcel.writeInt(sport_match_cache.size());  // 写入 Map 的大小
+            for (Map.Entry<String, List<Integer>> entry : sport_match_cache.entrySet()) {
+                parcel.writeString(entry.getKey());  // 写入每个 key
+                parcel.writeList(entry.getValue());  // 写入每个 List<Integer>（值）
+            }
+        } else {
+            parcel.writeInt(0);  // 如果 sport_match_cache 为 null，写入大小为 0
+        }
     }
 
     @Override

@@ -29,7 +29,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
+import com.drake.net.reflect.TypeToken;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
@@ -52,6 +54,8 @@ import com.xtree.bet.BR;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.fb.HotLeague;
+import com.xtree.bet.bean.response.pm.MatchInfo;
+import com.xtree.bet.bean.response.pm.MatchListRsp;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.constant.Constants;
@@ -401,6 +405,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         binding.ivwGameSearch.setOnClickListener(this);
         binding.tvwCancel.setOnClickListener(this);
 
+
         tabSportAdapter = new TabSportAdapter(new ArrayList<>(), viewModel.getMatchGames());
         tabSportAdapter.setAnimationEnable(false);
         binding.tabSportType.setAdapter(tabSportAdapter);
@@ -412,7 +417,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         initNetFloatWindows();
 
         setChangeDomainVisible();
-
         //今日\滚球\早盘\串光\冠军切换
         binding.tabPlayMethod.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -1435,7 +1439,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
         });
         viewModel.statisticalData.observe(this, statisticalData -> {
-            //CfLog.i("mStatisticalData     " + new Gson().toJson(mStatisticalData));
+            CfLog.i("mStatisticalData     " + new Gson().toJson(mStatisticalData));
             this.mStatisticalData = statisticalData;
             updateStatisticalData();
         });
@@ -1634,6 +1638,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
             }
         }
+
         if (mLeagueList.isEmpty()) {
             binding.nsvLeague.setVisibility(View.GONE);
             binding.llEmpty.llEmpty.setVisibility(View.VISIBLE);
@@ -1726,7 +1731,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         //    newList.get(0).num = allCount;
         //}
         if (playMethodPos == 0 || playMethodPos == 3) {
-            if (list.get(0) != null) {
+            if (list != null && list.get(0) != null) {
                 list.get(0).num = mHotMatchCount;
             }
         }

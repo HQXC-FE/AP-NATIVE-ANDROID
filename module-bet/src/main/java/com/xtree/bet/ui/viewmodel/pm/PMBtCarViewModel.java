@@ -1,6 +1,10 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
 
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_400467;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
+
 import android.app.Application;
 
 import androidx.annotation.NonNull;
@@ -32,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;

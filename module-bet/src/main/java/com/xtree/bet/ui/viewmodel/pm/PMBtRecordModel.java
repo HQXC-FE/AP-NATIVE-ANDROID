@@ -1,6 +1,13 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
 
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_10000001;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_400524;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_400527;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
+
 import android.app.Application;
 import android.text.TextUtils;
 

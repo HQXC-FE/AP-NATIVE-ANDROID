@@ -16,7 +16,7 @@ public class BaseResponse<T> {
     private AuthVo authorization;
     public int timestamp; // 1700702751
     private T data;
-//    //原数据
+    //    //原数据
 //    @SerializedName("data")
 //    private Object data;
 //    //转换数据
@@ -54,6 +54,10 @@ public class BaseResponse<T> {
 
     public int getCode() {
         return code;
+    }
+
+    public String getMsg(){
+        return message;
     }
 
     public void setStatus(int status) {
