@@ -67,7 +67,7 @@ public interface PMApiService {
     Flowable<PMBaseResponse<List<MenuInfo>>> initPB(@QueryMap Map<String, String> map);
 
     /**
-     * 获取最新投注数据
+     * 获取最新投注数据，投注前查询指定玩法赔率
      * @return
      */
     @POST("/yewu13/v1/betOrder/client/queryLatestMarketInfo")

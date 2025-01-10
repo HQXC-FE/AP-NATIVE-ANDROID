@@ -57,7 +57,7 @@ public interface FBApiService {
     Flowable<BaseResponse<StatisticalInfo>> statistical(@Body Map<String, String> map);
 
     /**
-     * 按运动、分类类型统计可投注的赛事个数
+     * 获取最新投注数据，投注前查询指定玩法赔率
      * @return
      */
     @POST("/v1/order/batchBetMatchMarketOfJumpLine")

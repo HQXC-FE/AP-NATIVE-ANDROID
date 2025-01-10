@@ -26,6 +26,7 @@ import com.xtree.base.utils.NumberUtils;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.bet.R;
+import com.xtree.bet.bean.response.pm.BtConfirmInfo;
 import com.xtree.bet.bean.ui.BetConfirmOption;
 import com.xtree.bet.bean.ui.BetConfirmOptionUtil;
 import com.xtree.bet.bean.ui.CgOddLimit;
@@ -81,7 +82,7 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
     private BasePopupView ppw;
 
     private String mBanlance = "-1";
-    private boolean haveRealData = false;
+    private boolean haveRealData = false;//是否已经获取过一次投注赔率数据
 
     private KeyBoardListener mKeyBoardListener = new KeyBoardListener() {
         @Override
@@ -263,19 +264,26 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
         viewModel.btConfirmInfoDate.observe(this, betConfirmOptions -> {
             hasCloseOption = false;
             for (int i = 0; i < betConfirmOptionList.size(); i++) {
-                if (!hasCloseOption) {
-                    hasCloseOption = betConfirmOptionList.get(i).isClose();
-                }
                 if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {
                     betConfirmOptionList.get(i).setRealData(betConfirmOptions.get(i).getRealData());
                 } else {
                     for (BetConfirmOption option : betConfirmOptions) {
                         if (TextUtils.equals(((BetConfirmOption) betConfirmOptionList.get(i)).getMatchId(), ((BetConfirmOption) option).getMatchId())) {
+                            BtConfirmInfo btConfirmInfo = ((BtConfirmInfo) option.getRealData());
+                            if (!TextUtils.equals(betConfirmOptionList.get(i).getPlayType().getId(), btConfirmInfo.playId + "")) {
+                                //盘口已关闭
+                                ToastUtils.showLong("盘口玩法已关闭" + i);
+                                btConfirmInfo.matchHandicapStatus = 2;
+                            }
                             betConfirmOptionList.get(i).setRealData(option.getRealData());
                             break;
                         }
                     }
                 }
+                if (!hasCloseOption) {
+                    hasCloseOption = betConfirmOptionList.get(i).isClose();
+                }
+
             }
             haveRealData = true;
 

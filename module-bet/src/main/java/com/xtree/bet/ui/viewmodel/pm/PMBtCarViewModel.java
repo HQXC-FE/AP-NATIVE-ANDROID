@@ -75,7 +75,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
             betMatchMarket.setMatchInfoId(betConfirmOption.getMatch().getId());
             betMatchMarket.setMarketId(Long.valueOf(betConfirmOption.getPlayTypeId()));
             betMatchMarket.setOddsId(betConfirmOption.getOption().getId());
-            betMatchMarket.setPlayId(betConfirmOption.getPlayType().getId());
+            betMatchMarket.setPlayId(betConfirmOption.getPlayType().getId());//betConfirmOption.getPlayType().getId()  这个值就是hpid
             betMatchMarket.setMatchType(betConfirmOption.getOptionList().getMatchType());
             betMatchMarket.setSportId(Integer.valueOf(betConfirmOption.getMatch().getSportId()));
             betMatchMarket.setPlaceNum(betConfirmOption.getPlaceNum());
@@ -126,7 +126,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
     }
 
     /**
-     * 投注前查询指定玩法赔率
+     * 查询最大最小投注金额
      */
     private void queryMarketMaxMinBetMoney(List<BetConfirmOption> betConfirmOptionList) {
         BtCarCgReq btCarCgReq = new BtCarCgReq();
