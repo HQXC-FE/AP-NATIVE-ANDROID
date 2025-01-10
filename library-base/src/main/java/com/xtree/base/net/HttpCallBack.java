@@ -1,5 +1,6 @@
 package com.xtree.base.net;
 
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
 import static com.xtree.base.utils.EventConstant.EVENT_LOG_OUT;
 import static me.xtree.mvvmhabit.http.ExceptionHandle.ERROR.HIJACKED_ERROR;
 
@@ -85,7 +86,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             case HttpCallBack.CodeRule.CODE_401013://账号已登出，请重新登录
             case HttpCallBack.CodeRule.CODE_401026://账号已登出，请重新登录
             case HttpCallBack.CodeRule.CODE_400467:
-            case HttpCallBack.CodeRule.CODE_401038:
+            case CODE_401038:
             case HttpCallBack.CodeRule.CODE_400524:
             case HttpCallBack.CodeRule.CODE_400527:
             case HttpCallBack.CodeRule.CODE_408028:
@@ -213,6 +214,9 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             } else if (rError.code == 401) {
                 TagUtils.tagEvent(Utils.getContext(), "401 鉴权失败");
                 FastestTopDomainUtil.getInstance().start();
+            } else if (rError.code == CODE_401038) {
+                t.printStackTrace();
+                return;
             } else {
                 TagUtils.tagEvent(Utils.getContext(), "API 测速失败", DomainUtil.getApiUrl());
                 TagUtils.tagEvent(Utils.getContext(), "event_network_error", DomainUtil.getApiUrl() + "：" + t.getMessage());
