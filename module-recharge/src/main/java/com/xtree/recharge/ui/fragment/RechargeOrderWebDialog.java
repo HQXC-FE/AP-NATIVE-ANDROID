@@ -16,6 +16,7 @@ import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.QrcodeUtil;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.DialogRcOrderWebBinding;
@@ -82,6 +83,7 @@ public class RechargeOrderWebDialog extends BottomPopupView {
             binding.tvwQrcodeTitle.setVisibility(View.VISIBLE);
             binding.llQrcodeUrl.setVisibility(View.VISIBLE);
             binding.ivwQrcode.setVisibility(View.VISIBLE);
+            binding.ivwQrcode.setImageBitmap(QrcodeUtil.getQrcode(mRechargePayVo.qrcodeurl));
             binding.tvwOk.setVisibility(View.VISIBLE);
             binding.tvwShowPay.setVisibility(View.GONE); // 隐藏
             binding.tvwTipChannel.setVisibility(View.INVISIBLE);
