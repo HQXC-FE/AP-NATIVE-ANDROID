@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
 public class FBChampionListCallBack extends HttpCallBack<MatchListRsp> {
@@ -171,8 +171,8 @@ public class FBChampionListCallBack extends HttpCallBack<MatchListRsp> {
     @Override
     public void onError(Throwable t) {
         mViewModel.getUC().getDismissDialogEvent().call();
-        if (t instanceof ResponseThrowable) {
-            if (((ResponseThrowable) t).code == HttpCallBack.CodeRule.CODE_14010) {
+        if (t instanceof BusinessException) {
+            if (((BusinessException) t).code == HttpCallBack.CodeRule.CODE_14010) {
                 mViewModel.getGameTokenApi();
             } else {
                 mViewModel.getChampionList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, mPlayMethodType, mOddType, mIsTimerRefresh, mIsRefresh);

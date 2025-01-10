@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.KLog;
 
 public class FBStatisticalCacheCallBack extends HttpCallBack<FbStatisticalInfoCacheRsp> {
@@ -73,8 +73,8 @@ public class FBStatisticalCacheCallBack extends HttpCallBack<FbStatisticalInfoCa
     @Override
     public void onError(Throwable t) {
         super.onError(t);
-        if (t instanceof ResponseThrowable) {
-            ResponseThrowable rError = (ResponseThrowable) t;
+        if (t instanceof BusinessException) {
+            BusinessException rError = (BusinessException) t;
             KLog.e("##### FBStatisticalCacheCallBack onError: ", rError+" #####");
         }
     }

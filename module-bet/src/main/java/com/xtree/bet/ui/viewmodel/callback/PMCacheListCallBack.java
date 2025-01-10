@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.Utils;
 
 public class PMCacheListCallBack extends HttpCallBack<MatchListCacheRsp> {
@@ -157,8 +157,8 @@ public class PMCacheListCallBack extends HttpCallBack<MatchListCacheRsp> {
     public void onError(Throwable t) {
         mViewModel.getUC().getDismissDialogEvent().call();
         //if (!mIsTimerRefresh) {
-            if (t instanceof ResponseThrowable) {
-                ResponseThrowable error = (ResponseThrowable) t;
+            if (t instanceof BusinessException) {
+                BusinessException error = (BusinessException) t;
                 if (error.code == CODE_401026 || error.code == CODE_401013) {
                     mViewModel.getGameTokenApi();
                 } else if (error.code == CODE_401038) {

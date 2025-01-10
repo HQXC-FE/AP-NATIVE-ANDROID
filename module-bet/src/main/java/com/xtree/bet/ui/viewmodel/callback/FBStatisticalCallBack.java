@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 
 public class FBStatisticalCallBack extends HttpCallBack<StatisticalInfo> {
 

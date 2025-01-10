@@ -1,6 +1,6 @@
 package com.xtree.bet.ui.viewmodel.callback;
 
-import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FB;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
@@ -10,7 +10,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.net.FBHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
@@ -33,11 +33,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp> {
+public class LeagueListCacheCallBack extends HttpCallBack<FbMatchListCacheRsp> {
     private FBMainViewModel mViewModel;
     private boolean mHasCache;
     private boolean mIsTimerRefresh;
@@ -73,6 +73,29 @@ public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp>
      */
     private List<BaseBean> mNoliveMatchList = new ArrayList<>();
     private League mNoLiveheaderLeague;
+
+    public LeagueListCacheCallBack(FBMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
+                                   int currentPage, int playMethodType, int sportPos, String sportId,
+                                   int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchids,
+                                   boolean needSecondStep, int finalType, boolean isStepSecond) {
+        mViewModel = viewModel;
+        mHasCache = hasCache;
+        mIsTimerRefresh = isTimerRefresh;
+        mIsRefresh = isRefresh;
+        mCurrentPage = currentPage;
+        mPlayMethodType = playMethodType;
+        mSportPos = sportPos;
+        mSportId = sportId;
+        mOrderBy = orderBy;
+        mLeagueIds = leagueIds;
+        mSearchDatePos = searchDatePos;
+        mOddType = oddType;
+        mMatchids = matchids;
+        mNeedSecondStep = needSecondStep;
+        mFinalType = finalType;
+        mIsStepSecond = isStepSecond;
+        saveLeague();
+    }
 
     public Map<String, League> getMapSportType() {
         return mMapSportType;
@@ -124,29 +147,6 @@ public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp>
         }
     }
 
-    public LeagueListCacheCallBack(FBMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
-                                   int currentPage, int playMethodType, int sportPos, String sportId,
-                                   int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchids,
-                                   boolean needSecondStep, int finalType, boolean isStepSecond) {
-        mViewModel = viewModel;
-        mHasCache = hasCache;
-        mIsTimerRefresh = isTimerRefresh;
-        mIsRefresh = isRefresh;
-        mCurrentPage = currentPage;
-        mPlayMethodType = playMethodType;
-        mSportPos = sportPos;
-        mSportId = sportId;
-        mOrderBy = orderBy;
-        mLeagueIds = leagueIds;
-        mSearchDatePos = searchDatePos;
-        mOddType = oddType;
-        mMatchids = matchids;
-        mNeedSecondStep = needSecondStep;
-        mFinalType = finalType;
-        mIsStepSecond = isStepSecond;
-        saveLeague();
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -157,7 +157,7 @@ public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp>
 
     @Override
     public void onResult(FbMatchListCacheRsp fbMatchListCacheRsp) {
-        MatchListRsp  matchListRsp = fbMatchListCacheRsp.getData();
+        MatchListRsp matchListRsp = fbMatchListCacheRsp.getData();
         if (mIsTimerRefresh) {
             if (matchListRsp.records.size() != mMatchids.size()) {
                 List<Long> matchIdList = new ArrayList<>();
@@ -170,7 +170,7 @@ public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp>
         }
         mViewModel.firstNetworkFinishData.call();
         synchronized (this) {
-            if(mIsRefresh){
+            if (mIsRefresh) {
                 mNoLiveheaderLeague = null;
             }
             if (mIsRefresh && !mNeedSecondStep) {
@@ -200,17 +200,17 @@ public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp>
                 if (mNeedSecondStep) {
                     mIsStepSecond = true;
                     mLiveMatchList.addAll(matchListRsp.records);
-                    if(TextUtils.isEmpty(mViewModel.mSearchWord)) {
+                    if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
                         leagueGoingList(matchListRsp.records);
                     }
                     mViewModel.saveLeague(this);
                     mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, 3, mSearchDatePos, mOddType, false, mIsRefresh, mIsStepSecond);
                 } else {
                     mNoliveMatchList.addAll(matchListRsp.records);
-                    if(TextUtils.isEmpty(mViewModel.mSearchWord)){
+                    if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
                         leagueAdapterList(matchListRsp.records);
                         mViewModel.leagueLiveListData.postValue(mLeagueList);
-                    }else{
+                    } else {
                         searchMatch(mViewModel.mSearchWord);
                     }
 
@@ -221,10 +221,10 @@ public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp>
                 }
             } else {
                 mNoliveMatchList.addAll(matchListRsp.records);
-                if(TextUtils.isEmpty(mViewModel.mSearchWord)){
+                if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
                     leagueAdapterList(matchListRsp.records);
                     mViewModel.leagueNoLiveListData.postValue(mLeagueList);
-                }else{
+                } else {
                     searchMatch(mViewModel.mSearchWord);
                 }
 
@@ -241,8 +241,8 @@ public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp>
     @Override
     public void onError(Throwable t) {
         mViewModel.getUC().getDismissDialogEvent().call();
-        if (t instanceof ResponseThrowable) {
-            if(((ResponseThrowable) t).isHttpError){
+        if (t instanceof BusinessException) {
+            if (((BusinessException) t).isHttpError) {
                 UploadExcetionReq uploadExcetionReq = new UploadExcetionReq();
                 String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
                 String domainUrl = null;
@@ -254,10 +254,10 @@ public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp>
                     uploadExcetionReq.setLogTag("fb_url_error");
                 }
                 uploadExcetionReq.setApiUrl(domainUrl);
-                uploadExcetionReq.setLogType("" + ((ResponseThrowable) t).code);
-                uploadExcetionReq.setMsg(((ResponseThrowable) t).message);
+                uploadExcetionReq.setLogType("" + ((BusinessException) t).code);
+                uploadExcetionReq.setMsg(((BusinessException) t).message);
                 mViewModel.firstNetworkExceptionData.postValue(uploadExcetionReq);
-            }else if (((ResponseThrowable) t).code == CODE_14010) {
+            } else if (((BusinessException) t).code == CODE_14010) {
                 mViewModel.getGameTokenApi();
             } else {
                 mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, mPlayMethodType, mSearchDatePos, mOddType, mIsTimerRefresh, mIsRefresh, mIsStepSecond);
@@ -265,12 +265,12 @@ public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp>
         }
     }
 
-    public void searchMatch(String searchWord){
+    public void searchMatch(String searchWord) {
         mLeagueList.clear();
         mMapLeague.clear();
         mMapSportType.clear();
         mNoLiveheaderLeague = null;
-        if(!TextUtils.isEmpty(searchWord)) {
+        if (!TextUtils.isEmpty(searchWord)) {
             if (!mLiveMatchList.isEmpty()) {
                 List<MatchInfo> matchInfoList = new ArrayList<>();
                 for (BaseBean matchInfo : mLiveMatchList) {
@@ -291,8 +291,8 @@ public class LeagueListCacheCallBack extends FBHttpCallBack<FbMatchListCacheRsp>
                 }
                 leagueAdapterList(matchInfoList);
             }
-        }else{
-            if(!mLiveMatchList.isEmpty()) {
+        } else {
+            if (!mLiveMatchList.isEmpty()) {
                 List<MatchInfo> matchInfoList = new ArrayList<>();
                 for (BaseBean matchInfo : mLiveMatchList) {
                     matchInfoList.add((MatchInfo) matchInfo);

@@ -1,5 +1,9 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_14010;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
@@ -287,8 +291,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                 @Override
                 public void onError(Throwable t) {
                     getUC().getDismissDialogEvent().call();
-                    if (t instanceof ResponseThrowable) {
-                        ResponseThrowable error = (ResponseThrowable) t;
+                    if (t instanceof BusinessException) {
+                        BusinessException error = (BusinessException) t;
                         if (error.code == CODE_401026 || error.code == CODE_401013 || error.code == CODE_401013) {
                             getGameTokenApi();
 
@@ -313,8 +317,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                 @Override
                 public void onError(Throwable t) {
                     getUC().getDismissDialogEvent().call();
-                    if (t instanceof ResponseThrowable) {
-                        ResponseThrowable error = (ResponseThrowable) t;
+                    if (t instanceof BusinessException) {
+                        BusinessException error = (BusinessException) t;
                         if (error.code == CODE_401026 || error.code == CODE_401013 || error.code == CODE_401013) {
                             getGameTokenApi();
 
@@ -616,8 +620,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                 @Override
                 public void onError(Throwable t) {
                     getUC().getDismissDialogEvent().call();
-                    if (t instanceof ResponseThrowable) {
-                        ResponseThrowable error = (ResponseThrowable) t;
+                    if (t instanceof BusinessException) {
+                        BusinessException error = (BusinessException) t;
                         if (error.code == CODE_401026 || error.code == CODE_401013 || error.code == CODE_14010) {
                             getGameTokenApi();
                         } else if (error.code == CODE_401038) {
@@ -688,11 +692,11 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                 @Override
                 public void onError(Throwable t) {
                     getUC().getDismissDialogEvent().call();
-                    if (t instanceof ResponseThrowable) {
-                        ResponseThrowable error = (ResponseThrowable) t;
+                    if (t instanceof BusinessException) {
+                        BusinessException error = (BusinessException) t;
                         if (error.code == CODE_401026 || error.code == CODE_401013 || error.code == CODE_14010 ) {
                             getGameTokenApi();
-                        } else if (error.code == HttpCallBack.CodeRule.CODE_401038) {
+                        } else if (error.code == CODE_401038) {
                             super.onError(t);
                             tooManyRequestsEvent.call();
                         } else {

@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
@@ -160,10 +160,10 @@ public class FBChampionListCacheCallBack extends HttpCallBack<FbMatchListCacheRs
     @Override
     public void onError(Throwable t) {
         mViewModel.getUC().getDismissDialogEvent().call();
-        if (t instanceof ResponseThrowable) {
-            ResponseThrowable rError = (ResponseThrowable) t;
+        if (t instanceof BusinessException) {
+            BusinessException rError = (BusinessException) t;
             KLog.e("##### FBChampionListCacheCallBack onError: ", rError+" #####");
-            if (((ResponseThrowable) t).code == HttpCallBack.CodeRule.CODE_14010) {
+            if (((BusinessException) t).code == HttpCallBack.CodeRule.CODE_14010) {
                 mViewModel.getGameTokenApi();
             } else {
                 mViewModel.getChampionList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, mPlayMethodType, mOddType, mIsTimerRefresh, mIsRefresh);
