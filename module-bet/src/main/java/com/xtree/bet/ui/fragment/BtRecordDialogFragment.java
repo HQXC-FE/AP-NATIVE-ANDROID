@@ -115,7 +115,7 @@ public class BtRecordDialogFragment extends BaseDialogFragment<BtDialogBtRecordB
                 setTabsClickable(binding.tabTitle, false);
 
                 // 延迟恢复点击功能
-                binding.tabTitle.postDelayed(() -> setTabsClickable(binding.tabTitle, true), 1500);
+                binding.tabTitle.postDelayed(() -> setTabsClickable(binding.tabTitle, true), 1000);
 
                 viewModel.betRecord(tab.getPosition() != 0);
                 isSettled = tab.getPosition() != 0;
