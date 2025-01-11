@@ -9,15 +9,15 @@ import android.os.Message;
 import androidx.annotation.Nullable;
 
 import com.xtree.base.utils.CfLog;
+import com.xtree.live.messenger.ILiveInputMessenger;
+import com.xtree.live.messenger.LiveInputMessenger;
 import com.xtree.service.LooperHeartHandler;
 import com.xtree.service.message.MessageType;
-import com.xtree.service.messenger.IInputMessenger;
-import com.xtree.service.messenger.InputMessenger;
 
 public class LiveWebSocketService extends Service {
     private LivePushClient pushClient;
     //应用内消息传递
-    private IInputMessenger messenger;
+    private ILiveInputMessenger messenger;
     private long checkInterval = 30;
     private long retryNumber = 3;
     private long retryWaitingTime = 300;
@@ -54,7 +54,7 @@ public class LiveWebSocketService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        messenger = new InputMessenger() {
+        messenger = new LiveInputMessenger() {
 
             @Override
             public void handleMessage(Message msg) {
@@ -79,7 +79,6 @@ public class LiveWebSocketService extends Service {
                         break;
                     case LOGOUT:
                         pushClient.stopSocket();
-                        //pushClient.stopWatchdog();
                         isLogin = false;
                         break;
                     default:
@@ -111,6 +110,5 @@ public class LiveWebSocketService extends Service {
         if (pushClient != null) {
             pushClient.stopSocket();
         }
-        //pushClient.stopWatchdog();
     }
 }

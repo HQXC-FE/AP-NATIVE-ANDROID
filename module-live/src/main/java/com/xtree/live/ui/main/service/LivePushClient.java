@@ -9,10 +9,12 @@ import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xtree.base.utils.CfLog;
+import com.xtree.live.messenger.ILiveInputMessenger;
 import com.xtree.live.ui.main.service.message.LiveMessageCenterThread;
+import com.xtree.live.ui.main.service.response.LiveRoomChatResponse;
 import com.xtree.service.IWebSocket;
 import com.xtree.service.WebSocketManager;
-import com.xtree.service.messenger.IInputMessenger;
+import com.xtree.service.message.MessageType;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -25,30 +27,17 @@ import okhttp3.WebSocketListener;
 public class LivePushClient implements IWebSocket {
     private LiveMessageCenterThread messageCenter;
     HashMap<String, Object> map;
-    //private boolean isManualClose = false; // 标记是否为主动关闭
-    //String url = "";
-    //long checkInterval;
-    //private ScheduledExecutorService watchdogExecutor; // Watchdog 定时任务
-    //private int retryCount = 0; // 重连次数
-    //private static final int MAX_RETRIES = 3; // 最大重连次数
+    Gson gson = new Gson();
 
     //应用内消息传递
-    private IInputMessenger inputMessenger;
+    private ILiveInputMessenger inputMessenger;
 
-    public LivePushClient(IInputMessenger inputMessenger) {
+    public LivePushClient(ILiveInputMessenger inputMessenger) {
         this.inputMessenger = inputMessenger;
-        //watchdogExecutor = Executors.newSingleThreadScheduledExecutor(); // Watchdog 定时任务线程池
     }
 
     @Override
     public void connectSocket(String url, long checkInterval) {
-        //this.url = url;
-        //this.checkInterval = checkInterval;
-        //if (retryCount > MAX_RETRIES) {
-        //    CfLog.e("超过最大重连次数，停止重连并通知用户！");
-        //    stopWatchdog();
-        //    return;
-        //}
         if (messageCenter != null) {
             stopSocket();
         }
@@ -68,9 +57,6 @@ public class LivePushClient implements IWebSocket {
 
             @Override
             public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
-                //isManualClose = false; // 重置主动关闭标志
-                //retryCount = 0; // 重置重连计数
-                //startWatchdog(); // 开始监测
                 try {
                     //text="{\"type\":\"message\",\"fd\":9197,\"data\":{\"subject\":\"\\u5145\\u503c\\u7533\\u8bf7\",\"messageid\":41450873},\"timestamp\":1730360802}";
                     if (text == null || text.isEmpty()) {
@@ -78,7 +64,7 @@ public class LivePushClient implements IWebSocket {
                         return;
                     }
                     CfLog.i("socket message:" + text);
-                    Gson gson = new Gson();
+                    gson = new Gson();
                     Type type = new TypeToken<HashMap<String, Object>>() {
                     }.getType();
                     try {
@@ -99,12 +85,13 @@ public class LivePushClient implements IWebSocket {
                             break;
                         case "msg":
                             CfLog.i("消息");
-                            //if (inputMessenger != null && remoteMessage.getData() != null && remoteMessage.getData().size() > 0) {
-                            //    inputMessenger.sendMessage(MessageType.Output.REMOTE_MSG, remoteMessage.getData().get(0));
-                            //}
+                            LiveRoomChatResponse liveRoomChatVo = gson.fromJson(text, LiveRoomChatResponse.class);
+                            if (inputMessenger != null && liveRoomChatVo != null) {
+                                inputMessenger.sendMessage(MessageType.Output.REMOTE_MSG, liveRoomChatVo);
+                            }
                             break;
                         case "send":
-                            CfLog.i("消息");
+                            CfLog.i("直播间消息");
                             break;
                         case "close"://服务端返回失败，主动断开
                             if (messageCenter != null) {
@@ -160,35 +147,4 @@ public class LivePushClient implements IWebSocket {
         }
         return false;
     }
-
-    //private void handleDisconnection() {
-    //    if (!isManualClose && retryCount < MAX_RETRIES) {
-    //        retryCount++;
-    //        CfLog.e("非主动断线，开始第 " + retryCount + " 次重连...");
-    //        connectSocket(url, checkInterval);
-    //    } else if (retryCount >= MAX_RETRIES) {
-    //        CfLog.e("达到最大重连次数，停止所有操作！");
-    //        stopSocket();
-    //    }
-    //}
-
-    //// 启动 Watchdog 监测连接状态
-    //private void startWatchdog() {
-    //    stopWatchdog(); // 确保没有重复的任务
-    //    watchdogExecutor.scheduleWithFixedDelay(() -> {
-    //        CfLog.e("检测中...");
-    //        if (messageCenter == null) {
-    //            CfLog.e("连接异常，尝试重连...");
-    //            handleDisconnection();
-    //        }
-    //    }, 5, 5, TimeUnit.SECONDS); // 每 5 秒检查一次连接状态
-    //}
-
-    //// 停止 Watchdog
-    //public void stopWatchdog() {
-    //    if (watchdogExecutor != null && !watchdogExecutor.isShutdown()) {
-    //        watchdogExecutor.shutdownNow();
-    //        watchdogExecutor = Executors.newSingleThreadScheduledExecutor(); // 重置线程池
-    //    }
-    //}
 }
