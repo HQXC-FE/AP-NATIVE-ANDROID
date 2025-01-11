@@ -63,13 +63,13 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
                     ArrayList<BindModel> bindModels = datas.getValue();
                     int modelPosition = bindingViewHolder.getModelPosition();
                     LotteryOrderModel model = (LotteryOrderModel) bindModels.get(modelPosition);
+
+                    bindingViewHolder.getAdapter().getMutable().remove(modelPosition);
+                    bindingViewHolder.getAdapter().notifyItemRemoved(modelPosition);
+
                     ArrayList<LotteryOrderModel> betOrders = betsViewModel.betOrdersLiveData.getValue();
                     betOrders.remove(model);
                     betsViewModel.betOrdersLiveData.setValue(betOrders);
-
-                    bindModels.remove(modelPosition);
-                    bindingViewHolder.getAdapter().getMutable().remove(modelPosition);
-                    bindingViewHolder.getAdapter().notifyItemRemoved(modelPosition);
 
                     checkOrder();
                 });
