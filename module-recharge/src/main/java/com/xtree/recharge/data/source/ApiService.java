@@ -104,7 +104,7 @@ public interface ApiService {
      * 获取 充值类型详情 (跳转链接用的)
      */
     //@GET("/api/deposit/payments?")
-    @GET("/api/deposit/info/{bid}")
+    @GET("/api/deposit/info/{bid}?cache=0")
     Flowable<BaseResponse<RechargeVo>> getPayment(@Path("bid") String bid);
 
     /**
