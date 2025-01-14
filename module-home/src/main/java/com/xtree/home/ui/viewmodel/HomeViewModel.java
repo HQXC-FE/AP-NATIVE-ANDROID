@@ -448,7 +448,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                 .subscribeWith(new HttpCallBack<SettingsVo>() {
                     @Override
                     public void onResult(SettingsVo vo) {
-                        CfLog.i("****** SettingsVo " + vo.toString());
+                        CfLog.e("****** SettingsVo " + vo.toString());
                         public_key = vo.public_key
                                 .replace("\n", "")
                                 .replace("\t", " ")
@@ -521,11 +521,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                 .subscribeWith(new HttpCallBack<ProfileVo>() {
                     @Override
                     public void onResult(ProfileVo vo) {
-                        CfLog.i(vo.toString());
+                        CfLog.e("----ProfileVo ===" + vo.toString());
                         SPUtils.getInstance().put(SPKeyGlobal.USER_AUTO_THRAD_STATUS, vo.auto_thrad_status);
                         SPUtils.getInstance().put(SPKeyGlobal.HOME_PROFILE, new Gson().toJson(vo));
                         SPUtils.getInstance().put(SPKeyGlobal.USER_ID, vo.userid);
                         SPUtils.getInstance().put(SPKeyGlobal.USER_NAME, vo.username);
+                        SPUtils.getInstance().put(SPKeyGlobal.APP_REGISTER_CODE, vo.register_promotion_code);
                         liveDataProfile.setValue(vo);
                     }
 

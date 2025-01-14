@@ -84,12 +84,17 @@ public class AppUtil {
 
         if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
             serviceLink =SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK) ;
+            if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)))
+            {
+                serviceLink = "&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}";
+            }
+
         }else {
             serviceLink =Constant.URL_CUSTOMER_SERVICE ;
         }
-    /*    CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
+        CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
 
-        CfLog.e("goCustomerService  ---- sDomainUtil.getH5Domain2()" +DomainUtil.getH5Domain2() + serviceLink);
+        /*CfLog.e("goCustomerService  ---- sDomainUtil.getH5Domain2()" +DomainUtil.getH5Domain2() + serviceLink);
            goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);*/
         goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink);
     }
