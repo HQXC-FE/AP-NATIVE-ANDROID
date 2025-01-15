@@ -15,7 +15,7 @@ import com.xtree.base.widget.LoadingDialog;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.Injection;
 import com.xtree.lottery.data.source.vo.LotteryOrderVo;
-import com.xtree.lottery.databinding.DialogBtCpDetailBinding;
+import com.xtree.lottery.databinding.DialogLotteryBtCpDetailBinding;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 
 import me.xtree.mvvmhabit.utils.Utils;
@@ -24,10 +24,9 @@ public class BtCpDetailDialog extends BottomPopupView {
 
     //private Context ctx;
     LifecycleOwner owner;
-    private String id; // D20240203-192***CED
-
     //ReportViewModel viewModel;
-    DialogBtCpDetailBinding binding;
+    DialogLotteryBtCpDetailBinding binding;
+    private String id; // D20240203-192***CED
     private LotteryViewModel viewModel;
 
     private BtCpDetailDialog(@NonNull Context context) {
@@ -56,7 +55,7 @@ public class BtCpDetailDialog extends BottomPopupView {
     }
 
     private void initView() {
-        binding = DialogBtCpDetailBinding.bind(findViewById(R.id.ll_root));
+        binding = DialogLotteryBtCpDetailBinding.bind(findViewById(R.id.ll_root));
         binding.ivwClose.setOnClickListener(v -> dismiss());
     }
 
@@ -99,7 +98,7 @@ public class BtCpDetailDialog extends BottomPopupView {
 
     @Override
     protected int getImplLayoutId() {
-        return R.layout.dialog_bt_cp_detail;
+        return R.layout.dialog_lottery_bt_cp_detail;
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.xtree.lottery.R
 import com.xtree.lottery.data.source.vo.LotteryOrderVo
 
 
-class CpReportAdapter(list: ArrayList<LotteryOrderVo>) : BaseQuickAdapter<LotteryOrderVo, BaseViewHolder>(R.layout.item_report_cp, list) {
+class CpReportAdapter(list: ArrayList<LotteryOrderVo>) : BaseQuickAdapter<LotteryOrderVo, BaseViewHolder>(R.layout.item_lottery_report_cp, list) {
 
     override fun convert(holder: BaseViewHolder, item: LotteryOrderVo) {
         holder.setText(R.id.tvw_lottery_name, item.lotteryname)
