@@ -18,6 +18,7 @@ android {
             resValue "string", "mixpanel_token", "aeb0e83d57c9c765a9f0c1631f16e1d8"
             resValue "bool", "is_tag", "false" // 是否开启统计
             resValue "string", "ms_secret_key", "2cfde5ab-d271-462f-9b67-a6bdabf4c5ee"
+            resValue "string", "sentry_dsn", "https://383170354668314c6a6b6ca3527d1810@o4507447554539520.ingest.us.sentry.io/4507604245217280"
             // 后面可能会改成 https://preyiang22test.oxldkm.com 如后续有连线问题 尝试看看
             resValue "string", "domain_api_list", "https://preyiang.oxldkm.com;"
             resValue "string", "domain_url_list", "https://preyiang.oxldkm.com;"
@@ -39,6 +40,7 @@ android {
             resValue "string", "mixpanel_token", "cce6df315eee2c445da416c6b717f114"
             resValue "bool", "is_tag", "true" // 是否开启统计
             resValue "string", "ms_secret_key", "2cfde5ab-d271-462f-9b67-a6bdabf4c5ee"
+            resValue "string", "sentry_dsn", "https://383170354668314c6a6b6ca3527d1810@o4507447554539520.ingest.us.sentry.io/4507604245217280"
             resValue "string", "domain_api_list", "https://app1.ghxzeem.xyz;" +
                     "https://app1.ndlyceg.xyz;" +
                     "https://app1.wwamilt.xyz;" +
