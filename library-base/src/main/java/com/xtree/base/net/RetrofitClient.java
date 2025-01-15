@@ -99,6 +99,8 @@ public class RetrofitClient {
                 //.addInterceptor(new BaseInterceptor(headers))
                 .addInterceptor(new HeaderInterceptor())
                 .addInterceptor(new CacheInterceptor(mContext))
+                .addInterceptor(new UrlModifyingInterceptor())
+                .addInterceptor(new ExceptionInterceptor())
                 .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
                 //.addInterceptor(new HttpLoggingInterceptor(message -> KLog.d(message)).setLevel(HttpLoggingInterceptor.Level.BODY))
                 .addInterceptor(new LoggingInterceptor
@@ -122,6 +124,10 @@ public class RetrofitClient {
                 .baseUrl(url)
                 .build();
 
+    }
+
+    public OkHttpClient getOkHttpClient() {
+        return okHttpClient;
     }
 
     /**
