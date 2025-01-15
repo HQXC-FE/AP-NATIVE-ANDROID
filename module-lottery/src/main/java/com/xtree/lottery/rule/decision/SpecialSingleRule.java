@@ -84,7 +84,7 @@ public class SpecialSingleRule {
             facts.put("formatCodes", currentCodes);
 
             // 组选去重
-            if (flagList.contains("group")) {
+            if (flagList != null && flagList.contains("group")) {
                 handleGroupCodes(currentCodes, specialSingle, message, facts);
             }
 
