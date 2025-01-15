@@ -23,6 +23,7 @@ import com.xtree.lottery.ui.view.viewmodel.BetInputViewModel;
 import com.xtree.lottery.utils.LotteryAnalyzer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -95,6 +96,9 @@ public class BetInputView extends BetBaseView {
             return;
         }
 
+        //格式化输入的字符串
+        s = binding.getModel().reFormatNums(s);
+
         Set<String> validNumbers = LotteryAnalyzer.getValidNumbers(s, Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
 
         if (validNumbers.size() == 0) {
@@ -102,7 +106,14 @@ public class BetInputView extends BetBaseView {
             return;
         }
 
-        String codes = String.join("&", validNumbers);
+        Set<String> updatedNumbers = new HashSet<>();
+        for (String n : validNumbers) {
+            updatedNumbers.add(n.replaceAll(" ", ""));
+        }
+        //替换原集合内容
+        validNumbers = updatedNumbers;
+
+        String codes = String.join(",", validNumbers);
 
         LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
         betOrderData.setCodes(codes);

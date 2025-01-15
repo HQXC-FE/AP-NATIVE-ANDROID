@@ -15,6 +15,8 @@ import com.xtree.lottery.R;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.utils.LotteryAnalyzer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -104,5 +106,30 @@ public class BetInputViewModel {
                 .dismissOnTouchOutside(true)
                 .dismissOnBackPressed(true)
                 .asCustom(dialog).show();
+    }
+
+
+    /**
+     * 格式化输入字符串匹配规则
+     */
+    public String reFormatNums(String input) {
+        if (TextUtils.isEmpty(input)) {
+            return input;
+        }
+
+        StringBuilder formatted = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            char currentChar = input.charAt(i);
+            // 如果是数字，且前一个字符是数字，插入空格
+            if (i > 0 && Character.isDigit(currentChar)) {
+                char previousChar = input.charAt(i - 1);
+                if (Character.isDigit(previousChar)) {
+                    formatted.append(' ');
+                }
+            }
+            formatted.append(currentChar);
+        }
+
+        return formatted.toString();
     }
 }
