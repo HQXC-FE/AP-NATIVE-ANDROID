@@ -39,7 +39,6 @@ public class CustomerServiceActivity extends BaseActivity<ActivityCustomerServic
     private BasePopupView basePopupView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ToastUtils.showError("CustomerServiceActivity");
         //修复Android 8.0版本 Activity 设置为透明主题造成的崩溃
         if (Build.VERSION.SDK_INT == 26 && isTranslucentOrFloating()) {
             fixOrientation(this);
