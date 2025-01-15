@@ -331,25 +331,33 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 if (isAgent) {
                     SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, DomainUtil.getApiUrl());
                 } else {
-                    SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, BtDomainUtil.getDomainUrl().get(useLinePosition));
+                    if (!TextUtils.isEmpty(BtDomainUtil.getDomainUrl().get(useLinePosition))) {
+                        SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, BtDomainUtil.getDomainUrl().get(useLinePosition));
+                    }
                 }
             } else if (TextUtils.equals(mPlatform, PLATFORM_FB)) {
                 if (isAgent) {
                     SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, DomainUtil.getApiUrl());
                 } else {
-                    SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, BtDomainUtil.getDomainUrl().get(useLinePosition));
+                    if (!TextUtils.isEmpty(BtDomainUtil.getDomainUrl().get(useLinePosition))) {
+                        SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, BtDomainUtil.getDomainUrl().get(useLinePosition));
+                    }
                 }
             } else if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                 if (isAgent) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, DomainUtil.getApiUrl());
                 } else {
-                    SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, BtDomainUtil.getDomainUrl().get(useLinePosition));
+                    if (!TextUtils.isEmpty(BtDomainUtil.getDomainUrl().get(useLinePosition))) {
+                        SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, BtDomainUtil.getDomainUrl().get(useLinePosition));
+                    }
                 }
             } else {
                 if (isAgent) {
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, DomainUtil.getApiUrl());
                 } else {
-                    SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, BtDomainUtil.getDomainUrl().get(useLinePosition));
+                    if (!TextUtils.isEmpty(BtDomainUtil.getDomainUrl().get(useLinePosition))) {
+                        SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, BtDomainUtil.getDomainUrl().get(useLinePosition));
+                    }
                 }
             }
         } catch (IndexOutOfBoundsException e) {
@@ -1159,12 +1167,14 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, DomainUtil.getApiUrl());
                 } else {
+                    System.out.println("########### MainActivity baseUrl 333333 ###########"+DomainUtil.getApiUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, DomainUtil.getApiUrl());
                 }
             } else {
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, BtDomainUtil.getDefaultPmxcDomainUrl());
                 } else {
+                    System.out.println("########### MainActivity baseUrl 44444 ###########"+ BtDomainUtil.getDefaultPmDomainUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, BtDomainUtil.getDefaultPmDomainUrl());
                 }
             }
