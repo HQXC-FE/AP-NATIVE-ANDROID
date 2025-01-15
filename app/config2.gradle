@@ -27,19 +27,14 @@ android {
             versionName "1.0.8"
             versionCode 108
             resValue "string", "app_name", "恒行5"
-            resValue "string", "domain_api", "http://175.27.143.79:16811"
+            resValue "string", "domain_api", "http://119.45.14.75:16811"
             resValue "string", "domain_url", "https://www.hxing5vip3.com"
             resValue "string", "channel_name", "hengxing5"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
             resValue "bool", "is_tag", "true" // 是否开启统计
             resValue "string", "mixpanel_token", "6a1ec9cae116d7a920a4697a46599ca9"
             resValue "string", "ms_secret_key", "139dbbd0-5ab4-4be6-b197-e3af17a95279"
-            resValue "string", "domain_api_list", "http://175.27.143.79:16811;" +
-                    "http://111.231.12.228:16811;" +
-                    "http://139.186.156.33:16811;" +
-                    "http://43.129.64.206:16811;" +
-                    "http://43.134.194.101:16811;" +
-                    "https://app1.d6d7vh.click;" +
+            resValue "string", "domain_api_list", "https://app1.d6d7vh.click;" +
                     "https://app1.a4x6ur.click;" +
                     "https://app1.k2j8gm.click;" +
                     "https://app1.p2e2vs.click;" +
@@ -52,6 +47,16 @@ android {
                     "https://app3.j3e7ms.click;" +
                     "https://app3.x1e9fu.click;" +
                     "https://app4.z3p9tu.click;" +
+                    "http://119.45.14.75:16811;" +
+                    "http://119.45.63.172:16811  ;" +
+                    "http://146.56.229.55:16811;" +
+                    "http://43.143.77.164:16811;" +
+                    "http://101.43.108.235:16811;" +
+                    "http://139.186.137.79:16811;" +
+                    "http://124.221.214.240:16811;" +
+                    "http://139.186.201.117:16811;" +
+                    "http://43.155.0.147:16811;" +
+                    "http://43.154.246.56:16811;" +
                     "https://app5.t4v1su.click;"
             resValue "string", "domain_url_list", "https://h51.x9f4ke.click;" +
                     "https://h51.v3t8zx.click;" +
