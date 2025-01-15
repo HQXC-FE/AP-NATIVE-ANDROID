@@ -165,7 +165,7 @@ public class LotteryAnalyzer {
     }
 
     //输入筛选正则
-    private static final String INPUT_REGEX = "[,;；，]+";
+    private static final String INPUT_REGEX = "[,;；，\n]+";
 
     // 返回符合规则的号码集合
     public static Set<String> getValidNumbers(String input, int numCount, int numMax, int digitCount) {
