@@ -291,9 +291,9 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
         HashMap<String, Object> params = new HashMap<>();
         params.put("lt_trace_if", "no");
 
-        model.bet(lotteryBetRequest, params).subscribe(new HttpCallBack<BaseResponse>() {
+        model.bet(lotteryBetRequest, params).subscribe(new HttpCallBack<Object>() {
             @Override
-            public void onResult(BaseResponse response) {
+            public void onResult(Object response) {
 
                 betLiveData.setValue(null);
                 clearBetEvent.setValue(null);

@@ -141,9 +141,9 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
         if (chasingNumberParams.getValue() != null && chasingNumberParams.getValue().getParmes() != null) {
             parmes.putAll(chasingNumberParams.getValue().getParmes());
         }
-        model.bet(lotteryBetRequest, parmes).subscribe(new HttpCallBack<BaseResponse>() {
+        model.bet(lotteryBetRequest, parmes).subscribe(new HttpCallBack<Object>() {
             @Override
-            public void onResult(BaseResponse response) {
+            public void onResult(Object response) {
                 chasingNumberParams.setValue(null);
                 betsViewModel.betLiveData.setValue(null);
                 betsViewModel.betOrdersLiveData.setValue(null);
