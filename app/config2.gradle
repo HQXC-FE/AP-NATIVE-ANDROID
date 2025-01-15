@@ -28,7 +28,7 @@ android {
             versionName "1.4.4"
             versionCode 144
             resValue "string", "app_name", "XC Sports"
-            resValue "string", "domain_api", "http://139.186.224.209:16803"
+            resValue "string", "domain_api", "http://139.186.201.117:16803"
             resValue "string", "domain_url", "https://h61.saaen.com:16801"
             resValue "string", "channel_name", "xingcai"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
@@ -55,11 +55,16 @@ android {
                     "https://app.hstxdl.com:16801;" +
                     "https://app.qiuchongyao.com:16801;" +
                     "https://app.tiantianwangluo.com:16801;" +
-                    "http://43.135.76.237:16803;" +
-                    "http://43.154.74.20:16803;" +
-                    "http://119.45.131.29:16803;" +
-                    "http://124.222.34.63:16803;" +
-                    "http://139.186.224.209:16803"
+                    "http://43.155.0.147:16803;" +
+                    "http://43.154.246.56:16803;" +
+                    "http://119.45.14.75:16803;" +
+                    "http://119.45.63.172:16803  ;" +
+                    "http://146.56.229.55:16803;" +
+                    "http://43.143.77.164:16803;" +
+                    "http://101.43.108.235:16803;" +
+                    "http://139.186.137.79:16803;" +
+                    "http://124.221.214.240:16803;" +
+                    "http://139.186.201.117:16803"
             resValue "string", "domain_url_list", "https://h11.p6w4fy.xyz;" +
                     "https://h11.l2u8ol.xyz;" +
                     "https://h11.i2z7on.xyz;" +
@@ -95,7 +100,7 @@ android {
             versionName "1.4.4"
             versionCode 144
             resValue "string", "app_name", "XC Sports"
-            resValue "string", "domain_api", "http://139.186.224.209:16803"
+            resValue "string", "domain_api", "http://139.186.201.117:16803"
             resValue "string", "domain_url", "https://h61.saaen.com:16801"
             resValue "string", "channel_name", "xingcai"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
@@ -122,11 +127,16 @@ android {
                     "https://app.hstxdl.com:16801;" +
                     "https://app.qiuchongyao.com:16801;" +
                     "https://app.tiantianwangluo.com:16801;" +
-                    "http://43.135.76.237:16803;" +
-                    "http://43.154.74.20:16803;" +
-                    "http://119.45.131.29:16803;" +
-                    "http://124.222.34.63:16803;" +
-                    "http://139.186.224.209:16803"
+                    "http://43.155.0.147:16803;" +
+                    "http://43.154.246.56:16803;" +
+                    "http://119.45.14.75:16803;" +
+                    "http://119.45.63.172:16803  ;" +
+                    "http://146.56.229.55:16803;" +
+                    "http://43.143.77.164:16803;" +
+                    "http://101.43.108.235:16803;" +
+                    "http://139.186.137.79:16803;" +
+                    "http://124.221.214.240:16803;" +
+                    "http://139.186.201.117:16803"
             resValue "string", "domain_url_list", "https://h11.p6w4fy.xyz;" +
                     "https://h11.l2u8ol.xyz;" +
                     "https://h11.i2z7on.xyz;" +
@@ -163,7 +173,7 @@ android {
             versionName "1.4.4"
             versionCode 144
             resValue "string", "app_name", "XC Sports"
-            resValue "string", "domain_api", "http://139.186.224.209:16803"
+            resValue "string", "domain_api", "http://139.186.201.117:16803"
             resValue "string", "domain_url", "https://h61.saaen.com:16801"
             resValue "string", "channel_name", "xingcai"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
@@ -190,11 +200,16 @@ android {
                     "https://app.hstxdl.com:16801;" +
                     "https://app.qiuchongyao.com:16801;" +
                     "https://app.tiantianwangluo.com:16801;" +
-                    "http://43.135.76.237:16803;" +
-                    "http://43.154.74.20:16803;" +
-                    "http://119.45.131.29:16803;" +
-                    "http://124.222.34.63:16803;" +
-                    "http://139.186.224.209:16803"
+                    "http://43.155.0.147:16803;" +
+                    "http://43.154.246.56:16803;" +
+                    "http://119.45.14.75:16803;" +
+                    "http://119.45.63.172:16803  ;" +
+                    "http://146.56.229.55:16803;" +
+                    "http://43.143.77.164:16803;" +
+                    "http://101.43.108.235:16803;" +
+                    "http://139.186.137.79:16803;" +
+                    "http://124.221.214.240:16803;" +
+                    "http://139.186.201.117:16803"
             resValue "string", "domain_url_list", "https://h11.p6w4fy.xyz;" +
                     "https://h11.l2u8ol.xyz;" +
                     "https://h11.i2z7on.xyz;" +
