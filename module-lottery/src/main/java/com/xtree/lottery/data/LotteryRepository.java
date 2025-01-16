@@ -3,17 +3,17 @@ package com.xtree.lottery.data;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.HttpDataSource;
 import com.xtree.lottery.data.source.LocalDataSource;
 import com.xtree.lottery.data.source.LotteryApiService;
 import com.xtree.lottery.data.source.request.BonusNumbersRequest;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
+import com.xtree.lottery.data.source.request.LotteryCopyBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
-import com.xtree.base.vo.UserMethodsResponse;
-import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel;
 
 import java.util.Map;
 
@@ -97,6 +97,14 @@ public class LotteryRepository extends BaseModel implements HttpDataSource, Loca
     @Override
     public Flowable<BaseResponse> bet(LotteryBetRequest betRequest, Map<String, Object> params) {
         return mHttpDataSource.bet(betRequest, params)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
+
+
+    @Override
+    public Flowable<BaseResponse> copyBet(LotteryCopyBetRequest betRequest) {
+        return mHttpDataSource.copyBet(betRequest)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer());
     }

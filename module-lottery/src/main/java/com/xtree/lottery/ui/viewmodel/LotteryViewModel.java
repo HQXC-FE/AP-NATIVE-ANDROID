@@ -1,15 +1,23 @@
 package com.xtree.lottery.ui.viewmodel;
 
 import android.app.Application;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
+import com.xtree.base.utils.UuidUtil;
+import com.xtree.base.widget.LoadingDialog;
+import com.xtree.base.widget.MsgDialog;
+import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.data.LotteryRepository;
+import com.xtree.lottery.data.source.request.LotteryCopyBetRequest;
 import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.data.source.vo.LotteryChaseDetailVo;
 import com.xtree.lottery.data.source.vo.LotteryOrderVo;
@@ -48,6 +56,8 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
     public MutableLiveData<LotteryChaseDetailVo> liveDataBtChaseDetail = new MutableLiveData<>(); // 追号记录-详情(彩票)
     //当前期号
     public MutableLiveData<IssueVo> currentIssueLiveData = new MutableLiveData<>();
+
+    private BasePopupView popupView;
 
     public LotteryViewModel(@NonNull Application application) {
         super(application, null);
@@ -266,6 +276,66 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
                     }
                 });
         addSubscribe(disposable);
+    }
+
+    /**
+     * 再来一注
+     */
+    public void copyBet(View view, String id) {
+
+        LotteryCopyBetRequest lotteryCopyBetRequest = new LotteryCopyBetRequest();
+        lotteryCopyBetRequest.setId(id);
+        lotteryCopyBetRequest.setPlay_source(6);
+        lotteryCopyBetRequest.setNonce(UuidUtil.getID24());
+        model.copyBet(lotteryCopyBetRequest).subscribe(new HttpCallBack<Object>() {
+            @Override
+            public void onResult(Object response) {
+
+                MsgDialog dialog = new MsgDialog(view.getContext(), "", "投注成功", true, new TipDialog.ICallBack() {
+                    @Override
+                    public void onClickLeft() {
+
+                    }
+
+                    @Override
+                    public void onClickRight() {
+                        if (popupView != null) {
+                            popupView.dismiss();
+                        }
+                        LoadingDialog.show(view.getContext());
+                        getCpReport();
+                    }
+                });
+
+                popupView = new XPopup.Builder(view.getContext())
+                        .dismissOnTouchOutside(true)
+                        .dismissOnBackPressed(true)
+                        .asCustom(dialog).show();
+            }
+
+            @Override
+            public void onFail(BusinessException t) {
+                super.onFail(t);
+                MsgDialog dialog = new MsgDialog(view.getContext(), "", t.message, true, new TipDialog.ICallBack() {
+                    @Override
+                    public void onClickLeft() {
+
+                    }
+
+                    @Override
+                    public void onClickRight() {
+                        if (popupView != null) {
+                            popupView.dismiss();
+                        }
+                    }
+                });
+
+                popupView = new XPopup.Builder(view.getContext())
+                        .dismissOnTouchOutside(true)
+                        .dismissOnBackPressed(true)
+                        .asCustom(dialog).show();
+            }
+        });
     }
 
     /*

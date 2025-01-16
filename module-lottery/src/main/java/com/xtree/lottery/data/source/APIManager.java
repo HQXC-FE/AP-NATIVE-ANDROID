@@ -18,5 +18,7 @@ public class APIManager {
     public static final String BALANCE_URL = "/api/account/balance";
     //彩票投注
     public static final String BET_URL = "/api/lottery/bet";
+    //再来一注
+    public static final String COPY_BET_URL = "/api/lottery/copy-bet";
 
 }

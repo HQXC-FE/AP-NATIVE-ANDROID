@@ -8,11 +8,13 @@ import com.xtree.lottery.data.source.HttpDataSource;
 import com.xtree.lottery.data.source.LotteryApiService;
 import com.xtree.lottery.data.source.request.BonusNumbersRequest;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
+import com.xtree.lottery.data.source.request.LotteryCopyBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Flowable;
@@ -25,29 +27,29 @@ import okhttp3.ResponseBody;
  */
 public class HttpDataSourceImpl implements HttpDataSource {
     private static TypeReference<Map<String, Object>> type;
-    private LotteryApiService apiService;
     private volatile static HttpDataSourceImpl INSTANCE = null;
+    private LotteryApiService apiService;
+
+    private HttpDataSourceImpl(LotteryApiService apiService) {
+        this.apiService = apiService;
+    }
 
     public static HttpDataSourceImpl getInstance(LotteryApiService apiService) {
-            if (INSTANCE == null) {
-                synchronized (HttpDataSourceImpl.class) {
-                    if (INSTANCE == null) {
-                        INSTANCE = new HttpDataSourceImpl(apiService);
-                        type = new TypeReference<Map<String, Object>>() {
-                        };
-                    }
+        if (INSTANCE == null) {
+            synchronized (HttpDataSourceImpl.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new HttpDataSourceImpl(apiService);
+                    type = new TypeReference<Map<String, Object>>() {
+                    };
                 }
             }
+        }
 
         return INSTANCE;
     }
 
     public static void destroyInstance() {
         INSTANCE = null;
-    }
-
-    private HttpDataSourceImpl(LotteryApiService apiService) {
-        this.apiService = apiService;
     }
 
     @Override
@@ -61,7 +63,8 @@ public class HttpDataSourceImpl implements HttpDataSource {
             @Override
             public UserMethodsResponse apply(ResponseBody responseBody) throws Exception {
                 return JSON.parseObject(responseBody.string(),
-                        new TypeReference<UserMethodsResponse>() {});
+                        new TypeReference<UserMethodsResponse>() {
+                        });
             }
         });
     }
@@ -72,7 +75,8 @@ public class HttpDataSourceImpl implements HttpDataSource {
             @Override
             public MenuMethodsResponse apply(ResponseBody responseBody) throws Exception {
                 return JSON.parseObject(responseBody.string(),
-                        new TypeReference<MenuMethodsResponse>() {});
+                        new TypeReference<MenuMethodsResponse>() {
+                        });
             }
         });
     }
@@ -83,7 +87,8 @@ public class HttpDataSourceImpl implements HttpDataSource {
             @Override
             public HandicapResponse apply(ResponseBody responseBody) throws Exception {
                 return JSON.parseObject(responseBody.string(),
-                        new TypeReference<HandicapResponse>() {});
+                        new TypeReference<HandicapResponse>() {
+                        });
             }
         });
     }
@@ -107,7 +112,8 @@ public class HttpDataSourceImpl implements HttpDataSource {
             @Override
             public BalanceResponse apply(ResponseBody responseBody) throws Exception {
                 return JSON.parseObject(responseBody.string(),
-                        new TypeReference<BalanceResponse>() {});
+                        new TypeReference<BalanceResponse>() {
+                        });
             }
         });
     }
@@ -119,6 +125,21 @@ public class HttpDataSourceImpl implements HttpDataSource {
             map.putAll(params);
         }
         return apiService.post(APIManager.BET_URL, map, "application/vnd.sc-api.v1.json").map(new Function<ResponseBody, BaseResponse>() {
+            @Override
+            public BaseResponse apply(ResponseBody responseBody) throws Exception {
+                return JSON.parseObject(responseBody.string(),
+                        new TypeReference<BaseResponse>() {
+                        });
+            }
+        });
+    }
+
+    @Override
+    public Flowable<BaseResponse> copyBet(LotteryCopyBetRequest betRequest) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(betRequest), type);
+        return apiService.post(APIManager.COPY_BET_URL, new HashMap<String, Object>() {{
+            put("client", "m");
+        }}, map, "application/vnd.sc-api.v1.json").map(new Function<ResponseBody, BaseResponse>() {
             @Override
             public BaseResponse apply(ResponseBody responseBody) throws Exception {
                 return JSON.parseObject(responseBody.string(),

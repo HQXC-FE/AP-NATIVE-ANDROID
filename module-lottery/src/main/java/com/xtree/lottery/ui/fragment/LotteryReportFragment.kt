@@ -6,8 +6,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
 import com.xtree.base.router.RouterFragmentPath
 import com.xtree.base.widget.LoadingDialog
+import com.xtree.base.widget.MsgDialog
+import com.xtree.base.widget.TipDialog
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
 import com.xtree.lottery.data.source.vo.LotteryOrderVo
@@ -40,7 +43,11 @@ class LotteryReportFragment : BaseFragment<FragmentLotteryReportBinding, Lottery
 
     }
 
-    override fun initContentView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): Int {
+    override fun initContentView(
+        inflater: LayoutInflater?,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): Int {
         return R.layout.fragment_lottery_report
     }
 
@@ -63,12 +70,36 @@ class LotteryReportFragment : BaseFragment<FragmentLotteryReportBinding, Lottery
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
                 R.id.tv_bet_again -> {
+                    var popupView: BasePopupView? = null
+                    val dialog =
+                        MsgDialog(
+                            view.context,
+                            "",
+                            "确定再来一注吗？",
+                            object : TipDialog.ICallBack {
+                                override fun onClickLeft() {
+                                    popupView?.dismiss()
+                                }
 
+                                override fun onClickRight() {
+                                    popupView?.dismiss()
+                                    viewModel.copyBet(view,(adapter.getItem(position) as LotteryOrderVo).projectid)
+                                }
+                            })
+
+                    popupView = XPopup.Builder(view.context)
+                        .dismissOnTouchOutside(true)
+                        .dismissOnBackPressed(true)
+                        .asCustom(dialog).show()
                 }
 
                 R.id.tv_bet_details -> {
                     val dialog: BtCpDetailDialog =
-                        BtCpDetailDialog.newInstance(context, viewLifecycleOwner, (adapter.getItem(position) as LotteryOrderVo).projectid)
+                        BtCpDetailDialog.newInstance(
+                            context,
+                            viewLifecycleOwner,
+                            (adapter.getItem(position) as LotteryOrderVo).projectid
+                        )
                     XPopup.Builder(context).asCustom(dialog).show()
                 }
             }
