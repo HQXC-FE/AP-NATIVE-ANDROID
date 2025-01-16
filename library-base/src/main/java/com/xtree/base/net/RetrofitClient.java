@@ -124,6 +124,10 @@ public class RetrofitClient {
 
     }
 
+    public OkHttpClient getOkHttpClient() {
+        return okHttpClient;
+    }
+
     /**
      * create you ApiService
      * Create an implementation of the API endpoints defined by the {@code service} interface.
