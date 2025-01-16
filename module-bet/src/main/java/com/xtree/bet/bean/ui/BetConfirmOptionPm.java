@@ -117,7 +117,7 @@ public class BetConfirmOptionPm implements BetConfirmOption {
 
     @Override
     public Option getOption() {
-        if(btConfirmInfo != null && btConfirmInfo.marketOddsList != null && !btConfirmInfo.marketOddsList.isEmpty()){
+        if (btConfirmInfo != null && btConfirmInfo.marketOddsList != null && !btConfirmInfo.marketOddsList.isEmpty() && mOption != null) {
             OptionInfo optionInfo = new OptionInfo();
             optionInfo.oid = btConfirmInfo.marketOddsList.get(0).id;
             optionInfo.onb = TextUtils.isEmpty(mOption.getSortName()) ? mOption.isBtHome() ? btConfirmInfo.home : btConfirmInfo.away : mOption.getSortName();
