@@ -86,7 +86,7 @@
     <color name="clr_txt_04">#949292</color>
     <color name="clr_txt_05">#868686</color>
     <color name="clr_txt_06">#4B4B4B</color>
-    <color name="clr_txt_07">#EBEBEB</color>
+    <color name="clr_txt_07">#3F3F3F</color>
     <!-- 通用黑色 1E -->
     <color name="clr_txt_black_cm">#1E1E1E</color>
     <!-- 可跳转链接的文字 通常是蓝色或主题色 -->
@@ -400,7 +400,7 @@
     <color name="clr_green_01">#20B56E</color>
 
     <!--<color name="clr_blue_02">#247BF4</color>-->
-<!--    <color name="clr_blue_03">#119BFF</color>-->
+    <color name="clr_blue_03">#119BFF</color>
     <!--<color name="clr_blue_04">#C7E3FF</color>-->
     <!--<color name="clr_blue_05">#376CAA</color>-->
     <!--<color name="clr_blue_05a">#415AB0</color>-->
@@ -547,6 +547,9 @@
     <color name="clr_purple_09">#D6CEF9</color>
     <color name="clr_purple_12">#A17DF5</color>
 
+    <color name="clr_txt_right_dark_start">#E3CBB2</color>
+    <color name="clr_txt_right_dark_center">#E3CBB2</color>
+    <color name="clr_txt_right_dark_end">#D0B190</color>
 
     <!-- 充值弹窗 提示语 -->
     <color name="clr_txt_recharge_hint">#99A0B1</color>
@@ -556,8 +559,8 @@
     <color name="clr_txt_recharge_tip">#121B47</color>
 
     <!-- 测速浮窗-->
-    <color name="clr_txt_fastest_high">#EE1A34</color>
-    <color name="clr_txt_fastest_medium">#FFE145</color>
-    <color name="clr_txt_fastest_low">#51FF6D</color>
+    <color name="clr_txt_fastest_high">#F53A35</color>
+    <color name="clr_txt_fastest_medium">#FFF600</color>
+    <color name="clr_txt_fastest_low">#FFFFFF</color>
 
 </resources>
