@@ -97,9 +97,6 @@ import me.xtree.mvvmhabit.bus.Messenger;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
-/**
- * Created by goldze on 2018/6/21
- */
 @Route(path = RouterActivityPath.Bet.PAGER_BET_HOME)
 public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMainViewModel> implements OnRefreshLoadMoreListener, View.OnClickListener {
 
