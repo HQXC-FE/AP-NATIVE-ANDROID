@@ -76,6 +76,10 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
             BtCarReq.BetMatchMarket betMatchMarket = new BtCarReq.BetMatchMarket();
             betMatchMarket.setMatchInfoId(betConfirmOption.getMatch().getId());
             betMatchMarket.setMarketId(Long.valueOf(betConfirmOption.getPlayTypeId()));
+            if (betConfirmOption.getOption() == null) {
+                //初始化投注弹窗是，option有可能为空
+                return;
+            }
             betMatchMarket.setOddsId(betConfirmOption.getOption().getId());
             betMatchMarket.setPlayId(betConfirmOption.getPlayType().getId());
             betMatchMarket.setMatchType(betConfirmOption.getOptionList().getMatchType());
@@ -225,12 +229,12 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                     PlayTypePm playTypePm = (PlayTypePm) betConfirmOption.getPlayType();
                     PlayTypeInfo playTypeInfo = playTypePm.getPlayTypeInfo();
                     String chpid = "";
-                    if(playTypeInfo.topKey != null){
+                    if (playTypeInfo.topKey != null) {
                         chpid = playTypeInfo.topKey;
-                    }else{
+                    } else {
                         chpid = betConfirmOption.getPlayType().getId();
                     }
-                    if(!chpid.isEmpty()){
+                    if (!chpid.isEmpty()) {
                         btReq.setChpid(chpid);
                     }
                 }
