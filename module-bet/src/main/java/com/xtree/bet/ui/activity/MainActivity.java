@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
-import com.drake.net.reflect.TypeToken;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
@@ -54,8 +53,6 @@ import com.xtree.bet.BR;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.fb.HotLeague;
-import com.xtree.bet.bean.response.pm.MatchInfo;
-import com.xtree.bet.bean.response.pm.MatchListRsp;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.constant.Constants;
@@ -300,9 +297,11 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         } else {
             if (!isFloating) {
                 CfLog.i("bettingNetFloatingWindows.show");
-                if (!isFinishing() && !isDestroyed()) {//防止activity销毁了页面，还需启动
-                    mBettingNetFloatingWindows.show();
-                }
+                runOnUiThread(() -> {//处理BadTokenException: Unable to add window -- token android.os.BinderProxy@3c447b2 is not valid; is your activity running
+                    if (!isFinishing() && !isDestroyed()) {//防止activity销毁了页面，还需启动
+                        mBettingNetFloatingWindows.show();
+                    }
+                });
                 isFloating = true;
             }
         }
@@ -401,7 +400,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         binding.tvBalance.setOnClickListener(this);
         binding.ivwGameSearch.setOnClickListener(this);
         binding.tvwCancel.setOnClickListener(this);
-
 
         tabSportAdapter = new TabSportAdapter(new ArrayList<>(), viewModel.getMatchGames());
         tabSportAdapter.setAnimationEnable(false);
@@ -638,7 +636,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private void initNetFloatWindows() {
-        mBettingNetFloatingWindows = BettingNetFloatingWindows.getInstance(this, (useAgent, isChangeDomain, checkBox) -> {
+        mBettingNetFloatingWindows = BettingNetFloatingWindows.getInstance(MainActivity.this, (useAgent, isChangeDomain, checkBox) -> {
             checkBox.setChecked(useAgent);
             setDomain(useAgent);
             resetViewModel();
