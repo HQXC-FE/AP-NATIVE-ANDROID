@@ -46,15 +46,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/layout_margin"
+                android:layout_marginTop="16dp"
                 android:drawableStart="@mipmap/mine_bonus"
                 android:hint="@string/txt_please_input_money_password"
-                android:inputType=""
+                android:inputType="textPassword"
                 android:maxLength="16"
+                android:textColor="@color/clr_grey_05"
+                android:textColorHint="@color/clr_txt_hit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:textColorHint="@color/clr_txt_hit"
-                android:textColor="@color/clr_grey_05"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvw_warning"
