@@ -18,7 +18,7 @@ android {
             resValue "string", "sentry_dsn", "https://552dcc17bc3f9472be954a1fd5b5610b@o4507447554539520.ingest.us.sentry.io/4508341154676736"
             resValue "string", "domain_api_list", "https://hxing6pre.hxing5vip.com;"
             resValue "string", "domain_url_list", "https://hxing6pre.hxing5vip.com;"
-            resValue "string", "domain_url_list_third", "https://hx6aliapp.h7i8j.xyz/hx6/app_config_heng6.json"
+            resValue "string", "domain_url_list_third", ""
 
             multiDexEnabled true
             dimension "channelName"
