@@ -10,6 +10,7 @@ import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.gson.Gson
+import com.gyf.immersionbar.ImmersionBar
 import com.xtree.base.global.SPKeyGlobal
 import com.xtree.base.router.RouterFragmentPath
 import com.xtree.base.utils.AppUtil
@@ -105,6 +106,10 @@ class FundsPwdFragment : BaseFragment<FragmentFundsPwdBinding, VerifyViewModel>(
             map["password_confirmation"] = pwd2
             viewModel.changeFundsPwd(map)
         }
+    }
+
+    override fun initImmersionBar() {
+
     }
 
     override fun initViewObservable() {

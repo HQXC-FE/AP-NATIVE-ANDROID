@@ -784,6 +784,7 @@
         <item name="android:textColor">@color/clr_txt_mouse6</item>
         <item name="android:textColorHint">@color/clr_txt_et_hint_51463F</item>
         <item name="android:textSize">@dimen/bt_text_14sp</item>
+        <item name="android:textCursorDrawable">@null</item>
         <item name="android:inputType">text</item>
         <item name="android:paddingStart">10dp</item>
         <item name="android:drawablePadding">10dp</item>
