@@ -24,13 +24,13 @@ android {
             dimension "channelName"
         }
         // 生产环境 发布用
-      hx6_OL {
+        hx6_OL {
             applicationId "com.hengxing6.app"
             versionName "1.0.0"
             versionCode 100
             resValue "string", "app_name", "恒行6"
             resValue "string", "domain_api", "https://app1.e3f4g.xyz"
-            resValue "string", "domain_url", "https://h51.x9f4ke.click"
+            resValue "string", "domain_url", "https://h51.n1o2p.xyz"
             resValue "string", "channel_name", "hengxing6"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
             resValue "bool", "is_tag", "true" // 是否开启统计
@@ -53,24 +53,23 @@ android {
                     "http://43.134.194.101:16820;" +
                     "http://43.129.64.206:16820;"
 
-                    resValue "string", "domain_url_list", "https://h51.x9f4ke.click;" +
-                    "https://h51.v3t8zx.click;" +
-                    "https://h51.k1w7rs.click;" +
-                    "https://h52.e8x8ss.click;" +
-                    "https://h52.o5w3if.click;" +
-                    "https://h52.m5l5xc.click;" +
-                    "https://h53.a6d1yd.click;" +
-                    "https://h53.l4n5kx.click;" +
-                    "https://h53.bavxj.vip;" +
-                    "https://h54.jutqu.vip;" +
-                    "https://h55.vvhoq.vip;"
+            resValue "string", "domain_url_list", "https://h51.n1o2p.xyz;" +
+                    "https://h51.q3r4s.xyz;" +
+                    "https://h51.t5u6v.xyz;" +
+                    "https://h52.w7x8y.xyz;" +
+                    "https://h52.z9a0b.xyz;" +
+                    "https://h52.c1d2e.xyz;" +
+                    "https://h53.f3g4h.xyz;" +
+                    "https://h53.i5j6k.xyz;" +
+                    "https://h53.l7m8n.xyz;" +
+                    "https://h54.o9p0q.xyz;"
 
-          resValue "string", "domain_url_list_third", "https://hx6aliapp.h7i8j.xyz/hx6/app_config_heng6.json" +
-                  ";https://hx6aliapp.k9l0m.xyz/hx6/app_config_heng6.json" +
-                  ";https://hx6cn2app.b3c4d.xyz/hx6/app_config_heng6.json" +
-                  ";https://hx6scdnapp.v9w0x.xyz/hx6/app_config_heng6.json" +
-                  ";https://hx6scdnapp.y1z2a.xyz/hx6/app_config_heng6.json" +
-                  ";https://hx6cn2app.e5f6g.xyz/hx6/app_config_heng6.json"
+            resValue "string", "domain_url_list_third", "https://hx6aliapp.h7i8j.xyz/hx6/app_config_heng6.json" +
+                    ";https://hx6aliapp.k9l0m.xyz/hx6/app_config_heng6.json" +
+                    ";https://hx6cn2app.b3c4d.xyz/hx6/app_config_heng6.json" +
+                    ";https://hx6scdnapp.v9w0x.xyz/hx6/app_config_heng6.json" +
+                    ";https://hx6scdnapp.y1z2a.xyz/hx6/app_config_heng6.json" +
+                    ";https://hx6cn2app.e5f6g.xyz/hx6/app_config_heng6.json"
             multiDexEnabled true
             dimension "channelName"
         }
