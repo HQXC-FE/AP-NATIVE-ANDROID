@@ -13,8 +13,6 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.MD5Util;
 import com.xtree.base.utils.RSAEncrypt;
 import com.xtree.base.utils.UuidUtil;
-import com.xtree.base.vo.FBService;
-import com.xtree.base.vo.PMService;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.mine.data.MineRepository;
 import com.xtree.mine.vo.LoginResultVo;
@@ -89,8 +87,8 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onError(Throwable t) {
                         KLog.e(t.toString());
-                        //super.onError(t);
-                        ToastUtils.showLong("登录异常，请重试");
+                        super.onError(t);
+//                        ToastUtils.showLong("登录异常，请重试");
                     }
 
                     @Override
