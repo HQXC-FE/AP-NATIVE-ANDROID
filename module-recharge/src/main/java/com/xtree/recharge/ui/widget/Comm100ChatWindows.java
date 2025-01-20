@@ -144,7 +144,8 @@ public class Comm100ChatWindows extends FloatingWindows {
                 Sentry.captureException(e);
                 e.printStackTrace();
             }
-            return chatUrl += "&remark=" + encodedJson;
+            String sid = SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME, "");
+            return chatUrl += ("&sid=" + sid + "&remark=" + encodedJson);
         }
     }
 
