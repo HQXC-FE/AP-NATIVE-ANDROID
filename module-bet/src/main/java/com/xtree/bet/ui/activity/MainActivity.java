@@ -447,7 +447,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     binding.rlCg.setVisibility(!BtCarManager.isCg() ? View.GONE : BtCarManager.isEmpty() ? View.GONE : View.VISIBLE);
                     mLeagueGoingOnList.clear();
                     mLeagueList.clear();
-                    //viewModel.setSportIcons(playMethodPos);
                     viewModel.setSportItems(playMethodPos, playMethodType);
 
                     if (playMethodPos == 2 || playMethodPos == 3) {

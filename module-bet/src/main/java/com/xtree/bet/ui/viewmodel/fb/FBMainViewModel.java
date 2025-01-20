@@ -145,76 +145,8 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         return mMapMatch;
     }
 
-    //@Override
-    //public void setSportIds(int playMethodPos) {
-    //    if (playMethodPos == 0 || playMethodPos == 3 || playMethodPos == 1) {//今日滚球串关
-    //        SPORT_IDS = SPORT_IDS_ALL;
-    //    } else {
-    //        SPORT_IDS = SPORT_IDS_NOMAL;
-    //    }
-    //}
-
     public void setSportItems(int playMethodPos, int playMethodType) {
         sportItemData.postValue(new String[]{});
-        //if (playMethodPos == 0 || playMethodPos == 3) {//今日或串关
-        //    if (SPORT_NAMES != SPORT_NAMES_TODAY_CG) {
-        //        SPORT_NAMES = SPORT_NAMES_TODAY_CG;
-        //    }
-        //} else if (playMethodPos == 1) {//滚球
-        //    if (SPORT_NAMES != SPORT_NAMES_LIVE) {
-        //        SPORT_NAMES = SPORT_NAMES_LIVE;
-        //    }
-        //} else {//早盘和冠军
-        //    if (SPORT_NAMES != SPORT_NAMES_NOMAL) {
-        //        SPORT_NAMES = SPORT_NAMES_NOMAL;
-        //    }
-        //}
-        //setSportIds(playMethodPos);
-        //if (playMethodPos == 4) {
-        //    MatchTypeInfo matchTypeInfo;
-        //    Map<String, MatchTypeStatisInfo> mapMatchTypeStatisInfo = new HashMap<>();
-        //    List<String> additionalIds = new ArrayList<>();
-        //    List<String> additionalNames = new ArrayList<>();
-        //    List<Integer> additionalIcons = new ArrayList<>();
-        //    for (int i = 0; i < SPORT_IDS.length; i++) {
-        //        additionalIds.add(SPORT_IDS[i]);
-        //        additionalNames.add(FBConstants.SPORT_NAMES[i]);
-        //        additionalIcons.add(Constants.SPORT_ICON[i]);
-        //    }
-        //    if (mStatisticalInfo != null) {
-        //        for (MatchTypeInfo typeInfo : mStatisticalInfo.sl) {
-        //            if (typeInfo.ty == playMethodType) {
-        //                matchTypeInfo = typeInfo;
-        //                for (MatchTypeStatisInfo matchTypeStatisInfo :
-        //                        matchTypeInfo.ssl) {
-        //                    mapMatchTypeStatisInfo.put(String.valueOf(matchTypeStatisInfo.sid), matchTypeStatisInfo);
-        //                }
-        //                break;
-        //            }
-        //        }
-        //    }
-        //
-        //    for (int i = 0; i < SPORT_IDS_ADDITIONAL.length; i++) {
-        //        MatchTypeStatisInfo matchTypeStatisInfo = mapMatchTypeStatisInfo.get(SPORT_IDS_ADDITIONAL[i]);
-        //        if (matchTypeStatisInfo != null && matchTypeStatisInfo.c > 0) {
-        //            additionalIds.add(SPORT_IDS_ADDITIONAL[i]);
-        //            additionalNames.add(SPORT_NAMES_ADDITIONAL[i]);
-        //            additionalIcons.add(SPORT_ICON_ADDITIONAL[i]);
-        //        }
-        //    }
-        //    String[] ids = new String[additionalIds.size()];
-        //    String[] names = new String[additionalNames.size()];
-        //    int[] icons = new int[additionalIcons.size()];
-        //    additionalIds.toArray(ids);
-        //    additionalNames.toArray(names);
-        //    for (int i = 0; i < additionalIcons.size(); i++) {
-        //        icons[i] = additionalIcons.get(i);
-        //    }
-        //    SPORT_IDS = ids;
-        //    SPORT_NAMES = names;
-        //    Constants.SPORT_ICON = icons;
-        //}
-
     }
 
     /**

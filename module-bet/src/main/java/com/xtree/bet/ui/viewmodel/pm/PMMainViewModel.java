@@ -147,91 +147,12 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         return mMatchList;
     }
 
-    //@Override
-    //public void setSportIds(int playMethodPos) {
-    //    if (playMethodPos == 0 || playMethodPos == 3 || playMethodPos == 1) {
-    //        SPORT_IDS = new String[14];
-    //        SPORT_IDS[0] = "0";
-    //    } else {
-    //        SPORT_IDS = new String[13];
-    //    }
-    //    int playMethodType = Integer.valueOf(getPlayMethodTypes()[playMethodPos]);
-    //    for (MenuInfo menuInfo : mMenuInfoList) {
-    //        Map<String, Integer> sslMap = new HashMap<>();
-    //        if (playMethodType == menuInfo.menuType) {
-    //            for (MenuInfo subMenu : menuInfo.subList) {
-    //                sslMap.put(String.valueOf(subMenu.menuId), subMenu.count);
-    //
-    //                int index = Arrays.asList(SPORT_NAMES).indexOf(subMenu.menuName);
-    //                if (index != -1) {
-    //                    SPORT_IDS[index] = String.valueOf(subMenu.menuId);
-    //                }
-    //
-    //            }
-    //            break;
-    //        }
-    //    }
-    //}
-
     public Map<String, Match> getMapMatch() {
         return mMapMatch;
     }
 
     public void setSportItems(int playMethodPos, int playMethodType) {
         sportItemData.postValue(new String[]{});
-        //if (playMethodPos == 0 || playMethodPos == 3) {
-        //    if (SPORT_NAMES != SPORT_NAMES_TODAY_CG) {
-        //        SPORT_NAMES = SPORT_NAMES_TODAY_CG;
-        //    }
-        //} else if (playMethodPos == 1) {
-        //    if (SPORT_NAMES != SPORT_NAMES_LIVE) {
-        //        SPORT_NAMES = SPORT_NAMES_LIVE;
-        //    }
-        //} else {
-        //    if (SPORT_NAMES != SPORT_NAMES_NOMAL) {
-        //        SPORT_NAMES = SPORT_NAMES_NOMAL;
-        //    }
-        //}
-        ////setSportIds(playMethodPos);
-        //
-        //if (playMethodPos == 4) {
-        //    List<String> additionalIds = new ArrayList<>();
-        //    List<String> additionalNames = new ArrayList<>();
-        //    List<Integer> additionalIcons = new ArrayList<>();
-        //    for (int i = 0; i < SPORT_IDS.length; i++) {
-        //        additionalIds.add(SPORT_IDS[i]);
-        //        additionalNames.add(SPORT_NAMES[i]);
-        //        additionalIcons.add(Constants.SPORT_ICON[i]);
-        //    }
-        //
-        //    for (MenuInfo menuInfo : mMenuInfoList) {
-        //        if (playMethodType == menuInfo.menuType) {
-        //            for (MenuInfo subMenu : menuInfo.subList) {
-        //                int index = Arrays.asList(PMConstants.SPORT_TYPES_ADDITIONAL).indexOf(subMenu.menuType);
-        //                if (index != -1 && subMenu.count > 0) {
-        //                    additionalIds.add(String.valueOf(subMenu.menuId));
-        //                    additionalNames.add(subMenu.menuName);
-        //                    additionalIcons.add(SPORT_ICON_ADDITIONAL[index]);
-        //                }
-        //            }
-        //            break;
-        //        }
-        //    }
-        //
-        //    String[] ids = new String[additionalIds.size()];
-        //    String[] names = new String[additionalNames.size()];
-        //    int[] icons = new int[additionalIcons.size()];
-        //    additionalIds.toArray(ids);
-        //    additionalNames.toArray(names);
-        //    for (int i = 0; i < additionalIcons.size(); i++) {
-        //        icons[i] = additionalIcons.get(i);
-        //    }
-        //    PMConstants.SPORT_IDS = ids;
-        //    PMConstants.SPORT_NAMES = names;
-        //    Constants.SPORT_ICON = icons;
-        //}
-        //
-        //sportItemData.postValue(SPORT_NAMES);
     }
 
     /**
@@ -565,7 +486,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             //        break;
             //    }
             //}
-        }//再试试断网情况 和弱网情况
+        }
         Flowable flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
         if(isUseCacheApiService()){
             Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<MatchLeagueListCacheRsp>() {
@@ -703,11 +624,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                             getChampionList(sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh);
                         }
                     }
-                        /*if (isRefresh) {
-                            finishRefresh(false);
-                        } else {
-                            finishLoadMore(false);
-                        }*/
                 }
             });
             addSubscribe(disposable);

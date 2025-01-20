@@ -120,10 +120,6 @@ public abstract class TemplateMainViewModel extends BaseBtViewModel implements M
     public boolean mHasCache;
     public int mCurrentPage = 1;
     /**
-     * 是否获取今日中未开赛比赛列表
-     */
-    public boolean mIsStepSecond;
-    /**
      * 当前选择的玩法
      */
     public int mPlayMethodType;
@@ -184,16 +180,6 @@ public abstract class TemplateMainViewModel extends BaseBtViewModel implements M
         } else {
             leagueItemData.postValue(null);
         }
-    }
-
-    public void setSportIcons(int playMethodPos) {
-        //if (playMethodPos == 0 || playMethodPos == 3) {
-        //    Constants.SPORT_ICON = Constants.SPORT_ICON_TODAY_CG;
-        //} else if (playMethodPos == 1) {
-        //    Constants.SPORT_ICON = Constants.SPORT_ICON_LIVE;
-        //} else {
-        //    Constants.SPORT_ICON = Constants.SPORT_ICON_NOMAL;
-        //}
     }
 
     public String getScore(List<League> leagueList, long matchId) {
@@ -283,36 +269,6 @@ public abstract class TemplateMainViewModel extends BaseBtViewModel implements M
     }
 
     /**
-     * 新建未开赛联赛分类信息
-     *
-     * @param league
-     */
-    /*public void buildNoLiveHeaderLeague(League league, int noLiveMatchSize) {
-        if (!mGoingOnLeagueList.isEmpty() && mLeagueList.isEmpty()) {
-            mLeagueList.addAll(mGoingOnLeagueList);
-            mNoLiveheaderLeague = league;
-            mNoLiveheaderLeague.setHead(true);
-            mNoLiveheaderLeague.setHeadType(League.HEAD_TYPE_LIVE_OR_NOLIVE);
-            mNoLiveheaderLeague.setLeagueName(Utils.getContext().getResources().getString(R.string.bt_game_waiting));
-            mLeagueList.add(mNoLiveheaderLeague);
-            mGoingOnLeagueList.clear();
-        } else if (mNoLiveheaderLeague == null) {
-            if (noLiveMatchSize > 0) {
-                mNoLiveheaderLeague = league;
-                mNoLiveheaderLeague.setHead(true);
-                mNoLiveheaderLeague.setHeadType(League.HEAD_TYPE_LIVE_OR_NOLIVE);
-                if (mNoLiveMatch) {
-                    mNoLiveheaderLeague.setLeagueName(Utils.getContext().getResources().getString(R.string.bt_game_waiting));
-                } else {
-                    mNoLiveheaderLeague.setLeagueName(Utils.getContext().getResources().getString(R.string.bt_all_league));
-                }
-                mLeagueList.add(mNoLiveheaderLeague);
-            }
-            mNoLiveMatch = false;
-        }
-    }*/
-
-    /**
      * 新建进行中比赛种类头部信息，足球、篮球等
      *
      * @param mapSportType
@@ -332,32 +288,6 @@ public abstract class TemplateMainViewModel extends BaseBtViewModel implements M
             sportHeader.setMatchCount(1);
         }
     }
-
-    /**
-     * 新建未开赛比赛种类头部信息，足球、篮球等
-     *
-     * @param match
-     * @param league
-     */
-    public void buildNoLiveSportHeader(Match match, League league) {
-        League sportHeader = mMapSportType.get(match.getSportId());
-        if (sportHeader == null) {
-            League sportHeaderLeague = league;
-            sportHeaderLeague.setHead(true);
-            sportHeaderLeague.setHeadType(League.HEAD_TYPE_SPORT_NAME);
-            sportHeaderLeague.setLeagueName(match.getSportName());
-            sportHeaderLeague.setMatchCount(1);
-            if (!mGoingOnLeagueList.isEmpty() && mLeagueList.isEmpty()) { // 进行中
-                mGoingOnLeagueList.add(sportHeaderLeague);
-            } else {  // 未开赛
-                mLeagueList.add(sportHeaderLeague);
-            }
-            mMapSportType.put(match.getSportId(), sportHeaderLeague);
-        } else {
-            sportHeader.setMatchCount(1);
-        }
-    }
-
     public void showCache(String sportId, int playMethodType, int searchDatePos) {
         if (TextUtils.isEmpty(mSearchWord)) {
             String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
