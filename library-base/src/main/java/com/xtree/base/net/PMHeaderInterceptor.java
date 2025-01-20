@@ -1,12 +1,11 @@
 package com.xtree.base.net;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.utils.TagUtils;
+import com.xtree.base.utils.StringUtils;
 
 import java.io.IOException;
 
@@ -30,8 +29,11 @@ public class PMHeaderInterceptor implements Interceptor {
             builder.removeHeader("Authorization");
             builder.addHeader("Authorization", "bearer" + token);
         }
-        builder.addHeader("lang", "zh"); //
+        builder.addHeader("lang", "zh");
         builder.addHeader("requestId", token);
+        builder.addHeader("App-RNID", "87jumkljo"); //
+        builder.addHeader("Source", "9");
+        builder.addHeader("app-version", StringUtils.getVersionName(Utils.getContext()));
         //请求信息
         return chain.proceed(builder.build());
     }
