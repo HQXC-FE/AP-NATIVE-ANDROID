@@ -12,8 +12,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.drake.brv.annotaion.DividerOrientation
 import com.drake.brv.utils.bindingAdapter
 import com.drake.brv.utils.divider
+import com.drake.brv.utils.dividerSpace
 import com.drake.brv.utils.grid
 import com.drake.brv.utils.linear
 import com.drake.brv.utils.models
@@ -34,7 +36,7 @@ import com.xtree.base.widget.impl.FilterViewOnClickListerner
  */
 
 @BindingAdapter(
-    value = ["layoutManager", "itemData", "itemViewType", "onBindListener", "dividerDrawableId", "viewPool","spanCount"],
+    value = ["layoutManager", "itemData", "itemViewType", "onBindListener", "dividerDrawableId", "viewPool","spanCount","gridSpace"],
     requireAll = false
 )
 fun RecyclerView.init(
@@ -45,6 +47,7 @@ fun RecyclerView.init(
     dividerDrawableId: Int?,
     viewPool: RecyclerView.RecycledViewPool?,
     spanCount: Int?,
+    gridSpace: Float?
 ) {
 
     if (itemData == null || itemViewType == null) {
@@ -76,6 +79,15 @@ fun RecyclerView.init(
                 startVisible = false
                 endVisible = true
             }
+        }
+
+        gridSpace?.let {
+            dividerSpace (it.toInt(), DividerOrientation.VERTICAL)
+            dividerSpace (it.toInt(), DividerOrientation.HORIZONTAL)
+//            divider {
+//                startVisible = true
+//                endVisible = true
+//            }
         }
 
         val mAdapter = BaseDatabindingAdapter().run {
@@ -194,4 +206,13 @@ fun setImageUrl(
         .diskCacheStrategy(diskCacheStrategy)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(view)
+}
+
+fun List<String>.includes(substring: String): Boolean {
+    for (item in this) {
+        if (item.contains(substring)) {
+            return true
+        }
+    }
+    return false
 }

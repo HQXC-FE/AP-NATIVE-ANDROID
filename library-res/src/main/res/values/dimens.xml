@@ -23,5 +23,7 @@
     <dimen name="me_text_sp20">20sp</dimen>
     <dimen name="me_text_size_sp12sp">12sp</dimen>
     <dimen name="mine_text_size">12sp</dimen>
+    <dimen name="grid_space30">30dp</dimen>
+    <dimen name="grid_space15">30dp</dimen>
 
 </resources>
