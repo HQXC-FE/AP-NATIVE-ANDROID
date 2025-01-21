@@ -18,6 +18,8 @@ public class LotteryDrawViewModel {
     public ObservableField<String> drawDate = new ObservableField<>();
     //开奖号码
     public ObservableField<ArrayList<String>> drawCode = new ObservableField<>();
+    //别名
+    public ObservableField<String> alias = new ObservableField<>();
 
     private LotteryDrawView.OnLotteryDrawListener listener;
 

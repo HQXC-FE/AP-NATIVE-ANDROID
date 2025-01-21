@@ -221,8 +221,9 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
                         );
                     }
                     binding.lotteryBetsBetlayout.setLotteryNumbsHistory(lotteryNumbs);
-
+                    binding.lotteryBetsDrawview.setLottery(lottery);
                     binding.lotteryBetsDrawview.setDrawCode(bonusNumbers.getData().get(0));
+
                 }
             }
         });
