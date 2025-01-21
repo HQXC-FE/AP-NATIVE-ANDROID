@@ -23,8 +23,8 @@ import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
-import com.xtree.lottery.rule.EntryRule;
-import com.xtree.lottery.rule.data.RulesEntryData;
+import com.xtree.lottery.rule.BettingEntryRule;
+import com.xtree.lottery.rule.betting.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.LotteryBetConfirmDialogFragment;
 import com.xtree.lottery.ui.lotterybet.LotteryOrderDialogFragment;
 import com.xtree.lottery.ui.lotterybet.LotteryPlayCollectionDialogFragment;
@@ -481,7 +481,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         betDTO.setDisplay(displayDTO);
         betDTO.setSubmit(new RulesEntryData.SubmitDTO());
         rulesEntryData.setBet(betDTO);
-        RulesEntryData.SubmitDTO submitDTO = EntryRule.getInstance().startEngine(rulesEntryData);
+        RulesEntryData.SubmitDTO submitDTO = BettingEntryRule.getInstance().startEngine(rulesEntryData);
 
         if (submitDTO.getMoney() > 0 && submitDTO.getNums() > 0) {
             LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();

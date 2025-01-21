@@ -25,7 +25,7 @@ import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
 import com.xtree.lottery.databinding.FragmentLotteryBetsBinding;
 import com.xtree.lottery.inter.ParentChildCommunication;
-import com.xtree.lottery.rule.data.RulesEntryData;
+import com.xtree.lottery.rule.betting.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.data.LotteryMoneyData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel;
