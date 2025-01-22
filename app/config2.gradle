@@ -33,8 +33,8 @@ android {
             versionName "1.0.4"
             versionCode 104
             resValue "string", "app_name", "意昂体育3"
-            resValue "string", "domain_api", "http://43.155.0.147:46820"
-            resValue "string", "domain_url", "https://h51.k8z8dv.xyz"
+            resValue "string", "domain_api", "http://43.154.246.56:46820"
+            resValue "string", "domain_url", "https://h51.d4c1tc.vip"
             resValue "string", "channel_name", "eon3"  // 渠道名称
             resValue "string", "platform_set", "40"  // 平台代号,升级用 35-意昂, 38-意昂2 40-意昂3
             resValue "string", "build_time", "${buildTime()}"
@@ -42,29 +42,7 @@ android {
             resValue "string", "ms_secret_key", "b4636d50-41d2-49f4-b843-07572a8d282f"
             resValue "string", "sentry_dsn", "https://0cefc03e1c8e991010eb93fb0722e362@o4507447554539520.ingest.us.sentry.io/4507604245217280"
             resValue "bool", "is_tag", "true" // 是否开启统计
-            resValue "string", "domain_api_list", "https://app1.b5f6oz.xyz;" +
-                    "https://app1.b7x2bp.xyz;" +
-                    "https://app1.g2y8by.xyz;" +
-                    "https://app1.d1h9kq.xyz;" +
-                    "https://app1.p9d8af.xyz;" +
-                    "https://app2.v2n9bo.xyz;" +
-                    "https://app2.c1d8wp.xyz;" +
-                    "https://app2.y4l8ev.xyz;" +
-                    "https://app2.c9i9gv.xyz;" +
-                    "https://app2.w3f5bf.xyz;" +
-                    "https://app3.h2l5yj.xyz;" +
-                    "https://app3.b3h6ha.xyz;" +
-                    "https://app3.f9d5mm.xyz;" +
-                    "https://app3.p5t7nh.xyz;" +
-                    "https://app3.x6z4ai.xyz;" +
-                    "https://app4.k8t7rl.xyz;" +
-                    "https://app4.q6l1rv.xyz;" +
-                    "https://app4.o6l4da.xyz;" +
-                    "http://175.27.143.79:46820;" +
-                    "http://111.231.12.228:46820;" +
-                    "http://139.186.156.33:46820;" +
-                    "http://43.134.194.101:46820;" +
-                    "http://43.155.0.147:46820;" +
+            resValue "string", "domain_api_list", "http://43.155.0.147:46820;" +
                     "http://43.154.246.56:46820;" +
                     "http://119.45.14.75:46820;" +
                     "http://119.45.63.172:46820;" +
@@ -74,21 +52,29 @@ android {
                     "http://139.186.137.79:46820;" +
                     "http://124.221.214.240:46820;" +
                     "http://139.186.201.117:46820;" +
-                    "http://43.129.64.206:46820;"
-            resValue "string", "domain_url_list", "https://h51.k8z8dv.xyz;" +
-                    "https://h51.r2p8ss.xyz;" +
-                    "https://h51.d1b9bu.xyz;" +
-                    "https://h51.j3z5la.xyz;" +
-                    "https://h52.n7k1kr.xyz;" +
-                    "https://h52.addpg.vip;" +
-                    "https://h52.y8q7ra.xyz;" +
-                    "https://h52.toaob.vip;" +
-                    "https://h53.kghqo.vip;" +
-                    "https://h53.mbqqv.vip;" +
-                    "https://h53.rhury.vip;" +
-                    "https://h53.xufzy.vip;" +
-                    "https://h54.l8y4cj.xyz;" +
-                    "https://h54.x4m5hw.xyz;"
+                    "https://app1.h8g5lk.vip;" +
+                    "https://app1.z6r9qr.vip;" +
+                    "https://app1.i8c3rn.vip;" +
+                    "https://app1.f9m7kk.vip;" +
+                    "https://app2.x4q7fs.vip;" +
+                    "https://app2.h6z6vs.vip;" +
+                    "https://app2.s7m2de.vip;" +
+                    "https://app2.y8w1zh.vip;" +
+                    "https://app3.w5h9eb.vip;" +
+                    "https://app3.j8o2ga.vip;" +
+                    "https://app3.o3v1ff.vip;" +
+                    "https://app3.l2a8gk.vip;" +
+                    "https://app4.s5o4tt.vip;"
+            resValue "string", "domain_url_list", "https://h51.i6w1ib.vip;" +
+                    "https://h51.d4c1tc.vip;" +
+                    "https://h51.f4m1pt.vip;" +
+                    "https://h52.v3t5gs.vip;" +
+                    "https://h52.b4y2wa.vip;" +
+                    "https://h52.e6p3zo.vip;" +
+                    "https://h53.y7s6lx.vip;" +
+                    "https://h53.n4v6fg.vip;" +
+                    "https://h53.r7l2zu.vip;" +
+                    "https://h54.k2s3xy.vip;"
             resValue "string", "domain_url_list_third", "https://e3scdnapp.nprxv.vip/e3/app_config_e3.json" +
                     ";https://e3scdnapp.dogko.vip/e3/app_config_e3.json" +
                     ";https://e3cn2app.rizyw.vip/e3/app_config_e3.json" +
