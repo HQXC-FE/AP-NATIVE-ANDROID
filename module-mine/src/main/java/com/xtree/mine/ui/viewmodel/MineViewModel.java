@@ -76,6 +76,7 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
         SPUtils.getInstance().remove(SPKeyGlobal.USER_CODE_MSG);
         SPUtils.getInstance().remove(SPKeyGlobal.PROMOTION_CODE);
         SPUtils.getInstance().remove(SPKeyGlobal.PROMOTION_CODE_REG);
+        SPUtils.getInstance().remove(SPKeyGlobal.APP_REGISTER_CODE);//清空【嗨客服】域名拼接推广Code
         RetrofitClient.init();
         EventBus.getDefault().post(new EventVo(EVENT_LOG_OUT, ""));
         liveDataLogout.setValue(true);
