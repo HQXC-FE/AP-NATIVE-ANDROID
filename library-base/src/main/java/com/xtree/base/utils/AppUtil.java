@@ -82,28 +82,20 @@ public class AppUtil {
     public static void goCustomerServiceWeb(Context ctx) {
         StringBuffer serviceLink = new StringBuffer() ;
         if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
-           // serviceLink =SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK) ;
             serviceLink.append(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK));
-
-            if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_ID)) &&
+            if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME)) &&
                     !TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE))){
-                //serviceLink = "&sid="+SPUtils.getInstance().getString(SPKeyGlobal.USER_ID)+"&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}";
-                serviceLink.append("&sid="+SPUtils.getInstance().getString(SPKeyGlobal.USER_ID)+"&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}");
+                serviceLink.append("&sid="+SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME)+"&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}");
             }
             else if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)))
             {
-               // serviceLink = "&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}";
                 serviceLink.append("&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}");
             }
 
         }else {
-            //serviceLink =Constant.URL_CUSTOMER_SERVICE ;
             serviceLink.append(Constant.URL_CUSTOMER_SERVICE);
         }
         CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
-
-        /*CfLog.e("goCustomerService  ---- sDomainUtil.getH5Domain2()" +DomainUtil.getH5Domain2() + serviceLink);
-           goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);*/
         goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink.toString());
     }
 
