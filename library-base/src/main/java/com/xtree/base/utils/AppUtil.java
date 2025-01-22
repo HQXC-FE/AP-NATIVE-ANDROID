@@ -81,17 +81,35 @@ public class AppUtil {
      */
     public static void goCustomerServiceWeb(Context ctx) {
         StringBuffer serviceLink = new StringBuffer() ;
+        /**
+         * 已登录用户，嗨客服拼接用户信息
+         *
+         * 用户账号：
+         * &sid=username
+         *
+         * 注册来源推广码，profile接口register_promotion_code字段
+         * &remark=encodeURIComponent(JSON.stringify({promo: register_promotion_code}))
+         *
+         *
+         * 未登录用户
+         * 推广码传递注册用的推广码
+         * &remark=encodeURIComponent(JSON.stringify({promo: 推广码}))
+         */
         if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
             serviceLink.append(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK));
-            if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME)) &&
-                    !TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE))){
-                serviceLink.append("&sid="+SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME)+"&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}");
-            }
-            else if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)))
-            {
+            String username = SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME );
+            if (TextUtils.isEmpty(username) || username == null){
                 serviceLink.append("&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}");
+            }else
+            {
+                //登录 没有推广码
+                https://ap3sport.oxldkm.com/im/chat?platformCode=THRB&channelLink=OKGV5vPNGc&sid=zfqd2008
+                if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)) || SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE) == null){
+                    serviceLink.append("&sid="+SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME));
+                }else{
+                    serviceLink.append("&sid="+SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME)+"&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}");
+                }
             }
-
         }else {
             serviceLink.append(Constant.URL_CUSTOMER_SERVICE);
         }
