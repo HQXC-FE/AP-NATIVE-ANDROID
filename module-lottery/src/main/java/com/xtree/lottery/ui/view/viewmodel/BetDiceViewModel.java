@@ -185,6 +185,7 @@ public class BetDiceViewModel extends BindModel {
      */
     public void clear() {
         lotteryNumbs.set(Arrays.asList(Collections.emptyList(), Collections.emptyList()));
+        notifyChange();
     }
 
     public enum Dice {

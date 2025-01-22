@@ -37,8 +37,8 @@ public class K3TwoDifferentNumbersRule {
             Map<String, String> currentCategory = facts.get("currentCategory");
             Map<String, String> currentMethod = facts.get("currentMethod");
             String methodName = currentCategory.get("name") + currentMethod.get("name");
-            double currentPrize = facts.get("currentPrize");
-            double money = facts.get("money");
+            double currentPrize = Double.valueOf(facts.get("currentPrize"));
+            double money =Double.valueOf(facts.get("money")) ;
             List<List<String>> formatCodes = facts.get("formatCodes");
 
             if ("二不同号标准选号".equals(methodName)) {

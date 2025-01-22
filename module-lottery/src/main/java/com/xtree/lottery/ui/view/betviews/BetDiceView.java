@@ -10,9 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
 
+import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.databinding.LayoutBetDiceBinding;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.view.viewmodel.BetDiceViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by KAKA on 2024/5/3.
@@ -46,7 +50,7 @@ public class BetDiceView extends BetBaseView {
         });
     }
 
-    public BetDiceViewModel.Dice getMethod(){
+    public BetDiceViewModel.Dice getMethod() {
         return BetDiceViewModel.Dice.Normal;
     }
 
@@ -54,41 +58,32 @@ public class BetDiceView extends BetBaseView {
      * 保留投注数据
      */
     private void setBetData() {
-//        String codes = binding.getM().lotteryNumbs.get();
-//        LotteryBetsModel betsModel = getModel();
-//        //判断是否包含有效数据
-//        String numbs = codes.replaceAll("[|,&]", "");
-//        if (!TextUtils.isEmpty(numbs) && betsModel != null) {
-//            LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
-//            betOrderData.setCodes(codes.trim());
-//            betOrderData.setDesc(betsModel.getTitle());
-//            betOrderData.setMenuid(betsModel.getMenuMethodLabelData().getMenuid());
-//            betOrderData.setMethodid(betsModel.getMenuMethodLabelData().getMethodid());
-//            betOrderData.setType(betsModel.getMenuMethodLabelData().getSelectarea().getType());
-//            //设置位数
-//            if (Boolean.TRUE.equals(binding.getModel().showSeatView.get())) {
-//                String formatSeats = binding.betDigitalSeatview.getFormatSeats();
-//                if (formatSeats != null) {
-//                    betOrderData.setPoschoose(formatSeats);
-//                } else {
-//                    //如果位数设置不符合规则，设置投注为无效
-//                    betData.set(null);
-//                    return;
-//                }
-//            }
-//            ArrayList<LotteryBetRequest.BetOrderData> orderList = new ArrayList<>();
-//            orderList.add(betOrderData);
-//
-//            if (codes.contains("|")) {
-//                betCodes.set(binding.getModel().reFormatCode(codes));
-//            } else {
-//                betCodes.set(binding.getModel().reFormatCode2(codes));
-//            }
-//
-//            betData.set(orderList);
-//        } else {
-//            betData.set(null);
-//        }
+        List<List<String>> lotteryNumbs = binding.getM().lotteryNumbs.get();
+
+        LotteryBetsModel betsModel = getModel();
+        //判断是否包含有效数据
+        String codes = null;
+        if (lotteryNumbs.size() > 1 && !lotteryNumbs.get(1).isEmpty()) {
+
+        } else if (lotteryNumbs.size() > 0 && !lotteryNumbs.get(0).isEmpty()) {
+            codes = String.join("&", lotteryNumbs.get(0));
+        }
+        if (!TextUtils.isEmpty(codes) && betsModel != null) {
+            LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
+            betOrderData.setCodes(codes);
+            betOrderData.setDesc(betsModel.getTitle());
+            betOrderData.setMenuid(betsModel.getMenuMethodLabelData().getMenuid());
+            betOrderData.setMethodid(betsModel.getMenuMethodLabelData().getMethodid());
+            betOrderData.setType(betsModel.getMenuMethodLabelData().getSelectarea().getType());
+            ArrayList<LotteryBetRequest.BetOrderData> orderList = new ArrayList<>();
+            orderList.add(betOrderData);
+
+            betCodes.set(lotteryNumbs);
+
+            betData.set(orderList);
+        } else {
+            betData.set(null);
+        }
     }
 
     private void initTip() {
