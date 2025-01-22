@@ -80,18 +80,41 @@ public class AppUtil {
      * @param ctx Context
      */
     public static void goCustomerServiceWeb(Context ctx) {
-        String serviceLink ;
-
+        StringBuffer serviceLink = new StringBuffer() ;
+        /**
+         * 已登录用户，嗨客服拼接用户信息
+         *
+         * 用户账号：
+         * &sid=username
+         *
+         * 注册来源推广码，profile接口register_promotion_code字段
+         * &remark=encodeURIComponent(JSON.stringify({promo: register_promotion_code}))
+         *
+         *
+         * 未登录用户
+         * 推广码传递注册用的推广码
+         * &remark=encodeURIComponent(JSON.stringify({promo: 推广码}))
+         */
         if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
-            serviceLink =SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK) ;
+            serviceLink.append(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK));
+            String username = SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME );
+            if (TextUtils.isEmpty(username) || username == null){
+                serviceLink.append("&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}");
+            }else
+            {
+                //登录 没有推广码
+                https://ap3sport.oxldkm.com/im/chat?platformCode=THRB&channelLink=OKGV5vPNGc&sid=zfqd2008
+                if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)) || SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE) == null){
+                    serviceLink.append("&sid="+SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME));
+                }else{
+                    serviceLink.append("&sid="+SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME)+"&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}");
+                }
+            }
         }else {
-            serviceLink =Constant.URL_CUSTOMER_SERVICE ;
+            serviceLink.append(Constant.URL_CUSTOMER_SERVICE);
         }
-    /*    CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
-
-        CfLog.e("goCustomerService  ---- sDomainUtil.getH5Domain2()" +DomainUtil.getH5Domain2() + serviceLink);
-           goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);*/
-        goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink);
+        CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
+        goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink.toString());
     }
 
 

@@ -54,6 +54,7 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
     public MutableLiveData<OfferVo> offerVoMutableLiveData = new MutableLiveData<>(); // 优惠中心列表
 
     public MutableLiveData<AppUpdateVo> liveDataUpdate = new MutableLiveData<>();//更新
+    public MutableLiveData<VipInfoVo> liveVipInfoVo = new MutableLiveData<>(); // VIP
 
     public MineViewModel(@NonNull Application application, MineRepository repository) {
         super(application, repository);
@@ -75,6 +76,7 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
         SPUtils.getInstance().remove(SPKeyGlobal.USER_CODE_MSG);
         SPUtils.getInstance().remove(SPKeyGlobal.PROMOTION_CODE);
         SPUtils.getInstance().remove(SPKeyGlobal.PROMOTION_CODE_REG);
+        SPUtils.getInstance().remove(SPKeyGlobal.APP_REGISTER_CODE);//清空【嗨客服】域名拼接推广Code
         RetrofitClient.init();
         EventBus.getDefault().post(new EventVo(EVENT_LOG_OUT, ""));
         liveDataLogout.setValue(true);
@@ -361,6 +363,30 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
                     public void onFail(BusinessException t) {
                         CfLog.e("onError message =  " + t.toString());
                         ToastUtils.showError(t.getMessage());
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    /**
+     * 获取用户等级
+     */
+    public void getVipInfo() {
+        Disposable disposable = (Disposable) model.getApiService().getVipInfo()
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<VipInfoVo>() {
+                    @Override
+                    public void onResult(VipInfoVo vo) {
+                        CfLog.i(vo.toString());
+                        SPUtils.getInstance().put(SPKeyGlobal.HOME_VIP_INFO, new Gson().toJson(vo));
+                        liveVipInfoVo.setValue(vo);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        //super.onError(t);
                     }
                 });
         addSubscribe(disposable);

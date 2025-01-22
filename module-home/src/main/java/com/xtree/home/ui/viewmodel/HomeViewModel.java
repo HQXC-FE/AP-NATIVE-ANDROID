@@ -54,6 +54,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -352,8 +353,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         for (GameVo vo : a) {
             for (GameStatusVo vo2 : b) {
                 if (vo.cid == vo2.cid) {
-                    // cid=3时,是"AG娱乐",包含 AG真人,AG电子,AG捕鱼,AG街机
-                    if (vo.cid != 3) {
+                    // cid=3时,是"AG娱乐",包含 AG真人,AG电子,AG捕鱼,AG街机.   cid=43时,包括瓦力真人、瓦力棋牌
+                    if (vo.cid != 3 && vo.cid != 43) {
                         vo.name = vo2.name;
                     }
                     vo.alias = vo2.alias;
@@ -384,7 +385,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void getPlayUrl(String gameAlias, String gameId, String name) {
         if (TextUtils.isEmpty(gameId)) {
-            gameId = "1";
+            //如果是瓦力棋牌，gameId为""
+            if (TextUtils.equals(gameAlias, "wali")) {
+                gameId = "";
+            } else {
+                gameId = "1";
+            }
         }
         int autoThrad = SPUtils.getInstance().getInt(SPKeyGlobal.USER_AUTO_THRAD_STATUS);
 
@@ -448,7 +454,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                 .subscribeWith(new HttpCallBack<SettingsVo>() {
                     @Override
                     public void onResult(SettingsVo vo) {
-                        CfLog.i("****** SettingsVo " + vo.toString());
+                        CfLog.e("****** SettingsVo " + vo.toString());
                         public_key = vo.public_key
                                 .replace("\n", "")
                                 .replace("\t", " ")
@@ -461,7 +467,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_NUMBER, vo.ws_retry_number);
                         SPUtils.getInstance().put(SPKeyGlobal.WS_EXPIRE_TIME, vo.ws_expire_time);
                         SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_WAITING_TIME, vo.ws_retry_waiting_time);
-                        SPUtils.getInstance().put(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, new LinkedHashSet(Arrays.asList(vo.op_hichat_url_suffix)));
+                        SPUtils.getInstance().put(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, new LinkedHashSet(vo.op_hichat_url_suffix==null? Collections.emptyList():Arrays.asList(vo.op_hichat_url_suffix)));
                         //SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
                         CfLog.e("**************** vo.sport_match_cache = " + vo.sport_match_cache);
                         SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, new Gson().toJson(vo.sport_match_cache));
@@ -521,11 +527,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                 .subscribeWith(new HttpCallBack<ProfileVo>() {
                     @Override
                     public void onResult(ProfileVo vo) {
-                        CfLog.i(vo.toString());
+                        CfLog.e("----ProfileVo ===" + vo.toString());
                         SPUtils.getInstance().put(SPKeyGlobal.USER_AUTO_THRAD_STATUS, vo.auto_thrad_status);
                         SPUtils.getInstance().put(SPKeyGlobal.HOME_PROFILE, new Gson().toJson(vo));
                         SPUtils.getInstance().put(SPKeyGlobal.USER_ID, vo.userid);
                         SPUtils.getInstance().put(SPKeyGlobal.USER_NAME, vo.username);
+                        SPUtils.getInstance().put(SPKeyGlobal.APP_REGISTER_CODE, vo.register_promotion_code);
                         liveDataProfile.setValue(vo);
                     }
 

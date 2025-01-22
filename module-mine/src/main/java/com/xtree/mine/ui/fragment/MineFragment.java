@@ -329,6 +329,9 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         mProfileVo = new Gson().fromJson(json, ProfileVo.class);
         json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_VIP_INFO);
         mVipInfoVo = new Gson().fromJson(json, VipInfoVo.class);
+        if (mVipInfoVo == null){
+            viewModel.getVipInfo();
+        }
         viewModel.getVipUpgradeInfo();
     }
 
@@ -525,6 +528,21 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         viewModel.liveDataReward.observe(this, vo -> {
             binding.tvwDcCentre.setSelected(vo.result);
             EventBus.getDefault().post(new EventVo(EVENT_RED_POINT, vo.result));
+        });
+         //用户VIP信息
+        viewModel.liveVipInfoVo.observe(this, vo -> {
+            mVipInfoVo = vo ;
+            if (mVipInfoVo != null) {
+                binding.ivwVip.setImageLevel(mVipInfoVo.display_level);
+                binding.ivwLevel.setImageLevel(mVipInfoVo.display_level);
+                if (mVipInfoVo.display_level >= 10) {
+                    binding.ivwLevel.setVisibility(View.INVISIBLE);
+                    //binding.ivwLevel10.setVisibility(View.VISIBLE);
+                    binding.middleArea.setBackgroundResource(R.mipmap.me_bg_top_10);
+                    binding.ivwVip10.setVisibility(View.VISIBLE);
+                    binding.ivwVip10.setOnClickListener(v -> binding.ivwLevel.performClick());
+                }
+            }
         });
     }
 

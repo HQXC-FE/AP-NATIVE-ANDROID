@@ -46,7 +46,6 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 
 public class PMBtCarViewModel extends TemplateBtCarViewModel {
 
-    private List<BetConfirmOption> mBetConfirmOptionList;
     private List<BetConfirmOption> mSearchBetConfirmOptionList;
 
     public PMBtCarViewModel(@NonNull Application application, BetRepository repository) {
@@ -76,7 +75,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
             betMatchMarket.setMatchInfoId(betConfirmOption.getMatch().getId());
             betMatchMarket.setMarketId(Long.valueOf(betConfirmOption.getPlayTypeId()));
             betMatchMarket.setOddsId(betConfirmOption.getOption().getId());
-            betMatchMarket.setPlayId(betConfirmOption.getPlayType().getId());
+            betMatchMarket.setPlayId(betConfirmOption.getPlayType().getId());//betConfirmOption.getPlayType().getId()  这个值就是hpid
             betMatchMarket.setMatchType(betConfirmOption.getOptionList().getMatchType());
             betMatchMarket.setSportId(Integer.valueOf(betConfirmOption.getMatch().getSportId()));
             betMatchMarket.setPlaceNum(betConfirmOption.getPlaceNum());
@@ -95,7 +94,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
             betMatchMarketList.add(betMatchMarket);
         }
         btCarReq.setIdList(betMatchMarketList);
-
+        queryMarketMaxMinBetMoney(betConfirmOptionList);
         Disposable disposable = (Disposable) model.getPMApiService().batchBetMatchMarketOfJumpLine(btCarReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
@@ -106,11 +105,11 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                             onFail(exception);
                             return;
                         }
-                        mBetConfirmOptionList = new ArrayList<>();
+                        List<BetConfirmOption> mBetConfirmOptionList = new ArrayList<>();
                         for (BtConfirmInfo btConfirmInfo : btConfirmInfoList) {
                             mBetConfirmOptionList.add(new BetConfirmOptionPm(btConfirmInfo, ""));
                         }
-                        queryMarketMaxMinBetMoney(betConfirmOptionList);
+                        btConfirmInfoDate.postValue(mBetConfirmOptionList);
                     }
 
                     @Override
@@ -128,7 +127,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
     }
 
     /**
-     * 投注前查询指定玩法赔率
+     * 查询最大最小投注金额
      */
     private void queryMarketMaxMinBetMoney(List<BetConfirmOption> betConfirmOptionList) {
         BtCarCgReq btCarCgReq = new BtCarCgReq();
@@ -168,7 +167,6 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                             }
                         }
 
-                        btConfirmInfoDate.postValue(mBetConfirmOptionList);
                         cgOddLimitDate.postValue(cgOddLimitInfoList);
                     }
 
