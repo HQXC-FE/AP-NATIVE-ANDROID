@@ -32,6 +32,7 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.mvvm.ExKt;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
@@ -84,6 +85,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -405,8 +408,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             }
         });
 
-        binding.btnNext.setOnClickListener(v -> {
-
+        ExKt.clickNoRepeat(binding.btnNext, 1500, view -> {
             // 下一步
             if (curRechargeVo.paycode.equals(KEY_MANUAL)) {
                 goNextManual(); // 人工充值
@@ -419,6 +421,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             } else {
                 goNext(); // 普通充值
             }
+            return null;
         });
 
         setTipBottom(null); // 设置底部的文字提示
