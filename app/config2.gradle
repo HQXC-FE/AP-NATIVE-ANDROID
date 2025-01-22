@@ -27,37 +27,36 @@ android {
             versionName "1.0.1"
             versionCode 101
             resValue "string", "app_name", "摩域体育"
-            resValue "string", "domain_api", "http://43.155.0.147:26803"
+            resValue "string", "domain_api", "http://43.154.246.56:26803"
             resValue "string", "domain_url", "https://www.alltm1s.com"
             resValue "string", "channel_name", "moYu"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
             resValue "string", "mixpanel_token", "8c0e04f787df7fa37fdd8ed81c4c219a"
             resValue "bool", "is_tag", "true" // 是否开启统计
             resValue "string", "ms_secret_key", "b8597911-c169-4fcb-b548-51a575e698d1"
-            resValue "string", "domain_api_list", "https://app1.c6j6g4.com;" +
-                    "https://app1.q7n5k5.com;" +
-                    "https://app1.j4p5m1.com;" +
-                    "https://app1.n6d1r1.com;" +
-                    "https://app2.d1t7w5.com;" +
-                    "https://app2.v1m9z9.com;" +
-                    "https://app2.h2q1g5.com;" +
-                    "https://app2.v7n6c3.com;" +
-                    "https://app5.q6o3d8.com;" +
-                    "https://app3.s9v4f7.com;" +
-                    "https://app3.i5t4l1.com;" +
-                    "https://app3.s3k5q8.com;" +
-                    "https://app3.f2p3b7.com;" +
-                    "https://app4.lgecqd.com;" +
-                    "http://43.155.0.147:26803;" +
+            resValue "string", "domain_api_list", "http://43.155.0.147:26803;" +
                     "http://43.154.246.56:26803;" +
                     "http://119.45.14.75:26803;" +
-                    "http://119.45.63.172:26803  ;" +
+                    "http://119.45.63.172:26803;" +
                     "http://146.56.229.55:26803;" +
                     "http://43.143.77.164:26803;" +
                     "http://101.43.108.235:26803;" +
                     "http://139.186.137.79:26803;" +
                     "http://124.221.214.240:26803;" +
-                    "http://139.186.201.117:26803"
+                    "http://139.186.201.117:26803;" +
+                    "https://app1.y8j5h4.com;" +
+                    "https://app1.s5k4w3.com;" +
+                    "https://app1.q2o6v5.com;" +
+                    "https://app1.h8g4k6.com;" +
+                    "https://app2.c7d1z3.com;" +
+                    "https://app2.w3d2m5.com;" +
+                    "https://app2.l7c4b3.com;" +
+                    "https://app2.f2a5l1.com;" +
+                    "https://app3.d2h4h2.com;" +
+                    "https://app3.s3f8l7.com;" +
+                    "https://app3.w3b1m3.com;" +
+                    "https://app3.u5i5i7.com;" +
+                    "https://app4.c6h7s9.com"
             resValue "string", "domain_url_list", "https://www.alltm1s.com;" +
                     "https://www.ykusti.com;" +
                     "https://www.covgra.com;" +
