@@ -676,7 +676,6 @@ public interface HttpApiService {
     @PUT("/api/activity/reward/{key}")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse> getOffer(@Path("key") String key, @Body Map<String, String> map);
-    Flowable<BaseResponse3> getOffer(@Path("key") String key, @Body Map<String, String> map);
     /**
      * 获取 VIP信息
      */
