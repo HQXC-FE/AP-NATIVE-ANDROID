@@ -30,7 +30,7 @@ public class CombinationChosenRule {
     public void then(Facts facts) {
         try {
             // 获取相关数据
-            List<String> formatCodes = facts.get("formatCodes");
+            List<List<String>>formatCodes = facts.get("formatCodes");
             Map<String, String> attached = facts.get("attached");
             Integer number =  Integer.parseInt(attached.get("number"));
 
@@ -41,7 +41,7 @@ public class CombinationChosenRule {
             }
 
             // 获取第一组的长度
-            int m = formatCodes.size();
+            int m = formatCodes.get(0).size();
 
             // 检查是否满足最小选择值
             if (m < number) {
