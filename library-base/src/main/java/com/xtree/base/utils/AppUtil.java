@@ -233,4 +233,31 @@ public class AppUtil {
         }
     }
 
+    public static String getSysName(Context context) {
+        if (isHarmonyServiceInstalled(context)) {
+            return "HarmonyOS";
+        } else {
+            return "Android";
+        }
+    }
+
+    private static boolean isHarmonyServiceInstalled(Context context) {
+        try {
+            context.getPackageManager().getPackageInfo("com.huawei.harmonyos", 0);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static String getDeviceName() {
+        try {
+            String productName = System.getProperty("ro.product.name");
+            return productName != null ? productName : "Unknown";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unknown";
+        }
+    }
+
 }

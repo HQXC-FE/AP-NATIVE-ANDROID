@@ -104,7 +104,7 @@ public class HeaderInterceptor implements Interceptor {
     private void addUserAgentHeader(Chain chain, Request.Builder builder) {
         StringBuilder userAgentString = new StringBuilder();
         userAgentString
-                .append("Android");
+                .append(AppUtil.getSysName(BaseApplication.getInstance().getApplicationContext()));
 
         if (BaseApplication.getInstance() != null) {
             userAgentString
