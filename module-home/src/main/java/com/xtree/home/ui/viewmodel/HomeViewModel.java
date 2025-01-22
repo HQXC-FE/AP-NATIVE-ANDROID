@@ -353,8 +353,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         for (GameVo vo : a) {
             for (GameStatusVo vo2 : b) {
                 if (vo.cid == vo2.cid) {
-                    // cid=3时,是"AG娱乐",包含 AG真人,AG电子,AG捕鱼,AG街机
-                    if (vo.cid != 3) {
+                    // cid=3时,是"AG娱乐",包含 AG真人,AG电子,AG捕鱼,AG街机.   cid=43时,包括瓦力真人、瓦力棋牌
+                    if (vo.cid != 3 && vo.cid != 43) {
                         vo.name = vo2.name;
                     }
                     vo.alias = vo2.alias;
@@ -385,7 +385,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void getPlayUrl(String gameAlias, String gameId, String name) {
         if (TextUtils.isEmpty(gameId)) {
-            gameId = "1";
+            //如果是瓦力棋牌，gameId为""
+            if (TextUtils.equals(gameAlias, "wali")) {
+                gameId = "";
+            } else {
+                gameId = "1";
+            }
         }
         int autoThrad = SPUtils.getInstance().getInt(SPKeyGlobal.USER_AUTO_THRAD_STATUS);
 
