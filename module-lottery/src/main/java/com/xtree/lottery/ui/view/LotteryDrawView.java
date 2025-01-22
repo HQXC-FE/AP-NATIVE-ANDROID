@@ -1,6 +1,7 @@
 package com.xtree.lottery.ui.view;
 
-import static com.xtree.lottery.rule.Matchers.k3Alias;
+
+import static com.xtree.lottery.rule.betting.Matchers.k3Alias;
 
 import android.content.Context;
 import android.graphics.Bitmap;
