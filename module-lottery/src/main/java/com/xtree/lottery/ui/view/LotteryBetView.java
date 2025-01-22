@@ -90,11 +90,11 @@ public class LotteryBetView extends FrameLayout {
                 default:
                     if (Arrays.asList(racingTagTypes).contains(betsModel.getMenuMethodLabelData().getDescription())) {
                         betView = new BetRacingView(getContext());
-                    } else if (ExKt.includes(Arrays.asList(dice), betsModel.getMenuMethodLabelData().getDescription())) {
+                    } else if (ExKt.includes(Arrays.asList(dice), betsModel.getTitle())) {
                         betView = new BetDiceView(getContext());
-                    } else if (ExKt.includes(Arrays.asList(diceAll), betsModel.getMenuMethodLabelData().getDescription())) {
+                    } else if (ExKt.includes(Arrays.asList(diceAll),betsModel.getTitle())) {
                         betView = new BetDiceAllView(getContext());
-                    } else if (ExKt.includes(Arrays.asList(diceRelation), betsModel.getMenuMethodLabelData().getDescription())) {
+                    } else if (ExKt.includes(Arrays.asList(diceRelation), betsModel.getTitle())) {
                         betView = new BetDiceRelationView(getContext());
                     } else {
                         betView = new BetDigitalView(getContext());

@@ -90,18 +90,18 @@
                     android:textSize="14sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    gridSpace="@{@dimen/grid_space30}"
                     itemData="@{m.num0Datas}"
                     itemViewType="@{m.itemTypes}"
                     onBindListener="@{m.onBindListener}"
                     spanCount="@{3}"
-                    gridSpace="@{@dimen/grid_space30}"
-                    android:paddingBottom="@dimen/grid_space30"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:overScrollMode="never"
                     android:paddingStart="@dimen/grid_space15"
                     android:paddingEnd="@dimen/grid_space15"
-                    android:overScrollMode="never"
+                    android:paddingBottom="@dimen/grid_space30"
                     android:scrollbars="none" />
 
                 <TextView
@@ -113,6 +113,7 @@
                     android:visibility="@{m.dice==Dice.Relation?View.VISIBLE:View.GONE}" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    gridSpace="@{@dimen/grid_space30}"
                     itemData="@{m.num1Datas}"
                     itemViewType="@{m.itemTypes}"
                     onBindListener="@{m.onBindListener}"
@@ -121,6 +122,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:overScrollMode="never"
+                    android:paddingStart="@dimen/grid_space15"
+                    android:paddingEnd="@dimen/grid_space15"
+                    android:paddingBottom="@dimen/grid_space30"
                     android:scrollbars="none"
                     android:visibility="@{m.dice==Dice.Relation?View.VISIBLE:View.GONE}" />
             </LinearLayout>
