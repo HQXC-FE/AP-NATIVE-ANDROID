@@ -16,6 +16,7 @@ import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.view.viewmodel.BetDiceViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -64,7 +65,7 @@ public class BetDiceView extends BetBaseView {
         //判断是否包含有效数据
         String codes = null;
         if (lotteryNumbs.size() > 1 && !lotteryNumbs.get(1).isEmpty()) {
-
+            codes = String.join("|", Arrays.asList(String.join("&", lotteryNumbs.get(0)), String.join("&", lotteryNumbs.get(1))));
         } else if (lotteryNumbs.size() > 0 && !lotteryNumbs.get(0).isEmpty()) {
             codes = String.join("&", lotteryNumbs.get(0));
         }
