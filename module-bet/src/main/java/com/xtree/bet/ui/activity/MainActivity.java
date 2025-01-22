@@ -181,28 +181,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             return tabSportAdapter.getItem(sportTypePos == -1 ? 0 : sportTypePos).id;
         }
 
-        //String[] sportIds = tabSportAdapter.getItem(sportTypePos).id;
-        //String sportId = null;
-        //if (sportTypePos < sportIds.length) {
-        //    sportId = sportIds[sportTypePos == -1 ? 0 : sportTypePos];
-        //}
-        //// 以下规则只用于PM体育
-        //if (playMethodPos != 4) { // 刚开始进入PM体育场馆时，会有sportId为空的情况
-        //    if (sportId == null) { // 获取相应玩法中默认的球种
-        //        if (playMethodPos == 2) {
-        //            sportTypePos = 0;
-        //            sportId = sportIds[0];
-        //        } else {
-        //            sportTypePos = 1;
-        //            sportId = sportIds[1];
-        //        }
-        //        mSportName = viewModel.getSportName(playMethodType)[sportTypePos];
-        //    }
-        //}
-        //if (sportId == null) {
-        //    sportId = playMethodPos == 4 ? "0" : PMConstants.SPORT_IDS_DEFAULT[1];
-        //}
-        //return Integer.valueOf(sportId);
     }
 
     @Override
@@ -496,6 +474,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 getMatchData(sportId, mOrderBy, mLeagueIdList, null,
                         playMethodType, searchDatePos, false, true);
                 if ((sportId == null || TextUtils.equals("1111", sportId)) && (playMethodPos == 0 || playMethodPos == 3)) {
+                    System.out.println("############## tabSportAdapter sportId ##############"+sportId);
                     viewModel.getHotMatchCount(playMethodType, viewModel.hotLeagueList);
                 }
             }
@@ -1689,46 +1668,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             return;
         }
         List<SportTypeItem> list = mStatisticalData.get(String.valueOf(playMethodType));
-        //CfLog.i("playMethodType1     " + playMethodType + "   " + new Gson().toJson(mStatisticalData));
-        //CfLog.i("playMethodType1     " + mSportName);
-
-        //List<SportTypeItem> newList = new ArrayList<>();
-        //
-        //int allCount = 0;
-        //HashMap<Integer, SportTypeItem> matchGames = viewModel.getMatchGames();
-        //
-        //for (int i = 0; i < list.size(); i++) {
-        //    Integer count = list.get(i).num;
-        //    if (count != null) {
-        //        if (count == 0 && i != 0) {
-        //            continue;
-        //        }
-        //        SportTypeItem item = list.get(i);
-        //        item.name = matchGames.get(item.id).name;
-        //        if (item.name.equals(mSportName)) {
-        //            item.isSelected = true;
-        //        } else {
-        //            item.isSelected = false;
-        //        }
-        //        item.iconId = Constants.SPORT_ICON[i];
-        //        newList.add(item);
-        //    } else {
-        //        break;
-        //    }
-        //
-        //    if (playMethodPos == 1) {
-        //        if (i == 0) {
-        //            continue;
-        //        }
-        //        CfLog.i("allCount     " + allCount);
-        //        allCount += count;
-        //    }
-        //}
-        //
-        //if (playMethodPos == 1) {
-        //    CfLog.i("allCount     " + allCount);
-        //    newList.get(0).num = allCount;
-        //}
         if (playMethodPos == 0 || playMethodPos == 3) {
             if (list != null && list.get(0) != null) {
                 list.get(0).num = mHotMatchCount;
