@@ -54,6 +54,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -461,7 +462,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_NUMBER, vo.ws_retry_number);
                         SPUtils.getInstance().put(SPKeyGlobal.WS_EXPIRE_TIME, vo.ws_expire_time);
                         SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_WAITING_TIME, vo.ws_retry_waiting_time);
-                        SPUtils.getInstance().put(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, new LinkedHashSet(Arrays.asList(vo.op_hichat_url_suffix)));
+                        SPUtils.getInstance().put(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, new LinkedHashSet(vo.op_hichat_url_suffix==null? Collections.emptyList():Arrays.asList(vo.op_hichat_url_suffix)));
                         //SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
                         CfLog.e("**************** vo.sport_match_cache = " + vo.sport_match_cache);
                         SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, new Gson().toJson(vo.sport_match_cache));
