@@ -80,7 +80,9 @@ android {
                     "https://h53.n9a8th.vip;" +
                     "https://h53.z4y3lx.vip;" +
                     "https://h54.u2e3uc.vip;" +
-                    "https://h54.p7x3cn.vip"
+                    "https://h54.p7x3cn.vip;" +
+                    "https://h61.hmsdjy.com:36801;" +
+                    "https://h61.zexsw.com:36801"
             resValue "string", "domain_url_list_third", "https://scdnapp.b4k4p3.com/e1/app_config_e1.json"
 
             multiDexEnabled true
