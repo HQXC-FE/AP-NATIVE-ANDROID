@@ -29,9 +29,9 @@ android {
 
         // 生产环境 发布用
         eon4_OL {
-            applicationId "com.eon4.app" // eon3
-            versionName "1.0.4"
-            versionCode 104
+            applicationId "com.eon4.app"
+            versionName "1.0.0"
+            versionCode 100
             resValue "string", "app_name", "意昂体育4"
             resValue "string", "domain_api", "http://175.27.143.79:46820"
             resValue "string", "domain_url", "https://h51.k8z8dv.xyz"
