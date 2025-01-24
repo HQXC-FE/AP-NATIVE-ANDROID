@@ -105,7 +105,7 @@ public class AppUpdateDialog extends CenterPopupView {
 
     @Override
     protected int getMaxHeight() {
-        return (XPopupUtils.getScreenHeight(getContext()) * 8 / 10);
+        return (XPopupUtils.getScreenHeight(getContext())* 9 / 10);
     }
 
     private void initView() throws IOException {
