@@ -92,8 +92,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/layout_margin</item>
         <item name="android:layout_marginTop">@dimen/layout_margin</item>
-        <item name="android:textColor">@color/clr_txt_02</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/clr_withdrawal_text_bank_tip</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <!-- 首页-左边的游戏类型 -->
@@ -470,7 +470,7 @@
         <item name="android:minEms">4</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
-        <item name="android:textColor">@color/clr_filter_txt_gray</item>
+        <item name="android:textColor">@color/clr_btn_grey01</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -519,7 +519,7 @@
         <item name="android:textColorHint">@color/clr_txt_grey_03</item>
         <item name="android:textSize">14sp</item>
     </style>
-    <!--益阳-->
+
     <style name="style_rc_feedback_eon_edit">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">42dp</item>

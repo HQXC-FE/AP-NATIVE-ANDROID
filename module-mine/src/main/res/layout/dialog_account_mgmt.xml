@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/me_choose_acount"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_withdrawal_text_bank_tip"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
