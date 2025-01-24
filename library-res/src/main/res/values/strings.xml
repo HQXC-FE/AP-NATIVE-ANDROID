@@ -45,6 +45,8 @@
     <string name="txt_remind_card">请输入16到19位数字</string>
     <string name="txt_remind_usdt_trc20">TRC20_USDT地址以T开头的数字和字母组成的34位</string>
     <string name="txt_remind_usdt_erc20">ERC20_USDT地址以0x开头的数字和字母组成的42位</string>
+    <string name="txt_remind_usdt_arbitrum">Arbitrum地址以0x开头的数字和字母组成的42位</string>
+    <string name="txt_remind_usdt_solana">Solana地址以数字和字母组成的44位</string>
     <string name="txt_remind_ebpay">EBPAY地址以eb开头的数字和字母组成的34位</string>
     <string name="txt_remind_topay">TOPAY地址以tp开头的18位 或字母开头的16位</string>
     <string name="txt_remind_gcnyt">地址以CNYT开头的20位英文或数字</string>
