@@ -28,7 +28,6 @@ import java.util.Map;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.BaseResponse;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -124,7 +123,7 @@ public interface PMApiService {
     Flowable<BaseResponse<List<PlayTypeInfo>>> getMatchOddsInfoPB(@QueryMap Map<String, String> map);
 
     /**
-     * 查询最大最小投注金额  投注
+     * 投注
      * @return
      */
     @POST("/yewu13/v1/betOrder/client/bet")
