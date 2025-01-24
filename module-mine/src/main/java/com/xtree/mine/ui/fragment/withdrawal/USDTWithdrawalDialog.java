@@ -155,9 +155,9 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     @Override
     protected void onCreate() {
         super.onCreate();
+        initData();
         initView();
         hideKeyBoard();
-        initData();
         initViewObservable();
 //        requestData();
         String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
@@ -306,6 +306,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
             erc20BankInfoList.clear();
             erc20ArbitrumBankInfoList.clear();
             solanaBankInfoList.clear();
+            //业务正常 刷新页面
+            refreshChangeUI(changVo, infoVo);
         });
 
         // 验证当前渠道信息
@@ -645,8 +647,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         String temp = infoVo.min_money + "元,最高" + infoVo.max_money + "元";
         binding.tvWithdrawalSingleShow.setText(temp); //单笔提现金额
 
-        binding.tvWithdrawalAmountMethod.setText(infoVo.user_bank_info.get(0).usdt_type);//提款方式
-/*
+        /*
         binding.tvCollectionUsdt.setText(cashMoYuVo.usdtinfo.get(0).usdt_type + " " + cashMoYuVo.usdtinfo.get(0).usdt_card);
 
         usdtid = cashMoYuVo.usdtinfo.get(0).id;*/
@@ -670,7 +671,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     }
 
     private void refreshTopUI(ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo) {
-
+        listVo.get(0).flag = true;
         recyclerViewAdapter = new FruitHorUSDTRecyclerViewAdapter(listVo, this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -680,7 +681,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         binding.rvShowChooseCard.setAdapter(recyclerViewAdapter);
         binding.rvShowChooseCard.setItemAnimator(new DefaultItemAnimator());
         ///
-
+        callbackWithFruitHor(listVo.get(0));
     }
 
     /**
@@ -1024,6 +1025,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
        /* if (selectVo.name.equals(selectUsdtInfo.name)) {
             selectorTopChannel = selectVo;
         }*/
+        changVo=selectVo;
         wtype=selectVo.name;
         viewModel.getWithdrawalInfo(wtype, checkCode);
     }
