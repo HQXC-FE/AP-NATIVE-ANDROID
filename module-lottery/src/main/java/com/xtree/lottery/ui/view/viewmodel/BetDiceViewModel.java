@@ -46,7 +46,7 @@ public class BetDiceViewModel extends BindModel {
         @Override
         public void onBind(@NonNull BindingAdapter.BindingViewHolder bindingViewHolder, @NonNull View view, int itemViewType) {
             ItemBetDiceNumsBinding binding = (ItemBetDiceNumsBinding) bindingViewHolder.getViewBinding();
-            Bitmap diceSource = BitmapFactory.decodeResource(binding.getRoot().getResources(), R.mipmap.dice);
+            Bitmap diceSource = BitmapFactory.decodeResource(binding.getRoot().getResources(), R.mipmap.lottery_dice);
             BetDiceModel model = bindingViewHolder.getModel();
             boolean isActived = dice.isActived(model.number, lotteryNumbs);
             String actionNumber;

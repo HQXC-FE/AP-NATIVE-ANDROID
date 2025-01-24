@@ -159,7 +159,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
             public void onChanged(LotteryBetsModel lotteryBetsModel) {
                 if (lotteryBetsModel != null) {
                     //设置选注形态
-                    binding.lotteryBetsBetlayout.setData(lotteryBetsModel);
+                    binding.lotteryBetsBetlayout.setData(lotteryBetsModel,lottery);
 
                     //设置投注金额
                     if (lotteryBetsModel.getMenuMethodLabelData() != null && lotteryBetsModel.getMenuMethodLabelData().getMoneyModes() != null) {

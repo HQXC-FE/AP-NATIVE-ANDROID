@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -72,7 +71,7 @@ public class LotteryDrawView extends LinearLayout {
                             LinearLayout.LayoutParams params =  new LinearLayout.LayoutParams( ConvertUtils.dp2px(30), ConvertUtils.dp2px(35));
                             params.rightMargin=ConvertUtils.dp2px(6);
                             view.setLayoutParams(params);
-                            Bitmap diceSource = BitmapFactory.decodeResource(binding.getRoot().getResources(), R.mipmap.dice);
+                            Bitmap diceSource = BitmapFactory.decodeResource(binding.getRoot().getResources(), R.mipmap.lottery_dice);
                             ((ImageView) view).setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(numb), 1));
                         } else {
                             view = LayoutInflater.from(getContext()).inflate(R.layout.view_lottery_draw_ball, null);

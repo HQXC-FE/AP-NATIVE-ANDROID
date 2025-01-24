@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
 
 import com.xtree.base.mvvm.ExKt;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.view.betviews.BetBaseView;
@@ -20,6 +21,7 @@ import com.xtree.lottery.ui.view.betviews.BetDxdsTagView;
 import com.xtree.lottery.ui.view.betviews.BetDxdsView;
 import com.xtree.lottery.ui.view.betviews.BetHandicap1View;
 import com.xtree.lottery.ui.view.betviews.BetInputView;
+import com.xtree.lottery.ui.view.betviews.BetLhcView;
 import com.xtree.lottery.ui.view.betviews.BetRacingView;
 
 import java.util.Arrays;
@@ -55,7 +57,7 @@ public class LotteryBetView extends FrameLayout {
         super(context, attrs);
     }
 
-    public void setData(LotteryBetsModel betsModel) {
+    public void setData(LotteryBetsModel betsModel, Lottery lottery) {
 
         removeAllViews();
 
@@ -73,33 +75,38 @@ public class LotteryBetView extends FrameLayout {
                 return;
             }
 
-            switch (betsModel.getMenuMethodLabelData().getSelectarea().getType()) {
-                case "dxds":
-                    if (Arrays.asList(dxdsTagTypes).contains(betsModel.getMenuMethodLabelData().getDescription())) {
+
+            if ("lhc".equals(lottery.getLinkType())) {//六合彩
+                betView = new BetLhcView(getContext());
+            } else {
+                switch (betsModel.getMenuMethodLabelData().getSelectarea().getType()) {
+                    case "dxds":
+                        if (Arrays.asList(dxdsTagTypes).contains(betsModel.getMenuMethodLabelData().getDescription())) {
+                            betView = new BetDxdsTagView(getContext());
+                        } else {
+                            betView = new BetDxdsView(getContext());
+                        }
+                        break;
+                    case "dds":
                         betView = new BetDxdsTagView(getContext());
-                    } else {
-                        betView = new BetDxdsView(getContext());
-                    }
-                    break;
-                case "dds":
-                    betView = new BetDxdsTagView(getContext());
-                    break;
-                case "input":
-                    betView = new BetInputView(getContext());
-                    break;
-                default:
-                    if (Arrays.asList(racingTagTypes).contains(betsModel.getMenuMethodLabelData().getDescription())) {
-                        betView = new BetRacingView(getContext());
-                    } else if (ExKt.includes(Arrays.asList(dice), betsModel.getTitle())) {
-                        betView = new BetDiceView(getContext());
-                    } else if (ExKt.includes(Arrays.asList(diceAll),betsModel.getTitle())) {
-                        betView = new BetDiceAllView(getContext());
-                    } else if (ExKt.includes(Arrays.asList(diceRelation), betsModel.getTitle())) {
-                        betView = new BetDiceRelationView(getContext());
-                    } else {
-                        betView = new BetDigitalView(getContext());
-                    }
-                    break;
+                        break;
+                    case "input":
+                        betView = new BetInputView(getContext());
+                        break;
+                    default:
+                        if (Arrays.asList(racingTagTypes).contains(betsModel.getMenuMethodLabelData().getDescription())) {
+                            betView = new BetRacingView(getContext());
+                        } else if (ExKt.includes(Arrays.asList(dice), betsModel.getTitle())) {
+                            betView = new BetDiceView(getContext());
+                        } else if (ExKt.includes(Arrays.asList(diceAll), betsModel.getTitle())) {
+                            betView = new BetDiceAllView(getContext());
+                        } else if (ExKt.includes(Arrays.asList(diceRelation), betsModel.getTitle())) {
+                            betView = new BetDiceRelationView(getContext());
+                        } else {
+                            betView = new BetDigitalView(getContext());
+                        }
+                        break;
+                }
             }
         }
 
