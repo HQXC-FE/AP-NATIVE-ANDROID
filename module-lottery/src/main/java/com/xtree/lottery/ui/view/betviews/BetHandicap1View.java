@@ -10,6 +10,7 @@ import androidx.databinding.Observable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.databinding.LayoutBetHandicap1Binding;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.view.viewmodel.BetHandicap1ViewModel;
@@ -56,8 +57,8 @@ public class BetHandicap1View extends BetBaseView {
     }
 
     @Override
-    public void setModel(LotteryBetsModel model) {
-        super.setModel(model);
+    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
+        super.setModel(model, prizeGroup);
         binding.getModel().initData(model);
 
         switch (model.getHandicapMethodData().getCategory()) {

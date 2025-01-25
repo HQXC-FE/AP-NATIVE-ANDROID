@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.lxj.xpopup.util.KeyboardUtils;
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.BR;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.config.Lottery;
@@ -154,22 +155,19 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
             }
         });
 
-        binding.getModel().currentBetModel.observe(this, new Observer<LotteryBetsModel>() {
-            @Override
-            public void onChanged(LotteryBetsModel lotteryBetsModel) {
-                if (lotteryBetsModel != null) {
-                    //设置选注形态
-                    binding.lotteryBetsBetlayout.setData(lotteryBetsModel,lottery);
+        binding.getModel().combinedPrizeBetLiveData.observe(this, combinedData -> {
+            LotteryBetsModel lotteryBetsModel = combinedData.betModel;
+            UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup = combinedData.prizeGroup;
+            //设置选注形态
+            binding.lotteryBetsBetlayout.setData(lotteryBetsModel, prizeGroup, lottery);
 
-                    //设置投注金额
-                    if (lotteryBetsModel.getMenuMethodLabelData() != null && lotteryBetsModel.getMenuMethodLabelData().getMoneyModes() != null) {
-                        ArrayList<LotteryMoneyModel> moneyModelList = new ArrayList<>();
-                        for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO moneyMode : lotteryBetsModel.getMenuMethodLabelData().getMoneyModes()) {
-                            moneyModelList.add(new LotteryMoneyModel(moneyMode.getName(), moneyMode.getRate(), moneyMode.getModeid()));
-                        }
-                        binding.lotteryBetsMoneyView.setMoneyUnit(moneyModelList);
-                    }
+            //设置投注金额
+            if (lotteryBetsModel.getMenuMethodLabelData() != null && lotteryBetsModel.getMenuMethodLabelData().getMoneyModes() != null) {
+                ArrayList<LotteryMoneyModel> moneyModelList = new ArrayList<>();
+                for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO moneyMode : lotteryBetsModel.getMenuMethodLabelData().getMoneyModes()) {
+                    moneyModelList.add(new LotteryMoneyModel(moneyMode.getName(), moneyMode.getRate(), moneyMode.getModeid()));
                 }
+                binding.lotteryBetsMoneyView.setMoneyUnit(moneyModelList);
             }
         });
 

@@ -54,8 +54,9 @@ public class MenuMethodsData {
         /**
          * title
          */
-        @SerializedName("title")
+        @SerializedName(value = "title", alternate = {"dy_title"})
         private String title;
+
         /**
          * isdefault
          */
@@ -108,7 +109,7 @@ public class MenuMethodsData {
             /**
              * title
              */
-            @SerializedName(value = "title", alternate = {"gtitle"})
+            @SerializedName(value = "title", alternate = {"gtitle", "dy_title"})
             private String title;
             /**
              * labels
@@ -133,10 +134,33 @@ public class MenuMethodsData {
             }
 
             public static class Labels2DTO {
+
                 /**
                  * 是否应用玩法
                  */
                 public boolean userPlay = false;
+                /**
+                 * title
+                 */
+                @SerializedName(value = "cate_title")
+                private String cateTitle;
+                @SerializedName(value = "group_title")
+                private String groupTitle;
+                /**
+                 * color
+                 */
+                @SerializedName("color")
+                private String color;
+                /**
+                 * num
+                 */
+                @SerializedName("num")
+                private String num;
+                /**
+                 * type
+                 */
+                @SerializedName("type")
+                private String type;
                 /**
                  * menuid
                  */
@@ -212,6 +236,46 @@ public class MenuMethodsData {
                  */
                 @SerializedName("money_modes")
                 private List<MoneyModesDTO> moneyModes;
+
+                public String getCateTitle() {
+                    return cateTitle;
+                }
+
+                public void setCateTitle(String cateTitle) {
+                    this.cateTitle = cateTitle;
+                }
+
+                public String getGroupTitle() {
+                    return groupTitle;
+                }
+
+                public void setGroupTitle(String groupTitle) {
+                    this.groupTitle = groupTitle;
+                }
+
+                public String getColor() {
+                    return color;
+                }
+
+                public void setColor(String color) {
+                    this.color = color;
+                }
+
+                public String getNum() {
+                    return num;
+                }
+
+                public void setNum(String num) {
+                    this.num = num;
+                }
+
+                public String getType() {
+                    return type;
+                }
+
+                public void setType(String type) {
+                    this.type = type;
+                }
 
                 public boolean isUserPlay() {
                     return userPlay;

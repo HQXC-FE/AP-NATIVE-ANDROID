@@ -10,6 +10,7 @@ import androidx.databinding.ObservableField;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.R;
@@ -24,10 +25,11 @@ import java.util.List;
  */
 public abstract class BetBaseView extends FrameLayout {
 
-    private LotteryBetsModel model;
-    private BasePopupView pop;
     public ObservableField<List<LotteryBetRequest.BetOrderData>> betData = new ObservableField<>();
     public ObservableField<Object> betCodes = new ObservableField<>();
+    private LotteryBetsModel model;
+    private UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup;
+    private BasePopupView pop;
 
     public BetBaseView(@NonNull Context context) {
         super(context);
@@ -37,12 +39,17 @@ public abstract class BetBaseView extends FrameLayout {
         super(context, attrs);
     }
 
-    public void setModel(LotteryBetsModel model) {
-        this.model = model;
+    public UserMethodsResponse.DataDTO.PrizeGroupDTO getPrizeGroup() {
+        return prizeGroup;
     }
 
     public LotteryBetsModel getModel() {
         return model;
+    }
+
+    public void setModel(LotteryBetsModel model, @Nullable UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
+        this.model = model;
+        this.prizeGroup = prizeGroup;
     }
 
     public abstract void clearBet();

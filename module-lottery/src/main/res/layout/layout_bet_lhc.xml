@@ -125,7 +125,6 @@
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    gridSpace="@{@dimen/grid_space30}"
                     itemData="@{m.datas}"
                     itemViewType="@{m.itemTypes}"
                     onBindListener="@{m.onBindListener}"
@@ -133,10 +132,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:paddingBottom="30dp"
                     android:overScrollMode="never"
-                    android:paddingStart="@dimen/grid_space15"
-                    android:paddingEnd="@dimen/grid_space15"
-                    android:paddingBottom="@dimen/grid_space30"
                     android:scrollbars="none" />
 
             </LinearLayout>

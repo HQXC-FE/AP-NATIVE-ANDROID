@@ -14,9 +14,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.util.KeyboardUtils;
-import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.BR;
 import com.xtree.lottery.R;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.databinding.FragmentLotteryHandicapBinding;
@@ -56,6 +56,7 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
         RxBus.getDefault().postSticky(lottery);
         return new LotteryHandicapFragment();
     }
+
     protected void initImmersionBar() {
 
     }
@@ -119,7 +120,7 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
             public void onChanged(LotteryBetsModel lotteryBetsModel) {
                 if (lotteryBetsModel != null) {
                     //设置选注形态
-                    binding.lotteryHandicapBetlayout.setData(lotteryBetsModel,lottery);
+                    binding.lotteryHandicapBetlayout.setData(lotteryBetsModel, null, lottery);
                     mTabPosition = lotteryBetsModel.getPosition();
                     mTabTitle = lotteryBetsModel.getTitle();
 //                    //设置投注金额

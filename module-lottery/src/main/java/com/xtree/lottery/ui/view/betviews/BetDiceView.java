@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
 
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.databinding.LayoutBetDiceBinding;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
@@ -28,9 +29,7 @@ public class BetDiceView extends BetBaseView {
     private LayoutBetDiceBinding binding;
 
     public BetDiceView(@NonNull Context context) {
-        super(context);
-        binding = LayoutBetDiceBinding.inflate(LayoutInflater.from(context), this, true);
-        initView();
+        this(context,null);
     }
 
     public BetDiceView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -105,8 +104,8 @@ public class BetDiceView extends BetBaseView {
     }
 
     @Override
-    public void setModel(LotteryBetsModel model) {
-        super.setModel(model);
+    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
+        super.setModel(model,prizeGroup);
         binding.getM().initData(model);
         initTip();
 

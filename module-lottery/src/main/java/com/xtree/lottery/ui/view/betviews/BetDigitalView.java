@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
 
+import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.databinding.LayoutBetDigitalBinding;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
@@ -28,9 +29,9 @@ import java.util.Set;
  */
 public class BetDigitalView extends BetBaseView {
 
-    private LayoutBetDigitalBinding binding;
     //使用冷热遗漏功能的玩法
-    private final String[] useMissPlays = {"复式","直选复式"};
+    private final String[] useMissPlays = {"复式", "直选复式"};
+    private LayoutBetDigitalBinding binding;
 
 
     public BetDigitalView(@NonNull Context context) {
@@ -169,8 +170,8 @@ public class BetDigitalView extends BetBaseView {
     }
 
     @Override
-    public void setModel(LotteryBetsModel model) {
-        super.setModel(model);
+    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
+        super.setModel(model, prizeGroup);
         binding.getModel().initData(model);
         initTip();
 
