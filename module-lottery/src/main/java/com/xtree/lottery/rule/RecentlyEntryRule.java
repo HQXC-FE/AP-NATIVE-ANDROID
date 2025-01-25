@@ -2,14 +2,11 @@ package com.xtree.lottery.rule;
 
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
-import com.xtree.lottery.rule.betting.AfterRules;
-import com.xtree.lottery.rule.betting.AttachedRules;
-import com.xtree.lottery.rule.betting.DecisionRules;
-import com.xtree.lottery.rule.betting.EndingRules;
-import com.xtree.lottery.rule.betting.FilterRules;
-import com.xtree.lottery.rule.betting.MatchRules;
-import com.xtree.lottery.rule.betting.PrepareRules;
+import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.rule.betting.data.RulesEntryData;
+import com.xtree.lottery.rule.recent.RecentDecisionRules;
+import com.xtree.lottery.rule.recent.RecentEndingRules;
+import com.xtree.lottery.rule.recent.RecentMatchRules;
 
 import org.jeasy.rules.api.Facts;
 import org.jeasy.rules.api.Rules;
@@ -21,49 +18,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BettingEntryRule {
+public class RecentlyEntryRule {
     Rules rules;
     Facts facts;
     RulesEngine rulesEngine;
-    private static BettingEntryRule INSTANCE;
+    private static RecentlyEntryRule INSTANCE;
 
-    public static BettingEntryRule getInstance() {
+    public static RecentlyEntryRule getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new BettingEntryRule();
+            INSTANCE = new RecentlyEntryRule();
         }
         return INSTANCE;
     }
 
-    public BettingEntryRule() {
+    public RecentlyEntryRule() {
         rules = new Rules();
         rulesEngine = new DefaultRulesEngine();
 
-        MatchRules.addRules(rules);
-        FilterRules.addRules(rules);
-        PrepareRules.addRules(rules);
-        AttachedRules.addRules(rules);
-        DecisionRules.addRules(rules);
-        AfterRules.addRules(rules);
-        EndingRules.addRules(rules);
+        RecentMatchRules.addRules(rules);
+        RecentDecisionRules.addRules(rules);
+        RecentEndingRules.addRules(rules);
     }
 
-    public RulesEntryData.SubmitDTO startEngine(RulesEntryData rulesEntryData) {
+    public List<RecentLotteryVo> startEngine(RulesEntryData rulesEntryData, List<RecentLotteryVo> historyLottery) {
         facts = new Facts();
-        Map<String, String> currentCategory = new HashMap<>();
         Map<String, Object> currentMethod = new HashMap<>();
         Map<String, Object> currentMethodSelectArea = new HashMap<>();
-        Map<String, Object> bet = new HashMap<>();
-        Map<String, String> betMode = new HashMap<>();
         List<Map<String, Object>> currentMethodSelectAreaLayout = new ArrayList<>();
         List<Map<String, String>> currentMethodMoneyModes = new ArrayList<>();
         List<Map<String, String>> currentMethodPrizeGroup = new ArrayList<>();
-        Map<String, Object> attached = new HashMap<>();
-        List<String> message = new ArrayList<>();
-
-        // currentCategory.name
-        currentCategory.put("name", rulesEntryData.getCurrentCategory().getName());
-        // currentCategory.flag
-        currentCategory.put("flag", rulesEntryData.getCurrentCategory().getFlag());
+        List<Map<String, Object>> inputHistoryLottery = new ArrayList<>();
 
         // currentMethod.methodid
         currentMethod.put("methodid", rulesEntryData.getCurrentMethod().getMethodid());
@@ -131,66 +115,35 @@ public class BettingEntryRule {
         // currentMethod.selectarea
         currentMethod.put("selectarea", currentMethodSelectArea);
 
-        //bet.codes
-        if (rulesEntryData.getBet().getCodes() instanceof List) {
-            if (((List<?>) rulesEntryData.getBet().getCodes()).get(0) instanceof String) {
-                bet.put("codes", rulesEntryData.getBet().getCodes());
-            } else if (((List<?>) rulesEntryData.getBet().getCodes()).get(0) instanceof List<?>) {
-                List<List<String>> betCodes = new ArrayList<>();
-                for (List<String> item : (List<List<String>>) rulesEntryData.getBet().getCodes()) {
-                    betCodes.add(item);
-                }
-                bet.put("codes", betCodes);
-            }
-        } else if (rulesEntryData.getBet().getCodes() instanceof String) {
-            bet.put("codes", rulesEntryData.getBet().getCodes());
+        // historyLottery
+        for (RecentLotteryVo item : historyLottery) {
+            HashMap<String, Object> temp = new HashMap<>();
+            temp.put("code", item.getCode());
+            temp.put("draw_time", item.getDraw_time());
+            temp.put("issue", item.getIssue());
+            temp.put("original_code", item.getOriginal_code());
+            temp.put("split_code", item.getSplit_code());
+            inputHistoryLottery.add(temp);
         }
-        //bet.mode
-        betMode.put("modeid", String.valueOf(rulesEntryData.getBet().getMode().getModeid()));
-        betMode.put("name", rulesEntryData.getBet().getMode().getName());
-        betMode.put("rate", String.valueOf(rulesEntryData.getBet().getMode().getRate()));
-        bet.put("mode", betMode);
-        //bet.times
-        bet.put("times", String.valueOf(rulesEntryData.getBet().getTimes()));
-        //bet.prize
-        bet.put("prize", String.valueOf(rulesEntryData.getBet().getPrize()));
-        //Todo bet.poschoose这个参数到最后还是无法知道
-        //bet.poschoose
-        bet.put("poschoose", null);
 
-        facts.put("lotteryType", rulesEntryData.getType());
-        facts.put("currentCategory", currentCategory);
         facts.put("currentMethod", currentMethod);
-        facts.put("bet", bet);
-        facts.put("attached", attached);
-        facts.put("message", message);
-        if (currentMethod.get("originalName") != null && !((String) currentMethod.get("originalName")).isEmpty())
-            facts.put("matcherName", currentMethod.get("cateName") + "-" + currentMethod.get("groupName") + "-" + currentMethod.get("originalName"));
-        else {
-            facts.put("matcherName", currentMethod.get("cateName") + "-" + currentMethod.get("groupName") + "-" + currentMethod.get("name"));
-        }
+        facts.put("historyLottery", inputHistoryLottery);
 
         // enter the rules
         rulesEngine.fire(rules, facts);
 
-        RulesEntryData.SubmitDTO submitDTO = new RulesEntryData.SubmitDTO();
-        HashMap<String, Object> done = facts.get("done");
-        if (done != null) {
-            HashMap<String, Object> submit = (HashMap<String, Object>) done.get("submit");
-            submitDTO.setMethodid(Integer.parseInt((String) submit.get("methodid")));
-            submitDTO.setCodes((String) submit.get("codes"));
-            submitDTO.setOmodel((int) submit.get("omodel"));
-            submitDTO.setMode(Integer.parseInt((String) submit.get("mode")));
-            submitDTO.setTimes((int) submit.get("times"));
-            submitDTO.setPoschoose(submit.get("poschoose"));
-            submitDTO.setMenuid(Integer.parseInt((String) submit.get("menuid")));
-            submitDTO.setType((String) submit.get("type"));
-            submitDTO.setNums((int) submit.get("nums"));
-            submitDTO.setMoney((double) submit.get("money"));
-            submitDTO.setSolo((boolean) submit.get("solo"));
-            submitDTO.setDesc((String) submit.get("desc"));
+        List<RecentLotteryVo> outputHistory = new ArrayList<>();
+        List<Map<String, Object>> filterLottery = facts.get("history");
+        for (Map<String, Object> item : filterLottery) {
+            RecentLotteryVo vo = new RecentLotteryVo((String) item.get("code"),
+                    (String) item.get("draw_time"),
+                    (String) item.get("issue"),
+                    (String) item.get("original_code"),
+                    (ArrayList<String>) item.get("split_code"));
+            outputHistory.add(vo);
         }
 
-        return submitDTO;
+        return outputHistory;
     }
 }
+
