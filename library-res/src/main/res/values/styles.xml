@@ -1225,7 +1225,7 @@
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/colorPrimaryTxt</item>
+        <item name="android:textColor">@color/color_2c2a29</item>
         <item name="android:textSize">12sp</item>
     </style>
     <!-- 通用 筛选 标题 外框 -->

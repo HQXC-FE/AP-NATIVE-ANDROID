@@ -605,4 +605,7 @@
     <color name="clr_txt_fastest_low">@color/clr_white</color>
     <color name="clr_txt_choose_account_item_off">#4F4439</color>
     <color name="clr_txt_choose_account_item_on">@color/clr_bg_frame_32</color>
+
+    <!--登录-->
+    <color name="color_2c2a29">#2C2A29</color>
 </resources>
