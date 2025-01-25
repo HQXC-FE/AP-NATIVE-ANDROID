@@ -448,7 +448,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         MenuMethodsData.LabelsDTO menuMethodLabel = lotteryBetsModel.getMenuMethodLabel();
         MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO currentl2 = lotteryBetsModel.getMenuMethodLabelData();
         RulesEntryData rulesEntryData = new RulesEntryData();
-        rulesEntryData.setType(lottery.getType());
+        rulesEntryData.setType(lottery.getLinkType());
 
         RulesEntryData.CurrentCategoryDTO currentCategoryDTO = new RulesEntryData.CurrentCategoryDTO();
         currentCategoryDTO.setFlag(lottery.getAlias());
