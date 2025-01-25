@@ -158,8 +158,7 @@ public class BettingEntryRule {
         //bet.poschoose
         bet.put("poschoose", null);
 
-        //facts.put("lotteryType", rulesEntryData.getType());
-        facts.put("lotteryType", "ssc");
+        facts.put("lotteryType", rulesEntryData.getType());
         facts.put("currentCategory", currentCategory);
         facts.put("currentMethod", currentMethod);
         facts.put("bet", bet);
