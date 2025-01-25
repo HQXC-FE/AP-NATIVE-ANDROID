@@ -608,4 +608,8 @@
 
     <!--登录-->
     <color name="color_2c2a29">#2C2A29</color>
+
+    <!-- 默认背景色-->
+    <color name="clr_main_bg">#F8F8F8</color>
+
 </resources>

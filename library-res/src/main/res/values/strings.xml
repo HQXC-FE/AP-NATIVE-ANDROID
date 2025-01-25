@@ -5,7 +5,6 @@
     <string name="txt_feedback">反馈信息</string>
     <string name="txt_custom_center">客服中心</string>
     <string name="txt_contact_custom">联系客服</string>
-    <string name="txt_recharge_tutorial">充值教程</string>
     <string name="txt_msg_center">消息中心</string>
     <string name="txt_kind_tips">温馨提示</string>
 
@@ -192,6 +191,9 @@
     <string name="txt_question">常见问题</string>
     <string name="txt_member_manager">团队管理</string>
     <string name="txt_play_intro">玩法介绍</string>
+    <string name="txt_lottery_explanation">彩票单期奖金限额说明</string>
+    <string name="txt_lottery_instructions">彩票单挑说明</string>
+    <string name="txt_recharge_tutorial">充值教程</string>
     <string name="txt_tutorial">教程</string>
 
     <!-- 充值页 -->
@@ -406,5 +408,7 @@
 3.代理服务费只计算彩票中奖金额（秒秒彩除外），不包括其他类别的盈利（如真人、体育、电子、棋牌、电竞、捕鱼等）；\n\n
 4.代理服务费每日凌晨2点自动发放，无需手动领取；\n\n
 5.代理服务费活跃人数定义：历史有提款成功纪录且当日投注 ≥1000元（卡U皆可）</string>
+
+    <string name="txt_question_feedback">问题反馈</string>
 
 </resources>

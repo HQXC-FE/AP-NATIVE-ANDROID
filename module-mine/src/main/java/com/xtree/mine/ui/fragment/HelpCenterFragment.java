@@ -25,9 +25,13 @@ public class HelpCenterFragment extends BaseFragment<FragmentHelpCenterBinding, 
     @Override
     public void initView() {
         binding.ivwBack.setOnClickListener(v -> getActivity().finish());
+        //彩种信息
         binding.clLotteryInfo.setOnClickListener(v -> goWebView(getString(R.string.txt_lottery_info), Constant.URL_LOTTERY_INFO, true));
+        //常见问题
         binding.clQuestion.setOnClickListener(v -> startContainerFragment(RouterFragmentPath.Mine.PAGER_QUESTION));
+        //玩法介绍
         binding.clPlayIntro.setOnClickListener(v -> goWebView(getString(R.string.txt_play_intro), Constant.URL_PLAY_INTRO, true));
+        //教程
         binding.clLotteryTutorial.setOnClickListener(v -> goWebView(getString(R.string.txt_tutorial), Constant.URL_TUTORIAL, false));
     }
 
