@@ -2,6 +2,7 @@ package com.xtree.lottery.rule;
 
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
+import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.rule.betting.data.RulesEntryData;
 import com.xtree.lottery.rule.recent.RecentDecisionRules;
 import com.xtree.lottery.rule.recent.RecentEndingRules;
@@ -39,15 +40,14 @@ public class RecentlyEntryRule {
         RecentEndingRules.addRules(rules);
     }
 
-    public void startEngine(RulesEntryData rulesEntryData) {
+    public List<RecentLotteryVo> startEngine(RulesEntryData rulesEntryData, List<RecentLotteryVo> historyLottery) {
         facts = new Facts();
         Map<String, Object> currentMethod = new HashMap<>();
         Map<String, Object> currentMethodSelectArea = new HashMap<>();
         List<Map<String, Object>> currentMethodSelectAreaLayout = new ArrayList<>();
         List<Map<String, String>> currentMethodMoneyModes = new ArrayList<>();
         List<Map<String, String>> currentMethodPrizeGroup = new ArrayList<>();
-        Map<String, Object> attached = new HashMap<>();
-        List<String> message = new ArrayList<>();
+        List<Map<String, Object>> inputHistoryLottery = new ArrayList<>();
 
         // currentMethod.methodid
         currentMethod.put("methodid", rulesEntryData.getCurrentMethod().getMethodid());
@@ -115,39 +115,35 @@ public class RecentlyEntryRule {
         // currentMethod.selectarea
         currentMethod.put("selectarea", currentMethodSelectArea);
 
-        //facts.put("lotteryType", rulesEntryData.getType());
-        facts.put("lotteryType", "ssc");
-        facts.put("currentMethod", currentMethod);
-        facts.put("attached", attached);
-        facts.put("message", message);
-        if (currentMethod.get("originalName") != null && !((String) currentMethod.get("originalName")).isEmpty())
-            facts.put("matcherName", currentMethod.get("cateName") + "-" + currentMethod.get("groupName") + "-" + currentMethod.get("originalName"));
-        else {
-            facts.put("matcherName", currentMethod.get("cateName") + "-" + currentMethod.get("groupName") + "-" + currentMethod.get("name"));
+        // historyLottery
+        for (RecentLotteryVo item : historyLottery) {
+            HashMap<String, Object> temp = new HashMap<>();
+            temp.put("code", item.getCode());
+            temp.put("draw_time", item.getDraw_time());
+            temp.put("issue", item.getIssue());
+            temp.put("original_code", item.getOriginal_code());
+            temp.put("split_code", item.getSplit_code());
+            inputHistoryLottery.add(temp);
         }
+
+        facts.put("currentMethod", currentMethod);
+        facts.put("historyLottery", inputHistoryLottery);
 
         // enter the rules
         rulesEngine.fire(rules, facts);
 
-        //        RulesEntryData.SubmitDTO submitDTO = new RulesEntryData.SubmitDTO();
-        //        HashMap<String, Object> done = facts.get("done");
-        //        if (done != null) {
-        //            HashMap<String, Object> submit = (HashMap<String, Object>) done.get("submit");
-        //            submitDTO.setMethodid(Integer.parseInt((String) submit.get("methodid")));
-        //            submitDTO.setCodes((String) submit.get("codes"));
-        //            submitDTO.setOmodel((int) submit.get("omodel"));
-        //            submitDTO.setMode(Integer.parseInt((String) submit.get("mode")));
-        //            submitDTO.setTimes((int) submit.get("times"));
-        //            submitDTO.setPoschoose(submit.get("poschoose"));
-        //            submitDTO.setMenuid(Integer.parseInt((String) submit.get("menuid")));
-        //            submitDTO.setType((String) submit.get("type"));
-        //            submitDTO.setNums((int) submit.get("nums"));
-        //            submitDTO.setMoney((double) submit.get("money"));
-        //            submitDTO.setSolo((boolean) submit.get("solo"));
-        //            submitDTO.setDesc((String) submit.get("desc"));
-        //        }
-        //
-        //        return submitDTO;
+        List<RecentLotteryVo> outputHistory = new ArrayList<>();
+        List<Map<String, Object>> filterLottery = facts.get("history");
+        for (Map<String, Object> item : filterLottery) {
+            RecentLotteryVo vo = new RecentLotteryVo((String) item.get("code"),
+                    (String) item.get("draw_time"),
+                    (String) item.get("issue"),
+                    (String) item.get("original_code"),
+                    (ArrayList<String>) item.get("split_code"));
+            outputHistory.add(vo);
+        }
+
+        return outputHistory;
     }
 }
 

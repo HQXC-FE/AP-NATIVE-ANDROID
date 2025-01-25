@@ -38,7 +38,7 @@ public class GenerateRuleSuiteRule {
             // 拼接並生成 methodName
             String methodFullName = (cateName + methodName).trim();
 
-            // 使用 Mathchers.method2RuleSuite 方法生成 ruleSuite
+            // 使用 Matchers.method2RuleSuite 方法生成 ruleSuite
             List<String> ruleSuite = RecentMatchers.method2RuleSuite(methodFullName, alias);
 
             // 將生成的 ruleSuite 放入 Facts
