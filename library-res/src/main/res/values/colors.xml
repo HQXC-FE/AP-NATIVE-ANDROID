@@ -25,7 +25,7 @@
     <color name="clr_main_05">#EAF2F5</color>
     <color name="clr_main_06">#2E2E2E</color>
     <color name="clr_main_06a">#242424</color>
-    <color name="clr_main_07">#3A3A3A</color>
+    <color name="clr_main_07">#F0F0F0</color>
     <color name="clr_main_08">#F9FF8F</color>
     <color name="clr_main_08a">#484848</color>
     <color name="clr_main_09">#313035</color>
@@ -178,7 +178,7 @@
     <color name="bt_text_color_primary">@color/clr_txt_black_cm</color>
 
     <!-- 投注页深色字体颜色 -->
-    <color name="bt_text_color_deep_primary">#EBEBEB</color>
+    <color name="bt_text_color_deep_primary">#1E1E1E</color>
 
     <!-- 主色/1级字 -->
     <color name="bt_text_color_primary_1">#4F4439</color>
@@ -234,13 +234,13 @@
     <color name="bt_bg_color_playtype">@color/clr_main_05</color>
 
     <!-- 投注项默认背影颜色 -->
-    <color name="bt_option_bg_default">#444444</color>
+    <color name="bt_option_bg_default">#F0F0F0</color>
 
     <!-- 投注项选中背影颜色 -->
     <color name="bt_option_bg_selected">@color/clr_main_05</color>
 
     <!-- 主题色背景下（项目中是蓝色）的字体颜色 -->
-    <color name="bt_color_under_bg_primary_text">#FFFFFF</color>
+    <color name="bt_color_under_bg_primary_text">#1E1E1E</color>
 
     <!-- 投注模块弹窗顶部金额背景颜色 -->
     <color name="bt_color_car_dialog_top_acount">#54D8CAFF</color>
@@ -264,7 +264,7 @@
     <color name="bt_color_shadow">#1AAD7851</color>
 
     <!-- 键盘背景颜色 -->
-    <color name="bt_bg_color_keyboard">#252525</color>
+    <color name="bt_bg_color_keyboard">#F1F1F1</color>
 
     <!-- 赛事详情页顶部栏背景颜色 -->
     <color name="bt_color_detail_top_toolbar">#4D000000</color>
