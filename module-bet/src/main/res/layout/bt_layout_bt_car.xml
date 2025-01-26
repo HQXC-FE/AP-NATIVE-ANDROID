@@ -37,7 +37,7 @@
                     android:background="@mipmap/bt_icon_dan"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/tv_platform" />
 
                 <TextView
                     android:id="@+id/tv_platform"

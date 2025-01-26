@@ -43,7 +43,7 @@
     <color name="clr_main_19">#313035</color>
     <color name="clr_main_20a">#484848</color>
     <color name="clr_main_21a">#1d1d22</color>
-    <color name="clr_main_24">#222222</color>
+    <color name="clr_main_24">@color/white</color>
 
     <!-- ################ 配色 设计师提供 start ################ -->
     <!-- 主色 -->
@@ -198,7 +198,7 @@
     <!-- 投注页页面各区块背景颜色 -->
 <!--    <color name="bt_page_up_bg">#404040</color>-->
     <color name="bt_page_up_bg">#FFFFFF</color>
-
+    <color name="bt_page_time_bg">#F0F0F0</color>
 
     <!-- 投注页页面顶部玩法tabIndicator颜色 -->
     <color name="bt_page_top_tab_indicator">#00000000</color>
@@ -210,7 +210,7 @@
     <color name="bt_tab_match_textcolor_selected">@color/clr_btn_press</color>
 
     <!-- 分隔线颜色 -->
-    <color name="bt_color_line">#404040</color>
+    <color name="bt_color_line">#FFFFFF</color>
 
     <!-- 赛事比分颜色 -->
     <color name="bt_color_score">#F74E15</color>
@@ -324,6 +324,7 @@
     <color name="clr_hm_txt_grey_03">#6E6A66</color>
     <color name="clr_hm_grey_03">#E9E9E9</color>
     <color name="clr_hm_grey_05">#D1D1D1</color>
+    <color name="clr_bottom_black_29">#29000000</color>
 
     <!-- 首页模块 end-->
 
@@ -440,7 +441,7 @@
     <!-- 通用 end-->
     <color name="clr_toast">#808080</color>
 
-    <color name="black">#FF000000</color>
+    <color name="black">#03000000</color>
     <color name="white">#FFFFFFFF</color>
 
     <!-- 充值页 -->
@@ -620,6 +621,5 @@
     <color name="color_2c2a29">#2C2A29</color>
 
     <!-- 默认背景色-->
-    <color name="clr_main_bg">#F8F8F8</color>
-
+    <color name="clr_main_bg">#F9F8F4</color>
 </resources>

@@ -6,20 +6,20 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/clr_main_bg">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/pager_bottom_tab"
-            android:background="@color/white"
+            android:background="@color/clr_main_bg"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/rl_play_method"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/clr_main_bg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
