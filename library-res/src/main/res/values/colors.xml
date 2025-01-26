@@ -92,8 +92,10 @@
     <color name="clr_txt_05">#868686</color>
     <color name="clr_txt_06">#4B4B4B</color>
     <color name="clr_txt_07">#EBEBEB</color>
-    <!-- 通用黑色 1E -->
-    <color name="clr_txt_black_cm">@color/white</color>
+    <!-- 通用白色 1E -->
+    <color name="clr_txt_white_cm">@color/white</color>
+    《!-- 通用黑色 1E -->
+    <color name="clr_txt_black_cm">@color/black</color>
     <!-- 可跳转链接的文字 通常是蓝色或主题色 -->
     <!--<color name="clr_txt_link">#119BFF</color>-->
     <color name="clr_txt_link">#7F7C79</color>
@@ -121,7 +123,7 @@
     <color name="clr_btn_01">#D0B292</color>
     <color name="clr_btn_02">#E3C3A2</color>
     <!-- 按钮 按下 -->
-    <color name="clr_btn_press">#B69C82</color>
+    <color name="clr_btn_press">@color/bt_text_color_primary</color>
     <color name="clr_btn_press_stroke">#F7DFD1</color>
     <color name="clr_btn_stroke">#F7DFD1</color>
 
@@ -179,10 +181,10 @@
     <color name="bt_text_color_deep_primary">#EBEBEB</color>
 
     <!-- 主色/1级字 -->
-    <color name="bt_text_color_primary_1">@color/white</color>
+    <color name="bt_text_color_primary_1">#4F4439</color>
 
     <!-- 主色/2级字 -->
-    <color name="bt_text_color_primary_2">@color/clr_txt_02</color>
+    <color name="bt_text_color_primary_2">@color/clr_txt_grey_5B</color>
 
     <!-- 通用3级文字颜色 -->
     <color name="bt_text_color_primary_3">@color/clr_txt_03</color>
@@ -194,13 +196,15 @@
     <color name="bt_page_bg">@color/clr_main_start</color>
 
     <!-- 投注页页面各区块背景颜色 -->
-    <color name="bt_page_up_bg">#404040</color>
+<!--    <color name="bt_page_up_bg">#404040</color>-->
+    <color name="bt_page_up_bg">#FFFFFF</color>
+
 
     <!-- 投注页页面顶部玩法tabIndicator颜色 -->
     <color name="bt_page_top_tab_indicator">#00000000</color>
 
     <!-- 投注页页面顶部玩法tab选中状态字体颜色 -->
-    <color name="bt_tab_textcolor_selected">@color/white</color>
+    <color name="bt_tab_textcolor_selected">@color/black</color>
 
     <!-- 投注页页面日期下比赛选中状态的字体颜色 -->
     <color name="bt_tab_match_textcolor_selected">@color/clr_btn_press</color>
@@ -224,7 +228,7 @@
     <color name="bt_color_blurred_2">#AEAEAE</color>
 
     <!-- 赛事列表进行时间背影颜色 -->
-    <color name="bt_bg_color_time">#3E3D3F</color>
+    <color name="bt_bg_color_time">#F0F0F0</color>
 
     <!-- 赛事列表玩法名称背影颜色 -->
     <color name="bt_bg_color_playtype">@color/clr_main_05</color>
@@ -275,7 +279,7 @@
     <color name="bt_color_league_line_top">#80E3C3A2</color>
 
     <!-- 赛事列表联赛顶部背景线颜色 -->
-    <color name="bt_color_league_top">#80D0B292</color>
+    <color name="bt_color_league_top">#84D9F5</color>
 
     <!-- 注单为赢的字体颜色 -->
     <color name="bt_color_option_win">#F74E15</color>
@@ -384,6 +388,8 @@
     <color name="clr_grey_80">#CC000000</color>
     <color name="clr_grey_1">#6C757D</color>
 
+    #5B5B6A
+
     <color name="clr_white_14">#24FFFFFF</color>
 
     <color name="clr_login_txt_01">@color/clr_main</color>
@@ -446,9 +452,10 @@
     <color name="clr_item_lottery_bg">#F8F8F8</color>
 
     <color name="red">#DA0000</color>
-    <color name="cl_gap">#EBEBEB</color>
+    <color name="cl_gap">#4F4439</color>
     <color name="cl_set_request">#FF4A4D</color>
     <color name="cl_bank_withdraw">#F4F4F4</color>
+
 
     <!--136 -->
     <color name="cl_amount_bt_53">#88F0EAFF</color>
@@ -537,6 +544,7 @@
     <color name="clr_text_color_hint">#C6C6C6</color>
     <color name="clr_edt_auth_focused">@color/clr_white</color>
     <color name="clr_grey_58">#58FAFAFF</color>
+    <color name="clr_txt_grey_5B">#5B5B6A</color>
     <color name="clr_rc_exp_choose_bank_bg">@color/clr_main_33</color>
 
     <!-- 输入框 hint -->
@@ -571,6 +579,8 @@
     <color name="clr_txt_left_dark_start">#3F3F3F</color>
     <!--取消按钮 暗色系 结束颜色-->
     <color name="clr_txt_left_dark_end">#363636</color>
+    <color name="clr_txt_grey">#5B5B6A</color>
+
 
     <color name="clr_txt_right_dark_start">#78E6AF</color>
     <color name="clr_txt_right_dark_center">#2F7653</color>
