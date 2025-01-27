@@ -1,8 +1,8 @@
 package com.xtree.lottery.ui.view.viewmodel;
 
-import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -47,21 +47,14 @@ public class BetLhcViewModel extends BindModel {
             binding.tvNum.setText(model.number);
             binding.tvNum.setBackgroundResource(model.ball.getResourceId());
             binding.tvOdds.setText(model.odds);
-            binding.etMoney.addTextChangedListener(new TextWatcher() {
+            binding.etMoney.setFilters(new InputFilter[]{new InputFilter() {
                 @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+                    handleInput(model);
+                    return null;
                 }
+            }
 
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    handleInput(binding.etMoney.getText().toString(), model.methodid);
-                }
             });
         }
 
@@ -111,23 +104,25 @@ public class BetLhcViewModel extends BindModel {
         notifyChange();
     }
 
-    public void handleInput(String money, String methodid) {
+    public void handleInput(BetLhcModel model) {
+        String money = model.getMoney().get();
         if (TextUtils.isEmpty(money) || !(Integer.parseInt(money) > 0)) {
             // Remove items where methodid does not match
             List<Map<String, String>> newCodes = new ArrayList<>();
             for (Map<String, String> item : lotteryNumbs.get()) {
-                if (!methodidEquals(item, methodid)) {
+                if (!methodidEquals(item, model.methodid)) {
                     newCodes.add(item);
                 }
             }
             lotteryNumbs.set(newCodes);
+            model.money.set("");
             return;
         }
 
         // Find the existing code with matching methodid
         Map<String, String> existingCode = null;
         for (Map<String, String> item : lotteryNumbs.get()) {
-            if (methodidEquals(item, methodid)) {
+            if (methodidEquals(item, model.methodid)) {
                 existingCode = item;
                 break;
             }
@@ -137,9 +132,10 @@ public class BetLhcViewModel extends BindModel {
             // Update value if found
             existingCode.put("value", money);
             lotteryNumbs.set(new ArrayList<>(lotteryNumbs.get()));
+            model.money.set(money);
         } else {
             // Find current method from groups and add it to codes
-            BetLhcModel currentMethod = findCurrentMethod(methodid);
+            BetLhcModel currentMethod = findCurrentMethod(model.methodid);
             if (currentMethod != null) {
                 Map<String, String> newMethod = new HashMap<>();
                 newMethod.put("value", money);
@@ -149,6 +145,7 @@ public class BetLhcViewModel extends BindModel {
                 ArrayList updatedLists = new ArrayList<>(lotteryNumbs.get());
                 updatedLists.add(newMethod);
                 lotteryNumbs.set(updatedLists);
+                model.money.set(money);
             }
         }
 

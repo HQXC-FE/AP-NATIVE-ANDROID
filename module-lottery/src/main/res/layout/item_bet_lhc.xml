@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="m"
+            type="com.xtree.lottery.ui.view.model.BetLhcModel" />
     </data>
 
 
@@ -51,6 +54,7 @@
                 android:id="@+id/etMoney"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={m.money}"
                 android:inputType="number"
                 android:gravity="center" />
         </FrameLayout>
