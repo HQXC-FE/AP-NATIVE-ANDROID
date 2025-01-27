@@ -47,7 +47,7 @@ public class BettingEntryRule {
         return INSTANCE;
     }
 
-    public RulesEntryData.SubmitDTO startEngine(RulesEntryData rulesEntryData) {
+    public List<RulesEntryData.SubmitDTO> startEngine(RulesEntryData rulesEntryData) {
         facts = new Facts();
         Map<String, String> currentCategory = new HashMap<>();
         Map<String, Object> currentMethod = new HashMap<>();
@@ -141,8 +141,12 @@ public class BettingEntryRule {
                     betCodes.add(item);
                 }
                 bet.put("codes", betCodes);
+            } else {
+                bet.put("codes", rulesEntryData.getBet().getCodes());
             }
         } else if (rulesEntryData.getBet().getCodes() instanceof String) {
+            bet.put("codes", rulesEntryData.getBet().getCodes());
+        } else {
             bet.put("codes", rulesEntryData.getBet().getCodes());
         }
         //bet.mode
@@ -173,24 +177,40 @@ public class BettingEntryRule {
         // enter the rules
         rulesEngine.fire(rules, facts);
 
-        RulesEntryData.SubmitDTO submitDTO = new RulesEntryData.SubmitDTO();
+        List<RulesEntryData.SubmitDTO> submitDTOList = new ArrayList<>();
         HashMap<String, Object> done = facts.get("done");
         if (done != null) {
-            HashMap<String, Object> submit = (HashMap<String, Object>) done.get("submit");
-            submitDTO.setMethodid(Integer.parseInt((String) submit.get("methodid")));
-            submitDTO.setCodes((String) submit.get("codes"));
-            submitDTO.setOmodel((int) submit.get("omodel"));
-            submitDTO.setMode(Integer.parseInt((String) submit.get("mode")));
-            submitDTO.setTimes((int) submit.get("times"));
-            submitDTO.setPoschoose(submit.get("poschoose"));
-            submitDTO.setMenuid(Integer.parseInt((String) submit.get("menuid")));
-            submitDTO.setType((String) submit.get("type"));
-            submitDTO.setNums((int) submit.get("nums"));
-            submitDTO.setMoney((double) submit.get("money"));
-            submitDTO.setSolo((boolean) submit.get("solo"));
-            submitDTO.setDesc((String) submit.get("desc"));
+            if (done.get("submit") instanceof List) {
+                List<HashMap<String, Object>> submitList = (List<HashMap<String, Object>>) done.get("submit");
+                for (HashMap<String, Object> submit : submitList) {
+                    submitDTOList.add(calcSubmit(submit));
+                }
+            } else {
+                HashMap<String, Object> submit = (HashMap<String, Object>) done.get("submit");
+                submitDTOList.add(calcSubmit(submit));
+            }
         }
 
+        return submitDTOList;
+    }
+
+    private RulesEntryData.SubmitDTO calcSubmit(HashMap<String, Object> submit) {
+        RulesEntryData.SubmitDTO submitDTO = new RulesEntryData.SubmitDTO();
+        submitDTO.setMethodid(Integer.valueOf(submit.get("methodid").toString()));
+        submitDTO.setCodes(submit.get("codes").toString());
+        submitDTO.setOmodel(Integer.valueOf(submit.get("omodel").toString()));
+        submitDTO.setMode(Integer.valueOf(submit.get("mode").toString()));
+        submitDTO.setTimes(Integer.valueOf(submit.get("times").toString()));
+        submitDTO.setPoschoose(submit.get("poschoose"));
+        submitDTO.setMenuid(Integer.valueOf(submit.get("menuid").toString()));
+        submitDTO.setType(submit.get("type").toString());
+        submitDTO.setNums(Integer.valueOf(submit.get("nums").toString()));
+        submitDTO.setMoney(Double.valueOf(submit.get("money").toString()));
+        if (submit.get("solo") != null) {
+            submitDTO.setSolo(Boolean.valueOf(submit.get("solo").toString()));
+        }
+        submitDTO.setDesc((String) submit.get("desc"));
         return submitDTO;
     }
+
 }

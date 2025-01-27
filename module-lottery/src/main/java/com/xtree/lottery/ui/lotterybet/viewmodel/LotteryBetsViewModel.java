@@ -35,6 +35,7 @@ import com.xtree.lottery.ui.lotterybet.LotteryPlayCollectionDialogFragment;
 import com.xtree.lottery.ui.lotterybet.data.LotteryMoneyData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsPrizeGroup;
+import com.xtree.lottery.ui.lotterybet.model.LotteryBetsTotal;
 import com.xtree.lottery.ui.lotterybet.model.LotteryOrderModel;
 import com.xtree.lottery.ui.lotterybet.model.LotteryPlayCollectionModel;
 import com.xtree.lottery.utils.AnimUtils;
@@ -69,14 +70,18 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     //奖金玩法
     public MutableLiveData<UserMethodsResponse.DataDTO.PrizeGroupDTO> prizeData = new MutableLiveData<>();
     //投注订单集
-    public MutableLiveData<ArrayList<LotteryOrderModel>> betOrdersLiveData = new MutableLiveData<>(new ArrayList<>());
+    public MutableLiveData<ArrayList<LotteryOrderModel>> betOrdersLiveData = new MutableLiveData<>();
     //当前有效投注项
-    public SingleLiveData<LotteryBetRequest.BetOrderData> betLiveData = new SingleLiveData<>();
+    public SingleLiveData<List<LotteryBetRequest.BetOrderData>> betLiveData = new SingleLiveData<>();
     //清除投注框事件
     public SingleLiveData<String> clearBetEvent = new SingleLiveData<>();
     //彩票信息
     public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
+    //奖金组和投注数据组合
     public MediatorLiveData<LotteryBetsPrizeGroup> combinedPrizeBetLiveData = new MediatorLiveData<>();
+    //投注数和总金额
+    public MediatorLiveData<LotteryBetsTotal> betTotalLiveData = new MediatorLiveData<>();
+
     private MenuMethodsData menuMethods;
     private UserMethodsResponse userMethods;
     private WeakReference<FragmentActivity> mActivity = null;
@@ -96,6 +101,21 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         getUserBalance(null);
         combinedPrizeBetLiveData.addSource(currentBetModel, betModel -> createLotteryBetsPrizeGroup());
         combinedPrizeBetLiveData.addSource(prizeData, prizeGroup -> createLotteryBetsPrizeGroup());
+        betTotalLiveData.addSource(betLiveData, betOrders -> calBetOrdersNums());
+    }
+
+    private void calBetOrdersNums() {
+        List<LotteryBetRequest.BetOrderData> betOrderDataList = betLiveData.getValue();
+        if (betOrderDataList != null) {
+            int nums = 0;
+            double money = 0;
+            for (LotteryBetRequest.BetOrderData betOrderData :
+                    betOrderDataList) {
+                nums += betOrderData.getNums();
+                money += betOrderData.getMoney();
+            }
+            betTotalLiveData.setValue(new LotteryBetsTotal(nums, money));
+        }
     }
 
     //组合投注数据和奖金组
@@ -412,21 +432,18 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         if (betLiveData.getValue() != null) {
             ArrayList<LotteryOrderModel> orderModels = betOrdersLiveData.getValue();
 
-
-            LotteryOrderModel lotteryOrderModel = new LotteryOrderModel();
-            LotteryBetRequest.BetOrderData orderData = betLiveData.getValue();
-            UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
-            LotteryMoneyData money = moneyLiveData.getValue();
-
-            orderData.setOmodel(prize.getValue());
-            orderData.setMode(money.getMoneyModel().getModelId());
-            orderData.setTimes(money.getFactor());
-
-            lotteryOrderModel.setBetOrderData(orderData);
-            lotteryOrderModel.setPrizeLabel(prize.getLabel());
-            lotteryOrderModel.setMoneyData(money);
-
-            orderModels.add(lotteryOrderModel);
+            for (LotteryBetRequest.BetOrderData orderData : betLiveData.getValue()) {
+                LotteryOrderModel lotteryOrderModel = new LotteryOrderModel();
+                UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
+                LotteryMoneyData money = moneyLiveData.getValue();
+                orderData.setOmodel(prize.getValue());
+                orderData.setMode(money.getMoneyModel().getModelId());
+                orderData.setTimes(money.getFactor());
+                lotteryOrderModel.setBetOrderData(orderData);
+                lotteryOrderModel.setPrizeLabel(prize.getLabel());
+                lotteryOrderModel.setMoneyData(money);
+                orderModels.add(lotteryOrderModel);
+            }
 
             betOrdersLiveData.setValue(orderModels);
             betLiveData.setValue(null);
@@ -439,15 +456,13 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public void quickBet() {
         if (betLiveData.getValue() != null) {
             ArrayList<LotteryBetRequest.BetOrderData> betOrders = new ArrayList<>();
-            LotteryBetRequest.BetOrderData orderData = betLiveData.getValue();
-            UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
-            LotteryMoneyData money = moneyLiveData.getValue();
-
-            orderData.setOmodel(prize.getValue());
-            orderData.setMode(money.getMoneyModel().getModelId());
-
-            betOrders.add(orderData);
-
+            for (LotteryBetRequest.BetOrderData orderData : betLiveData.getValue()) {
+                UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
+                LotteryMoneyData money = moneyLiveData.getValue();
+                orderData.setOmodel(prize.getValue());
+                orderData.setMode(money.getMoneyModel().getModelId());
+                betOrders.add(orderData);
+            }
             LotteryBetConfirmDialogFragment.show(mActivity.get(), betOrders);
         }
     }
@@ -580,25 +595,33 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         betDTO.setDisplay(displayDTO);
         betDTO.setSubmit(new RulesEntryData.SubmitDTO());
         rulesEntryData.setBet(betDTO);
-        RulesEntryData.SubmitDTO submitDTO = BettingEntryRule.getInstance().startEngine(rulesEntryData);
+        List<RulesEntryData.SubmitDTO> submitDTOList = BettingEntryRule.getInstance().startEngine(rulesEntryData);
 
-        if (submitDTO.getMoney() > 0 && submitDTO.getNums() > 0) {
-            LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
-            betOrderData.setMoney(submitDTO.getMoney());
-            betOrderData.setOmodel(submitDTO.getOmodel());
-            betOrderData.setCodes(submitDTO.getCodes());
-            betOrderData.setTimes(submitDTO.getTimes());
-            betOrderData.setDesc(submitDTO.getDesc());
-            betOrderData.setMenuid(String.valueOf(submitDTO.getMenuid()));
-            betOrderData.setMethodid(String.valueOf(submitDTO.getMethodid()));
-            betOrderData.setNums(submitDTO.getNums());
-            betOrderData.setPoschoose((String) submitDTO.getPoschoose());
-            betOrderData.setSolo(submitDTO.isSolo());
-            betOrderData.setType(submitDTO.getType());
-            betLiveData.setValue(betOrderData);
-        } else {
-            betLiveData.setValue(null);
+        List<LotteryBetRequest.BetOrderData> betOrderlist = new ArrayList<>();
+        for (RulesEntryData.SubmitDTO submitDTO : submitDTOList) {
+            if (submitDTO.getMoney() > 0 && submitDTO.getNums() > 0) {
+                LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
+                betOrderData.setMoney(submitDTO.getMoney());
+                betOrderData.setOmodel(submitDTO.getOmodel());
+                betOrderData.setCodes(submitDTO.getCodes());
+                betOrderData.setTimes(submitDTO.getTimes());
+                betOrderData.setDesc(submitDTO.getDesc());
+                betOrderData.setMenuid(String.valueOf(submitDTO.getMenuid()));
+                betOrderData.setMethodid(String.valueOf(submitDTO.getMethodid()));
+                betOrderData.setNums(submitDTO.getNums());
+                betOrderData.setPoschoose((String) submitDTO.getPoschoose());
+                betOrderData.setSolo(submitDTO.isSolo());
+                betOrderData.setType(submitDTO.getType());
+                betOrderlist.add(betOrderData);
+            }
         }
+
+        if (betOrderlist.isEmpty()) {
+            betLiveData.setValue(null);
+        } else {
+            betLiveData.setValue(betOrderlist);
+        }
+
     }
 
     /**
@@ -607,7 +630,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public void doClear() {
 
         ArrayList<LotteryOrderModel> orderList = betOrdersLiveData.getValue();
-        LotteryBetRequest.BetOrderData curOrder = betLiveData.getValue();
+        List<LotteryBetRequest.BetOrderData> curOrder = betLiveData.getValue();
 
         if (orderList != null) {
             for (int i = 0; i < orderList.size(); i++) {
@@ -620,7 +643,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         }
 
         if (curOrder != null) {
-            if (curOrder.isSolo()) {
+            if (curOrder.get(0).isSolo()) {
                 betLiveData.setValue(null);
             }
         }

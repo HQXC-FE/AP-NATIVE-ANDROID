@@ -49,8 +49,14 @@ public class BetLhcViewModel extends BindModel {
             binding.tvOdds.setText(model.odds);
             binding.etMoney.setFilters(new InputFilter[]{new InputFilter() {
                 @Override
-                public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
-                    handleInput(model);
+                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                    // 模拟过滤逻辑，例如只允许数字
+                    StringBuilder result = new StringBuilder(dest);
+                    result.replace(dstart, dend, source.subSequence(start, end).toString());
+
+                    // 最终过滤后的内容
+                    String money = result.toString();
+                    handleInput(money, model);
                     return null;
                 }
             }
@@ -90,7 +96,7 @@ public class BetLhcViewModel extends BindModel {
         List<BindModel> dataList = new ArrayList<>();
 
         for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO itemLabel : labels1DTOS.get(0).getLabels()) {
-            dataList.add(new BetLhcModel(itemLabel.getNum(), BetLhcModel.Ball.getBallByColor(itemLabel.getColor()), odds, itemLabel.getMethodid(), itemLabel.getMenuid()));
+            dataList.add(new BetLhcModel(itemLabel.getNum(), BetLhcModel.Ball.getBallByColor(itemLabel.getColor()), odds, itemLabel.getMethodid(), itemLabel.getMenuid(), itemLabel.getType(),itemLabel.getName()));
         }
         datas.set(dataList);
     }
@@ -104,8 +110,7 @@ public class BetLhcViewModel extends BindModel {
         notifyChange();
     }
 
-    public void handleInput(BetLhcModel model) {
-        String money = model.getMoney().get();
+    public void handleInput(String money, BetLhcModel model) {
         if (TextUtils.isEmpty(money) || !(Integer.parseInt(money) > 0)) {
             // Remove items where methodid does not match
             List<Map<String, String>> newCodes = new ArrayList<>();
@@ -142,6 +147,8 @@ public class BetLhcViewModel extends BindModel {
                 newMethod.put("menuid", currentMethod.menuid);
                 newMethod.put("methodid", currentMethod.methodid);
                 newMethod.put("num", currentMethod.number);
+                newMethod.put("type", currentMethod.type);
+                newMethod.put("name", currentMethod.name);
                 ArrayList updatedLists = new ArrayList<>(lotteryNumbs.get());
                 updatedLists.add(newMethod);
                 lotteryNumbs.set(updatedLists);
