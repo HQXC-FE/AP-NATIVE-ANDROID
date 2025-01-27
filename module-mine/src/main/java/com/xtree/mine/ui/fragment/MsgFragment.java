@@ -1,8 +1,10 @@
 package com.xtree.mine.ui.fragment;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
@@ -20,6 +23,7 @@ import com.xtree.mine.databinding.FragmentMsgBinding;
 import com.xtree.mine.ui.viewmodel.MsgViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
@@ -29,6 +33,8 @@ public class MsgFragment extends BaseFragment<FragmentMsgBinding, MsgViewModel> 
     private ArrayList<Fragment> fragmentList = new ArrayList<>();
     private ArrayList<String> tabList = new ArrayList<>();
     private FragmentStateAdapter mAdapter;
+
+    private TextView topTextView1 ,topTextView2 , topTextView3 ;
 
     @Override
     public void initView() {
@@ -56,6 +62,7 @@ public class MsgFragment extends BaseFragment<FragmentMsgBinding, MsgViewModel> 
         new TabLayoutMediator(binding.tblType, binding.vpMain, (tab, position) -> {
             tab.setText(tabList.get(position));
         }).attach();
+
 
         MsgListFragment bindMsgFragment = new MsgListFragment();
         MsgPersonListFragment bindMsgPersonFragment = new MsgPersonListFragment();

@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cl_item"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="80dp"
+    android:layout_marginStart="10dp"
+    android:background="@color/clr_main_start_w">
 
     <CheckBox
         android:id="@+id/ckb_msg_check"
@@ -45,7 +47,8 @@
         android:maxEms="10"
         android:singleLine="true"
         android:text="13测试"
-        android:textColor="@color/clr_white"
+        android:textColor="@color/clr_txt_choose_account_item_off"
+        android:textSize="@dimen/bt_text_16sp"
         app:layout_constraintStart_toEndOf="@id/ivw_msg_icon"
         app:layout_constraintTop_toTopOf="@id/ivw_msg_icon" />
 
@@ -57,8 +60,8 @@
         android:layout_marginStart="40dp"
         android:text="2023-10-13 16:08:33"
         android:textStyle="normal"
-        android:textSize="@dimen/bt_text_10sp"
-        android:textColor="@color/clr_white"
+        android:textSize="@dimen/bt_text_12sp"
+        android:textColor="@color/clr_txt_mouse3"
         app:layout_constraintBottom_toBottomOf="@id/ivw_msg_icon"
         app:layout_constraintStart_toEndOf="@id/ivw_msg_icon" />
 
@@ -83,8 +86,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/clr_grey_22"
+        android:background="@color/clr_text_color_hint"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

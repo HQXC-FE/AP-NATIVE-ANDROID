@@ -100,7 +100,7 @@
     <style name="style_hm_game_type">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
         <item name="android:button">@drawable/hm_game_type_selector</item>
     </style>
 
@@ -124,7 +124,6 @@
     <style name="style_hm_recharge">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">12dp</item>
         <item name="android:drawablePadding">0dp</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">4dp</item>
@@ -240,7 +239,8 @@
         <item name="android:gravity">center</item>
         <item name="android:padding">12dp</item>
         <item name="android:background">@drawable/btn_acc_item_selector_item</item>
-        <item name="android:textColor">@color/clr_white</item>
+        <item name="android:textSize">@dimen/bt_text_16sp</item>
+        <item name="android:textColor">@drawable/choose_account_item_text_selector</item>
     </style>
 
     <!-- 充值页-选取金额 按钮背景 -->
@@ -369,7 +369,7 @@
     <!-- 通用 提示小字 桔红色 -->
     <style name="style_cm_tip_small_orange" parent="style_cm_tip_small_grey">
         <item name="android:text">@string/txt_note_asterisks_cannot_empty</item>
-        <item name="android:textColor">@color/clr_main_login_txt</item>
+        <item name="android:textColor">@color/clr_gray_7</item>
     </style>
     <!-- 通用 提示小字 桔红色 -->
     <style name="style_cm_tip_small_yellow" parent="style_cm_tip_small_grey">
@@ -911,6 +911,7 @@
         <item name="android:layout_marginBottom">12dp</item>
         <item name="android:textColor">@color/clr_txt_black_01</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:drawableLeft">@mipmap/cm_bind_title_star</item>
     </style>
 
     <!-- 我的-账户管理-绑定-新增页 值 -->

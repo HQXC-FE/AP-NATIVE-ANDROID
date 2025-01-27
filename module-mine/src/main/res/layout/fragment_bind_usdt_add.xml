@@ -14,7 +14,7 @@
         android:id="@+id/ll_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/clr_main_08"
+        android:background="@color/clr_main_bg"
         android:orientation="vertical"
         tools:context=".ui.fragment.BindUsdtAddFragment">
 
@@ -52,11 +52,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_bind_top_bg"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:drawableLeft="@mipmap/cm_bind_top_notic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/txt_note_asterisks_cannot_empty"
+                 />
+            </LinearLayout>
+           <!-- <TextView
                 style="@style/style_cm_tip_small_orange"
-                android:text="@string/txt_note_asterisks_cannot_empty" />
-
+                android:text="@string/txt_note_asterisks_cannot_empty"
+                android:background="@drawable/bg_bind_top_bg"
+                android:layout_width="match_parent"/>
+-->
             <TextView
                 android:id="@+id/tvw_old_name"
                 style="@style/style_bind_title"
@@ -111,9 +127,21 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <TextView
-                style="@style/style_cm_tip_small_orange"
-                android:text="@string/txt_note_asterisks_cannot_empty" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_bind_top_bg"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:drawableLeft="@mipmap/cm_bind_top_notic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/txt_note_asterisks_cannot_empty"
+                    />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvw_choose_title"
