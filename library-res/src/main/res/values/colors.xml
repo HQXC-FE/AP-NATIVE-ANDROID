@@ -184,7 +184,7 @@
     <color name="bt_text_color_primary_1">#4F4439</color>
 
     <!-- 主色/2级字 -->
-    <color name="bt_text_color_primary_2">@color/clr_txt_grey_5B</color>
+    <color name="bt_text_color_primary_2">@color/clr_txt_grey_C6</color>
 
     <!-- 通用3级文字颜色 -->
     <color name="bt_text_color_primary_3">@color/clr_txt_03</color>
@@ -546,6 +546,7 @@
     <color name="clr_edt_auth_focused">@color/clr_white</color>
     <color name="clr_grey_58">#58FAFAFF</color>
     <color name="clr_txt_grey_5B">#5B5B6A</color>
+    <color name="clr_txt_grey_C6">#C6C6C6</color>
     <color name="clr_rc_exp_choose_bank_bg">@color/clr_main_33</color>
 
     <!-- 输入框 hint -->
