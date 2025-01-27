@@ -17,6 +17,7 @@ import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.LotteryDataManager;
+import com.xtree.lottery.data.LotteryDetailManager;
 import com.xtree.lottery.data.LotteryRepository;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.BonusNumbersRequest;
@@ -37,6 +38,8 @@ import com.xtree.lottery.ui.lotterybet.model.LotteryOrderModel;
 import com.xtree.lottery.ui.lotterybet.model.LotteryPlayCollectionModel;
 import com.xtree.lottery.utils.AnimUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +50,7 @@ import java.util.Objects;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
@@ -424,6 +428,50 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public void onTabSelected(TabLayout.Tab tab) {
         LotteryBetsModel lotteryBetsModel = betModels.get(tab.getPosition());
         currentBetModel.setValue(lotteryBetsModel);
+
+        Lottery lottery = lotteryLiveData.getValue();
+        UserMethodsResponse.DataDTO userMethodData = lotteryBetsModel.getUserMethodData();
+        MenuMethodsData.LabelsDTO menuMethodLabel = lotteryBetsModel.getMenuMethodLabel();
+        MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO currentl2 = lotteryBetsModel.getMenuMethodLabelData();
+        for (MenuMethodsData.LabelsDTO.Labels1DTO l1 : menuMethodLabel.getLabels()) {
+            for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO l2 : l1.getLabels()) {
+                //设置当前玩法
+                if (l2.getMenuid().equals(currentl2.getMenuid()) && l2.getMethodid().equals(currentl2.getMethodid())) {
+
+                    RulesEntryData rulesEntryData = new RulesEntryData();
+                    RulesEntryData.CurrentMethodDTO currentMethodDTO = new RulesEntryData.CurrentMethodDTO();
+                    currentMethodDTO.setMenuid(l2.getMenuid());
+                    currentMethodDTO.setMethodid(l2.getMethodid());
+                    currentMethodDTO.setName(l2.getName());
+                    currentMethodDTO.setIsMultiple(l2.getIsMultiple());
+                    currentMethodDTO.setRelationMethods(l2.getRelationMethods());
+                    currentMethodDTO.setMaxcodecount(l2.getMaxcodecount());
+                    currentMethodDTO.setSelectarea(l2.getSelectarea());
+                    currentMethodDTO.setShowStr(l2.getShowStr());
+                    currentMethodDTO.setCodeSp(l2.getCodeSp());
+                    currentMethodDTO.setDefaultposition(l2.getDefaultposition());
+                    currentMethodDTO.setDesc(l2.getName());
+                    currentMethodDTO.setPrizeLevel(userMethodData.getPrizeLevel());
+                    currentMethodDTO.setPrizeGroup(userMethodData.getPrizeGroup());
+                    currentMethodDTO.setGroupName(l1.getTitle());
+                    currentMethodDTO.setCateName(menuMethodLabel.getTitle());
+                    currentMethodDTO.setLotteryId(String.valueOf(lottery.getId()));
+                    currentMethodDTO.setOriginalName(l2.getName());
+                    currentMethodDTO.setMethoddesc(l2.getMethoddesc());
+                    currentMethodDTO.setMethodexample(l2.getMethodexample());
+                    currentMethodDTO.setMethodhelp(l2.getMethodhelp());
+                    currentMethodDTO.setDescription(l2.getDescription());
+                    currentMethodDTO.setMoneyModes(l2.getMoneyModes());
+                    currentMethodDTO.setCateTitle(menuMethodLabel.getTitle());
+                    currentMethodDTO.setGroupTitle(l1.getTitle());
+//                    currentMethodDTO.setTarget();
+                    rulesEntryData.setCurrentMethod(currentMethodDTO);
+                    KLog.i("1111111111111111");
+                    EventBus.getDefault().post(rulesEntryData);
+                }
+            }
+        }
+
         if (lotteryBetsModel.getUserMethodData().getPrizeGroup() != null) {
             prizeData.setValue(lotteryBetsModel.getUserMethodData().getPrizeGroup().get(0));
         }

@@ -8,17 +8,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.xtree.base.widget.LoadingDialog
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
+import com.xtree.lottery.data.source.vo.RecentLotteryVo
 import com.xtree.lottery.databinding.FragmentRecentLotteryBinding
+import com.xtree.lottery.rule.RecentlyEntryRule
+import com.xtree.lottery.rule.betting.data.RulesEntryData
 import com.xtree.lottery.ui.adapter.RecentAdapter
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
 import me.xtree.mvvmhabit.base.BaseFragment
+import me.xtree.mvvmhabit.utils.KLog
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 近期开奖
  */
 class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, LotteryViewModel>() {
 
+    private var mList = ArrayList<RecentLotteryVo>()
     private lateinit var mAdapter: RecentAdapter
 
     companion object {
@@ -33,6 +41,15 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
 
     override fun initImmersionBar() {
 
@@ -73,6 +90,7 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
 
     override fun initViewObservable() {
         viewModel.liveDataRecentList.observe(viewLifecycleOwner) {
+            mList = it
             mAdapter.setList(it)
             binding.rvRecent.scrollToPosition(0)
         }
@@ -80,7 +98,12 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
         //    viewModel.liveDataListIssue2.value = it
         //
         //}
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public fun onMessageEvent(data: RulesEntryData) {
+        val resultList = RecentlyEntryRule.getInstance().startEngine(data, mList)
+        mAdapter.setList(resultList)
     }
 
 }
