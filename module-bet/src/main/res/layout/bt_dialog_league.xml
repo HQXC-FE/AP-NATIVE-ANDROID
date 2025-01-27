@@ -76,7 +76,7 @@
                         android:background="@null"
                         android:paddingStart="30dp"
                         android:textSize="@dimen/bt_text_14sp"
-                        android:textColorHint="@color/bt_color_hine_color"
+                        android:textColorHint="@color/clr_text_color_hint"
                         android:hint="请输入联赛名"/>
 
                     <ImageView

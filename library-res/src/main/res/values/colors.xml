@@ -311,7 +311,7 @@
     <color name="bt_color_bt_pay">#80FFFFFF</color>
 
     <!-- 选择联赛页面联赛分组背景颜色 -->
-    <color name="bt_color_league_group">@color/clr_main_04</color>
+    <color name="bt_color_league_group">@color/clr_main_07</color>
 
     <!-- 投注确认页倒计时背景颜色 -->
     <color name="bt_color_bt_timer">#66FFFFFF</color>
