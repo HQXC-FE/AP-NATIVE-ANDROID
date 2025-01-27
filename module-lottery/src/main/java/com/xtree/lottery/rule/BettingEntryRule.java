@@ -22,17 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 public class BettingEntryRule {
+    private static BettingEntryRule INSTANCE;
     Rules rules;
     Facts facts;
     RulesEngine rulesEngine;
-    private static BettingEntryRule INSTANCE;
-
-    public static BettingEntryRule getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new BettingEntryRule();
-        }
-        return INSTANCE;
-    }
 
     public BettingEntryRule() {
         rules = new Rules();
@@ -45,6 +38,13 @@ public class BettingEntryRule {
         DecisionRules.addRules(rules);
         AfterRules.addRules(rules);
         EndingRules.addRules(rules);
+    }
+
+    public static BettingEntryRule getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new BettingEntryRule();
+        }
+        return INSTANCE;
     }
 
     public RulesEntryData.SubmitDTO startEngine(RulesEntryData rulesEntryData) {
@@ -110,27 +110,27 @@ public class BettingEntryRule {
         currentMethod.put("relationMethods", rulesEntryData.getCurrentMethod().getRelationMethods());
         // currentMethod.selectarea.originType
         // TODO 这个需要补全
-        // currentMethod.selectarea.type
-        currentMethodSelectArea.put("type", rulesEntryData.getCurrentMethod().getSelectarea().getType());
-        rulesEntryData.getCurrentMethod().getSelectarea().getLayout();
-        // currentMethod.selectarea.layout
-        if (rulesEntryData.getCurrentMethod().getSelectarea().getLayout() != null) {
-            for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO item : rulesEntryData.getCurrentMethod().getSelectarea().getLayout()) {
-                Map<String, Object> currentMethodSelectAreaLayoutItem = new HashMap<>();
-                currentMethodSelectAreaLayoutItem.put("title", item.getTitle());
-                currentMethodSelectAreaLayoutItem.put("no", item.getNo());
-                currentMethodSelectAreaLayoutItem.put("place", String.valueOf(item.getPlace()));
-                currentMethodSelectAreaLayoutItem.put("cols", String.valueOf(item.getCols()));
-                currentMethodSelectAreaLayoutItem.put("minchosen", String.valueOf(item.getMinchosen()));
-                currentMethodSelectAreaLayout.add(currentMethodSelectAreaLayoutItem);
+        if (rulesEntryData.getCurrentMethod().getSelectarea() != null) {
+            // currentMethod.selectarea.type
+            currentMethodSelectArea.put("type", rulesEntryData.getCurrentMethod().getSelectarea().getType());
+            // currentMethod.selectarea.layout
+            if (rulesEntryData.getCurrentMethod().getSelectarea().getLayout() != null) {
+                for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO item : rulesEntryData.getCurrentMethod().getSelectarea().getLayout()) {
+                    Map<String, Object> currentMethodSelectAreaLayoutItem = new HashMap<>();
+                    currentMethodSelectAreaLayoutItem.put("title", item.getTitle());
+                    currentMethodSelectAreaLayoutItem.put("no", item.getNo());
+                    currentMethodSelectAreaLayoutItem.put("place", String.valueOf(item.getPlace()));
+                    currentMethodSelectAreaLayoutItem.put("cols", String.valueOf(item.getCols()));
+                    currentMethodSelectAreaLayoutItem.put("minchosen", String.valueOf(item.getMinchosen()));
+                    currentMethodSelectAreaLayout.add(currentMethodSelectAreaLayoutItem);
+                }
+                currentMethodSelectArea.put("layout", currentMethodSelectAreaLayout);
             }
-            currentMethodSelectArea.put("layout", currentMethodSelectAreaLayout);
+            // currentMethod.selectarea.selPosition
+            currentMethodSelectArea.put("selPosition", rulesEntryData.getCurrentMethod().getSelectarea().isSelPosition());
+            // currentMethod.selectarea
+            currentMethod.put("selectarea", currentMethodSelectArea);
         }
-        // currentMethod.selectarea.selPosition
-        currentMethodSelectArea.put("selPosition", rulesEntryData.getCurrentMethod().getSelectarea().isSelPosition());
-        // currentMethod.selectarea
-        currentMethod.put("selectarea", currentMethodSelectArea);
-
         //bet.codes
         if (rulesEntryData.getBet().getCodes() instanceof List) {
             if (((List<?>) rulesEntryData.getBet().getCodes()).get(0) instanceof String) {
