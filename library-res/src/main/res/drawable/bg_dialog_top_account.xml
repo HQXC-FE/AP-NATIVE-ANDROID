@@ -7,7 +7,7 @@
         android:endColor="@color/clr_bg_frame_dark_end"
         android:startColor="@color/clr_bg_frame_dark_start" />
     <corners
-        android:topLeftRadius="24dp"
-        android:topRightRadius="24dp" />
+        android:topLeftRadius="40dp"
+        android:topRightRadius="40dp" />
 
 </shape>
