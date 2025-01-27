@@ -3,7 +3,6 @@
     <item android:drawable="@mipmap/hm_gm_ty_01" android:maxLevel="101" />
     <item android:drawable="@mipmap/hm_gm_ty_02" android:maxLevel="102" />
     <item android:drawable="@mipmap/hm_gm_ty_03" android:maxLevel="103" />
-    <item android:drawable="@mipmap/hm_gm_ty_04" android:maxLevel="104" />
     <item android:drawable="@mipmap/hm_gm_ty_05" android:maxLevel="105" />
 
     <item android:drawable="@mipmap/hm_gm_zr_00" android:maxLevel="200" />
@@ -18,9 +17,7 @@
     <item android:drawable="@mipmap/hm_gm_dz_03" android:maxLevel="303" />
     <item android:drawable="@mipmap/hm_gm_dz_04" android:maxLevel="304" />
     <item android:drawable="@mipmap/hm_gm_dz_05" android:maxLevel="305" />
-    <item android:drawable="@mipmap/hm_gm_dz_06" android:maxLevel="306" />
     <item android:drawable="@mipmap/hm_gm_dz_07" android:maxLevel="307" />
-    <item android:drawable="@mipmap/hm_gm_dz_08" android:maxLevel="308" />
     <item android:drawable="@mipmap/hm_gm_dz_09" android:maxLevel="309" />
     <item android:drawable="@mipmap/hm_gm_dz_10" android:maxLevel="310" />
     <item android:drawable="@mipmap/hm_gm_dz_11" android:maxLevel="311" />

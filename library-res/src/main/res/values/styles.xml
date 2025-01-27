@@ -100,7 +100,7 @@
     <style name="style_hm_game_type">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
         <item name="android:button">@drawable/hm_game_type_selector</item>
     </style>
 
@@ -124,7 +124,6 @@
     <style name="style_hm_recharge">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">12dp</item>
         <item name="android:drawablePadding">0dp</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">4dp</item>
