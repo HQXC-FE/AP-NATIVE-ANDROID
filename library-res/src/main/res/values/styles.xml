@@ -240,7 +240,8 @@
         <item name="android:gravity">center</item>
         <item name="android:padding">12dp</item>
         <item name="android:background">@drawable/btn_acc_item_selector_item</item>
-        <item name="android:textColor">@color/clr_white</item>
+        <item name="android:textSize">@dimen/bt_text_16sp</item>
+        <item name="android:textColor">@drawable/choose_account_item_text_selector</item>
     </style>
 
     <!-- 充值页-选取金额 按钮背景 -->
@@ -562,8 +563,8 @@
         <item name="android:inputType">numberPassword</item>
         <item name="android:maxLength">6</item>
         <item name="android:padding">8dp</item>
-        <item name="android:textColor">@color/clr_gap_bg</item>
-        <item name="android:textColorHint">@color/clr_gap_bg</item>
+        <item name="android:textColor">@color/clr_txt_recharge_tip</item>
+        <item name="android:textColorHint">@color/clr_text_color_hint</item>
         <item name="android:textSize">14sp</item>
     </style>
     <!-- 注册推广输入框 -->

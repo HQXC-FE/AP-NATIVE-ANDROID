@@ -42,11 +42,11 @@
 
             <EditText
                 android:id="@+id/et_transfer_password"
-                style="@style/style_cm_edt"
+                style="@style/style_withdraw_password_eno_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/layout_margin"
-                android:drawableStart="@mipmap/mine_bonus"
+                android:drawableStart="@mipmap/me_awards_lock"
                 android:hint="@string/txt_please_input_money_password"
                 android:inputType="numberPassword"
                 android:maxLength="6"
@@ -61,7 +61,7 @@
                 android:layout_margin="@dimen/layout_margin"
                 android:layout_marginTop="8dp"
                 android:text="@string/txt_warning_money_password"
-                android:textColor="@color/clr_red_01"
+                android:textColor="@color/clr_txt_recharge_hint"
                 app:layout_constraintEnd_toEndOf="@id/et_transfer_password"
                 app:layout_constraintStart_toStartOf="@id/et_transfer_password"
                 app:layout_constraintTop_toBottomOf="@id/et_transfer_password" />
@@ -86,7 +86,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/layout_margin"
-                android:background="@drawable/bg_stroke_main_r12"
+                android:background="@drawable/me_bg_fund_password_cancel"
                 android:text="@string/text_cancel"
                 android:textColor="@color/clr_main_login_txt"
                 android:textSize="16dp"
@@ -98,12 +98,17 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/layout_margin"
-                android:background="@drawable/bg_main_r12"
+
                 android:text="@string/text_confirm"
                 android:textColor="@color/clr_white"
                 android:textSize="16dp"
                 app:layout_constraintEnd_toEndOf="@id/et_transfer_google_auth"
-                app:layout_constraintTop_toBottomOf="@id/et_transfer_google_auth" />
+                app:layout_constraintTop_toBottomOf="@id/et_transfer_google_auth"
+                android:background="@drawable/bt_bg_fund_password_sure"
+                style="?android:attr/borderlessButtonStyle"
+                android:shadowDx="0"
+                android:shadowDy="6"
+                android:shadowColor="#4D32A5AF"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
