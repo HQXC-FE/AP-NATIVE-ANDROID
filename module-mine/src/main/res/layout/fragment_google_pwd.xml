@@ -52,7 +52,7 @@
             android:layout_marginTop="6dp"
             android:layout_marginEnd="@dimen/layout_margin"
             android:orientation="vertical"
-            android:background="@color/clr_reset_bg_dark"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +110,7 @@
 
             <EditText
                 android:id="@+id/edt_googlepsw"
-                style="@style/style_rc_feedback_eon_edit"
+                style="@style/style_set_fund_psw_edit"
                 android:layout_marginLeft="0dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="0dp"

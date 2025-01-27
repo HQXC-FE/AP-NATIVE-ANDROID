@@ -619,6 +619,8 @@
 
     <!--登录-->
     <color name="color_2c2a29">#2C2A29</color>
+    <color name="color_d9edfc">#D9EDFC</color>
+    <color name="color_606684">#606684</color>
 
     <!-- 默认背景色-->
     <color name="clr_main_bg">#F9F8F4</color>

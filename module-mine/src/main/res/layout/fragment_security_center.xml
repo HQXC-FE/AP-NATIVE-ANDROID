@@ -13,14 +13,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_dialog_background_color"
         android:orientation="vertical"
         tools:context=".ui.fragment.SecurityCenterFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white">
 
             <TextView
                 style="@style/style_cm_title"
@@ -45,7 +45,6 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/clr_grey_080"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -74,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/layout_margin"
                 android:text="@string/txt_pwd_edit_hint"
-                android:textColor="@color/clr_txt_02"
+                android:textColor="@color/clr_txt_rebateagrt_title"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/ivw_pwd_edit"
@@ -97,7 +96,7 @@
                 android:layout_width="0dp"
                 android:layout_height="4dp"
                 android:layout_marginEnd="@dimen/layout_margin"
-                android:background="@color/clr_bg_light_main"
+                android:background="@color/color_d9edfc"
                 android:max="100"
                 android:progress="20"
                 android:progressDrawable="@drawable/me_level_progressbar"
@@ -111,12 +110,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:padding="@dimen/layout_margin"
-            android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/bg_security_frame"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/layout_margin">
 
             <TextView
                 android:id="@+id/tvw_reset_pwd"
@@ -156,8 +155,9 @@
                 android:drawableStart="@mipmap/me_sc_phone"
                 android:text="@string/txt_bind_phone" />
 
-            <View style="@style/style_dividing_line"
-                android:visibility="gone"/>
+            <View
+                style="@style/style_dividing_line"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tvw_email"

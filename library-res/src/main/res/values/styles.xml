@@ -162,7 +162,7 @@
         <item name="android:drawablePadding">6dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:padding">16dp</item>
-        <item name="android:textColor">@color/clr_txt_02</item>
+        <item name="android:textColor">@color/clr_withdrawal_text_bank_tip</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -196,7 +196,7 @@
         <item name="android:layout_marginStart">12dp</item>
         <item name="android:layout_marginEnd">12dp</item>
         <item name="android:layout_marginTop">2dp</item>
-        <item name="android:background">@color/clr_grey_080</item>
+        <item name="android:background">@color/clr_btn_grey01</item>
     </style>
     <!-- 取款-提款流水-未完成活动流水 -->
     <style name="style_awards_line">
@@ -562,8 +562,8 @@
         <item name="android:inputType">numberPassword</item>
         <item name="android:maxLength">6</item>
         <item name="android:padding">8dp</item>
-        <item name="android:textColor">@color/clr_gap_bg</item>
-        <item name="android:textColorHint">@color/clr_gap_bg</item>
+        <item name="android:textColor">@color/clr_txt_recharge_tip</item>
+        <item name="android:textColorHint">@color/clr_text_color_hint</item>
         <item name="android:textSize">14sp</item>
     </style>
     <!-- 注册推广输入框 -->
@@ -642,7 +642,7 @@
     <style name="style_set_fund_psw_edit">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">42dp</item>
-        <item name="android:background">@drawable/rc_bg_feedback_input</item>
+        <item name="android:background">@drawable/bg_et_pwd</item>
         <item name="android:hint"></item>
         <item name="android:gravity">center_vertical|left</item>
         <item name="android:lines">1</item>
@@ -748,9 +748,33 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="style_cm_edt_ret_arrow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/layout_margin</item>
+        <item name="android:layout_marginEnd">@dimen/layout_margin</item>
+        <item name="android:background">@drawable/bg_security_et_bg</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:hint"></item>
+        <item name="android:inputType">text</item>
+        <item name="android:lines">1</item>
+        <item name="android:maxLength">64</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:tag"></item>
+        <item name="android:text"></item>
+        <item name="android:textColor">@color/cl_gap</item>
+        <item name="android:textColorHint">@color/clr_txt_grey_03</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <!-- 通用下拉框 带边框,占一整行的 -->
     <style name="style_cm_spinner" parent="style_cm_edt">
         <item name="android:drawableEnd">@mipmap/bt_icon_expand</item>
+    </style>
+
+    <!-- 通用下拉框 带边框,占一整行的, 下箭头的 -->
+    <style name="style_cm_spinner_arrow" parent="style_cm_edt_ret_arrow">
+        <item name="android:drawableEnd">@mipmap/bt_icon_arrow</item>
     </style>
 
     <!-- 通用下拉框 带边框,一行有两个或多个下拉菜单的 -->
@@ -791,7 +815,6 @@
         <item name="android:textColor">@color/bt_text_color_primary</item>
         <item name="android:textColorHint">@color/clr_txt_04</item>
         <item name="android:textSize">@dimen/bt_text_14sp</item>
-
         <item name="android:inputType">numberPassword</item>
         <item name="android:paddingStart">10dp</item>
         <item name="android:drawablePadding">10dp</item>
@@ -1195,7 +1218,7 @@
 
     <!--谷歌动态口令提示语风格-->
     <style name="style_google_prompt">
-        <item name="android:textColor">@color/clr_gap_bg</item>
+        <item name="android:textColor">@color/clr_txt_recharge_tip</item>
         <item name="android:textSize">12sp</item>
     </style>
 

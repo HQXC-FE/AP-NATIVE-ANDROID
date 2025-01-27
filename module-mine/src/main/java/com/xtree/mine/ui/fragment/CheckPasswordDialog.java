@@ -79,7 +79,7 @@ public class CheckPasswordDialog extends BaseFragment<DialogTransferMemberBindin
     @Override
     public MineViewModel initViewModel() {
         AppViewModelFactory factory = AppViewModelFactory.getInstance(getActivity().getApplication());
-        return new ViewModelProvider(this, factory).get(MineViewModel.class);
+        return new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(MineViewModel.class);
     }
 
     @Override
