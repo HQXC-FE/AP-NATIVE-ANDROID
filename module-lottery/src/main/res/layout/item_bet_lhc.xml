@@ -4,13 +4,6 @@
 
     <data>
 
-        <variable
-            name="m"
-            type="com.xtree.lottery.ui.view.model.BetDiceModel" />
-
-        <import type="android.view.View" />
-
-        <import type="android.text.TextUtils" />
     </data>
 
 

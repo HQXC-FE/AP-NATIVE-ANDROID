@@ -14,12 +14,14 @@ public class BetLhcModel extends BindModel {
     public String odds = "?";
     public String money = "?";
     public String methodid = "?";
+    public String menuid = "?";
 
-    public BetLhcModel(String number, Ball ball, String odds, String methodid) {
+    public BetLhcModel(String number, Ball ball, String odds, String methodid, String menuid) {
         this.ball = ball;
         this.number = number;
         this.odds = odds;
         this.methodid = methodid;
+        this.menuid = menuid;
     }
 
     public enum Ball {

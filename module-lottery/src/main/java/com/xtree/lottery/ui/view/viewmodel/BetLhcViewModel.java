@@ -1,6 +1,8 @@
 package com.xtree.lottery.ui.view.viewmodel;
 
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -45,6 +47,22 @@ public class BetLhcViewModel extends BindModel {
             binding.tvNum.setText(model.number);
             binding.tvNum.setBackgroundResource(model.ball.getResourceId());
             binding.tvOdds.setText(model.odds);
+            binding.etMoney.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    handleInput(binding.etMoney.getText().toString(), model.methodid);
+                }
+            });
         }
 
         @Override
@@ -79,7 +97,7 @@ public class BetLhcViewModel extends BindModel {
         List<BindModel> dataList = new ArrayList<>();
 
         for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO itemLabel : labels1DTOS.get(0).getLabels()) {
-            dataList.add(new BetLhcModel(itemLabel.getNum(), BetLhcModel.Ball.getBallByColor(itemLabel.getColor()), odds, itemLabel.getMethodid()));
+            dataList.add(new BetLhcModel(itemLabel.getNum(), BetLhcModel.Ball.getBallByColor(itemLabel.getColor()), odds, itemLabel.getMethodid(), itemLabel.getMenuid()));
         }
         datas.set(dataList);
     }
@@ -125,8 +143,11 @@ public class BetLhcViewModel extends BindModel {
             if (currentMethod != null) {
                 Map<String, String> newMethod = new HashMap<>();
                 newMethod.put("value", money);
+                newMethod.put("menuid", currentMethod.menuid);
+                newMethod.put("methodid", currentMethod.methodid);
+                newMethod.put("num", currentMethod.number);
                 ArrayList updatedLists = new ArrayList<>(lotteryNumbs.get());
-                updatedLists.add(currentMethod);
+                updatedLists.add(newMethod);
                 lotteryNumbs.set(updatedLists);
             }
         }
