@@ -113,6 +113,8 @@ public class BettingEntryRule {
         if (rulesEntryData.getCurrentMethod().getSelectarea() != null) {
             // currentMethod.selectarea.type
             currentMethodSelectArea.put("type", rulesEntryData.getCurrentMethod().getSelectarea().getType());
+            // currentMethod.selectarea. originType 骰子
+            currentMethodSelectArea.put("originType", rulesEntryData.getCurrentMethod().getSelectarea().getOriginType());
             // currentMethod.selectarea.layout
             if (rulesEntryData.getCurrentMethod().getSelectarea().getLayout() != null) {
                 for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO item : rulesEntryData.getCurrentMethod().getSelectarea().getLayout()) {

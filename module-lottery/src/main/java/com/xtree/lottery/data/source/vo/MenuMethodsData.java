@@ -451,6 +451,21 @@ public class MenuMethodsData {
                      */
                     @SerializedName("type")
                     private String type;
+
+                    /**
+                     * type
+                     */
+                    @SerializedName("originType")
+                    private String originType;
+
+                    public String getOriginType() {
+                        return originType;
+                    }
+
+                    public void setOriginType(String originType) {
+                        this.originType = originType;
+                    }
+
                     /**
                      * layout
                      */
