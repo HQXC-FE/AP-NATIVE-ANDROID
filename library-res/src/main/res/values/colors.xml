@@ -84,7 +84,7 @@
     <!-- 通用字颜色 主色/1级字 -->
     <color name="clr_txt_01">#BEBEC0</color>
     <!-- 通用字颜色 主色/2级字 -->
-    <color name="clr_txt_02">@color/white</color>
+    <color name="clr_txt_02">#CC000000</color>
     <!-- 通用字颜色 主色/3级字 -->
     <color name="clr_txt_03">#AFAFAF</color>
     <!-- 通用字颜色 主色/4级字 -->
