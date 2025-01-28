@@ -241,7 +241,7 @@
     <color name="bt_option_bg_selected">@color/clr_main_05</color>
 
     <!-- 主题色背景下（项目中是蓝色）的字体颜色 -->
-    <color name="bt_color_under_bg_primary_text">#1E1E1E</color>
+    <color name="bt_color_under_bg_primary_text">#FFFFFF</color>
 
     <!-- 投注模块弹窗顶部金额背景颜色 -->
     <color name="bt_color_car_dialog_top_acount">#54D8CAFF</color>
@@ -264,6 +264,8 @@
     <!-- hine字体颜色 -->
     <color name="bt_color_hine_color">#BEBEC0</color>
     <color name="bt_color_hine_color_5B">#5B5B6A</color>
+    <color name="bt_color_hine_color_99">#99A0B1</color>
+
 
     <!-- 阴影颜色 -->
     <color name="bt_color_shadow">#1AAD7851</color>

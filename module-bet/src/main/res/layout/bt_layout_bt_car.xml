@@ -201,7 +201,7 @@
                     android:button="@drawable/bt_checkbox_selector"
                     android:checked="true"
                     android:text="@string/bt_txt_odds"
-                    android:textColor="@color/bt_color_hine_color"
+                    android:textColor="@color/bt_color_hine_color_99"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -225,7 +225,7 @@
                     android:layout_marginEnd="10dp"
                     android:textSize="@dimen/bt_text_12sp"
                     tools:text="@string/bt_bt_top_win"
-                    android:textColor="@color/bt_text_color_primary_2"/>
+                    android:textColor="@color/bt_color_hine_color_99"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -266,7 +266,7 @@
                             android:layout_toRightOf="@+id/iv_confirm"
                             android:paddingStart="5dp"
                             android:text="@string/bt_bt_confirm_option"
-                            android:textColor="@color/bt_color_under_bg_primary_text"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/bt_text_15sp" />
 
                         <TextView
