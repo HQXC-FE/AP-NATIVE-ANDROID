@@ -50,7 +50,7 @@ import com.xtree.service.WebSocketService;
 import com.xtree.service.message.MessageData;
 import com.xtree.service.message.MessageType;
 import com.xtree.service.message.PushServiceConnection;
-import com.xtree.weight.TopSpeedDomainFloatingWindows;
+import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

@@ -203,7 +203,7 @@ class FastestTopDomainUtil private constructor() {
                                 //      mCurApiDomainList.remove(url)
 
                                 //debug模式 显示所有测速线路 release模式 只显示4条
-                                if (mTopSpeedDomainList.size < 4 || BuildConfig.DEBUG) {
+                                if (mTopSpeedDomainList.none { it.url == topSpeedDomain.url } && mTopSpeedDomainList.size < 4 || BuildConfig.DEBUG) {
                                     topSpeedDomain.isRecommend = 1;
                                     mTopSpeedDomainList.add(topSpeedDomain)
                                     mTopSpeedDomainList.sort()
@@ -413,10 +413,17 @@ class FastestTopDomainUtil private constructor() {
      * 线路竞速
      */
     private fun setFasterApiDomain() {
-        val apis = Utils.getContext().getString(R.string.domain_api_list) // 不能为空,必须正确
-        val apiList = listOf(*apis.split(";".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray())
-        addApiDomainList(apiList)
+
+        addApiDomainList(FastestMonitorCache.scoreCacheList.map { it.url }.run {
+            if (isEmpty()) {
+                val apis = Utils.getContext().getString(R.string.domain_api_list) // 不能为空,必须正确
+                listOf(*apis.split(";".toRegex()).dropLastWhile { it.isEmpty() }
+                    .toTypedArray())
+            } else {
+                this
+            }
+        })
+
 //        if (mCurApiDomainList.size >= 4) {
 //            getFastestApiDomain(false)
 //        } else {

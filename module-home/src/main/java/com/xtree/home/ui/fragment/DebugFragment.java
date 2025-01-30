@@ -38,7 +38,7 @@ import com.xtree.home.R;
 import com.xtree.home.databinding.FragmentDebugBinding;
 import com.xtree.home.ui.viewmodel.HomeViewModel;
 import com.xtree.home.ui.viewmodel.factory.AppViewModelFactory;
-import com.xtree.weight.TopSpeedDomainFloatingWindows;
+import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

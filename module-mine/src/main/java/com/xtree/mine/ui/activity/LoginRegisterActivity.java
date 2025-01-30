@@ -54,7 +54,7 @@ import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.mine.vo.LoginResultVo;
 import com.xtree.mine.vo.SettingsVo;
 import com.xtree.mine.vo.RegisterVerificationCodeVo;
-import com.xtree.weight.TopSpeedDomainFloatingWindows;
+import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
