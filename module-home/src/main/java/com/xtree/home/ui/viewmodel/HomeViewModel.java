@@ -321,7 +321,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         map.put("fields", "customer_service_url,public_key,barrage_api_url," +
                 "x9_customer_service_url," + "promption_code,default_promption_code," +
                 "ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time," +
-                "app_response_speed_calculation,app_response_speed_max,hichat_url_suffix");
+                "app_response_speed_calculation,app_response_speed_max,hichat_url_suffix,sport_match_cache");
         Disposable disposable = (Disposable) model.getApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
@@ -339,6 +339,11 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         SPUtils.getInstance().put("customer_service_url", vo.customer_service_url);
                         SPUtils.getInstance().put(SPKeyGlobal.APP_RESPONSE_SPEED_CALCULATION, vo.app_response_speed_calculation);
                         SPUtils.getInstance().put(SPKeyGlobal.APP_Response_Speed_Max, vo.app_response_speed_max);
+                        //本地存储最新客服链接
+                        if (vo.hichat_url_suffix !=null && vo.hichat_url_suffix.length > 0)
+                        {
+                            SPUtils.getInstance().put(SPKeyGlobal.APP_SERVICE_LINK, vo.hichat_url_suffix[0]);
+                        }
                         //设置测速扣除百分比
                         FastestMonitorCache.INSTANCE.setSPEED_CALCULATION(vo.app_response_speed_calculation);
                         //设置测速显示上限
@@ -393,6 +398,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         SPUtils.getInstance().put(SPKeyGlobal.USER_ID, vo.userid);
                         SPUtils.getInstance().put(SPKeyGlobal.USER_NAME, vo.username);
                         SPUtils.getInstance().put(SPKeyGlobal.USER_LEVEL, vo.getUserLevel());
+                        SPUtils.getInstance().put(SPKeyGlobal.APP_REGISTER_CODE, vo.register_promotion_code);
                         liveDataProfile.setValue(vo);
                     }
 

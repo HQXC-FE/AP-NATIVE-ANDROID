@@ -633,4 +633,6 @@
 
     <!-- 默认背景色-->
     <color name="clr_main_bg">#F9F8F4</color>
+    <color name="clr_awards_bt_end">#FFFFFF</color>
+    <color name="clr_awards_bt_start">#ECE6F9</color>
 </resources>

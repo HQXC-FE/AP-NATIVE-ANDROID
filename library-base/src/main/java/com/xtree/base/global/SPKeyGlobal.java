@@ -64,4 +64,10 @@ public class SPKeyGlobal {
     public static final String APP_Response_Speed_Max ="app_response_speed_max";
     public static final String DEBUG_APPLY_DOMAIN ="debug_apply_domain";//debug 设置指定域名
 
+
+    //客服链接
+    public static final String APP_SERVICE_LINK = "app_service_link";
+    //域名拼接推广Code至嗨客服
+    public static final String APP_REGISTER_CODE = "register_promotion_code";
+
 }

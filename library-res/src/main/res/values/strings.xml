@@ -412,5 +412,36 @@
 5.代理服务费活跃人数定义：历史有提款成功纪录且当日投注 ≥1000元（卡U皆可）</string>
 
     <string name="txt_question_feedback">问题反馈</string>
+    <string name="txt_customer_service">我的客服</string>
+    <string name="me_agreement_hint">我已阅读并同意</string>
+    <string name="me_agreement_content">《游戏网站使用者条款》</string>
 
+    <string name="txt_qa_digital_teaching">数字货币操作流程教学</string>
+    <string name="txt_qa_digital_teaching_detail">推荐您使用数字货币进行充值，若是您想要更清楚链接数据货币，请您点击下方导航栏【我的】>【教程】即可了解CNYT教程、TOPAY教程哦</string>
+    <string name="txt_qa_bind_bank_card">如何绑定银行卡</string>
+    <string name="txt_qa_bind_bank_card_detail">请您点击下方导航栏【我的】>【账户管理】选择【银行卡】，验证通过后，即可输入对应信息新增绑定银行卡</string>
+    <string name="txt_qa_forget_login_password">忘记登录密码操作方式</string>
+    <string name="txt_qa_forget_login_password_detail">若您忘记登录密码，有绑定手机号，可在登录页面下可以点击【忘记密码】，然后通过已绑定的手机，收取验证码进行修改并登录</string>
+    <string name="txt_qa_forget_login_password_tip">※提醒您，如未绑定手机号，要重置登录密码，请您点击人工客服咨询。</string>
+    <string name="txt_qa_down_app">玩家下载APP操作</string>
+    <string name="txt_qa_down_app_detail">您好，请先下载二维码扫描器，应在以下位置找到手机客户端二维码进行下载。\n\n
+        1.登录页面右上角【APP下载】,点击立即下载后跳转到有二维码的页面 \n
+        2.登录前/后,都可在页面右方【手机端】看到下载二维码 \n
+        3.登录前/后,页面往下滑也可直接看到【下载APP】手机二维码</string>
+    <string name="txt_qa_login_password">登录密码总是不正确</string>
+    <string name="txt_qa_login_password_detail">请您输入登录密码时候，优先确认密码及输入字母的大小写是否正确。密码设定规则为6-16英数混合的字符，例如:abc666</string>
+    <string name="txt_qa_login_password_tip">※若忘记登录密码，请点击常见问题的忘记密码操作方式即可。</string>
+    <string name="txt_qa_add_usdt">新增USDT或其他虚拟币</string>
+    <string name="txt_qa_add_usdt_detail">请您点击下方导航栏【我的】>【账户管理】选择【虚拟币账户】，验证通过后，即可输入对应信息新增绑定钱包。</string>
+    <string name="me_agree_hint">请授权同意</string>
+    <string name="me_agreement_text">请贵使用者确认以下事项：
+        \n\n 1. 贵使用者用以本网站注册之个人基本资料均与实际情况相符，且无冒用他人资料或伪造变造之情事。
+        \n\n 2. 贵使用者于使用本网站提供之服务时，目前所在国家/地区并非香港、澳门、或台湾。 贵使用者兹确认登录本网站及使用本网站提供服务，并不违反目前所在之国家/地区之法令。
+        \n\n 3. 贵使用者并未使用虚拟私人网路（VPN）或者其他任何不当手法连结至本网站，以致本网站无法确认使用者之真实目前所在国家/地区。
+        \n\n 4. 贵使用者亦已知悉，如目前所在国家/地区禁止类似于本网站所提供服务时，本网站将拒绝提供服务；贵使用者并明确知悉使用违反前项规定所可能导致之法律制裁或其他风险。
+        \n\n 5. 贵使用者兹确认不会藉本网站所提供服务用以从事任何违法活动。
+        \n\n 6. 贵使用者了解及同意如本网站发现或知悉 贵使用者于本网站有任何违法或违反使用者条款之行为，本网站将立即停止一切服务，视情节将账号停权。必要时将通报相关司法或警察机关。
+        \n\n 7. 请使用者注意网络环境安全，注意防护个人信息泄露，本网站不会以致电、短信、三方平台添加好友等形式与您做私密沟通。
+        \n\n 8. 请勿将个人账户、密码泄露他人，还请防范陌生人假借提供的代充、代传方式，实际以实施诈骗行为。
+        \n\n 9. 贵使用者新绑定银行卡，为了账户资金安全，需等待6小时后才可提现。</string>
 </resources>
