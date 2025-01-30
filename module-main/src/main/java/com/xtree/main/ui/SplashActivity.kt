@@ -53,18 +53,19 @@ class SplashActivity : BaseActivity<ActivitySplashBinding?, SplashViewModel?>() 
     private fun init() {
         val api = getString(R.string.domain_api) // 不能为空,必须正确
         val url = getString(R.string.domain_url) // 如果为空或者不正确,转用API的
+        val apiCache = SPUtils.getInstance().getString(SPKeyGlobal.KEY_API_URL, api)
+        val h5Cache = SPUtils.getInstance().getString(SPKeyGlobal.KEY_H5_URL, url)
 
-        if (api.startsWith("http://") || api.startsWith("https://")) {
-            DomainUtil.setApiUrl(api)
+        if (apiCache.startsWith("http://") || apiCache.startsWith("https://")) {
+            DomainUtil.setApiUrl(apiCache)
         }
 
-        if (url.startsWith("http://") || url.startsWith("https://")) {
-            DomainUtil.setDomainUrl(url)
+        if (h5Cache.startsWith("http://") || h5Cache.startsWith("https://")) {
+            DomainUtil.setH5Url(h5Cache)
         } else {
-            DomainUtil.setDomainUrl(api)
+            DomainUtil.setH5Url(apiCache)
         }
     }
-
     override fun initViewObservable() {
         viewModel?.reNewViewModel?.observe(this) {
             RetrofitClient.init()
