@@ -14,7 +14,7 @@
             tools:text="全部"
             android:maxLines="1"
             android:ellipsize="end"
-            android:textColor="@color/bt_color_detail_playtype_item_text"
+            android:textColor="@color/bt_color_bet_match_item_text"
             android:textSize="@dimen/bt_text_12sp"/>
 
 </LinearLayout>

@@ -23,7 +23,7 @@
             style="@style/style_wd_info_value2"
             android:layout_marginStart="0dp"
             android:layout_weight="1"
-            tools:text="DEMO" />
+            tools:text="1111111" />
 
         <TextView
             style="@style/style_wd_info_title2"

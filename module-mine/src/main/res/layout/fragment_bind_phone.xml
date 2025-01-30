@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/bg_dialog_background_color"
         tools:context=".ui.fragment.BindPhoneFragment">
 
         <TextView
@@ -25,10 +24,10 @@
             android:textColor="@color/bt_color_blurred"
             android:textSize="@dimen/bt_text_12sp"
             android:gravity="center_vertical|left"
-            android:drawableLeft="@drawable/ic_info"
+            android:drawableLeft="@mipmap/ic_info"
             android:drawablePadding="2dp"
             android:paddingStart="12dp"
-            android:background="@color/clr_main_05"/>
+            android:background="@drawable/bg_security_warn"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -47,7 +46,7 @@
                 android:id="@+id/tvw_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/txt_phone_num"
+                android:text="输入手机号"
                 android:textSize="12sp"
                 android:textColor="@color/bt_color_blurred"
                 android:layout_marginStart="4dp"/>
@@ -64,7 +63,7 @@
             android:layout_marginEnd="@dimen/layout_margin"
             android:textSize="12sp"
             app:errorTextColor="@color/clr_txt_warn"
-            android:background="@drawable/bg_withdraw_money_input">
+            android:background="@drawable/bg_security_et_bg">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -115,7 +114,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/txt_verify_code"
+                android:text="输入验证码"
                 android:textSize="12sp"
                 android:textColor="@color/bt_color_blurred"
                 android:layout_marginStart="4dp"/>
@@ -131,7 +130,7 @@
             android:layout_marginEnd="@dimen/layout_margin"
             android:textSize="12sp"
             app:errorTextColor="@color/clr_txt_warn"
-            android:background="@drawable/bg_withdraw_money_input">
+            android:background="@drawable/bg_security_et_bg">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -196,7 +195,7 @@
                 android:id="@+id/tvw_cs"
                 style="@style/style_info2_grey_50"
                 android:text="@string/txt_tip_cs_02"
-                android:textColor="@color/clr_txt_right_dark_end"
+                android:textColor="@color/clr_main_end"
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="3dp"/>
 

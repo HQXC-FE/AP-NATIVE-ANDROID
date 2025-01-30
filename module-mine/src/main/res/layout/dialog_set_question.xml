@@ -11,8 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="密保问题"
-        android:textColor="@color/clr_txt_02"
+        android:text="密保设定"
+        android:textColor="@color/clr_txt_rebateagrt_title"
         android:textSize="@dimen/bt_text_16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,6 +29,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/ivw_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/layout_margin"
+        android:padding="4dp"
+        android:src="@mipmap/cm_ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_set"
         android:layout_width="wrap_content"
@@ -39,6 +49,7 @@
         android:textColor="@color/clr_txt_02"
         android:textSize="@dimen/bt_text_16sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
@@ -49,14 +60,14 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
         android:text="问题一："
-        android:textColor="@color/clr_txt_02"
+        android:textColor="@color/clr_txt_rebateagrt_title"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_set" />
 
     <TextView
         android:id="@+id/tv_question1"
-        style="@style/style_cm_spinner"
+        style="@style/style_cm_spinner_arrow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -73,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="答案一："
-        android:textColor="@color/clr_txt_02"
+        android:textColor="@color/clr_txt_rebateagrt_title"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/tv1"
         app:layout_constraintTop_toBottomOf="@+id/tv1" />
@@ -95,14 +106,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="问题二："
-        android:textColor="@color/clr_txt_02"
+        android:textColor="@color/clr_txt_rebateagrt_title"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/tv1"
         app:layout_constraintTop_toBottomOf="@+id/tv2" />
 
     <TextView
         android:id="@+id/tv_question2"
-        style="@style/style_cm_spinner"
+        style="@style/style_cm_spinner_arrow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="您配偶的生日是？"
@@ -117,7 +128,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="答案二："
-        android:textColor="@color/clr_txt_02"
+        android:textColor="@color/clr_txt_rebateagrt_title"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/tv1"
         app:layout_constraintTop_toBottomOf="@+id/tv3" />
@@ -140,7 +151,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="50dp"
-        android:background="@drawable/bg_main_r12"
+        android:background="@drawable/bg_main_r24"
         android:text="设定密保"
         android:textColor="@color/clr_white"
         android:textSize="16sp"

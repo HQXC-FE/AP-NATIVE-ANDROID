@@ -72,7 +72,7 @@ public class SecurityCenterFragment extends BaseFragment<FragmentSecurityCenterB
     public VerifyViewModel initViewModel() {
         // return super.initViewModel();
         AppViewModelFactory factory = AppViewModelFactory.getInstance(getActivity().getApplication());
-        return new ViewModelProvider(this, factory).get(VerifyViewModel.class);
+        return new ViewModelProvider(this, (ViewModelProvider.Factory) factory).get(VerifyViewModel.class);
     }
 
     @Override

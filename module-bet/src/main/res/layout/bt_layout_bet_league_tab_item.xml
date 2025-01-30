@@ -17,15 +17,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bt_match_item_lq_selector"/>
+
         <TextView
             android:id="@+id/tab_item_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/iv_icon"
             android:paddingStart="2dp"
-            tools:text="全部"
             android:textColor="@color/bt_color_bet_match_item_text"
-            android:textSize="@dimen/bt_text_12sp"/>
+            android:textSize="@dimen/bt_text_12sp"
+            tools:text="全部" />
 
     </LinearLayout>
 

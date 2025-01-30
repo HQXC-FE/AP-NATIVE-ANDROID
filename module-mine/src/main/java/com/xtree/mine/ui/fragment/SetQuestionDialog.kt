@@ -41,6 +41,7 @@ class SetQuestionDialog(context: Context) : BottomPopupView(context) {
         super.onCreate()
         binding = DialogSetQuestionBinding.bind(findViewById(R.id.cl_root))
         binding.ivwClose.setOnClickListener { this@SetQuestionDialog.dismiss() }
+        binding.ivwBack.setOnClickListener { this@SetQuestionDialog.dismiss() }
         binding.tvQuestion1.setOnClickListener {
             showChooseDialog()
         }

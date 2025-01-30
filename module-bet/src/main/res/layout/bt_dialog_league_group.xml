@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bt_color_league_group">
+        android:background="@drawable/bg_dialog_league_group">
 
         <ImageView
             android:id="@+id/group_indicator"
@@ -29,7 +29,7 @@
             android:paddingBottom="8dp"
             android:layout_marginStart="3dp"
             android:layout_toRightOf="@+id/group_indicator"
-            android:textColor="@color/bt_color_under_bg_primary_text"
+            android:textColor="@color/white"
             android:textSize="@dimen/bt_text_14sp"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="热门联赛" />
