@@ -55,7 +55,9 @@
     <color name="clr_main_end_2">#1A1B1F</color>
     <color name="clr_main_start_w">#FFFFFF</color>
     <color name="clr_main_end_w">#FFFFFF</color>
-
+    <!--主色60透明度-->
+    <color name="clr_main_start60">#9940A5F2</color>
+    <color name="clr_main_end60">#9933E8E2</color>
     <!-- 辅-渐变色 -->
     <color name="clr_main_21">#2D2D2D</color>
     <color name="clr_main_22">#49453F</color>
@@ -540,7 +542,7 @@
     <color name="clr_rc_exp_choose_bank_bg">@color/clr_main_33</color>
 
     <!-- 输入框 hint -->
-    <color name="clr_txt_color_hint">#C7C4D0</color>
+    <color name="clr_txt_color_hint">#949292</color>
     <color name="clr_rc_exp_choose_bank_txt">@color/clr_red_24</color>
 
     <!-- 分隔线 -->
@@ -567,6 +569,8 @@
 
     <color name="clr_txt_edittext_input_stroke">#38373C</color>
     <color name="clr_txt_edittext_input">#313035</color>
+    <!--取消-->
+    <color name="clr_txt_left">#F0F0F0</color>
     <!--取消按钮 暗色系 开始颜色-->
     <color name="clr_txt_left_dark_start">#3F3F3F</color>
     <!--取消按钮 暗色系 结束颜色-->
@@ -588,7 +592,7 @@
     <color name="clr_withdraw_selector_end">#66CC99</color>
     <color name="clr_re_feedback_right_txt_hint">#868686</color>
     <!--充值页面 字体颜色 暗色系 -->
-    <color name="clr_re_txt">#BCBCBC</color>
+    <color name="clr_re_txt">#313035</color>
     <color name="clr_re_channels_txt">#3FD0FF</color>
     <color name="clr_re_bottom_txt">#E3E3E3</color>
     <color name="clr_re_bottom_bt_start">@color/clr_main_start</color>
