@@ -400,8 +400,6 @@
     <color name="clr_grey_80">#CC000000</color>
     <color name="clr_grey_1">#6C757D</color>
 
-    #5B5B6A
-
     <color name="clr_white_14">#24FFFFFF</color>
 
     <color name="clr_login_txt_01">@color/clr_main</color>
