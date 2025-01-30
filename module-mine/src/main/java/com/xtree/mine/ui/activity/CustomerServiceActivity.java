@@ -19,6 +19,7 @@ import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.widget.CustomerServiceQADialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
+import com.xtree.mine.ui.fragment.AgreementCutomerDialog;
 import com.xtree.mine.ui.fragment.AgreementDialog;
 import com.xtree.mine.ui.viewmodel.ChooseWithdrawViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
@@ -153,7 +154,7 @@ public class CustomerServiceActivity extends BaseActivity<ActivityCustomerServic
         if (ClickUtil.isFastClick()) {
             return;
         }
-        BasePopupView ppw = new XPopup.Builder(CustomerServiceActivity.this).asCustom(new AgreementDialog(CustomerServiceActivity.this, checkBox));
+        BasePopupView ppw = new XPopup.Builder(CustomerServiceActivity.this).asCustom(new AgreementCutomerDialog(CustomerServiceActivity.this, checkBox));
         ppw.show();
     }
 
