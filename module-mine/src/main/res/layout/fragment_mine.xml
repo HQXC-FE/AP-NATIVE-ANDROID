@@ -11,7 +11,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/clr_main_08"
+            android:background="@color/clr_gray_10"
             android:orientation="vertical">
 
             <LinearLayout
@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/layout_margin"
                     android:text="@string/me_user_name_hint"
-                    android:textColor="@color/clr_txt_black_cm"
+                    android:textColor="@color/clr_txt_rebateagrt_title"
                     android:textSize="14sp" />
 
                 <TextView
@@ -46,7 +46,7 @@
                     android:background="@drawable/bg_home_vip"
                     android:gravity="center"
                     android:text="VIP 0"
-                    android:textColor="@color/clr_yellow"
+                    android:textColor="@color/clr_txt_rebateagrt_title"
                     android:textSize="10sp"
                     android:visibility="gone" />
 
@@ -90,13 +90,13 @@
                     android:id="@+id/tvw_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_btn_selector"
+                    android:background="@drawable/bg_white_r12"
                     android:paddingLeft="45dp"
                     android:paddingTop="5dp"
                     android:paddingEnd="45dp"
                     android:paddingBottom="5dp"
                     android:text="@string/me_login_hint"
-                    android:textColor="@color/clr_white"
+                    android:textColor="@color/clr_txt_02"
                     android:textSize="@dimen/mine_text_size" />
             </LinearLayout>
 
@@ -126,13 +126,13 @@
                     android:id="@+id/tvw_1k_recycle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_6"
+                    android:background="@drawable/bg_btn_round_selector"
                     android:paddingStart="16dp"
                     android:paddingTop="6dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="6dp"
                     android:text="@string/me_get_all_money"
-                    android:textColor="@color/clr_txt_01"
+                    android:textColor="@color/white"
                     android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -496,7 +496,7 @@
                 android:layout_marginBottom="24dp"
                 android:background="@color/clr_transparent"
                 android:text="@string/me_logout_login"
-                android:textColor="@color/clr_green_01"
+                android:textColor="@color/color_8040a5f2"
                 android:textSize="@dimen/bt_text_16sp"
                 android:textStyle="bold" />
 
