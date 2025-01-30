@@ -74,7 +74,7 @@ public class BetDiceView extends BetBaseView {
             betOrderData.setDesc(betsModel.getTitle());
             betOrderData.setMenuid(betsModel.getMenuMethodLabelData().getMenuid());
             betOrderData.setMethodid(betsModel.getMenuMethodLabelData().getMethodid());
-            betOrderData.setType(betsModel.getMenuMethodLabelData().getSelectarea().getType());
+            betOrderData.setType(TextUtils.isEmpty(betsModel.getMenuMethodLabelData().getSelectarea().getOriginType()) ? betsModel.getMenuMethodLabelData().getSelectarea().getType() : betsModel.getMenuMethodLabelData().getSelectarea().getOriginType());
             ArrayList<LotteryBetRequest.BetOrderData> orderList = new ArrayList<>();
             orderList.add(betOrderData);
 

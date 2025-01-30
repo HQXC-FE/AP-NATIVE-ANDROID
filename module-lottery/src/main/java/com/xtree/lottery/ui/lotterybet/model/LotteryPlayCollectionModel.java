@@ -2,6 +2,7 @@ package com.xtree.lottery.ui.lotterybet.model;
 
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.vo.UserMethodsResponse;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
 
 /**
@@ -13,6 +14,15 @@ public class LotteryPlayCollectionModel extends BindModel {
     private MenuMethodsData.LabelsDTO.Labels1DTO label;
     private MenuMethodsData.LabelsDTO menulabel;
     private UserMethodsResponse.DataDTO userMethods;
+    private Lottery lottery;
+
+    public Lottery getLottery() {
+        return lottery;
+    }
+
+    public void setLottery(Lottery lottery) {
+        this.lottery = lottery;
+    }
 
     public UserMethodsResponse.DataDTO getUserMethods() {
         return userMethods;

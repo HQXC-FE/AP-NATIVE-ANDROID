@@ -22,17 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 public class BettingEntryRule {
+    private static BettingEntryRule INSTANCE;
     Rules rules;
     Facts facts;
     RulesEngine rulesEngine;
-    private static BettingEntryRule INSTANCE;
-
-    public static BettingEntryRule getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new BettingEntryRule();
-        }
-        return INSTANCE;
-    }
 
     public BettingEntryRule() {
         rules = new Rules();
@@ -47,7 +40,14 @@ public class BettingEntryRule {
         EndingRules.addRules(rules);
     }
 
-    public RulesEntryData.SubmitDTO startEngine(RulesEntryData rulesEntryData) {
+    public static BettingEntryRule getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new BettingEntryRule();
+        }
+        return INSTANCE;
+    }
+
+    public List<RulesEntryData.SubmitDTO> startEngine(RulesEntryData rulesEntryData) {
         facts = new Facts();
         Map<String, String> currentCategory = new HashMap<>();
         Map<String, Object> currentMethod = new HashMap<>();
@@ -110,27 +110,29 @@ public class BettingEntryRule {
         currentMethod.put("relationMethods", rulesEntryData.getCurrentMethod().getRelationMethods());
         // currentMethod.selectarea.originType
         // TODO 这个需要补全
-        // currentMethod.selectarea.type
-        currentMethodSelectArea.put("type", rulesEntryData.getCurrentMethod().getSelectarea().getType());
-        rulesEntryData.getCurrentMethod().getSelectarea().getLayout();
-        // currentMethod.selectarea.layout
-        if (rulesEntryData.getCurrentMethod().getSelectarea().getLayout() != null) {
-            for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO item : rulesEntryData.getCurrentMethod().getSelectarea().getLayout()) {
-                Map<String, Object> currentMethodSelectAreaLayoutItem = new HashMap<>();
-                currentMethodSelectAreaLayoutItem.put("title", item.getTitle());
-                currentMethodSelectAreaLayoutItem.put("no", item.getNo());
-                currentMethodSelectAreaLayoutItem.put("place", String.valueOf(item.getPlace()));
-                currentMethodSelectAreaLayoutItem.put("cols", String.valueOf(item.getCols()));
-                currentMethodSelectAreaLayoutItem.put("minchosen", String.valueOf(item.getMinchosen()));
-                currentMethodSelectAreaLayout.add(currentMethodSelectAreaLayoutItem);
+        if (rulesEntryData.getCurrentMethod().getSelectarea() != null) {
+            // currentMethod.selectarea.type
+            currentMethodSelectArea.put("type", rulesEntryData.getCurrentMethod().getSelectarea().getType());
+            // currentMethod.selectarea. originType 骰子
+            currentMethodSelectArea.put("originType", rulesEntryData.getCurrentMethod().getSelectarea().getOriginType());
+            // currentMethod.selectarea.layout
+            if (rulesEntryData.getCurrentMethod().getSelectarea().getLayout() != null) {
+                for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO item : rulesEntryData.getCurrentMethod().getSelectarea().getLayout()) {
+                    Map<String, Object> currentMethodSelectAreaLayoutItem = new HashMap<>();
+                    currentMethodSelectAreaLayoutItem.put("title", item.getTitle());
+                    currentMethodSelectAreaLayoutItem.put("no", item.getNo());
+                    currentMethodSelectAreaLayoutItem.put("place", String.valueOf(item.getPlace()));
+                    currentMethodSelectAreaLayoutItem.put("cols", String.valueOf(item.getCols()));
+                    currentMethodSelectAreaLayoutItem.put("minchosen", String.valueOf(item.getMinchosen()));
+                    currentMethodSelectAreaLayout.add(currentMethodSelectAreaLayoutItem);
+                }
+                currentMethodSelectArea.put("layout", currentMethodSelectAreaLayout);
             }
-            currentMethodSelectArea.put("layout", currentMethodSelectAreaLayout);
+            // currentMethod.selectarea.selPosition
+            currentMethodSelectArea.put("selPosition", rulesEntryData.getCurrentMethod().getSelectarea().isSelPosition());
+            // currentMethod.selectarea
+            currentMethod.put("selectarea", currentMethodSelectArea);
         }
-        // currentMethod.selectarea.selPosition
-        currentMethodSelectArea.put("selPosition", rulesEntryData.getCurrentMethod().getSelectarea().isSelPosition());
-        // currentMethod.selectarea
-        currentMethod.put("selectarea", currentMethodSelectArea);
-
         //bet.codes
         if (rulesEntryData.getBet().getCodes() instanceof List) {
             if (((List<?>) rulesEntryData.getBet().getCodes()).get(0) instanceof String) {
@@ -141,8 +143,12 @@ public class BettingEntryRule {
                     betCodes.add(item);
                 }
                 bet.put("codes", betCodes);
+            } else {
+                bet.put("codes", rulesEntryData.getBet().getCodes());
             }
         } else if (rulesEntryData.getBet().getCodes() instanceof String) {
+            bet.put("codes", rulesEntryData.getBet().getCodes());
+        } else {
             bet.put("codes", rulesEntryData.getBet().getCodes());
         }
         //bet.mode
@@ -173,24 +179,40 @@ public class BettingEntryRule {
         // enter the rules
         rulesEngine.fire(rules, facts);
 
-        RulesEntryData.SubmitDTO submitDTO = new RulesEntryData.SubmitDTO();
+        List<RulesEntryData.SubmitDTO> submitDTOList = new ArrayList<>();
         HashMap<String, Object> done = facts.get("done");
         if (done != null) {
-            HashMap<String, Object> submit = (HashMap<String, Object>) done.get("submit");
-            submitDTO.setMethodid(Integer.parseInt((String) submit.get("methodid")));
-            submitDTO.setCodes((String) submit.get("codes"));
-            submitDTO.setOmodel((int) submit.get("omodel"));
-            submitDTO.setMode(Integer.parseInt((String) submit.get("mode")));
-            submitDTO.setTimes((int) submit.get("times"));
-            submitDTO.setPoschoose(submit.get("poschoose"));
-            submitDTO.setMenuid(Integer.parseInt((String) submit.get("menuid")));
-            submitDTO.setType((String) submit.get("type"));
-            submitDTO.setNums((int) submit.get("nums"));
-            submitDTO.setMoney((double) submit.get("money"));
-            submitDTO.setSolo((boolean) submit.get("solo"));
-            submitDTO.setDesc((String) submit.get("desc"));
+            if (done.get("submit") instanceof List) {
+                List<HashMap<String, Object>> submitList = (List<HashMap<String, Object>>) done.get("submit");
+                for (HashMap<String, Object> submit : submitList) {
+                    submitDTOList.add(calcSubmit(submit));
+                }
+            } else {
+                HashMap<String, Object> submit = (HashMap<String, Object>) done.get("submit");
+                submitDTOList.add(calcSubmit(submit));
+            }
         }
 
+        return submitDTOList;
+    }
+
+    private RulesEntryData.SubmitDTO calcSubmit(HashMap<String, Object> submit) {
+        RulesEntryData.SubmitDTO submitDTO = new RulesEntryData.SubmitDTO();
+        submitDTO.setMethodid(Integer.valueOf(submit.get("methodid").toString()));
+        submitDTO.setCodes(submit.get("codes").toString());
+        submitDTO.setOmodel(Integer.valueOf(submit.get("omodel").toString()));
+        submitDTO.setMode(Integer.valueOf(submit.get("mode").toString()));
+        submitDTO.setTimes(Integer.valueOf(submit.get("times").toString()));
+        submitDTO.setPoschoose(submit.get("poschoose"));
+        submitDTO.setMenuid(Integer.valueOf(submit.get("menuid").toString()));
+        submitDTO.setType(submit.get("type").toString());
+        submitDTO.setNums(Integer.valueOf(submit.get("nums").toString()));
+        submitDTO.setMoney(Double.valueOf(submit.get("money").toString()));
+        if (submit.get("solo") != null) {
+            submitDTO.setSolo(Boolean.valueOf(submit.get("solo").toString()));
+        }
+        submitDTO.setDesc((String) submit.get("desc"));
         return submitDTO;
     }
+
 }

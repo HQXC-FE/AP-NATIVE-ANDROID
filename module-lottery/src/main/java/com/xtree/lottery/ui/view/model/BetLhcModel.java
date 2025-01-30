@@ -1,5 +1,7 @@
 package com.xtree.lottery.ui.view.model;
 
+import androidx.databinding.ObservableField;
+
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.utils.CfLog;
 import com.xtree.lottery.R;
@@ -12,14 +14,28 @@ public class BetLhcModel extends BindModel {
     public String number = "?";
     public Ball ball;
     public String odds = "?";
-    public String money = "?";
+    public ObservableField<String> money = new ObservableField<>("");
     public String methodid = "?";
+    public String menuid = "?";
+    public String type = "?";
+    public String name = "?";
 
-    public BetLhcModel(String number, Ball ball, String odds, String methodid) {
+    public ObservableField<String> getMoney() {
+        return money;
+    }
+
+    public void setMoney(ObservableField<String> money) {
+        this.money = money;
+    }
+
+    public BetLhcModel(String number, Ball ball, String odds, String methodid, String menuid,String type,String name) {
         this.ball = ball;
         this.number = number;
         this.odds = odds;
         this.methodid = methodid;
+        this.menuid = menuid;
+        this.type = type;
+        this.name = name;
     }
 
     public enum Ball {

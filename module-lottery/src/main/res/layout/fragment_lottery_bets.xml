@@ -249,7 +249,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/lt_color_text14"
                     android:textStyle="bold"
-                    android:text="@{model.betLiveData==null?String.valueOf(0):String.valueOf(model.betLiveData.nums)}" />
+                    android:text="@{model.betTotalLiveData==null?String.valueOf(0):String.valueOf(model.betTotalLiveData.nums)}" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -284,7 +284,7 @@
                     android:textSize="12sp"
                     android:textColor="@color/lt_color_text14"
                     android:textStyle="bold"
-                    android:text="@{model.betLiveData==null?String.valueOf(0):String.valueOf(model.betLiveData.money)}" />
+                    android:text="@{model.betTotalLiveData==null?String.valueOf(0):String.valueOf(model.betTotalLiveData.money)}" />
 
                 <TextView
                     android:layout_width="wrap_content"

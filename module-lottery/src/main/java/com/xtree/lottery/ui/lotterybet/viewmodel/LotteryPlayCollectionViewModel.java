@@ -4,6 +4,7 @@ import android.app.Application;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -35,39 +36,66 @@ public class LotteryPlayCollectionViewModel extends BaseViewModel<LotteryReposit
                     add(R.layout.item_lottery_play_collection);
                 }
             });
-
+    public LotteryBetsViewModel betsViewModel;
     public BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
         @Override
         public void onBind(@NonNull BindingAdapter.BindingViewHolder bindingViewHolder, @NonNull View view, int itemViewType) {
 
             if (itemViewType == R.layout.item_lottery_play_collection) {
                 FlexboxLayout flexboxLayout = view.findViewById(R.id.flexLayout);
+                TextView playName = view.findViewById(R.id.playName);
                 flexboxLayout.removeAllViews();
 
                 ArrayList<BindModel> bindModels = datas.get();
 
                 LotteryPlayCollectionModel lotteryPlayCollectionModel = (LotteryPlayCollectionModel) bindModels.get(bindingViewHolder.getModelPosition());
 
-                for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO label : lotteryPlayCollectionModel.getLabel().getLabels()) {
+                if ("lhc".equals(lotteryPlayCollectionModel.getLottery().getLinkType())) {//六合彩暂时只有一个选项
                     View inflate = LayoutInflater.from(view.getContext()).inflate(R.layout.label_lottery_play_collection, null);
+                    MenuMethodsData.LabelsDTO.Labels1DTO label = lotteryPlayCollectionModel.getLabel();
+                    MenuMethodsData.LabelsDTO menuLabel = lotteryPlayCollectionModel.getMenulabel();
+                    playName.setText(menuLabel.getTitle() + ":");
                     CheckBox labelBox = inflate.findViewById(R.id.label_box);
                     labelBox.setClickable(false);
-                    labelBox.setText(label.getName());
-                    labelBox.setChecked(label.isUserPlay());
+                    labelBox.setText(label.getDyTitle());
+                    labelBox.setChecked(true);
                     labelBox.setOnClickListener(v -> {
+//                        if (checkPlayCount(bindModels) <= 1) {
+//                            ToastUtils.show("当前玩法不可取消收藏", ToastUtils.ShowType.Default);
+//                            return;
+//                        }
+
+//                        label.setUserPlay(!label.isUserPlay());
+                        if (betsViewModel != null) {
+                            betsViewModel.initTabs();
+                        }
+                    });
+                    flexboxLayout.addView(inflate);
+                } else {
+                    for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO label : lotteryPlayCollectionModel.getLabel().getLabels()) {
+                        View inflate = LayoutInflater.from(view.getContext()).inflate(R.layout.label_lottery_play_collection, null);
+                        playName.setText(lotteryPlayCollectionModel.labelName());
+                        CheckBox labelBox = inflate.findViewById(R.id.label_box);
+                        labelBox.setClickable(false);
+                        labelBox.setText(label.getName());
+                        labelBox.setChecked(label.isUserPlay());
+                        labelBox.setOnClickListener(v -> {
 
 //                        if (checkPlayCount(bindModels) <= 1) {
 //                            ToastUtils.show("当前玩法不可取消收藏", ToastUtils.ShowType.Default);
 //                            return;
 //                        }
 
-                        label.setUserPlay(!label.isUserPlay());
-                        if (betsViewModel != null) {
-                            betsViewModel.initTabs();
-                        }
-                    });
-                    flexboxLayout.addView(inflate);
+                            label.setUserPlay(!label.isUserPlay());
+                            if (betsViewModel != null) {
+                                betsViewModel.initTabs();
+                            }
+                        });
+                        flexboxLayout.addView(inflate);
+                    }
                 }
+
+
             }
         }
 
@@ -83,9 +111,6 @@ public class LotteryPlayCollectionViewModel extends BaseViewModel<LotteryReposit
     public LotteryPlayCollectionViewModel(@NonNull Application application, LotteryRepository model) {
         super(application, model);
     }
-
-    public LotteryBetsViewModel betsViewModel;
-
 
     public void initData() {
         datas.set(betsViewModel.playModels);

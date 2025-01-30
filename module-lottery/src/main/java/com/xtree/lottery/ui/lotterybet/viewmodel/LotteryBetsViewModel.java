@@ -13,8 +13,10 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.LotteryDataManager;
 import com.xtree.lottery.data.LotteryDetailManager;
@@ -34,6 +36,7 @@ import com.xtree.lottery.ui.lotterybet.LotteryPlayCollectionDialogFragment;
 import com.xtree.lottery.ui.lotterybet.data.LotteryMoneyData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsPrizeGroup;
+import com.xtree.lottery.ui.lotterybet.model.LotteryBetsTotal;
 import com.xtree.lottery.ui.lotterybet.model.LotteryOrderModel;
 import com.xtree.lottery.ui.lotterybet.model.LotteryPlayCollectionModel;
 import com.xtree.lottery.utils.AnimUtils;
@@ -43,6 +46,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -70,14 +74,18 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     //奖金玩法
     public MutableLiveData<UserMethodsResponse.DataDTO.PrizeGroupDTO> prizeData = new MutableLiveData<>();
     //投注订单集
-    public MutableLiveData<ArrayList<LotteryOrderModel>> betOrdersLiveData = new MutableLiveData<>(new ArrayList<>());
+    public MutableLiveData<ArrayList<LotteryOrderModel>> betOrdersLiveData = new MutableLiveData<>();
     //当前有效投注项
-    public SingleLiveData<LotteryBetRequest.BetOrderData> betLiveData = new SingleLiveData<>();
+    public SingleLiveData<List<LotteryBetRequest.BetOrderData>> betLiveData = new SingleLiveData<>();
     //清除投注框事件
     public SingleLiveData<String> clearBetEvent = new SingleLiveData<>();
     //彩票信息
     public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
+    //奖金组和投注数据组合
     public MediatorLiveData<LotteryBetsPrizeGroup> combinedPrizeBetLiveData = new MediatorLiveData<>();
+    //投注数和总金额
+    public MediatorLiveData<LotteryBetsTotal> betTotalLiveData = new MediatorLiveData<>();
+
     private MenuMethodsData menuMethods;
     private UserMethodsResponse userMethods;
     private WeakReference<FragmentActivity> mActivity = null;
@@ -97,6 +105,21 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         getUserBalance(null);
         combinedPrizeBetLiveData.addSource(currentBetModel, betModel -> createLotteryBetsPrizeGroup());
         combinedPrizeBetLiveData.addSource(prizeData, prizeGroup -> createLotteryBetsPrizeGroup());
+        betTotalLiveData.addSource(betLiveData, betOrders -> calBetOrdersNums());
+    }
+
+    private void calBetOrdersNums() {
+        List<LotteryBetRequest.BetOrderData> betOrderDataList = betLiveData.getValue();
+        if (betOrderDataList != null) {
+            int nums = 0;
+            double money = 0;
+            for (LotteryBetRequest.BetOrderData betOrderData :
+                    betOrderDataList) {
+                nums += betOrderData.getNums();
+                money += betOrderData.getMoney();
+            }
+            betTotalLiveData.setValue(new LotteryBetsTotal(nums, money));
+        }
     }
 
     //组合投注数据和奖金组
@@ -117,7 +140,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     /**
      * 初始化玩法数据
      */
-    private void initPlayCollection() {
+    private void initPlayCollection(Lottery lottery) {
         playModels.clear();
         List<UserMethodsResponse.DataDTO> userLabels = userMethods.getData();
         List<MenuMethodsData.LabelsDTO> menuLabels = menuMethods.getLabels();
@@ -127,10 +150,17 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         for (MenuMethodsData.LabelsDTO label : menuLabels) {
             if (label != null && label.getLabels() != null) {
                 for (MenuMethodsData.LabelsDTO.Labels1DTO labels1DTO : label.getLabels()) {
+                    if ("lhc".equals(lottery.getLinkType())) {
+                        if (!"特码".equals(label.getDyTitle())) {
+                            continue;
+                        }
+                    }
                     LotteryPlayCollectionModel model = new LotteryPlayCollectionModel();
+                    model.setLottery(lottery);
                     model.setMenulabel(label);
                     MenuMethodsData.LabelsDTO.Labels1DTO la = new MenuMethodsData.LabelsDTO.Labels1DTO();
                     la.setTitle(labels1DTO.getTitle());
+                    la.setDyTitle(labels1DTO.getDyTitle());
                     la.setLabels(new ArrayList<>());
                     model.setLabel(la);
                     for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTO : labels1DTO.getLabels()) {
@@ -171,7 +201,13 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             LotteryPlayCollectionModel m = (LotteryPlayCollectionModel) playModel;
             for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO label : m.getLabel().getLabels()) {
                 if (label.isUserPlay()) {
-                    String title = m.getLabel().getTitle() + "-" + label.getName();
+                    String title;
+                    if ("lhc".equals(m.getLottery().getLinkType())) {
+                        title = m.getMenulabel().getTitle() + "-" + m.getLabel().getDyTitle();
+                    } else {
+                        title = m.getLabel().getTitle() + "-" + label.getName();
+                    }
+
                     tabList.add(title);
                     LotteryBetsModel lotteryBetsModel = new LotteryBetsModel(title, m.getMenulabel(), label, m.getUserMethods());
                     betModels.add(lotteryBetsModel);
@@ -192,14 +228,14 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             if (menuMethodsData != null && userMethodsData != null) {
                 menuMethods = menuMethodsData;
                 userMethods = userMethodsData;
-                initPlayCollection();
+                initPlayCollection(lottery);
             }
         }
         //加载网络数据初始化玩法
-        getMenuMethods();
+        getMenuMethods(lottery);
     }
 
-    private void getUserMethods() {
+    private void getUserMethods(Lottery lottery) {
         Disposable disposable = model.getUserMethodsData()
                 .subscribeWith(new HttpCallBack<UserMethodsResponse>() {
                     @Override
@@ -207,7 +243,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                         if (response.getData() != null && menuMethods != null) {
                             LotteryDataManager.INSTANCE.setUserMethods(response);
                             userMethods = response;
-                            initPlayCollection();
+                            initPlayCollection(lottery);
                         }
 
                     }
@@ -215,8 +251,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         addSubscribe(disposable);
     }
 
-    private void getMenuMethods() {
-        Disposable disposable = model.getMenuMethodsData(lotteryLiveData.getValue().getAlias())
+    private void getMenuMethods(Lottery lottery) {
+        Disposable disposable = model.getMenuMethodsData(lottery.getAlias())
                 .subscribeWith(new HttpCallBack<MenuMethodsResponse>() {
                     @Override
                     public void onResult(MenuMethodsResponse response) {
@@ -241,32 +277,48 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                                 // 遍历本地数据并更新
                                 for (MenuMethodsData.LabelsDTO labelsDTOLocal : menuMethods.getLabels()) {
                                     for (MenuMethodsData.LabelsDTO.Labels1DTO labels1DTOLocal : labelsDTOLocal.getLabels()) {
-                                        for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTOLocal : labels1DTOLocal.getLabels()) {
-                                            String menuid = labels2DTOLocal.getMenuid();
-                                            if (labels2DTORemoteMap.get(menuid) != null) {
-                                                // 如果远程数据中存在对应的 menuid，则更新本地数据
-                                                MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTORemote = labels2DTORemoteMap.get(menuid);
-                                                MenuMethodsData.LabelsDTO labelsDTORemote = labelsDTORemoteMap.get(menuid);
-                                                labels2DTOLocal.setName(labels2DTORemote.getName());
-                                                labels2DTOLocal.setMethoddesc(labels2DTORemote.getMethoddesc());
-                                                labels2DTOLocal.setMethodexample(labels2DTORemote.getMethodexample());
-                                                labels2DTOLocal.setMethodhelp(labels2DTORemote.getMethodhelp());
-                                                labels2DTOLocal.setDescription(labels2DTORemote.getDescription());
-                                                labels2DTOLocal.setShowStr(labels2DTORemote.getShowStr());
-                                                labels2DTOLocal.setCodeSp(labels2DTORemote.getCodeSp());
-                                                labels2DTOLocal.setMoneyModes(labels2DTORemote.getMoneyModes());
-                                                if (TextUtils.isEmpty(labels2DTOLocal.getDefaultposition())) {
-                                                    labels2DTOLocal.setDefaultposition(labels2DTORemote.getDefaultposition());
+                                        Iterator<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO> iterator = labels1DTOLocal.getLabels().iterator();
+                                        while (iterator.hasNext()) {
+                                            MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTOLocal = iterator.next();
+                                            try {
+                                                String menuid = labels2DTOLocal.getMenuid();
+                                                if (labels2DTORemoteMap.get(menuid) != null) {
+                                                    // 如果远程数据中存在对应的 menuid，则更新本地数据
+                                                    MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTORemote = labels2DTORemoteMap.get(menuid);
+                                                    MenuMethodsData.LabelsDTO.Labels1DTO labels1DTORemote = labels1DTORemoteMap.get(menuid);
+                                                    MenuMethodsData.LabelsDTO labelsDTORemote = labelsDTORemoteMap.get(menuid);
+                                                    labelsDTOLocal.setDyTitle(labelsDTORemote.getTitle());
+                                                    labels1DTOLocal.setDyTitle(labels1DTORemote.getTitle());
+                                                    labels2DTOLocal.setName(labels2DTORemote.getName());
+                                                    labels2DTOLocal.setMethoddesc(labels2DTORemote.getMethoddesc());
+                                                    labels2DTOLocal.setMethodexample(labels2DTORemote.getMethodexample());
+                                                    labels2DTOLocal.setMethodhelp(labels2DTORemote.getMethodhelp());
+                                                    labels2DTOLocal.setDescription(labels2DTORemote.getDescription());
+                                                    labels2DTOLocal.setShowStr(labels2DTORemote.getShowStr());
+                                                    labels2DTOLocal.setCodeSp(labels2DTORemote.getCodeSp());
+                                                    labels2DTOLocal.setMoneyModes(labels2DTORemote.getMoneyModes());
+                                                    if (TextUtils.isEmpty(labels2DTOLocal.getDefaultposition())) {
+                                                        labels2DTOLocal.setDefaultposition(labels2DTORemote.getDefaultposition());
+                                                    }
+                                                    labels2DTOLocal.setCateTitle(labelsDTORemote.getTitle());
+                                                    labels2DTOLocal.setGroupTitle(labels1DTORemote.getTitle());
+                                                    if (labels2DTOLocal.getSelectarea() != null && labels2DTOLocal.getSelectarea().getLayout() != null) {
+                                                        List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO> layoutDTOLocal = labels2DTOLocal.getSelectarea().getLayout();
+                                                        List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO> layoutDTORemote = labels2DTORemote.getSelectarea().getLayout();
+                                                        for (int index = 0; index < layoutDTOLocal.size(); index++) {
+                                                            MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layout = layoutDTOLocal.get(index);
+                                                            layout.setTitle(layoutDTORemote.get(index).getTitle());
+                                                        }
+                                                    }
                                                 }
-                                                labels2DTOLocal.setCateTitle(labelsDTORemote.getTitle());
-                                                labels2DTOLocal.setGroupTitle(labels1DTOLocal.getTitle());
-                                                labelsDTOLocal.setTitle(labelsDTORemote.getTitle());
-                                                labels1DTOLocal.setTitle(labelsDTORemote.getTitle());
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                CfLog.e("替换Selectarea异常" + new Gson().toJson(labels2DTOLocal));
+                                                iterator.remove();
                                             }
                                         }
                                     }
                                 }
-
                             } else {
                                 menuMethods = menuMethodsRemote;
                             }
@@ -274,10 +326,10 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
 
                             UserMethodsResponse userMethodsData = LotteryDataManager.INSTANCE.getUserMethods();
                             if (userMethodsData == null) {
-                                getUserMethods();
+                                getUserMethods(lottery);
                             } else {
                                 userMethods = userMethodsData;
-                                initPlayCollection();
+                                initPlayCollection(lottery);
                             }
                         }
                     }
@@ -384,21 +436,18 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         if (betLiveData.getValue() != null) {
             ArrayList<LotteryOrderModel> orderModels = betOrdersLiveData.getValue();
 
-
-            LotteryOrderModel lotteryOrderModel = new LotteryOrderModel();
-            LotteryBetRequest.BetOrderData orderData = betLiveData.getValue();
-            UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
-            LotteryMoneyData money = moneyLiveData.getValue();
-
-            orderData.setOmodel(prize.getValue());
-            orderData.setMode(money.getMoneyModel().getModelId());
-            orderData.setTimes(money.getFactor());
-
-            lotteryOrderModel.setBetOrderData(orderData);
-            lotteryOrderModel.setPrizeLabel(prize.getLabel());
-            lotteryOrderModel.setMoneyData(money);
-
-            orderModels.add(lotteryOrderModel);
+            for (LotteryBetRequest.BetOrderData orderData : betLiveData.getValue()) {
+                LotteryOrderModel lotteryOrderModel = new LotteryOrderModel();
+                UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
+                LotteryMoneyData money = moneyLiveData.getValue();
+                orderData.setOmodel(prize.getValue());
+                orderData.setMode(money.getMoneyModel().getModelId());
+                orderData.setTimes(money.getFactor());
+                lotteryOrderModel.setBetOrderData(orderData);
+                lotteryOrderModel.setPrizeLabel(prize.getLabel());
+                lotteryOrderModel.setMoneyData(money);
+                orderModels.add(lotteryOrderModel);
+            }
 
             betOrdersLiveData.setValue(orderModels);
             betLiveData.setValue(null);
@@ -411,15 +460,13 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public void quickBet() {
         if (betLiveData.getValue() != null) {
             ArrayList<LotteryBetRequest.BetOrderData> betOrders = new ArrayList<>();
-            LotteryBetRequest.BetOrderData orderData = betLiveData.getValue();
-            UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
-            LotteryMoneyData money = moneyLiveData.getValue();
-
-            orderData.setOmodel(prize.getValue());
-            orderData.setMode(money.getMoneyModel().getModelId());
-
-            betOrders.add(orderData);
-
+            for (LotteryBetRequest.BetOrderData orderData : betLiveData.getValue()) {
+                UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
+                LotteryMoneyData money = moneyLiveData.getValue();
+                orderData.setOmodel(prize.getValue());
+                orderData.setMode(money.getMoneyModel().getModelId());
+                betOrders.add(orderData);
+            }
             LotteryBetConfirmDialogFragment.show(mActivity.get(), betOrders);
         }
     }
@@ -596,25 +643,33 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         betDTO.setDisplay(displayDTO);
         betDTO.setSubmit(new RulesEntryData.SubmitDTO());
         rulesEntryData.setBet(betDTO);
-        RulesEntryData.SubmitDTO submitDTO = BettingEntryRule.getInstance().startEngine(rulesEntryData);
+        List<RulesEntryData.SubmitDTO> submitDTOList = BettingEntryRule.getInstance().startEngine(rulesEntryData);
 
-        if (submitDTO.getMoney() > 0 && submitDTO.getNums() > 0) {
-            LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
-            betOrderData.setMoney(submitDTO.getMoney());
-            betOrderData.setOmodel(submitDTO.getOmodel());
-            betOrderData.setCodes(submitDTO.getCodes());
-            betOrderData.setTimes(submitDTO.getTimes());
-            betOrderData.setDesc(submitDTO.getDesc());
-            betOrderData.setMenuid(String.valueOf(submitDTO.getMenuid()));
-            betOrderData.setMethodid(String.valueOf(submitDTO.getMethodid()));
-            betOrderData.setNums(submitDTO.getNums());
-            betOrderData.setPoschoose((String) submitDTO.getPoschoose());
-            betOrderData.setSolo(submitDTO.isSolo());
-            betOrderData.setType(submitDTO.getType());
-            betLiveData.setValue(betOrderData);
-        } else {
-            betLiveData.setValue(null);
+        List<LotteryBetRequest.BetOrderData> betOrderlist = new ArrayList<>();
+        for (RulesEntryData.SubmitDTO submitDTO : submitDTOList) {
+            if (submitDTO.getMoney() > 0 && submitDTO.getNums() > 0) {
+                LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
+                betOrderData.setMoney(submitDTO.getMoney());
+                betOrderData.setOmodel(submitDTO.getOmodel());
+                betOrderData.setCodes(submitDTO.getCodes());
+                betOrderData.setTimes(submitDTO.getTimes());
+                betOrderData.setDesc(submitDTO.getDesc());
+                betOrderData.setMenuid(String.valueOf(submitDTO.getMenuid()));
+                betOrderData.setMethodid(String.valueOf(submitDTO.getMethodid()));
+                betOrderData.setNums(submitDTO.getNums());
+                betOrderData.setPoschoose((String) submitDTO.getPoschoose());
+                betOrderData.setSolo(submitDTO.isSolo());
+                betOrderData.setType(submitDTO.getType());
+                betOrderlist.add(betOrderData);
+            }
         }
+
+        if (betOrderlist.isEmpty()) {
+            betLiveData.setValue(null);
+        } else {
+            betLiveData.setValue(betOrderlist);
+        }
+
     }
 
     /**
@@ -623,7 +678,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public void doClear() {
 
         ArrayList<LotteryOrderModel> orderList = betOrdersLiveData.getValue();
-        LotteryBetRequest.BetOrderData curOrder = betLiveData.getValue();
+        List<LotteryBetRequest.BetOrderData> curOrder = betLiveData.getValue();
 
         if (orderList != null) {
             for (int i = 0; i < orderList.size(); i++) {
@@ -636,7 +691,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         }
 
         if (curOrder != null) {
-            if (curOrder.isSolo()) {
+            if (curOrder.get(0).isSolo()) {
                 betLiveData.setValue(null);
             }
         }

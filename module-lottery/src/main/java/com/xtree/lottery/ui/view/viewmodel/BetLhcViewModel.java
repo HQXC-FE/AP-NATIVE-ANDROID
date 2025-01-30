@@ -1,5 +1,7 @@
 package com.xtree.lottery.ui.view.viewmodel;
 
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -45,6 +47,21 @@ public class BetLhcViewModel extends BindModel {
             binding.tvNum.setText(model.number);
             binding.tvNum.setBackgroundResource(model.ball.getResourceId());
             binding.tvOdds.setText(model.odds);
+            binding.etMoney.setFilters(new InputFilter[]{new InputFilter() {
+                @Override
+                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                    // 模拟过滤逻辑，例如只允许数字
+                    StringBuilder result = new StringBuilder(dest);
+                    result.replace(dstart, dend, source.subSequence(start, end).toString());
+
+                    // 最终过滤后的内容
+                    String money = result.toString();
+                    handleInput(money, model);
+                    return null;
+                }
+            }
+
+            });
         }
 
         @Override
@@ -79,7 +96,7 @@ public class BetLhcViewModel extends BindModel {
         List<BindModel> dataList = new ArrayList<>();
 
         for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO itemLabel : labels1DTOS.get(0).getLabels()) {
-            dataList.add(new BetLhcModel(itemLabel.getNum(), BetLhcModel.Ball.getBallByColor(itemLabel.getColor()), odds, itemLabel.getMethodid()));
+            dataList.add(new BetLhcModel(itemLabel.getNum(), BetLhcModel.Ball.getBallByColor(itemLabel.getColor()), odds, itemLabel.getMethodid(), itemLabel.getMenuid(), itemLabel.getType(),itemLabel.getName()));
         }
         datas.set(dataList);
     }
@@ -93,23 +110,24 @@ public class BetLhcViewModel extends BindModel {
         notifyChange();
     }
 
-    public void handleInput(String money, String methodid) {
+    public void handleInput(String money, BetLhcModel model) {
         if (TextUtils.isEmpty(money) || !(Integer.parseInt(money) > 0)) {
             // Remove items where methodid does not match
             List<Map<String, String>> newCodes = new ArrayList<>();
             for (Map<String, String> item : lotteryNumbs.get()) {
-                if (!methodidEquals(item, methodid)) {
+                if (!methodidEquals(item, model.methodid)) {
                     newCodes.add(item);
                 }
             }
             lotteryNumbs.set(newCodes);
+            model.money.set("");
             return;
         }
 
         // Find the existing code with matching methodid
         Map<String, String> existingCode = null;
         for (Map<String, String> item : lotteryNumbs.get()) {
-            if (methodidEquals(item, methodid)) {
+            if (methodidEquals(item, model.methodid)) {
                 existingCode = item;
                 break;
             }
@@ -119,15 +137,22 @@ public class BetLhcViewModel extends BindModel {
             // Update value if found
             existingCode.put("value", money);
             lotteryNumbs.set(new ArrayList<>(lotteryNumbs.get()));
+            model.money.set(money);
         } else {
             // Find current method from groups and add it to codes
-            BetLhcModel currentMethod = findCurrentMethod(methodid);
+            BetLhcModel currentMethod = findCurrentMethod(model.methodid);
             if (currentMethod != null) {
                 Map<String, String> newMethod = new HashMap<>();
                 newMethod.put("value", money);
+                newMethod.put("menuid", currentMethod.menuid);
+                newMethod.put("methodid", currentMethod.methodid);
+                newMethod.put("num", currentMethod.number);
+                newMethod.put("type", currentMethod.type);
+                newMethod.put("name", currentMethod.name);
                 ArrayList updatedLists = new ArrayList<>(lotteryNumbs.get());
-                updatedLists.add(currentMethod);
+                updatedLists.add(newMethod);
                 lotteryNumbs.set(updatedLists);
+                model.money.set(money);
             }
         }
 

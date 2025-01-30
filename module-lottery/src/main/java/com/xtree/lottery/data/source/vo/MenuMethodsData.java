@@ -54,9 +54,13 @@ public class MenuMethodsData {
         /**
          * title
          */
-        @SerializedName(value = "title", alternate = {"dy_title"})
+        @SerializedName(value = "title")
         private String title;
-
+        /**
+         * dy_title
+         */
+        @SerializedName(value = "dy_title")
+        private String dyTitle;
         /**
          * isdefault
          */
@@ -72,6 +76,14 @@ public class MenuMethodsData {
          */
         @SerializedName(value = "labels", alternate = {"label"})
         private List<Labels1DTO> labels;
+
+        public String getDyTitle() {
+            return dyTitle;
+        }
+
+        public void setDyTitle(String dyTitle) {
+            this.dyTitle = dyTitle;
+        }
 
         public String getTitle() {
             return title;
@@ -106,16 +118,44 @@ public class MenuMethodsData {
         }
 
         public static class Labels1DTO {
+
+            /**
+             * 是否应用玩法
+             */
+            public boolean userPlay = false;
+
+            public boolean isUserPlay() {
+                return userPlay;
+            }
+
+            public void setUserPlay(boolean userPlay) {
+                this.userPlay = userPlay;
+            }
+
             /**
              * title
              */
-            @SerializedName(value = "title", alternate = {"gtitle", "dy_title"})
+            @SerializedName(value = "title", alternate = {"gtitle"})
             private String title;
+
+            /**
+             * dy_title
+             */
+
+            private String dyTitle;
             /**
              * labels
              */
             @SerializedName(value = "labels", alternate = {"label"})
             private List<Labels2DTO> labels;
+
+            public String getDyTitle() {
+                return dyTitle;
+            }
+
+            public void setDyTitle(String dyTitle) {
+                this.dyTitle = dyTitle;
+            }
 
             public String getTitle() {
                 return title;
@@ -411,6 +451,21 @@ public class MenuMethodsData {
                      */
                     @SerializedName("type")
                     private String type;
+
+                    /**
+                     * type
+                     */
+                    @SerializedName("originType")
+                    private String originType;
+
+                    public String getOriginType() {
+                        return originType;
+                    }
+
+                    public void setOriginType(String originType) {
+                        this.originType = originType;
+                    }
+
                     /**
                      * layout
                      */
