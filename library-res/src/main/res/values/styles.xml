@@ -480,7 +480,7 @@
     <!-- 通用 筛选 值 样式 -->
     <style name="style_filter_info_value" parent="style_filter_info_title">
         <item name="android:layout_weight">1</item>
-        <item name="android:textColor">@color/clr_gap_bg</item>
+        <item name="android:textColor">@color/clr_txt_09</item>
     </style>
     <!-- 通用 筛选 值Edittext 样式 -->
     <style name="style_filter_info_edit_value">

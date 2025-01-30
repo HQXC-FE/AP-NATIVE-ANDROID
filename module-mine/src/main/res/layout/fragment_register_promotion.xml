@@ -5,13 +5,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/clr_bg_frame_dark_start"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/clr_main_15">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
@@ -35,14 +36,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/clr_grey_080"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.tabs.TabLayout
@@ -54,8 +47,8 @@
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/clr_main_01"
             app:tabIndicatorFullWidth="false"
-            app:tabSelectedTextColor="@color/white"
-            app:tabTextColor="@color/clr_txt_01" />
+            app:tabSelectedTextColor="@color/clr_txt_09"
+            app:tabTextColor="@color/clr_grey_13" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_main"

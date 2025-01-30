@@ -131,7 +131,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                 }
 
                 adapter.addAll(linkList)
-                linkPpw = XPopup.Builder(context).asCustom(ListDialog(requireContext(), "", adapter))
+                linkPpw = XPopup.Builder(context).asCustom(ListDialog(requireContext(), "推广链接", adapter))
                 binding.tvLink.setOnClickListener {
                     linkPpw.show()
                 }
@@ -253,12 +253,12 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                 if (type == 0) {
                     //未初始化，创建ppw
                     if (!::ppwLottery.isInitialized) {
-                        ppwLottery = createPpw(max, typeLottery, tvLotteryRebate, arrayList) { ppwLottery.dismiss() }
+                        ppwLottery = createPpw(max, typeLottery, tvLotteryRebate, arrayList, "彩票返点") { ppwLottery.dismiss() }
                     }
                     ppwLottery.show()
                 } else {
                     if (!::ppwLottery1.isInitialized) {
-                        ppwLottery1 = createPpw(max, typeLottery, tvLotteryRebate, arrayList) { ppwLottery1.dismiss() }
+                        ppwLottery1 = createPpw(max, typeLottery, tvLotteryRebate, arrayList, "彩票返点") { ppwLottery1.dismiss() }
                     }
                     ppwLottery1.show()
                 }
@@ -275,13 +275,13 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                     if (type == 0) {
                         //未初始化，创建ppw
                         if (!::ppwReal.isInitialized) {
-                            ppwReal = createPpw(mProfileVo.maxLivePoint, typeReal, tvRealRebate, getRebateList(mProfileVo.maxLivePoint))
+                            ppwReal = createPpw(mProfileVo.maxLivePoint, typeReal, tvRealRebate, getRebateList(mProfileVo.maxLivePoint), "真人返点")
                             { ppwReal.dismiss() }
                         }
                         ppwReal.show()
                     } else {
                         if (!::ppwReal1.isInitialized) {
-                            ppwReal1 = createPpw(mProfileVo.maxLivePoint, typeReal, tvRealRebate, getRebateList(mProfileVo.maxLivePoint))
+                            ppwReal1 = createPpw(mProfileVo.maxLivePoint, typeReal, tvRealRebate, getRebateList(mProfileVo.maxLivePoint), "真人返点")
                             { ppwReal1.dismiss() }
                         }
                         ppwReal1.show()
@@ -301,14 +301,14 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                         //未初始化，创建ppw
                         if (!::ppwSports.isInitialized) {
                             ppwSports =
-                                createPpw(mProfileVo.maxSportPoint, typeSports, tvSportsRebate, getRebateList(mProfileVo.maxSportPoint))
+                                createPpw(mProfileVo.maxSportPoint, typeSports, tvSportsRebate, getRebateList(mProfileVo.maxSportPoint), "体育返点")
                                 { ppwSports.dismiss() }
                         }
                         ppwSports.show()
                     } else {
                         if (!::ppwSports1.isInitialized) {
                             ppwSports1 =
-                                createPpw(mProfileVo.maxSportPoint, typeSports, tvSportsRebate, getRebateList(mProfileVo.maxSportPoint))
+                                createPpw(mProfileVo.maxSportPoint, typeSports, tvSportsRebate, getRebateList(mProfileVo.maxSportPoint), "体育返点")
                                 { ppwSports1.dismiss() }
                         }
                         ppwSports1.show()
@@ -328,14 +328,14 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                         //未初始化，创建ppw
                         if (!::ppwChess.isInitialized) {
                             ppwChess =
-                                createPpw(mProfileVo.maxPokerPoint, typeChess, tvChessRebate, getRebateList(mProfileVo.maxPokerPoint))
+                                createPpw(mProfileVo.maxPokerPoint, typeChess, tvChessRebate, getRebateList(mProfileVo.maxPokerPoint), "棋牌返点")
                                 { ppwChess.dismiss() }
                         }
                         ppwChess.show()
                     } else {
                         if (!::ppwChess1.isInitialized) {
                             ppwChess1 =
-                                createPpw(mProfileVo.maxPokerPoint, typeChess, tvChessRebate, getRebateList(mProfileVo.maxPokerPoint))
+                                createPpw(mProfileVo.maxPokerPoint, typeChess, tvChessRebate, getRebateList(mProfileVo.maxPokerPoint), "棋牌返点")
                                 { ppwChess1.dismiss() }
                         }
                         ppwChess1.show()
@@ -355,14 +355,14 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
                         //未初始化，创建ppw
                         if (!::ppwGame.isInitialized) {
                             ppwGame =
-                                createPpw(mProfileVo.maxEsportsPoint, typeGame, tvGameRebate, getRebateList(mProfileVo.maxEsportsPoint))
+                                createPpw(mProfileVo.maxEsportsPoint, typeGame, tvGameRebate, getRebateList(mProfileVo.maxEsportsPoint), "电竞返点")
                                 { ppwGame.dismiss() }
                         }
                         ppwGame.show()
                     } else {
                         if (!::ppwGame1.isInitialized) {
                             ppwGame1 =
-                                createPpw(mProfileVo.maxEsportsPoint, typeGame, tvGameRebate, getRebateList(mProfileVo.maxEsportsPoint))
+                                createPpw(mProfileVo.maxEsportsPoint, typeGame, tvGameRebate, getRebateList(mProfileVo.maxEsportsPoint), "电竞返点")
                                 { ppwGame1.dismiss() }
                         }
                         ppwGame1.show()
@@ -383,6 +383,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
         type: TextView,
         rebate: TextView,
         list: List<Double>,
+        title: String,
         dismiss: () -> Unit
     ): BasePopupView {
         val adapter: CachedAutoRefreshAdapter<Double> = object : CachedAutoRefreshAdapter<Double>() {
@@ -404,7 +405,7 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
         }
 
         adapter.addAll(list)
-        return XPopup.Builder(context).asCustom(ListDialog(requireContext(), "", adapter))
+        return XPopup.Builder(context).asCustom(ListDialog(requireContext(), title, adapter))
     }
 
 
