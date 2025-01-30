@@ -512,7 +512,10 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     currentMethodDTO.setCateTitle(menuMethodLabel.getTitle());
                     currentMethodDTO.setGroupTitle(l1.getTitle());
 //                    currentMethodDTO.setTarget();
+                    RulesEntryData.CurrentCategoryDTO currentCategoryDTO = new RulesEntryData.CurrentCategoryDTO();
+                    currentCategoryDTO.setFlag(lottery.getAlias());
                     rulesEntryData.setCurrentMethod(currentMethodDTO);
+                    rulesEntryData.setCurrentCategory(currentCategoryDTO);
                     KLog.i("1111111111111111");
                     EventBus.getDefault().post(rulesEntryData);
                 }

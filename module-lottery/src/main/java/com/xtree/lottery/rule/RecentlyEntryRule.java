@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class RecentlyEntryRule {
     Rules rules;
@@ -49,6 +50,10 @@ public class RecentlyEntryRule {
         List<Map<String, String>> currentMethodPrizeGroup = new ArrayList<>();
         List<Map<String, Object>> inputHistoryLottery = new ArrayList<>();
 
+        // currentMethod.flag 此为 CurrentCategory 的 flag
+        currentMethod.put("flag", rulesEntryData.getCurrentCategory().getFlag());
+        // currentMethod.methodName
+        currentMethod.put("methodName", Optional.ofNullable(rulesEntryData.getCurrentMethod().getOriginalName()).orElse(rulesEntryData.getCurrentMethod().getName()));
         // currentMethod.methodid
         currentMethod.put("methodid", rulesEntryData.getCurrentMethod().getMethodid());
         // currentMethod.menuid
@@ -127,19 +132,22 @@ public class RecentlyEntryRule {
         }
 
         facts.put("currentMethod", currentMethod);
-        facts.put("historyLottery", inputHistoryLottery);
+        facts.put("historyCodes", inputHistoryLottery);
 
         // enter the rules
         rulesEngine.fire(rules, facts);
 
+        //Todo 返回的参数请使用 LotteryBackReportVo
+
         List<RecentLotteryVo> outputHistory = new ArrayList<>();
-        List<Map<String, Object>> filterLottery = facts.get("history");
+        List<Map<String, Object>> filterLottery = ((Map<String, List<Map<String, Object>>>) facts.get("done")).get("history");
         for (Map<String, Object> item : filterLottery) {
-            RecentLotteryVo vo = new RecentLotteryVo((String) item.get("code"),
+            RecentLotteryVo vo = new RecentLotteryVo(
+                    (String) item.get("displayCode"),
                     (String) item.get("draw_time"),
+                    (String) item.get("issueClass"),
                     (String) item.get("issue"),
-                    (String) item.get("original_code"),
-                    (ArrayList<String>) item.get("split_code"));
+                    (ArrayList<String>) item.get("form"));
             outputHistory.add(vo);
         }
 

@@ -34,7 +34,7 @@ public class ExtractUsefulValuesRule {
             List<String> ruleSuite = facts.get("ruleSuite");
 
             if (historyCodes != null && ruleSuite != null) {
-                String position = ruleSuite.get(1);
+                String position = ruleSuite.get(0);
                 String[] positions = position.split(",");
 
                 for (Map<String, Object> history : historyCodes) {

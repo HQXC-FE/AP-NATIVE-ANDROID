@@ -1,6 +1,7 @@
 package com.xtree.lottery.rule.recent.match;
 
 import com.xtree.base.utils.CfLog;
+import com.xtree.lottery.rule.betting.Matchers;
 import com.xtree.lottery.rule.recent.IssueRules;
 
 import org.jeasy.rules.annotation.Action;
@@ -41,7 +42,7 @@ public class IssueNumberRule {
             String alias = (String) currentMethod.get("flag");
 
             // 定义时时彩相关别名
-            List<String> sscAlias = facts.get("sscAlias"); // 需从 Facts 中获取时时彩别名列表
+            List<String> sscAlias = Matchers.sscAlias; // 需从 Facts 中获取时时彩别名列表
             List<String> additionalAliases = List.of("3djnd", "ydl10", "jssm");
 
             // 遍历历史期号并截取 issue 字段

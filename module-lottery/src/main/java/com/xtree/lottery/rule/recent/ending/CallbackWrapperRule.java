@@ -8,6 +8,7 @@ import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,19 +32,33 @@ public class CallbackWrapperRule {
         try {
             // 获取历史记录列表
             List<Map<String, Object>> historyCodes = facts.get("historyCodes");
-            String currentMethod = facts.get("currentMethod");
+            Map<String, Object> currentMethod = facts.get("currentMethod");
             String title = facts.get("title");
 
             if (historyCodes != null) {
                 // 转换历史记录
                 List<Map<String, Object>> history = historyCodes.stream()
-                        .map(item -> Map.of(
-                                "form", item.get("form"),
-                                "issue", item.get("issue"),
-                                "codes", item.get("displayCode"),
-                                "draw_time", item.get("draw_time"),
-                                "issueClass", item.getOrDefault("issueClass", "")
-                        ))
+                        .map(item -> {
+                            HashMap<String, Object> historyItem = new HashMap<>();
+
+                            historyItem.put("form", item.get("form"));
+                            historyItem.put("issue", item.get("issue"));
+                            historyItem.put("displayCode", item.get("displayCode"));
+
+                            if (null != item.get("draw_time")) {
+                                historyItem.put("draw_time", item.get("draw_time"));
+                            } else {
+                                historyItem.put("draw_time", "");
+                            }
+
+                            if (null != item.get("issueClass")) {
+                                historyItem.put("issueClass", item.get("issueClass"));
+                            } else {
+                                historyItem.put("issueClass", "");
+                            }
+
+                            return historyItem;
+                        })
                         .collect(Collectors.toList());
 
                 // 封装结果

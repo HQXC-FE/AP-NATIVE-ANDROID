@@ -22,7 +22,7 @@ public class GroupConfigurationRule {
 
     @Condition
     public boolean when(Facts facts) {
-        List<String> rules = facts.get("ruleSuiteRules");
+        List<String> rules = facts.get("ruleSuite");
         return rules != null && rules.contains("GROUP");
     }
 
