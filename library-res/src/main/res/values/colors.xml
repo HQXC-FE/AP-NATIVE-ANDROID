@@ -104,6 +104,7 @@
     <color name="clr_txt_link">#7F7C79</color>
     <!-- 暗色系警告红 -->
     <color name="clr_txt_warn_dark">#FF6C6C</color>
+    <color name="clr_txt_will_win">#FF6C6C</color>
 
     <!-- 警告红 -->
     <color name="clr_txt_warn">#DA0000</color>
