@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 渐变边框 -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="@color/clr_main_start"
+                android:endColor="@color/clr_main_end"/>
+            <corners android:radius="8dp"/>
+        </shape>
+    </item>
 
-    <stroke
-        android:width="1dp"
-        android:color="@color/clr_bg_frame_small_1" />
-    <corners
-        android:radius="10dp" />
-
-</shape>
+    <!-- 内层背景 -->
+    <item android:left="1dp" android:right="1dp" android:top="1dp" android:bottom="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white"/>
+            <corners android:radius="8dp"/>  <!-- 需要比外层小，才能露出边框 -->
+        </shape>
+    </item>
+</layer-list>
