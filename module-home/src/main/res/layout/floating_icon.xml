@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="90dp"
             android:text="@string/txt_floating_title"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/bt_text_color_primary_1"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,14 +55,13 @@
 
         <TextView
             android:id="@+id/tvw_record"
-            android:layout_width="65dp"
-            android:layout_height="20dp"
+            android:layout_width="80dp"
+            android:layout_height="28dp"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp"
             android:background="@drawable/bg_floating_button"
             android:gravity="center"
             android:text="@string/txt_floating_record"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_txt_10"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/ivw_close" />
@@ -71,9 +70,10 @@
             android:id="@+id/ivw_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="15dp"
-            android:background="@mipmap/ic_pop_close"
+            android:layout_marginTop="65dp"
+            android:layout_marginEnd="20dp"
+            android:padding="5dp"
+            android:src="@mipmap/ic_pop_close"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
