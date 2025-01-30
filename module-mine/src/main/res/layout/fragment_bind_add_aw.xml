@@ -7,7 +7,7 @@
         android:id="@+id/ll_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/clr_main_08"
+        android:background="@color/clr_main_bg"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,9 +45,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                style="@style/style_cm_tip_small_orange"
-                android:text="@string/txt_note_asterisks_cannot_empty" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_bind_top_bg"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:drawableLeft="@mipmap/cm_bind_top_notic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/txt_note_asterisks_cannot_empty"
+                    />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvw_old_name"
@@ -104,9 +116,21 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <TextView
-                style="@style/style_cm_tip_small_orange"
-                android:text="@string/txt_note_asterisks_cannot_empty" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_bind_top_bg"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:drawableLeft="@mipmap/cm_bind_top_notic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="12dp"
+                    android:text="@string/txt_note_asterisks_cannot_empty"
+                    />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_name"
