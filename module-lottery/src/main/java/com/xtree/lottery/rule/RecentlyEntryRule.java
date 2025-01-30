@@ -2,6 +2,7 @@ package com.xtree.lottery.rule;
 
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
+import com.xtree.lottery.data.source.vo.RecentLotteryBackReportVo;
 import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.rule.betting.data.RulesEntryData;
 import com.xtree.lottery.rule.recent.RecentDecisionRules;
@@ -41,7 +42,7 @@ public class RecentlyEntryRule {
         RecentEndingRules.addRules(rules);
     }
 
-    public List<RecentLotteryVo> startEngine(RulesEntryData rulesEntryData, List<RecentLotteryVo> historyLottery) {
+    public List<RecentLotteryBackReportVo> startEngine(RulesEntryData rulesEntryData, List<RecentLotteryVo> historyLottery) {
         facts = new Facts();
         Map<String, Object> currentMethod = new HashMap<>();
         Map<String, Object> currentMethodSelectArea = new HashMap<>();
@@ -137,17 +138,15 @@ public class RecentlyEntryRule {
         // enter the rules
         rulesEngine.fire(rules, facts);
 
-        //Todo 返回的参数请使用 LotteryBackReportVo
-
-        List<RecentLotteryVo> outputHistory = new ArrayList<>();
+        List<RecentLotteryBackReportVo> outputHistory = new ArrayList<>();
         List<Map<String, Object>> filterLottery = ((Map<String, List<Map<String, Object>>>) facts.get("done")).get("history");
         for (Map<String, Object> item : filterLottery) {
-            RecentLotteryVo vo = new RecentLotteryVo(
-                    (String) item.get("displayCode"),
+            RecentLotteryBackReportVo vo = new RecentLotteryBackReportVo(
+                    (String) item.get("issue"),
                     (String) item.get("draw_time"),
                     (String) item.get("issueClass"),
-                    (String) item.get("issue"),
-                    (ArrayList<String>) item.get("form"));
+                    (List<String>) item.get("displayCode"),
+                    (List<String>) item.get("form"));
             outputHistory.add(vo);
         }
 
