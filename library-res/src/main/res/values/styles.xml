@@ -470,7 +470,7 @@
         <item name="android:minEms">4</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
-        <item name="android:textColor">@color/clr_btn_grey01</item>
+        <item name="android:textColor">@color/clr_txt_04</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -480,7 +480,7 @@
     <!-- 通用 筛选 值 样式 -->
     <style name="style_filter_info_value" parent="style_filter_info_title">
         <item name="android:layout_weight">1</item>
-        <item name="android:textColor">@color/clr_gap_bg</item>
+        <item name="android:textColor">@color/clr_txt_mouse5</item>
     </style>
     <!-- 通用 筛选 值Edittext 样式 -->
     <style name="style_filter_info_edit_value">
@@ -503,7 +503,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_marginTop">2dp</item>
-        <item name="android:background">@color/clr_btn_rc_amount_border</item>
+        <item name="android:background">@color/clr_btn_grey01</item>
     </style>
 
     <style name="style_cm_edit">
@@ -987,8 +987,23 @@
         <item name="android:textColor">@color/clr_filter_txt_gray</item>
         <item name="android:textSize">14sp</item>
     </style>
+    <style name="style_item_report_base_2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">start</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:minEms">5</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:textColor">@color/cl_gap</item>
+        <item name="android:textSize">14sp</item>
+    </style>
     <!-- 报表 列表项 标题灰色 靠左 -->
     <style name="style_item_report_title" parent="style_item_report_base">
+        <item name="android:gravity">start</item>
+    </style>
+    <!-- 报表 列表项 标题灰色 靠左 -->
+    <style name="style_item_report_title_2" parent="style_item_report_base_2">
         <item name="android:gravity">start</item>
     </style>
     <!-- 报表 列表项 标题灰色 居中 -->
@@ -1009,8 +1024,14 @@
     <style name="style_item_report_value" parent="style_item_report_base">
         <item name="android:textColor">@color/clr_filter_txt_black</item>
     </style>
+    <style name="style_item_report_value_2" parent="style_item_report_base_2">
+        <item name="android:textColor">@color/clr_txt_rebateagrt_title</item>
+    </style>
     <!-- 报表 列表项 值 黑色 居中 -->
     <style name="style_item_report_value_center" parent="style_item_report_value">
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="style_item_report_value_center_2" parent="style_item_report_value_2">
         <item name="android:gravity">center</item>
     </style>
     <!-- 报表 列表项 值 黑色 靠右 -->
