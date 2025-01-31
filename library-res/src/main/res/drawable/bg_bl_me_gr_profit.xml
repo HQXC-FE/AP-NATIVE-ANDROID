@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 底部、左侧和右侧的阴影 -->
+    <item
+        android:bottom="-2dp"
+        android:top="10dp"
+        android:left="2dp"
+        android:right="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#336CABC3" />
+            <corners android:radius="15dp" />
+        </shape>
+    </item>
+
+    <!-- 上层的PNG图片 -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@mipmap/me_gr_profit" />
+    </item>
+</layer-list>

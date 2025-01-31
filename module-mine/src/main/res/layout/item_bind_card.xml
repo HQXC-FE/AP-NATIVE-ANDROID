@@ -23,7 +23,7 @@
             style="@style/style_wd_info_value2"
             android:layout_marginStart="0dp"
             android:layout_weight="1"
-            tools:text="DEMO" />
+            tools:text="1111111" />
 
         <TextView
             style="@style/style_wd_info_title2"
@@ -79,7 +79,8 @@
                 style="@style/style_wd_info_title"
                 android:gravity="start"
                 android:textColor="@color/clr_white"
-                tools:text="***3281" />
+                tools:text="***3281"
+                android:text="123123123123"/>
         </LinearLayout>
 
         <LinearLayout

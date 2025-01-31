@@ -3,8 +3,15 @@ package com.xtree.base.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.Constant;
+import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.router.RouterActivityPath;
+import com.xtree.base.widget.CustomerServiceDialogActivity;
 
 import me.xtree.mvvmhabit.utils.SPUtils;
 
@@ -15,9 +22,62 @@ public class AppUtil {
      *
      * @param ctx Context
      */
-    public static void goCustomerService(Context ctx) {
+    public static void goCustomerServiceWeb(Context ctx) {
+        StringBuffer serviceLink = new StringBuffer() ;
+        /**
+         * 已登录用户，嗨客服拼接用户信息
+         *
+         * 用户账号：
+         * &sid=username
+         *
+         * 注册来源推广码，profile接口register_promotion_code字段
+         * &remark=encodeURIComponent(JSON.stringify({promo: register_promotion_code}))
+         *
+         *
+         * 未登录用户
+         * 推广码传递注册用的推广码
+         * &remark=encodeURIComponent(JSON.stringify({promo: 推广码}))
+         */
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
+            serviceLink.append(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK));
+            String username = SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME );
+            if (TextUtils.isEmpty(username) || username == null){
+                serviceLink.append("&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}");
+            }else
+            {
+                //登录 没有推广码
+                https://ap3sport.oxldkm.com/im/chat?platformCode=THRB&channelLink=OKGV5vPNGc&sid=zfqd2008
+                if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)) || SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE) == null){
+                    serviceLink.append("&sid="+SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME));
+                }else{
+                    serviceLink.append("&sid="+SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME)+"&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}");
+                }
+            }
+        }else {
+            serviceLink.append(Constant.URL_CUSTOMER_SERVICE);
+        }
+        CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
+        goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink.toString());
+    }
 
-        goBrowser(ctx, DomainUtil.getDomain2() + Constant.URL_CUSTOMER_SERVICE);
+    /**
+     * 跳转到客服
+     *
+     * @param ctx Context
+     */
+    public static void goCustomerService(Context ctx) {
+        ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_CUSTOMER_SERVICE).navigation();
+        //goBrowser(ctx, DomainUtil.getDomain2() + Constant.URL_CUSTOMER_SERVICE);
+    }
+    /**
+     * 跳转Dialog形式客服
+     * @param ctx
+     */
+    public static void goCustomerServiceDialog(Context ctx) {
+        BasePopupView basePopupView = new XPopup.Builder(ctx).dismissOnBackPressed(true)
+                .dismissOnTouchOutside(false)
+                .asCustom( CustomerServiceDialogActivity.newInstance(ctx));
+        basePopupView.show();
     }
 
     public static void goBrowser(Context ctx, String url) {

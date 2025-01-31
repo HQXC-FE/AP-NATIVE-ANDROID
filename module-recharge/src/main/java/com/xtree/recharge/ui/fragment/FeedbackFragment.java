@@ -129,7 +129,7 @@ public class FeedbackFragment extends BaseFragment<FragmentFeedbackBinding, Rech
         }
         referFeedbackUI("wechat");
         //我的客服
-        binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
+        binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerServiceDialog(getContext()));
         //消息中心
         binding.ivwMsg.setOnClickListener(v -> {
             //增加限制用户多次快速点击

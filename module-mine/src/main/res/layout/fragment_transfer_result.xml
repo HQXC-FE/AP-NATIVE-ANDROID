@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:background="@color/bg_main"
+        android:background="@color/clr_main_bg"
         android:orientation="vertical">
 
         <include
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:text="@{model.statusTitleData}"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_main_15"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:text="转账成功" />
@@ -45,7 +45,7 @@
             android:layout_marginEnd="16dp"
             android:gravity="center"
             android:text="@{model.statusSubTitleData}"
-            android:textColor="@color/clr_txt_01"
+            android:textColor="@color/clr_main_14"
             android:textSize="12sp"
             tools:text="您已从中心钱包转入沙巴体育9999.000元" />
 

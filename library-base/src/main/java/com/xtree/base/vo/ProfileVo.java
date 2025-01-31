@@ -109,6 +109,8 @@ public class ProfileVo {
     public int phone_selfupdate; // 1,
     public String email_selfupdate; // "1"
     public int zhaoshang;
+
+    public String register_promotion_code ;//
     /**
      * userLevel
      */
@@ -118,7 +120,17 @@ public class ProfileVo {
     @Override
     public String toString() {
         return "ProfileVo{" +
-                "userid='" + userid + '\'' +
+                "frequency=" + frequency +
+                ", liveStatus=" + liveStatus +
+                ", sportStatus=" + sportStatus +
+                ", pokerStatus=" + pokerStatus +
+                ", esportsStatus=" + esportsStatus +
+                ", rebate_percentage='" + rebate_percentage + '\'' +
+                ", maxLivePoint=" + maxLivePoint +
+                ", maxSportPoint=" + maxSportPoint +
+                ", maxPokerPoint=" + maxPokerPoint +
+                ", maxEsportsPoint=" + maxEsportsPoint +
+                ", userid='" + userid + '\'' +
                 ", username='" + username + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", agency_model=" + agency_model +
@@ -132,9 +144,9 @@ public class ProfileVo {
                 ", preinfo='" + preinfo + '\'' +
                 ", messages=" + messages +
                 ", availablebalance='" + availablebalance + '\'' +
-                ", rebate_percentage='" + rebate_percentage + '\'' +
                 ", has_securitypwd=" + has_securitypwd +
                 ", solo_challenge=" + solo_challenge +
+                ", set_question=" + set_question +
                 ", twofa=" + twofa +
                 ", twofa_login_enabled=" + twofa_login_enabled +
                 ", twofa_withdraw_enabled=" + twofa_withdraw_enabled +
@@ -154,6 +166,9 @@ public class ProfileVo {
                 ", ratio='" + ratio + '\'' +
                 ", phone_selfupdate=" + phone_selfupdate +
                 ", email_selfupdate='" + email_selfupdate + '\'' +
+                ", zhaoshang=" + zhaoshang +
+                ", register_promotion_code='" + register_promotion_code + '\'' +
+                ", userLevel=" + userLevel +
                 '}';
     }
 

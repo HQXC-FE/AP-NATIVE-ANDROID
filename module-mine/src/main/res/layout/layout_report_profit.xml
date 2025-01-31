@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_white_14"
+        android:background="@drawable/bg_white_r12"
         android:orientation="vertical"
         android:padding="@dimen/layout_margin">
 
@@ -131,7 +131,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/layout_margin"
-        android:background="@drawable/bg_white_14"
+        android:background="@drawable/bg_white_r12"
         android:orientation="vertical"
         android:padding="@dimen/layout_margin">
 

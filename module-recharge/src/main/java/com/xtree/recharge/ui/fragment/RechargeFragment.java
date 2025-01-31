@@ -314,7 +314,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                     setUsdtRate(curRechargeVo);
                 }
                 if (!TextUtils.isEmpty(s.toString().trim())) {
-                    binding.tvwTipAmount.setVisibility(View.INVISIBLE);
+                    binding.tvwTipAmount.setVisibility(View.GONE);
                 } else {
                     binding.tvwTipAmount.setVisibility(View.VISIBLE);
                 }
