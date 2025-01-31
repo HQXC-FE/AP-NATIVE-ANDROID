@@ -16,4 +16,5 @@ public class EasterReportItemVo {
     public String recordsCount;
     public String total_sum;
     public String user_str;
+    public String user_str_count;
 }
