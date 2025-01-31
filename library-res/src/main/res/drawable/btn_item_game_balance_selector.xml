@@ -4,25 +4,23 @@
     <item android:state_selected="true">
         <shape android:shape="rectangle">
             <corners android:radius="10dp" />
-            <solid android:color="@color/clr_txt_right_dark_end" />
-            <stroke android:width="2dp" android:color="@color/clr_withdrawal_btn_stroke" />
+            <stroke android:width="2dp" android:color="@color/clr_bg_frame_24" />
+            <gradient android:angle="270" android:endColor="@color/clr_main_end" android:startColor="@color/clr_main_start" />
         </shape>
     </item>
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <gradient android:angle="270"
-                android:endColor="@color/clr_txt_right_dark_end"
-                android:startColor="@color/clr_txt_right_dark_end" />
             <corners android:radius="10dp" />
+            <stroke android:width="2dp" android:color="@color/clr_bg_frame_24" />
+            <gradient android:angle="270" android:endColor="@color/clr_main_end" android:startColor="@color/clr_main_start" />
         </shape>
     </item>
 
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="10dp" />
-            <solid android:color="@color/clr_gray_9" />
-            <stroke android:width="2dp"
-                android:color="@color/clr_gray_9" />
+            <solid android:color="@color/clr_gray_10" />
+            <stroke android:width="2dp" android:color="@color/clr_gray_10" />
         </shape>
     </item>
 </selector>

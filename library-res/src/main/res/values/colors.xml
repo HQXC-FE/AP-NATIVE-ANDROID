@@ -122,6 +122,7 @@
     <color name="clr_bg_frame_21">#E3CBB2</color>
     <color name="clr_bg_frame_22">#E3CBB2</color>
     <color name="clr_bg_frame_23">#D0B190</color>
+    <color name="clr_bg_frame_24">#9EECFF</color>
 
     <!-- 按钮 主 -->
     <color name="clr_btn_01">#D0B292</color>
@@ -381,6 +382,7 @@
     <color name="clr_gray_8">#393939</color>
     <color name="clr_gray_9">#424242</color>
     <color name="clr_gray_10">#F8F8F8</color>
+    <color name="clr_gray_11">#E5E5E5</color>
     <color name="clr_choose_20">#81CEA7</color>
 
     <!-- 筛选框 灰色 标题 -->

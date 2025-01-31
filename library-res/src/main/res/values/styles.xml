@@ -256,7 +256,7 @@
         <item name="android:gravity">center</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:textColor">@color/clr_white</item>
+        <item name="android:textColor">@color/clr_text_rdo_amount_selector</item>
         <item name="android:textSize">12sp</item>
     </style>
     <!-- 充值页-底部 提示小字 灰色 -->
@@ -801,7 +801,7 @@
         <item name="android:maxLength">16</item>
         <item name="android:padding">8dp</item>
         <item name="android:text"></item>
-        <item name="android:textColor">@color/clr_white</item>
+        <item name="android:textColor">@color/clr_black</item>
         <item name="android:textColorHint">@color/clr_txt_01</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -844,7 +844,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:minEms">6</item>
-        <item name="android:textColor">@color/clr_main_login_txt</item>
+        <item name="android:textColor">@color/clr_txt_grey_09</item>
         <item name="android:textSize">14sp</item>
     </style>
 

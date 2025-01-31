@@ -31,8 +31,8 @@
             android:layout_marginStart="@dimen/layout_margin"
             android:layout_marginEnd="@dimen/layout_margin"
             android:tag="obgqp"
+            android:textStyle="bold"
             android:textSize="@dimen/bt_text_12sp"
-            android:textColor="@color/clr_white"
             tools:text="0.0000" />
 
     </LinearLayout>
