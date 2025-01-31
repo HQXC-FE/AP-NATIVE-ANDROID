@@ -24,4 +24,16 @@ public class UsdtVo {
     //public String vvcq_updated_at; // null,
     //public String username; // "tst033@as"
 
+    @Override
+    public String toString() {
+        return "UsdtVo{" +
+                "id='" + id + '\'' +
+                ", user_name='" + user_name + '\'' +
+                ", usdt_type='" + usdt_type + '\'' +
+                ", usdt_card='" + usdt_card + '\'' +
+                ", status='" + status + '\'' +
+                ", atime='" + atime + '\'' +
+                ", utime='" + utime + '\'' +
+                '}';
+    }
 }

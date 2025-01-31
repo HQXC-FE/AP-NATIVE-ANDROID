@@ -79,7 +79,8 @@
                 style="@style/style_wd_info_title"
                 android:gravity="start"
                 android:textColor="@color/clr_white"
-                tools:text="***3281" />
+                tools:text="***3281"
+                android:text="123123123123"/>
         </LinearLayout>
 
         <LinearLayout
