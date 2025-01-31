@@ -14,7 +14,7 @@
         android:id="@+id/ll_back_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/clr_bg_main"
+        android:background="@color/clr_gray_10"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -180,7 +180,7 @@
                             android:layout_marginStart="@dimen/layout_margin"
                             android:layout_marginTop="@dimen/layout_margin"
                             android:layout_marginEnd="@dimen/layout_margin"
-                            android:background="@drawable/bg_white_14"
+                            android:background="@drawable/bg_white_r12"
                             android:orientation="horizontal"
                             android:padding="@dimen/layout_margin">
 
