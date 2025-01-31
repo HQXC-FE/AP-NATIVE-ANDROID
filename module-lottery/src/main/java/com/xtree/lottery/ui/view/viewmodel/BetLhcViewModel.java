@@ -96,7 +96,7 @@ public class BetLhcViewModel extends BindModel {
         List<BindModel> dataList = new ArrayList<>();
 
         for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO itemLabel : labels1DTOS.get(0).getLabels()) {
-            dataList.add(new BetLhcModel(itemLabel.getNum(), BetLhcModel.Ball.getBallByColor(itemLabel.getColor()), odds, itemLabel.getMethodid(), itemLabel.getMenuid(), itemLabel.getType(),itemLabel.getName()));
+            dataList.add(new BetLhcModel(itemLabel.getNum(), BetLhcModel.Ball.getBallByColor(itemLabel.getColor()), odds, itemLabel.getMethodid(), itemLabel.getMenuid(), itemLabel.getType(), itemLabel.getName()));
         }
         datas.set(dataList);
     }
@@ -107,6 +107,13 @@ public class BetLhcViewModel extends BindModel {
      */
     public void clear() {
         lotteryNumbs.set(Collections.emptyList());
+        if (!datas.get().isEmpty()) {
+            for (BindModel betLhcModel : datas.get()) {
+                if (betLhcModel instanceof BetLhcModel) {
+                    ((BetLhcModel) betLhcModel).money.set("");
+                }
+            }
+        }
         notifyChange();
     }
 

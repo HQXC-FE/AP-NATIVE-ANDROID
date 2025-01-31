@@ -19,7 +19,6 @@ import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.LotteryDataManager;
-import com.xtree.lottery.data.LotteryDetailManager;
 import com.xtree.lottery.data.LotteryRepository;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.BonusNumbersRequest;
@@ -81,6 +80,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public SingleLiveData<String> clearBetEvent = new SingleLiveData<>();
     //彩票信息
     public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
+    //是否显示金额
+    public MutableLiveData<Boolean> moneyView = new MutableLiveData<>();
     //奖金组和投注数据组合
     public MediatorLiveData<LotteryBetsPrizeGroup> combinedPrizeBetLiveData = new MediatorLiveData<>();
     //投注数和总金额
@@ -106,6 +107,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         combinedPrizeBetLiveData.addSource(currentBetModel, betModel -> createLotteryBetsPrizeGroup());
         combinedPrizeBetLiveData.addSource(prizeData, prizeGroup -> createLotteryBetsPrizeGroup());
         betTotalLiveData.addSource(betLiveData, betOrders -> calBetOrdersNums());
+        moneyView.setValue(!"lhc".equals(lottery.getLinkType()));
     }
 
     private void calBetOrdersNums() {
@@ -441,7 +443,13 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
                 LotteryMoneyData money = moneyLiveData.getValue();
                 orderData.setOmodel(prize.getValue());
-                orderData.setMode(money.getMoneyModel().getModelId());
+                if (lotteryLiveData.getValue() != null && "lhc".equals(lotteryLiveData.getValue().getLinkType())) {
+                    orderData.setMode(5);
+                } else {
+                    orderData.setMode(money.getMoneyModel().getModelId());
+                }
+
+
                 orderData.setTimes(money.getFactor());
                 lotteryOrderModel.setBetOrderData(orderData);
                 lotteryOrderModel.setPrizeLabel(prize.getLabel());
@@ -464,7 +472,11 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
                 LotteryMoneyData money = moneyLiveData.getValue();
                 orderData.setOmodel(prize.getValue());
-                orderData.setMode(money.getMoneyModel().getModelId());
+                if (lotteryLiveData.getValue() != null && "lhc".equals(lotteryLiveData.getValue().getLinkType())) {
+                    orderData.setMode(5);
+                } else {
+                    orderData.setMode(money.getMoneyModel().getModelId());
+                }
                 betOrders.add(orderData);
             }
             LotteryBetConfirmDialogFragment.show(mActivity.get(), betOrders);
@@ -516,7 +528,6 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     currentCategoryDTO.setFlag(lottery.getAlias());
                     rulesEntryData.setCurrentMethod(currentMethodDTO);
                     rulesEntryData.setCurrentCategory(currentCategoryDTO);
-                    KLog.i("1111111111111111");
                     EventBus.getDefault().post(rulesEntryData);
                 }
             }

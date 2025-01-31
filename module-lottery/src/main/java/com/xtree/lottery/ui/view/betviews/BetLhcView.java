@@ -35,7 +35,7 @@ public class BetLhcView extends BetBaseView {
 
     @Override
     public void clearBet() {
-
+        binding.getM().clear();
     }
 
     /**

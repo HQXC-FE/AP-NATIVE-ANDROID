@@ -304,6 +304,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             app:layout_constraintVertical_bias="1"
+            android:visibility="@{model.moneyView?View.VISIBLE:View.GONE}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/lottery_bets_showlayout"
             app:layout_constraintStart_toStartOf="parent"
