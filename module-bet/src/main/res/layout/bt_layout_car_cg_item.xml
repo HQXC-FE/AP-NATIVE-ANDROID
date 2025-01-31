@@ -63,7 +63,7 @@
                     android:background="@drawable/bt_bg_bt_editview"
                     android:inputType="number"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/clr_text_color_hint"
+                    android:textColorHint="@color/clr_txt_grey_5B"
                     android:textSize="@dimen/bt_text_13sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
