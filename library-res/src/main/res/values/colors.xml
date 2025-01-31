@@ -188,7 +188,7 @@
     <color name="bt_text_color_primary_1">#4F4439</color>
 
     <!-- 主色/2级字 -->
-    <color name="bt_text_color_primary_2">@color/clr_txt_grey_C6</color>
+    <color name="bt_text_color_primary_2">@color/clr_txt_grey_5B</color>
 
     <!-- 通用3级文字颜色 -->
     <color name="bt_text_color_primary_3">@color/clr_txt_03</color>
