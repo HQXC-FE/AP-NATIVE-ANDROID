@@ -76,15 +76,15 @@ public class RecentlyEntryRule {
         // enter the rules
         rulesEngine.fire(rules, facts);
 
-        List<RecentLotteryBackReportVo> outputHistory = new ArrayList<>();
+        ArrayList<RecentLotteryBackReportVo> outputHistory = new ArrayList<>();
         List<Map<String, Object>> filterLottery = ((Map<String, List<Map<String, Object>>>) facts.get("done")).get("history");
         for (Map<String, Object> item : filterLottery) {
             RecentLotteryBackReportVo vo = new RecentLotteryBackReportVo(
                     (String) item.get("issue"),
                     (String) item.get("draw_time"),
                     (String) item.get("issueClass"),
-                    (List<String>) item.get("displayCode"),
-                    (List<String>) item.get("form"));
+                    (ArrayList<Map<String, String>>) item.get("displayCode"),
+                    (List<Map<String, String>>) item.get("form"));
             outputHistory.add(vo);
         }
 

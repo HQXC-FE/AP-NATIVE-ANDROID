@@ -16,7 +16,6 @@ import com.xtree.lottery.ui.adapter.RecentAdapter
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
 import me.xtree.mvvmhabit.base.BaseFragment
-import me.xtree.mvvmhabit.utils.KLog
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -91,8 +90,8 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
     override fun initViewObservable() {
         viewModel.liveDataRecentList.observe(viewLifecycleOwner) {
             mList = it
-            mAdapter.setList(it)
-            binding.rvRecent.scrollToPosition(0)
+            //mAdapter.setList(it)
+            //binding.rvRecent.scrollToPosition(0)
         }
         //viewModel.liveDataListIssue.observe(this) {
         //    viewModel.liveDataListIssue2.value = it
@@ -102,8 +101,9 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public fun onMessageEvent(data: RulesEntryData) {
-        val resultList = RecentlyEntryRule.getInstance().startEngine(data, mList)
-        mAdapter.setList(resultList)
+        val result = RecentlyEntryRule.getInstance().startEngine(data, mList)
+        binding.tvStatusTop.text = result.title
+        mAdapter.setList(result.histories)
     }
 
 }

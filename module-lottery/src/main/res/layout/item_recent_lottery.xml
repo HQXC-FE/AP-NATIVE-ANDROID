@@ -30,6 +30,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
+        android:id="@+id/tv_status"
         android:layout_width="70dp"
         android:layout_height="match_parent"
         android:gravity="center"
