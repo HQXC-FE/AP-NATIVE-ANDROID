@@ -211,7 +211,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:background="@drawable/bg_btn_selector"
+                android:background="@drawable/bg_get_code_selector"
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="保存更新"

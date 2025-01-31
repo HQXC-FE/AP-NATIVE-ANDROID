@@ -96,11 +96,11 @@
     <color name="clr_txt_06">#4B4B4B</color>
     <color name="clr_txt_07">#EBEBEB</color>
     <color name="clr_txt_08">#827F8C</color>
-    <color name="clr_txt_09">#1E1E1E</color>
+    <color name="clr_txt_09">#8040A5F2</color>
     <color name="clr_txt_10">#45423C</color>
     <color name="clr_txt_11">#AA927A</color>
 
-    <color name="clr_txt_09">#8040A5F2</color>
+
     <!-- 通用白色 1E -->
     <color name="clr_txt_white_cm">@color/white</color>
     《!-- 通用黑色 1E -->
