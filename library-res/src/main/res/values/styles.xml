@@ -591,8 +591,8 @@
         <item name="android:lines">1</item>
         <item name="android:maxLength">50</item>
         <item name="android:padding">8dp</item>
-        <item name="android:textColor">@color/clr_gap_bg</item>
-        <item name="android:textColorHint">@color/clr_re_feedback_right_txt_hint</item>
+        <item name="android:textColor">@color/clr_text_black</item>
+        <item name="android:textColorHint">@color/clr_txt_mouse4</item>
         <item name="android:textSize">14sp</item>
     </style>
     <!-- 虚拟币提现 虚拟币地址选择框 -->
@@ -743,8 +743,8 @@
         <item name="android:padding">8dp</item>
         <item name="android:tag"></item>
         <item name="android:text"></item>
-        <item name="android:textColor">@color/cl_gap</item>
-        <item name="android:textColorHint">@color/clr_txt_grey_03</item>
+        <item name="android:textColor">@color/clr_withdrawal_text_bank_tip</item>
+        <item name="android:textColorHint">@color/clr_txt_grey_C6</item>
         <item name="android:textSize">14sp</item>
     </style>
 

@@ -64,7 +64,7 @@
     <!-- 辅色 -->
     <color name="clr_main_23">#AA927A</color>
     <!-- 背景色 -->
-    <!--<color name="clr_bg_main">#EBEDF0</color>-->
+    <color name="clr_bg_main_24">#EBEDF0</color>
 
     <!-- 文字 -->
     <color name="clr_txt">#D0B292</color>
@@ -643,4 +643,5 @@
     <color name="clr_main_bg">#F9F8F4</color>
     <color name="clr_awards_bt_end">#FFFFFF</color>
     <color name="clr_awards_bt_start">#ECE6F9</color>
+    <color name="clr_text_black">#000000</color>
 </resources>
