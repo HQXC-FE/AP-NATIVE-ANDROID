@@ -67,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:textColor="@color/bt_color_under_bg_primary_text"
+                        android:textColor="@color/clr_txt_rebateagrt_title"
                         android:textSize="@dimen/bt_text_16sp"
                         android:textStyle="bold"
                         android:text="0.00" />

@@ -244,7 +244,7 @@
     <color name="bt_option_bg_selected">@color/clr_main_05</color>
 
     <!-- 主题色背景下（项目中是蓝色）的字体颜色 -->
-    <color name="bt_color_under_bg_primary_text">#FFFFFF</color>
+    <color name="bt_color_under_bg_primary_text">#121B47</color>
 
     <!-- 投注模块弹窗顶部金额背景颜色 -->
     <color name="bt_color_car_dialog_top_acount">#54D8CAFF</color>
@@ -256,7 +256,7 @@
     <color name="bt_color_car_dialog_hight_line">@color/clr_main_03</color>
 
     <!-- 投注确认页高亮颜色2 -->
-    <color name="bt_color_car_dialog_hight_line2">#EBEBEB</color>
+    <color name="bt_color_car_dialog_hight_line2">@color/clr_main_start</color>
     <!-- 投注确认页高亮颜色2 -->
     <color name="bt_color_car_dialog_hight_12">#121B47</color>
 
