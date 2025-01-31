@@ -48,7 +48,7 @@ public class BaccaratPairRule {
 
                 // 判断庄对
                 if (workCode.get(0).equals(workCode.get(1))) {
-                    form.add(createFormEntry("庄", "ball b_ff0000"));
+                    form.add(createFormEntry("庄", "#ff0000"));
                 }
 
                 // 判断闲对

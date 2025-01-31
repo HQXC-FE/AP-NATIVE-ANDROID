@@ -37,10 +37,10 @@ public class BaccaratKingRule {
                 List<Map<String, Object>> form = new ArrayList<>();
 
                 if (List.of(8, 9).contains((workCode.get(0) + workCode.get(1)) % 10)) {
-                    form.add(Map.of("label", "庄", "className", "ball b_ff0000"));
+                    form.add(Map.of("label", "庄", "className", "#ff0000"));
                 }
                 if (List.of(8, 9).contains((workCode.get(2) + workCode.get(3)) % 10)) {
-                    form.add(Map.of("label", "闲", "className", "ball b_4c8bda"));
+                    form.add(Map.of("label", "闲", "className", "#4c8bda"));
                 }
 
                 history.put("form", form);

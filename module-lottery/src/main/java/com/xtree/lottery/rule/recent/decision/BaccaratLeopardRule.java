@@ -39,10 +39,10 @@ public class BaccaratLeopardRule {
                 List<Map<String, Object>> form = new ArrayList<>();
 
                 if (new HashSet<>(workCode.subList(0, 3)).size() == 1) {
-                    form.add(Map.of("label", "庄", "className", "ball b_ff0000"));
+                    form.add(Map.of("label", "庄", "className", "#ff0000"));
                 }
                 if (new HashSet<>(workCode.subList(2, 5)).size() == 1) {
-                    form.add(Map.of("label", "闲", "className", "ball b_4c8bda"));
+                    form.add(Map.of("label", "闲", "className", "#4c8bda"));
                 }
 
                 history.put("form", form);
