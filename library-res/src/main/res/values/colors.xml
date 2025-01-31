@@ -59,6 +59,7 @@
     <!-- 辅-渐变色 -->
     <color name="clr_main_21">#2D2D2D</color>
     <color name="clr_main_22">#49453F</color>
+    <color name="clr_main_25">#363B48</color>"
     <!-- 辅色 -->
     <color name="clr_main_23">#AA927A</color>
     <!-- 背景色 -->
@@ -93,6 +94,7 @@
     <color name="clr_txt_06">#4B4B4B</color>
     <color name="clr_txt_07">#EBEBEB</color>
     <color name="clr_txt_08">#827F8C</color>
+    <color name="clr_txt_09">#8040A5F2</color>
     <!-- 通用白色 1E -->
     <color name="clr_txt_white_cm">@color/white</color>
     《!-- 通用黑色 1E -->
@@ -340,6 +342,7 @@
     <color name="clr_bg_main">#1d1d21</color>
     <color name="bg_main">#1d1d21</color>
     <color name="clr_white">#FFFFFF</color>
+    <color name="clr_white_2">#FCF9F6</color>
     <color name="clr_white_t20">#33FFFFFF</color>
     <color name="clr_white_t80">#CCFFFFFF</color>
     <color name="clr_transparent">#00000000</color>
@@ -434,6 +437,7 @@
     <!--<color name="clr_blue_10">#247BF4</color>-->
     <!--<color name="clr_blue_11">#70B2FD</color>-->
     <!--<color name="clr_blue_12">#8BC1FF</color>-->
+    <color name="clr_blue_13">#121B47</color>
 
     <color name="clr_green_03">#5BBA5B</color>
     <color name="clr_green_06">#E7E7E7</color>

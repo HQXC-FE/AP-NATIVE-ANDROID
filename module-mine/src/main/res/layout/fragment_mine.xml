@@ -11,7 +11,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/clr_main_08"
+            android:background="@color/clr_main_bg"
             android:orientation="vertical">
 
             <LinearLayout
@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/layout_margin"
                     android:text="@string/me_user_name_hint"
-                    android:textColor="@color/clr_txt_black_cm"
+                    android:textColor="@color/clr_blue_13"
                     android:textSize="14sp" />
 
                 <TextView
@@ -79,7 +79,7 @@
                 android:layout_marginTop="@dimen/layout_margin"
                 android:layout_marginEnd="@dimen/layout_margin"
                 android:alpha="1"
-                android:background="@drawable/bg_gray_r12"
+                android:background="@drawable/bg_me_r12"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="@dimen/layout_margin"
@@ -96,8 +96,8 @@
                     android:paddingEnd="45dp"
                     android:paddingBottom="5dp"
                     android:text="@string/me_login_hint"
-                    android:textColor="@color/clr_white"
-                    android:textSize="@dimen/mine_text_size" />
+                    android:textColor="@color/clr_black"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -107,7 +107,7 @@
                 android:layout_marginStart="@dimen/layout_margin"
                 android:layout_marginTop="@dimen/layout_margin"
                 android:layout_marginEnd="@dimen/layout_margin"
-                android:background="@drawable/bg_me_main_frame_2"
+                android:background="@drawable/bg_me_r12"
                 android:padding="@dimen/layout_margin"
                 android:visibility="visible">
 
@@ -126,14 +126,14 @@
                     android:id="@+id/tvw_1k_recycle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_6"
+                    android:background="@drawable/bg_me_r24"
                     android:paddingStart="16dp"
                     android:paddingTop="6dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="6dp"
                     android:text="@string/me_get_all_money"
-                    android:textColor="@color/clr_txt_01"
-                    android:textSize="10sp"
+                    android:textColor="@color/clr_white"
+                    android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -260,6 +260,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_me_main_frame"
                     android:orientation="vertical"
+                    android:elevation="10dp"
                     android:padding="@dimen/layout_margin"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -496,7 +497,7 @@
                 android:layout_marginBottom="24dp"
                 android:background="@color/clr_transparent"
                 android:text="@string/me_logout_login"
-                android:textColor="@color/clr_green_01"
+                android:textColor="@color/clr_txt_09"
                 android:textSize="@dimen/bt_text_16sp"
                 android:textStyle="bold" />
 
