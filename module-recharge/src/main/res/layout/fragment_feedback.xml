@@ -64,10 +64,21 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            style="@style/style_cm_tip_small_orange"
-            android:drawableLeft="@mipmap/re_feedback_tip_notice"
-            android:text="@string/txt_note_asterisks_cannot_empty" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_bind_top_bg"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:drawableLeft="@mipmap/cm_bind_top_notic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="12dp"
+                android:text="@string/txt_note_asterisks_cannot_empty"
+                />
+        </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
