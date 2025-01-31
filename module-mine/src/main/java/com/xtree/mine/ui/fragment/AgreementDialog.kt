@@ -2,6 +2,7 @@ package com.xtree.mine.ui.fragment
 
 import android.content.Context
 import android.text.method.ScrollingMovementMethod
+import android.widget.CheckBox
 import android.widget.TextView
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
@@ -24,5 +25,6 @@ class AgreementDialog(context: Context) : BottomPopupView(context) {
     override fun getMaxHeight(): Int {
         return XPopupUtils.getScreenHeight(context) * 80 / 100
     }
+
 
 }

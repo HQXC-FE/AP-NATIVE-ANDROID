@@ -86,6 +86,7 @@ public class BindUsdtFragment extends BaseFragment<FragmentBindUsdtBinding, Bind
             public void onBindViewHolder(@NonNull CacheViewHolder holder, int position) {
                 binding2 = ItemBindCardBinding.bind(holder.itemView);
                 UsdtVo vo = get(position);
+                CfLog.e("mAdapter  UsdtVo = " +vo.toString());
                 binding2.tvwUserName.setText(vo.user_name);
                 binding2.tvwBindTime.setText(vo.atime);
                 binding2.tvwType.setText(vo.usdt_type);

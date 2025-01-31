@@ -62,15 +62,15 @@ import project.tqyb.com.library_res.databinding.ItemTextBinding;
  * USDT虚拟币提款
  */
 public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSDTRecyclerViewAdapter.IUSDTFruitHorCallback {
-    private LifecycleOwner owner;
     ChooseWithdrawViewModel viewModel;
-    private ChooseInfoVo.ChannelInfo channelInfo;
     ArrayList<WithdrawalListVo.WithdrawalItemVo> UsdtInfoTRC = new ArrayList<>(); //TRC20地址 仅用于钱包
+    ItemTextBinding binding2;
+    BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
+    private LifecycleOwner owner;
+    private ChooseInfoVo.ChannelInfo channelInfo;
     private WithdrawalListVo.WithdrawalItemVo selectUsdtInfo;//选中的支付
-    private WithdrawalListVo.WithdrawalItemVo  selectorTopChannel;//选中的支付通道
-
+    private WithdrawalListVo.WithdrawalItemVo selectorTopChannel;//选中的支付通道
     private USDTCashVo cashMoYuVo;
-
     private USDTSecurityVo usdtSecurityVo;
     private USDTConfirmVo usdtConfirmVo;
     private BankWithdrawalDialog.BankWithdrawalClose bankClose;
@@ -81,9 +81,20 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     private String usdtType;
     private FruitHorUSDTRecyclerViewAdapter recyclerViewAdapter;
     private BasePopupView ppwError = null; // 底部弹窗 (显示错误信息)
-
     private String usdtid;//第二步传递的 提款地址ide id
     private ProfileVo mProfileVo;
+    private String wtype;
+    private ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo;
+    private WithdrawalInfoVo infoVo; //页面展示需要的model
+    private WithdrawalInfoVo.UserBankInfo selectorBankInfo;//选中的支付地址
+    private ArrayList<WithdrawalInfoVo.UserBankInfo> trc20BankInfoList;//只支持trc20提款地址
+    private ArrayList<WithdrawalInfoVo.UserBankInfo> erc20BankInfoList;//只支持erc20提款地址
+    private ArrayList<WithdrawalInfoVo.UserBankInfo> erc20ArbitrumBankInfoList;//只支持erc20 arb提款地址
+    private ArrayList<WithdrawalInfoVo.UserBankInfo> solanaBankInfoList;//只支持solana提款地址
+    private WithdrawalVerifyVo verifyVo;
+    private WithdrawalSubmitVo submitVo;
+    private WithdrawalListVo.WithdrawalItemVo changVo;//切换的Vo
+    private BasePopupView errorPopView;
 
     public USDTWithdrawalDialog(@NonNull Context context) {
         super(context);
@@ -97,15 +108,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         CfLog.i("USDTWithdrawalDialog");
         return dialog;
     }
-    private String wtype;
-    private ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo;
-    private WithdrawalInfoVo infoVo; //页面展示需要的model
-    private WithdrawalInfoVo.UserBankInfo selectorBankInfo;//选中的支付地址
-    private ArrayList<WithdrawalInfoVo.UserBankInfo> trc20BankInfoList;//只支持trc20提款地址
-    private WithdrawalVerifyVo verifyVo;
-    private WithdrawalSubmitVo submitVo;
-    private WithdrawalListVo.WithdrawalItemVo changVo;//切换的Vo
-    private BasePopupView errorPopView;
 
     public static USDTWithdrawalDialog newInstance(Context context,
                                                    LifecycleOwner owner,
@@ -120,11 +122,21 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         dialog.listVo = listVo;
         dialog.infoVo = infoVo;
         dialog.trc20BankInfoList = new ArrayList<>();
+        dialog.trc20BankInfoList = new ArrayList<>();
+        dialog.erc20BankInfoList = new ArrayList<>();
+        dialog.erc20ArbitrumBankInfoList = new ArrayList<>();
+        dialog.solanaBankInfoList = new ArrayList<>();
         for (int i = 0; i < dialog.infoVo.user_bank_info.size(); i++) {
             WithdrawalInfoVo.UserBankInfo bankInfo = dialog.infoVo.user_bank_info.get(i);
             //将TRC20地址组装在一起
-            if (TextUtils.equals("TRC20_USDT", bankInfo.usdt_type)) {
+            if (bankInfo.usdt_type.toUpperCase().contains("TRC20")) {
                 dialog.trc20BankInfoList.add(bankInfo);
+            } else if (bankInfo.usdt_type.toUpperCase().contains("ERC20")) {
+                dialog.erc20BankInfoList.add(bankInfo);
+            } else if (bankInfo.usdt_type.toUpperCase().contains("ARBITRUM")) {
+                dialog.erc20ArbitrumBankInfoList.add(bankInfo);
+            } else if (bankInfo.usdt_type.toUpperCase().contains("SOLANA")) {
+                dialog.solanaBankInfoList.add(bankInfo);
             }
         }
         return dialog;
@@ -143,9 +155,9 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     @Override
     protected void onCreate() {
         super.onCreate();
+        initData();
         initView();
         hideKeyBoard();
-        initData();
         initViewObservable();
 //        requestData();
         String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
@@ -260,11 +272,20 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
             infoVo = vo;
             if (infoVo != null && !infoVo.user_bank_info.isEmpty()) {
                 trc20BankInfoList.clear();
+                erc20BankInfoList.clear();
+                erc20ArbitrumBankInfoList.clear();
+                solanaBankInfoList.clear();
                 for (int i = 0; i < infoVo.user_bank_info.size(); i++) {
                     WithdrawalInfoVo.UserBankInfo bankInfo = infoVo.user_bank_info.get(i);
                     //将TRC20地址组装在一起
-                    if (TextUtils.equals("TRC20_USDT", bankInfo.usdt_type)) {
+                    if (bankInfo.usdt_type.toUpperCase().contains("TRC20")) {
                         trc20BankInfoList.add(bankInfo);
+                    } else if (bankInfo.usdt_type.toUpperCase().contains("ERC20")) {
+                        erc20BankInfoList.add(bankInfo);
+                    } else if (bankInfo.usdt_type.toUpperCase().contains("ARBITRUM")) {
+                        erc20ArbitrumBankInfoList.add(bankInfo);
+                    } else if (bankInfo.usdt_type.toUpperCase().contains("SOLANA")) {
+                        solanaBankInfoList.add(bankInfo);
                     }
                 }
                 //业务正常 刷新页面
@@ -281,6 +302,12 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
             } else {
                 ToastUtils.showError(getContext().getString(R.string.txt_network_error));
             }
+            trc20BankInfoList.clear();
+            erc20BankInfoList.clear();
+            erc20ArbitrumBankInfoList.clear();
+            solanaBankInfoList.clear();
+            //业务正常 刷新页面
+            refreshChangeUI(changVo, infoVo);
         });
 
         // 验证当前渠道信息
@@ -448,7 +475,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
 
     }
 
-
     /**
      * 设置提款 完成申请
      */
@@ -507,16 +533,45 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
      */
     private void refreshChangeUI(WithdrawalListVo.WithdrawalItemVo changVo, WithdrawalInfoVo infoVo) {
         //根据传入列表的地址数据判断提币数组数据 TRC情况下 只显示trc地址
-        if (TextUtils.equals("TRC20_USDT", changVo.name)
-                || changVo.name.contains("TRC")
-                || changVo.name.contains("TRC20")
-                || changVo.name.contains("trc")
-                || changVo.name.contains("trc20")) {
+        if (changVo.name.toUpperCase().contains("TRC20")) {
             if (!trc20BankInfoList.isEmpty()) {
                 String showAddress = trc20BankInfoList.get(0).usdt_type + "--" + trc20BankInfoList.get(0).account;
                 CfLog.e("设置默认选中的提币地址=" + showAddress);
                 //设置默认选中的提币地址
                 selectorBankInfo = trc20BankInfoList.get(0);
+                binding.tvBindAddress.setText(showAddress);
+            } else {
+                selectorBankInfo = null;
+                binding.tvBindAddress.setText(" ");
+            }
+        } else if (changVo.name.toUpperCase().contains("ERC20")) {
+            if (!erc20BankInfoList.isEmpty()) {
+                String showAddress = erc20BankInfoList.get(0).usdt_type + "--" + erc20BankInfoList.get(0).account;
+                CfLog.e("设置默认选中的提币地址=" + showAddress);
+                //设置默认选中的提币地址
+                selectorBankInfo = erc20BankInfoList.get(0);
+                binding.tvBindAddress.setText(showAddress);
+            } else {
+                selectorBankInfo = null;
+                binding.tvBindAddress.setText(" ");
+            }
+        } else if (changVo.name.toUpperCase().contains("ARBITRUM")) {
+            if (!erc20ArbitrumBankInfoList.isEmpty()) {
+                String showAddress = erc20ArbitrumBankInfoList.get(0).usdt_type + "--" + erc20ArbitrumBankInfoList.get(0).account;
+                CfLog.e("设置默认选中的提币地址=" + showAddress);
+                //设置默认选中的提币地址
+                selectorBankInfo = erc20ArbitrumBankInfoList.get(0);
+                binding.tvBindAddress.setText(showAddress);
+            } else {
+                selectorBankInfo = null;
+                binding.tvBindAddress.setText(" ");
+            }
+        } else if (changVo.name.toUpperCase().contains("SOLANA")) {
+            if (!solanaBankInfoList.isEmpty()) {
+                String showAddress = solanaBankInfoList.get(0).usdt_type + "--" + solanaBankInfoList.get(0).account;
+                CfLog.e("设置默认选中的提币地址=" + showAddress);
+                //设置默认选中的提币地址
+                selectorBankInfo = solanaBankInfoList.get(0);
                 binding.tvBindAddress.setText(showAddress);
             } else {
                 selectorBankInfo = null;
@@ -543,12 +598,14 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         }
         //点击USDT收款地址
         binding.tvBindAddress.setOnClickListener(v -> {
-            if (TextUtils.equals("TRC20_USDT", changVo.name)
-                    || changVo.name.contains("TRC")
-                    || changVo.name.contains("TRC20")
-                    || changVo.name.contains("trc")
-                    || changVo.name.contains("trc20")) {
+            if (changVo.name.toUpperCase().contains("TRC20")) {
                 showCollectionDialog(trc20BankInfoList);
+            } else if (changVo.name.toUpperCase().contains("ERC20")) {
+                showCollectionDialog(erc20BankInfoList);
+            }else if (changVo.name.toUpperCase().contains("ARBITRUM")) {
+                showCollectionDialog(erc20ArbitrumBankInfoList);
+            }else if (changVo.name.toUpperCase().contains("SOLANA")) {
+                showCollectionDialog(solanaBankInfoList);
             } else {
                 showCollectionDialog(infoVo.user_bank_info);
             }
@@ -590,14 +647,13 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         String temp = infoVo.min_money + "元,最高" + infoVo.max_money + "元";
         binding.tvWithdrawalSingleShow.setText(temp); //单笔提现金额
 
-        binding.tvWithdrawalAmountMethod.setText(infoVo.user_bank_info.get(0).usdt_type);//提款方式
-/*
+        /*
         binding.tvCollectionUsdt.setText(cashMoYuVo.usdtinfo.get(0).usdt_type + " " + cashMoYuVo.usdtinfo.get(0).usdt_card);
 
         usdtid = cashMoYuVo.usdtinfo.get(0).id;*/
         //设置收款USDT地址
         selectorBankInfo = infoVo.user_bank_info.get(0);
-        binding.tvBindAddress.setText(selectorBankInfo.usdt_type+"--"+selectorBankInfo.account);
+        binding.tvBindAddress.setText(selectorBankInfo.usdt_type + "--" + selectorBankInfo.account);
 
         binding.tvBindAddress.setOnClickListener(v -> {
             showCollectionDialog(infoVo.user_bank_info);
@@ -615,8 +671,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     }
 
     private void refreshTopUI(ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo) {
-
-        recyclerViewAdapter = new FruitHorUSDTRecyclerViewAdapter( listVo, this);
+        listVo.get(0).flag = true;
+        recyclerViewAdapter = new FruitHorUSDTRecyclerViewAdapter(listVo, this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -625,7 +681,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         binding.rvShowChooseCard.setAdapter(recyclerViewAdapter);
         binding.rvShowChooseCard.setItemAnimator(new DefaultItemAnimator());
         ///
-
+        callbackWithFruitHor(listVo.get(0));
     }
 
     /**
@@ -687,7 +743,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
 //        initListener();
 //
 //    }
-
     private void initListener() {
         hideKeyBoard();
         //提款金额输入框与提款金额显示View
@@ -749,32 +804,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     }
 
     /**
-     * 设置提款 请求 下一步
-     */
-    private void requestVerify(final String money, final WithdrawalInfoVo.UserBankInfo selectorBankInfo) {
-        LoadingDialog.show(getContext());
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("bank_id", selectorBankInfo.id);
-        map.put("money", money);
-        map.put("check", checkCode);
-        map.put("wtype", wtype);
-        map.put("nonce", UuidUtil.getID24());
-        CfLog.e("requestVerify -->" + map);
-        viewModel.postWithdrawalVerify(map);
-    }
-
-
-    /**
-     * 关闭键盘
-     */
-    public void hideKeyBoard() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive()) {
-            imm.hideSoftInputFromWindow(this.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
-
-    /**
      * 刷新确认提款UI
      */
 //    private void refreshSecurityUI() {
@@ -820,6 +849,31 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
 //    }
 
     /**
+     * 设置提款 请求 下一步
+     */
+    private void requestVerify(final String money, final WithdrawalInfoVo.UserBankInfo selectorBankInfo) {
+        LoadingDialog.show(getContext());
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("bank_id", selectorBankInfo.id);
+        map.put("money", money);
+        map.put("check", checkCode);
+        map.put("wtype", wtype);
+        map.put("nonce", UuidUtil.getID24());
+        CfLog.e("requestVerify -->" + map);
+        viewModel.postWithdrawalVerify(map);
+    }
+
+    /**
+     * 关闭键盘
+     */
+    public void hideKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive()) {
+            imm.hideSoftInputFromWindow(this.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    /**
      * 刷新完成申请UI
      */
     private void refreshConfirmUI() {
@@ -851,9 +905,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         });
     }
 
-    ItemTextBinding binding2;
-    BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
-
     /**
      * 显示USDT收款地址
      */
@@ -864,7 +915,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
 //            showCollectionDialog(cashMoYuVo.usdtinfo);
 //        }
 //    }
-
     private void showCollectionDialog(ArrayList<WithdrawalInfoVo.UserBankInfo> infoArrayList) {
         CachedAutoRefreshAdapter adapter = new CachedAutoRefreshAdapter<WithdrawalInfoVo.UserBankInfo>() {
             @NonNull
@@ -970,11 +1020,14 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     }
 
     @Override
-    public void callbackWithFruitHor(WithdrawalListVo.WithdrawalItemVo  selectVo) {
+    public void callbackWithFruitHor(WithdrawalListVo.WithdrawalItemVo selectVo) {
         //点击了不同头部 数显View
        /* if (selectVo.name.equals(selectUsdtInfo.name)) {
             selectorTopChannel = selectVo;
         }*/
+        changVo=selectVo;
+        wtype=selectVo.name;
+        viewModel.getWithdrawalInfo(wtype, checkCode);
     }
 
     /* 由于权限原因弹窗*/

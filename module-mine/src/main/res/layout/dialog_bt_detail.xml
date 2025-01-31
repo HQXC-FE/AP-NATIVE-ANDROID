@@ -71,7 +71,7 @@
 
                 <TextView
                     android:id="@+id/tvw_username"
-                    style="@style/style_item_report_value"
+                    style="@style/style_item_report_value_2"
                     tools:text="tom" />
             </LinearLayout>
 
@@ -105,7 +105,7 @@
 
                 <TextView
                     android:id="@+id/tvw_game_code"
-                    style="@style/style_item_report_value"
+                    style="@style/style_item_report_value_2"
                     tools:text="73234576653****7766" />
             </LinearLayout>
 
@@ -122,7 +122,7 @@
 
                 <TextView
                     android:id="@+id/tvw_game_date"
-                    style="@style/style_item_report_value"
+                    style="@style/style_item_report_value_2"
                     tools:text="2024-01-13 13:53:53" />
             </LinearLayout>
 
@@ -139,7 +139,7 @@
 
                 <TextView
                     android:id="@+id/tvw_venue"
-                    style="@style/style_item_report_value"
+                    style="@style/style_item_report_value_2"
                     tools:text="AAA" />
             </LinearLayout>
 
@@ -151,7 +151,7 @@
 
                 <TextView
                     android:id="@+id/tvw_game_name"
-                    style="@style/style_item_report_value"
+                    style="@style/style_item_report_value_2"
                     tools:text="跑得快" />
             </LinearLayout>
 
@@ -168,7 +168,7 @@
 
                 <TextView
                     android:id="@+id/tvw_bet"
-                    style="@style/style_item_report_value"
+                    style="@style/style_item_report_value_2"
                     tools:text="1.8000" />
             </LinearLayout>
 
@@ -180,7 +180,7 @@
 
                 <TextView
                     android:id="@+id/tvw_bt_result"
-                    style="@style/style_item_report_value"
+                    style="@style/style_item_report_value_2"
                     tools:text="AAA" />
             </LinearLayout>
 
@@ -210,7 +210,7 @@
 
                 <TextView
                     android:id="@+id/tvw_winlostdatetime"
-                    style="@style/style_item_report_value"
+                    style="@style/style_item_report_value_2"
                     tools:text="2024-01-13 13:56:02" />
             </LinearLayout>
 
@@ -232,7 +232,7 @@
 
                 <TextView
                     android:id="@+id/tvw_advance_settle"
-                    style="@style/style_item_report_value"
+                    style="@style/style_item_report_value_2"
                     android:text="--"
                     tools:text="否" />
             </LinearLayout>
@@ -265,7 +265,7 @@
 
                 <TextView
                     android:id="@+id/tvw_bet_content"
-                    style="@style/style_item_report_value"
+                    style="@style/style_item_report_value_2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvw_bet_title"
                     tools:text="全场 滚球 0.81" />

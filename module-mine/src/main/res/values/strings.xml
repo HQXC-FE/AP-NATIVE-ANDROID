@@ -153,8 +153,8 @@
     <string name="txt_choose_province">请选择省</string>
     <string name="txt_choose_city">请选择市</string>
     <string name="txt_enter_branch">请输入支行名称</string>
-    <string name="txt_s_bank_num">*银行卡号</string>
-    <string name="txt_s_acc_real_name">*开户人姓名</string>
+    <string name="txt_s_bank_num">银行卡号</string>
+    <string name="txt_s_acc_real_name">开户人姓名</string>
     <string name="txt_s_enter_real_name_pls">*为了您的资金能够迅速到账，请确保填写你的姓名与银行卡的开户姓名一致</string>
     <string name="txt_s_bank_name">*开户银行</string>
     <string name="txt_s_branch_name">*支行名称</string>

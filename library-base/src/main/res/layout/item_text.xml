@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp">
+    android:layout_margin="4dp"
+   >
 
     <TextView
         android:id="@+id/tvw_title"
@@ -12,8 +13,8 @@
         android:layout_marginTop="1dp"
         android:gravity="center"
         android:padding="8dp"
-        android:textColor="@color/clr_white"
         android:textSize="17sp"
-        tools:text="TITLE" />
+        tools:text="TITLE"
+        style="@style/style_choose_account_item"/>
 
 </LinearLayout>

@@ -223,20 +223,6 @@
 
                         <TextView
                             style="@style/style_withdraw_show_title"
-                            android:text="@string/txt_withdrawal_enm" />
-
-                        <TextView
-                            android:id="@+id/tv_withdrawal_amount_method"
-                            style="@style/style_withdraw_confirm_value"
-                            tools:text="" />
-                    </LinearLayout>
-
-                    <View style="@style/style_withdraw_dividing_line" />
-
-                    <LinearLayout style="@style/style_withdraw_confirm_ll">
-
-                        <TextView
-                            style="@style/style_withdraw_show_title"
                             android:text="@string/txt_confirm_withdrawal_amount" />
 
                         <TextView

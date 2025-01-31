@@ -591,7 +591,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         String temp = infoVo.min_money + "元,最高" + infoVo.max_money + "元";
         binding.tvWithdrawalSingleShow.setText(temp); //单笔提现金额
 
-        binding.tvWithdrawalAmountMethod.setText(infoVo.user_bank_info.get(0).usdt_type);//提款方式
+//        binding.tvWithdrawalAmountMethod.setText(infoVo.user_bank_info.get(0).usdt_type);//提款方式
 /*
         binding.tvCollectionUsdt.setText(cashMoYuVo.usdtinfo.get(0).usdt_type + " " + cashMoYuVo.usdtinfo.get(0).usdt_card);
 

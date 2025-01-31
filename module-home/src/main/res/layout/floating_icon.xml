@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="90dp"
             android:text="@string/txt_floating_title"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +62,7 @@
             android:background="@drawable/bg_floating_button"
             android:gravity="center"
             android:text="@string/txt_floating_record"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_black"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/ivw_close" />

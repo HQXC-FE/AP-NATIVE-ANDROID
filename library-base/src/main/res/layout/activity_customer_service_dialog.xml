@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+   <!-- <data>
+
+        <variable
+            name="viewModel"
+            type="com.xtree.recharge.ui.viewmodel.ChooseWithdrawViewModel" />
+    </data>-->
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.xtree.mine.ui.activity.CustomerServiceActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:background="@drawable/bg_customer_service_top">
+
+            <TextView
+                style="@style/style_cm_title"
+                android:textColor="@color/clr_awards_txt_black"
+                android:text="@string/txt_customer_service"
+                app:layout_constraintBaseline_toBaselineOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivw_back"
+                style="@style/style_ic_title_back"
+                android:src="@mipmap/cm_ic_back"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F2F3F7">
+            <LinearLayout
+                android:id="@+id/custom_choose_line"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="4dp"
+                >
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/custom_app_cl"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_customer_liner_item"
+                    >
+                    <ImageView
+                        android:id="@+id/custom_app_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@mipmap/online_app_icon"
+                        app:layout_constraintStart_toStartOf="@id/custom_app_cl"
+                        app:layout_constraintTop_toTopOf="@id/custom_app_cl"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="20dp"
+                        />
+                    <TextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#0c0319"
+                        android:textSize="@dimen/bt_text_16sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintStart_toEndOf="@id/custom_app_icon"
+                        app:layout_constraintTop_toTopOf="@id/custom_app_icon"/>
+                    <TextView
+                        android:id="@+id/tvWelcom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="欢迎来到客服中心"
+                        android:textColor="#121b47"
+                        android:textSize="@dimen/bt_text_12sp"
+                        android:layout_marginStart="20dp"
+                        app:layout_constraintStart_toEndOf="@id/custom_app_icon"
+                        app:layout_constraintTop_toBottomOf="@id/tvUserName"/>
+                    <ImageView
+                        android:id="@+id/custom_line_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@mipmap/custom_line_2"
+                        app:layout_constraintStart_toStartOf="@id/custom_app_icon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/custom_app_icon"
+
+                        />
+                    <ImageView
+                        android:id="@+id/custom_line_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@mipmap/custom_line_1"
+                        app:layout_constraintStart_toStartOf="@id/custom_line_1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/custom_line_1"
+                        />
+                    <LinearLayout
+                        android:id="@+id/custom_ll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="@id/custom_line_2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/custom_line_2"
+                        >
+
+                        <CheckBox
+                            android:id="@+id/ckbAgreement"
+                            style="@style/PwdCheckboxStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="2dp"
+                            android:checked="true" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="2dp"
+                            android:text="@string/me_agreement_hint"
+                            android:textSize="@dimen/me_text_size_sp12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvw_agreement_register"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/me_agreement_content"
+                            android:textColor="@color/clr_main_start"
+                            android:textSize="@dimen/me_text_size_sp12sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                    <View
+                        app:layout_constraintStart_toStartOf="@id/custom_ll"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/custom_ll"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <LinearLayout
+                    android:id="@+id/custom_choose_qa_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_customer_qa_item"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    >
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/custom_app_qa"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        >
+                        <ImageView
+                            android:id="@+id/custom_app_icon_qa"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@mipmap/online_qa"
+                            app:layout_constraintStart_toStartOf="@id/custom_app_qa"
+                            app:layout_constraintTop_toTopOf="@id/custom_app_qa"
+
+                            />
+                        <TextView
+                            android:id="@+id/tvQA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="常见问题"
+                            android:textColor="#585859"
+                            android:textSize="@dimen/bt_text_14sp"
+                            android:textStyle="bold"
+                            android:layout_marginStart="20dp"
+                            app:layout_constraintStart_toEndOf="@id/custom_app_icon_qa"
+                            app:layout_constraintTop_toTopOf="@id/custom_app_icon_qa"/>
+                        <TextView
+                            android:id="@+id/tvQAdigitalTeaching"
+                            style="@style/style_qa_txt"
+                            android:text="@string/txt_qa_digital_teaching"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
+                            app:layout_constraintTop_toBottomOf="@id/tvQA"/>
+
+                        <ImageView
+                            android:id="@+id/ivtvQAdigitalTeaching"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/custom_arrow_left"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tvQAdigitalTeaching"
+                            android:layout_marginRight="4dp" />
+
+                        <View
+                            android:id="@+id/ivtvQAdigitalTeachingLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="10dp"
+                            android:background="#E8E8E8"
+                            app:layout_constraintStart_toStartOf="@id/tvQAdigitalTeaching"
+                            app:layout_constraintTop_toBottomOf="@id/tvQAdigitalTeaching"
+                            android:visibility="invisible"
+                            />
+                        <TextView
+                            android:id="@+id/tvQABindCard"
+                            style="@style/style_qa_txt"
+                            android:text="@string/txt_qa_bind_bank_card"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
+                            app:layout_constraintTop_toBottomOf="@id/ivtvQAdigitalTeachingLine"/>
+
+                        <ImageView
+                            android:id="@+id/ivQABindCard"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/custom_arrow_left"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tvQABindCard"
+                            android:layout_marginRight="4dp"  />
+
+                        <View
+                            android:id="@+id/ivQABindCardLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="10dp"
+                            android:background="#E8E8E8"
+                            app:layout_constraintStart_toStartOf="@id/tvQABindCard"
+                            app:layout_constraintTop_toBottomOf="@id/tvQABindCard"
+                            android:visibility="invisible"
+                            />
+                        <TextView
+                            android:id="@+id/tvQAForgetLoginPassword"
+                            style="@style/style_qa_txt"
+                            android:text="@string/txt_qa_forget_login_password"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
+                            app:layout_constraintTop_toBottomOf="@id/ivQABindCardLine"/>
+
+                        <ImageView
+                            android:id="@+id/ivQAForgetLoginPassword"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/custom_arrow_left"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tvQAForgetLoginPassword"
+                            android:layout_marginRight="4dp" />
+
+                        <View
+                            android:id="@+id/ivQAForgetLoginPasswordLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="10dp"
+                            android:background="#E8E8E8"
+                            app:layout_constraintStart_toStartOf="@id/ivQAForgetLoginPassword"
+                            app:layout_constraintTop_toBottomOf="@id/ivQAForgetLoginPassword"
+                            android:visibility="invisible"
+                            />
+                        <TextView
+                            android:id="@+id/tvQADownApp"
+                            style="@style/style_qa_txt"
+                            android:text="@string/txt_qa_down_app"
+                            android:layout_marginTop="20dp"
+
+                            app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
+                            app:layout_constraintTop_toBottomOf="@id/ivQAForgetLoginPasswordLine"/>
+
+                        <ImageView
+                            android:id="@+id/ivQADownApp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/custom_arrow_left"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tvQADownApp"
+                            android:layout_marginRight="4dp"  />
+
+                        <View
+                            android:id="@+id/ivQADownAppLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="10dp"
+                            android:background="#E8E8E8"
+                            app:layout_constraintStart_toStartOf="@id/ivQADownApp"
+                            app:layout_constraintTop_toBottomOf="@id/ivQADownApp"
+                            android:visibility="invisible"
+                            />
+                        <TextView
+                            android:id="@+id/tvQALoginPassword"
+                            style="@style/style_qa_txt"
+                            android:text="@string/txt_qa_login_password"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
+                            app:layout_constraintTop_toBottomOf="@id/ivQADownAppLine"/>
+
+                        <ImageView
+                            android:id="@+id/ivQALoginPassword"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/custom_arrow_left"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tvQALoginPassword"
+                            android:layout_marginRight="4dp"  />
+
+                        <View
+                            android:id="@+id/ivQALoginPasswordLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="10dp"
+                            android:background="#E8E8E8"
+                            app:layout_constraintStart_toStartOf="@id/ivQALoginPassword"
+                            app:layout_constraintTop_toBottomOf="@id/ivQALoginPassword"
+                            android:visibility="invisible"
+                            />
+                        <TextView
+                            android:id="@+id/tvQAAddUSDT"
+                            style="@style/style_qa_txt"
+                            android:text="@string/txt_qa_add_usdt"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
+                            app:layout_constraintTop_toBottomOf="@id/ivQALoginPasswordLine"/>
+
+                        <ImageView
+                            android:id="@+id/ivQAAddUSDT"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/custom_arrow_left"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tvQAAddUSDT"
+                            android:layout_marginRight="4dp"  />
+
+                        <View
+                            android:id="@+id/ivQAAddUSDTLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_marginTop="10dp"
+                            android:background="#E8E8E8"
+                            app:layout_constraintStart_toStartOf="@id/tvQAAddUSDT"
+                            app:layout_constraintTop_toBottomOf="@id/tvQAAddUSDT"
+                            android:visibility="invisible"
+                            />
+                        <View
+                            android:layout_height="20dp"
+                            android:layout_width="match_parent"
+                            app:layout_constraintStart_toStartOf="@id/ivQAAddUSDTLine"
+                            app:layout_constraintTop_toBottomOf="@id/ivQAAddUSDTLine"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>
