@@ -1,9 +1,8 @@
 package com.xtree.lottery.rule;
 
-import com.xtree.base.vo.UserMethodsResponse;
-import com.xtree.lottery.data.source.vo.MenuMethodsData;
 import com.xtree.lottery.data.source.vo.RecentLotteryBackReportVo;
 import com.xtree.lottery.data.source.vo.RecentLotteryVo;
+import com.xtree.lottery.data.source.vo.RecentReturnVo;
 import com.xtree.lottery.rule.betting.data.RulesEntryData;
 import com.xtree.lottery.rule.recent.RecentDecisionRules;
 import com.xtree.lottery.rule.recent.RecentEndingRules;
@@ -42,7 +41,7 @@ public class RecentlyEntryRule {
         RecentEndingRules.addRules(rules);
     }
 
-    public List<RecentLotteryBackReportVo> startEngine(RulesEntryData rulesEntryData, List<RecentLotteryVo> historyLottery) {
+    public RecentReturnVo startEngine(RulesEntryData rulesEntryData, List<RecentLotteryVo> historyLottery) {
         facts = new Facts();
         Map<String, Object> currentMethod = new HashMap<>();
         List<Map<String, Object>> inputHistoryLottery = new ArrayList<>();
@@ -89,7 +88,7 @@ public class RecentlyEntryRule {
             outputHistory.add(vo);
         }
 
-        return outputHistory;
+        return new RecentReturnVo((((Map<String, String>) facts.get("done")).get("title")), outputHistory);
     }
 }
 
