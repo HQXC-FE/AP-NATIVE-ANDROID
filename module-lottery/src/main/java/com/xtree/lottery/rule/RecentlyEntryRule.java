@@ -45,81 +45,20 @@ public class RecentlyEntryRule {
     public List<RecentLotteryBackReportVo> startEngine(RulesEntryData rulesEntryData, List<RecentLotteryVo> historyLottery) {
         facts = new Facts();
         Map<String, Object> currentMethod = new HashMap<>();
-        Map<String, Object> currentMethodSelectArea = new HashMap<>();
-        List<Map<String, Object>> currentMethodSelectAreaLayout = new ArrayList<>();
-        List<Map<String, String>> currentMethodMoneyModes = new ArrayList<>();
-        List<Map<String, String>> currentMethodPrizeGroup = new ArrayList<>();
         List<Map<String, Object>> inputHistoryLottery = new ArrayList<>();
 
         // currentMethod.flag 此为 CurrentCategory 的 flag
         currentMethod.put("flag", rulesEntryData.getCurrentCategory().getFlag());
         // currentMethod.methodName
         currentMethod.put("methodName", Optional.ofNullable(rulesEntryData.getCurrentMethod().getOriginalName()).orElse(rulesEntryData.getCurrentMethod().getName()));
-        // currentMethod.methodid
-        currentMethod.put("methodid", rulesEntryData.getCurrentMethod().getMethodid());
-        // currentMethod.menuid
-        currentMethod.put("menuid", rulesEntryData.getCurrentMethod().getMenuid());
-        // currentMethod.lotteryId
-        currentMethod.put("lotteryId", rulesEntryData.getCurrentMethod().getLotteryId());
         // currentMethod.name
         currentMethod.put("name", rulesEntryData.getCurrentMethod().getName());
-        // currentMethod.originalName
-        currentMethod.put("originalName", rulesEntryData.getCurrentMethod().getOriginalName());
-        // currentMethod.cate_title
-        currentMethod.put("cate_title", rulesEntryData.getCurrentMethod().getCateTitle());
         // currentMethod.desc
         currentMethod.put("desc", rulesEntryData.getCurrentMethod().getDesc());
         // currentMethod.show_str
-        currentMethod.put("show_str", rulesEntryData.getCurrentMethod().getShowStr());
-        // currentMethod.code_sp
-        currentMethod.put("code_sp", rulesEntryData.getCurrentMethod().getCodeSp());
-        // currentMethod.cateName
         currentMethod.put("cateName", rulesEntryData.getCurrentMethod().getCateName());
         // currentMethod.groupName
         currentMethod.put("groupName", rulesEntryData.getCurrentMethod().getGroupName());
-        // currentMethod.money_modes
-        for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO item : rulesEntryData.getCurrentMethod().getMoneyModes()) {
-            Map<String, String> currentMethodMoneyModesItem = new HashMap<>();
-            currentMethodMoneyModesItem.put("modeid", String.valueOf(item.getModeid()));
-            currentMethodMoneyModesItem.put("name", item.getName());
-            currentMethodMoneyModesItem.put("rate", String.valueOf(item.getRate()));
-            currentMethodMoneyModes.add(currentMethodMoneyModesItem);
-        }
-        currentMethod.put("money_modes", currentMethodMoneyModes);
-        // currentMethod.prize_group
-        for (UserMethodsResponse.DataDTO.PrizeGroupDTO item : rulesEntryData.getCurrentMethod().getPrizeGroup()) {
-            Map<String, String> currentMethodPrizeGroupItem = new HashMap<>();
-            currentMethodPrizeGroupItem.put("value", String.valueOf(item.getValue()));
-            currentMethodPrizeGroupItem.put("label", item.getLabel());
-            currentMethodPrizeGroup.add(currentMethodPrizeGroupItem);
-        }
-        currentMethod.put("prize_group", currentMethodPrizeGroup);
-        // currentMethod.prize_level
-        currentMethod.put("prize_level", rulesEntryData.getCurrentMethod().getPrizeLevel());
-        // currentMethod.relationMethods
-        currentMethod.put("relationMethods", rulesEntryData.getCurrentMethod().getRelationMethods());
-        // currentMethod.selectarea.originType
-        // TODO 这个需要补全
-        // currentMethod.selectarea.type
-        currentMethodSelectArea.put("type", rulesEntryData.getCurrentMethod().getSelectarea().getType());
-        rulesEntryData.getCurrentMethod().getSelectarea().getLayout();
-        // currentMethod.selectarea.layout
-        if (rulesEntryData.getCurrentMethod().getSelectarea().getLayout() != null) {
-            for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO item : rulesEntryData.getCurrentMethod().getSelectarea().getLayout()) {
-                Map<String, Object> currentMethodSelectAreaLayoutItem = new HashMap<>();
-                currentMethodSelectAreaLayoutItem.put("title", item.getTitle());
-                currentMethodSelectAreaLayoutItem.put("no", item.getNo());
-                currentMethodSelectAreaLayoutItem.put("place", String.valueOf(item.getPlace()));
-                currentMethodSelectAreaLayoutItem.put("cols", String.valueOf(item.getCols()));
-                currentMethodSelectAreaLayoutItem.put("minchosen", String.valueOf(item.getMinchosen()));
-                currentMethodSelectAreaLayout.add(currentMethodSelectAreaLayoutItem);
-            }
-            currentMethodSelectArea.put("layout", currentMethodSelectAreaLayout);
-        }
-        // currentMethod.selectarea.selPosition
-        currentMethodSelectArea.put("selPosition", rulesEntryData.getCurrentMethod().getSelectarea().isSelPosition());
-        // currentMethod.selectarea
-        currentMethod.put("selectarea", currentMethodSelectArea);
 
         // historyLottery
         for (RecentLotteryVo item : historyLottery) {
