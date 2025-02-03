@@ -42,7 +42,7 @@ public class BaccaratPairRule {
                 List<Map<String, Object>> form = (List<Map<String, Object>>) history.get("form");
 
                 if (code == null || code.isEmpty()) {
-                    form.add(createFormEntry("--", "c_ff0000"));
+                    form.add(createFormEntry("--", "#ff0000"));
                     continue;
                 }
 
@@ -53,7 +53,7 @@ public class BaccaratPairRule {
 
                 // 判断闲对
                 if (workCode.get(2).equals(workCode.get(3))) {
-                    form.add(createFormEntry("闲", "ball b_4c8bda"));
+                    form.add(createFormEntry("闲", "#4c8bda"));
                 }
             }
         } catch (Exception e) {

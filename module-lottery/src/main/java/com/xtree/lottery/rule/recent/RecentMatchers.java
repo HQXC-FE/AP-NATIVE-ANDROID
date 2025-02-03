@@ -10,25 +10,25 @@ import java.util.Map;
 public class RecentMatchers {
     private static Map<String, String> map = new HashMap<>();
 
-    public static Map<String, String> getMap() {
-        map.put("c_7c73ff", "c_7c73ff");
-        map.put("c_229e6d", "c_229e6d");
-        map.put("c_cc8b1e", "c_cc8b1e");
-        map.put("c_006dfe", "c_006dfe");
-        map.put("c_ff33ff", "c_ff33ff");
-        map.put("c_ff0000", "c_ff0000");
-        map.put("b_f8aa46", "ball b_f8aa46");
-        map.put("b_4c8bda", "ball b_4c8bda");
-        map.put("b_008000", "ball b_008000");
-        map.put("b_ff0000", "ball b_ff0000");
-        map.put("c_f95016", "c_f95016");
-        map.put("c_476efe", "c_476efe");
-        map.put("c_fc5d50", "c_fc5d50");
-        map.put("c_1291bb", "c_1291bb");
-        map.put("c_0b9fb9", "c_0b9fb9");
-        map.put("c_685ba2", "c_685ba2");
-        return map;
-    }
+    //public static Map<String, String> getMap() {
+    //    map.put("c_7c73ff", "c_7c73ff");
+    //    map.put("c_229e6d", "c_229e6d");
+    //    map.put("c_cc8b1e", "c_cc8b1e");
+    //    map.put("c_006dfe", "c_006dfe");
+    //    map.put("c_ff33ff", "c_ff33ff");
+    //    map.put("c_ff0000", "c_ff0000");
+    //    map.put("b_f8aa46", "ball b_f8aa46");
+    //    map.put("b_4c8bda", "ball b_4c8bda");
+    //    map.put("b_008000", "ball b_008000");
+    //    map.put("b_ff0000", "ball b_ff0000");
+    //    map.put("c_f95016", "c_f95016");
+    //    map.put("c_476efe", "c_476efe");
+    //    map.put("c_fc5d50", "c_fc5d50");
+    //    map.put("c_1291bb", "c_1291bb");
+    //    map.put("c_0b9fb9", "c_0b9fb9");
+    //    map.put("c_685ba2", "c_685ba2");
+    //    return map;
+    //}
 
     public static List<String> method2RuleSuite(String methodName, String alias) {
         List<String> result = null;

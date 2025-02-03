@@ -44,17 +44,18 @@ public class SumCalculationRule {
                     int sum = workCode.stream().mapToInt(Integer::intValue).sum();
 
                     if (Double.isNaN(sum)) {
-                        addForm(history, "--", "b_f8aa46");
+                        addForm(history, "--",
+                                "#f8aa46");
                         continue;
                     }
 
                     if (methodName.contains("直选和值")) {
-                        addForm(history, String.valueOf(sum), "b_f8aa46");
+                        addForm(history, String.valueOf(sum), "#f8aa46");
                         continue;
                     }
 
                     if (unionWorkCode > 1 || workCode.size() == 2) {
-                        addForm(history, String.valueOf(sum), "b_f8aa46");
+                        addForm(history, String.valueOf(sum), "#f8aa46");
                     }
                 }
             }

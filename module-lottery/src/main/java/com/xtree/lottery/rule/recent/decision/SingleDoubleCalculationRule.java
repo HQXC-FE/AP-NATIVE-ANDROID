@@ -52,7 +52,7 @@ public class SingleDoubleCalculationRule {
                 for (Map<String, Object> history : historyCodes) {
                     List<Integer> workCode = (List<Integer>) history.get("workCode");
                     if (workCode == null || workCode.isEmpty()) {
-                        addForm(history, "--", "c_ff0000");
+                        addForm(history, "--", "#ff0000");
                         continue;
                     }
 
@@ -82,52 +82,52 @@ public class SingleDoubleCalculationRule {
 
     private void handleTotalSum(Map<String, Object> history, int sum) {
         if (sum > 22) {
-            addForm(history, "大", "c_f95016");
+            addForm(history, "大", "#f95016");
         } else {
-            addForm(history, "小", "c_476efe");
+            addForm(history, "小", "#476efe");
         }
 
         if (sum % 2 == 1) {
-            addForm(history, "单", "c_f95016");
+            addForm(history, "单", "#f95016");
         } else {
-            addForm(history, "双", "c_476efe");
+            addForm(history, "双", "#476efe");
         }
     }
 
     private void handleSumValues(Map<String, Object> history, int sum, String methodName) {
         if ("大小单双五星和值".equals(methodName)) {
             if (sum > 22) {
-                addForm(history, "大", "c_f95016");
+                addForm(history, "大", "#f95016");
             } else {
-                addForm(history, "小", "c_476efe");
+                addForm(history, "小", "#476efe");
             }
         } else {
             if (sum > 13) {
-                addForm(history, "大", "c_f95016");
+                addForm(history, "大", "#f95016");
             } else {
-                addForm(history, "小", "c_476efe");
+                addForm(history, "小", "#476efe");
             }
         }
 
         if (sum % 2 == 1) {
-            addForm(history, "单", "c_f95016");
+            addForm(history, "单", "#f95016");
         } else {
-            addForm(history, "双", "c_476efe");
+            addForm(history, "双", "#476efe");
         }
     }
 
     private void handleIndividualValues(Map<String, Object> history, List<Integer> workCode, String methodName) {
         for (int item : workCode) {
             if (item > 4) {
-                addForm(history, "大", "c_f95016");
+                addForm(history, "大", "#f95016");
             } else {
-                addForm(history, "小", "c_476efe");
+                addForm(history, "小", "#476efe");
             }
 
             if (item % 2 == 1) {
-                addForm(history, "单", "c_f95016");
+                addForm(history, "单", "#f95016");
             } else {
-                addForm(history, "双", "c_476efe");
+                addForm(history, "双", "#476efe");
             }
         }
     }
@@ -145,12 +145,12 @@ public class SingleDoubleCalculationRule {
         }
 
         if (bigCount == 0) {
-            addForm(history, "全小", "c_476efe");
+            addForm(history, "全小", "#476efe");
         } else if (smallCount == 0) {
-            addForm(history, "全大", "c_f95016");
+            addForm(history, "全大", "#f95016");
         } else {
-            addForm(history, bigCount + "大", "c_f95016");
-            addForm(history, smallCount + "小", "c_476efe");
+            addForm(history, bigCount + "大", "#f95016");
+            addForm(history, smallCount + "小", "#476efe");
         }
     }
 
@@ -167,12 +167,12 @@ public class SingleDoubleCalculationRule {
         }
 
         if (singleCount == 0) {
-            addForm(history, "全双", "c_476efe");
+            addForm(history, "全双", "#476efe");
         } else if (doubleCount == 0) {
-            addForm(history, "全单", "c_f95016");
+            addForm(history, "全单", "#f95016");
         } else {
-            addForm(history, singleCount + "单", "c_f95016");
-            addForm(history, doubleCount + "双", "c_476efe");
+            addForm(history, singleCount + "单", "#f95016");
+            addForm(history, doubleCount + "双", "#476efe");
         }
     }
 

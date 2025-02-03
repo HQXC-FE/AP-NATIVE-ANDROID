@@ -48,32 +48,32 @@ public class GroupConfigurationRule {
                             .count();
 
                     if (history.get("code") == null || history.get("code").toString().isEmpty()) {
-                        addForm(history, "--", "c_ff0000");
+                        addForm(history, "--", "#ff0000");
                     }
 
                     switch (workCode.size()) {
                         case 5:
                             title = "五星组态";
-                            if (unionWorkCode == 5) addForm(history, "组选120", "c_7c73ff");
-                            if (unionWorkCode == 4) addForm(history, "组选60", "c_1291bb");
-                            if (unionWorkCode == 3 && groupBySize == 2) addForm(history, "组选30", "c_229e6d");
-                            if (unionWorkCode == 3 && groupBySize == 1) addForm(history, "组选20", "c_cc8b1e");
-                            if (unionWorkCode == 2 && groupBySize == 2) addForm(history, "组选10", "c_006dfe");
-                            if (unionWorkCode == 2 && groupBySize == 1) addForm(history, "组选5", "c_ff33ff");
+                            if (unionWorkCode == 5) addForm(history, "组选120", "#7c73ff");
+                            if (unionWorkCode == 4) addForm(history, "组选60", "#1291bb");
+                            if (unionWorkCode == 3 && groupBySize == 2) addForm(history, "组选30", "#229e6d");
+                            if (unionWorkCode == 3 && groupBySize == 1) addForm(history, "组选20", "#cc8b1e");
+                            if (unionWorkCode == 2 && groupBySize == 2) addForm(history, "组选10", "#006dfe");
+                            if (unionWorkCode == 2 && groupBySize == 1) addForm(history, "组选5", "#ff33ff");
                             break;
 
                         case 4:
                             title = "四星组态";
-                            if (unionWorkCode == 4) addForm(history, "组选24", "c_7c73ff");
-                            if (unionWorkCode == 3) addForm(history, "组选12", "c_1291bb");
-                            if (unionWorkCode == 2 && groupBySize == 2) addForm(history, "组选6", "c_229e6d");
-                            if (unionWorkCode == 2 && groupBySize == 1) addForm(history, "组选4", "c_cc8b1e");
+                            if (unionWorkCode == 4) addForm(history, "组选24", "#7c73ff");
+                            if (unionWorkCode == 3) addForm(history, "组选12", "#1291bb");
+                            if (unionWorkCode == 2 && groupBySize == 2) addForm(history, "组选6", "#229e6d");
+                            if (unionWorkCode == 2 && groupBySize == 1) addForm(history, "组选4", "#cc8b1e");
                             break;
 
                         case 3:
                             title = "三星组态";
-                            if (unionWorkCode == 3) addForm(history, "组六", "c_685ba2");
-                            if (unionWorkCode == 2) addForm(history, "组三", "c_fc5d50");
+                            if (unionWorkCode == 3) addForm(history, "组六", "#685ba2");
+                            if (unionWorkCode == 2) addForm(history, "组三", "#fc5d50");
                             break;
 
                         default:

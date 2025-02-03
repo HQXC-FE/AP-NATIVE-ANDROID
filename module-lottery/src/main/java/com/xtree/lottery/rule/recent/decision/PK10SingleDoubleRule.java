@@ -37,15 +37,15 @@ public class PK10SingleDoubleRule {
                 for (Integer item : workCode) {
                     // 大小判斷
                     if (item > 5) {
-                        form.add(Map.of("label", "大", "className", "c_f95016"));
+                        form.add(Map.of("label", "大", "className", "#f95016"));
                     } else {
-                        form.add(Map.of("label", "小", "className", "c_476efe"));
+                        form.add(Map.of("label", "小", "className", "#476efe"));
                     }
                     // 單雙判斷
                     if (item % 2 == 0) {
-                        form.add(Map.of("label", "双", "className", "c_476efe"));
+                        form.add(Map.of("label", "双", "className", "#476efe"));
                     } else {
-                        form.add(Map.of("label", "单", "className", "c_f95016"));
+                        form.add(Map.of("label", "单", "className", "#f95016"));
                     }
                 }
             }

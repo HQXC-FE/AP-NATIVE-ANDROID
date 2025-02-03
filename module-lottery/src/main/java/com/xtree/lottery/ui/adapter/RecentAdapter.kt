@@ -15,16 +15,19 @@ class RecentAdapter(list: ArrayList<RecentLotteryBackReportVo>) :
     override fun convert(holder: BaseViewHolder, item: RecentLotteryBackReportVo) {
         // 设置item数据
         holder.setText(R.id.tv_issue, item.issue)
-        holder.setText(R.id.tv_status, item.form.get(0).get("label"))
-        //holder.setTextColor(R.id.tv_status, Color.parseColor(item.form.get(0).get("className")))
+        holder.setText(R.id.tv_status, item.form[0]["label"])
+        val color = item.form[0]["className"]
+        if (color == null || !color.startsWith("#")) {
+            holder.setTextColor(R.id.tv_status, Color.parseColor("#000000"))
+        } else {
+            holder.setTextColor(R.id.tv_status, Color.parseColor(color))
+        }
         val rv = holder.getView<RecyclerView>(R.id.rv_recent_child)
         rv.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         val adapter = RecentChildAdapter(item.displayCode, R.layout.item_recent_child)
         rv.adapter = adapter
-
-
     }
 
 }

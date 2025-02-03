@@ -49,7 +49,7 @@ public class SumTailNumberRule {
                         if (form != null) {
                             form.add(Map.of(
                                     "label", (tailNum >= 0 ? String.valueOf(tailNum) : "-"),
-                                    "className", "ball b_f8aa46"
+                                    "className", "#f8aa46"
                             ));
                         }
                     }

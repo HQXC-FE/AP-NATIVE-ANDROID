@@ -48,7 +48,7 @@ public class StraightSelectionSpanRule {
                     // 如果结果是 NaN 或无效值，用 "-" 替代
                     Map<String, Object> result = new HashMap<>();
                     result.put("label", (Double.isNaN(span) ? "-" : span));
-                    result.put("className", "ball b_f8aa46"); // 对应 classNames.b_f8aa46
+                    result.put("className", "#f8aa46"); // 对应 classNames.b_f8aa46
                     form.add(result);
                 }
             }

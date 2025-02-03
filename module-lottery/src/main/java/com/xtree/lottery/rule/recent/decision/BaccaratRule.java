@@ -42,7 +42,7 @@ public class BaccaratRule {
                 List<Map<String, Object>> form = (List<Map<String, Object>>) history.get("form");
 
                 if (code == null || code.isEmpty()) {
-                    form.add(createFormEntry("--", "c_ff0000"));
+                    form.add(createFormEntry("--", "#ff0000"));
                     continue;
                 }
 
@@ -52,11 +52,11 @@ public class BaccaratRule {
                 int result = bankerScore - playerScore;
 
                 if (result > 0) {
-                    form.add(createFormEntry("庄", "ball b_ff0000"));
+                    form.add(createFormEntry("庄", "#ff0000"));
                 } else if (result == 0) {
-                    form.add(createFormEntry("和", "ball b_008000"));
+                    form.add(createFormEntry("和", "#008000"));
                 } else {
-                    form.add(createFormEntry("闲", "ball b_4c8bda"));
+                    form.add(createFormEntry("闲", "#4c8bda"));
                 }
             }
         } catch (Exception e) {

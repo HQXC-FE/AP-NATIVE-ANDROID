@@ -37,7 +37,7 @@ public class FillEmptyValuesRule {
 
                     // 检查 form 是否为空
                     if (form != null && form.isEmpty()) {
-                        form.add(Map.of("label", "-", "className", "empty"));
+                        form.add(Map.of("label", "-", "className", "#000000"));
                     }
                 }
             }

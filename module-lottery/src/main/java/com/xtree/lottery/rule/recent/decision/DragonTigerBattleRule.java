@@ -46,20 +46,20 @@ public class DragonTigerBattleRule {
                 List<Map<String, Object>> form = (List<Map<String, Object>>) history.get("form");
 
                 if (code == null || code.isEmpty()) {
-                    form.add(createFormEntry("--", "c_ff0000"));
+                    form.add(createFormEntry("--", "#ff0000"));
                     continue;
                 }
 
                 int diff = workCode.get(0) - workCode.get(1);
 
                 if (diff == 0) {
-                    form.add(createFormEntry("-", "ball b_008000"));
+                    form.add(createFormEntry("-", "#008000"));
                 } else if (diff > 0) {
                     String label = "龙虎斗玄麟斗".equals(methodName) ? "玄" : "龙";
-                    form.add(createFormEntry(label, "ball b_008000"));
+                    form.add(createFormEntry(label, "#008000"));
                 } else {
                     String label = "龙虎斗玄麟斗".equals(methodName) ? "麟" : "虎";
-                    form.add(createFormEntry(label, "ball b_4c8bda"));
+                    form.add(createFormEntry(label, "#4c8bda"));
                 }
             }
         } catch (Exception e) {

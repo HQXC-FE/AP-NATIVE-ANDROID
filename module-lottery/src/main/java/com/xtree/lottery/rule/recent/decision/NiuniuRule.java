@@ -43,7 +43,7 @@ public class NiuniuRule {
 
                 List<Map<String, Object>> form = new ArrayList<>();
                 if (niuArr.isEmpty()) {
-                    form.add(Map.of("label", "无牛", "className", "c_476efe"));
+                    form.add(Map.of("label", "无牛", "className", "#476efe"));
                     history.put("form", form);
                     history.put("displayCode", mapToDisabled(workCode));
                     continue;
@@ -53,30 +53,30 @@ public class NiuniuRule {
                 int niuNum = (workCode.stream().mapToInt(Integer::intValue).sum() - niuArr.stream().mapToInt(Integer::intValue).sum()) % 10;
 
                 if (niuNum == 0) {
-                    form.add(Map.of("label", "牛牛", "className", "c_f95016"));
+                    form.add(Map.of("label", "牛牛", "className", "#f95016"));
                 } else {
-                    form.add(Map.of("label", "牛", "className", "c_476efe"));
-                    form.add(Map.of("label", niuNum, "className", "c_f95016"));
+                    form.add(Map.of("label", "牛", "className", "#476efe"));
+                    form.add(Map.of("label", niuNum, "className", "#f95016"));
                 }
 
-                form.add(Map.of("label", " ", "className", "empty"));
+                form.add(Map.of("label", " ", "className", "#000000"));
 
                 if (niuNum > 5 || niuNum == 0) {
-                    form.add(Map.of("label", "牛", "className", "c_476efe"));
-                    form.add(Map.of("label", "大", "className", "c_f95016"));
+                    form.add(Map.of("label", "牛", "className", "#476efe"));
+                    form.add(Map.of("label", "大", "className", "#f95016"));
                 } else {
-                    form.add(Map.of("label", "牛", "className", "c_476efe"));
-                    form.add(Map.of("label", "小", "className", "c_f95016"));
+                    form.add(Map.of("label", "牛", "className", "#476efe"));
+                    form.add(Map.of("label", "小", "className", "#f95016"));
                 }
 
-                form.add(Map.of("label", " ", "className", "empty"));
+                form.add(Map.of("label", " ", "className", "#000000"));
 
                 if (niuNum % 2 == 1) {
-                    form.add(Map.of("label", "牛", "className", "c_476efe"));
-                    form.add(Map.of("label", "单", "className", "c_f95016"));
+                    form.add(Map.of("label", "牛", "className", "#476efe"));
+                    form.add(Map.of("label", "单", "className", "#f95016"));
                 } else {
-                    form.add(Map.of("label", "牛", "className", "c_476efe"));
-                    form.add(Map.of("label", "双", "className", "c_f95016"));
+                    form.add(Map.of("label", "牛", "className", "#476efe"));
+                    form.add(Map.of("label", "双", "className", "#f95016"));
                 }
 
                 history.put("form", form);

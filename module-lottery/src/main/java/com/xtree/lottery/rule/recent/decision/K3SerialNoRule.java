@@ -35,9 +35,9 @@ public class K3SerialNoRule {
                 List<Map<String, String>> form = (List<Map<String, String>>) history.get("form");
 
                 if (workCode.get(0) + 1 == workCode.get(1) && workCode.get(1) + 1 == workCode.get(2)) {
-                    form.add(Map.of("label", "三连号", "className", "c_7c73ff"));
+                    form.add(Map.of("label", "三连号", "className", "#7c73ff"));
                 } else {
-                    form.add(Map.of("label", "-", "className", "c_ff0000"));
+                    form.add(Map.of("label", "-", "className", "#ff0000"));
                 }
             }
         } catch (Exception e) {
