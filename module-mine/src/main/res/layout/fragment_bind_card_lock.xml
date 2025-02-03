@@ -95,7 +95,7 @@
 
             <TextView
                 android:id="@+id/tvw_submit"
-                style="@style/style_btn" />
+                style="@style/style_btn_sure" />
         </LinearLayout>
 
     </LinearLayout>
