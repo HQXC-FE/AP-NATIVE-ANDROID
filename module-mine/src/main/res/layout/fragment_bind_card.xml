@@ -56,6 +56,7 @@
             <TextView
                 android:id="@+id/tvw_add"
                 style="@style/style_btn"
+                android:textColor="@color/bt_color_hine_color_5B"
                 android:minEms="6"
                 android:text="@string/txt_add_bind" />
 
