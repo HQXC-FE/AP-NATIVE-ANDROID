@@ -44,7 +44,7 @@
 
     <TextView
         android:id="@+id/tv_agree"
-        style="@style/style_btn"
+        style="@style/style_btn_sure"
         android:layout_width="120dp"
         android:text="同意"
         app:layout_constraintEnd_toEndOf="@+id/tvw_agreement"
