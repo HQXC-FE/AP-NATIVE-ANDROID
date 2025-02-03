@@ -167,7 +167,7 @@
 
                 <TextView
                     android:id="@+id/tvw_copy"
-                    style="@style/style_btn"
+                    style="@style/style_btn_sure"
                     android:minEms="3"
                     android:text="@string/txt_copy"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_link"

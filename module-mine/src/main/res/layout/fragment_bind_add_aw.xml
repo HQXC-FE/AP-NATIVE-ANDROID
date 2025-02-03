@@ -99,7 +99,8 @@
 
                 <TextView
                     android:id="@+id/tvw_old_back"
-                    style="@style/style_btn" />
+                    style="@style/style_btn"
+                    android:textColor="@color/bt_color_hine_color_5B"/>
 
                 <TextView
                     android:id="@+id/tvw_old_submit"
@@ -324,7 +325,7 @@
 
                 <TextView
                     android:id="@+id/tvw_back"
-                    style="@style/style_btn_sure_back" />
+                    style="@style/style_btn_sure" />
 
                 <TextView
                     android:id="@+id/tvw_submit"

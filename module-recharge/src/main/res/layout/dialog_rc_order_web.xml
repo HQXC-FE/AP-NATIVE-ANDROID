@@ -150,7 +150,7 @@
 
         <TextView
             android:id="@+id/tvw_ok"
-            style="@style/style_btn"
+            style="@style/style_btn_sure"
             android:layout_width="match_parent"
             android:layout_marginStart="36dp"
             android:layout_marginTop="36dp"
@@ -161,7 +161,7 @@
 
         <TextView
             android:id="@+id/tvw_show_pay"
-            style="@style/style_btn"
+            style="@style/style_btn_sure"
             android:layout_width="match_parent"
             android:layout_marginStart="36dp"
             android:layout_marginTop="36dp"
