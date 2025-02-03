@@ -23,9 +23,9 @@ import com.xtree.base.adapter.CachedAutoRefreshAdapter;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.widget.BaseDialog;
 import com.xtree.base.widget.FilterView;
 import com.xtree.base.widget.LoadingDialog;
-import com.xtree.base.widget.MsgDialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.FragmentReportProfitBinding;
@@ -244,7 +244,7 @@ public class ProfitLossFragment extends BaseFragment<FragmentReportProfitBinding
 
             // 原先为Toast 修改成温馨提示
             if (vo.msg_type == 2) {
-                ppw = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), "", vo.message, true, new MsgDialog.ICallBack() {
+                ppw = new XPopup.Builder(getContext()).asCustom(new BaseDialog(getContext(), "", vo.message, true, new BaseDialog.ICallBack() {
                     @Override
                     public void onClickLeft() {
                         ppw.dismiss();

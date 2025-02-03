@@ -14,8 +14,8 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.widget.BaseDialog;
 import com.xtree.base.widget.LoadingDialog;
-import com.xtree.base.widget.MsgDialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.FragmentMsgPersonListBinding;
@@ -100,7 +100,7 @@ public class MsgPersonListFragment extends BaseFragment<FragmentMsgPersonListBin
             String title = getString(R.string.txt_delete_msg_title);
             String msg = getString(R.string.txt_delete_part_msg);
             String txtRight = getString(R.string.txt_confirm_deltet);
-            ppw = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), title, msg, "", txtRight, new MsgDialog.ICallBack() {
+            ppw = new XPopup.Builder(getContext()).asCustom(new BaseDialog(getContext(), title, msg, "", txtRight, new BaseDialog.ICallBack() {
                 @Override
                 public void onClickLeft() {
                     ppw.dismiss();
@@ -120,7 +120,7 @@ public class MsgPersonListFragment extends BaseFragment<FragmentMsgPersonListBin
             String title = getString(R.string.txt_delete_msg_title);
             String msg = getString(R.string.txt_delete_all_msg);
             String txtRight = getString(R.string.txt_confirm_deltet);
-            ppw = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), title, msg, "", txtRight, new MsgDialog.ICallBack() {
+            ppw = new XPopup.Builder(getContext()).asCustom(new BaseDialog(getContext(), title, msg, "", txtRight, new BaseDialog.ICallBack() {
                 @Override
                 public void onClickLeft() {
                     ppw.dismiss();

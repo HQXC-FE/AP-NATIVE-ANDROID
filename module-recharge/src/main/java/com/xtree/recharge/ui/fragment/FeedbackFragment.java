@@ -38,12 +38,12 @@ import com.xtree.base.utils.ImageUploadUtil;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.base.utils.UuidUtil;
 import com.xtree.base.vo.ProfileVo;
+import com.xtree.base.widget.BaseDialog;
 import com.xtree.base.widget.DateTimePickerDialog;
 import com.xtree.base.widget.GlideEngine;
 import com.xtree.base.widget.ImageFileCompressEngine;
 import com.xtree.base.widget.ListDialog;
 import com.xtree.base.widget.LoadingDialog;
-import com.xtree.base.widget.MsgDialog;
 import com.xtree.recharge.BR;
 import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.FragmentFeedbackBinding;
@@ -268,7 +268,7 @@ public class FeedbackFragment extends BaseFragment<FragmentFeedbackBinding, Rech
     private void showNextDialog() {
         String title = getContext().getString(R.string.txt_tip);
         String msg = getContext().getString(R.string.txt_submitted_suc);
-        ppw = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), title, msg, true, new MsgDialog.ICallBack() {
+        ppw = new XPopup.Builder(getContext()).asCustom(new BaseDialog(getContext(), title, msg, true, new BaseDialog.ICallBack() {
             @Override
             public void onClickLeft() {
                 ppw.dismiss();

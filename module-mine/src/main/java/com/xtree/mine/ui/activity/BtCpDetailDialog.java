@@ -12,8 +12,8 @@ import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.widget.BaseDialog;
 import com.xtree.base.widget.LoadingDialog;
-import com.xtree.base.widget.MsgDialog;
 import com.xtree.mine.R;
 import com.xtree.mine.data.Injection;
 import com.xtree.mine.databinding.DialogBtCpDetailBinding;
@@ -85,7 +85,7 @@ public class BtCpDetailDialog extends BottomPopupView {
         });
 
         viewModel.liveDataDeleteCp.observe(owner, vo -> {
-            ppw2 = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), "", vo, true, new MsgDialog.ICallBack() {
+            ppw2 = new XPopup.Builder(getContext()).asCustom(new BaseDialog(getContext(), "", vo, true, new BaseDialog.ICallBack() {
                 @Override
                 public void onClickLeft() {
                     ppw2.dismiss();
@@ -147,7 +147,7 @@ public class BtCpDetailDialog extends BottomPopupView {
 
     private void showDialog() {
         String msg = getContext().getString(R.string.txt_delete_cp_msg);
-        ppw = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), "", msg, new MsgDialog.ICallBack() {
+        ppw = new XPopup.Builder(getContext()).asCustom(new BaseDialog(getContext(), "", msg, new BaseDialog.ICallBack() {
             @Override
             public void onClickLeft() {
                 ppw.dismiss();

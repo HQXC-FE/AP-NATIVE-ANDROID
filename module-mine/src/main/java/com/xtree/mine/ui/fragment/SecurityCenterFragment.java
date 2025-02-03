@@ -21,7 +21,7 @@ import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.vo.ProfileVo;
-import com.xtree.base.widget.MsgDialog;
+import com.xtree.base.widget.BaseDialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.FragmentSecurityCenterBinding;
@@ -29,7 +29,6 @@ import com.xtree.mine.ui.viewmodel.VerifyViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -238,7 +237,7 @@ public class SecurityCenterFragment extends BaseFragment<FragmentSecurityCenterB
      * 显示已经绑定谷歌验证码提示
      */
     private void showOverBindGoogle(String title, String msg) {
-        basePopupView = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), title, msg, true, new MsgDialog.ICallBack() {
+        basePopupView = new XPopup.Builder(getContext()).asCustom(new BaseDialog(getContext(), title, msg, true, new BaseDialog.ICallBack() {
             @Override
             public void onClickLeft() {
 

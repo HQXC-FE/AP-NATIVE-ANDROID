@@ -9,8 +9,7 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.core.CenterPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
-import com.xtree.base.widget.MsgDialog;
-import com.xtree.base.widget.TipDialog;
+import com.xtree.base.widget.BaseDialog;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.DialogEnterAnswerBinding;
 
@@ -77,7 +76,7 @@ public class EnterAnswerDialog extends CenterPopupView {
     private void  showError(final String message){
         if (ppwError == null) {
             final String title = getContext().getString(R.string.txt_kind_tips);
-            ppwError = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), title, message, true, new TipDialog.ICallBack() {
+            ppwError = new XPopup.Builder(getContext()).asCustom(new BaseDialog(getContext(), title, message, true, new BaseDialog.ICallBack() {
                 @Override
                 public void onClickLeft() {
                     ppwError.dismiss();

@@ -41,10 +41,10 @@ import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.StringUtils;
 import com.xtree.base.utils.UuidUtil;
 import com.xtree.base.vo.ProfileVo;
+import com.xtree.base.widget.BaseDialog;
 import com.xtree.base.widget.ListDialog;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
-import com.xtree.base.widget.TipDialog;
 import com.xtree.mine.R;
 import com.xtree.mine.data.Injection;
 import com.xtree.mine.databinding.DialogBankWithdrawalBankBinding;
@@ -1358,7 +1358,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     private void showErrorBySystem(final String message) {
         if (ppwError == null) {
             final String title = getContext().getString(R.string.txt_kind_tips);
-            ppwError = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), title, message, false, new TipDialog.ICallBack() {
+            ppwError = new XPopup.Builder(getContext()).asCustom(new BaseDialog(getContext(), title, message, false, new BaseDialog.ICallBack() {
                 @Override
                 public void onClickLeft() {
                     ppwError.dismiss();

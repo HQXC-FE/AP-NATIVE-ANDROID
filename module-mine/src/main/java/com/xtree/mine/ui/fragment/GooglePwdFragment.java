@@ -20,7 +20,7 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.QrcodeUtil;
 import com.xtree.base.utils.UuidUtil;
 import com.xtree.base.vo.ProfileVo;
-import com.xtree.base.widget.MsgDialog;
+import com.xtree.base.widget.BaseDialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.FragmentGooglePwdBinding;
@@ -142,7 +142,7 @@ public class GooglePwdFragment extends BaseFragment<FragmentGooglePwdBinding, Go
     private void showErrorDialog() {
         String title = getString(R.string.txt_kind_tips);
         String msg = getContext().getString(R.string.txt_google_auth_fail);
-        basePopupView = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), title, msg, true, new MsgDialog.ICallBack() {
+        basePopupView = new XPopup.Builder(getContext()).asCustom(new BaseDialog(getContext(), title, msg, true, new BaseDialog.ICallBack() {
             @Override
             public void onClickLeft() {
             }
