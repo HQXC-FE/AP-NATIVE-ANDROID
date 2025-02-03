@@ -114,7 +114,7 @@
 
             <TextView
                 android:id="@+id/tvw_right"
-                style="@style/style_btn"
+                style="@style/style_btn_sure"
                 android:text="@string/txt_confirm"
                 android:textSize="14sp" />
         </LinearLayout>
