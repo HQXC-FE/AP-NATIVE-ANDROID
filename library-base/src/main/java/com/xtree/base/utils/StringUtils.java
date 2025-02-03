@@ -101,9 +101,14 @@ public class StringUtils {
     /**
      * 获取本机app版本
      */
-    public static String getVersionName(final Context context) throws Exception {
+    public static String getVersionName(final Context context) {
         PackageManager packageManager = context.getPackageManager();
-        PackageInfo info = packageManager.getPackageInfo(context.getPackageName(), 0);
+        PackageInfo info = null;
+        try {
+            info = packageManager.getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            return "";
+        }
         String version = info.versionName;
         return version;
     }
@@ -128,6 +133,7 @@ public class StringUtils {
         return versionCode;
     }
 
+    /**切割提款用户名*/
     public  static String splitWithdrawUserName(String  userName){
 
         if (!userName.contains("@")){

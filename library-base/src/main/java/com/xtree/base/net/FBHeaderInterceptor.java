@@ -1,18 +1,14 @@
 package com.xtree.base.net;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.StringUtils;
 import com.xtree.base.utils.TagUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
@@ -43,6 +39,7 @@ public class FBHeaderInterceptor implements Interceptor {
         }
         builder.addHeader("App-RNID", "87jumkljo"); //
         builder.addHeader("Source", "9");
+        builder.addHeader("app-version", StringUtils.getVersionName(Utils.getContext()));
         builder.addHeader("UUID", TagUtils.getDeviceId(Utils.getContext()));
         //请求信息
         return chain.proceed(builder.build());
