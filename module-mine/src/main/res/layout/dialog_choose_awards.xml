@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="0dp"
-        android:background="@drawable/bg_dialog_top_main_up_rounded">
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,7 +121,7 @@
                     android:layout_marginTop="6dp"
                     android:gravity="center"
                     android:text="@string/txt_awards_no_money_tip"
-                    android:textColor="@color/clr_main_login_txt"
+                    android:textColor="@color/clr_gray_7"
                     android:textSize="15dp"
                     android:visibility="visible" />
             </LinearLayout>
@@ -133,7 +133,7 @@
                 android:layout_marginTop="60dp"
                 android:gravity="center|left"
                 android:text="@string/txt_unfinished_activity_flow"
-                android:textColor="@color/clr_main_login_txt"
+                android:textColor="@color/clr_gray_7"
                 android:textSize="18dp"
                 android:visibility="visible" />
 

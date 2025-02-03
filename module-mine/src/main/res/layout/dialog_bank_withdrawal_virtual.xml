@@ -26,7 +26,7 @@
             android:gravity="center"
             android:text=""
             tools:text="虚拟币"
-            android:textColor="@color/clr_gap_bg"
+            android:textColor="@color/clr_withdrawal_text_bank_tip"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

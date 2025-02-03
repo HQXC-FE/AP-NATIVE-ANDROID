@@ -609,6 +609,7 @@
 
     <color name="clr_txt_withdraw_left_dark_start">#222322</color>
     <color name="clr_txt_withdraw_left_dark_end">#5A5A5A</color>
+    <color name="clr_txt_withdraw_left">#99DBDBDB</color>
     <!--重置登录密码暗色系 结束颜色-->
     <color name="clr_reset_bg_dark">#242424</color>
     <color name="clr_withdraw_bg_dark">#2C2C2C</color>
