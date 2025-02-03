@@ -121,7 +121,7 @@
 
                             <TextView
                                 android:id="@+id/tvw_old_submit"
-                                style="@style/style_btn" />
+                                style="@style/style_btn_sure" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -341,7 +341,7 @@
 
                             <TextView
                                 android:id="@+id/tvw_submit"
-                                style="@style/style_btn" />
+                                style="@style/style_btn_sure" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

@@ -99,11 +99,11 @@
 
                 <TextView
                     android:id="@+id/tvw_old_back"
-                    style="@style/style_btn_back" />
+                    style="@style/style_btn" />
 
                 <TextView
                     android:id="@+id/tvw_old_submit"
-                    style="@style/style_btn" />
+                    style="@style/style_btn_sure" />
             </LinearLayout>
 
         </LinearLayout>
@@ -236,7 +236,7 @@
 
             <TextView
                 android:id="@+id/ivw_next"
-                style="@style/style_btn"
+                style="@style/style_btn_sure"
                 android:layout_width="140dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
@@ -324,11 +324,11 @@
 
                 <TextView
                     android:id="@+id/tvw_back"
-                    style="@style/style_btn_back" />
+                    style="@style/style_btn_sure_back" />
 
                 <TextView
                     android:id="@+id/tvw_submit"
-                    style="@style/style_btn"
+                    style="@style/style_btn_sure"
                     android:text="@string/text_confirm" />
             </LinearLayout>
         </LinearLayout>
@@ -359,7 +359,7 @@
 
             <TextView
                 android:id="@+id/tvType"
-                style="@style/style_btn"
+                style="@style/style_btn_sure"
                 android:layout_width="140dp"
                 android:layout_marginTop="30dp"
                 android:padding="8dp"
