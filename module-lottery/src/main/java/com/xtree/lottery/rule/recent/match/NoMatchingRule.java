@@ -62,6 +62,7 @@ public class NoMatchingRule {
             Map<String, Object> done = new HashMap<>();
             done.put("history", formattedHistory);
             done.put("currentMethod", facts.get("currentMethod"));
+            done.put("title", "");
             facts.put("done", done);
         } catch (Exception e) {
             CfLog.e("Error in NoMatchingRule: " + e.getMessage());
