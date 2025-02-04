@@ -446,6 +446,9 @@
     <!--<color name="clr_blue_11">#70B2FD</color>-->
     <!--<color name="clr_blue_12">#8BC1FF</color>-->
     <color name="clr_blue_13">#121B47</color>
+    <color name="clr_blue_14">#3340A5F2</color>
+    <color name="clr_blue_15">#3333E8E2</color>
+    <color name="clr_blue_16">#7191FF</color>
 
     <color name="clr_green_03">#5BBA5B</color>
     <color name="clr_green_06">#E7E7E7</color>

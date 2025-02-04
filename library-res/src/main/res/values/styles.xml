@@ -1063,7 +1063,7 @@
     <style name="style_item_report_profit_base">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/clr_txt_03</item>
+        <item name="android:textColor">@color/clr_txt_mouse5</item>
         <item name="android:textSize">12sp</item>
     </style>
 
@@ -1073,7 +1073,7 @@
 
     <style name="style_item_report_profit_v" parent="style_item_report_profit_base">
         <item name="android:layout_marginTop">1dp</item>
-        <item name="android:textColor">@color/clr_white</item>
+        <item name="android:textColor">@color/clr_txt_mouse</item>
     </style>
 
     <style name="style_item_report_profit_sum_t" parent="style_item_report_profit_base">
