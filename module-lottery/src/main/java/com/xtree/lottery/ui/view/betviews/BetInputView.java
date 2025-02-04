@@ -1,6 +1,7 @@
 package com.xtree.lottery.ui.view.betviews;
 
 import static com.xtree.lottery.utils.LotteryAnalyzer.INPUT_PLAYS_MAP;
+import static com.xtree.lottery.utils.LotteryAnalyzer.INPUT_REGEX;
 
 import android.content.Context;
 import android.text.Html;
@@ -13,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
 
-import com.xtree.base.utils.filter.LotteryInputFilter;
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
@@ -21,9 +21,10 @@ import com.xtree.lottery.databinding.LayoutBetInputBinding;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.view.LotterySeatView;
 import com.xtree.lottery.ui.view.viewmodel.BetInputViewModel;
-import com.xtree.lottery.utils.LotteryAnalyzer;
+import com.xtree.lottery.utils.filter.LotteryInputFilter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,9 +37,7 @@ public class BetInputView extends BetBaseView {
     private LayoutBetInputBinding binding;
 
     public BetInputView(@NonNull Context context) {
-        super(context);
-        binding = LayoutBetInputBinding.inflate(LayoutInflater.from(context), this, true);
-        initView();
+        this(context, null);
     }
 
     public BetInputView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -86,35 +85,35 @@ public class BetInputView extends BetBaseView {
         }
 
         //是否存在此玩法规则
-        String rules = INPUT_PLAYS_MAP.get(betsModel.getTitle());
-        if (rules == null) {
-            return;
-        }
-
-        String[] split = rules.split(",");
-
-        if (split.length < 3) {
+//        String rules = INPUT_PLAYS_MAP.get(betsModel.getTitle());
+//        if (rules == null) {
+//            return;
+//        }
+//
+        String[] split = s.split(INPUT_REGEX);
+//
+        if (split.length < 1) {
             return;
         }
 
         //格式化输入的字符串
-        s = binding.getModel().reFormatNums(s);
+//        s = binding.getModel().reFormatNums(s);
+//
+//        Set<String> validNumbers = LotteryAnalyzer.getValidNumbers(s, Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
 
-        Set<String> validNumbers = LotteryAnalyzer.getValidNumbers(s, Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+//        if (validNumbers.size() == 0) {
+//            betData.set(null);
+//            return;
+//        }
 
-        if (validNumbers.size() == 0) {
-            betData.set(null);
-            return;
-        }
+//        Set<String> updatedNumbers = new HashSet<>();
+//        for (String n : validNumbers) {
+//            updatedNumbers.add(n.replaceAll(" ", ""));
+//        }
+//        //替换原集合内容
+//        validNumbers = updatedNumbers;
 
-        Set<String> updatedNumbers = new HashSet<>();
-        for (String n : validNumbers) {
-            updatedNumbers.add(n.replaceAll(" ", ""));
-        }
-        //替换原集合内容
-        validNumbers = updatedNumbers;
-
-        String codes = String.join(",", validNumbers);
+        String codes = String.join(",", split);
 
         LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
         betOrderData.setCodes(codes);
@@ -179,7 +178,7 @@ public class BetInputView extends BetBaseView {
 
     @Override
     public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
-        super.setModel(model,prizeGroup);
+        super.setModel(model, prizeGroup);
         binding.getModel().initData(model);
 
         initTip();

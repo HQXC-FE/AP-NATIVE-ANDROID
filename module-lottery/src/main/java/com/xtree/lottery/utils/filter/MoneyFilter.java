@@ -1,4 +1,4 @@
-package com.xtree.base.utils.filter;
+package com.xtree.lottery.utils.filter;
 
 import android.text.InputFilter;
 import android.text.Spanned;
