@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_main_dark_r12"
+        android:background="@drawable/bg_main_white_r12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -17,10 +17,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/layout_margin"
-            android:drawableStart="@mipmap/me_wallet_left_icon"
             android:drawablePadding="3dp"
             android:text="moyu00"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_txt_mouse5"
             android:textSize="@dimen/bt_text_16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/layout_margin"
             android:text="@string/txt_account_self"
-            android:textColor="@color/clr_txt_05"
+            android:textColor="@color/clr_txt_grey_09"
             android:textSize="@dimen/bt_text_16sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/tvw_user_name"
@@ -44,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/layout_margin"
             android:text="@string/txt_teturn_point"
-            android:textColor="@color/clr_txt_05"
+            android:textColor="@color/clr_txt_grey_09"
             app:layout_constraintStart_toStartOf="@id/tvw_user_name"
             app:layout_constraintTop_toBottomOf="@id/tvw_user_name" />
 
@@ -53,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4%"
-            android:textColor="@color/clr_red_01"
+            android:textColor="@color/clr_orange_02"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/tvw_return_point_title"
             app:layout_constraintStart_toEndOf="@id/tvw_return_point_title"
@@ -64,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/txt_member_value"
-            android:textColor="@color/clr_txt_05"
+            android:textColor="@color/clr_txt_grey_09"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvw_return_point_title"
             app:layout_constraintTop_toTopOf="@id/tvw_return_point_title" />
@@ -74,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="100"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_txt_mouse5"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/tvw_return_point_title"
             app:layout_constraintStart_toEndOf="@id/tvw_member_num_title"
@@ -86,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layout_margin"
             android:text="@string/txt_people_balance"
-            android:textColor="@color/clr_txt_05"
+            android:textColor="@color/clr_txt_grey_09"
             app:layout_constraintStart_toStartOf="@id/tvw_return_point_title"
             app:layout_constraintTop_toBottomOf="@id/tvw_return_point_title" />
 
@@ -95,7 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="608545.2805"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_main_13"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/tvw_member_num_title"
             app:layout_constraintTop_toTopOf="@+id/tvw_user_balance_title" />
@@ -106,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layout_margin"
             android:text="@string/txt_group_balance"
-            android:textColor="@color/clr_txt_05"
+            android:textColor="@color/clr_txt_grey_09"
             app:layout_constraintStart_toStartOf="@id/tvw_user_balance_title"
             app:layout_constraintTop_toBottomOf="@id/tvw_user_balance_title" />
 
@@ -115,7 +114,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0.0000"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_main_13"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/tvw_member_num_title"
             app:layout_constraintTop_toTopOf="@+id/tvw_member_balance_title" />
@@ -126,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layout_margin"
             android:text="@string/txt_last_login_time"
-            android:textColor="@color/clr_txt_05"
+            android:textColor="@color/clr_txt_grey_09"
             app:layout_constraintStart_toStartOf="@id/tvw_member_balance_title"
             app:layout_constraintTop_toBottomOf="@id/tvw_member_balance_title" />
 
@@ -136,7 +135,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="2024-03-11 13:34:32"
-            android:textColor="@color/clr_txt_black_cm"
+            android:textColor="@color/clr_txt_mouse5"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/tvw_member_num_title"
             app:layout_constraintTop_toTopOf="@+id/tvw_last_time_title" />
@@ -147,7 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layout_margin"
             android:text="@string/txt_register_time"
-            android:textColor="@color/clr_txt_05"
+            android:textColor="@color/clr_txt_grey_09"
             app:layout_constraintStart_toStartOf="@id/tvw_last_time_title"
             app:layout_constraintTop_toBottomOf="@id/tvw_last_time_title" />
 
@@ -157,7 +156,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="2024-01-08 09:34:02"
-            android:textColor="@color/clr_txt_black_cm"
+            android:textColor="@color/clr_txt_mouse5"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/tvw_member_num_title"
             app:layout_constraintTop_toTopOf="@+id/tvw_register_time_title" />
@@ -182,9 +181,9 @@
             android:layout_marginTop="@dimen/layout_margin"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="@dimen/layout_margin"
-            android:background="@drawable/bg_main_r24"
+            android:background="@drawable/btn_report_r22"
             android:text="@string/txt_transfer_member"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_main_13"
             android:textSize="16sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -199,9 +198,9 @@
             android:layout_marginTop="@dimen/layout_margin"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="@dimen/layout_margin"
-            android:background="@drawable/bg_main_r24"
+            android:background="@drawable/btn_report_r22"
             android:text="@string/txt_account_money_record"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_main_13"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_transfor"
@@ -214,9 +213,9 @@
             android:layout_marginTop="@dimen/layout_margin"
             android:layout_marginEnd="3dp"
             android:layout_marginBottom="@dimen/layout_margin"
-            android:background="@drawable/bg_main_r24"
+            android:background="@drawable/btn_report_r22"
             android:text="@string/me_betting_record"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_main_13"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_account"

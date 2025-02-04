@@ -111,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@color/clr_transparent"
+                android:textColorHint="@color/clr_main_13"
                 android:hint="@string/txt_input_search_user"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvw_username"
@@ -132,7 +133,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginBottom="@dimen/layout_margin"
-                android:background="@drawable/bg_main_r12"
+                android:background="@drawable/bg_main_r88"
                 android:text="@string/txt_search"
                 android:textColor="@color/clr_white"
                 android:textSize="16sp"
@@ -188,14 +189,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/txt_rpt_level"
-                                android:textColor="@color/clr_txt_black_cm"
+                                android:textColor="@color/clr_blue_16"
                                 android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/tvw_bread"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/clr_txt_black_cm"
+                                android:textColor="@color/clr_blue_16"
                                 android:textSize="16sp"
                                 tools:text="Demo > Demo" />
                         </LinearLayout>
