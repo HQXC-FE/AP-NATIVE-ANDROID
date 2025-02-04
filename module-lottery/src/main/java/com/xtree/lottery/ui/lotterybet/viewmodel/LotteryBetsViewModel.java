@@ -280,46 +280,53 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                                 }
 
                                 // 遍历本地数据并更新
-                                for (MenuMethodsData.LabelsDTO labelsDTOLocal : menuMethods.getLabels()) {
-                                    for (MenuMethodsData.LabelsDTO.Labels1DTO labels1DTOLocal : labelsDTOLocal.getLabels()) {
-                                        Iterator<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO> iterator = labels1DTOLocal.getLabels().iterator();
-                                        while (iterator.hasNext()) {
-                                            MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTOLocal = iterator.next();
-                                            try {
-                                                String menuid = labels2DTOLocal.getMenuid();
-                                                if (labels2DTORemoteMap.get(menuid) != null) {
-                                                    // 如果远程数据中存在对应的 menuid，则更新本地数据
-                                                    MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTORemote = labels2DTORemoteMap.get(menuid);
-                                                    MenuMethodsData.LabelsDTO.Labels1DTO labels1DTORemote = labels1DTORemoteMap.get(menuid);
-                                                    MenuMethodsData.LabelsDTO labelsDTORemote = labelsDTORemoteMap.get(menuid);
-                                                    labelsDTOLocal.setDyTitle(labelsDTORemote.getTitle());
-                                                    labels1DTOLocal.setDyTitle(labels1DTORemote.getTitle());
-                                                    labels2DTOLocal.setName(labels2DTORemote.getName());
-                                                    labels2DTOLocal.setMethoddesc(labels2DTORemote.getMethoddesc());
-                                                    labels2DTOLocal.setMethodexample(labels2DTORemote.getMethodexample());
-                                                    labels2DTOLocal.setMethodhelp(labels2DTORemote.getMethodhelp());
-                                                    labels2DTOLocal.setDescription(labels2DTORemote.getDescription());
-                                                    labels2DTOLocal.setShowStr(labels2DTORemote.getShowStr());
-                                                    labels2DTOLocal.setCodeSp(labels2DTORemote.getCodeSp());
-                                                    labels2DTOLocal.setMoneyModes(labels2DTORemote.getMoneyModes());
-                                                    if (TextUtils.isEmpty(labels2DTOLocal.getDefaultposition())) {
-                                                        labels2DTOLocal.setDefaultposition(labels2DTORemote.getDefaultposition());
-                                                    }
-                                                    labels2DTOLocal.setCateTitle(labelsDTORemote.getTitle());
-                                                    labels2DTOLocal.setGroupTitle(labels1DTORemote.getTitle());
-                                                    if (labels2DTOLocal.getSelectarea() != null && labels2DTOLocal.getSelectarea().getLayout() != null) {
-                                                        List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO> layoutDTOLocal = labels2DTOLocal.getSelectarea().getLayout();
-                                                        List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO> layoutDTORemote = labels2DTORemote.getSelectarea().getLayout();
-                                                        for (int index = 0; index < layoutDTOLocal.size(); index++) {
-                                                            MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layout = layoutDTOLocal.get(index);
-                                                            layout.setTitle(layoutDTORemote.get(index).getTitle());
+                                if (menuMethods.getLabels() != null) {
+                                    for (MenuMethodsData.LabelsDTO labelsDTOLocal : menuMethods.getLabels()) {
+                                        if (labelsDTOLocal.getLabels() != null) {
+                                            for (MenuMethodsData.LabelsDTO.Labels1DTO labels1DTOLocal : labelsDTOLocal.getLabels()) {
+                                                if (labels1DTOLocal.getLabels() != null) {
+                                                    Iterator<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO> iterator = labels1DTOLocal.getLabels().iterator();
+                                                    while (iterator.hasNext()) {
+                                                        MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTOLocal = iterator.next();
+                                                        try {
+                                                            String menuid = labels2DTOLocal.getMenuid();
+                                                            if (labels2DTORemoteMap.get(menuid) != null) {
+                                                                // 如果远程数据中存在对应的 menuid，则更新本地数据
+                                                                MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTORemote = labels2DTORemoteMap.get(menuid);
+                                                                MenuMethodsData.LabelsDTO.Labels1DTO labels1DTORemote = labels1DTORemoteMap.get(menuid);
+                                                                MenuMethodsData.LabelsDTO labelsDTORemote = labelsDTORemoteMap.get(menuid);
+                                                                labelsDTOLocal.setDyTitle(labelsDTORemote.getTitle());
+                                                                labels1DTOLocal.setDyTitle(labels1DTORemote.getTitle());
+                                                                labels2DTOLocal.setName(labels2DTORemote.getName());
+                                                                labels2DTOLocal.setMethoddesc(labels2DTORemote.getMethoddesc());
+                                                                labels2DTOLocal.setMethodexample(labels2DTORemote.getMethodexample());
+                                                                labels2DTOLocal.setMethodhelp(labels2DTORemote.getMethodhelp());
+                                                                labels2DTOLocal.setDescription(labels2DTORemote.getDescription());
+                                                                labels2DTOLocal.setShowStr(labels2DTORemote.getShowStr());
+                                                                labels2DTOLocal.setCodeSp(labels2DTORemote.getCodeSp());
+                                                                labels2DTOLocal.setMoneyModes(labels2DTORemote.getMoneyModes());
+                                                                if (TextUtils.isEmpty(labels2DTOLocal.getDefaultposition())) {
+                                                                    labels2DTOLocal.setDefaultposition(labels2DTORemote.getDefaultposition());
+                                                                }
+                                                                labels2DTOLocal.setCateTitle(labelsDTORemote.getTitle());
+                                                                labels2DTOLocal.setGroupTitle(labels1DTORemote.getTitle());
+                                                                if (labels2DTOLocal.getSelectarea() != null && labels2DTOLocal.getSelectarea().getLayout() != null) {
+                                                                    List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO> layoutDTOLocal = labels2DTOLocal.getSelectarea().getLayout();
+                                                                    List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO> layoutDTORemote = labels2DTORemote.getSelectarea().getLayout();
+                                                                    for (int index = 0; index < layoutDTOLocal.size(); index++) {
+                                                                        MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layout = layoutDTOLocal.get(index);
+                                                                        layout.setTitle(layoutDTORemote.get(index).getTitle());
+                                                                    }
+                                                                }
+                                                            }
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                            CfLog.e("替换Selectarea异常" + new Gson().toJson(labels2DTOLocal));
+                                                            iterator.remove();
                                                         }
                                                     }
                                                 }
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                                CfLog.e("替换Selectarea异常" + new Gson().toJson(labels2DTOLocal));
-                                                iterator.remove();
+
                                             }
                                         }
                                     }
