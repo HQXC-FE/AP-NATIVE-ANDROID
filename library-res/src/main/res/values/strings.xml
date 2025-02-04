@@ -38,7 +38,7 @@
     <string name="txt_bind_gobao">管理GOBAO</string>
     <string name="txt_bind_gopay">管理GOPAY</string>
     <string name="txt_bind_okpay">管理OKPAY</string>
-    <string name="txt_bind_bobi">管理BOBI</string>
+    <string name="txt_bind_bobi">管理波币</string>
     <string name="txt_bind_alipay">管理支付宝</string>
     <string name="txt_bind_alipay1">绑定支付宝</string>
     <string name="txt_bind_wechat">管理微信支付</string>
