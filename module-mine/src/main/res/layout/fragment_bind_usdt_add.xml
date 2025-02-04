@@ -26,7 +26,11 @@
             android:paddingBottom="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/clr_awards_bt_end"
+            android:shadowDx="0"
+            android:shadowDy="-1"
+            android:shadowColor="@color/clr_btn_grey01">
 
             <TextView
                 android:id="@+id/tvw_title"
