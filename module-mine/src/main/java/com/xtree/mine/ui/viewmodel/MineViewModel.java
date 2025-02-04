@@ -350,7 +350,12 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
                 .subscribeWith(new HttpCallBack<BaseResponse>() {
                     @Override
                     public void onResult(BaseResponse response) {
-                        ToastUtils.showSuccess(response.getMessage());
+
+                    }
+
+                    @Override
+                    public void onResult(BaseResponse baseResponse, BusinessException ex) {
+                        ToastUtils.showSuccess(ex.message);
                         getOfferList(offerListMap);
                     }
 
