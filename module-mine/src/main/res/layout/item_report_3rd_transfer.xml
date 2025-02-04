@@ -13,13 +13,15 @@
         <TextView
             android:id="@+id/tvw_action_time"
             style="@style/style_item_report_title"
-            android:textColor="@color/clr_white"
+            android:drawableStart="@mipmap/ic_account_change"
+            android:drawablePadding="3dp"
+            android:textColor="@color/clr_txt_mouse5"
             tools:text="2024-01-12 15:00:00" />
 
         <TextView
             android:id="@+id/tvw_status"
             style="@style/style_item_report_value_end"
-            android:textColor="@color/clr_red_01"
+            android:textColor="@color/clr_green_01"
             tools:text="@string/txt_succ" />
     </LinearLayout>
 
@@ -43,19 +45,19 @@
         <TextView
             android:id="@+id/tvw_out"
             style="@style/style_item_report_value"
-            android:textColor="@color/clr_red_01"
+            android:textColor="@color/clr_txt_mouse5"
             tools:text="PT" />
 
         <TextView
             android:id="@+id/tvw_in"
             style="@style/style_item_report_value_center"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_txt_mouse5"
             tools:text="5.00" />
 
         <TextView
             android:id="@+id/tvw_amount"
             style="@style/style_item_report_value_end"
-            android:textColor="@color/clr_red_01"
+            android:textColor="@color/clr_txt_mouse5"
             tools:text="0.0000" />
     </LinearLayout>
 
@@ -80,19 +82,21 @@
         <TextView
             android:id="@+id/tvw_prebalance"
             style="@style/style_item_report_value"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_txt_mouse5"
             tools:text="5.00" />
 
         <TextView
             android:id="@+id/tvw_channelbalance"
             style="@style/style_item_report_value_center"
-            android:textColor="@color/clr_white"
+            android:textColor="@color/clr_main_13"
             tools:text="5.00" />
 
         <TextView
             android:id="@+id/tvw_self_money"
             style="@style/style_item_report_value_end" />
     </LinearLayout>
+
+    <View style="@style/style_filter_info_dividing" />
 
     <LinearLayout
         style="@style/style_item_ll_row"
