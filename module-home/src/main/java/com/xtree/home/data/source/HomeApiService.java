@@ -152,10 +152,4 @@ public interface HomeApiService {
     @GET("/api/app/version?platform=android")
     Flowable<BaseResponse<AppUpdateVo>> getUpdate();
 
-    /**
-     * 获取是否有红包
-     */
-    @GET("/api/activity/vip/redenvelope")
-    Flowable<BaseResponse<RedPocketVo>> getRedPocket();
-
 }
