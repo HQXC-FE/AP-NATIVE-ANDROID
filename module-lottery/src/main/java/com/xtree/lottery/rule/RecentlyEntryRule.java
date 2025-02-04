@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class RecentlyEntryRule {
     Rules rules;
@@ -76,17 +77,49 @@ public class RecentlyEntryRule {
         // enter the rules
         rulesEngine.fire(rules, facts);
 
-        ArrayList<RecentLotteryBackReportVo> outputHistory = new ArrayList<>();
+        List<RecentLotteryBackReportVo> outputHistory;
         List<Map<String, Object>> filterLottery = ((Map<String, List<Map<String, Object>>>) facts.get("done")).get("history");
-        for (Map<String, Object> item : filterLottery) {
-            RecentLotteryBackReportVo vo = new RecentLotteryBackReportVo(
-                    (String) item.get("issue"),
-                    (String) item.get("draw_time"),
-                    (String) item.get("issueClass"),
-                    (ArrayList<Map<String, String>>) item.get("displayCode"),
-                    (List<Map<String, String>>) item.get("form"));
-            outputHistory.add(vo);
-        }
+        outputHistory = filterLottery.stream()
+                .map(item -> {
+                    HashMap<String, Object> historyItem = new HashMap<>();
+
+                    if (null != item.get("displayCode")) {
+                        historyItem.put("displayCode", item.get("displayCode"));
+                    } else {
+                        historyItem.put("displayCode", new ArrayList<>());
+                    }
+
+                    if (null != item.get("form")) {
+                        historyItem.put("form", item.get("form"));
+                    } else {
+                        historyItem.put("form", new ArrayList<>());
+                    }
+
+                    if (null != item.get("issue")) {
+                        historyItem.put("issue", item.get("issue"));
+                    } else {
+                        historyItem.put("issue", "");
+                    }
+
+                    if (null != item.get("draw_time")) {
+                        historyItem.put("draw_time", item.get("draw_time"));
+                    } else {
+                        historyItem.put("draw_time", "");
+                    }
+
+                    if (null != item.get("issueClass")) {
+                        historyItem.put("issueClass", item.get("issueClass"));
+                    } else {
+                        historyItem.put("issueClass", "");
+                    }
+
+                    return new RecentLotteryBackReportVo((String) historyItem.get("issue"),
+                            (String) historyItem.get("draw_time"),
+                            (String) historyItem.get("issueClass"),
+                            (ArrayList<Map<String, String>>) historyItem.get("displayCode"),
+                            (ArrayList<Map<String, String>>) historyItem.get("form"));
+                })
+                .collect(Collectors.toList());
 
         return new RecentReturnVo((((Map<String, String>) facts.get("done")).get("title")), outputHistory);
     }
