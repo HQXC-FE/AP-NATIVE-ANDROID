@@ -63,7 +63,7 @@
             android:id="@+id/rcv_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/clr_main_start"
+            android:background="@color/clr_main_start_w"
             android:paddingBottom="12dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
