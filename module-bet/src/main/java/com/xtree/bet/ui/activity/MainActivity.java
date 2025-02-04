@@ -952,6 +952,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         if (timerDisposable != null) {
             viewModel.removeSubscribe(timerDisposable);
         }
+        String json = SPUtils.getInstance().getString(SPKeyGlobal.SPORT_MATCH_CACHE, "");
+        if(!TextUtils.isEmpty(json)){
+            SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, "");
+        }
         timerDisposable = Observable.interval(5, 5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1157,6 +1161,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
      * 刷新赛事列表
      */
     private void refreshLeague() {
+        System.out.println("================== MainActivity refreshLeague ===================");
         int firstVisiblePos = binding.rvLeague.getFirstVisiblePosition();
         int lastVisiblePos = binding.rvLeague.getLastVisiblePosition();
         List<Long> matchIdList = new ArrayList<>();
@@ -1569,6 +1574,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private void updateData() {
+        System.out.println("============= MainActivity updateData ===============");
         if (playMethodPos == 4) {
             updateChampionMatchData();
         } else {
@@ -1580,7 +1586,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
      * 更新联赛数据
      */
     private void updateLeagueData() {
+        System.out.println("============= MainActivity updateLeagueData ===============");
         if (mLeagueAdapter == null) {
+            System.out.println("============= MainActivity updateLeagueData mLeagueList 1111 ==============="+mLeagueList.size());
             mLeagueAdapter = new LeagueAdapter(MainActivity.this, mLeagueList);
             initLeagueListView();
             binding.rvLeague.setAdapter(mLeagueAdapter);
@@ -1600,6 +1608,13 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 }
             });
         } else {
+            if (mLeagueList != null && mLeagueList.size() > 0) {
+                System.out.println("============= MainActivity updateLeagueData mLeagueList 2222 ==============="+mLeagueList.get(0).getMatchList().size());
+                if(mLeagueList.get(0).getMatchList().size() > 0){
+                    System.out.println("============= MainActivity updateLeagueData mLeagueList 2222aaaaa ==============="+mLeagueList.get(0).getMatchList().get(0).getTime());
+                }
+            }
+
             if (!(binding.rvLeague.getExpandableListAdapter() instanceof LeagueAdapter)) {
                 binding.rvLeague.setAdapter(mLeagueAdapter);
             }
