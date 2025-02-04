@@ -437,7 +437,7 @@
     <color name="clr_blue_03">#119BFF</color>
     <!--<color name="clr_blue_04">#C7E3FF</color>-->
     <!--<color name="clr_blue_05">#376CAA</color>-->
-    <!--<color name="clr_blue_05a">#415AB0</color>-->
+    <color name="clr_blue_05a">#415AB0</color>
     <!--<color name="clr_blue_06">#CEE4FE</color>-->
     <color name="clr_blue_07">#D3E6FC</color>
     <!--<color name="clr_blue_08">#FCFCFF</color>-->
