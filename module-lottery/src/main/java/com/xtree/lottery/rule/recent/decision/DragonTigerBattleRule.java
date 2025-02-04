@@ -22,8 +22,8 @@ public class DragonTigerBattleRule {
 
     @Condition
     public boolean when(Facts facts) {
-        List<String> ruleSuite = facts.get("ruleSuite");
-        return ruleSuite.contains("DRAGON_TIGER_PK");
+        List<String> rules = facts.get("ruleSuite");
+        return rules != null && rules.contains("DRAGON_TIGER_PK");
     }
 
     @Action

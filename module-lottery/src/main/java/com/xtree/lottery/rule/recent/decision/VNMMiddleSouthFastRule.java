@@ -23,7 +23,7 @@ public class VNMMiddleSouthFastRule {
     @Condition
     public boolean when(Facts facts) {
         List<String> ruleSuite = facts.get("ruleSuite");
-        return ruleSuite.contains("VNM_MIDDLE_SOUTH_FAST");
+        return ruleSuite != null && ruleSuite.contains("VNM_MIDDLE_SOUTH_FAST");
     }
 
     @Action

@@ -23,8 +23,7 @@ public class CallbackWrapperRule {
 
     @Condition
     public boolean when(Facts facts) {
-        // 条件恒为 true
-        return true;
+        return null == facts.get("done");
     }
 
     @Action

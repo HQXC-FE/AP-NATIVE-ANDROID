@@ -22,8 +22,8 @@ public class BaccaratRule {
 
     @Condition
     public boolean when(Facts facts) {
-        List<String> ruleSuite = facts.get("ruleSuite");
-        return ruleSuite.contains("BACCARAT_1");
+        List<String> rules = facts.get("ruleSuite");
+        return rules != null && rules.contains("BACCARAT_1");
     }
 
     @Action
