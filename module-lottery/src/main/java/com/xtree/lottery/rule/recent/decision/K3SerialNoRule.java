@@ -22,7 +22,7 @@ public class K3SerialNoRule {
     @Condition
     public boolean when(Facts facts) {
         List<String> ruleSuite = facts.get("ruleSuite");
-        return ruleSuite.contains("K3_SERIAL_NO");
+        return ruleSuite != null && ruleSuite.contains("K3_SERIAL_NO");
     }
 
     @Action

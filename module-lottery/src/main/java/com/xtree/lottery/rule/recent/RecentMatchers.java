@@ -31,7 +31,7 @@ public class RecentMatchers {
     //}
 
     public static List<String> method2RuleSuite(String methodName, String alias) {
-        List<String> result = null;
+        List<String> result = new ArrayList<>();
 
         // 如果 alias 在 sscAlias 列表中
         if (Matchers.sscAlias.contains(alias)) {

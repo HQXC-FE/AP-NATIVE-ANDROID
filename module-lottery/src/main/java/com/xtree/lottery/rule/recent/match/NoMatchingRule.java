@@ -63,10 +63,6 @@ public class NoMatchingRule {
             done.put("history", formattedHistory);
             done.put("currentMethod", facts.get("currentMethod"));
             facts.put("done", done);
-
-            // 停止规则引擎
-            throw new Exception();
-
         } catch (Exception e) {
             CfLog.e("Error in NoMatchingRule: " + e.getMessage());
         }

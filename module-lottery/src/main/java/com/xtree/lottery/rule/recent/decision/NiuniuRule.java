@@ -25,9 +25,8 @@ public class NiuniuRule {
     @Condition
     public boolean when(Facts facts) {
         List<String> ruleSuite = facts.get("ruleSuite");
-        return ruleSuite.contains("NIUNIU");
+        return ruleSuite != null && ruleSuite.contains("NIUNIU");
     }
-
 
     @Action
     public void then(Facts facts) {

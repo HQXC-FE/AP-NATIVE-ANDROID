@@ -23,7 +23,7 @@ public class VnmNorthRule {
     @Condition
     public boolean when(Facts facts) {
         List<String> ruleSuite = facts.get("ruleSuite");
-        return ruleSuite.contains("VNM_NORTH");
+        return ruleSuite != null && ruleSuite.contains("VNM_NORTH");
     }
 
     @Action

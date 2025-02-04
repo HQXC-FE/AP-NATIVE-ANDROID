@@ -22,7 +22,7 @@ public class PK10SingleDoubleRule {
     @Condition
     public boolean when(Facts facts) {
         List<String> ruleSuite = facts.get("ruleSuite");
-        return ruleSuite.contains("PK10_SINGLE_DOUBLE");
+        return ruleSuite != null && ruleSuite.contains("PK10_SINGLE_DOUBLE");
     }
 
     @Action
