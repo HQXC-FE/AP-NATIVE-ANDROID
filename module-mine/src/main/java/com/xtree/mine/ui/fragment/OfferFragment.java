@@ -39,7 +39,7 @@ import me.xtree.mvvmhabit.base.BaseFragment;
 @Route(path = RouterFragmentPath.Mine.PAGER_OFFER)
 public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewModel> {
     String mStatus = "";
-    String mStartTime = CalenderUtil.searchToday() + " 00:00:00";
+    String mStartTime = CalenderUtil.cutDay(-29) + " 00:00:00";
     String mEndTime = CalenderUtil.searchToday() + " 23:59:59";
     CachedAutoRefreshAdapter<OfferItemVo> mAdapter;
     ItemOfferBinding binding2;
@@ -206,6 +206,8 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
             binding.clStatus.setVisibility(View.GONE);
             binding.clTime.setVisibility(View.GONE);
         });
+
+        setTime(binding.tvLast30);
     }
 
     @Override
