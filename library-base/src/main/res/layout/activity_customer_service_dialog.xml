@@ -212,7 +212,7 @@
                             android:id="@+id/tvQAdigitalTeaching"
                             style="@style/style_qa_txt"
                             android:text="@string/txt_qa_digital_teaching"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="20dp"
                             app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
                             app:layout_constraintTop_toBottomOf="@id/tvQA"/>
 
@@ -266,7 +266,7 @@
                             android:id="@+id/tvQAForgetLoginPassword"
                             style="@style/style_qa_txt"
                             android:text="@string/txt_qa_forget_login_password"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="20dp"
                             app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
                             app:layout_constraintTop_toBottomOf="@id/ivQABindCardLine"/>
 
@@ -348,7 +348,7 @@
                             android:id="@+id/tvQAAddUSDT"
                             style="@style/style_qa_txt"
                             android:text="@string/txt_qa_add_usdt"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="20dp"
                             app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
                             app:layout_constraintTop_toBottomOf="@id/ivQALoginPasswordLine"/>
 

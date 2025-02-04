@@ -38,7 +38,7 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="@string/txt_kind_tips"
-            android:textColor="@color/white"
+            android:textColor="@color/clr_withdrawal_text_bank_tip"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
@@ -63,7 +63,7 @@
             android:layout_marginEnd="52dp"
             android:gravity="center"
             android:text="@string/txt_rc_hi_wlt_content"
-            android:textColor="@color/white"
+            android:textColor="@color/clr_withdrawal_text_bank_tip"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
             app:layout_constraintStart_toStartOf="@id/ivw_bg"
@@ -135,8 +135,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/rc_reg_hi_wallet"
-                app:tint="@color/clr_main_start" />
+                android:src="@mipmap/rc_reg_hi_wallet" />
 
             <TextView
                 android:id="@+id/tvw_reg"
@@ -162,8 +161,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/rc_down_hi_wallet"
-                app:tint="@color/clr_main_start" />
+                android:src="@mipmap/rc_down_hi_wallet" />
 
             <TextView
                 android:id="@+id/tvw_download"

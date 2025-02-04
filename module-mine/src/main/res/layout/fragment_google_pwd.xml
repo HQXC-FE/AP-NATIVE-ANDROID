@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.fragment.GooglePwdFragment"
-        android:background="@drawable/bg_dialog_background_color">
+        android:background="@color/clr_main_bg">
         <!--顶部-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_title"
@@ -17,7 +17,11 @@
             android:paddingBottom="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/clr_awards_bt_end"
+            android:shadowDx="0"
+            android:shadowDy="-1"
+            android:shadowColor="@color/clr_btn_grey01">
 
             <TextView
                 style="@style/style_cm_title"
