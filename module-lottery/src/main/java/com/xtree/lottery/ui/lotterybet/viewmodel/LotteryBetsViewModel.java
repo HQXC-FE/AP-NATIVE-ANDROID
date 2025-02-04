@@ -53,7 +53,6 @@ import java.util.Objects;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
-import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
@@ -267,11 +266,15 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                                 Map<String, MenuMethodsData.LabelsDTO.Labels1DTO> labels1DTORemoteMap = new HashMap<>();
                                 Map<String, MenuMethodsData.LabelsDTO> labelsDTORemoteMap = new HashMap<>();
                                 for (MenuMethodsData.LabelsDTO labelsDTORemote : menuMethodsRemote.getLabels()) {
-                                    for (MenuMethodsData.LabelsDTO.Labels1DTO labels1DTORemote : labelsDTORemote.getLabels()) {
-                                        for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTORemote : labels1DTORemote.getLabels()) {
-                                            labels2DTORemoteMap.put(labels2DTORemote.getMenuid(), labels2DTORemote);
-                                            labels1DTORemoteMap.put(labels2DTORemote.getMenuid(), labels1DTORemote);
-                                            labelsDTORemoteMap.put(labels2DTORemote.getMenuid(), labelsDTORemote);
+                                    if (labelsDTORemote.getLabels() != null) {
+                                        for (MenuMethodsData.LabelsDTO.Labels1DTO labels1DTORemote : labelsDTORemote.getLabels()) {
+                                            if (labels1DTORemote.getLabels() != null) {
+                                                for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTORemote : labels1DTORemote.getLabels()) {
+                                                    labels2DTORemoteMap.put(labels2DTORemote.getMenuid(), labels2DTORemote);
+                                                    labels1DTORemoteMap.put(labels2DTORemote.getMenuid(), labels1DTORemote);
+                                                    labelsDTORemoteMap.put(labels2DTORemote.getMenuid(), labelsDTORemote);
+                                                }
+                                            }
                                         }
                                     }
                                 }
