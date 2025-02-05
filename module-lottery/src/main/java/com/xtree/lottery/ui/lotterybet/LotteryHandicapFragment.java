@@ -1,7 +1,5 @@
 package com.xtree.lottery.ui.lotterybet;
 
-import static com.xtree.lottery.utils.EventConstant.EVENT_TIME_FINISH;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,7 +16,7 @@ import com.xtree.lottery.BR;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
-import com.xtree.lottery.data.source.response.BonusNumbersResponse;
+import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.databinding.FragmentLotteryHandicapBinding;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryHandicapViewModel;
@@ -28,12 +26,9 @@ import com.xtree.lottery.ui.view.LotteryRoadMapDialog;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.lottery.utils.AnimUtils;
-import com.xtree.lottery.utils.EventVo;
 import com.xtree.lottery.utils.LotteryAnalyzer;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +105,7 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
         binding.lotteryHandicapDrawview.setOnLotteryDrawListener(new LotteryDrawView.OnLotteryDrawListener() {
             @Override
             public void onRefresh(View view) {
-                binding.getModel().getBonusNumbers();
+                binding.getModel().lotteryViewModel.getRecentLottery();
                 AnimUtils.rotateView(view);
             }
         });
@@ -152,25 +147,22 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
             }
         });
 
-        binding.getModel().bonusNumbersLiveData.observe(this, new Observer<BonusNumbersResponse>() {
-            @Override
-            public void onChanged(BonusNumbersResponse bonusNumbers) {
-                if (bonusNumbers.getData() != null && bonusNumbers.getData().size() > 0) {
-                    ArrayList<String> lotteryNumbs = new ArrayList<>();
-                    for (BonusNumbersResponse.DataDTO datum : bonusNumbers.getData()) {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (String s : datum.getSplitCode()) {
-                            stringBuilder.append(s + LotteryAnalyzer.SPLIT);
-                        }
-                        lotteryNumbs.add(stringBuilder.deleteCharAt(stringBuilder
-                                        .lastIndexOf(LotteryAnalyzer.SPLIT))
-                                .toString()
-                        );
+        binding.getModel().lotteryViewModel.liveDataRecentList.observe(this, bonusNumbers -> {
+            if (bonusNumbers != null && bonusNumbers.size() > 0) {
+                ArrayList<String> lotteryNumbs = new ArrayList<>();
+                for (RecentLotteryVo datum : bonusNumbers) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (String s : datum.getSplit_code()) {
+                        stringBuilder.append(s + LotteryAnalyzer.SPLIT);
                     }
-                    binding.lotteryHandicapBetlayout.setLotteryNumbsHistory(lotteryNumbs);
-
-                    binding.lotteryHandicapDrawview.setDrawCode(bonusNumbers.getData().get(0));
+                    lotteryNumbs.add(stringBuilder.deleteCharAt(stringBuilder
+                                    .lastIndexOf(LotteryAnalyzer.SPLIT))
+                            .toString()
+                    );
                 }
+                binding.lotteryHandicapBetlayout.setLotteryNumbsHistory(lotteryNumbs);
+
+                binding.lotteryHandicapDrawview.setDrawCode(bonusNumbers.get(0));
             }
         });
 
@@ -203,24 +195,4 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventVo event) {
-        switch (event.getEvent()) {
-            case EVENT_TIME_FINISH:
-                binding.getModel().getBonusNumbers();
-                break;
-        }
-    }
 }

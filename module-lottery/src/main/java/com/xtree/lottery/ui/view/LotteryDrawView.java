@@ -1,6 +1,5 @@
 package com.xtree.lottery.ui.view;
 
-
 import static com.xtree.lottery.rule.betting.Matchers.k3Alias;
 
 import android.content.Context;
@@ -20,7 +19,7 @@ import androidx.databinding.Observable;
 import com.xtree.base.mvvm.ExKt;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.config.Lottery;
-import com.xtree.lottery.data.source.response.BonusNumbersResponse;
+import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.databinding.LayoutLotteryDrawBinding;
 import com.xtree.lottery.ui.view.viewmodel.LotteryDrawViewModel;
 import com.xtree.lottery.utils.DiceCutter;
@@ -28,7 +27,6 @@ import com.xtree.lottery.utils.DiceCutter;
 import java.util.ArrayList;
 
 import me.xtree.mvvmhabit.utils.ConvertUtils;
-
 
 /**
  * Created by KAKA on 2024/5/1.
@@ -85,9 +83,9 @@ public class LotteryDrawView extends LinearLayout {
         });
     }
 
-    public void setDrawCode(BonusNumbersResponse.DataDTO bonusNumber) {
+    public void setDrawCode(RecentLotteryVo bonusNumber) {
         binding.getModel().drawDate.set(bonusNumber.getIssue() + "期：");
-        binding.getModel().drawCode.set((ArrayList<String>) bonusNumber.getSplitCode());
+        binding.getModel().drawCode.set((ArrayList<String>) bonusNumber.getSplit_code());
     }
 
     public void setLottery(Lottery lottery) {

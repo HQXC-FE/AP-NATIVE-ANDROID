@@ -17,6 +17,8 @@ import com.xtree.lottery.rule.betting.data.RulesEntryData
 import com.xtree.lottery.ui.adapter.RecentAdapter
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
+import com.xtree.lottery.utils.EventConstant
+import com.xtree.lottery.utils.EventVo
 import me.xtree.mvvmhabit.base.BaseFragment
 import me.xtree.mvvmhabit.utils.KLog
 import org.greenrobot.eventbus.EventBus
@@ -33,10 +35,9 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
     private lateinit var mAdapter: RecentAdapter
 
     companion object {
-        fun newInstance(id: Int): RecentLotteryFragment {
+        fun newInstance(): RecentLotteryFragment {
             val fragment = RecentLotteryFragment()
             val bundle = Bundle()
-            bundle.putInt("id", id)
             //fragment传参数，谷歌官方建议使用setArguments
             //使用有参构造函数传参数，依附的Activity重建时，Fragment会调取无参构造函数重建，没有无参构造就会闪退
             fragment.arguments = bundle
@@ -79,15 +80,14 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
     }
 
     override fun initView() {
-        val id = requireArguments().getInt("id")
         binding.rvRecent.layoutManager = LinearLayoutManager(requireContext())
         mAdapter = RecentAdapter(ArrayList())
         binding.rvRecent.adapter = mAdapter
         mAdapter.setEmptyView(R.layout.layout_no_data)
-        viewModel.getRecentLottery(id)
+        viewModel.getRecentLottery()
         binding.btRefresh.setOnClickListener {
             LoadingDialog.show(context)
-            viewModel.getRecentLottery(id)
+            viewModel.getRecentLottery()
         }
     }
 
@@ -102,10 +102,18 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public fun onMessageEvent(data: RulesEntryData) {
-        KLog.i("RulesEntryData1", Gson().toJson(data))
-        currentData = data
-        setList()
+    fun onEvent(event: EventVo) {
+        when (event.event) {
+            EventConstant.EVENT_TIME_FINISH -> {
+                //viewModel.getRecentLottery()
+            }
+
+            EventConstant.EVENT_RULES_ENTRY_DATA -> {
+                currentData = event.data as RulesEntryData
+                KLog.i("RulesEntryData1", Gson().toJson(currentData))
+                setList()
+            }
+        }
     }
 
     private fun setList() {
@@ -117,7 +125,7 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
                 binding.tvStatusTop.visibility = View.VISIBLE
                 binding.tvStatusTop.text = result.title
             }
-            KLog.i("RulesEntryData2", Gson().toJson(result))
+            //KLog.i("RulesEntryData2", Gson().toJson(result))
             mAdapter.setList(result.histories)
         }
     }

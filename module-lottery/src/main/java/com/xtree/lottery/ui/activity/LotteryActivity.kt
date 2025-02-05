@@ -85,8 +85,9 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
+        viewModel.lotteryLiveData.value = lottery
 
-        fragmentList.add(RecentLotteryFragment.newInstance(lottery.id))
+        fragmentList.add(RecentLotteryFragment.newInstance())
         lotteryBetsFragment = LotteryBetsFragment.newInstance(lottery)
         fragmentList.add(lotteryBetsFragment)
         if (lottery.handicap) {//是否显示盘口玩法
@@ -176,6 +177,7 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
                     countDownTimer(index + 1)
                     EventBus.getDefault()
                         .post(EventVo(EventConstant.EVENT_TIME_FINISH, ""))
+                    viewModel.getRecentLottery()
                 }
             }
 
