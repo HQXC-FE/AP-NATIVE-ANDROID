@@ -431,7 +431,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
      */
     public void saveBetOrder() {
         if (betLiveData.getValue() != null) {
-            ArrayList<LotteryOrderModel> orderModels = betOrdersLiveData.getValue();
+            ArrayList<LotteryOrderModel> orderModels = new ArrayList<>();
 
             for (LotteryBetRequest.BetOrderData orderData : betLiveData.getValue()) {
                 LotteryOrderModel lotteryOrderModel = new LotteryOrderModel();
