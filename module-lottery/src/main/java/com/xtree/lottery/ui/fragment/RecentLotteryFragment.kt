@@ -2,9 +2,11 @@ package com.xtree.lottery.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.xtree.base.widget.LoadingDialog
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
@@ -16,6 +18,7 @@ import com.xtree.lottery.ui.adapter.RecentAdapter
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
 import me.xtree.mvvmhabit.base.BaseFragment
+import me.xtree.mvvmhabit.utils.KLog
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -25,6 +28,7 @@ import org.greenrobot.eventbus.ThreadMode
  */
 class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, LotteryViewModel>() {
 
+    private var currentData: RulesEntryData? = null
     private var mList = ArrayList<RecentLotteryVo>()
     private lateinit var mAdapter: RecentAdapter
 
@@ -90,20 +94,32 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
     override fun initViewObservable() {
         viewModel.liveDataRecentList.observe(viewLifecycleOwner) {
             mList = it
-            //mAdapter.setList(it)
-            //binding.rvRecent.scrollToPosition(0)
+            if (currentData != null) {
+                setList()
+                binding.rvRecent.scrollToPosition(0)
+            }
         }
-        //viewModel.liveDataListIssue.observe(this) {
-        //    viewModel.liveDataListIssue2.value = it
-        //
-        //}
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public fun onMessageEvent(data: RulesEntryData) {
-        val result = RecentlyEntryRule.getInstance().startEngine(data, mList)
-        binding.tvStatusTop.text = result.title
-        mAdapter.setList(result.histories)
+        KLog.i("RulesEntryData1", Gson().toJson(data))
+        currentData = data
+        setList()
+    }
+
+    private fun setList() {
+        synchronized(this) {
+            val result = RecentlyEntryRule.getInstance().startEngine(currentData, mList)
+            if (result.title.isEmpty()) {
+                binding.tvStatusTop.visibility = View.GONE
+            } else {
+                binding.tvStatusTop.visibility = View.VISIBLE
+                binding.tvStatusTop.text = result.title
+            }
+            KLog.i("RulesEntryData2", Gson().toJson(result))
+            mAdapter.setList(result.histories)
+        }
     }
 
 }
