@@ -307,7 +307,7 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
     private void showDatePicker(TextView tvw, String title) {
         CfLog.i("****** ");
         new XPopup.Builder(getContext())
-                .asCustom(DateTimePickerDialog.newInstance(getContext(), title, 1, date -> {
+                .asCustom(DateTimePickerDialog.newInstance(getContext(), title, "yyyy-MM-dd", -29, date -> {
                     tvw.setText(date);
                     if (tvw == binding.tvStartTime) {
                         mStartTime = date + " 00:00:00";
