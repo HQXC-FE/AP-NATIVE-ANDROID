@@ -3,11 +3,10 @@ package com.xtree.base.net;
 import android.text.TextUtils;
 
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.utils.StringUtils;
 import com.xtree.base.utils.TagUtils;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
 
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
@@ -37,6 +36,7 @@ public class HeaderInterceptor implements Interceptor {
         builder.addHeader("Content-Type", "application/vnd.sc-api.v1.json");
         builder.addHeader("App-RNID", "87jumkljo"); //
         builder.addHeader("Source", "9");
+        builder.addHeader("app-version", StringUtils.getVersionName(Utils.getContext()));
         builder.addHeader("UUID", TagUtils.getDeviceId(Utils.getContext()));
         //请求信息
         return chain.proceed(builder.build());
