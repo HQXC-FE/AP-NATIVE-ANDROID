@@ -85,6 +85,8 @@ public class RecentlyEntryRule {
 
                     if (null != item.get("displayCode")) {
                         historyItem.put("displayCode", item.get("displayCode"));
+                    } else if (null != item.get("codes")) {
+                        historyItem.put("displayCode", item.get("codes"));
                     } else {
                         historyItem.put("displayCode", new ArrayList<>());
                     }

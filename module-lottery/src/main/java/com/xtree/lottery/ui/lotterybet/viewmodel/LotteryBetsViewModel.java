@@ -53,6 +53,7 @@ import java.util.Objects;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
@@ -538,6 +539,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     currentCategoryDTO.setFlag(lottery.getAlias());
                     rulesEntryData.setCurrentMethod(currentMethodDTO);
                     rulesEntryData.setCurrentCategory(currentCategoryDTO);
+                    KLog.i("RulesEntryData3", new Gson().toJson(rulesEntryData));
                     EventBus.getDefault().post(rulesEntryData);
                 }
             }
