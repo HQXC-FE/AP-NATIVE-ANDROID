@@ -14,6 +14,7 @@ import com.xtree.lottery.data.source.vo.RecentLotteryVo
 import com.xtree.lottery.databinding.FragmentRecentLotteryBinding
 import com.xtree.lottery.rule.RecentlyEntryRule
 import com.xtree.lottery.rule.betting.data.RulesEntryData
+import com.xtree.lottery.ui.activity.LotteryActivity
 import com.xtree.lottery.ui.adapter.RecentAdapter
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
@@ -30,6 +31,7 @@ import org.greenrobot.eventbus.ThreadMode
  */
 class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, LotteryViewModel>() {
 
+    private var isTab0Enabled = false
     private var currentData: RulesEntryData? = null
     private var mList = ArrayList<RecentLotteryVo>()
     private lateinit var mAdapter: RecentAdapter
@@ -104,14 +106,16 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: EventVo) {
         when (event.event) {
-            EventConstant.EVENT_TIME_FINISH -> {
-                //viewModel.getRecentLottery()
-            }
-
             EventConstant.EVENT_RULES_ENTRY_DATA -> {
                 currentData = event.data as RulesEntryData
                 KLog.i("RulesEntryData1", Gson().toJson(currentData))
                 setList()
+
+                if (!isTab0Enabled) {
+                    //tab0近期开奖 在彩种投注页面未加载完时，禁止点击
+                    (activity as LotteryActivity).setTab0Enable()
+                    isTab0Enabled = true
+                }
             }
         }
     }
@@ -125,7 +129,7 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
                 binding.tvStatusTop.visibility = View.VISIBLE
                 binding.tvStatusTop.text = result.title
             }
-            //KLog.i("RulesEntryData2", Gson().toJson(result))
+            KLog.i("RulesEntryData2", Gson().toJson(result))
             mAdapter.setList(result.histories)
         }
     }
