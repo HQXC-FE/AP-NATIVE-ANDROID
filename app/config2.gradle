@@ -16,6 +16,7 @@ android {
             resValue "bool", "is_tag", "false" // 是否开启统计
             resValue "string", "mixpanel_token", "6a1ec9cae116d7a920a4697a46599ca9"
             resValue "string", "ms_secret_key", "139dbbd0-5ab4-4be6-b197-e3af17a95279"
+            resValue "string", "sentry_dsn", "https://552dcc17bc3f9472be954a1fd5b5610b@o4507447554539520.ingest.us.sentry.io/4508341154676736"
             resValue "string", "domain_api_list", "https://hxing5pre.hxing5vip.com;"
             resValue "string", "domain_url_list", "https://hxing5pre.hxing5vip.com;"
             resValue "string", "domain_url_list_third", ""
@@ -36,6 +37,7 @@ android {
             resValue "bool", "is_tag", "true" // 是否开启统计
             resValue "string", "mixpanel_token", "6a1ec9cae116d7a920a4697a46599ca9"
             resValue "string", "ms_secret_key", "139dbbd0-5ab4-4be6-b197-e3af17a95279"
+            resValue "string", "sentry_dsn", "https://552dcc17bc3f9472be954a1fd5b5610b@o4507447554539520.ingest.us.sentry.io/4508341154676736"
             resValue "string", "domain_api_list", "http://175.27.143.79:16811;" +
                     "http://111.231.12.228:16811;" +
                     "http://139.186.156.33:16811;" +

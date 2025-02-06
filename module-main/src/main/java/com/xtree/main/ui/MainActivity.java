@@ -1,6 +1,8 @@
 package com.xtree.main.ui;
 
-import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_TO_ACT;
+import static com.xtree.base.vo.EventConstant.EVENT_CHANGE_TO_ACT;
+import static com.xtree.base.vo.EventConstant.EVENT_TOP_SPEED_FAILED;
+import static com.xtree.base.vo.EventConstant.EVENT_TOP_SPEED_FINISH;
 
 import android.os.Bundle;
 
@@ -19,7 +21,6 @@ import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.widget.MenuItemView;
-import com.xtree.base.widget.TopSpeedDomainFloatingWindows;
 import com.xtree.main.BR;
 import com.xtree.main.R;
 import com.xtree.main.databinding.ActivityMainBinding;
