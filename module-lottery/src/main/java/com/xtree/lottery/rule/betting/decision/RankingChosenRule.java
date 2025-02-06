@@ -11,6 +11,7 @@ import org.jeasy.rules.api.Facts;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Rule(name = "RankingChosenRule", description = "猜名次算法")
 public class RankingChosenRule {
@@ -30,62 +31,42 @@ public class RankingChosenRule {
     @Action
     public void then(Facts facts) {
         try {
-            // 获取相关数据
             List<List<String>> formatCodes = facts.get("formatCodes");
-            Integer num = facts.get("num");
+            int num = 0;
 
-            // 检查输入的有效性
-            if (formatCodes == null || formatCodes.isEmpty() || num == null) {
-                facts.put("num", 0);
-                return;
-            }
+            if (formatCodes != null) {
+                boolean noFinish = formatCodes.stream().anyMatch(List::isEmpty);
 
-            // 检查是否每个位置都有选择值
-            boolean noFinish = formatCodes.stream().anyMatch(List::isEmpty);
-            if (noFinish) {
-                facts.put("num", 0);
-                return;
-            }
+                if (noFinish) {
+                    num = 0;
+                } else {
+                    List<List<String>> allCombinations = cartesianProduct(formatCodes);
+                    List<List<String>> validCombinations = allCombinations.stream()
+                            .filter(item -> item.size() == new HashSet<>(item).size()) // 確保所有元素唯一
+                            .collect(Collectors.toList());
 
-            // 生成所有组合方式（笛卡尔积）
-            List<List<String>> allCombination = cartesianProduct(formatCodes);
-
-            // 筛选出每个位置值唯一的组合
-            int validCombinationCount = (int) allCombination.stream()
-                    .filter(combination -> isUnique(combination))
-                    .count();
-
-            facts.put("num", validCombinationCount);
-        } catch (Exception e) {
-            CfLog.e(e.getMessage());
-        }
-    }
-
-    // Helper method: Cartesian Product
-    private List<List<String>> cartesianProduct(List<List<String>> lists) {
-        List<List<String>> resultLists = new java.util.ArrayList<>();
-        if (lists.isEmpty()) {
-            resultLists.add(new java.util.ArrayList<>());
-            return resultLists;
-        } else {
-            List<String> firstList = lists.get(0);
-            List<List<String>> remainingLists = cartesianProduct(lists.subList(1, lists.size()));
-            for (String condition : firstList) {
-                for (List<String> remainingList : remainingLists) {
-                    List<String> resultList = new java.util.ArrayList<>();
-                    resultList.add(condition);
-                    resultList.addAll(remainingList);
-                    resultLists.add(resultList);
+                    num = validCombinations.size();
                 }
             }
+
+            facts.put("num", num);
+        } catch (Exception e) {
+            System.err.println("Error in RankingChosenRule: " + e.getMessage());
         }
-        return resultLists;
     }
 
-    // Helper method: Check if a combination contains unique elements
-    private boolean isUnique(List<String> combination) {
-        Set<String> uniqueSet = new HashSet<>(combination);
-        return uniqueSet.size() == combination.size();
+    private List<List<String>> cartesianProduct(List<List<String>> lists) {
+        if (lists.isEmpty()) return List.of(List.of());
+        List<String> firstList = lists.get(0);
+        List<List<String>> rest = cartesianProduct(lists.subList(1, lists.size()));
+
+        return firstList.stream()
+                .flatMap(item -> rest.stream().map(subList -> {
+                    List<String> newList = new java.util.ArrayList<>(subList);
+                    newList.add(0, item);
+                    return newList;
+                }))
+                .collect(Collectors.toList());
     }
 }
 
