@@ -684,7 +684,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         if (updateView != null && updateView.isShow()) {
             return;
         }
-        if (vo.download_url.contains(".apk")){
+       /* if (vo.download_url.contains(".apk")){
             AppUpdateDialog dialog = new AppUpdateDialog(getContext(), isWeakUpdate, vo, new AppUpdateDialog.IAppUpdateCallBack() {
                 @Override
                 public void onUpdateCancel() {
@@ -702,8 +702,24 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     .dismissOnTouchOutside(false)
                     .asCustom(dialog);
             updateView.show();
-        }
+        }*/
+        AppUpdateDialog dialog = new AppUpdateDialog(getContext(), isWeakUpdate, vo, new AppUpdateDialog.IAppUpdateCallBack() {
+            @Override
+            public void onUpdateCancel() {
+                updateView.dismiss();
+            }
 
+            @Override
+            public void onUpdateForce() {
+            }
+
+        });
+
+        updateView = new XPopup.Builder(getContext())
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .asCustom(dialog);
+        updateView.show();
     }
 
     private void smoothToPositionTop(int position) {

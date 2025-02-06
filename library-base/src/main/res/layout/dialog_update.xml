@@ -15,6 +15,8 @@
             android:id="@+id/ivw_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="300dp"
+            android:maxHeight="400dp"
             android:layout_marginTop="60dp"
             android:background="@mipmap/cm_dialog_bg"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -68,7 +70,9 @@
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="@id/ivw_bg"
             app:layout_constraintRight_toRightOf="@id/ivw_bg"
-            app:layout_constraintTop_toBottomOf="@id/tvw_title">
+            app:layout_constraintTop_toBottomOf="@id/tvw_title"
+
+            app:layout_constraintBottom_toBottomOf="@+id/ivw_bg">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -84,7 +88,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvw_upgrade_tips"
+                    android:id="@+id/tvwUpgradeTips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvw_update_version"
@@ -92,6 +96,16 @@
                     android:textColor="@color/clr_withdrawal_text_bg"
                     android:textSize="12sp"
                     android:visibility="visible"
+                    android:scrollbars="vertical"
+                    android:text="iOS自5.0.9版本开始，正式包具有强制升级功能；所有版本正式包均有升级提醒功能。
+                    新打包的客户端默认都在无需升级版本里，
+                    可将需要升级的版本移动至对应的提示升级版本框和强制升级版本框中。iOS自5.0.9版本开始，正式包具有强制升级功能；所有版本正式包均有升级提醒功能。
+                    新打包的客户端默认都在无需升级版本里，
+                    可将需要升级的版本移动至对应的提示升级版本框和强制升级版本框中。iOS自5.0.9版本开始，正式包具有强制升级功能；所有版本正式包均有升级提醒功能。
+                    新打包的客户端默认都在无需升级版本里，
+                    可将需要升级的版本移动至对应的提示升级版本框和强制升级版本框中。iOS自5.0.9版本开始，正式包具有强制升级功能；所有版本正式包均有升级提醒功能。
+                    新打包的客户端默认都在无需升级版本里，
+                    可将需要升级的版本移动至对应的提示升级版本框和强制升级版本框中。"
                     tools:text="iOS自5.0.9版本开始，正式包具有强制升级功能；所有版本正式包均有升级提醒功能。
                     新打包的客户端默认都在无需升级版本里，
                     可将需要升级的版本移动至对应的提示升级版本框和强制升级版本框中。" />

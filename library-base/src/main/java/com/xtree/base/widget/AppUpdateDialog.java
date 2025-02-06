@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -108,7 +109,7 @@ public class AppUpdateDialog extends CenterPopupView {
         if (!vo.download_url.startsWith("http")) {
             vo.download_url = DomainUtil.getDomain2() + vo.download_url;
         }
-        CfLog.i("download_url: " + vo.download_url);
+        CfLog.e("vo.content: " +vo.content);
 
         CfLog.i("apkFile: " + apkFile.getAbsolutePath());
         binding = DialogUpdateBinding.bind(findViewById(R.id.ll_root_update));
@@ -119,6 +120,7 @@ public class AppUpdateDialog extends CenterPopupView {
 
         binding.tvwUpdateVersion.setText(getContext().getString(R.string.txt_update) + " " + vo.version_name);
         binding.tvwUpgradeTips.setText(vo.content);
+        binding.tvwUpgradeTips.setMovementMethod(ScrollingMovementMethod.getInstance());
         binding.dialogUpdateCancel.setOnClickListener(v -> {
             mCallBack.onUpdateCancel();
         });
