@@ -156,8 +156,8 @@
     <string name="txt_s_bank_num">银行卡号</string>
     <string name="txt_s_acc_real_name">开户人姓名</string>
     <string name="txt_s_enter_real_name_pls">*为了您的资金能够迅速到账，请确保填写你的姓名与银行卡的开户姓名一致</string>
-    <string name="txt_s_bank_name">*开户银行</string>
-    <string name="txt_s_branch_name">*支行名称</string>
+    <string name="txt_s_bank_name">开户银行</string>
+    <string name="txt_s_branch_name">支行名称</string>
     <string name="txt_choose_pls">请选择</string>
     <string name="txt_choose_type_pls">请选择类型</string>
     <string name="txt_s_usdt_type">货币类型</string>
@@ -184,7 +184,7 @@
     <string name="txt_rebind">重新绑定</string>
     <string name="txt_open_acc_bank">开户行：</string>
     <string name="txt_card_num">卡号：</string>
-    <string name="txt_open_area">*开户地区</string>
+    <string name="txt_open_area">开户地区</string>
     <string name="txt_info_review">信息核对</string>
     <string name="txt_nickname_c">昵称：</string>
     <string name="txt_bind_bank_c">绑定银行：</string>
