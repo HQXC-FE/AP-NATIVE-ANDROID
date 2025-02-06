@@ -87,6 +87,24 @@ public class DateTimePickerDialog extends BottomPopupView {
     }
 
     /**
+     * @param context   上下文
+     * @param title     标题
+     * @param format    日期时间样式 默认: "yyyy-MM-dd"
+     * @param minDay    当前日期往前几日
+     * @param mCallBack 选中后的回调事件
+     */
+    public static DateTimePickerDialog newInstance(@NonNull Context context, String title, String format, int minDay, ICallBack mCallBack) {
+        DateTimePickerDialog dialog = new DateTimePickerDialog(context);
+        dialog.title = title;
+        dialog.mCallBack = mCallBack;
+        dialog.mFormat = format;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, minDay);
+        dialog.minMillisecond = calendar.getTimeInMillis();
+        return dialog;
+    }
+
+    /**
      * 设置 日期时间样式 默认: "yyyy-MM-dd", 参考: "yyyy-MM-dd HH:mm:ss"
      *
      * @param format 日期时间样式
@@ -131,7 +149,7 @@ public class DateTimePickerDialog extends BottomPopupView {
         binding.dateTimePicker.showLabel(true);
         binding.dateTimePicker.setOnDateTimeChangedListener((dateTimePicker, l) -> {
             tmpDate = TimeUtils.longFormatString(l, mFormat);
-            CfLog.d("---------->",tmpDate);
+            CfLog.d("---------->", tmpDate);
         });
 
     }
