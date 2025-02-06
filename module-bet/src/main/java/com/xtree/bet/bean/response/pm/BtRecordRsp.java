@@ -192,7 +192,7 @@ public class BtRecordRsp implements BaseBean {
             public String playName;
             public String playOptionsId;
             /**
-             * 基准比分  实时比分
+             * 基准比分  下注时比分
              */
             public String scoreBenchmark;
             /**
