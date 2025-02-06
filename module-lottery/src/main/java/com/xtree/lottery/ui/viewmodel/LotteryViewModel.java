@@ -17,6 +17,7 @@ import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.data.LotteryRepository;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryCopyBetRequest;
 import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.data.source.vo.LotteryChaseDetailVo;
@@ -45,7 +46,7 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
     //livedata只有在STARTED（onStart()到onPause()）和RESUMED才会接收数据
     //处于不可见但未销毁时，livedata会存储数据，观察者页面可见时，再传递给它
     //SingleLiveData，只有一名观察者会收到更改通知。
-    public SingleLiveData<ArrayList<RecentLotteryVo>> liveDataRecentList = new SingleLiveData<>();
+    public MutableLiveData<ArrayList<RecentLotteryVo>> liveDataRecentList = new MutableLiveData<>();
     public SingleLiveData<MethodMenus> liveDataMethodMenus = new SingleLiveData<>();
     public MutableLiveData<IssueVo> liveDataCurrentIssue = new SingleLiveData<>();
     public MutableLiveData<Boolean> liveDataCloseLotteryDetail = new SingleLiveData<>();
@@ -56,6 +57,8 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
     public MutableLiveData<LotteryChaseDetailVo> liveDataBtChaseDetail = new MutableLiveData<>(); // 追号记录-详情(彩票)
     //当前期号
     public MutableLiveData<IssueVo> currentIssueLiveData = new MutableLiveData<>();
+    //彩票信息
+    public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
 
     private BasePopupView popupView;
 
@@ -67,8 +70,8 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
         super(application, repository);
     }
 
-    public void getRecentLottery(int id) {
-        Disposable disposable = (Disposable) model.getApiService().getRecentLottery(id)
+    public void getRecentLottery() {
+        Disposable disposable = (Disposable) model.getApiService().getRecentLottery(lotteryLiveData.getValue().getId())
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<ArrayList<RecentLotteryVo>>() {

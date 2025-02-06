@@ -7,11 +7,9 @@ import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.HttpDataSource;
 import com.xtree.lottery.data.source.LocalDataSource;
 import com.xtree.lottery.data.source.LotteryApiService;
-import com.xtree.lottery.data.source.request.BonusNumbersRequest;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.request.LotteryCopyBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
-import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 
@@ -81,13 +79,6 @@ public class LotteryRepository extends BaseModel implements HttpDataSource, Loca
     }
 
     @Override
-    public Flowable<BonusNumbersResponse> getBonusNumbersData(String lotteryId, BonusNumbersRequest request) {
-        return mHttpDataSource.getBonusNumbersData(lotteryId, request)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer());
-    }
-
-    @Override
     public Flowable<BalanceResponse> getUserBalance() {
         return mHttpDataSource.getUserBalance()
                 .compose(RxUtils.schedulersTransformer())
@@ -100,7 +91,6 @@ public class LotteryRepository extends BaseModel implements HttpDataSource, Loca
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer());
     }
-
 
     @Override
     public Flowable<BaseResponse> copyBet(LotteryCopyBetRequest betRequest) {

@@ -1,7 +1,5 @@
 package com.xtree.lottery.ui.lotterybet;
 
-import static com.xtree.lottery.utils.EventConstant.EVENT_TIME_FINISH;
-
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -21,9 +19,9 @@ import com.xtree.lottery.BR;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
-import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
+import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.databinding.FragmentLotteryBetsBinding;
 import com.xtree.lottery.inter.ParentChildCommunication;
 import com.xtree.lottery.rule.betting.data.RulesEntryData;
@@ -34,14 +32,12 @@ import com.xtree.lottery.ui.view.LotteryBetView;
 import com.xtree.lottery.ui.view.LotteryDrawView;
 import com.xtree.lottery.ui.view.LotteryMoneyView;
 import com.xtree.lottery.ui.view.model.LotteryMoneyModel;
+import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.lottery.utils.AnimUtils;
-import com.xtree.lottery.utils.EventVo;
 import com.xtree.lottery.utils.LotteryAnalyzer;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -96,6 +92,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
         LotteryBetsViewModel viewmodel = new ViewModelProvider(getActivity()).get(LotteryBetsViewModel.class);
         AppViewModelFactory factory = AppViewModelFactory.getInstance(requireActivity().getApplication());
         viewmodel.setModel(factory.getmRepository());
+        viewmodel.lotteryViewModel = new ViewModelProvider(getActivity()).get(LotteryViewModel.class);
         return viewmodel;
     }
 
@@ -150,7 +147,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
         binding.lotteryBetsDrawview.setOnLotteryDrawListener(new LotteryDrawView.OnLotteryDrawListener() {
             @Override
             public void onRefresh(View view) {
-                binding.getModel().getBonusNumbers();
+                binding.getModel().lotteryViewModel.getRecentLottery();
                 AnimUtils.rotateView(view);
             }
         });
@@ -203,14 +200,14 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
             }
         });
 
-        binding.getModel().bonusNumbersLiveData.observe(this, new Observer<BonusNumbersResponse>() {
+        binding.getModel().lotteryViewModel.liveDataRecentList.observe(this, new Observer<ArrayList<RecentLotteryVo>>() {
             @Override
-            public void onChanged(BonusNumbersResponse bonusNumbers) {
-                if (bonusNumbers.getData() != null && bonusNumbers.getData().size() > 0) {
+            public void onChanged(ArrayList<RecentLotteryVo> bonusNumbers) {
+                if (bonusNumbers != null && bonusNumbers.size() > 0) {
                     ArrayList<String> lotteryNumbs = new ArrayList<>();
-                    for (BonusNumbersResponse.DataDTO datum : bonusNumbers.getData()) {
+                    for (RecentLotteryVo datum : bonusNumbers) {
                         StringBuilder stringBuilder = new StringBuilder();
-                        for (String s : datum.getSplitCode()) {
+                        for (String s : datum.getSplit_code()) {
                             stringBuilder.append(s + LotteryAnalyzer.SPLIT);
                         }
                         lotteryNumbs.add(stringBuilder.deleteCharAt(stringBuilder
@@ -220,7 +217,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
                     }
                     binding.lotteryBetsBetlayout.setLotteryNumbsHistory(lotteryNumbs);
                     binding.lotteryBetsDrawview.setLottery(lottery);
-                    binding.lotteryBetsDrawview.setDrawCode(bonusNumbers.getData().get(0));
+                    binding.lotteryBetsDrawview.setDrawCode(bonusNumbers.get(0));
 
                 }
             }
@@ -245,30 +242,9 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         viewModel.getUserBalance(null);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(EventVo event) {
-        switch (event.getEvent()) {
-            case EVENT_TIME_FINISH:
-                binding.getModel().getBonusNumbers();
-                break;
-        }
     }
 
     @Override

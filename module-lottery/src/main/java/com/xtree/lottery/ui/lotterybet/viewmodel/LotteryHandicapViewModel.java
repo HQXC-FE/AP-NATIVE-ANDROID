@@ -20,10 +20,8 @@ import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.data.LotteryRepository;
 import com.xtree.lottery.data.config.Lottery;
-import com.xtree.lottery.data.source.request.BonusNumbersRequest;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
-import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.ui.lotterybet.LotteryChipSettingDialogFragment;
 import com.xtree.lottery.ui.lotterybet.data.LotteryHandicapPrizeData;
@@ -62,7 +60,6 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
     private WeakReference<FragmentActivity> mActivity = null;
     public ObservableField<ArrayList<String>> tabs = new ObservableField<>(new ArrayList<>());
     public MutableLiveData<LotteryBetsModel> currentBetModel = new MutableLiveData<LotteryBetsModel>();
-    public MutableLiveData<BonusNumbersResponse> bonusNumbersLiveData = new MutableLiveData<>();
     //投注金额
     public MutableLiveData<String> moneyLiveData = new MutableLiveData<>("2");
     //余额
@@ -147,7 +144,7 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
      * 初始化玩法数据
      */
     public void initTabs() {
-        getBonusNumbers();
+
 
         List<HandicapResponse.DataDTO> handicapMethodsData = handicapMethods.getData();
         ArrayList<String> tabList = new ArrayList<>();
@@ -182,22 +179,6 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
                         if (response.getData() != null) {
                             handicapMethods = response;
                             initTabs();
-                        }
-                    }
-                });
-        addSubscribe(disposable);
-    }
-
-    /**
-     * 获取往期开奖号码
-     */
-    public void getBonusNumbers() {
-        Disposable disposable = model.getBonusNumbersData(String.valueOf(lotteryLiveData.getValue().getId()),new BonusNumbersRequest())
-                .subscribeWith(new HttpCallBack<BonusNumbersResponse>() {
-                    @Override
-                    public void onResult(BonusNumbersResponse response) {
-                        if (response != null && response.getData() != null) {
-                            bonusNumbersLiveData.setValue(response);
                         }
                     }
                 });

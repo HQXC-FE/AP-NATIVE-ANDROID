@@ -1,11 +1,9 @@
 package com.xtree.lottery.data.source;
 
 import com.xtree.base.vo.UserMethodsResponse;
-import com.xtree.lottery.data.source.request.BonusNumbersRequest;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.request.LotteryCopyBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
-import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 
@@ -34,11 +32,6 @@ public interface HttpDataSource {
      * 盘口玩法-玩法菜单
      */
     Flowable<HandicapResponse> getHandicapData(String lotteryName);
-
-    /**
-     * 彩票投注-往期开奖
-     */
-    Flowable<BonusNumbersResponse> getBonusNumbersData(String lotteryId, BonusNumbersRequest request);
 
     /**
      * 获取用户余额
