@@ -34,10 +34,10 @@ import java.util.List;
  */
 public class LotteryBetView extends FrameLayout {
 
-    //使用标签布局的玩法
-    private final String[] dxdsTagTypes = {"牛牛", "五星和值", "五星大小个数", "四星大小个数", "前三大小个数", "中三大小个数", "后三大小个数", "五星单双个数", "四星单双个数", "前三单双个数", "中三单双个数", "后三单双个数"};
     //竞速标签布局玩法
     private final String[] racingTagTypes = {"竞速", "对决"};
+    //使用标签布局的玩法
+    String[] boxs = {"趣味型-趣味型-定单双", "趣味-趣味型-和值单双", "趣味-趣味型-和值大小", "趣味-趣味型-奇偶盘", "趣味-趣味型-上下盘", "趣味-趣味型-和值大小单双", "盘面-盘面-上下盘", "盘面-盘面-奇偶盘", "大小单双-和值大小单双-五星和值", "大小单双-大小个数-五星大小个数", "大小单双-大小个数-四星大小个数", "大小单双-大小个数-前三大小个数", "大小单双-大小个数-中三大小个数", "大小单双-大小个数-后三大小个数", "大小单双-单双个数-五星单双个数", "大小单双-单双个数-四星单双个数", "大小单双-单双个数-前三单双个数", "大小单双-单双个数-中三单双个数", "大小单双-单双个数-后三单双个数", "牛牛-牛牛-牛牛"};
     //骰子
     //dice 数组
     String[] dice = {"二不同号-二不同号-标准选号", "二同号复选-二同号复选-二同号复选", "三不同号-三不同号-标准选号", "三同号单选-三同号单选-三同号单选"};
@@ -76,7 +76,7 @@ public class LotteryBetView extends FrameLayout {
             }
             switch (betsModel.getMenuMethodLabelData().getSelectarea().getType()) {
                 case "dxds":
-                    if (Arrays.asList(dxdsTagTypes).contains(betsModel.getMenuMethodLabelData().getDescription())) {
+                    if (ExKt.includes(Arrays.asList(boxs), betsModel.getTitle())) {
                         betView = new BetDxdsTagView(getContext());
                     } else {
                         betView = new BetDxdsView(getContext());
@@ -97,6 +97,8 @@ public class LotteryBetView extends FrameLayout {
                         betView = new BetDiceAllView(getContext());
                     } else if (ExKt.includes(Arrays.asList(diceRelation), betsModel.getTitle())) {
                         betView = new BetDiceRelationView(getContext());
+                    } else if (ExKt.includes(Arrays.asList(boxs), betsModel.getTitle())) {
+                        betView = new BetDxdsTagView(getContext());
                     } else {
                         betView = new BetDigitalView(getContext());
                     }

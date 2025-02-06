@@ -9,8 +9,14 @@ import com.xtree.base.mvvm.recyclerview.BindModel;
  * Describe:
  */
 public class BetDxdsTagModel extends BindModel {
-    private String tag;
     public ObservableField<Boolean> clicked = new ObservableField<>(false);
+    private String tag;
+    private String code;
+
+    public BetDxdsTagModel(String tag, String code) {
+        this.tag = tag;
+        this.code = code;
+    }
 
     public BetDxdsTagModel(String tag) {
         this.tag = tag;
@@ -22,5 +28,9 @@ public class BetDxdsTagModel extends BindModel {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public String getCode() {
+        return code;
     }
 }
