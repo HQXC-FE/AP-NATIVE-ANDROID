@@ -6,7 +6,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/clr_bg_main"
+        android:background="@color/clr_gray_10"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
