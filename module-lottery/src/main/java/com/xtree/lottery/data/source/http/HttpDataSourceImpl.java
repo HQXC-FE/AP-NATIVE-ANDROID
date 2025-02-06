@@ -6,11 +6,9 @@ import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.APIManager;
 import com.xtree.lottery.data.source.HttpDataSource;
 import com.xtree.lottery.data.source.LotteryApiService;
-import com.xtree.lottery.data.source.request.BonusNumbersRequest;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.request.LotteryCopyBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
-import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 
@@ -88,19 +86,6 @@ public class HttpDataSourceImpl implements HttpDataSource {
             public HandicapResponse apply(ResponseBody responseBody) throws Exception {
                 return JSON.parseObject(responseBody.string(),
                         new TypeReference<HandicapResponse>() {
-                        });
-            }
-        });
-    }
-
-    @Override
-    public Flowable<BonusNumbersResponse> getBonusNumbersData(String lotteryId, BonusNumbersRequest request) {
-        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
-        return apiService.get(String.format(APIManager.BONUS_NUMBERS_URL, lotteryId), map).map(new Function<ResponseBody, BonusNumbersResponse>() {
-            @Override
-            public BonusNumbersResponse apply(ResponseBody responseBody) throws Exception {
-                return JSON.parseObject(responseBody.string(),
-                        new TypeReference<BonusNumbersResponse>() {
                         });
             }
         });

@@ -21,10 +21,8 @@ import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.LotteryDataManager;
 import com.xtree.lottery.data.LotteryRepository;
 import com.xtree.lottery.data.config.Lottery;
-import com.xtree.lottery.data.source.request.BonusNumbersRequest;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
-import com.xtree.lottery.data.source.response.BonusNumbersResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
 import com.xtree.lottery.rule.BettingEntryRule;
@@ -38,7 +36,10 @@ import com.xtree.lottery.ui.lotterybet.model.LotteryBetsPrizeGroup;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsTotal;
 import com.xtree.lottery.ui.lotterybet.model.LotteryOrderModel;
 import com.xtree.lottery.ui.lotterybet.model.LotteryPlayCollectionModel;
+import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 import com.xtree.lottery.utils.AnimUtils;
+import com.xtree.lottery.utils.EventConstant;
+import com.xtree.lottery.utils.EventVo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -65,7 +66,6 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public final ArrayList<LotteryBetsModel> betModels = new ArrayList<LotteryBetsModel>();
     public ObservableField<ArrayList<String>> tabs = new ObservableField<>(new ArrayList<>());
     public MutableLiveData<LotteryBetsModel> currentBetModel = new MutableLiveData<LotteryBetsModel>();
-    public MutableLiveData<BonusNumbersResponse> bonusNumbersLiveData = new MutableLiveData<>();
     //投注金额
     public MutableLiveData<LotteryMoneyData> moneyLiveData = new MutableLiveData<>();
     //余额
@@ -86,6 +86,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public MediatorLiveData<LotteryBetsPrizeGroup> combinedPrizeBetLiveData = new MediatorLiveData<>();
     //投注数和总金额
     public MediatorLiveData<LotteryBetsTotal> betTotalLiveData = new MediatorLiveData<>();
+    public LotteryViewModel lotteryViewModel;
 
     private MenuMethodsData menuMethods;
     private UserMethodsResponse userMethods;
@@ -196,7 +197,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     }
 
     public void initTabs() {
-        getBonusNumbers();
+
         ArrayList<String> tabList = new ArrayList<>();
         betModels.clear();
         for (BindModel playModel : playModels) {
@@ -336,7 +337,6 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                                 menuMethods = menuMethodsRemote;
                             }
 
-
                             UserMethodsResponse userMethodsData = LotteryDataManager.INSTANCE.getUserMethods();
                             if (userMethodsData == null) {
                                 getUserMethods(lottery);
@@ -344,22 +344,6 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                                 userMethods = userMethodsData;
                                 initPlayCollection(lottery);
                             }
-                        }
-                    }
-                });
-        addSubscribe(disposable);
-    }
-
-    /**
-     * 获取往期开奖号码
-     */
-    public void getBonusNumbers() {
-        Disposable disposable = model.getBonusNumbersData(String.valueOf(lotteryLiveData.getValue().getId()), new BonusNumbersRequest())
-                .subscribeWith(new HttpCallBack<BonusNumbersResponse>() {
-                    @Override
-                    public void onResult(BonusNumbersResponse response) {
-                        if (response != null && response.getData() != null) {
-                            bonusNumbersLiveData.setValue(response);
                         }
                     }
                 });
@@ -460,7 +444,6 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     orderData.setMode(money.getMoneyModel().getModelId());
                 }
 
-
                 orderData.setTimes(money.getFactor());
                 lotteryOrderModel.setBetOrderData(orderData);
                 lotteryOrderModel.setPrizeLabel(prize.getLabel());
@@ -540,7 +523,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     rulesEntryData.setCurrentMethod(currentMethodDTO);
                     rulesEntryData.setCurrentCategory(currentCategoryDTO);
                     KLog.i("RulesEntryData3", new Gson().toJson(rulesEntryData));
-                    EventBus.getDefault().post(rulesEntryData);
+                    EventBus.getDefault().post(new EventVo(EventConstant.EVENT_RULES_ENTRY_DATA, rulesEntryData));
                 }
             }
         }
@@ -742,6 +725,5 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     private void processLocalMethodReplaceRemote(Map<String, Object> methodData, String alias, Map<String, Object> res) {
 
     }
-
 
 }

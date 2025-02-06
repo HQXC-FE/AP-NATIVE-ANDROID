@@ -3,6 +3,7 @@ package com.xtree.lottery.ui.activity
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -35,6 +36,7 @@ import org.greenrobot.eventbus.EventBus
  * 彩票详情
  */
 class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>(), ParentChildCommunication {
+    private var isTab0Enabled = false
     private var currentIssue: IssueVo? = null
     private lateinit var lotteryBetsFragment: LotteryBetsFragment
     private var methodMenus: MethodMenus? = null
@@ -85,8 +87,9 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
+        viewModel.lotteryLiveData.value = lottery
 
-        fragmentList.add(RecentLotteryFragment.newInstance(lottery.id))
+        fragmentList.add(RecentLotteryFragment.newInstance())
         lotteryBetsFragment = LotteryBetsFragment.newInstance(lottery)
         fragmentList.add(lotteryBetsFragment)
         if (lottery.handicap) {//是否显示盘口玩法
@@ -105,7 +108,14 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
             }
         }
         binding.vpLottery.adapter = mAdapter
+        val tab0 = (binding.tlLottery.getChildAt(0) as ViewGroup).getChildAt(0)
+        tab0.isEnabled = false
         binding.tlLottery.getTabAt(1)?.select()
+    }
+
+    fun setTab0Enable() {
+        val tab0 = (binding.tlLottery.getChildAt(0) as ViewGroup).getChildAt(0)
+        tab0.isEnabled = true
     }
 
     override fun initData() {
@@ -176,6 +186,7 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
                     countDownTimer(index + 1)
                     EventBus.getDefault()
                         .post(EventVo(EventConstant.EVENT_TIME_FINISH, ""))
+                    viewModel.getRecentLottery()
                 }
             }
 

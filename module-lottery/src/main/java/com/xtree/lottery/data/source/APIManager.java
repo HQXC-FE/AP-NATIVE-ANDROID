@@ -12,8 +12,6 @@ public class APIManager {
     public static final String MENU_METHODS_URL = "/api/lottery/%s/method-menus";
     //盘口玩法
     public static final String HANDICAP_METHODS_URL = "/api/lottery/%s/dsp-methods";
-    //往期号码
-    public static final String BONUS_NUMBERS_URL = "/api/lottery/%s/bonus-numbers";
     //获取用户余额
     public static final String BALANCE_URL = "/api/account/balance";
     //彩票投注
