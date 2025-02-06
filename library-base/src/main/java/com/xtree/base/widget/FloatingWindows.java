@@ -19,7 +19,6 @@ import android.widget.RelativeLayout;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.xtree.base.R;
-import com.xtree.base.databinding.FloatingIconBinding;
 import com.xtree.base.utils.CfLog;
 
 import me.xtree.mvvmhabit.utils.ConvertUtils;
@@ -107,8 +106,7 @@ public abstract class FloatingWindows extends RelativeLayout {
     protected void initView(int layout) {
         mWindowManager = (WindowManager) mContext.getSystemService(WINDOW_SERVICE);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-        floatView = inflater.inflate(R.layout.floating_icon, null);
-        FloatingIconBinding bind = FloatingIconBinding.bind(floatView);
+        floatView = inflater.inflate(R.layout.floating_icon_base, null);
         if (layout != 0) {
             secondaryLayout = inflater.inflate(layout, null);
         }
@@ -129,7 +127,7 @@ public abstract class FloatingWindows extends RelativeLayout {
         floatLp.y = mFloatY;
 
         ivwIcon = floatView.findViewById(R.id.ivw_icon);
-        mainLayout = bind.clRoot;
+        mainLayout = floatView.findViewById(R.id.cl_root);
         llLine = floatView.findViewById(R.id.ll_line);
 
         mainLayout.setOnTouchListener(new View.OnTouchListener() {

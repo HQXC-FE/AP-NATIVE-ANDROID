@@ -5,8 +5,8 @@ android {
         // 测试环境 测试用
         hx5_pre {
             applicationId "com.${name.toLowerCase()}.app"
-            versionName "1.0.6"
-            versionCode 106
+            versionName "1.0.7"
+            versionCode 107
             //resValue "string", "app_name", "${name}"
             resValue "string", "app_name", "恒行5T${versionCode}"
             resValue "string", "domain_api", "https://hxing5pre.hxing5vip.com"
@@ -16,16 +16,19 @@ android {
             resValue "bool", "is_tag", "false" // 是否开启统计
             resValue "string", "mixpanel_token", "6a1ec9cae116d7a920a4697a46599ca9"
             resValue "string", "ms_secret_key", "139dbbd0-5ab4-4be6-b197-e3af17a95279"
+            resValue "string", "sentry_dsn", "https://37abb5e9cfc1ee3efe43f0f96abd9b33@o4507447554539520.ingest.us.sentry.io/4508771117105152"
             resValue "string", "domain_api_list", "https://hxing5pre.hxing5vip.com;"
             resValue "string", "domain_url_list", "https://hxing5pre.hxing5vip.com;"
+            resValue "string", "domain_url_list_third", ""
+
             multiDexEnabled true
             dimension "channelName"
         }
         // 生产环境 发布用
         hx5_OL {
             applicationId "com.hengxing5.app"
-            versionName "1.0.6"
-            versionCode 106
+            versionName "1.0.7"
+            versionCode 107
             resValue "string", "app_name", "恒行5"
             resValue "string", "domain_api", "http://175.27.143.79:16811"
             resValue "string", "domain_url", "https://www.hxing5vip3.com"
@@ -34,6 +37,7 @@ android {
             resValue "bool", "is_tag", "true" // 是否开启统计
             resValue "string", "mixpanel_token", "6a1ec9cae116d7a920a4697a46599ca9"
             resValue "string", "ms_secret_key", "139dbbd0-5ab4-4be6-b197-e3af17a95279"
+            resValue "string", "sentry_dsn", "https://37abb5e9cfc1ee3efe43f0f96abd9b33@o4507447554539520.ingest.us.sentry.io/4508771117105152"
             resValue "string", "domain_api_list", "http://175.27.143.79:16811;" +
                     "http://111.231.12.228:16811;" +
                     "http://139.186.156.33:16811;" +
@@ -64,6 +68,13 @@ android {
                     "https://h53.bavxj.vip;" +
                     "https://h54.jutqu.vip;" +
                     "https://h55.vvhoq.vip;"
+
+            resValue "string", "domain_url_list_third", "https://hx5aliapp.k4z6vh.vip/hx5/app_config_heng5.json" +
+                    ";https://hx5aliapp.y4q4nq.vip/hx5/app_config_heng5.json" +
+                    ";https://hx5cn2app.h3c6jx.vip/hx5/app_config_heng5.json" +
+                    ";https://hx5cn2app.r6a7qi.vip/hx5/app_config_heng5.json" +
+                    ";https://hx5scdnapp.r7u1hp.vip/hx5/app_config_heng5.json" +
+                    ";https://hx5scdnapp.w5r7jy.vip/hx5/app_config_heng5.json"
             multiDexEnabled true
             dimension "channelName"
         }

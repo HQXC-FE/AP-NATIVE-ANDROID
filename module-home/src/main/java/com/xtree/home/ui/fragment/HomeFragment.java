@@ -1,6 +1,6 @@
 package com.xtree.home.ui.fragment;
 
-import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_TO_ACT;
+import static com.xtree.base.vo.EventConstant.EVENT_CHANGE_TO_ACT;
 import static com.xtree.home.ui.adapter.GameAdapter.PLATFORM_FB;
 import static com.xtree.home.ui.adapter.GameAdapter.PLATFORM_FBXC;
 
