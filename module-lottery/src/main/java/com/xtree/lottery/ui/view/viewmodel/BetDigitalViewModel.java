@@ -165,9 +165,9 @@ public class BetDigitalViewModel {
             }
         }
         if (codesBuildr.length() > 1) {
-            return codesBuildr.deleteCharAt(codesBuildr.length() - 1).toString();
+            return codesBuildr.deleteCharAt(codesBuildr.length() - 1).toString().trim();
         } else {
-            return codesBuildr.toString();
+            return codesBuildr.toString().trim();
         }
     }
 
