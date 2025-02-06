@@ -27,6 +27,7 @@ import com.xtree.bet.bean.ui.BtResult;
 import com.xtree.bet.bean.ui.BtResultPm;
 import com.xtree.bet.bean.ui.CgOddLimit;
 import com.xtree.bet.bean.ui.CgOddLimitPm;
+import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.bean.ui.PlayTypePm;
 import com.xtree.bet.constant.SPKey;
 import com.xtree.bet.data.BetRepository;
@@ -74,14 +75,19 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
             BtCarReq.BetMatchMarket betMatchMarket = new BtCarReq.BetMatchMarket();
             betMatchMarket.setMatchInfoId(betConfirmOption.getMatch().getId());
             betMatchMarket.setMarketId(Long.valueOf(betConfirmOption.getPlayTypeId()));
+            if (betConfirmOption.getOption() == null) {
+                //初始化投注弹窗是，option有可能为空
+                return;
+            }
             betMatchMarket.setOddsId(betConfirmOption.getOption().getId());
             betMatchMarket.setPlayId(betConfirmOption.getPlayType().getId());//betConfirmOption.getPlayType().getId()  这个值就是hpid
             betMatchMarket.setMatchType(betConfirmOption.getOptionList().getMatchType());
             betMatchMarket.setSportId(Integer.valueOf(betConfirmOption.getMatch().getSportId()));
             betMatchMarket.setPlaceNum(betConfirmOption.getPlaceNum());
 
-            PlayTypePm playTypePm = (PlayTypePm) betConfirmOption.getPlayType();
-            PlayTypeInfo playTypeInfo = playTypePm.getPlayTypeInfo();
+            //处理ClassCastException: com.xtree.bet.bean.ui.PlayTypeFb cannot be cast to com.xtree.bet.bean.ui.PlayTypePm
+            PlayType playType = betConfirmOption.getPlayType();
+            PlayTypeInfo playTypeInfo = ((PlayTypePm) playType).getPlayTypeInfo();
             String chpid = "";
             if(playTypeInfo.topKey != null){
                 chpid = playTypeInfo.topKey;
@@ -221,12 +227,12 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                     PlayTypePm playTypePm = (PlayTypePm) betConfirmOption.getPlayType();
                     PlayTypeInfo playTypeInfo = playTypePm.getPlayTypeInfo();
                     String chpid = "";
-                    if(playTypeInfo.topKey != null){
+                    if (playTypeInfo.topKey != null) {
                         chpid = playTypeInfo.topKey;
-                    }else{
+                    } else {
                         chpid = betConfirmOption.getPlayType().getId();
                     }
-                    if(!chpid.isEmpty()){
+                    if (!chpid.isEmpty()) {
                         btReq.setChpid(chpid);
                     }
                 }
