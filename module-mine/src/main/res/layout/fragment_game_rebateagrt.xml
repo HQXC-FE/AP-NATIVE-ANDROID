@@ -13,7 +13,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_main">
+        android:background="@color/clr_gray_10">
 
         <include
             android:id="@+id/layout_toolbar"
@@ -36,14 +36,14 @@
             android:tooltipText="@null"
             android:longClickable="false"
             app:tabIndicatorHeight="4dp"
-            app:tabIndicatorColor="@color/clr_main_02"
-            app:tabTextColor="@color/clr_txt_03"
-            app:tabSelectedTextColor="@color/clr_txt_black_cm"
+            app:tabIndicatorColor="@color/clr_main_13"
+            app:tabTextColor="@color/clr_txt_04"
+            app:tabSelectedTextColor="@color/clr_txt_mouse5"
             app:tabBackground="@android:color/transparent"
             app:tabRippleColor="@android:color/transparent"
             setSelectedListener="@{model}"
             tabs="@{model.tabs}"
-            android:background="@color/clr_main_09"
+            android:background="@color/clr_gray_10"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

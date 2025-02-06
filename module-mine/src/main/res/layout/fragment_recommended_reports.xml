@@ -40,7 +40,7 @@
                 itemViewType="@{model.itemType}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/bg_main"
+                android:background="@color/clr_gray_10"
                 app:itemData="@{model.datas}" />
 
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>

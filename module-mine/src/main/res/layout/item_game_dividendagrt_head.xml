@@ -13,7 +13,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_main"
+        android:background="@color/clr_gray_10"
         android:elevation="1dp"
         android:orientation="vertical">
 
@@ -55,7 +55,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_main31_c05"
+                android:background="@drawable/shape_main31_c88"
                 android:gravity="center"
                 android:onClick="@{() -> m.myAgrt()}"
                 android:paddingStart="5dp"
@@ -63,7 +63,7 @@
                 android:paddingEnd="5dp"
                 android:paddingBottom="2dp"
                 android:text="@string/txt_mine_agrt"
-                android:textColor="@color/clr_white"
+                android:textColor="@color/clr_txt_mouse"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +109,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/clr_main_06a"
+            app:cardBackgroundColor="@color/clr_white"
             app:cardCornerRadius="12dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
