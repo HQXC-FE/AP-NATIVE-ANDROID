@@ -1,4 +1,4 @@
-package com.xtree.weight;
+package com.xtree.base.net.fastest;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
@@ -31,8 +31,6 @@ import com.drake.net.Net;
 import com.xtree.base.R;
 import com.xtree.base.adapter.MainDomainAdapter;
 import com.xtree.base.databinding.MainLayoutTopSpeedDomainBinding;
-import com.xtree.base.net.fastest.ChangeH5LineUtil;
-import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.TopSpeedDomain;
 import com.xtree.base.widget.FloatingWindows;

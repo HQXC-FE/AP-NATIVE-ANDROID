@@ -13,7 +13,10 @@ import me.xtree.mvvmhabit.utils.SPUtils
 object FastestMonitorCache {
 
     private val domains = mutableListOf<TopSpeedDomain>()
-    private var scoreCacheList = mutableListOf<TopSpeedDomain>()
+    var scoreCacheList = mutableListOf<TopSpeedDomain>()
+        get() {
+            return LineHelpUtil.getUploadList(field)
+        }
 
     const val TIME_OUT = 1000 * 60 * 60
 
