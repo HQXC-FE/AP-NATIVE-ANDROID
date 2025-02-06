@@ -33,15 +33,7 @@ import me.xtree.mvvmhabit.base.BaseApplication;
  */
 public class BetDigitalViewModel {
 
-    //遗漏/冷热开关
-    public ObservableField<Boolean> buttonStatus = new ObservableField<>(false);
-    //0:不显示选项 1:显示遗漏选项 2:显示冷热选项
-    public ObservableField<Integer> screenStatus = new ObservableField<>(0);
-    //是否显示位数按钮
-    public ObservableField<Boolean> showSeatView = new ObservableField<>(false);
-
     public final ObservableField<ArrayList<BindModel>> datas = new ObservableField<>(new ArrayList<>());
-
     public final ObservableField<ArrayList<Integer>> itemType = new ObservableField<>(
             new ArrayList<Integer>() {
                 {
@@ -49,7 +41,23 @@ public class BetDigitalViewModel {
                 }
             });
     private final ArrayList<BindModel> bindModels = new ArrayList<>();
-
+    //热值标签颜色
+    private final int hotMaxTagColor = BaseApplication.getInstance().getResources().getColor(R.color.lt_color_text9);
+    //冷值标签颜色
+    private final int hotMinTagColor = BaseApplication.getInstance().getResources().getColor(R.color.lt_color_text12);
+    //最大遗漏值标签颜色
+    private final int missMaxTagColor = BaseApplication.getInstance().getResources().getColor(R.color.lt_color_text9);
+    //普通标签颜色
+    private final int normalTagColor = BaseApplication.getInstance().getResources().getColor(R.color.lt_color_text3);
+    //遗漏/冷热开关
+    public ObservableField<Boolean> buttonStatus = new ObservableField<>(false);
+    //0:不显示选项 1:显示遗漏选项 2:显示冷热选项
+    public ObservableField<Integer> screenStatus = new ObservableField<>(0);
+    //是否显示位数按钮
+    public ObservableField<Boolean> showSeatView = new ObservableField<>(false);
+    public MutableLiveData<List<String>> lotteryHistoryLiveData = new MutableLiveData<>();
+    //选中号码
+    public ObservableField<String> codesData = new ObservableField<>("");
     public final BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
         @Override
         public void onBind(@NonNull BindingAdapter.BindingViewHolder bindingViewHolder, @NonNull View view, int itemViewType) {
@@ -85,28 +93,29 @@ public class BetDigitalViewModel {
         }
     };
 
-    public MutableLiveData<List<String>> lotteryHistoryLiveData = new MutableLiveData<>();
-    //选中号码
-    public ObservableField<String> codesData = new ObservableField<>("");
-
-    //热值标签颜色
-    private final int hotMaxTagColor = BaseApplication.getInstance().getResources().getColor(R.color.lt_color_text9);
-    //冷值标签颜色
-    private final int hotMinTagColor = BaseApplication.getInstance().getResources().getColor(R.color.lt_color_text12);
-    //最大遗漏值标签颜色
-    private final int missMaxTagColor = BaseApplication.getInstance().getResources().getColor(R.color.lt_color_text9);
-    //普通标签颜色
-    private final int normalTagColor = BaseApplication.getInstance().getResources().getColor(R.color.lt_color_text3);
+    @androidx.databinding.BindingAdapter("data")
+    public static void initLotteryPickView(LotteryPickView view, List<LotteryPickModel> picks) {
+        if (picks != null) {
+            view.setData(picks);
+        }
+    }
 
     public void initData(LotteryBetsModel model) {
 
         bindModels.clear();
-
+        String showStr = model.getMenuMethodLabelData().getShowStr();
         for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layoutDTO : model.getMenuMethodLabelData().getSelectarea().getLayout()) {
             String[] split = layoutDTO.getNo().split(LAYOUT_NO_SPLIT);
             ArrayList<LotteryPickModel> picks = new ArrayList<>();
 
             for (int i = 0; i < split.length; i++) {
+                // 若占位是$的话隐藏
+//                if (method.show_str.split(',')[index] === '$') {
+//                    return (<></>)
+//                }
+                if (!TextUtils.isEmpty(showStr) && showStr.split(",").length > i && "$".equals(showStr.split(",")[i])) {
+                    continue;
+                }
                 picks.add(new LotteryPickModel(i, split[i]));
             }
             bindModels.add(new BetDigitalModel(layoutDTO.getTitle(), picks));
@@ -195,6 +204,7 @@ public class BetDigitalViewModel {
 
     /**
      * 显示遗漏数据
+     *
      * @param maxMiss 最大遗漏
      */
     public synchronized void showMiss(boolean maxMiss) {
@@ -260,6 +270,7 @@ public class BetDigitalViewModel {
 
     /**
      * 显示冷热数据
+     *
      * @param checkCount 检查期数
      */
     public synchronized void showHot(int checkCount) {
@@ -317,7 +328,7 @@ public class BetDigitalViewModel {
                                 pickData.tagColor.set(hotMaxTagColor);
                             } else if (hotValue.equals(minValue)) {
                                 pickData.tagColor.set(hotMinTagColor);
-                            }else {
+                            } else {
                                 pickData.tagColor.set(normalTagColor);
                             }
                         }
@@ -349,12 +360,5 @@ public class BetDigitalViewModel {
             }
         }
         codesData.set("");
-    }
-
-    @androidx.databinding.BindingAdapter("data")
-    public static void initLotteryPickView(LotteryPickView view, List<LotteryPickModel> picks) {
-        if (picks != null) {
-            view.setData(picks);
-        }
     }
 }
