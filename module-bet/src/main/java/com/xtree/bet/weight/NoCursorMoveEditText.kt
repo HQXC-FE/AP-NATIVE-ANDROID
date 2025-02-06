@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 
 /**
- * 无论用户如何尝试移动光标，光标都会被强制到 EditText 末尾
+ * 无论用户如何尝试移动光标，光标都会被强制到 EditText 末尾（和H5Ios一致）
  */
 class NoCursorMoveEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = android.R.attr.editTextStyle
