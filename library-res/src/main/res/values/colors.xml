@@ -564,7 +564,7 @@
 
     <!-- 测速浮窗-->
     <color name="clr_txt_fastest_high">#EE1A34</color>
-    <color name="clr_txt_fastest_medium">#FFE145</color>
-    <color name="clr_txt_fastest_low">#51FF6D</color>
+    <color name="clr_txt_fastest_medium">#FBC400</color>
+    <color name="clr_txt_fastest_low">#00C41F</color>
 
 </resources>
