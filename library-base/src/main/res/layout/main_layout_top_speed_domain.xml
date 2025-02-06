@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="-20dp"
-        android:background="@drawable/bg_btn_speed_c16"
+        android:background="@drawable/line_fastest_status_bg"
         android:drawableStart="@mipmap/main_icon_top_speed_reflesh"
         android:drawablePadding="5dp"
         android:paddingStart="10dp"
