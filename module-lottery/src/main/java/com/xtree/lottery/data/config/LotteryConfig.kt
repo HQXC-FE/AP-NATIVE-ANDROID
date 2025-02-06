@@ -438,7 +438,7 @@ val lotteries = arrayListOf(
                 alias = "xyft",
                 type = "new",
                 link = R.mipmap.lottery_pk10_1,
-                linkType = "animate",
+                linkType = "ssc",
                 curmid = "399000",
                 handicap = false
             ),
@@ -448,7 +448,7 @@ val lotteries = arrayListOf(
                 alias = "pk10",
                 type = "hot",
                 link = R.mipmap.lottery_pk10_2,
-                linkType = "animate",
+                linkType = "ssc",
                 curmid = "313012",
                 handicap = false
             ),
@@ -458,7 +458,7 @@ val lotteries = arrayListOf(
                 alias = "jssm",
                 type = "hot",
                 link = R.mipmap.lottery_pk10_3,
-                linkType = "animate",
+                linkType = "ssc",
                 curmid = "313212",
                 handicap = false
             ),
@@ -468,7 +468,7 @@ val lotteries = arrayListOf(
                 alias = "ydl10",
                 type = "hot",
                 link = R.mipmap.lottery_pk10_4,
-                linkType = "animate",
+                linkType = "ssc",
                 curmid = "347712",
                 handicap = false
             ),
