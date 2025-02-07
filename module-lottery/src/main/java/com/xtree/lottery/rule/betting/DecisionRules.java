@@ -10,7 +10,7 @@ import com.xtree.lottery.rule.betting.decision.LineMissRule;
 import com.xtree.lottery.rule.betting.decision.MultiCombinationRule;
 import com.xtree.lottery.rule.betting.decision.MultiRule;
 import com.xtree.lottery.rule.betting.decision.MultiplyRule;
-import com.xtree.lottery.rule.betting.decision.PositionChosenRule;
+import com.xtree.lottery.rule.betting.decision.PositionChosenDecisionRule;
 import com.xtree.lottery.rule.betting.decision.RankingChosenRule;
 import com.xtree.lottery.rule.betting.decision.RankingPkRule;
 import com.xtree.lottery.rule.betting.decision.SingleNumberMultipleBetsRule;
@@ -32,7 +32,7 @@ public class DecisionRules {
         rules.register(new AnyChosenRule());
         rules.register(new TimesChosenRule());
         rules.register(new GeneralElectionRule());
-        rules.register(new PositionChosenRule());
+        rules.register(new PositionChosenDecisionRule());
         rules.register(new SpanChosenRule());
         rules.register(new CombinationChosenRule());
         rules.register(new RankingChosenRule());

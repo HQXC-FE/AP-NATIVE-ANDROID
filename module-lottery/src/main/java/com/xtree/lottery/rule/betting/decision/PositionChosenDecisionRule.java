@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Rule(name = "PositionChosenRule", description = "任选位数算法")
-public class PositionChosenRule {
+public class PositionChosenDecisionRule {
 
     @Priority
     public int getPriority() {
