@@ -32,7 +32,7 @@ public class CallbackWrapperRule {
             // 获取历史记录列表
             List<Map<String, Object>> historyCodes = facts.get("historyCodes");
             Map<String, Object> currentMethod = facts.get("currentMethod");
-            String title = facts.get("title");
+            String title = facts.get("title") == null ? "" : facts.get("title");
 
             if (historyCodes != null) {
                 // 转换历史记录
