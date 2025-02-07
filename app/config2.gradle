@@ -9,12 +9,12 @@ android {
             versionCode 100
 
             //resValue "string", "app_name", "${name}"
-            resValue "string", "app_name", "意昂4T${versionCode}"
+            resValue "string", "app_name", "意昂凯捷FT${versionCode}"
             // 后面可能会改成 https://preyiang22test.oxldkm.com 如后续有连线问题 尝试看看
             resValue "string", "domain_api", "https://preyiang4.oxldkm.com"
             resValue "string", "domain_url", "https://preyiang4.oxldkm.com"
             resValue "string", "channel_name", "eon4"  // 渠道名称
-            resValue "string", "platform_set", "47"  // 平台代号,升级用 35-意昂, 38-意昂2 ，40-意昂3，47-意昂4
+            resValue "string", "platform_set", "47"  // 平台代号,升级用 35-意昂, 38-意昂2 ，40-意昂3，47-意昂4(意昂凯捷F)
             resValue "string", "build_time", "${buildTime()}"
             resValue "string", "mixpanel_token", "aeb0e83d57c9c765a9f0c1631f16e1d8"
             resValue "string", "ms_secret_key", "b4636d50-41d2-49f4-b843-07572a8d282f"
@@ -31,13 +31,13 @@ android {
         // 生产环境 发布用
         eon4_OL {
             applicationId "com.eon4.app"
-            versionName "1.0.7"
-            versionCode 107
-            resValue "string", "app_name", "意昂体育4"
+            versionName "1.0.0"
+            versionCode 100
+            resValue "string", "app_name", "意昂凯捷F"
             resValue "string", "domain_api", "http://175.27.143.79:46820"
             resValue "string", "domain_url", "https://h51.k8z8dv.xyz"
             resValue "string", "channel_name", "eon4"  // 渠道名称
-            resValue "string", "platform_set", "47"  // 平台代号,升级用 35-意昂, 38-意昂2 40-意昂3，47-意昂4
+            resValue "string", "platform_set", "47"  // 平台代号,升级用 35-意昂, 38-意昂2 40-意昂3，47-意昂4(意昂凯捷F)
             resValue "string", "build_time", "${buildTime()}"
             resValue "string", "mixpanel_token", "cce6df315eee2c445da416c6b717f114"
             resValue "string", "ms_secret_key", "b4636d50-41d2-49f4-b843-07572a8d282f"
