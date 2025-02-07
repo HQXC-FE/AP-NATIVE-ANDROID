@@ -608,6 +608,7 @@
     <color name="clr_txt_FFF8F8">#FFF8F8</color>
     <color name="clr_card_stroke_start">#A28D8D</color>
     <color name="clr_card_stroke_end">#3E3131</color>
+    <color name="color_ff7373">#FF7373</color>
     <!-- 投注 -->
     <color name="clr_bet_keyboard_bg">#514242</color>
     <color name="clr_bet_keyboard_txt">#867163</color>

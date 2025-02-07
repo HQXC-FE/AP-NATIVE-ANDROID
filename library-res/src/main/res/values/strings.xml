@@ -253,7 +253,7 @@
     <string name="txt_withdraw_choose">请选择提款方式</string>
     <string name="txt_withdraw_sure">确认</string>
     <string name="txt_withdraw_cancel">取消</string>
-    <string name="txt_withdraw_tip">请妥善保管好您的资金密码,如遗忘请使用密保功能找回或联系在线客服</string>
+    <string name="txt_withdraw_tip">备注：请妥善保管好您的资金密码，如遗忘请使用密保功能找回或联系在线客服处理 \n为了您的资金安全请务必设置谷歌验证码</string>
     <string name="txt_withdraw_usdt_tip">USDT介绍及提款教程</string>
     <string name="txt_withdraw_balance_tip">可用提款余额:%1$s其中%2$s可以使用虚拟币提款取出</string>
     <string name="txt_withdraw_bank_top_tip">%1$s 每天限制提款 %2$s 次，您已提款 %3$s 次，提款时间为 %4$s  至 %5$s  您今日剩余提款额度为 %6$s 元</string>
