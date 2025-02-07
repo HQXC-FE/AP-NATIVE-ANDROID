@@ -57,7 +57,7 @@
     <string name="txt_multiple_s">倍数：</string>
     <string name="txt_modes_s">模式：</string>
 
-    <string name="txt_inputview_tip2_mode1">每注号码之间请使用逗号【，】、分号【；】 或回车隔开。</string>
+    <string name="txt_inputview_tip2_mode1">每注号码之间请用一个空格【 】、逗号【，】或者分号【；】隔开</string>
     <string name="txt_inputview_tip2_mode2">每注号码之间请使用逗号【，】、分号【；】 或回车隔开。注意：号码之间要用空格隔开，不足2位要在前面加0。</string>
 
     <string name="lot_txt_confirm_solo_tip">投注包含单挑注单，单挑注单盈利上限为30000元\n是否继续投注?</string>
