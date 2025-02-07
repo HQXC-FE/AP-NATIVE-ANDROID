@@ -97,11 +97,13 @@ public class BettingEntryRule {
         }
         currentMethod.put("money_modes", currentMethodMoneyModes);
         // currentMethod.prize_group
-        for (UserMethodsResponse.DataDTO.PrizeGroupDTO item : rulesEntryData.getCurrentMethod().getPrizeGroup()) {
-            Map<String, String> currentMethodPrizeGroupItem = new HashMap<>();
-            currentMethodPrizeGroupItem.put("value", String.valueOf(item.getValue()));
-            currentMethodPrizeGroupItem.put("label", item.getLabel());
-            currentMethodPrizeGroup.add(currentMethodPrizeGroupItem);
+        if (null != rulesEntryData.getCurrentMethod().getPrizeGroup()) {
+            for (UserMethodsResponse.DataDTO.PrizeGroupDTO item : rulesEntryData.getCurrentMethod().getPrizeGroup()) {
+                Map<String, String> currentMethodPrizeGroupItem = new HashMap<>();
+                currentMethodPrizeGroupItem.put("value", String.valueOf(item.getValue()));
+                currentMethodPrizeGroupItem.put("label", item.getLabel());
+                currentMethodPrizeGroup.add(currentMethodPrizeGroupItem);
+            }
         }
         currentMethod.put("prize_group", currentMethodPrizeGroup);
         // currentMethod.prize_level
