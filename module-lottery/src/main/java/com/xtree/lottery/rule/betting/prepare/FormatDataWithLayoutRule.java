@@ -41,18 +41,19 @@ public class FormatDataWithLayoutRule {
 
             // 遍历布局，根据 place 将代码分组到 formatCodes 中
             for (int index = 0; index < layout.size(); index++) {
-                Map<String, Object> item = layout.get(index);
-                Integer place = Integer.parseInt((String) item.get("place"));
+//                Map<String, Object> item = layout.get(index);
+//                Integer place = Integer.parseInt((String) item.get("place"));
 
                 // 将 bet.codes[index] 的内容追加到对应 place 的列表中
                 if (betCodes.get(0) instanceof String) {
                     formatCodes = betCodes;
                 } else {
-                    // 确保 place 对应的列表已初始化
-                    while (formatCodes.size() <= place) {
+                    if (betCodes.size() > index) {
+                        formatCodes.add(index, betCodes.get(index));
+                    } else {
                         formatCodes.add(new ArrayList<>());
                     }
-                    ((List<String>) formatCodes.get(place)).addAll((List<String>) betCodes.get(index));
+
                 }
             }
             // 将格式化后的数据存入 facts

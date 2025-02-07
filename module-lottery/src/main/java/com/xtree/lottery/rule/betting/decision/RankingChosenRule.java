@@ -8,7 +8,9 @@ import org.jeasy.rules.annotation.Priority;
 import org.jeasy.rules.annotation.Rule;
 import org.jeasy.rules.api.Facts;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,17 +37,29 @@ public class RankingChosenRule {
             int num = 0;
 
             if (formatCodes != null) {
-                boolean noFinish = formatCodes.stream().anyMatch(List::isEmpty);
-
+                boolean noFinish = false;
+                for (List<?> list : formatCodes) {
+                    if (list.isEmpty()) {
+                        noFinish = true;
+                        break; // 发现空列表后立即退出循环，提升效率
+                    }
+                }
                 if (noFinish) {
                     num = 0;
                 } else {
-                    List<List<String>> allCombinations = cartesianProduct(formatCodes);
-                    List<List<String>> validCombinations = allCombinations.stream()
-                            .filter(item -> item.size() == new HashSet<>(item).size()) // 確保所有元素唯一
-                            .collect(Collectors.toList());
+                    // 计算笛卡尔积
+                    List<List<String>> allCombination = cartesianProduct(formatCodes);
 
-                    num = validCombinations.size();
+                    // 过滤掉有重复元素的组合
+                    Iterator<List<String>> iterator = allCombination.iterator();
+                    while (iterator.hasNext()) {
+                        List<String> item = iterator.next();
+                        if (item.size() != new HashSet<>(item).size()) {
+                            iterator.remove(); // 通过迭代器安全删除元素
+                        }
+                    }
+                    // 计算组合数量
+                    num = allCombination.size();
                 }
             }
 
@@ -55,18 +69,23 @@ public class RankingChosenRule {
         }
     }
 
-    private List<List<String>> cartesianProduct(List<List<String>> lists) {
-        if (lists.isEmpty()) return List.of(List.of());
-        List<String> firstList = lists.get(0);
-        List<List<String>> rest = cartesianProduct(lists.subList(1, lists.size()));
+    // 计算笛卡尔积
+    private static List<List<String>> cartesianProduct(List<List<String>> lists) {
+        List<List<String>> result = new ArrayList<>();
+        cartesianRecursive(lists, result, new ArrayList<>(), 0);
+        return result;
+    }
 
-        return firstList.stream()
-                .flatMap(item -> rest.stream().map(subList -> {
-                    List<String> newList = new java.util.ArrayList<>(subList);
-                    newList.add(0, item);
-                    return newList;
-                }))
-                .collect(Collectors.toList());
+    private static void cartesianRecursive(List<List<String>> lists, List<List<String>> result, List<String> temp, int depth) {
+        if (depth == lists.size()) {
+            result.add(new ArrayList<>(temp));
+            return;
+        }
+        for (String item : lists.get(depth)) {
+            temp.add(item);
+            cartesianRecursive(lists, result, temp, depth + 1);
+            temp.remove(temp.size() - 1); // 回溯
+        }
     }
 }
 
