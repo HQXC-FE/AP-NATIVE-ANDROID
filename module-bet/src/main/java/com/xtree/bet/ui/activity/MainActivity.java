@@ -29,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
-import com.drake.net.reflect.TypeToken;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
@@ -54,8 +53,6 @@ import com.xtree.bet.BR;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.fb.HotLeague;
-import com.xtree.bet.bean.response.pm.MatchInfo;
-import com.xtree.bet.bean.response.pm.MatchListRsp;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.constant.Constants;
@@ -110,6 +107,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private boolean mIsShowLoading = true;
     private boolean mIsChange = true;
     private boolean mIsFirstNetworkFinished;
+    private boolean mIsFirstLoadMatch = true;
     private UploadExcetionReq mUploadExcetionReq;
     /**
      * 赛事统计数据
@@ -127,6 +125,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private List<Long> mLeagueIdList = new ArrayList<>();
 
     private Disposable timerDisposable;
+    private Disposable sportsTimerDisposable;
     private Disposable firstNetworkFinishedDisposable;
     private Disposable firstNetworkExceptionDisposable;
 
@@ -952,10 +951,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         if (timerDisposable != null) {
             viewModel.removeSubscribe(timerDisposable);
         }
-        String json = SPUtils.getInstance().getString(SPKeyGlobal.SPORT_MATCH_CACHE, "");
-        if(!TextUtils.isEmpty(json)){
-            SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, "");
-        }
+
         timerDisposable = Observable.interval(5, 5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -964,6 +960,24 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     viewModel.statistical(playMethodType);
                 });
         viewModel.addSubscribe(timerDisposable);
+    }
+
+    /**
+     * 按秒更新赛事时间
+     */
+    private void initSportsTimer() {
+        if (sportsTimerDisposable != null) {
+            viewModel.removeSubscribe(sportsTimerDisposable);
+        }
+        sportsTimerDisposable = Observable.interval((long)1.3, (long)1.3, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                   if(mLeagueAdapter != null){
+                       mLeagueAdapter.countItemTime();
+                   }
+                });
+        viewModel.addSubscribe(sportsTimerDisposable);
     }
 
     /**
@@ -1161,7 +1175,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
      * 刷新赛事列表
      */
     private void refreshLeague() {
-        System.out.println("================== MainActivity refreshLeague ===================");
         int firstVisiblePos = binding.rvLeague.getFirstVisiblePosition();
         int lastVisiblePos = binding.rvLeague.getLastVisiblePosition();
         List<Long> matchIdList = new ArrayList<>();
@@ -1221,6 +1234,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     protected void onResume() {
         super.onResume();
         initTimer();
+        initSportsTimer();
         setCgBtCar();
         if (mLeagueAdapter != null) {
             mLeagueAdapter.notifyDataSetChanged();
@@ -1574,7 +1588,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private void updateData() {
-        System.out.println("============= MainActivity updateData ===============");
         if (playMethodPos == 4) {
             updateChampionMatchData();
         } else {
@@ -1586,9 +1599,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
      * 更新联赛数据
      */
     private void updateLeagueData() {
-        System.out.println("============= MainActivity updateLeagueData ===============");
         if (mLeagueAdapter == null) {
-            System.out.println("============= MainActivity updateLeagueData mLeagueList 1111 ==============="+mLeagueList.size());
             mLeagueAdapter = new LeagueAdapter(MainActivity.this, mLeagueList);
             initLeagueListView();
             binding.rvLeague.setAdapter(mLeagueAdapter);
@@ -1607,17 +1618,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     binding.rvLeague.setEnabled(false);
                 }
             });
+            clearSportCache();
         } else {
-            if (mLeagueList != null && mLeagueList.size() > 0) {
-                System.out.println("============= MainActivity updateLeagueData mLeagueList 2222 ==============="+mLeagueList.get(0).getMatchList().size());
-                if(mLeagueList.get(0).getMatchList().size() > 0){
-                    System.out.println("============= MainActivity updateLeagueData mLeagueList 2222aaaaa ==============="+mLeagueList.get(0).getMatchList().get(0).getTime());
-                }
-            }
-
             if (!(binding.rvLeague.getExpandableListAdapter() instanceof LeagueAdapter)) {
                 binding.rvLeague.setAdapter(mLeagueAdapter);
             }
+            mLeagueAdapter.resetTime();//自动记时归0，校正成接口时间
             mLeagueAdapter.setData(mLeagueList);
             if (mIsChange) {
                 setGoingOnAllExpand(true);
@@ -1839,5 +1845,17 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         mIsShowLoading = false;
         getMatchData(String.valueOf(getSportId()), mOrderBy, mLeagueIdList, null,
                 playMethodType, searchDatePos, false, false);
+    }
+
+    // 开启缓存接口的情况：首次加载赛事列表调用缓存接口数据，
+    // 后面因为需要更新比赛时间不适合再调用缓存接口数据，
+    // 因调用缓存接口数据是为了解决赛事白屏的问题
+    // 所以需要清理缓存接口调用变成直连三方数据
+    private void clearSportCache() {
+        String json = SPUtils.getInstance().getString(SPKeyGlobal.SPORT_MATCH_CACHE, "");
+        if(!TextUtils.isEmpty(json)){
+            SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, "");
+            mIsFirstLoadMatch = false;
+        }
     }
 }

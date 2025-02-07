@@ -58,6 +58,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     private String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
     private int liveHeaderPosition;
     private int noLiveHeaderPosition;
+    private int secoend = 0;
 
     private PageHorizontalScrollView.OnScrollListener mOnScrollListener;
 
@@ -283,7 +284,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     @Override
     public View getRealChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-
         ChildHolder holder;
         Match match = (Match) getChild(groupPosition, childPosition);
         if (match == null) {
@@ -343,7 +343,15 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                     if (mc.contains("休息") || mc.contains("结束")) {
                         binding.tvMatchTime.setText(match.getStage());
                     } else {
-                        binding.tvMatchTime.setText(mc + " " + match.getTime());
+                        if(match.getSportId().equals("1")){ //足球
+                            int currentTime = match.getTimeS() + secoend;
+                            binding.tvMatchTime.setText(mc + " " + formatTime(currentTime));
+                        }else if(match.getSportId().equals("2")){ //篮球
+                            int currentTime = match.getTimeS() - secoend;
+                            binding.tvMatchTime.setText(mc + " " + formatTime(currentTime));
+                        }else{ //其它
+                            binding.tvMatchTime.setText(mc + " " + match.getTime());
+                        }
                     }
                 } else {
                     binding.tvMatchTime.setText(match.getStage());
@@ -580,5 +588,22 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             itemView = view;
         }
     }
+
+    public void countItemTime() {
+        secoend = secoend+1;
+        notifyDataSetChanged(); // 刷新列表
+    }
+
+    public void resetTime() {
+        System.out.println("===================== LeagueAdapter resetTime =======================");
+        secoend = 0;
+    }
+
+    public static String formatTime(int totalSeconds) {
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
 
 }

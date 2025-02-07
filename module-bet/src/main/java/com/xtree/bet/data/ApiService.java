@@ -131,15 +131,6 @@ public interface ApiService {
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<FbStatisticalInfoCacheRsp>> fbStatistical(@Body Map<String, String> map);
 
-//    /**
-//     * 按运动、分类类型统计可投注的赛事个数
-//     * 按运动、分类类型获取单个赛事详情及玩法
-//     * @return
-//     */
-//    @POST("/api/sports/fb/forward?api=/v1/match/getMatchDetail&method=post")
-//    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-//    Flowable<BaseResponse<MatchInfo>> fbGetMatchDetail(@Body Map<String, String> map);
-
     /**
      * 获取 FB体育请求服务地址
      * @return
@@ -155,15 +146,6 @@ public interface ApiService {
     @POST("/api/sports/fbxc/forward?api=/v1/match/statistical&method=post")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<FbStatisticalInfoCacheRsp>> fbxcStatistical(@Body Map<String, String> map);
-
-//    /**
-//     * 按运动、分类类型统计可投注的赛事个数
-//     * 按运动、分类类型获取单个赛事详情及玩法
-//     * @return
-//     */
-//    @POST("/api/sports/fbxc/forward?api=/v1/match/getMatchDetail&method=post")
-//    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-//    Flowable<BaseResponse<MatchInfo>> fbxcGetMatchDetail(@Body Map<String, String> map);
 
     /**
      * 获取 PM赛事列表
