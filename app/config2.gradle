@@ -16,8 +16,11 @@ android {
             resValue "bool", "is_tag", "false" // 是否开启统计
             resValue "string", "mixpanel_token", "6a1ec9cae116d7a920a4697a46599ca9"
             resValue "string", "ms_secret_key", "139dbbd0-5ab4-4be6-b197-e3af17a95279"
+            resValue "string", "sentry_dsn", "https://37abb5e9cfc1ee3efe43f0f96abd9b33@o4507447554539520.ingest.us.sentry.io/4508771117105152"
             resValue "string", "domain_api_list", "https://hxing5pre.hxing5vip.com;"
             resValue "string", "domain_url_list", "https://hxing5pre.hxing5vip.com;"
+            resValue "string", "domain_url_list_third", ""
+
             multiDexEnabled true
             dimension "channelName"
         }
@@ -34,6 +37,7 @@ android {
             resValue "bool", "is_tag", "true" // 是否开启统计
             resValue "string", "mixpanel_token", "6a1ec9cae116d7a920a4697a46599ca9"
             resValue "string", "ms_secret_key", "139dbbd0-5ab4-4be6-b197-e3af17a95279"
+            resValue "string", "sentry_dsn", "https://37abb5e9cfc1ee3efe43f0f96abd9b33@o4507447554539520.ingest.us.sentry.io/4508771117105152"
             resValue "string", "domain_api_list", "https://app1.d6d7vh.click;" +
                     "https://app1.a4x6ur.click;" +
                     "https://app1.k2j8gm.click;" +
@@ -69,6 +73,13 @@ android {
                     "https://h53.bavxj.vip;" +
                     "https://h54.jutqu.vip;" +
                     "https://h55.vvhoq.vip;"
+
+            resValue "string", "domain_url_list_third", "https://hx5aliapp.k4z6vh.vip/hx5/app_config_heng5.json" +
+                    ";https://hx5aliapp.y4q4nq.vip/hx5/app_config_heng5.json" +
+                    ";https://hx5cn2app.h3c6jx.vip/hx5/app_config_heng5.json" +
+                    ";https://hx5cn2app.r6a7qi.vip/hx5/app_config_heng5.json" +
+                    ";https://hx5scdnapp.r7u1hp.vip/hx5/app_config_heng5.json" +
+                    ";https://hx5scdnapp.w5r7jy.vip/hx5/app_config_heng5.json"
             multiDexEnabled true
             dimension "channelName"
         }
