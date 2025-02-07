@@ -55,10 +55,10 @@
                 android:text="@string/txt_open_acc_bank" />
 
             <TextView
-                android:id="@+id/tvw_type"
+                android:id="@+id/tvwType"
                 style="@style/style_wd_info_title"
                 android:gravity="start"
-                android:textColor="@color/clr_white"
+
                 tools:text="XX银行" />
         </LinearLayout>
 
@@ -78,7 +78,6 @@
                 android:id="@+id/tvw_account"
                 style="@style/style_wd_info_title"
                 android:gravity="start"
-                android:textColor="@color/clr_white"
                 tools:text="***3281"
                 android:text="123123123123"/>
         </LinearLayout>
@@ -95,7 +94,6 @@
                 android:gravity="start"
                 android:minEms="2"
                 android:text="@string/txt_card_locked"
-                android:textColor="@color/clr_white"
                 android:visibility="gone"
                 tools:visibility="visible" />
 

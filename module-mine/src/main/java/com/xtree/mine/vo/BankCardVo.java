@@ -18,4 +18,16 @@ public class BankCardVo {
     public String status; // "1", 1-正常, 3-锁定
     //public String utime; // "2024-01-01 16:47:50",
     public String atime; // "2024-01-01 16:47:50"
+
+    @Override
+    public String toString() {
+        return "BankCardVo{" +
+                "id='" + id + '\'' +
+                ", user_name='" + user_name + '\'' +
+                ", bank_name='" + bank_name + '\'' +
+                ", account='" + account + '\'' +
+                ", status='" + status + '\'' +
+                ", atime='" + atime + '\'' +
+                '}';
+    }
 }

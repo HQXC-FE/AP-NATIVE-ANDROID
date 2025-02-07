@@ -26,7 +26,11 @@
             android:paddingBottom="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/white"
+            android:shadowDx="0"
+            android:shadowDy="-1"
+            android:shadowColor="@color/clr_btn_grey01">
 
             <TextView
                 android:id="@+id/tvw_title"
@@ -47,9 +51,34 @@
                 tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            style="@style/style_cm_tip_small_orange"
-            android:text="@string/txt_note_asterisks_cannot_empty" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_bind_top_bg"
+            android:orientation="vertical"
+            >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/cm_bind_top_notic"
+                android:text="注意"
+                android:layout_marginStart="12dp"
+                />
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="24dp"
+                android:text="@string/txt_note_cs_cannot_unlock_bank_card"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"/>
+        </LinearLayout>
 
         <TextView
             style="@style/style_bind_title"
@@ -83,9 +112,9 @@
             style="@style/style_cm_tip_small_grey"
             android:text="@string/txt_enter_last_bank_card_num" />
 
-        <TextView
+     <!--   <TextView
             style="@style/style_cm_tip_small_orange"
-            android:text="@string/txt_note_cs_cannot_unlock_bank_card" />
+            android:text="@string/txt_note_cs_cannot_unlock_bank_card" />-->
 
         <LinearLayout style="@style/style_cm_btn_ll">
 
