@@ -38,10 +38,6 @@ import com.xtree.lottery.ui.lotterybet.model.LotteryOrderModel;
 import com.xtree.lottery.ui.lotterybet.model.LotteryPlayCollectionModel;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 import com.xtree.lottery.utils.AnimUtils;
-import com.xtree.lottery.utils.EventConstant;
-import com.xtree.lottery.utils.EventVo;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -175,7 +171,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                                     labels2DTO.setUserPlay(true);
                                 }
                                 model.getLabel().getLabels().add(labels2DTO);
-                                model.setUserMethods(um);
+                                model.putUserMethods(um.getMethodid(), um);
                                 break;
                             }
                         }
@@ -212,7 +208,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     }
 
                     tabList.add(title);
-                    LotteryBetsModel lotteryBetsModel = new LotteryBetsModel(title, m.getMenulabel(), label, m.getUserMethods());
+                    LotteryBetsModel lotteryBetsModel = new LotteryBetsModel(title, m.getMenulabel(), label, m.getUserMethod(label.getMethodid()));
                     betModels.add(lotteryBetsModel);
                 }
             }

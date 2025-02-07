@@ -5,6 +5,8 @@ import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
 
+import java.util.HashMap;
+
 /**
  * Created by KAKA on 2024/4/29.
  * Describe:
@@ -13,7 +15,7 @@ public class LotteryPlayCollectionModel extends BindModel {
 
     private MenuMethodsData.LabelsDTO.Labels1DTO label;
     private MenuMethodsData.LabelsDTO menulabel;
-    private UserMethodsResponse.DataDTO userMethods;
+    private HashMap<String, UserMethodsResponse.DataDTO> userMethods = new HashMap<>();
     private Lottery lottery;
 
     public Lottery getLottery() {
@@ -24,12 +26,12 @@ public class LotteryPlayCollectionModel extends BindModel {
         this.lottery = lottery;
     }
 
-    public UserMethodsResponse.DataDTO getUserMethods() {
-        return userMethods;
+    public UserMethodsResponse.DataDTO getUserMethod(String methodid) {
+        return userMethods.get(methodid);
     }
 
-    public void setUserMethods(UserMethodsResponse.DataDTO userMethods) {
-        this.userMethods = userMethods;
+    public void putUserMethods(String methodid, UserMethodsResponse.DataDTO userMethod) {
+        this.userMethods.put(methodid, userMethod);
     }
 
     public MenuMethodsData.LabelsDTO.Labels1DTO getLabel() {
