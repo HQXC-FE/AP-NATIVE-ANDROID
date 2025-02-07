@@ -29,7 +29,6 @@ import com.xtree.home.vo.EleVo;
 import com.xtree.home.vo.GameStatusVo;
 import com.xtree.home.vo.GameVo;
 import com.xtree.home.vo.NoticeVo;
-import com.xtree.home.vo.RedPocketVo;
 import com.xtree.home.vo.SettingsVo;
 import com.xtree.home.vo.VipInfoVo;
 
@@ -65,7 +64,6 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<SettingsVo> liveDataSettings = new MutableLiveData<>();
     public MutableLiveData<HashMap<String, ArrayList<AugVo>>> liveDataAug = new MutableLiveData<>();
     public MutableLiveData<EleVo> liveDataEle = new MutableLiveData<>();
-    public MutableLiveData<RedPocketVo> liveDataRedPocket = new MutableLiveData<>();
     public MutableLiveData<AppUpdateVo> liveDataUpdate = new MutableLiveData<>();//更新
 
     String public_key;
@@ -465,8 +463,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         addSubscribe(disposable);
     }
 
-    public void getEle(Context context, int id, int page, int pageSize, String cateId, int isHot) {
-        LoadingDialog.show(context);
+    public void getEle(int id, int page, int pageSize, String cateId, int isHot) {
         HashMap map = new HashMap<>();
         map.put("platform_id", id);
         map.put("page", page);
@@ -480,30 +477,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                     @Override
                     public void onResult(EleVo vo) {
                         CfLog.i(vo.toString().toString());
-                        Gson gson = new Gson();
-                        SPUtils.getInstance().put(String.valueOf(id), gson.toJson(vo));
                         liveDataEle.setValue(vo);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        super.onError(t);
-                        //ToastUtils.showLong("请求失败");
-                    }
-                });
-        addSubscribe(disposable);
-    }
-
-    public void getRedPocket() {
-        Disposable disposable = (Disposable) model.getApiService().getRedPocket()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<RedPocketVo>() {
-                    @Override
-                    public void onResult(RedPocketVo vo) {
-                        CfLog.i(vo.toString());
-                        liveDataRedPocket.setValue(vo);
                     }
 
                     @Override
