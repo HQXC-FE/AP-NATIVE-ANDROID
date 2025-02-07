@@ -37,8 +37,8 @@ public class ElevenOptionalMultipleRule {
             Map<String, String> currentMethod = facts.get("currentMethod");
             String methodName = currentCategory.get("name") + currentMethod.get("name");
             List<String> formatCodes = facts.get("formatCodes");
-            double currentPrize = facts.get("currentPrize");
-            double currentBonus = facts.get("currentBonus");
+            double currentPrize = Double.parseDouble(facts.get("currentPrize"));
+            double currentBonus = Double.parseDouble(facts.get("currentBonus"));
 
             int chooseNum = Math.min(formatCodes.size(), 5);
 
