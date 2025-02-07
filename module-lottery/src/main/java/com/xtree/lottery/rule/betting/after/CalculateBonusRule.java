@@ -33,8 +33,8 @@ public class CalculateBonusRule {
         try {
             String methodName = (String) ((Map<String, Object>) facts.get("currentCategory")).get("name");
             Integer num = facts.get("num");
-            double currentBonus = facts.get("currentBonus");
-            double currentPrize = facts.get("currentPrize");
+            double currentBonus = Double.parseDouble(facts.get("currentBonus"));
+            double currentPrize = Double.parseDouble(facts.get("currentPrize"));
 
             if (num == null || methodName == null) {
                 return;
