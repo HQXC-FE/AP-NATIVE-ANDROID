@@ -38,7 +38,7 @@ public class SingleLevelPrizeRule {
     @Action
     public void then(Facts facts) {
         try {
-            double currentPrize = facts.get("currentPrize");
+            double currentPrize = Double.parseDouble(facts.get("currentPrize"));
             double money = facts.get("money");
             Map<String, Integer> attached = facts.get("attached");
             int attachedNumber = attached.get("number");
