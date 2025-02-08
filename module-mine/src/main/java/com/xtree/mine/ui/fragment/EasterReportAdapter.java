@@ -46,19 +46,12 @@ public class EasterReportAdapter extends CachedAutoRefreshAdapter<EasterReportIt
         binding.tvwTime.setText(vo.recordsCount);
         binding.tvwReturnMoney.setText(vo.total_sum);
         if (vo.user_str.isEmpty()) {
-            binding.tvwTouchMember.setText("--");
-        } else if (vo.user_str.contains(",")) {
-            if (vo.user_str.length() > maxNum) {
-                String detailString = vo.user_str.substring(0, maxNum) + "..>>";
-                binding.tvwTouchMember.setText(detailString);
-            } else {
-                binding.tvwTouchMember.setText(vo.user_str + "..>>");
-            }
-            binding.tvwTouchMember.setOnClickListener(v -> {
-                new XPopup.Builder(ctx).asCustom(new MemberDialog(ctx, vo.username, vo.user_str)).show();
-            });
+            binding.tvwTouchMember.setText(vo.user_str_count);
         } else {
-            binding.tvwTouchMember.setText(vo.user_str);
+            binding.tvwTouchMember.setText(vo.user_str_count);
+            //binding.tvwTouchMember.setOnClickListener(v -> {
+            //    new XPopup.Builder(ctx).asCustom(new MemberDialog(ctx, vo.username, vo.user_str)).show();
+            //});
         }
     }
 }
