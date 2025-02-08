@@ -63,7 +63,7 @@ public class CombinationProfitCalculationRule {
     private double getRate(Map<String, Object> currentMethod, Map<String, Object> mode) {
         return ((List<Map<String, Object>>) currentMethod.get("money_modes")).stream()
                 .filter(m -> m.get("modeid").equals(mode.get("modeid")))
-                .map(m -> (double) m.get("rate"))
+                .map(m -> Double.parseDouble((String) m.get("rate")))
                 .findFirst()
                 .orElse(1.0);
     }
