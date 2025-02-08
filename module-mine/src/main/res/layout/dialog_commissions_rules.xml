@@ -6,6 +6,10 @@
         <variable
             name="model"
             type="com.xtree.mine.ui.rebateagrt.viewmodel.CommissionsRulesViewModel" />
+
+        <import type="android.text.TextUtils" />
+
+        <import type="android.view.View" />
     </data>
 
     <FrameLayout
@@ -50,6 +54,7 @@
                         android:textStyle="bold"
                         android:gravity="center"
                         android:background="@color/clr_main_11"
+                        android:visibility="@{TextUtils.isEmpty(model.title1)?View.GONE:View.VISIBLE}"
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -69,6 +74,7 @@
                         android:background="@color/clr_main_11"
                         android:layout_marginStart="1dp"
                         android:layout_marginEnd="1dp"
+                        android:visibility="@{TextUtils.isEmpty(model.title2)?View.GONE:View.VISIBLE}"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/item_tv1"
                         app:layout_constraintEnd_toStartOf="@id/item_tv3"
@@ -85,6 +91,7 @@
                         android:textStyle="bold"
                         android:gravity="center"
                         android:background="@color/clr_main_11"
+                        android:visibility="@{TextUtils.isEmpty(model.title3)?View.GONE:View.VISIBLE}"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@id/item_tv2"
                         app:layout_constraintBottom_toBottomOf="parent"

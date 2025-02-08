@@ -66,30 +66,26 @@ public class CommissionsRulesViewModel extends BaseViewModel<MineRepository> {
 
     private final ArrayList<BindModel> com1Models = new ArrayList<BindModel>() {
         {
-            add(new CommissionsRulesModel("0", "≥100,000", "1.5%"));
-            add(new CommissionsRulesModel("0", "≥300,000", "2%"));
+            add(new CommissionsRulesModel("", "大于10万", "1.5%"));
+            add(new CommissionsRulesModel("", "大于30万", "2%"));
         }
     };
 
     private final ArrayList<BindModel> com2Models = new ArrayList<BindModel>() {
         {
-            add(new CommissionsRulesModel("0", "1-9,999", "23%"));
-            add(new CommissionsRulesModel("3", "10,000-50,000", "25%"));
-            add(new CommissionsRulesModel("4", "50,001-100,000", "27%"));
-            add(new CommissionsRulesModel("5", "100,001-200,000", "30%"));
-            add(new CommissionsRulesModel("6", "200,001-500,000", "35%"));
-            add(new CommissionsRulesModel("10", "≥500,001", "40%"));
+            add(new CommissionsRulesModel("保底", "3","23%"));
+            add(new CommissionsRulesModel("10000-50000","3", "25%"));
+            add(new CommissionsRulesModel("50000-100,000","4", "27%"));
+            add(new CommissionsRulesModel("100000-200000","5","30%"));
+            add(new CommissionsRulesModel("200000-500000","6", "33%"));
+            add(new CommissionsRulesModel("500000-1000000", "8","35%"));
+            add(new CommissionsRulesModel( "100万以上", "10","40%"));
         }
     };
 
     private final ArrayList<BindModel> agentModels = new ArrayList<BindModel>() {
         {
-            add(new CommissionsRulesModel("3", "≥100.000", "2%"));
-            add(new CommissionsRulesModel("3", "≥300.000", "4%"));
-            add(new CommissionsRulesModel("5", "≥500.000", "5%"));
-            add(new CommissionsRulesModel("8", "≥1000.000", "8%"));
-            add(new CommissionsRulesModel("10", "≥1500.000", "10%"));
-            add(new CommissionsRulesModel("15", "≥2000.000", "12%"));
+            add(new CommissionsRulesModel("1", "1", "2%"));
         }
     };
     public final MutableLiveData<String> title = new MutableLiveData<>();
@@ -121,19 +117,29 @@ public class CommissionsRulesViewModel extends BaseViewModel<MineRepository> {
     }
 
     private void initCommissionsData() {
-        title.setValue("体育分红制度");
-        title1.setValue("玩家活跃要求");
-        title2.setValue("总输赢");
-        title3.setValue("分红");
 
         int level = SPUtils.getInstance().getInt(SPKeyGlobal.USER_LEVEL);
 
         if (level == 2) {
-            datas.setValue(com1Models);
+            title.setValue("体育分红制度");
+            title1.setValue("");
+            title2.setValue("团队月净亏损");
+            title3.setValue("分红比例");
+
         } else {
-            datas.setValue(com2Models);
+            title.setValue("体育分红制度");
+            title1.setValue("月亏损金额");
+            title2.setValue("活跃人数");
+            title3.setValue("佣金比例");
         }
 
+        if (level == 2) {
+            datas.setValue(com1Models);
+        } else if (level == 3) {
+            datas.setValue(com2Models);
+        } else {
+            datas.setValue(agentModels);
+        }
     }
 
     public void setActivity(FragmentActivity mActivity) {

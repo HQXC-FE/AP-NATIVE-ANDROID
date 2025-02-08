@@ -6,6 +6,10 @@
         <variable
             name="m"
             type="com.xtree.mine.ui.rebateagrt.model.CommissionsRulesModel" />
+
+        <import type="android.text.TextUtils" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,6 +27,7 @@
             android:textColor="@color/clr_txt_mouse5"
             android:gravity="center"
             android:background="@color/clr_main_10"
+            android:visibility="@{TextUtils.isEmpty(m.text1)?View.GONE:View.VISIBLE}"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +46,7 @@
             android:background="@color/clr_main_10"
             android:layout_marginStart="1dp"
             android:layout_marginEnd="1dp"
+            android:visibility="@{TextUtils.isEmpty(m.text2)?View.GONE:View.VISIBLE}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/item_tv1"
             app:layout_constraintEnd_toStartOf="@id/item_tv3"
@@ -56,6 +62,7 @@
             android:textColor="@color/clr_txt_mouse5"
             android:gravity="center"
             android:background="@color/clr_main_10"
+            android:visibility="@{TextUtils.isEmpty(m.text3)?View.GONE:View.VISIBLE}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/item_tv2"
             app:layout_constraintBottom_toBottomOf="parent"
