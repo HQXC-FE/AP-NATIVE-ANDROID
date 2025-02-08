@@ -118,7 +118,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
         LotteryBetRequest lotteryBetRequest = new LotteryBetRequest();
         ArrayList<LotteryBetRequest.BetOrderData> betOrders = new ArrayList<>();
 
-        int money = 0;
+        double money = 0;
         int nums = 0;
         for (BindModel bindModel : datas.getValue()) {
             LotteryBetRequest.BetOrderData data = (LotteryBetRequest.BetOrderData) bindModel;

@@ -249,7 +249,7 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
         LotteryBetRequest lotteryBetRequest = new LotteryBetRequest();
 
 
-        int money = 0;
+        double money = 0;
         int nums = 0;
         for (LotteryBetRequest.BetOrderData data : betOrders) {
             money += data.getMoney();
