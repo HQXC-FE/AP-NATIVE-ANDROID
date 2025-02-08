@@ -42,8 +42,7 @@ class FundsPwdFragment : BaseFragment<FragmentFundsPwdBinding, VerifyViewModel>(
             //如果没有资金密码，旧的输入用户资金密码框不显示
             //标题为设置资金密码
             if (!has_securitypwd) {
-                binding.etPwd.visibility = View.INVISIBLE
-                binding.ckbEye.visibility = View.GONE
+                binding.clPwd.visibility = View.GONE
                 binding.tvTitle.setText(R.string.txt_funds_pwd_set)
             }
         }
