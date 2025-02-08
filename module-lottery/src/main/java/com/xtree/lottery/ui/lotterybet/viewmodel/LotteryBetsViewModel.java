@@ -122,6 +122,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 money += betOrderData.getMoney();
             }
             betTotalLiveData.setValue(new LotteryBetsTotal(nums, money));
+        }else{
+            betTotalLiveData.setValue(null);
         }
     }
 
