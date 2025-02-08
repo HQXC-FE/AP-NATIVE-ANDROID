@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
@@ -29,6 +30,7 @@ import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.ui.lotterybet.LotteryChipSettingDialogFragment;
 import com.xtree.lottery.ui.lotterybet.data.LotteryHandicapPrizeData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
+import com.xtree.lottery.ui.lotterybet.model.LotteryBetsTotal;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 
 import java.lang.ref.WeakReference;
@@ -103,12 +105,16 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
     public MutableLiveData<int[]> chips = new MutableLiveData<>(new int[]{10, 50, 100, 5000, 10000});
     //彩票信息
     public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
+    //投注数和总金额
+    public MediatorLiveData<LotteryBetsTotal> betTotalLiveData = new MediatorLiveData<>();
+
     //清除投注框事件
     public SingleLiveData<String> clearBetEvent = new SingleLiveData<>();
     public LotteryViewModel lotteryViewModel;
     private HandicapResponse handicapMethods;
     private WeakReference<FragmentActivity> mActivity = null;
     private BasePopupView popupView;
+
     public LotteryHandicapViewModel(@NonNull Application application) {
         super(application);
     }
@@ -123,6 +129,8 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
         getHandicapMethods();
         getUserBalance();
         initPrize();
+        betTotalLiveData.addSource(betLiveData, betOrders -> calBetOrdersNums());
+        betTotalLiveData.addSource(moneyLiveData, betOrders -> calBetOrdersNums());
     }
 
     private void initPrize() {
@@ -134,6 +142,23 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
             prizeMap.add(new LotteryHandicapPrizeData(profileVo.rebate_percentage, 1));
         }
         prizeSwitchData.observeForever(prizeObserver);
+    }
+
+    private void calBetOrdersNums() {
+        List<LotteryBetRequest.BetOrderData> betOrderDataList = betLiveData.getValue();
+        String moneyValue = moneyLiveData.getValue();
+        if (betOrderDataList != null) {
+            int nums = 0;
+            double money = 0;
+            for (LotteryBetRequest.BetOrderData betOrderData :
+                    betOrderDataList) {
+                nums += betOrderData.getNums();
+                money +=Double.valueOf(moneyValue);
+            }
+            betTotalLiveData.setValue(new LotteryBetsTotal(nums, money));
+        } else {
+            betTotalLiveData.setValue(null);
+        }
     }
 
     private void setActivity(FragmentActivity mActivity) {
