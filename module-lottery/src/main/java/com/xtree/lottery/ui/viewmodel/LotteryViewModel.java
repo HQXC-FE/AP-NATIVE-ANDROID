@@ -1,6 +1,9 @@
 package com.xtree.lottery.ui.viewmodel;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -319,24 +322,40 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
             @Override
             public void onFail(BusinessException t) {
                 super.onFail(t);
-                MsgDialog dialog = new MsgDialog(view.getContext(), "", t.message, true, new TipDialog.ICallBack() {
-                    @Override
-                    public void onClickLeft() {
+                Context realContext = view.getContext();
+                while (realContext instanceof ContextWrapper && !(realContext instanceof Activity)) {
+                    realContext = ((ContextWrapper) realContext).getBaseContext();
+                }
 
-                    }
+                while (realContext instanceof ContextWrapper && !(realContext instanceof Activity)) {
+                    realContext = ((ContextWrapper) realContext).getBaseContext();
+                }
 
-                    @Override
-                    public void onClickRight() {
-                        if (popupView != null) {
-                            popupView.dismiss();
+                if (realContext instanceof Activity) {
+                    Activity activity = (Activity) realContext;
+                    // 继续你的逻辑
+                    MsgDialog dialog = new MsgDialog(activity, "", t.message, true, new TipDialog.ICallBack() {
+                        @Override
+                        public void onClickLeft() {
+
                         }
-                    }
-                });
 
-                popupView = new XPopup.Builder(view.getContext())
-                        .dismissOnTouchOutside(true)
-                        .dismissOnBackPressed(true)
-                        .asCustom(dialog).show();
+                        @Override
+                        public void onClickRight() {
+                            if (popupView != null) {
+                                popupView.dismiss();
+                            }
+                        }
+                    });
+
+                    popupView = new XPopup.Builder(activity)
+                            .dismissOnTouchOutside(true)
+                            .dismissOnBackPressed(true)
+                            .asCustom(dialog).show();
+                } else {
+                    ToastUtils.showError(t.message);
+                }
+
             }
         });
     }

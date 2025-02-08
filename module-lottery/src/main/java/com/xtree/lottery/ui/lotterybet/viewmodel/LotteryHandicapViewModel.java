@@ -1,11 +1,15 @@
 package com.xtree.lottery.ui.lotterybet.viewmodel;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
@@ -26,6 +30,7 @@ import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.ui.lotterybet.LotteryChipSettingDialogFragment;
 import com.xtree.lottery.ui.lotterybet.data.LotteryHandicapPrizeData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
+import com.xtree.lottery.ui.lotterybet.model.LotteryBetsTotal;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 
 import java.lang.ref.WeakReference;
@@ -36,7 +41,6 @@ import java.util.List;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
-import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -47,17 +51,9 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
  */
 public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> implements TabLayout.OnTabSelectedListener {
 
-    public LotteryHandicapViewModel(@NonNull Application application) {
-        super(application);
-    }
-
-    public LotteryHandicapViewModel(@NonNull Application application, LotteryRepository model) {
-        super(application, model);
-    }
-
-    private HandicapResponse handicapMethods;
+    //返点数据
+    public static ArrayList<LotteryHandicapPrizeData> prizeMap = new ArrayList<>();
     public final ArrayList<LotteryBetsModel> betModels = new ArrayList<LotteryBetsModel>();
-    private WeakReference<FragmentActivity> mActivity = null;
     public ObservableField<ArrayList<String>> tabs = new ObservableField<>(new ArrayList<>());
     public MutableLiveData<LotteryBetsModel> currentBetModel = new MutableLiveData<LotteryBetsModel>();
     //投注金额
@@ -66,31 +62,6 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
     public MutableLiveData<String> balanceData = new MutableLiveData<>();
     //奖金玩法返点
     public MutableLiveData<LotteryHandicapPrizeData> prizeData = new MutableLiveData<>(new LotteryHandicapPrizeData("0%", 2));
-    //是否启用奖金玩法
-    public MutableLiveData<Boolean> prizeSwitchData = new MutableLiveData<>(false);
-    //当前有效投注项
-    public MutableLiveData<List<LotteryBetRequest.BetOrderData>> betLiveData = new MutableLiveData<>(new ArrayList<>());
-    //显示选择筹码
-    public MutableLiveData<Boolean> showChipSetting = new MutableLiveData<>(false);
-    //筹码集
-    public MutableLiveData<int[]> chips = new MutableLiveData<>(new int[]{10, 50, 100, 5000, 10000});
-    //彩票信息
-    public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
-    //返点数据
-    public static ArrayList<LotteryHandicapPrizeData> prizeMap = new ArrayList<>();
-    //清除投注框事件
-    public SingleLiveData<String> clearBetEvent = new SingleLiveData<>();
-    private BasePopupView popupView;
-    public LotteryViewModel lotteryViewModel;
-
-    public void initData(FragmentActivity mActivity, Lottery lottery) {
-        setActivity(mActivity);
-        lotteryLiveData.setValue(lottery);
-        getHandicapMethods();
-        getUserBalance();
-        initPrize();
-    }
-
     //返点监听
     private final Observer<Boolean> prizeObserver = new Observer<Boolean>() {
         @Override
@@ -124,6 +95,43 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
             }
         }
     };
+    //是否启用奖金玩法
+    public MutableLiveData<Boolean> prizeSwitchData = new MutableLiveData<>(false);
+    //当前有效投注项
+    public MutableLiveData<List<LotteryBetRequest.BetOrderData>> betLiveData = new MutableLiveData<>(new ArrayList<>());
+    //显示选择筹码
+    public MutableLiveData<Boolean> showChipSetting = new MutableLiveData<>(false);
+    //筹码集
+    public MutableLiveData<int[]> chips = new MutableLiveData<>(new int[]{10, 50, 100, 5000, 10000});
+    //彩票信息
+    public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
+    //投注数和总金额
+    public MediatorLiveData<LotteryBetsTotal> betTotalLiveData = new MediatorLiveData<>();
+
+    //清除投注框事件
+    public SingleLiveData<String> clearBetEvent = new SingleLiveData<>();
+    public LotteryViewModel lotteryViewModel;
+    private HandicapResponse handicapMethods;
+    private WeakReference<FragmentActivity> mActivity = null;
+    private BasePopupView popupView;
+
+    public LotteryHandicapViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    public LotteryHandicapViewModel(@NonNull Application application, LotteryRepository model) {
+        super(application, model);
+    }
+
+    public void initData(FragmentActivity mActivity, Lottery lottery) {
+        setActivity(mActivity);
+        lotteryLiveData.setValue(lottery);
+        getHandicapMethods();
+        getUserBalance();
+        initPrize();
+        betTotalLiveData.addSource(betLiveData, betOrders -> calBetOrdersNums());
+        betTotalLiveData.addSource(moneyLiveData, betOrders -> calBetOrdersNums());
+    }
 
     private void initPrize() {
         String profile = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
@@ -134,6 +142,23 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
             prizeMap.add(new LotteryHandicapPrizeData(profileVo.rebate_percentage, 1));
         }
         prizeSwitchData.observeForever(prizeObserver);
+    }
+
+    private void calBetOrdersNums() {
+        List<LotteryBetRequest.BetOrderData> betOrderDataList = betLiveData.getValue();
+        String moneyValue = moneyLiveData.getValue();
+        if (betOrderDataList != null) {
+            int nums = 0;
+            double money = 0;
+            for (LotteryBetRequest.BetOrderData betOrderData :
+                    betOrderDataList) {
+                nums += betOrderData.getNums();
+                money +=Double.valueOf(moneyValue);
+            }
+            betTotalLiveData.setValue(new LotteryBetsTotal(nums, money));
+        } else {
+            betTotalLiveData.setValue(null);
+        }
     }
 
     private void setActivity(FragmentActivity mActivity) {
@@ -249,7 +274,7 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
         LotteryBetRequest lotteryBetRequest = new LotteryBetRequest();
 
 
-        int money = 0;
+        double money = 0;
         int nums = 0;
         for (LotteryBetRequest.BetOrderData data : betOrders) {
             money += data.getMoney();
@@ -301,24 +326,39 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
             @Override
             public void onFail(BusinessException t) {
                 super.onFail(t);
-                MsgDialog dialog = new MsgDialog(view.getContext(), "", t.message, true, new TipDialog.ICallBack() {
-                    @Override
-                    public void onClickLeft() {
+                Context realContext = view.getContext();
+                while (realContext instanceof ContextWrapper && !(realContext instanceof Activity)) {
+                    realContext = ((ContextWrapper) realContext).getBaseContext();
+                }
+                while (realContext instanceof ContextWrapper && !(realContext instanceof Activity)) {
+                    realContext = ((ContextWrapper) realContext).getBaseContext();
+                }
 
-                    }
+                if (realContext instanceof Activity) {
+                    Activity activity = (Activity) realContext;
+                    // 继续你的逻辑
+                    MsgDialog dialog = new MsgDialog(activity, "", t.message, true, new TipDialog.ICallBack() {
+                        @Override
+                        public void onClickLeft() {
 
-                    @Override
-                    public void onClickRight() {
-                        if (popupView != null) {
-                            popupView.dismiss();
                         }
-                    }
-                });
 
-                popupView = new XPopup.Builder(view.getContext())
-                        .dismissOnTouchOutside(true)
-                        .dismissOnBackPressed(true)
-                        .asCustom(dialog).show();
+                        @Override
+                        public void onClickRight() {
+                            if (popupView != null) {
+                                popupView.dismiss();
+                            }
+                        }
+                    });
+
+                    popupView = new XPopup.Builder(activity)
+                            .dismissOnTouchOutside(true)
+                            .dismissOnBackPressed(true)
+                            .asCustom(dialog).show();
+                } else {
+                    ToastUtils.showError(t.message);
+                }
+
             }
         });
     }
