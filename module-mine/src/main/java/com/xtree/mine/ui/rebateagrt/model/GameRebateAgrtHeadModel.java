@@ -128,7 +128,7 @@ public class GameRebateAgrtHeadModel extends BindModel implements BindHead {
                         ruleDTO.getPeople() + "人,且亏损额≥" +
                         ruleDTO.getLossAmount() +
                         "元,分红" +
-                        ruleDTO.getRatio() + "元");
+                        ruleDTO.getRatio() + "元/万");
                 break;
             default:
                 ratioTip.set("规则1:日有效投注额≥" +
@@ -208,7 +208,7 @@ public class GameRebateAgrtHeadModel extends BindModel implements BindHead {
                         if (i > 0) {
                             sb.append(System.lineSeparator());
                         }
-                        sb.append("规则").append(i + 1).append(":日投注额≥").append(ruleDTO.getBet()).append("元,日活跃人数≥").append(ruleDTO.getPeople()).append("人,且亏损额≥").append(ruleDTO.getLossAmount()).append("元,分红").append(ruleDTO.getRatio()).append("元");
+                        sb.append("规则").append(i + 1).append(":日投注额≥").append(ruleDTO.getBet()).append("元,日活跃人数≥").append(ruleDTO.getPeople()).append("人,且亏损额≥").append(ruleDTO.getLossAmount()).append("元,分红").append(ruleDTO.getRatio()).append("元/万");
                     }
                     break;
                 default:
