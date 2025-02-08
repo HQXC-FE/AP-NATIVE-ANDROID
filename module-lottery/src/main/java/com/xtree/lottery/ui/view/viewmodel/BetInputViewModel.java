@@ -2,6 +2,9 @@ package com.xtree.lottery.ui.view.viewmodel;
 
 import static com.xtree.lottery.utils.LotteryAnalyzer.INPUT_PLAYS_MAP;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -83,29 +86,41 @@ public class BetInputViewModel {
                 TextUtils.join(",", duplicateNumbers) +
                 "\n以下号码错误，已进行自动过滤\n" +
                 TextUtils.join(",", invalidCharacters);
+        Context realContext = view.getContext();
+        while (realContext instanceof ContextWrapper && !(realContext instanceof Activity)) {
+            realContext = ((ContextWrapper) realContext).getBaseContext();
+        }
 
-        MsgDialog dialog = new MsgDialog(view.getContext(),
-                view.getContext().getString(R.string.txt_kind_tips),
-                msg,
-                true,
-                new TipDialog.ICallBack() {
-            @Override
-            public void onClickLeft() {
+        if (realContext instanceof Activity) {
+            Activity activity = (Activity) realContext;
+            // 继续你的逻辑
+            MsgDialog dialog = new MsgDialog(activity,
+                    view.getContext().getString(R.string.txt_kind_tips),
+                    msg,
+                    true,
+                    new TipDialog.ICallBack() {
+                        @Override
+                        public void onClickLeft() {
 
-            }
+                        }
 
-            @Override
-            public void onClickRight() {
-                if (pop != null) {
-                    pop.dismiss();
-                }
-            }
-        });
+                        @Override
+                        public void onClickRight() {
+                            if (pop != null) {
+                                pop.dismiss();
+                            }
+                        }
+                    });
 
-        pop = new XPopup.Builder(view.getContext())
-                .dismissOnTouchOutside(true)
-                .dismissOnBackPressed(true)
-                .asCustom(dialog).show();
+            pop = new XPopup.Builder(activity)
+                    .dismissOnTouchOutside(true)
+                    .dismissOnBackPressed(true)
+                    .asCustom(dialog).show();
+        }else {
+            // 处理错误情况
+            ToastUtils.showError(msg);
+        }
+
     }
 
 

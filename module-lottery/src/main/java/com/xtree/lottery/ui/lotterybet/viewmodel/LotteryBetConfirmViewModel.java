@@ -1,6 +1,9 @@
 package com.xtree.lottery.ui.lotterybet.viewmodel;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -25,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -35,16 +37,7 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
  */
 public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository> {
 
-    public LotteryBetConfirmViewModel(@NonNull Application application) {
-        super(application);
-    }
-
-    public LotteryBetConfirmViewModel(@NonNull Application application, LotteryRepository model) {
-        super(application, model);
-    }
-
     public final MutableLiveData<ArrayList<BindModel>> datas = new MutableLiveData<>(new ArrayList<>());
-
     public final MutableLiveData<ArrayList<Integer>> itemType = new MutableLiveData<>(
             new ArrayList<Integer>() {
                 {
@@ -52,16 +45,21 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
                 }
             });
     public final ArrayList<BindModel> bindModels = new ArrayList<>();
-
     public final MutableLiveData<String> bonusNumberTitle = new MutableLiveData<>();
     public final MutableLiveData<String> totalMoney = new MutableLiveData<>();
     public final MutableLiveData<Boolean> containSolo = new MutableLiveData<>(false);
     //追号入参
     public final MutableLiveData<ChasingNumberRequestModel> chasingNumberParams = new MutableLiveData<>();
     public final MutableLiveData<IssueVo> issueLiveData = new MutableLiveData<>();
-    private BasePopupView popupView;
     public LotteryBetsViewModel betsViewModel;
     public LotteryViewModel lotteryViewModel;
+    private BasePopupView popupView;
+    public LotteryBetConfirmViewModel(@NonNull Application application) {
+        super(application);
+    }
+    public LotteryBetConfirmViewModel(@NonNull Application application, LotteryRepository model) {
+        super(application, model);
+    }
 
     public void initData(FragmentActivity activity, ArrayList<LotteryBetRequest.BetOrderData> betList) {
 
@@ -155,24 +153,39 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
             @Override
             public void onFail(BusinessException t) {
                 super.onFail(t);
-                MsgDialog dialog = new MsgDialog(view.getContext(), "", t.message, true, new TipDialog.ICallBack() {
-                    @Override
-                    public void onClickLeft() {
 
-                    }
+                Context realContext = view.getContext();
+                while (realContext instanceof ContextWrapper && !(realContext instanceof Activity)) {
+                    realContext = ((ContextWrapper) realContext).getBaseContext();
+                }
 
-                    @Override
-                    public void onClickRight() {
-                        if (popupView != null) {
-                            popupView.dismiss();
+                if (realContext instanceof Activity) {
+                    Activity activity = (Activity) realContext;
+                    // 继续你的逻辑
+
+                    MsgDialog dialog = new MsgDialog(activity, "", t.message, true, new TipDialog.ICallBack() {
+                        @Override
+                        public void onClickLeft() {
+
                         }
-                    }
-                });
 
-                popupView = new XPopup.Builder(view.getContext())
-                        .dismissOnTouchOutside(true)
-                        .dismissOnBackPressed(true)
-                        .asCustom(dialog).show();
+                        @Override
+                        public void onClickRight() {
+                            if (popupView != null) {
+                                popupView.dismiss();
+                            }
+                        }
+                    });
+
+                    popupView = new XPopup.Builder(activity)
+                            .dismissOnTouchOutside(true)
+                            .dismissOnBackPressed(true)
+                            .asCustom(dialog).show();
+                } else {
+                    // 处理错误情况
+                    ToastUtils.showError(t.message);
+                }
+
             }
         });
     }
