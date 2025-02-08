@@ -201,7 +201,11 @@ public class BettingEntryRule {
     private RulesEntryData.SubmitDTO calcSubmit(HashMap<String, Object> submit) {
         RulesEntryData.SubmitDTO submitDTO = new RulesEntryData.SubmitDTO();
         submitDTO.setMethodid(Integer.valueOf(submit.get("methodid").toString()));
-        submitDTO.setCodes(submit.get("codes").toString());
+        if (null != submit.get("codes")) {
+            submitDTO.setCodes(submit.get("codes").toString());
+        } else {
+            submitDTO.setCodes("");
+        }
         submitDTO.setOmodel(Integer.valueOf(submit.get("omodel").toString()));
         submitDTO.setMode(Integer.valueOf(submit.get("mode").toString()));
         submitDTO.setTimes(Integer.valueOf(submit.get("times").toString()));

@@ -1,6 +1,8 @@
 package com.xtree.lottery.rule.betting.decision;
 
 import com.xtree.base.utils.CfLog;
+import com.xtree.lottery.rule.SpecialSingle;
+import com.xtree.lottery.rule.betting.GameRule;
 
 import org.jeasy.rules.annotation.Action;
 import org.jeasy.rules.annotation.Condition;
@@ -10,7 +12,6 @@ import org.jeasy.rules.api.Facts;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -34,45 +35,49 @@ public class SpecialSingleRule {
     @Action
     public void then(Facts facts) {
         try {
-            Object rawFormatCodes = facts.get("formatCodes");
+            List<String> formatCodes = normalizeFormatCodes(facts.get("formatCodes"));
             String matcherName = facts.get("matcherName");
+            Map<String, GameRule> specialSingle = SpecialSingle.getSingleMethod();
             Map<String, Object> attached = facts.get("attached");
-            String number = (String) attached.get("number");
-            List<String> flagList = (List<String>) attached.get("flags");
-            List<String> message = new ArrayList<>();
 
-            // 标准化 formatCodes 到 List<String>
-            List<String> formatCodes = normalizeFormatCodes(rawFormatCodes);
+            GameRule singleRule = specialSingle.values().stream()
+                    .filter(rule -> rule.matcherNames.contains(matcherName))
+                    .findFirst()
+                    .orElse(specialSingle.get("default"));
 
-            SpecialSingle specialSingle = SpecialSingle.getByName(matcherName);
-
-            // 单式去重
-            List<String> realCode = filterCodes(formatCodes, specialSingle);
+            //去重
+            List<String> realCode = singleRule.filter(String.join(",", formatCodes), singleRule.filter);
             List<String> uniqueCode = new ArrayList<>(new HashSet<>(realCode));
+            List<String> message = facts.get("message");
 
             if (realCode.size() != uniqueCode.size()) {
                 message.add("以下号码重复，已进行自动去重");
                 message.add(realCode.stream()
-                        .filter(code -> Collections.frequency(realCode, code) > 1)
-                        .distinct()
+                        .collect(Collectors.groupingBy(code -> code, Collectors.counting()))
+                        .entrySet().stream()
+                        .filter(entry -> entry.getValue() > 1)
+                        .map(Map.Entry::getKey)
                         .collect(Collectors.joining(",")));
             }
 
             facts.put("formatCodes", uniqueCode);
-            facts.put("singleDesc", specialSingle.name());
+            facts.put("singleDesc", singleRule.description);
 
-            // 正则过滤
+            //正则过滤
             List<String> errorCodes = new ArrayList<>();
             List<String> currentCodes = new ArrayList<>();
-            Pattern regex = Pattern.compile(specialSingle.getRegex().replace("$", number));
 
-            for (String code : uniqueCode) {
-                if (!regex.matcher(code).matches()) {
-                    errorCodes.add(code);
-                } else if (specialSingle.hasZero() && isValidWithZero(code, specialSingle.getSortSplit())) {
-                    currentCodes.add(code);
+            String regex = singleRule.regex.replace("$", (String) attached.get("number"));
+            Pattern pattern = Pattern.compile("^" + regex + "$");
+
+            for (String item : uniqueCode) {
+                if (!pattern.matcher(item).matches()) {
+                    errorCodes.add(item);
+                } else if (!singleRule.hasZero ||
+                        Arrays.stream(item.split(" ")).distinct().count() == item.split(" ").length) {
+                    currentCodes.add(item);
                 } else {
-                    currentCodes.add(code);
+                    errorCodes.add(item);
                 }
             }
 
@@ -84,12 +89,44 @@ public class SpecialSingleRule {
             facts.put("formatCodes", currentCodes);
 
             // 组选去重
-            if (flagList != null && flagList.contains("group")) {
-                handleGroupCodes(currentCodes, specialSingle, message, facts);
+            List<String> attachedFlags = (List<String>) attached.get("flag");
+            if (attachedFlags != null && attachedFlags.contains("group")) {
+                String sortSplit = singleRule.join;
+
+                List<List<String>> sortedCodes = currentCodes.stream()
+                        .map(code -> Arrays.asList(code.split(sortSplit)))
+                        .map(list -> list.stream().sorted().collect(Collectors.toList()))
+                        .distinct()
+                        .collect(Collectors.toList());
+
+                List<List<String>> repeatCodes = new ArrayList<>();
+                if (!attachedFlags.contains("banco")) {
+                    for (List<String> code : sortedCodes) {
+                        if (new HashSet<>(code).size() == 1) {
+                            repeatCodes.add(code);
+                        }
+                    }
+                }
+
+                List<List<String>> finalCodes = sortedCodes.stream()
+                        .filter(code -> !repeatCodes.contains(code))
+                        .collect(Collectors.toList());
+
+                List<String> removedCodes = currentCodes.stream()
+                        .filter(code -> !finalCodes.contains(Arrays.asList(code.split(sortSplit))))
+                        .collect(Collectors.toList());
+
+                if (!removedCodes.isEmpty()) {
+                    message.add("已经过滤以下号码");
+                    message.add(String.join(",", removedCodes));
+                }
+
+                facts.put("formatCodes", finalCodes.stream()
+                        .map(list -> String.join(sortSplit, list))
+                        .collect(Collectors.toList()));
             }
 
-            facts.put("num", currentCodes.size());
-            facts.put("message", message);
+            facts.put("num", ((List<String>) facts.get("formatCodes")).size());
         } catch (Exception e) {
             CfLog.e(e.getMessage());
         }
@@ -101,10 +138,11 @@ public class SpecialSingleRule {
     private List<String> normalizeFormatCodes(Object rawFormatCodes) {
         if (rawFormatCodes instanceof String) {
             String codes = (String) rawFormatCodes;
-            return Arrays.stream(codes.split("[,;\\s]+"))
-                    .filter(code -> !code.trim().isEmpty())
-                    .map(String::trim)
-                    .collect(Collectors.toList());
+            return new ArrayList<String>() {
+                {
+                    add(codes);
+                }
+            };
         } else if (rawFormatCodes instanceof List) {
             List<?> codes = (List<?>) rawFormatCodes;
             if (!codes.isEmpty() && codes.get(0) instanceof List) {
@@ -122,76 +160,5 @@ public class SpecialSingleRule {
             }
         }
         return new ArrayList<>();
-    }
-
-    private List<String> filterCodes(List<String> codes, SpecialSingle specialSingle) {
-        return codes.stream()
-                .map(String::trim)
-                .filter(code -> !code.isEmpty())
-                .collect(Collectors.toList());
-    }
-
-    private boolean isValidWithZero(String code, String split) {
-        List<String> parts = Arrays.asList(code.split(split));
-        return parts.size() == new HashSet<>(parts).size();
-    }
-
-    private void handleGroupCodes(List<String> currentCodes, SpecialSingle specialSingle, List<String> message, Facts facts) {
-        String sortSplit = specialSingle.getSortSplit();
-        List<String> sortedCodes = currentCodes.stream()
-                .map(code -> Arrays.stream(code.split(sortSplit)).sorted().collect(Collectors.joining(sortSplit)))
-                .distinct()
-                .collect(Collectors.toList());
-
-        List<String> removedCodes = currentCodes.stream()
-                .filter(code -> !sortedCodes.contains(code))
-                .collect(Collectors.toList());
-
-        if (!removedCodes.isEmpty()) {
-            message.add("已经过滤以下号码");
-            message.add(String.join(",", removedCodes));
-        }
-
-        facts.put("formatCodes", sortedCodes);
-    }
-
-    public enum SpecialSingle {
-        RANK("rank", "(0[1-9]\\s|10\\s){$}(0[1-9]|10){1}", true, " "),
-        CHOOSE5("choose5", "(0[1-9]\\s|10\\s|11\\s){$}(0[1-9]|10|11){1}", true, " "),
-        K3("k3", "(?!\\d*?(\\d)\\d*?\\1)[1-6\\s]{$}", false, ""),
-        DIF2("dif2", "(?!\\d*?(\\d)\\d*?\\1)[1-6\\s]{$}", false, ""),
-        SK2("sk2", "[1-6\\s]{$}", false, ""),
-        DEFAULT("default", "[0-9\\s]{$}", false, "");
-
-        private final String name;
-        private final String regex;
-        private final boolean hasZero;
-        private final String sortSplit;
-
-        SpecialSingle(String name, String regex, boolean hasZero, String sortSplit) {
-            this.name = name;
-            this.regex = regex;
-            this.hasZero = hasZero;
-            this.sortSplit = sortSplit;
-        }
-
-        public String getRegex() {
-            return regex;
-        }
-
-        public boolean hasZero() {
-            return hasZero;
-        }
-
-        public String getSortSplit() {
-            return sortSplit;
-        }
-
-        public static SpecialSingle getByName(String name) {
-            return Arrays.stream(values())
-                    .filter(single -> single.name.equals(name))
-                    .findFirst()
-                    .orElse(DEFAULT);
-        }
     }
 }

@@ -48,26 +48,28 @@ public class SSCFinalMergeRule {
 
             // Generate codes for submission
             if (facts.get("formatCodes") instanceof List) {
-                formatCodes = facts.get("formatCodes");
-                if (List.of("input", "box").contains(selectarea.get("type"))) {
-                    if (formatCodes.get(0) instanceof List<?>) {
-                        forBet.put("codes", formatCodes.stream()
-                                .map(item -> String.join(sortSplit, (List<String>) item))
-                                .collect(Collectors.joining("&")));
-                    } else if(formatCodes.get(0) instanceof String){
-                        forBet.put("codes", formatCodes.stream()
-                                .map(item -> String.join(sortSplit, (String) item))
-                                .collect(Collectors.joining("&")));
-                    }
-                } else {
-                    if (formatCodes.get(0) instanceof List<?>) {
-                        forBet.put("codes", formatCodes.stream()
-                                .map(item -> String.join("&", (List<String>) item))
-                                .collect(Collectors.joining("|")));
+                if (!((List<Object>) facts.get("formatCodes")).isEmpty()) {
+                    formatCodes = facts.get("formatCodes");
+                    if (List.of("input", "box").contains(selectarea.get("type"))) {
+                        if (formatCodes.get(0) instanceof List<?>) {
+                            forBet.put("codes", formatCodes.stream()
+                                    .map(item -> String.join(sortSplit, (List<String>) item))
+                                    .collect(Collectors.joining("&")));
+                        } else if (formatCodes.get(0) instanceof String) {
+                            forBet.put("codes", formatCodes.stream()
+                                    .map(item -> String.join(sortSplit, (String) item))
+                                    .collect(Collectors.joining("&")));
+                        }
                     } else {
-                        forBet.put("codes", formatCodes.stream()
-                                .map(item -> String.join("&", (String) item))
-                                .collect(Collectors.joining("&")));
+                        if (formatCodes.get(0) instanceof List<?>) {
+                            forBet.put("codes", formatCodes.stream()
+                                    .map(item -> String.join("&", (List<String>) item))
+                                    .collect(Collectors.joining("|")));
+                        } else {
+                            forBet.put("codes", formatCodes.stream()
+                                    .map(item -> String.join("&", (String) item))
+                                    .collect(Collectors.joining("&")));
+                        }
                     }
                 }
             }
