@@ -278,14 +278,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
         });
 
-        viewModel.liveDataRedPocket.observe(getViewLifecycleOwner(), vo -> {
-            CfLog.e("Check has money : " + vo.money);
-            //if (vo.status == 0) {
-            //    binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member_has_red, 0, 0);
-            //} else {
-            //    binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member, 0, 0);
-            //}
-        });
         viewModel.liveDataMsgUnread.observe(getViewLifecycleOwner(), vo -> {
             if (vo == 0) {
                 binding.ivNotice.setVisibility(View.GONE);
@@ -694,10 +686,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         if (System.currentTimeMillis() - lastCheckTime >= (intervalTime * 60 * 1000)) {
             viewModel.getUpdate();
         }
-    }
-
-    private void checkRedPocket() {
-        viewModel.getRedPocket();
     }
 
     /**
