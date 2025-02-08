@@ -57,7 +57,7 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_toStartOf="@+id/tv_time"
                                 android:gravity="center"
-                                android:textColor="@color/bt_color_under_bg_primary_text"
+                                android:textColor="@color/clr_white"
                                 android:textSize="@dimen/bt_text_14sp"
                                 tools:text="湖人" />
                         </LinearLayout>
@@ -74,7 +74,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
-                                android:textColor="@color/bt_color_under_bg_primary_text"
+                                android:textColor="@color/clr_white"
                                 android:textSize="@dimen/bt_text_12sp"
                                 tools:text="上半场 02：54" />
 
@@ -84,7 +84,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:layout_marginTop="15dp"
-                                android:textColor="@color/bt_color_under_bg_primary_text"
+                                android:textColor="@color/clr_white"
                                 android:textSize="@dimen/bt_text_16sp"
                                 android:textStyle="bold"
                                 tools:text="2-1" />
@@ -113,7 +113,7 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_toStartOf="@+id/tv_time"
                                 android:gravity="center"
-                                android:textColor="@color/bt_color_under_bg_primary_text"
+                                android:textColor="@color/clr_white"
                                 android:textSize="@dimen/bt_text_14sp"
                                 tools:text="火箭" />
                         </LinearLayout>
@@ -138,7 +138,7 @@
                                 android:paddingBottom="5dp"
                                 android:visibility="gone"
                                 android:text="视频直播"
-                                android:textColor="@color/bt_color_under_bg_primary_text"
+                                android:textColor="@color/clr_white"
                                 android:textSize="@dimen/bt_text_10sp" />
 
                             <TextView
@@ -153,7 +153,7 @@
                                 android:paddingBottom="5dp"
                                 android:visibility="gone"
                                 android:text="动画直播"
-                                android:textColor="@color/bt_color_under_bg_primary_text"
+                                android:textColor="@color/clr_white"
                                 android:textSize="@dimen/bt_text_10sp" />
                         </LinearLayout>
 
@@ -194,7 +194,7 @@
                             android:layout_height="wrap_content"
                             android:padding="8dp"
                             android:layout_marginTop="20dp"
-                            android:src="@mipmap/cm_icon_back"
+                            android:src="@mipmap/cm_icon_detail_back"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
@@ -208,7 +208,7 @@
                                 android:id="@+id/tv_league_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/bt_color_under_bg_primary_text"
+                                android:textColor="@color/clr_white"
                                 android:layout_marginTop="20dp"
                                 android:textSize="@dimen/bt_text_14sp"
                                 android:visibility="visible"
@@ -240,7 +240,7 @@
                                 android:layout_marginTop="44dp"
                                 android:layout_marginEnd="15dp"
                                 android:layout_toStartOf="@+id/tv_time_top"
-                                android:textColor="@color/bt_color_under_bg_primary_text"
+                                android:textColor="@color/clr_white"
                                 android:textSize="@dimen/bt_text_14sp"
                                 android:text="2" />
 
@@ -249,7 +249,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
-                                android:textColor="@color/bt_color_under_bg_primary_text"
+                                android:textColor="@color/clr_white"
                                 android:layout_marginTop="45dp"
                                 android:textSize="@dimen/bt_text_12sp"
                                 tools:text="上半场 02：54" />
@@ -261,7 +261,7 @@
                                 android:layout_toEndOf="@+id/tv_time_top"
                                 android:layout_marginTop="44dp"
                                 android:paddingStart="15dp"
-                                android:textColor="@color/bt_color_under_bg_primary_text"
+                                android:textColor="@color/clr_white"
                                 android:textSize="@dimen/bt_text_14sp"
                                 android:text="1" />
 
@@ -356,7 +356,7 @@
                 android:background="@mipmap/bt_bg_text_cg"
                 android:gravity="center"
                 android:text="2"
-                android:textColor="@color/bt_color_under_bg_primary_text"
+                android:textColor="@color/clr_white"
                 android:textSize="12sp" />
         </RelativeLayout>
 

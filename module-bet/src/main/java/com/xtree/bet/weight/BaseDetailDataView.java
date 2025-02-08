@@ -79,12 +79,12 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.leftMargin = ConvertUtils.dp2px(5);
                 textView.setLayoutParams(params);
-                int color = i == scores.size() - 1 ? R.color.bt_color_car_dialog_hight_line2 : isMatchList ? R.color.bt_text_color_primary : R.color.bt_color_under_bg_primary_text;
+                int color = i == scores.size() - 1 ? R.color.bt_color_car_dialog_hight_line2 : isMatchList ? R.color.bt_text_color_primary : R.color.clr_white;
                 textView.setTextColor(getResources().getColor(color));
                 textView.setTextSize(10);
             }else{
                 textView = (TextView) root.getChildAt(i);
-                int color = i == scores.size() - 1 ? R.color.bt_color_car_dialog_hight_line2 : isMatchList ? R.color.bt_text_color_primary : R.color.bt_color_under_bg_primary_text;
+                int color = i == scores.size() - 1 ? R.color.bt_color_car_dialog_hight_line2 : isMatchList ? R.color.bt_text_color_primary : R.color.clr_white;
                 textView.setTextColor(getResources().getColor(color));
             }
 
