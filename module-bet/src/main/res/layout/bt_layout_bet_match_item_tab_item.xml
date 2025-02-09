@@ -23,7 +23,7 @@
             android:layout_marginStart="-2dp"
             android:textSize="@dimen/bt_text_10sp"
             android:text="(130)"
-            android:textColor="@color/bt_color_bet_match_item_text"/>
+            android:textColor="@color/bt_color_bet_match_item_text_count"/>
 
     </RelativeLayout>
     <TextView

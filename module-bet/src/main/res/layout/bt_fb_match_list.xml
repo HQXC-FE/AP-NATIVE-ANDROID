@@ -136,7 +136,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:background="@color/bt_bg_color_time"
+            android:background="@drawable/bg_rl_bt_time"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
