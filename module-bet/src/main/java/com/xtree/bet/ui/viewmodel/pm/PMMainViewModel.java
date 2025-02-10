@@ -20,7 +20,6 @@ import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.pm.FrontListInfo;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
-
 import com.xtree.bet.bean.response.pm.MenuInfo;
 import com.xtree.bet.bean.response.pm.PMResultBean;
 import com.xtree.bet.bean.ui.League;
@@ -37,10 +36,10 @@ import com.xtree.bet.ui.viewmodel.callback.PMChampionListCacheCallBack;
 import com.xtree.bet.ui.viewmodel.callback.PMChampionListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.PMHotMatchCountCacheCallBack;
 import com.xtree.bet.ui.viewmodel.callback.PMHotMatchCountCallBack;
-import com.xtree.bet.ui.viewmodel.callback.PMLeagueListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.PMLeagueListCacheCallBack;
-import com.xtree.bet.ui.viewmodel.callback.PMListCallBack;
+import com.xtree.bet.ui.viewmodel.callback.PMLeagueListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.PMListCacheCallBack;
+import com.xtree.bet.ui.viewmodel.callback.PMListCallBack;
 
 import org.reactivestreams.Subscriber;
 
@@ -53,6 +52,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -141,7 +141,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     public List<Match> getMatchList() {
         return mMatchList;
     }
-
 
     public Map<String, Match> getMapMatch() {
         return mMapMatch;
@@ -370,9 +369,9 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         if ((type == 1 && needSecondStep) // 获取今日中的全部滚球赛事列表
                 || isTimerRefresh) { // 定时刷新赔率变更
-            createPMListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList,flowable);
+            createPMListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, flowable);
         } else {
-            createPMLeagueListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, finalType, isStepSecond,flowable);
+            createPMLeagueListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, finalType, isStepSecond, flowable);
         }
     }
 
@@ -419,8 +418,8 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         Flowable flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
         Object callback = isUseCacheApiService()
-                ? new PMChampionListCacheCallBack(this,sportPos, sportId,orderBy,leagueIds,matchids,playMethodType, oddType,isTimerRefresh,isRefresh,mCurrentPage)
-                : new PMChampionListCallBack(this,sportPos, sportId,orderBy,leagueIds,matchids,playMethodType, oddType,isTimerRefresh,isRefresh,mCurrentPage);
+                ? new PMChampionListCacheCallBack(this, sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh, mCurrentPage)
+                : new PMChampionListCallBack(this, sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh, mCurrentPage);
         // 1.创建 Disposable，2.并进行订阅
         Disposable disposable = createDisposable(flowable, callback);
         addSubscribe(disposable);
@@ -437,7 +436,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
         }
         map.put("sys", "7");
-        System.out.println("############ PM statistical playMethodType ############"+playMethodType);
+        System.out.println("############ PM statistical playMethodType ############" + playMethodType);
         Disposable disposable = (Disposable) model.getPMApiService().initPB(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
@@ -584,6 +583,13 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
+                        resultErrorLeagueData.setValue("");
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        super.onFail(t);
+                        resultErrorLeagueData.setValue("");
                     }
                 });
         addSubscribe(disposable);
@@ -704,7 +710,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     private Flowable getFlowableMatchBaseInfoByMidsPB(PMListReq pmListReq) {
         Flowable flowable;
-        if (isUseCacheApiService()){
+        if (isUseCacheApiService()) {
             if (getSportCacheType().equals(SportCacheType.PM)) {
                 pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN));
                 flowable = model.getBaseApiService().pmGetMatchBaseInfoByMidsPB(pmListReq);
@@ -793,7 +799,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
     }
 
     // 根据条件设置 HttpCallBack 类型的对象
-    public void createPMListCallback(boolean isTimerRefresh, boolean isRefresh, int sportPos, String sportId, int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchidList,Flowable flowable) {
+    public void createPMListCallback(boolean isTimerRefresh, boolean isRefresh, int sportPos, String sportId, int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchidList, Flowable flowable) {
         // 根据是否使用缓存选择回调类型
         Object callback = isUseCacheApiService()
                 ? new PMListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType,
@@ -802,15 +808,15 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                 sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList);
 
         // 统一处理 Flowable 的线程调度和异常处理
-        Disposable disposable = createDisposable(flowable,callback);
+        Disposable disposable = createDisposable(flowable, callback);
         // 添加订阅管理
         addSubscribe(disposable);
     }
 
     // 根据条件返回 HttpCallBack 类型的对象
     public void createPMLeagueListCallback(boolean isTimerRefresh, boolean isRefresh,
-                                        int sportPos, String sportId, int orderBy, List<Long> leagueIds,
-                                        int searchDatePos, int oddType, List<Long> matchidList, int finalType, boolean isStepSecond,Flowable flowable) {
+                                           int sportPos, String sportId, int orderBy, List<Long> leagueIds,
+                                           int searchDatePos, int oddType, List<Long> matchidList, int finalType, boolean isStepSecond, Flowable flowable) {
         mPmLeagueCallBack = new PMLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage,
                 mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType,
                 matchidList, finalType, isStepSecond);
@@ -822,7 +828,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
                 ? mPmCacheLeagueCallBack
                 : mPmLeagueCallBack;
         // 统一处理 Flowable 的线程调度和异常处理
-        Disposable disposable = createDisposable(flowable,callback);
+        Disposable disposable = createDisposable(flowable, callback);
         // 添加订阅管理
         addSubscribe(disposable);
     }
