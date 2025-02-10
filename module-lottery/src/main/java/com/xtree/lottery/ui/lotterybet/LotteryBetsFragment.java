@@ -4,13 +4,10 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.lxj.xpopup.util.KeyboardUtils;
@@ -25,19 +22,14 @@ import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.databinding.FragmentLotteryBetsBinding;
 import com.xtree.lottery.inter.ParentChildCommunication;
 import com.xtree.lottery.rule.betting.data.RulesEntryData;
-import com.xtree.lottery.ui.lotterybet.data.LotteryMoneyData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel;
-import com.xtree.lottery.ui.view.LotteryBetView;
-import com.xtree.lottery.ui.view.LotteryDrawView;
-import com.xtree.lottery.ui.view.LotteryMoneyView;
 import com.xtree.lottery.ui.view.model.LotteryMoneyModel;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.lottery.utils.AnimUtils;
 import com.xtree.lottery.utils.LotteryAnalyzer;
 
-import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -66,12 +58,9 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
 
     @Override
     public void initView() {
-        binding.getRoot().setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                KeyboardUtils.hideSoftInput(getActivity().getWindow());
-                return false;
-            }
+        binding.getRoot().setOnTouchListener((v, event) -> {
+            KeyboardUtils.hideSoftInput(getActivity().getWindow());
+            return false;
         });
 
         binding.lotteryBetsPrizeOption.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -108,118 +97,107 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
 
         binding.getModel().initData(getActivity(), lottery);
 
-        binding.lotteryBetsMoneyView.setOnChangeMoneyListener(new LotteryMoneyView.onChangeMoneyListener() {
-            @Override
-            public void onChange(LotteryMoneyData moneyData) {
-                //更新金额数据
-                binding.getModel().moneyLiveData.setValue(moneyData);
+        binding.lotteryBetsMoneyView.setOnChangeMoneyListener(moneyData -> {
+            //更新金额数据
+            binding.getModel().moneyLiveData.setValue(moneyData);
 
-                //更新投注数据
-                List<LotteryBetRequest.BetOrderData> betOrderList = binding.lotteryBetsBetlayout.getBet();
-                Object codes = binding.lotteryBetsBetlayout.getCodes();
+            //更新投注数据
+            List<LotteryBetRequest.BetOrderData> betOrderList = binding.lotteryBetsBetlayout.getBet();
+            Object codes = binding.lotteryBetsBetlayout.getCodes();
 
-                if (betOrderList != null && betOrderList.size() > 0) {
-                    for (LotteryBetRequest.BetOrderData betOrderData : betOrderList) {
-                        LotteryMoneyModel moneyModel = binding.lotteryBetsMoneyView.getMoneyData().getMoneyModel();
-                        int factor = binding.lotteryBetsMoneyView.getMoneyData().getFactor();
-                        betOrderData.setMode(moneyModel.getModelId());
-                        betOrderData.setTimes(factor);
-                        betOrderData.setOmodel(viewModel.prizeData.getValue().getValue());
+            if (betOrderList != null && betOrderList.size() > 0) {
+                for (LotteryBetRequest.BetOrderData betOrderData : betOrderList) {
+                    LotteryMoneyModel moneyModel = binding.lotteryBetsMoneyView.getMoneyData().getMoneyModel();
+                    int factor = binding.lotteryBetsMoneyView.getMoneyData().getFactor();
+                    betOrderData.setMode(moneyModel.getModelId());
+                    betOrderData.setTimes(factor);
+                    betOrderData.setOmodel(viewModel.prizeData.getValue().getValue());
 
-                        RulesEntryData.BetDTO betDTO = new RulesEntryData.BetDTO();
-                        RulesEntryData.BetDTO.ModeDTO modeDTO = new RulesEntryData.BetDTO.ModeDTO();
-                        modeDTO.setModeid(moneyModel.getModelId());
-                        modeDTO.setName(moneyModel.getName());
-                        modeDTO.setRate(String.valueOf(moneyModel.getRate()));
-                        betDTO.setMode(modeDTO);
-                        betDTO.setTimes(factor);
-                        betDTO.setDisplay(new RulesEntryData.BetDTO.DisplayDTO());
-                        betDTO.setSubmit(new RulesEntryData.SubmitDTO());
-                        betDTO.setCodes(codes);
-                        viewModel.rule(betDTO);
-                    }
-                } else {
-                    binding.getModel().betLiveData.setValue(null);
+                    RulesEntryData.BetDTO betDTO = new RulesEntryData.BetDTO();
+                    RulesEntryData.BetDTO.ModeDTO modeDTO = new RulesEntryData.BetDTO.ModeDTO();
+                    modeDTO.setModeid(moneyModel.getModelId());
+                    modeDTO.setName(moneyModel.getName());
+                    modeDTO.setRate(String.valueOf(moneyModel.getRate()));
+                    betDTO.setMode(modeDTO);
+                    betDTO.setTimes(factor);
+                    betDTO.setDisplay(new RulesEntryData.BetDTO.DisplayDTO());
+                    betDTO.setSubmit(new RulesEntryData.SubmitDTO());
+                    betDTO.setCodes(codes);
+                    viewModel.rule(betDTO);
                 }
+            } else {
+                binding.getModel().betLiveData.setValue(null);
             }
         });
 
-        binding.lotteryBetsDrawview.setOnLotteryDrawListener(new LotteryDrawView.OnLotteryDrawListener() {
-            @Override
-            public void onRefresh(View view) {
-                binding.getModel().lotteryViewModel.getRecentLottery();
-                AnimUtils.rotateView(view);
-            }
+        binding.lotteryBetsDrawview.setOnLotteryDrawListener(view -> {
+            binding.getModel().lotteryViewModel.getRecentLottery();
+            AnimUtils.rotateView(view);
         });
 
         binding.getModel().combinedPrizeBetLiveData.observe(this, combinedData -> {
             LotteryBetsModel lotteryBetsModel = combinedData.betModel;
             UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup = combinedData.prizeGroup;
-            //设置选注形态
-            binding.lotteryBetsBetlayout.setData(lotteryBetsModel, prizeGroup, lottery);
-
-            //设置投注金额
-            if (lotteryBetsModel.getMenuMethodLabelData() != null && lotteryBetsModel.getMenuMethodLabelData().getMoneyModes() != null) {
-                ArrayList<LotteryMoneyModel> moneyModelList = new ArrayList<>();
-                for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO moneyMode : lotteryBetsModel.getMenuMethodLabelData().getMoneyModes()) {
-                    moneyModelList.add(new LotteryMoneyModel(moneyMode.getName(), moneyMode.getRate(), moneyMode.getModeid()));
+            Boolean isPrize = combinedData.isPrize;
+            if ("lhc".equals(lottery.getLinkType())) {
+                //六合彩视图需要奖金组获取赔率
+                if (prizeGroup == null) {
+                    return;
                 }
-                binding.lotteryBetsMoneyView.setMoneyUnit(moneyModelList);
+                setBetData(lotteryBetsModel, prizeGroup, lottery);
+            } else if (!isPrize) {
+                setBetData(lotteryBetsModel, prizeGroup, lottery);
+            } else {//非六合彩刷新奖金组
+                binding.lotteryBetsBetlayout.setPrizeGroup(prizeGroup);
             }
         });
 
-        binding.lotteryBetsBetlayout.setOnLotteryBetListener(new LotteryBetView.OnLotteryBetListener() {
-            @Override
-            public void onBetChange(List<LotteryBetRequest.BetOrderData> betOrderList, Object codes) {
-                if (betOrderList != null && betOrderList.size() > 0) {
-                    for (LotteryBetRequest.BetOrderData betOrderData : betOrderList) {
-                        LotteryMoneyModel moneyModel = binding.lotteryBetsMoneyView.getMoneyData().getMoneyModel();
-                        int factor = binding.lotteryBetsMoneyView.getMoneyData().getFactor();
-                        betOrderData.setMode(moneyModel.getModelId());
-                        betOrderData.setTimes(factor);
+        binding.lotteryBetsBetlayout.setOnLotteryBetListener((betOrderList, codes) -> {
+            if (betOrderList != null && betOrderList.size() > 0) {
+                for (LotteryBetRequest.BetOrderData betOrderData : betOrderList) {
+                    LotteryMoneyModel moneyModel = binding.lotteryBetsMoneyView.getMoneyData().getMoneyModel();
+                    int factor = binding.lotteryBetsMoneyView.getMoneyData().getFactor();
+                    betOrderData.setMode(moneyModel.getModelId());
+                    betOrderData.setTimes(factor);
 
-                        if (viewModel.prizeData.getValue() != null) {
-                            betOrderData.setOmodel(viewModel.prizeData.getValue().getValue());
-                        }
-
-                        RulesEntryData.BetDTO betDTO = new RulesEntryData.BetDTO();
-                        RulesEntryData.BetDTO.ModeDTO modeDTO = new RulesEntryData.BetDTO.ModeDTO();
-                        modeDTO.setModeid(moneyModel.getModelId());
-                        modeDTO.setName(moneyModel.getName());
-                        modeDTO.setRate(String.valueOf(moneyModel.getRate()));
-                        betDTO.setMode(modeDTO);
-                        betDTO.setTimes(factor);
-                        betDTO.setDisplay(new RulesEntryData.BetDTO.DisplayDTO());
-                        betDTO.setSubmit(new RulesEntryData.SubmitDTO());
-                        betDTO.setCodes(codes);
-                        viewModel.rule(betDTO);
+                    if (viewModel.prizeData.getValue() != null) {
+                        betOrderData.setOmodel(viewModel.prizeData.getValue().getValue());
                     }
-                } else {
-                    binding.getModel().betLiveData.setValue(null);
+
+                    RulesEntryData.BetDTO betDTO = new RulesEntryData.BetDTO();
+                    RulesEntryData.BetDTO.ModeDTO modeDTO = new RulesEntryData.BetDTO.ModeDTO();
+                    modeDTO.setModeid(moneyModel.getModelId());
+                    modeDTO.setName(moneyModel.getName());
+                    modeDTO.setRate(String.valueOf(moneyModel.getRate()));
+                    betDTO.setMode(modeDTO);
+                    betDTO.setTimes(factor);
+                    betDTO.setDisplay(new RulesEntryData.BetDTO.DisplayDTO());
+                    betDTO.setSubmit(new RulesEntryData.SubmitDTO());
+                    betDTO.setCodes(codes);
+                    viewModel.rule(betDTO);
                 }
+            } else {
+                binding.getModel().betLiveData.setValue(null);
             }
         });
 
-        binding.getModel().lotteryViewModel.liveDataRecentList.observe(this, new Observer<ArrayList<RecentLotteryVo>>() {
-            @Override
-            public void onChanged(ArrayList<RecentLotteryVo> bonusNumbers) {
-                if (bonusNumbers != null && bonusNumbers.size() > 0) {
-                    ArrayList<String> lotteryNumbs = new ArrayList<>();
-                    for (RecentLotteryVo datum : bonusNumbers) {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (String s : datum.getSplit_code()) {
-                            stringBuilder.append(s + LotteryAnalyzer.SPLIT);
-                        }
-                        lotteryNumbs.add(stringBuilder.deleteCharAt(stringBuilder
-                                        .lastIndexOf(LotteryAnalyzer.SPLIT))
-                                .toString()
-                        );
+        binding.getModel().lotteryViewModel.liveDataRecentList.observe(this, bonusNumbers -> {
+            if (bonusNumbers != null && bonusNumbers.size() > 0) {
+                ArrayList<String> lotteryNumbs = new ArrayList<>();
+                for (RecentLotteryVo datum : bonusNumbers) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (String s : datum.getSplit_code()) {
+                        stringBuilder.append(s + LotteryAnalyzer.SPLIT);
                     }
-                    binding.lotteryBetsBetlayout.setLotteryNumbsHistory(lotteryNumbs);
-                    binding.lotteryBetsDrawview.setLottery(lottery);
-                    binding.lotteryBetsDrawview.setDrawCode(bonusNumbers.get(0));
-
+                    lotteryNumbs.add(stringBuilder.deleteCharAt(stringBuilder
+                                    .lastIndexOf(LotteryAnalyzer.SPLIT))
+                            .toString()
+                    );
                 }
+                binding.lotteryBetsBetlayout.setLotteryNumbsHistory(lotteryNumbs);
+                binding.lotteryBetsDrawview.setLottery(lottery);
+                binding.lotteryBetsDrawview.setDrawCode(bonusNumbers.get(0));
+
             }
         });
 
@@ -230,15 +208,24 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
 
     }
 
+    private void setBetData(LotteryBetsModel betsModel, @Nullable UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
+        //设置选注形态
+        binding.lotteryBetsBetlayout.setData(betsModel, prizeGroup, lottery);
+
+        //设置投注金额
+        if (betsModel.getMenuMethodLabelData() != null && betsModel.getMenuMethodLabelData().getMoneyModes() != null) {
+            ArrayList<LotteryMoneyModel> moneyModelList = new ArrayList<>();
+            for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO moneyMode : betsModel.getMenuMethodLabelData().getMoneyModes()) {
+                moneyModelList.add(new LotteryMoneyModel(moneyMode.getName(), moneyMode.getRate(), moneyMode.getModeid()));
+            }
+            binding.lotteryBetsMoneyView.setMoneyUnit(moneyModelList);
+        }
+    }
+
     @Override
     public void initViewObservable() {
         super.initViewObservable();
-        viewModel.clearBetEvent.observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                binding.lotteryBetsBetlayout.clearBet();
-            }
-        });
+        viewModel.clearBetEvent.observe(this, s -> binding.lotteryBetsBetlayout.clearBet());
     }
 
     @Override

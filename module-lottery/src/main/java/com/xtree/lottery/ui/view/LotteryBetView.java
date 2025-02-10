@@ -124,6 +124,14 @@ public class LotteryBetView extends FrameLayout {
         addView(betView);
     }
 
+    public void setPrizeGroup(UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
+        if (betView == null) {
+            return;
+        }
+        betView.setPrizeGroup(prizeGroup);
+    }
+
+
     /**
      * 获取投注内容
      */

@@ -105,8 +105,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         lotteryLiveData.setValue(lottery);
         initMethods(lottery);
         getUserBalance(null);
-        combinedPrizeBetLiveData.addSource(currentBetModel, betModel -> createLotteryBetsPrizeGroup());
-        combinedPrizeBetLiveData.addSource(prizeData, prizeGroup -> createLotteryBetsPrizeGroup());
+        combinedPrizeBetLiveData.addSource(currentBetModel, betModel -> createLotteryBetsPrizeGroup(false));
+        combinedPrizeBetLiveData.addSource(prizeData, prizeGroup -> createLotteryBetsPrizeGroup(true));
         betTotalLiveData.addSource(betLiveData, betOrders -> calBetOrdersNums());
         moneyView.setValue(!"lhc".equals(lottery.getLinkType()));
     }
@@ -122,19 +122,19 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 money += betOrderData.getMoney();
             }
             betTotalLiveData.setValue(new LotteryBetsTotal(nums, money));
-        }else{
+        } else {
             betTotalLiveData.setValue(null);
         }
     }
 
     //组合投注数据和奖金组
-    private void createLotteryBetsPrizeGroup() {
+    private void createLotteryBetsPrizeGroup(boolean isPrize) {
         LotteryBetsModel betModel = currentBetModel.getValue();
         UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup = prizeData.getValue();
 
-        if (betModel != null && prizeGroup != null) {
+        if (betModel != null) {
             // Update combinedLiveData when both values are available
-            combinedPrizeBetLiveData.setValue(new LotteryBetsPrizeGroup(betModel, prizeGroup));
+            combinedPrizeBetLiveData.setValue(new LotteryBetsPrizeGroup(betModel, prizeGroup, isPrize));
         }
     }
 
@@ -405,23 +405,20 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         }
 
         // 设置菜单项点击事件
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                CharSequence title = item.getTitle();
-                if (title != null) {
-                    for (UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroupDTO : currentBetModel
-                            .getValue()
-                            .getUserMethodData()
-                            .getPrizeGroup()) {
-                        if (prizeGroupDTO.getLabel().contentEquals(title)) {
-                            prizeData.setValue(prizeGroupDTO);
-                            return true;
-                        }
+        popupMenu.setOnMenuItemClickListener(item -> {
+            CharSequence title = item.getTitle();
+            if (title != null) {
+                for (UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroupDTO : currentBetModel
+                        .getValue()
+                        .getUserMethodData()
+                        .getPrizeGroup()) {
+                    if (prizeGroupDTO.getLabel().contentEquals(title)) {
+                        prizeData.setValue(prizeGroupDTO);
+                        return true;
                     }
                 }
-                return true;
             }
+            return true;
         });
 
         // 显示 PopupMenu
@@ -441,7 +438,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 LotteryMoneyData money = moneyLiveData.getValue();
                 orderData.setOmodel(prize.getValue());
                 if (lotteryLiveData.getValue() != null && "lhc".equals(lotteryLiveData.getValue().getLinkType())) {
-                    orderData.setMode(5);
+                    orderData.setMode(5);//六合彩写死mode
                 } else {
                     orderData.setMode(money.getMoneyModel().getModelId());
                 }

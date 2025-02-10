@@ -52,6 +52,10 @@ public abstract class BetBaseView extends FrameLayout {
         this.prizeGroup = prizeGroup;
     }
 
+    public void setPrizeGroup(UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
+        this.prizeGroup = prizeGroup;
+    }
+
     public abstract void clearBet();
 
     /**
