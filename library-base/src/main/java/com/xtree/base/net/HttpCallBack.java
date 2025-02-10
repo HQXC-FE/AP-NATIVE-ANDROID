@@ -4,7 +4,6 @@ import static me.xtree.mvvmhabit.http.ExceptionHandle.ERROR.HIJACKED_ERROR;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.net.fastest.ChangeApiLineUtil;
 import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.net.fastest.SpeedApiLine;
 import com.xtree.base.router.RouterActivityPath;
@@ -128,7 +127,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             case HttpCallBack.CodeRule.CODE_100002:
                 TagUtils.tagEvent(Utils.getContext(), "API JSON数据转换失败", DomainUtil.getApiUrl());
                 ToastUtils.showShort("当前网络环境异常，切换线路中..."); // ("域名被劫持"  + "，切换线路中...");
-                ChangeApiLineUtil.getInstance().start();
+                FastestTopDomainUtil.getInstance().start();
                 break;
             default:
                 KLog.e("status is not normal: " + baseResponse);
