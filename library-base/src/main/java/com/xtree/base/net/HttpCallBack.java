@@ -5,7 +5,6 @@ import static me.xtree.mvvmhabit.http.ExceptionHandle.ERROR.HIJACKED_ERROR;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.fastest.FastestTopDomainUtil;
-import com.xtree.base.net.fastest.SpeedApiLine;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
@@ -154,11 +153,12 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                 TagUtils.tagEvent(Utils.getContext(), "API JSON数据转换失败", hijackedException.getUrl());
                 TagUtils.tagEvent(Utils.getContext(), "event_hijacked", t.getMessage());
                 TagUtils.tagEvent(Utils.getContext(), "event_change_api_line_start", " [" + rError.code + "]域名被劫持，切换线路开始...");
-                if (!SpeedApiLine.INSTANCE.isRunning()) {
-                    ToastUtils.showShort("当前网络环境异常" + " [" + rError.code + "]，切换线路中..."); // ("域名被劫持"  + "，切换线路中...");
-                    SpeedApiLine.INSTANCE.addHijeckedDomainList(((HijackedException) t.getCause()).getHost());
-                }
-                SpeedApiLine.INSTANCE.start();
+//                if (!SpeedApiLine.INSTANCE.isRunning()) {
+//                    ToastUtils.showShort("当前网络环境异常" + " [" + rError.code + "]，切换线路中..."); // ("域名被劫持"  + "，切换线路中...");
+//                    SpeedApiLine.INSTANCE.addHijeckedDomainList(((HijackedException) t.getCause()).getHost());
+//                }
+//                SpeedApiLine.INSTANCE.start();
+                FastestTopDomainUtil.getInstance().start();
             } else if (rError.code == 401) {
                 TagUtils.tagEvent(Utils.getContext(), "401 鉴权失败");
                 FastestTopDomainUtil.getInstance().start();
@@ -166,12 +166,13 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                 TagUtils.tagEvent(Utils.getContext(), "API 测速失败", DomainUtil.getApiUrl());
                 TagUtils.tagEvent(Utils.getContext(), "event_network_error", DomainUtil.getApiUrl() + "：" + t.getMessage());
                 TagUtils.tagEvent(Utils.getContext(), "event_change_api_line_start", " [" + rError.code + "]域名无法访问，切换线路开始...");
-                if (!SpeedApiLine.INSTANCE.isRunning()) {
-                    ToastUtils.showShort("当前网络环境异常" + " [" + rError.code + "]，切换线路中...");
-                    ToastUtils.showShort("切换线路中...");
-                    SpeedApiLine.INSTANCE.addHijeckedDomainList(DomainUtil.getApiUrl());
-                }
-                SpeedApiLine.INSTANCE.start();
+//                if (!SpeedApiLine.INSTANCE.isRunning()) {
+//                    ToastUtils.showShort("当前网络环境异常" + " [" + rError.code + "]，切换线路中...");
+//                    ToastUtils.showShort("切换线路中...");
+//                    SpeedApiLine.INSTANCE.addHijeckedDomainList(DomainUtil.getApiUrl());
+//                }
+//                SpeedApiLine.INSTANCE.start();
+                FastestTopDomainUtil.getInstance().start();
             }
             return;
         } else if (t instanceof BusinessException) {
