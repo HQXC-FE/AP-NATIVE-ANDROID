@@ -98,7 +98,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                 if (mProfileVo.usertype == 1) {
                     binding.llMenu2.setVisibility(View.VISIBLE);
                     binding.llMenu3.setVisibility(View.GONE);
-                    if (mProfileVo.getUserLevel() == 1) {
+                    if (mProfileVo.getUserLevel() == 1 || mProfileVo.getUserLevel() > 4) {
                         binding.tvwEaster.setVisibility(View.INVISIBLE);
                     }
                     if (mProfileVo.getUserLevel() == 2) {
