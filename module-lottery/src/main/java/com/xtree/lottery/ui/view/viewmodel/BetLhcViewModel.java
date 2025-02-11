@@ -46,7 +46,7 @@ public class BetLhcViewModel extends BindModel {
             binding.tvNum.setText(model.number);
             binding.tvNum.setBackgroundResource(model.ball.getResourceId());
             binding.tvOdds.setText(model.odds);
-            binding.etMoney.setFilters(new InputFilter[]{(source, start, end, dest, dstart, dend) -> {
+            binding.etMoney.setFilters(new InputFilter[]{new InputFilter.LengthFilter(9), (source, start, end, dest, dstart, dend) -> {
                 // 模拟过滤逻辑，例如只允许数字
                 StringBuilder result = new StringBuilder(dest);
                 result.replace(dstart, dend, source.subSequence(start, end).toString());
