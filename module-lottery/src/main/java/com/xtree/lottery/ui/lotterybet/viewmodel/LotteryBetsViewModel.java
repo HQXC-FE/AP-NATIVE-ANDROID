@@ -43,6 +43,7 @@ import com.xtree.lottery.utils.EventVo;
 import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -117,13 +118,13 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         List<LotteryBetRequest.BetOrderData> betOrderDataList = betLiveData.getValue();
         if (betOrderDataList != null) {
             int nums = 0;
-            double money = 0;
+            BigDecimal money = BigDecimal.ZERO;
             for (LotteryBetRequest.BetOrderData betOrderData :
                     betOrderDataList) {
                 nums += betOrderData.getNums();
-                money += betOrderData.getMoney();
+                money = money.add(BigDecimal.valueOf(betOrderData.getMoney()));
             }
-            betTotalLiveData.setValue(new LotteryBetsTotal(nums, money));
+            betTotalLiveData.setValue(new LotteryBetsTotal(nums, money.toPlainString()));
         } else {
             betTotalLiveData.setValue(null);
         }

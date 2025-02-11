@@ -34,6 +34,7 @@ import com.xtree.lottery.ui.lotterybet.model.LotteryBetsTotal;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -149,13 +150,13 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
         String moneyValue = moneyLiveData.getValue();
         if (betOrderDataList != null) {
             int nums = 0;
-            double money = 0;
+            BigDecimal money = BigDecimal.ZERO;
             for (LotteryBetRequest.BetOrderData betOrderData :
                     betOrderDataList) {
                 nums += betOrderData.getNums();
-                money +=Double.valueOf(moneyValue);
+                money = money.add(new BigDecimal(moneyValue));
             }
-            betTotalLiveData.setValue(new LotteryBetsTotal(nums, money));
+            betTotalLiveData.setValue(new LotteryBetsTotal(nums, money.toPlainString()));
         } else {
             betTotalLiveData.setValue(null);
         }
@@ -274,14 +275,14 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
         LotteryBetRequest lotteryBetRequest = new LotteryBetRequest();
 
 
-        double money = 0;
+        BigDecimal money = BigDecimal.ZERO;
         int nums = 0;
         for (LotteryBetRequest.BetOrderData data : betOrders) {
-            money += data.getMoney();
+            money = money.add(BigDecimal.valueOf(data.getMoney()));
             nums += data.getNums();
         }
 
-        if (money == 0 || nums == 0) {
+        if (money.compareTo(BigDecimal.ZERO) == 0 || nums == 0) {
             ToastUtils.showError("请选择注单和投注金额");
             return;
         }
@@ -290,7 +291,7 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
         lotteryBetRequest.setLotteryid(lotteryLiveData.getValue().getId());
         lotteryBetRequest.setCurmid(lotteryLiveData.getValue().getCurmid());
         lotteryBetRequest.setLt_issue_start(lotteryViewModel.currentIssueLiveData.getValue().getIssue());
-        lotteryBetRequest.setLt_total_money(money);
+        lotteryBetRequest.setLt_total_money(money.toPlainString());
         lotteryBetRequest.setLt_total_nums(nums);
         lotteryBetRequest.setPlay_source(6);
 

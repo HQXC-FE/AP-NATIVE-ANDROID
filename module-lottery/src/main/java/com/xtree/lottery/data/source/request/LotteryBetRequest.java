@@ -38,7 +38,7 @@ public class LotteryBetRequest {
      * ltTotalMoney
      */
     @SerializedName("lt_total_money")
-    private double lt_total_money;
+    private String lt_total_money;
     /**
      * ltTotalNums
      */
@@ -95,11 +95,11 @@ public class LotteryBetRequest {
         this.lt_project = lt_project;
     }
 
-    public double getLt_total_money() {
+    public String getLt_total_money() {
         return lt_total_money;
     }
 
-    public void setLt_total_money(double lt_total_money) {
+    public void setLt_total_money(String lt_total_money) {
         this.lt_total_money = lt_total_money;
     }
 

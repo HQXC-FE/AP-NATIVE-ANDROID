@@ -23,6 +23,7 @@ import com.xtree.lottery.ui.lotterybet.LotteryBetConfirmDialogFragment;
 import com.xtree.lottery.ui.lotterybet.model.LotteryOrderModel;
 
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,16 +130,16 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
      */
     private void checkOrder() {
         int totalBet = 0;
-        double totalMoney = 0;
+        BigDecimal totalMoney = BigDecimal.ZERO;
         for (BindModel binmodel : bindModels) {
             LotteryOrderModel orderModel = (LotteryOrderModel) binmodel;
             LotteryBetRequest.BetOrderData betOrderData = orderModel.getBetOrderData();
             totalBet += betOrderData.getNums();
-            totalMoney += betOrderData.getMoney();
+            totalMoney = totalMoney.add(BigDecimal.valueOf(betOrderData.getMoney()));
         }
 
         orderNums.setValue(String.valueOf(bindModels.size()));
-        moneyNums.setValue(String.valueOf(totalMoney));
+        moneyNums.setValue(totalMoney.toPlainString());
         betNums.setValue(String.valueOf(totalBet));
     }
 
