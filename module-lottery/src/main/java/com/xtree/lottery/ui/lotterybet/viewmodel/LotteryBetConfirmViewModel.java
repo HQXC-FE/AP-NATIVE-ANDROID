@@ -145,6 +145,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
                 chasingNumberParams.setValue(null);
                 betsViewModel.betLiveData.setValue(null);
                 betsViewModel.betOrdersLiveData.setValue(null);
+                betsViewModel.betCartOrdersLiveData.setValue(null);
                 betsViewModel.clearBetEvent.setValue(null);
                 finish();
                 ToastUtils.showSuccess("投注成功");
