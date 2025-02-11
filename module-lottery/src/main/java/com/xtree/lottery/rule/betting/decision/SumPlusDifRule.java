@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Rule(name = "SumPlusDifRule", description = "三不同号和值选号")
@@ -35,88 +34,75 @@ public class SumPlusDifRule {
     @Action
     public void then(Facts facts) {
         try {
-            // 初始化数据
-            List<List<Integer>> formatCodes = facts.get("formatCodes");
             Map<String, Object> attached = facts.get("attached");
-            Integer num = facts.get("num");
-            if (formatCodes == null || formatCodes.isEmpty() || attached == null || num == null) {
-                facts.put("num", 0);
-                return;
+            List<Integer> scope = (List<Integer>) attached.getOrDefault("scope", Arrays.asList(1, 2, 3, 4, 5, 6));
+            Integer number = Integer.parseInt((String) attached.get("number"));
+            boolean isTail;
+            List<String> flag = (List<String>) attached.get("flags");
+            List<String> formatCodes = facts.get("formatCodes");
+
+            if (attached.get("isTail") != null) {
+                isTail = (boolean) attached.get("isTail");
+            } else {
+                isTail = false;
             }
 
-            // 提取配置
-            List<Integer> scope = (List<Integer>) attached.getOrDefault("scope", Arrays.asList(1, 2, 3, 4, 5, 6));
-            int number = (Integer) attached.get("number");
-            boolean isTail = (Boolean) attached.getOrDefault("isTail", false);
-            List<String> flag = (List<String>) attached.getOrDefault("flag", new ArrayList<>());
-
-            // 构造待组合二维数组
+            // Generate all possible combinations
             List<List<Integer>> pendingArr = Collections.nCopies(number, scope);
+            List<List<Integer>> allCombinations = cartesianProduct(pendingArr);
 
-            // 获取全部组合
-            List<List<Integer>> allCombination = cartesianProduct(pendingArr);
+            int num = 0;
+            for (String code : formatCodes) {
+                List<List<Integer>> eachCombination = new ArrayList<>();
+                int codeNum = Integer.parseInt(code);
 
-            int resultNum = 0;
-
-            for (int codeStr : formatCodes.get(0)) {
-                int code = codeStr;
-                List<List<Integer>> validCombinations = new ArrayList<>();
-
-                // 过滤符合条件的组合
-                for (List<Integer> combination : allCombination) {
-                    int sum = combination.stream().mapToInt(Integer::intValue).sum();
-                    if ((!isTail && sum == code) || (isTail && sum % 10 == code)) {
-                        validCombinations.add(new ArrayList<>(combination.stream().sorted().toList()));
+                for (List<Integer> codeSet : allCombinations) {
+                    int sum = codeSet.stream().mapToInt(Integer::intValue).sum();
+                    if ((!isTail && sum == codeNum) || (isTail && sum % 10 == codeNum)) {
+                        eachCombination.add(codeSet.stream().sorted().collect(Collectors.toList()));
                     }
                 }
 
                 if (flag.contains("group")) {
-                    // 组选和值
-                    validCombinations = validCombinations.stream()
-                            .filter(item -> new HashSet<>(item).size() != 1) // 过滤全相等的组合
-                            .distinct() // 去重
+                    eachCombination = eachCombination.stream()
+                            .filter(set -> new HashSet<>(set).size() != 1)
+                            .distinct()
                             .collect(Collectors.toList());
 
-                    int duplicateCount = (int) validCombinations.stream()
-                            .filter(item -> hasDuplicates(item))
-                            .count();
-
-                    resultNum += validCombinations.size() - duplicateCount;
+                    int duplicateCount = 0;
+                    for (List<Integer> codeSet : eachCombination) {
+                        if (codeSet.get(0).equals(codeSet.get(1)) || codeSet.get(0).equals(codeSet.get(2)) || codeSet.get(1).equals(codeSet.get(2))) {
+                            duplicateCount++;
+                        }
+                    }
+                    num += eachCombination.size() - duplicateCount;
                 } else {
-                    resultNum += validCombinations.size();
+                    num += eachCombination.size();
                 }
             }
 
-            facts.put("num", resultNum);
+            facts.put("num", num);
         } catch (Exception e) {
             CfLog.e(e.getMessage());
         }
     }
 
-    // Helper: Cartesian Product
     private List<List<Integer>> cartesianProduct(List<List<Integer>> lists) {
-        List<List<Integer>> resultLists = new ArrayList<>();
-        if (lists.isEmpty()) {
-            resultLists.add(new ArrayList<>());
-            return resultLists;
-        } else {
-            List<Integer> firstList = lists.get(0);
-            List<List<Integer>> remainingLists = cartesianProduct(lists.subList(1, lists.size()));
-            for (Integer condition : firstList) {
-                for (List<Integer> remainingList : remainingLists) {
-                    List<Integer> resultList = new ArrayList<>();
-                    resultList.add(condition);
-                    resultList.addAll(remainingList);
-                    resultLists.add(resultList);
+        List<List<Integer>> result = new ArrayList<>();
+        if (lists.isEmpty()) return result;
+        result.add(new ArrayList<>());
+
+        for (List<Integer> list : lists) {
+            List<List<Integer>> newResult = new ArrayList<>();
+            for (List<Integer> current : result) {
+                for (Integer item : list) {
+                    List<Integer> newCombination = new ArrayList<>(current);
+                    newCombination.add(item);
+                    newResult.add(newCombination);
                 }
             }
+            result = newResult;
         }
-        return resultLists;
-    }
-
-    // Helper: Check if a list has duplicates
-    private boolean hasDuplicates(List<Integer> list) {
-        Set<Integer> uniqueSet = new HashSet<>(list);
-        return uniqueSet.size() != list.size();
+        return result;
     }
 }
