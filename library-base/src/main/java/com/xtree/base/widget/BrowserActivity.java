@@ -51,6 +51,7 @@ import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows;
 import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
@@ -60,7 +61,6 @@ import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.EventVo;
-import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -89,6 +89,7 @@ public class BrowserActivity extends AppCompatActivity {
     public static final String ARG_IS_CONTAIN_TITLE = "isContainTitle";
     public static final String ARG_IS_SHOW_LOADING = "isShowLoading";
     public static final String ARG_IS_GAME = "isGame";
+    public static final String ARG_IS_THIRD = "isThirdDomain";
     public static final String ARG_IS_LOTTERY = "isLottery";
     public static final String ARG_IS_HIDE_TITLE = "isHideTitle";
     public static final String ARG_SEARCH_DNS_URL = "https://dns.alidns.com/dns-query";
@@ -114,6 +115,7 @@ public class BrowserActivity extends AppCompatActivity {
     String url = "";
     boolean isContainTitle = false; // 网页自身是否包含标题(少数情况下会包含)
     boolean isGame = false; // 三方游戏, 不需要header和token
+    boolean isThirdDomain = false; // 是否是三方域名的三方游戏
     boolean isFirstOpenBrowser = true; // 是否第一次打开webView组件(解决第一次打开webView时传递header/cookie/token失效)
     String token; // token
 
@@ -134,6 +136,7 @@ public class BrowserActivity extends AppCompatActivity {
         isContainTitle = getIntent().getBooleanExtra(ARG_IS_CONTAIN_TITLE, false);
         isShowLoading = getIntent().getBooleanExtra(ARG_IS_SHOW_LOADING, false);
         isGame = getIntent().getBooleanExtra(ARG_IS_GAME, false);
+        isThirdDomain = getIntent().getBooleanExtra(ARG_IS_THIRD, false);
         isLottery = getIntent().getBooleanExtra(ARG_IS_LOTTERY, false);
         isHideTitle = getIntent().getBooleanExtra(ARG_IS_HIDE_TITLE, false);
         token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
@@ -230,8 +233,8 @@ public class BrowserActivity extends AppCompatActivity {
         animation.setDuration(20 * 1000);
 
         //todo test
-        if(BuildConfig.DEBUG && FightFanZhaUtils.isOpenTest){
-            FightFanZhaUtils.mockJumpFanZha(agentWeb.getWebCreator().getWebView(),url);
+        if (BuildConfig.DEBUG && FightFanZhaUtils.isOpenTest) {
+            FightFanZhaUtils.mockJumpFanZha(agentWeb.getWebCreator().getWebView(), url);
         }
     }
 
@@ -280,7 +283,7 @@ public class BrowserActivity extends AppCompatActivity {
                     @Override
                     public void onReceivedTitle(WebView webView, String s) {
                         super.onReceivedTitle(webView, s);
-                        FightFanZhaUtils.checkHeadTitle(webView,s,isGame,url);
+                        FightFanZhaUtils.checkHeadTitle(webView, s, isGame, url);
                     }
 
                     @Override
@@ -300,7 +303,6 @@ public class BrowserActivity extends AppCompatActivity {
                                 + consoleMessage.sourceId());
                         return true;
                     }
-
 
                     /**
                      * For Android >= 4.1
@@ -568,15 +570,6 @@ public class BrowserActivity extends AppCompatActivity {
         ctx.startActivity(it);
     }
 
-    public static void start(Context ctx, String title, String url) {
-        CfLog.i(title + ", isContainTitle: " + false + ", url: " + url);
-        Intent it = new Intent(ctx, BrowserActivity.class);
-        it.putExtra(ARG_TITLE, title);
-        it.putExtra(ARG_URL, url);
-        it.putExtra(ARG_IS_CONTAIN_TITLE, false);
-        ctx.startActivity(it);
-    }
-
     public static void start(Context ctx, String title, String url, boolean isContainTitle, boolean isGame) {
         CfLog.i(title + ", isContainTitle: " + false + ", url: " + url);
         Intent it = new Intent(ctx, BrowserActivity.class);
@@ -607,6 +600,16 @@ public class BrowserActivity extends AppCompatActivity {
         ctx.startActivity(it);
     }
 
+    public static void startThirdDomain(Context ctx, String title, String playUrl) {
+        CfLog.i("URL: " + playUrl);
+        Intent it = new Intent(ctx, BrowserActivity.class);
+        it.putExtra(ARG_URL, playUrl);
+        it.putExtra(ARG_TITLE, title);
+        it.putExtra(ARG_IS_THIRD, true);
+        it.putExtra(BrowserActivity.ARG_IS_GAME, true);
+        ctx.startActivity(it);
+    }
+
     @Override
     protected void onDestroy() {
         // 销毁 AgentWeb
@@ -633,17 +636,17 @@ public class BrowserActivity extends AppCompatActivity {
                 mTopSpeedDomainFloatingWindows.onError();
                 break;
             case EVENT_CHANGE_URL_FANZHA_FINSH:
-                if(!isGame){
+                if (!isGame) {
                     //只有自己的h5域名站作更换域名，重新Load
                     String newBaseUrl = DomainUtil.getH5Domain2();
-                    if(TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(url)){
+                    if (TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(url)) {
                         return;
                     }
                     String oldBaseUrl = FightFanZhaUtils.getDomain(url);
-                    if(!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)){
+                    if (!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)) {
                         return;
                     }
-                    String goUrl = url.replace(oldBaseUrl,newBaseUrl);
+                    String goUrl = url.replace(oldBaseUrl, newBaseUrl);
                     CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
                     agentWeb.getUrlLoader().loadUrl(goUrl);
                 }
@@ -652,7 +655,6 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
     public class CustomWebViewClient extends WebViewClient {
-        private boolean isInitialUrl = true; // 是否是初始 URL 的标识
         private final String initialUrl = url; // 替换为你的初始 URL
         private String mUrl;
         //        private OkHttpClient client;
@@ -692,15 +694,10 @@ public class BrowserActivity extends AppCompatActivity {
             //Log.d("---", "onPageStarted url:  " + url);
             if (isLottery) {
                 setLotteryCookieInside();
-            }else {
+            } else {
                 if (!SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN).isEmpty()) {
                     setCookieInside();
                 }
-            }
-            // 检测是否是初始 URL
-            if (isGame && isInitialUrl && TextUtils.equals(url, initialUrl)) {
-                // 当前加载的是初始 URL
-                isInitialUrl = false; // 初始 URL 加载过一次后更新状态
             }
         }
 
@@ -760,7 +757,7 @@ public class BrowserActivity extends AppCompatActivity {
             int statusCode = errorResponse.getStatusCode(); // 获取状态码
             String errorUrl = request.getUrl().toString(); // 获取请求的 URL   这个url不对，返回和初始url不一致
 
-            CfLog.d("HTTP Error:  " +"errorUrl:"+ errorUrl + ",   initialUrl:" + initialUrl + ",   URL: " + mUrl + ",   Status Code: " + statusCode);
+            CfLog.d("HTTP Error:  " + "errorUrl:" + errorUrl + ",   initialUrl:" + initialUrl + ",   URL: " + mUrl + ",   Status Code: " + statusCode);
             // 仅处理初始 URL 的 HTTP 错误
             if (TextUtils.equals(mUrl, initialUrl) || TextUtils.equals(mUrl, null) || TextUtils.equals(mUrl, errorUrl)) {
                 String msg = "状态码:" + statusCode + "；加载链接：" + initialUrl;
@@ -771,7 +768,7 @@ public class BrowserActivity extends AppCompatActivity {
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
-            if(FightFanZhaUtils.checkRequest(getBaseContext(),webResourceRequest,isGame,url)){
+            if (FightFanZhaUtils.checkRequest(getBaseContext(), webResourceRequest, isGame, url)) {
                 return FightFanZhaUtils.replaceLoadingHtml(isGame);
             }
             return super.shouldInterceptRequest(webView, webResourceRequest);
@@ -779,22 +776,28 @@ public class BrowserActivity extends AppCompatActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
-            if(FightFanZhaUtils.checkRequest(getBaseContext(),webResourceRequest,isGame,url)){
+            if (FightFanZhaUtils.checkRequest(getBaseContext(), webResourceRequest, isGame, url)) {
                 return false;
             }
             return super.shouldOverrideUrlLoading(webView, webResourceRequest);
         }
-
 
     }
 
     private void uploadH5Error(String msg, String url) {
         if (isGame) {
             UploadExcetionReq req = new UploadExcetionReq();
-            req.setLogTag("thirdgame_domain_exception");
+            if (isThirdDomain) {
+                req.setLogTag("thirdgame_domain_block");
+                req.setLogType("三方域名：三方游戏打开失败/初始 URL错误处理");
+            } else {
+                req.setLogTag("thirdgame_domain_exception");
+                req.setLogType("公司域名：三方游戏打开失败/初始 URL错误处理");
+            }
+
             req.setApiUrl(url);
             req.setMsg(msg);
-            req.setLogType("三方游戏打开失败/初始 URL错误处理");
+
             EventBus.getDefault().post(new EventVo(EVENT_UPLOAD_EXCEPTION, req));
         }
 

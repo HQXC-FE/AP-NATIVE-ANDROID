@@ -304,7 +304,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         viewModel.liveDataPlayUrl.observe(getViewLifecycleOwner(), map -> {
             CfLog.d("*** " + new Gson().toJson(map));
             // 跳转到游戏H5
-            gameAdapter.playGame(map.get("url").toString(), Objects.requireNonNull(map.get("name")).toString());
+            BrowserActivity.startThirdDomain(requireContext(), Objects.requireNonNull(map.get("name")).toString(), map.get("url").toString());
         });
         viewModel.liveDataProfile.observe(getViewLifecycleOwner(), vo -> {
             CfLog.d("*** " + new Gson().toJson(vo));
