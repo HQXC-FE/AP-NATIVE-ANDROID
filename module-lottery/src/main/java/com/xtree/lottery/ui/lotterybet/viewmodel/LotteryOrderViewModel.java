@@ -66,7 +66,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
                     .append(orderData.getBetOrderData().getNums()).append("注 x ")
                     .append(orderData.getBetOrderData().getTimes()).append("倍 x ")
                     .append(orderData.getMoneyData().getMoneyModel().getName()).append(" = ")
-                    .append(orderData.getBetOrderData().getMoney()).append("元");
+                    .append(BigDecimal.valueOf(orderData.getBetOrderData().getMoney()).toPlainString()).append("元");
             orderData.betMoney.set(stringBuilder.toString());
         }
         bindModels.addAll(lotteryOrderModels);
@@ -181,7 +181,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
                     .append(model.getBetOrderData().getNums()).append("注 x ")
                     .append(model.getBetOrderData().getTimes()).append("倍 x ")
                     .append(model.getMoneyData().getMoneyModel().getName()).append(" = ")
-                    .append(model.getBetOrderData().getMoney()).append("元");
+                    .append(BigDecimal.valueOf(model.getBetOrderData().getMoney()).toPlainString()).append("元");
             model.betMoney.set(stringBuilder.toString());
         }
         for (LotteryOrderModel lotteryOrderModel : betsViewModel.betOrdersLiveData.getValue()) {
