@@ -90,7 +90,6 @@ public class BrowserActivity extends AppCompatActivity {
     public static final String ARG_IS_SHOW_LOADING = "isShowLoading";
     public static final String ARG_IS_GAME = "isGame";
     public static final String ARG_IS_LOTTERY = "isLottery";
-    public static final String ARG_IS_3RD_LINK = "is3rdLink";
     public static final String ARG_IS_HIDE_TITLE = "isHideTitle";
     public static final String ARG_SEARCH_DNS_URL = "https://dns.alidns.com/dns-query";
 
@@ -107,8 +106,6 @@ public class BrowserActivity extends AppCompatActivity {
     ImageView ivwJump;
     View layoutRight;
 
-    int sslErrorCount = 0;
-
     boolean isLottery = false; // 是否彩票, 彩票需要header,需要注入IOS标题头样式
     boolean isShowLoading = false; // 展示loading弹窗
     boolean isHideTitle = false; // 是否隐藏标题
@@ -117,8 +114,6 @@ public class BrowserActivity extends AppCompatActivity {
     String url = "";
     boolean isContainTitle = false; // 网页自身是否包含标题(少数情况下会包含)
     boolean isGame = false; // 三方游戏, 不需要header和token
-    boolean is3rdLink = false; // 是否跳转到三方链接(如果是,就不用带header和cookie了)
-    boolean isFirstLoad = true; // 是否头一次打开当前网页,加载cookie时用
     boolean isFirstOpenBrowser = true; // 是否第一次打开webView组件(解决第一次打开webView时传递header/cookie/token失效)
     String token; // token
 
@@ -140,7 +135,6 @@ public class BrowserActivity extends AppCompatActivity {
         isShowLoading = getIntent().getBooleanExtra(ARG_IS_SHOW_LOADING, false);
         isGame = getIntent().getBooleanExtra(ARG_IS_GAME, false);
         isLottery = getIntent().getBooleanExtra(ARG_IS_LOTTERY, false);
-        is3rdLink = getIntent().getBooleanExtra(ARG_IS_3RD_LINK, false);
         isHideTitle = getIntent().getBooleanExtra(ARG_IS_HIDE_TITLE, false);
         token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
         isFirstOpenBrowser = SPUtils.getInstance().getBoolean(SPKeyGlobal.IS_FIRST_OPEN_BROWSER, true);
@@ -190,7 +184,7 @@ public class BrowserActivity extends AppCompatActivity {
 
         //header.put("Source", "8");
         //header.put("UUID", TagUtils.getDeviceId(Utils.getContext()));
-        if (isGame || is3rdLink) {
+        if (isGame) {
             CfLog.d("not need header.");
             header.clear(); // 游戏 header和cookie只带其中一个即可; FB只能带cookie
         }
@@ -639,7 +633,7 @@ public class BrowserActivity extends AppCompatActivity {
                 mTopSpeedDomainFloatingWindows.onError();
                 break;
             case EVENT_CHANGE_URL_FANZHA_FINSH:
-                if(!isGame && !is3rdLink){
+                if(!isGame){
                     //只有自己的h5域名站作更换域名，重新Load
                     String newBaseUrl = DomainUtil.getH5Domain2();
                     if(TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(url)){
@@ -698,9 +692,7 @@ public class BrowserActivity extends AppCompatActivity {
             //Log.d("---", "onPageStarted url:  " + url);
             if (isLottery) {
                 setLotteryCookieInside();
-            } else if (is3rdLink) {
-                CfLog.d("not need cookie.");
-            } else {
+            }else {
                 if (!SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN).isEmpty()) {
                     setCookieInside();
                 }
