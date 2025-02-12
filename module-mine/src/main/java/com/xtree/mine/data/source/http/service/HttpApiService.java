@@ -761,7 +761,7 @@ public interface HttpApiService {
      */
     @POST("/api/withdrawal/submit")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<WithdrawalSubmitVo> postWithdrawalSubmit(@Body Map<String, Object> map);
+    Flowable<BaseResponse<WithdrawalSubmitVo>> postWithdrawalSubmit(@Body Map<String, Object> map);
 
     @GET("https://ap3sport.oxldkm.com/report/getsplitlists?")
     Flowable<BaseResponse<SpiltDetailVo>> getWithdrawDetails(@QueryMap Map<String, String> map);
