@@ -57,7 +57,6 @@
                 android:id="@+id/ll_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/clr_bg_frame_dark_start"
                 android:gravity="center_vertical"
                 android:paddingStart="@dimen/page_margin"
                 android:paddingEnd="@dimen/page_margin"
