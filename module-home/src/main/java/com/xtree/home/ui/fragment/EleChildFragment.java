@@ -136,13 +136,6 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
             adapter.addAll(eleVo.getList());
             curPage += 1;
         });
-        viewModel.liveDataPlayUrl.observe(getViewLifecycleOwner(), map -> {
-            String url = Objects.requireNonNull(map.get("url")).toString();
-            String name = Objects.requireNonNull(map.get("name")).toString();
-            // 跳转到游戏H5
-            CfLog.i("URL: " + url);
-            BrowserActivity.start(getContext(), name, url, false, true);
-        });
     }
 
     /**
