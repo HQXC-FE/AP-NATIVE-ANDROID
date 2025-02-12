@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.xtree.base.net.FixHttpCallBack;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.StringUtils;
@@ -27,6 +26,12 @@ import com.xtree.mine.vo.USDTSecurityVo;
 import com.xtree.mine.vo.VirtualCashVo;
 import com.xtree.mine.vo.VirtualConfirmVo;
 import com.xtree.mine.vo.VirtualSecurityVo;
+import com.xtree.mine.vo.WithdrawVo.WithdrawalBankInfoVo;
+import com.xtree.mine.vo.WithdrawVo.WithdrawalInfoVo;
+import com.xtree.mine.vo.WithdrawVo.WithdrawalListVo;
+import com.xtree.mine.vo.WithdrawVo.WithdrawalQuotaVo;
+import com.xtree.mine.vo.WithdrawVo.WithdrawalSubmitVo;
+import com.xtree.mine.vo.WithdrawVo.WithdrawalVerifyVo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,12 +40,7 @@ import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
-import com.xtree.mine.vo.WithdrawVo.WithdrawalBankInfoVo;
-import com.xtree.mine.vo.WithdrawVo.WithdrawalInfoVo;
-import com.xtree.mine.vo.WithdrawVo.WithdrawalListVo;
-import com.xtree.mine.vo.WithdrawVo.WithdrawalQuotaVo;
-import com.xtree.mine.vo.WithdrawVo.WithdrawalSubmitVo;
-import com.xtree.mine.vo.WithdrawVo.WithdrawalVerifyVo;
+
 /**
  * 选择支付银行卡ViewModel
  */
@@ -89,9 +89,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * 【魔域】获取提款方式
      */
     public void getChooseWithdrawInfo(final String checkCode) {
-        Disposable disposable = (Disposable) model.getApiService().getChooseWithdrawInfo(checkCode)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
+        Disposable disposable = (Disposable) model.getApiService().getChooseWithdrawInfo(checkCode).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer())
 
                 .subscribeWith(new HttpCallBack<ChooseInfoMoYuVo>() {
 
@@ -102,8 +100,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                             chooseInfoMoYuVoMutableLiveData.setValue(chooseInfoVo);
                         } else {
                             for (int i = 0; i < chooseInfoVo.wdChannelList.size(); i++) {
-                                if (chooseInfoVo.wdChannelList.get(i).configkey.contains("usdt")
-                                        || chooseInfoVo.wdChannelList.get(i).title.contains("USDT提款")) {
+                                if (chooseInfoVo.wdChannelList.get(i).configkey.contains("usdt") || chooseInfoVo.wdChannelList.get(i).title.contains("USDT提款")) {
                                     chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_usdt_type);
                                     chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.usdtchanneluse_msg;
                                     if (chooseInfoVo.bankcardstatus_usdt) {
@@ -114,13 +111,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                                         chooseInfoVo.wdChannelList.get(i).isBind = false;
                                     }
 
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("bank")
-                                        || chooseInfoVo.wdChannelList.get(i).configkey.contains("hipaytx")
-                                        || chooseInfoVo.wdChannelList.get(i).configkey.contains("hipayht")
-                                        || chooseInfoVo.wdChannelList.get(i).configkey.contains("generalchannel")
-                                        || chooseInfoVo.wdChannelList.get(i).configkey.contains("银行卡")
-                                        || chooseInfoVo.wdChannelList.get(i).configkey.contains("onepayfast3")
-                                        || chooseInfoVo.wdChannelList.get(i).title.contains("银行卡提款")) {
+                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("bank") || chooseInfoVo.wdChannelList.get(i).configkey.contains("hipaytx") || chooseInfoVo.wdChannelList.get(i).configkey.contains("hipayht") || chooseInfoVo.wdChannelList.get(i).configkey.contains("generalchannel") || chooseInfoVo.wdChannelList.get(i).configkey.contains("银行卡") || chooseInfoVo.wdChannelList.get(i).configkey.contains("onepayfast3") || chooseInfoVo.wdChannelList.get(i).title.contains("银行卡提款")) {
 
                                     //对应银行卡提款字段匹配
                                     CfLog.e(" ChooseInfoVo.ChannelInfo = " + chooseInfoVo.wdChannelList.get(i).toString());
@@ -133,8 +124,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                                         chooseInfoVo.wdChannelList.get(i).channeluse = 0;
                                         chooseInfoVo.wdChannelList.get(i).isBind = false;
                                     }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("ebpay")
-                                        || chooseInfoVo.wdChannelList.get(i).title.contains("EBPAY提款")) {
+                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("ebpay") || chooseInfoVo.wdChannelList.get(i).title.contains("EBPAY提款")) {
                                     chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.ebpaychanneluse_msg;
                                     chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_ebpay_type);
                                     if (chooseInfoVo.bankcardstatus_ebpay) {
@@ -144,8 +134,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                                         chooseInfoVo.wdChannelList.get(i).channeluse = 0;
                                         chooseInfoVo.wdChannelList.get(i).isBind = false;
                                     }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("topay")
-                                        || chooseInfoVo.wdChannelList.get(i).title.contains("TOPAY提款")) {
+                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("topay") || chooseInfoVo.wdChannelList.get(i).title.contains("TOPAY提款")) {
                                     chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.topaychanneluse_msg;
                                     chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_topay_type);
                                     if (chooseInfoVo.bankcardstatus_topay) {
@@ -155,8 +144,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                                         chooseInfoVo.wdChannelList.get(i).channeluse = 0;
                                         chooseInfoVo.wdChannelList.get(i).isBind = false;
                                     }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("hiwallet")
-                                        || chooseInfoVo.wdChannelList.get(i).title.contains("CNYT提款")) {
+                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("hiwallet") || chooseInfoVo.wdChannelList.get(i).title.contains("CNYT提款")) {
                                     chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.hiwalletchanneluse_msg;
                                     chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_gcnyt_type);
                                     if (chooseInfoVo.bankcardstatus_hiwallet) {
@@ -166,8 +154,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                                         chooseInfoVo.wdChannelList.get(i).channeluse = 0;
                                         chooseInfoVo.wdChannelList.get(i).isBind = false;
                                     }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("gopay")
-                                        || chooseInfoVo.wdChannelList.get(i).title.contains("GOPAY提款")) {
+                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("gopay") || chooseInfoVo.wdChannelList.get(i).title.contains("GOPAY提款")) {
                                     chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.gopaychanneluse_msg;
                                     chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_gopay_type);
                                     if (chooseInfoVo.bankcardstatus_gopay) {
@@ -177,8 +164,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                                         chooseInfoVo.wdChannelList.get(i).channeluse = 0;
                                         chooseInfoVo.wdChannelList.get(i).isBind = false;
                                     }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("mpay")
-                                        || chooseInfoVo.wdChannelList.get(i).title.contains("MPAY提款")) {
+                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("mpay") || chooseInfoVo.wdChannelList.get(i).title.contains("MPAY提款")) {
                                     chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_mpay_type);
                                     chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.mpaychanneluse_msg;
                                     if (chooseInfoVo.bankcardstatus_mpay) {
@@ -188,8 +174,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                                         chooseInfoVo.wdChannelList.get(i).channeluse = 0;
                                         chooseInfoVo.wdChannelList.get(i).isBind = false;
                                     }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("gobao")
-                                        || chooseInfoVo.wdChannelList.get(i).title.contains("GOBAO提款")) {
+                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("gobao") || chooseInfoVo.wdChannelList.get(i).title.contains("GOBAO提款")) {
                                     chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_gobao_type);
                                     chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.gobaochanneluse_msg;
                                     if (chooseInfoVo.bankcardstatus_gobao) {
@@ -199,8 +184,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                                         chooseInfoVo.wdChannelList.get(i).channeluse = 0;
                                         chooseInfoVo.wdChannelList.get(i).isBind = false;
                                     }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("okpay")
-                                        || chooseInfoVo.wdChannelList.get(i).title.contains("OKPAY提款")) {
+                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("okpay") || chooseInfoVo.wdChannelList.get(i).title.contains("OKPAY提款")) {
                                     chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_okpay_type);
                                     chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.okpaychanneluse_msg;
                                     if (chooseInfoVo.bankcardstatus_okpay) {
@@ -210,8 +194,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                                         chooseInfoVo.wdChannelList.get(i).channeluse = 0;
                                         chooseInfoVo.wdChannelList.get(i).isBind = false;
                                     }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("onepayzfb")
-                                        || chooseInfoVo.wdChannelList.get(i).title.contains("极速支付宝提款")) {
+                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("onepayzfb") || chooseInfoVo.wdChannelList.get(i).title.contains("极速支付宝提款")) {
                                     chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_zfb_type);
                                     chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.onepayzfbchanneluse_msg;
                                     if (chooseInfoVo.bankcardstatus_onepayzfb) {
@@ -221,8 +204,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                                         chooseInfoVo.wdChannelList.get(i).channeluse = 0;
                                         chooseInfoVo.wdChannelList.get(i).isBind = false;
                                     }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("onepaywx")
-                                        || chooseInfoVo.wdChannelList.get(i).title.contains("极速微信提款")) {
+                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("onepaywx") || chooseInfoVo.wdChannelList.get(i).title.contains("极速微信提款")) {
                                     chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_wechat_type);
                                     chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.onepaywxchanneluse_msg;
                                     if (chooseInfoVo.bankcardstatus_onepaywx) {
@@ -271,47 +253,44 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      */
     public void getChooseWithdrawBankDetailInfo(final String checkCode) {
         CfLog.e("getChooseWithdrawBankDetailInfo = " + checkCode);
-        Disposable disposable = (Disposable) model.getApiService().getChooseWithdrawBankDetailsInfo(checkCode)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<BankCardCashVo>() {
-                    @Override
-                    public void onResult(BankCardCashVo bankCardCashVo) {
-                        if (bankCardCashVo.channel_list.size() > 0) {
-                            for (int i = 0; i < bankCardCashVo.channel_list.size(); i++) {
-                                BankCardCashVo.ChannelVo cv = bankCardCashVo.channel_list.get(i);
-                                if (!(cv.fixamount_list instanceof String)) {
-                                    //针对多金额选项数据封装
-                                    for (int j = 0; j < ((ArrayList) cv.fixamount_list).size(); j++) {
-                                        bankCardCashVo.channel_list.get(i).fixamountList.add(((ArrayList) cv.fixamount_list).get(j).toString());
-                                    }
-                                } else {
-
-                                }
-                                if (bankCardCashVo.channel_list.get(i).thiriframe_status == 1) {
-                                    bankCardCashVo.channel_list.get(i).isWebView = 1;//需要展示webView页面
-                                } else {
-                                    bankCardCashVo.channel_list.get(i).isWebView = 2;//需要展示webView页面
-                                }
-
+        Disposable disposable = (Disposable) model.getApiService().getChooseWithdrawBankDetailsInfo(checkCode).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<BankCardCashVo>() {
+            @Override
+            public void onResult(BankCardCashVo bankCardCashVo) {
+                if (bankCardCashVo.channel_list.size() > 0) {
+                    for (int i = 0; i < bankCardCashVo.channel_list.size(); i++) {
+                        BankCardCashVo.ChannelVo cv = bankCardCashVo.channel_list.get(i);
+                        if (!(cv.fixamount_list instanceof String)) {
+                            //针对多金额选项数据封装
+                            for (int j = 0; j < ((ArrayList) cv.fixamount_list).size(); j++) {
+                                bankCardCashVo.channel_list.get(i).fixamountList.add(((ArrayList) cv.fixamount_list).get(j).toString());
                             }
-                            if (bankCardCashVo.user != null) {
-                                if (bankCardCashVo.user.username != null) {
-                                    bankCardCashVo.user.username = StringUtils.splitWithdrawUserName(bankCardCashVo.user.username);
-                                } else if (bankCardCashVo.user.nickname != null) {
-                                    bankCardCashVo.user.nickname = StringUtils.splitWithdrawUserName(bankCardCashVo.user.nickname);
-                                }
-
-                            }
-                            bankCardCashMoYuVoMutableLiveData.setValue(bankCardCashVo);
-                        } else if (!TextUtils.isEmpty(bankCardCashVo.ur_here) && bankCardCashVo.ur_here.equals("资金密码检查")) {
-                            bankCardCashMoYuVoMutableLiveData.setValue(bankCardCashVo);
                         } else {
-                            bankCardCashMoYuVoMutableLiveData.setValue(bankCardCashVo);
+
+                        }
+                        if (bankCardCashVo.channel_list.get(i).thiriframe_status == 1) {
+                            bankCardCashVo.channel_list.get(i).isWebView = 1;//需要展示webView页面
+                        } else {
+                            bankCardCashVo.channel_list.get(i).isWebView = 2;//需要展示webView页面
                         }
 
                     }
-                });
+                    if (bankCardCashVo.user != null) {
+                        if (bankCardCashVo.user.username != null) {
+                            bankCardCashVo.user.username = StringUtils.splitWithdrawUserName(bankCardCashVo.user.username);
+                        } else if (bankCardCashVo.user.nickname != null) {
+                            bankCardCashVo.user.nickname = StringUtils.splitWithdrawUserName(bankCardCashVo.user.nickname);
+                        }
+
+                    }
+                    bankCardCashMoYuVoMutableLiveData.setValue(bankCardCashVo);
+                } else if (!TextUtils.isEmpty(bankCardCashVo.ur_here) && bankCardCashVo.ur_here.equals("资金密码检查")) {
+                    bankCardCashMoYuVoMutableLiveData.setValue(bankCardCashVo);
+                } else {
+                    bankCardCashMoYuVoMutableLiveData.setValue(bankCardCashVo);
+                }
+
+            }
+        });
         addSubscribe(disposable);
 
     }
@@ -320,21 +299,18 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * 【魔域】银行卡 提款提交
      */
     public void getPlatWithdrawMoYu(HashMap<String, String> map) {
-        Disposable disposable = (Disposable) model.getApiService().postMoYuPlatWithdrawBank(map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<PlatWithdrawVo>() {
-                    @Override
-                    public void onResult(PlatWithdrawVo platWithdrawVo) {
-                        if (platWithdrawVo.user != null) {
-                            if (platWithdrawVo.user.username != null) {
-                                platWithdrawVo.user.username = StringUtils.splitWithdrawUserName(platWithdrawVo.user.username);
-                            }
-                        }
-
-                        platWithdrawMoYuVoMutableLiveData.setValue(platWithdrawVo);
+        Disposable disposable = (Disposable) model.getApiService().postMoYuPlatWithdrawBank(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<PlatWithdrawVo>() {
+            @Override
+            public void onResult(PlatWithdrawVo platWithdrawVo) {
+                if (platWithdrawVo.user != null) {
+                    if (platWithdrawVo.user.username != null) {
+                        platWithdrawVo.user.username = StringUtils.splitWithdrawUserName(platWithdrawVo.user.username);
                     }
-                });
+                }
+
+                platWithdrawMoYuVoMutableLiveData.setValue(platWithdrawVo);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -342,16 +318,13 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * 确认提交[魔域]
      */
     public void postConfirmWithdrawMoYu(HashMap<String, String> map) {
-        Disposable disposable = (Disposable) model.getApiService().postMoYuConfirmWithdrawBank(map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<PlatWithdrawConfirmVo>() {
-                    @Override
-                    public void onResult(PlatWithdrawConfirmVo platWithdrawConfirmMoYuVo) {
-                        platWithdrawConfirmMoYuVoMutableLiveData.setValue(platWithdrawConfirmMoYuVo);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().postMoYuConfirmWithdrawBank(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<PlatWithdrawConfirmVo>() {
+            @Override
+            public void onResult(PlatWithdrawConfirmVo platWithdrawConfirmMoYuVo) {
+                platWithdrawConfirmMoYuVoMutableLiveData.setValue(platWithdrawConfirmMoYuVo);
+            }
 
-                });
+        });
         addSubscribe(disposable);
     }
 
@@ -359,23 +332,20 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      *【魔域】 获取USDT提款页面信息
      */
     public void getChooseWithdrawUSDTMoYu(String checkCode, String usdtType) {
-        Disposable disposable = (Disposable) model.getApiService().getMoYuChooseWithdrawUSDT(checkCode, usdtType)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<USDTCashVo>() {
-                    @Override
-                    public void onResult(USDTCashVo usdtCashVo) {
-                        if (usdtCashVo.user != null) {
-                            if (usdtCashVo.user.username != null) {
-                                usdtCashVo.user.username = StringUtils.splitWithdrawUserName(usdtCashVo.user.username);
-                            } else if (usdtCashVo.user.nickname != null) {
-                                usdtCashVo.user.nickname = StringUtils.splitWithdrawUserName(usdtCashVo.user.nickname);
-                            }
-                        }
-
-                        usdtCashMoYuVoMutableLiveData.setValue(usdtCashVo);
+        Disposable disposable = (Disposable) model.getApiService().getMoYuChooseWithdrawUSDT(checkCode, usdtType).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<USDTCashVo>() {
+            @Override
+            public void onResult(USDTCashVo usdtCashVo) {
+                if (usdtCashVo.user != null) {
+                    if (usdtCashVo.user.username != null) {
+                        usdtCashVo.user.username = StringUtils.splitWithdrawUserName(usdtCashVo.user.username);
+                    } else if (usdtCashVo.user.nickname != null) {
+                        usdtCashVo.user.nickname = StringUtils.splitWithdrawUserName(usdtCashVo.user.nickname);
                     }
-                });
+                }
+
+                usdtCashMoYuVoMutableLiveData.setValue(usdtCashVo);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -383,22 +353,19 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * [魔域]获取USDT提款 确认提款信息
      */
     public void postPlatWithdrawUSDTMoYu(HashMap<String, String> map) {
-        Disposable disposable = (Disposable) model.getApiService().postMoYuPlatWithdrawUSDT(map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<USDTSecurityVo>() {
-                    @Override
-                    public void onResult(USDTSecurityVo usdtSecurityVo) {
-                        if (usdtSecurityVo.user != null) {
-                            if (usdtSecurityVo.user.username != null) {
-                                usdtSecurityVo.user.username = StringUtils.splitWithdrawUserName(usdtSecurityVo.user.username);
-                            } else if (usdtSecurityVo.user.nickname != null) {
-                                usdtSecurityVo.user.nickname = StringUtils.splitWithdrawUserName(usdtSecurityVo.user.nickname);
-                            }
-                        }
-                        usdtSecurityMoYuVoMutableLiveData.setValue(usdtSecurityVo);
+        Disposable disposable = (Disposable) model.getApiService().postMoYuPlatWithdrawUSDT(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<USDTSecurityVo>() {
+            @Override
+            public void onResult(USDTSecurityVo usdtSecurityVo) {
+                if (usdtSecurityVo.user != null) {
+                    if (usdtSecurityVo.user.username != null) {
+                        usdtSecurityVo.user.username = StringUtils.splitWithdrawUserName(usdtSecurityVo.user.username);
+                    } else if (usdtSecurityVo.user.nickname != null) {
+                        usdtSecurityVo.user.nickname = StringUtils.splitWithdrawUserName(usdtSecurityVo.user.nickname);
                     }
-                });
+                }
+                usdtSecurityMoYuVoMutableLiveData.setValue(usdtSecurityVo);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -406,15 +373,12 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * [魔域]USDT提款完成申请
      */
     public void postConfirmWithdrawUSDTMoYu(HashMap<String, String> map) {
-        Disposable disposable = (Disposable) model.getApiService().postMoYuConfirmWithdrawUSDT(map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<USDTConfirmVo>() {
-                    @Override
-                    public void onResult(USDTConfirmVo usdtConfirmVo) {
-                        usdtConfirmMoYuVoMutableLiveData.setValue(usdtConfirmVo);
-                    }
-                });
+        Disposable disposable = (Disposable) model.getApiService().postMoYuConfirmWithdrawUSDT(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<USDTConfirmVo>() {
+            @Override
+            public void onResult(USDTConfirmVo usdtConfirmVo) {
+                usdtConfirmMoYuVoMutableLiveData.setValue(usdtConfirmVo);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -422,22 +386,19 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * [魔域] 获取虚拟币提款页面信息
      */
     public void getChooseWithdrawVirtualMoYu(final String checkCode, final String usdtType) {
-        Disposable disposable = (Disposable) model.getApiService().getMoYuChooseWithdrawVirtual(checkCode, usdtType)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<VirtualCashVo>() {
-                    @Override
-                    public void onResult(VirtualCashVo virtualCashVo) {
-                        if (virtualCashVo.user != null) {
-                            if (virtualCashVo.user.username != null) {
-                                virtualCashVo.user.username = StringUtils.splitWithdrawUserName(virtualCashVo.user.username);
-                            } else if (virtualCashVo.user.nickname != null) {
-                                virtualCashVo.user.nickname = StringUtils.splitWithdrawUserName(virtualCashVo.user.nickname);
-                            }
-                        }
-                        virtualCashMoYuVoMutableLiveData.setValue(virtualCashVo);
+        Disposable disposable = (Disposable) model.getApiService().getMoYuChooseWithdrawVirtual(checkCode, usdtType).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<VirtualCashVo>() {
+            @Override
+            public void onResult(VirtualCashVo virtualCashVo) {
+                if (virtualCashVo.user != null) {
+                    if (virtualCashVo.user.username != null) {
+                        virtualCashVo.user.username = StringUtils.splitWithdrawUserName(virtualCashVo.user.username);
+                    } else if (virtualCashVo.user.nickname != null) {
+                        virtualCashVo.user.nickname = StringUtils.splitWithdrawUserName(virtualCashVo.user.nickname);
                     }
-                });
+                }
+                virtualCashMoYuVoMutableLiveData.setValue(virtualCashVo);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -445,22 +406,19 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * [魔域] 获取虚拟币提款 确认提款信息
      */
     public void postPlatWithdrawVirtualMoYu(HashMap<String, String> map) {
-        Disposable disposable = (Disposable) model.getApiService().postMoYuPlatWithdrawVirtual(map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<VirtualSecurityVo>() {
-                    @Override
-                    public void onResult(VirtualSecurityVo virtualSecurityVo) {
-                        if (virtualSecurityVo.user != null) {
-                            if (virtualSecurityVo.user.username != null) {
-                                virtualSecurityVo.user.username = StringUtils.splitWithdrawUserName(virtualSecurityVo.user.username);
-                            } else if (virtualSecurityVo.user.nickname != null) {
-                                virtualSecurityVo.user.nickname = StringUtils.splitWithdrawUserName(virtualSecurityVo.user.nickname);
-                            }
-                        }
-                        virtualSecurityMoYuVoMutableLiveData.setValue(virtualSecurityVo);
+        Disposable disposable = (Disposable) model.getApiService().postMoYuPlatWithdrawVirtual(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<VirtualSecurityVo>() {
+            @Override
+            public void onResult(VirtualSecurityVo virtualSecurityVo) {
+                if (virtualSecurityVo.user != null) {
+                    if (virtualSecurityVo.user.username != null) {
+                        virtualSecurityVo.user.username = StringUtils.splitWithdrawUserName(virtualSecurityVo.user.username);
+                    } else if (virtualSecurityVo.user.nickname != null) {
+                        virtualSecurityVo.user.nickname = StringUtils.splitWithdrawUserName(virtualSecurityVo.user.nickname);
                     }
-                });
+                }
+                virtualSecurityMoYuVoMutableLiveData.setValue(virtualSecurityVo);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -468,15 +426,12 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * [魔域]虚拟币提款完成申请
      */
     public void postConfirmWithdrawVirtualMoYu(HashMap<String, String> map) {
-        Disposable disposable = (Disposable) model.getApiService().postMoYuConfirmWithdrawVirtual(map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<VirtualConfirmVo>() {
-                    @Override
-                    public void onResult(VirtualConfirmVo virtualConfirmVo) {
-                        virtualConfirmMuYuVoMutableLiveData.setValue(virtualConfirmVo);
-                    }
-                });
+        Disposable disposable = (Disposable) model.getApiService().postMoYuConfirmWithdrawVirtual(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<VirtualConfirmVo>() {
+            @Override
+            public void onResult(VirtualConfirmVo virtualConfirmVo) {
+                virtualConfirmMuYuVoMutableLiveData.setValue(virtualConfirmVo);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -484,45 +439,42 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * 获取流水
      */
     public void getAwardRecord() {
-        Disposable disposable = (Disposable) model.getApiService().getAwardRecord()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<AwardsRecordVo>() {
-                    @Override
-                    public void onResult(AwardsRecordVo awardrecordVo) {
-                        if (awardrecordVo != null) {
-                            awardrecordVoMutableLiveData.setValue(awardrecordVo);
-                        } else {
-                            CfLog.i("awardrecordVo IS NULL ");
-                        }
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getAwardRecord().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<AwardsRecordVo>() {
+            @Override
+            public void onResult(AwardsRecordVo awardrecordVo) {
+                if (awardrecordVo != null) {
+                    awardrecordVoMutableLiveData.setValue(awardrecordVo);
+                } else {
+                    CfLog.i("awardrecordVo IS NULL ");
+                }
+            }
 
-                    //增加网络异常抓取
-                    @Override
-                    public void onError(Throwable t) {
-                        //super.onError(t);  ex.message = "连接超时";
-                        Throwable throwable = t;
-                        String message = throwable.getMessage();
-                        CfLog.e("onError message =  " + message);
-                        AwardsRecordVo awardrecordVo = new AwardsRecordVo();
-                        //链接超时
-                        awardrecordVo.networkStatus = 1; //链接超时
-                        awardrecordVoMutableLiveData.setValue(awardrecordVo);
+            //增加网络异常抓取
+            @Override
+            public void onError(Throwable t) {
+                //super.onError(t);  ex.message = "连接超时";
+                Throwable throwable = t;
+                String message = throwable.getMessage();
+                CfLog.e("onError message =  " + message);
+                AwardsRecordVo awardrecordVo = new AwardsRecordVo();
+                //链接超时
+                awardrecordVo.networkStatus = 1; //链接超时
+                awardrecordVoMutableLiveData.setValue(awardrecordVo);
 
-                    }
+            }
 
-                    @Override
-                    public void onFail(BusinessException t) {
-                        // super.onFail(t);
-                        String message = t.getMessage();
-                        CfLog.e("onError message =  " + message);
-                        AwardsRecordVo awardrecordVo = new AwardsRecordVo();
-                        //链接超时
-                        awardrecordVo.networkStatus = 1; //链接超时
-                        awardrecordVoMutableLiveData.setValue(awardrecordVo);
-                    }
+            @Override
+            public void onFail(BusinessException t) {
+                // super.onFail(t);
+                String message = t.getMessage();
+                CfLog.e("onError message =  " + message);
+                AwardsRecordVo awardrecordVo = new AwardsRecordVo();
+                //链接超时
+                awardrecordVo.networkStatus = 1; //链接超时
+                awardrecordVoMutableLiveData.setValue(awardrecordVo);
+            }
 
-                });
+        });
         addSubscribe(disposable);
     }
 
@@ -530,15 +482,12 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * 校验资金密码(魔域)
      */
     public void getCheckPass(HashMap<String, String> map) {
-        Disposable disposable = (Disposable) model.getApiService().getCheckPass(map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<FundPassWordVo>() {
-                    @Override
-                    public void onResult(FundPassWordVo vo) {
-                        fundPassWordVoMutableLiveData.setValue(vo);
-                    }
-                });
+        Disposable disposable = (Disposable) model.getApiService().getCheckPass(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<FundPassWordVo>() {
+            @Override
+            public void onResult(FundPassWordVo vo) {
+                fundPassWordVoMutableLiveData.setValue(vo);
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -546,58 +495,52 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * 校验资金密码/谷歌验证(魔域)
      */
     public void getCheckPassAndVerify(HashMap<String, String> map) {
-        Disposable disposable = (Disposable) model.getApiService().getCheckPassAndVerify(map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<FundPassWordVerifyVo>() {
-                    @Override
-                    public void onResult(FundPassWordVerifyVo vo) {
-                        fundPassWordVerifyVoMutableLiveData.setValue(vo);
-                    }
-                });
+        Disposable disposable = (Disposable) model.getApiService().getCheckPassAndVerify(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<FundPassWordVerifyVo>() {
+            @Override
+            public void onResult(FundPassWordVerifyVo vo) {
+                fundPassWordVerifyVoMutableLiveData.setValue(vo);
+            }
+        });
         addSubscribe(disposable);
     }
 
     /*获取其他提款方式*/
     public void getWithdrawOther(final String check, final String type) {
-        Disposable disposable = (Disposable) model.getApiService().getChooseWithdrawOther(check, type)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<OtherWebWithdrawVo>() {
-                    @Override
-                    public void onResult(OtherWebWithdrawVo vo) {
-                        CfLog.e("getWithdrawOther =  " + vo.toString());
-                        if (vo != null) {
-                            otherWebWithdrawVoMutableLiveData.setValue(vo);
-                        }
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getChooseWithdrawOther(check, type).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<OtherWebWithdrawVo>() {
+            @Override
+            public void onResult(OtherWebWithdrawVo vo) {
+                CfLog.e("getWithdrawOther =  " + vo.toString());
+                if (vo != null) {
+                    otherWebWithdrawVoMutableLiveData.setValue(vo);
+                }
+            }
 
-                    //增加网络异常抓取
-                    @Override
-                    public void onError(Throwable t) {
-                        //super.onError(t);  ex.message = "连接超时";
-                        Throwable throwable = t;
-                        String message = throwable.getMessage();
-                        CfLog.e("onError message =  " + message);
-                        AwardsRecordVo awardrecordVo = new AwardsRecordVo();
-                        //链接超时
-                        awardrecordVo.networkStatus = 1; //链接超时
-                        awardrecordVoMutableLiveData.setValue(awardrecordVo);
+            //增加网络异常抓取
+            @Override
+            public void onError(Throwable t) {
+                //super.onError(t);  ex.message = "连接超时";
+                Throwable throwable = t;
+                String message = throwable.getMessage();
+                CfLog.e("onError message =  " + message);
+                AwardsRecordVo awardrecordVo = new AwardsRecordVo();
+                //链接超时
+                awardrecordVo.networkStatus = 1; //链接超时
+                awardrecordVoMutableLiveData.setValue(awardrecordVo);
 
-                    }
+            }
 
-                    @Override
-                    public void onFail(BusinessException t) {
-                        // super.onFail(t);
-                        String message = t.message;
-                        CfLog.e("onError message =  " + message);
-                        AwardsRecordVo awardrecordVo = new AwardsRecordVo();
-                        //链接超时
-                        awardrecordVo.networkStatus = 1; //链接超时
-                        awardrecordVoMutableLiveData.setValue(awardrecordVo);
-                    }
+            @Override
+            public void onFail(BusinessException t) {
+                // super.onFail(t);
+                String message = t.message;
+                CfLog.e("onError message =  " + message);
+                AwardsRecordVo awardrecordVo = new AwardsRecordVo();
+                //链接超时
+                awardrecordVo.networkStatus = 1; //链接超时
+                awardrecordVoMutableLiveData.setValue(awardrecordVo);
+            }
 
-                });
+        });
         addSubscribe(disposable);
 
     }
@@ -609,43 +552,44 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * 提款获取可用额度
      */
     public void getWithdrawQuota() {
-        Disposable disposable = (Disposable) model.getApiService().getWithdrawalQuota()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<WithdrawalQuotaVo>() {
-                    @Override
-                    public void onResult(WithdrawalQuotaVo vo) {
-                        quotaVoMutableLiveData.setValue(vo);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getWithdrawalQuota().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<WithdrawalQuotaVo>() {
+            @Override
+            public void onResult(WithdrawalQuotaVo vo, BusinessException ex) {
+                if (vo == null) {
+                    onFail(ex);
+                    return;
+                }
+                quotaVoMutableLiveData.setValue(vo);
+            }
 
-                    //增加网络异常抓取
-                    @Override
-                    public void onError(Throwable t) {
-                        //super.onError(t);  ex.message = "连接超时";
-                        LoadingDialog.finish();
-                        Throwable throwable = t;
-                        String message = throwable.getMessage();
-                        CfLog.e("onError message =  " + message);
-                        WithdrawalQuotaVo vo = new WithdrawalQuotaVo();
-                        //链接超时
-                        vo.networkStatus = 1; //链接超时
-                        quotaVoMutableLiveData.setValue(vo);
+            //增加网络异常抓取
+            @Override
+            public void onError(Throwable t) {
+                //super.onError(t);  ex.message = "连接超时";
+                LoadingDialog.finish();
+                Throwable throwable = t;
+                String message = throwable.getMessage();
+                CfLog.e("onError message =  " + message);
+                WithdrawalQuotaVo vo = new WithdrawalQuotaVo();
+                //链接超时
+                vo.networkStatus = 1; //链接超时
+                quotaVoMutableLiveData.setValue(vo);
 
-                    }
+            }
 
-                    @Override
-                    public void onFail(BusinessException t) {
+            @Override
+            public void onFail(BusinessException t) {
 //                         super.onFail(t);
-                        LoadingDialog.finish();
-                        String message = t.message;
-                        CfLog.e("onError message =  " + message);
-                        WithdrawalQuotaVo vo = new WithdrawalQuotaVo();
-                        //链接超时
-                        vo.networkStatus = 1; //链接超时
-                        quotaVoMutableLiveData.setValue(vo);
-                    }
+                LoadingDialog.finish();
+                String message = t.message;
+                CfLog.e("onError message =  " + message);
+                WithdrawalQuotaVo vo = new WithdrawalQuotaVo();
+                //链接超时
+                vo.networkStatus = 1; //链接超时
+                quotaVoMutableLiveData.setValue(vo);
+            }
 
-                });
+        });
         addSubscribe(disposable);
     }
 
@@ -653,30 +597,31 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * 获取可提现渠道列表
      */
     public void getWithdrawalList(final String checkCode) {
-        Disposable disposable = (Disposable) model.getApiService().getWithdrawalList(checkCode)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<WithdrawalListVo>() {
-                    @Override
-                    public void onResult(WithdrawalListVo withdrawalListVos) {
-                        withdrawalListVoMutableLiveData.setValue(withdrawalListVos);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().getWithdrawalList(checkCode).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<WithdrawalListVo>() {
+            @Override
+            public void onResult(WithdrawalListVo withdrawalListVos, BusinessException exception) {
+                if (withdrawalListVos == null) {
+                    onFail(exception);
+                    return;
+                }
+                withdrawalListVoMutableLiveData.setValue(withdrawalListVos);
+            }
 
-                    //增加网络异常抓取
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
+            //增加网络异常抓取
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
 
-                        CfLog.e("onError message =  " + t.toString());
-                    }
+                CfLog.e("onError message =  " + t.toString());
+            }
 
-                    @Override
-                    public void onFail(BusinessException t) {
-                         super.onFail(t);
-                        CfLog.e("onError message =  " + t.toString());
-                    }
+            @Override
+            public void onFail(BusinessException t) {
+                super.onFail(t);
+                CfLog.e("onError message =  " + t.toString());
+            }
 
-                });
+        });
         addSubscribe(disposable);
     }
 
@@ -688,38 +633,43 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
         //	hipayht
 //        HashMap<String, Object> map = new HashMap<>();
 //        map.put("wtype", name);
-        Disposable disposable = (Disposable) model.getApiService().getWithdrawalInfo(wtype, check)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<WithdrawalInfoVo>() {
-                    @Override
-                    public void onResult(WithdrawalInfoVo vo) {
+        Disposable disposable = (Disposable) model.getApiService().getWithdrawalInfo(wtype, check).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<WithdrawalInfoVo>() {
+            @Override
+            public void onResult(WithdrawalInfoVo vo) {
 //                        CfLog.e("withdrawalInfoVoMutableLiveData  message=" + vo.message + "/n vo=" + vo.toString());
-                        withdrawalInfoVoMutableLiveData.setValue(vo);
-                    }
+            }
 
-                    //增加网络异常抓取
-                    @Override
-                    public void onError(Throwable t) {
-                        //super.onError(t);  ex.message = "连接超时";
+            @Override
+            public void onResult(WithdrawalInfoVo vo, BusinessException ex) {
+                if (vo == null) {
+                    onFail(ex);
+                    return;
+                }
+                withdrawalInfoVoMutableLiveData.setValue(vo);
+            }
 
-                        CfLog.e("onError message =  " + t.toString());
-                         withdrawalListErrorData.setValue(t.getMessage());
-                    }
+            //增加网络异常抓取
+            @Override
+            public void onError(Throwable t) {
+                //super.onError(t);  ex.message = "连接超时";
 
-                    @Override
-                    public void onFail(BusinessException t) {
-                        // super.onFail(t);
-                        CfLog.e("onFail message =  " + t.toString());
+                CfLog.e("onError message =  " + t.toString());
+                withdrawalListErrorData.setValue(t.getMessage());
+            }
+
+            @Override
+            public void onFail(BusinessException t) {
+                // super.onFail(t);
+                CfLog.e("onFail message =  " + t.toString());
 //                        WithdrawalInfoVo vo = new WithdrawalInfoVo();
 //                        vo.message = t.message;
 //                        vo.code = String.valueOf(t.code);
 //                        withdrawalInfoVoMutableLiveData.setValue(vo);
-                        withdrawalListErrorData.setValue(t.message);
+                withdrawalListErrorData.setValue(t.message);
 
-                    }
+            }
 
-                });
+        });
         addSubscribe(disposable);
     }
 
@@ -727,63 +677,60 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * 获取可提现渠道列表
      */
     public void getWithdrawalBankInfo(final String wtype, final String check) {
-        Disposable disposable = (Disposable) model.getApiService().getWithdrawalBankInfo(wtype, check)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FixHttpCallBack<WithdrawalBankInfoVo>() {
-                    @Override
-                    public void onResult(WithdrawalBankInfoVo vo, BusinessException ex) {
-                        if (vo == null) {
-                            if (ex != null && !TextUtils.isEmpty(ex.message)) {
-                                bankInfoVoErrorData.setValue(ex.message);
-                            } else {
-                                bankInfoVoErrorData.setValue(getApplication().getString(R.string.txt_withdrawal_banks_empty));
-                            }
-                            return;
-                        }
-
-                        //开启固额
-                        if (vo.money_fixed) {
-                            if (vo.money_options instanceof ArrayList) {
-                                ArrayList list = (ArrayList) vo.money_options;
-                                for (int i = 0; i < list.size(); i++) {
-                                    if (list.get(i) instanceof String) {
-                                        vo.fixamountList.add((String) list.get(i));
-                                        WithdrawalBankInfoVo.WithdrawalAmountVo amountVo = new WithdrawalBankInfoVo.WithdrawalAmountVo();
-                                        amountVo.amount = (String) list.get(i);
-                                        amountVo.flag = false;
-
-                                        vo.amountVoList.add(amountVo);
-                                    }
-                                }
-                            }
-                        } else {
-                            CfLog.e(" *********** getWithdrawalBankInfo 暂未开启固额");
-                        }
-                        withdrawalBankInfoVoMutableLiveData.setValue(vo);
+        Disposable disposable = (Disposable) model.getApiService().getWithdrawalBankInfo(wtype, check).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<WithdrawalBankInfoVo>() {
+            @Override
+            public void onResult(WithdrawalBankInfoVo vo, BusinessException ex) {
+                if (vo == null) {
+                    if (ex != null && !TextUtils.isEmpty(ex.message)) {
+                        bankInfoVoErrorData.setValue(ex.message);
+                    } else {
+                        bankInfoVoErrorData.setValue(getApplication().getString(R.string.txt_withdrawal_banks_empty));
                     }
+                    return;
+                }
 
-                    //增加网络异常抓取
-                    @Override
-                    public void onError(Throwable t) {
-                        //super.onError(t);  ex.message = "连接超时";
+                //开启固额
+                if (vo.money_fixed) {
+                    if (vo.money_options instanceof ArrayList) {
+                        ArrayList list = (ArrayList) vo.money_options;
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.get(i) instanceof String) {
+                                vo.fixamountList.add((String) list.get(i));
+                                WithdrawalBankInfoVo.WithdrawalAmountVo amountVo = new WithdrawalBankInfoVo.WithdrawalAmountVo();
+                                amountVo.amount = (String) list.get(i);
+                                amountVo.flag = false;
 
-                        CfLog.e("onError message =  " + t.toString());
+                                vo.amountVoList.add(amountVo);
+                            }
+                        }
                     }
+                } else {
+                    CfLog.e(" *********** getWithdrawalBankInfo 暂未开启固额");
+                }
+                withdrawalBankInfoVoMutableLiveData.setValue(vo);
+            }
 
-                    @Override
-                    public void onFail(BusinessException t) {
-                        // super.onFail(t);
+            //增加网络异常抓取
+            @Override
+            public void onError(Throwable t) {
+                //super.onError(t);  ex.message = "连接超时";
+
+                CfLog.e("onError message =  " + t.toString());
+            }
+
+            @Override
+            public void onFail(BusinessException t) {
+                // super.onFail(t);
 //                        CfLog.e("onFail message =  " + t.toString());
 //                        WithdrawalBankInfoVo vo = new WithdrawalBankInfoVo();
 //                        vo.message = t.message;
 //                        vo.code = String.valueOf(t.code);
 //                        bankInfoVoMutableLiveData.setValue(vo);
-                        bankInfoVoErrorData.setValue(t.message);
+                bankInfoVoErrorData.setValue(t.message);
 
-                    }
+            }
 
-                });
+        });
         addSubscribe(disposable);
     }
 
@@ -793,35 +740,32 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * @param map
      */
     public void postWithdrawalVerify(final HashMap<String, Object> map) {
-        Disposable disposable = (Disposable) model.getApiService().postWithdrawalVerify(map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FixHttpCallBack<WithdrawalVerifyVo>() {
-                    @Override
-                    public void onResult(WithdrawalVerifyVo vo,BusinessException ex) {
-                        CfLog.e("withdrawalInfoVoMutableLiveData  vo .getStatus = " + vo);
-                        if (vo == null) {
-                            verifyVoErrorData.setValue(ex.message);
-                            return;
-                        }
-                        verifyVoMutableLiveData.setValue(vo);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().postWithdrawalVerify(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<WithdrawalVerifyVo>() {
+            @Override
+            public void onResult(WithdrawalVerifyVo vo, BusinessException exception) {
+                if (vo == null) {
+                    onFail(exception);
+                    return;
+                }
+                CfLog.e("postWithdrawalVerify  vo .getStatus = " + vo);
+                verifyVoMutableLiveData.setValue(vo);
+            }
 
-                    //增加网络异常抓取
-                    @Override
-                    public void onError(Throwable t) {
-                        //super.onError(t);  ex.message = "连接超时";
-                        CfLog.e("onError message =  " + t.toString());
-                    }
+            //增加网络异常抓取
+            @Override
+            public void onError(Throwable t) {
+                //super.onError(t);  ex.message = "连接超时";
+                CfLog.e("onError message =  " + t.toString());
+            }
 
-                    @Override
-                    public void onFail(BusinessException t) {
-                        // super.onFail(t);
-                        CfLog.e("onError message =  " + t.toString());
-                        verifyVoErrorData.setValue(t.message);
-                    }
+            @Override
+            public void onFail(BusinessException t) {
+                // super.onFail(t);
+                CfLog.e("onError message =  " + t.toString());
+                verifyVoErrorData.setValue(t.message);
+            }
 
-                });
+        });
         addSubscribe(disposable);
     }
 
@@ -831,32 +775,33 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
      * @param map
      */
     public void postWithdrawalSubmit(final HashMap<String, Object> map) {
-        Disposable disposable = (Disposable) model.getApiService().postWithdrawalSubmit(map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<WithdrawalSubmitVo>() {
-                    @Override
-                    public void onResult(WithdrawalSubmitVo vo) {
-                        CfLog.e("withdrawalInfoVoMutableLiveData  vo .getStatus = " + vo);
-                        submitVoMutableLiveData.setValue(vo);
-                    }
+        Disposable disposable = (Disposable) model.getApiService().postWithdrawalSubmit(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<WithdrawalSubmitVo>() {
+            @Override
+            public void onResult(WithdrawalSubmitVo vo, BusinessException exception) {
+                if (vo == null) {
+                    onFail(exception);
+                    return;
+                }
+                CfLog.e("withdrawalInfoVoMutableLiveData  vo .getStatus = " + vo);
+                submitVoMutableLiveData.setValue(vo);
+            }
 
-                    //增加网络异常抓取
-                    @Override
-                    public void onError(Throwable t) {
-                        //super.onError(t);  ex.message = "连接超时";
+            //增加网络异常抓取
+            @Override
+            public void onError(Throwable t) {
+                //super.onError(t);  ex.message = "连接超时";
 
-                        CfLog.e("onError message =  " + t.toString());
-                    }
+                CfLog.e("onError message =  " + t.toString());
+            }
 
-                    @Override
-                    public void onFail(BusinessException t) {
-                        // super.onFail(t);
-                        CfLog.e("onError message =  " + t.toString());
-                        submitVoErrorData.setValue(t.message);
-                    }
+            @Override
+            public void onFail(BusinessException t) {
+                // super.onFail(t);
+                CfLog.e("onError message =  " + t.toString());
+                submitVoErrorData.setValue(t.message);
+            }
 
-                });
+        });
         addSubscribe(disposable);
     }
 }
