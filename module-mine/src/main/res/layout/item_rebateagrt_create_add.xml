@@ -33,7 +33,7 @@
             <View
                 android:layout_width="5dp"
                 android:layout_height="14dp"
-                android:background="@color/clr_txt_02"/>
+                android:background="@color/clr_main_13"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,11 +50,11 @@
             android:layout_height="30dp"
             android:text="@string/txt_add_rules"
             android:textSize="12sp"
-            android:textColor="@color/clr_txt_02"
+            android:textColor="@color/clr_main_13"
             android:gravity="center"
             android:layout_marginTop="8dp"
             android:layout_marginStart="3dp"
-            android:background="@drawable/shape_stroke_main_c08"
+            android:background="@drawable/shape_main09_c22"
             android:layout_alignParentEnd="true"
             android:onClick="@{() -> m.add()}"
             android:visibility="@{m.openAdd==true?View.VISIBLE:View.GONE}"

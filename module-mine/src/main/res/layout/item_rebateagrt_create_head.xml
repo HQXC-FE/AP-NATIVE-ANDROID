@@ -30,7 +30,7 @@
             <View
                 android:layout_width="3dp"
                 android:layout_height="14dp"
-                android:background="@color/clr_txt_02"/>
+                android:background="@color/clr_main_13"/>
 
             <TextView
                 android:layout_width="wrap_content"

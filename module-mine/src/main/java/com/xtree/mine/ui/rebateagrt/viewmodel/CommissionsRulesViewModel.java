@@ -42,9 +42,9 @@ public class CommissionsRulesViewModel extends BaseViewModel<MineRepository> {
             TextView tv2 = view.findViewById(R.id.item_tv2);
             TextView tv3 = view.findViewById(R.id.item_tv3);
 
-            tv1.setTextColor(getApplication().getResources().getColor(R.color.clr_white));
-            tv2.setTextColor(getApplication().getResources().getColor(R.color.clr_white));
-            tv3.setTextColor(getApplication().getResources().getColor(R.color.clr_white));
+            tv1.setTextColor(getApplication().getResources().getColor(R.color.clr_txt_mouse5));
+            tv2.setTextColor(getApplication().getResources().getColor(R.color.clr_txt_mouse5));
+            tv3.setTextColor(getApplication().getResources().getColor(R.color.clr_txt_mouse5));
         }
         @Override
         public void onItemClick(int modelPosition, int layoutPosition, int itemViewType) {
