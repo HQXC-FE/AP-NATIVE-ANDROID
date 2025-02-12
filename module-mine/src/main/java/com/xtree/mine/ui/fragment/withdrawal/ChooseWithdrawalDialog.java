@@ -191,7 +191,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
     private WithdrawalBankInfoVo bankInfoVo;//银行卡提现渠道详情
 
     private void initViewObservable() {
-        dismissMasksLoading();
+//        dismissMasksLoading();
         //获取可提额度 刷新底部金额数据
         viewModel.quotaVoMutableLiveData.observe(owner, vo -> {
             quotaVo = vo;
@@ -343,7 +343,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
             WithdrawalListAdapter adapter = new WithdrawalListAdapter(getContext(), vo, this);
             binding.lvChoose.setVisibility(View.VISIBLE);
             binding.lvChoose.setAdapter(adapter);
-            dismissMasksLoading();
+//            dismissMasksLoading();
         }
     }
 
@@ -631,7 +631,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
      * 请求网络数据
      */
     private void requestData() {
-        showMaskLoading();
+        LoadingDialog.show(context);
         viewModel.getWithdrawQuota();
 //        viewModel.getChooseWithdrawInfo(checkCode);
         viewModel.getWithdrawalList(checkCode);
@@ -646,12 +646,12 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
     }
 
     /*关闭loading*/
-    private void dismissMasksLoading() {
-        if (loadingView != null) {
-            loadingView.dismiss();
-        }
-
-    }
+//    private void dismissMasksLoading() {
+//        if (loadingView != null) {
+//            loadingView.dismiss();
+//        }
+//
+//    }
 
 //    private void referUI() {
 //        if (chooseInfoVo.wdChannelList != null && !chooseInfoVo.wdChannelList.isEmpty()) {

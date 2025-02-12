@@ -10,6 +10,7 @@ import com.xtree.base.net.FixHttpCallBack;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.StringUtils;
+import com.xtree.base.widget.LoadingDialog;
 import com.xtree.mine.R;
 import com.xtree.mine.data.MineRepository;
 import com.xtree.mine.vo.AwardsRecordVo;
@@ -621,6 +622,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onError(Throwable t) {
                         //super.onError(t);  ex.message = "连接超时";
+                        LoadingDialog.finish();
                         Throwable throwable = t;
                         String message = throwable.getMessage();
                         CfLog.e("onError message =  " + message);
@@ -633,7 +635,8 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
 
                     @Override
                     public void onFail(BusinessException t) {
-                        // super.onFail(t);
+//                         super.onFail(t);
+                        LoadingDialog.finish();
                         String message = t.message;
                         CfLog.e("onError message =  " + message);
                         WithdrawalQuotaVo vo = new WithdrawalQuotaVo();
@@ -662,14 +665,14 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                     //增加网络异常抓取
                     @Override
                     public void onError(Throwable t) {
-                        //super.onError(t);  ex.message = "连接超时";
+                        super.onError(t);
 
                         CfLog.e("onError message =  " + t.toString());
                     }
 
                     @Override
                     public void onFail(BusinessException t) {
-                        // super.onFail(t);
+                         super.onFail(t);
                         CfLog.e("onError message =  " + t.toString());
                     }
 
@@ -701,7 +704,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                         //super.onError(t);  ex.message = "连接超时";
 
                         CfLog.e("onError message =  " + t.toString());
-                        withdrawalListErrorData.setValue(t.getMessage());
+                         withdrawalListErrorData.setValue(t.getMessage());
                     }
 
                     @Override
