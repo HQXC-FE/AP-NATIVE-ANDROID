@@ -103,11 +103,27 @@ public class BindUsdtFragment extends BaseFragment<FragmentBindUsdtBinding, Bind
                     binding2.llType.setVisibility(View.GONE);
                 }*/
 
-                if (vo.status.equals("1")) {
+             /*   if (vo.status.equals("1")) {
                     binding2.tvwRebind.setVisibility(View.VISIBLE);
                 } else {
                     binding2.tvwRebind.setVisibility(View.GONE);
                 }
+                if (TextUtils.equals("1", vo.lockbankoprate)) {
+                    binding2.tvwRebind.setVisibility(View.VISIBLE);
+                } else {
+                    binding2.tvwRebind.setVisibility(View.GONE);
+                }*/
+                /**
+                * lockbankoprate  TRUE  FALSE
+                 *
+                 * 后台基本配置为yes  == FALSE 隐藏   no  == TRUE  显示
+                */
+                if (vo.lockbankoprate == true) {
+                    binding2.tvwRebind.setVisibility(View.VISIBLE);
+                } else {
+                    binding2.tvwRebind.setVisibility(View.GONE);
+                }
+
 
                 binding2.tvwRebind.setOnClickListener(v -> {
                     Bundle bundle = getArguments();
@@ -162,7 +178,7 @@ public class BindUsdtFragment extends BaseFragment<FragmentBindUsdtBinding, Bind
     @Override
     public void initViewObservable() {
         viewModel.liveDataCardList.observe(this, vo -> {
-
+            CfLog.e("***************************initViewObservable ********************* " +vo.toString());
             if (vo.status == 1) {
                 binding.tvwAdd.performClick(); // 跳到增加绑定页
                 getActivity().finish();

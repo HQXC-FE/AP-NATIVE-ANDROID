@@ -23,5 +23,22 @@ public class UsdtVo {
     //public String vip_virtual_currency_quota; // null,
     //public String vvcq_updated_at; // null,
     //public String username; // "tst033@as"
+    //1、lockbankoprate参数值:yes，前台 管理USDT页面隐藏“重新绑定”按钮；
+    //2、lockbankoprate参数值:no，前台 管理USDT页面显示“重新绑定”按钮；
 
+    public boolean lockbankoprate ;
+
+    @Override
+    public String toString() {
+        return "UsdtVo{" +
+                "id='" + id + '\'' +
+                ", user_name='" + user_name + '\'' +
+                ", usdt_type='" + usdt_type + '\'' +
+                ", usdt_card='" + usdt_card + '\'' +
+                ", status='" + status + '\'' +
+                ", atime='" + atime + '\'' +
+                ", utime='" + utime + '\'' +
+                ", lockbankoprate='" + lockbankoprate + '\'' +
+                '}';
+    }
 }
