@@ -4,9 +4,9 @@ package com.xtree.lottery.ui.lotterybet.model;
 public class LotteryBetsTotal {
 
     public final int nums;
-    public final double money;
+    public final String money;
 
-    public LotteryBetsTotal(int nums, double money) {
+    public LotteryBetsTotal(int nums, String money) {
         this.nums = nums;
         this.money = money;
     }

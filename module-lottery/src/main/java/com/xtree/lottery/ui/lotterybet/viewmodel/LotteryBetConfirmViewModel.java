@@ -24,6 +24,7 @@ import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -54,9 +55,11 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
     public LotteryBetsViewModel betsViewModel;
     public LotteryViewModel lotteryViewModel;
     private BasePopupView popupView;
+
     public LotteryBetConfirmViewModel(@NonNull Application application) {
         super(application);
     }
+
     public LotteryBetConfirmViewModel(@NonNull Application application, LotteryRepository model) {
         super(application, model);
     }
@@ -83,10 +86,10 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
 
         datas.setValue(bindModels);
 
-        double money = 0;
+        BigDecimal money = BigDecimal.ZERO;
         boolean solo = false;
         for (LotteryBetRequest.BetOrderData betOrderData : betList) {
-            money += betOrderData.getMoney();
+            money = money.add(BigDecimal.valueOf(betOrderData.getMoney()));
             if (betOrderData.isSolo()) {
                 solo = true;
             }
@@ -95,7 +98,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
             containSolo.setValue(true);
         }
 
-        totalMoney.setValue(String.valueOf(money));
+        totalMoney.setValue(money.toPlainString());
     }
 
     /**
@@ -118,11 +121,11 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
         LotteryBetRequest lotteryBetRequest = new LotteryBetRequest();
         ArrayList<LotteryBetRequest.BetOrderData> betOrders = new ArrayList<>();
 
-        double money = 0;
+        BigDecimal money = BigDecimal.ZERO;
         int nums = 0;
         for (BindModel bindModel : datas.getValue()) {
             LotteryBetRequest.BetOrderData data = (LotteryBetRequest.BetOrderData) bindModel;
-            money += data.getMoney();
+            money = money.add(BigDecimal.valueOf(data.getMoney()));
             nums += data.getNums();
             betOrders.add(data);
         }
@@ -131,7 +134,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
         lotteryBetRequest.setLotteryid(betsViewModel.lotteryLiveData.getValue().getId());
         lotteryBetRequest.setCurmid(betsViewModel.lotteryLiveData.getValue().getCurmid());
         lotteryBetRequest.setLt_issue_start(issueLiveData.getValue().getIssue());
-        lotteryBetRequest.setLt_total_money(money);
+        lotteryBetRequest.setLt_total_money(money.toPlainString());
         lotteryBetRequest.setLt_total_nums(nums);
         lotteryBetRequest.setPlay_source(6);
 
@@ -145,6 +148,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
                 chasingNumberParams.setValue(null);
                 betsViewModel.betLiveData.setValue(null);
                 betsViewModel.betOrdersLiveData.setValue(null);
+                betsViewModel.betCartOrdersLiveData.setValue(null);
                 betsViewModel.clearBetEvent.setValue(null);
                 finish();
                 ToastUtils.showSuccess("投注成功");
@@ -195,14 +199,14 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
      */
     public void doClear() {
 
-        double money = 0;
+        BigDecimal money = BigDecimal.ZERO;
 
         for (int i = 0; i < bindModels.size(); i++) {
             LotteryBetRequest.BetOrderData m = (LotteryBetRequest.BetOrderData) bindModels.get(i);
             if (m.isSolo()) {
                 bindModels.remove(bindModels.get(i));
             } else {
-                money += m.getMoney();
+                money = money.add(BigDecimal.valueOf(m.getMoney()));
             }
         }
 
@@ -217,7 +221,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
 
         containSolo.setValue(false);
 
-        totalMoney.setValue(String.valueOf(money));
+        totalMoney.setValue(money.toPlainString());
 
         datas.setValue(bindModels);
     }

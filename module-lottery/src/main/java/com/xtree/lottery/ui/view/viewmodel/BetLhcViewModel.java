@@ -1,7 +1,6 @@
 package com.xtree.lottery.ui.view.viewmodel;
 
 import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -47,18 +46,15 @@ public class BetLhcViewModel extends BindModel {
             binding.tvNum.setText(model.number);
             binding.tvNum.setBackgroundResource(model.ball.getResourceId());
             binding.tvOdds.setText(model.odds);
-            binding.etMoney.setFilters(new InputFilter[]{new InputFilter() {
-                @Override
-                public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                    // 模拟过滤逻辑，例如只允许数字
-                    StringBuilder result = new StringBuilder(dest);
-                    result.replace(dstart, dend, source.subSequence(start, end).toString());
+            binding.etMoney.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8), (source, start, end, dest, dstart, dend) -> {
+                // 模拟过滤逻辑，例如只允许数字
+                StringBuilder result = new StringBuilder(dest);
+                result.replace(dstart, dend, source.subSequence(start, end).toString());
 
-                    // 最终过滤后的内容
-                    String money = result.toString();
-                    handleInput(money, model);
-                    return null;
-                }
+                // 最终过滤后的内容
+                String money = result.toString().replaceAll("\\D", "");
+                handleInput(money, model);
+                return null;
             }
 
             });

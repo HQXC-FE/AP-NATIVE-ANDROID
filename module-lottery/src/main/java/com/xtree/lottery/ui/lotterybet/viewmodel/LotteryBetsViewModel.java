@@ -2,7 +2,6 @@ package com.xtree.lottery.ui.lotterybet.viewmodel;
 
 import android.app.Application;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 
@@ -44,7 +43,9 @@ import com.xtree.lottery.utils.EventVo;
 import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -74,6 +75,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public MutableLiveData<UserMethodsResponse.DataDTO.PrizeGroupDTO> prizeData = new MutableLiveData<>();
     //投注订单集
     public MutableLiveData<ArrayList<LotteryOrderModel>> betOrdersLiveData = new MutableLiveData<>();
+    //购物车投注订单集
+    public MutableLiveData<List<LotteryOrderModel>> betCartOrdersLiveData = new MutableLiveData<>();
     //当前有效投注项
     public SingleLiveData<List<LotteryBetRequest.BetOrderData>> betLiveData = new SingleLiveData<>();
     //清除投注框事件
@@ -115,13 +118,13 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         List<LotteryBetRequest.BetOrderData> betOrderDataList = betLiveData.getValue();
         if (betOrderDataList != null) {
             int nums = 0;
-            double money = 0;
+            BigDecimal money = BigDecimal.ZERO;
             for (LotteryBetRequest.BetOrderData betOrderData :
                     betOrderDataList) {
                 nums += betOrderData.getNums();
-                money += betOrderData.getMoney();
+                money = money.add(BigDecimal.valueOf(betOrderData.getMoney()));
             }
-            betTotalLiveData.setValue(new LotteryBetsTotal(nums, money));
+            betTotalLiveData.setValue(new LotteryBetsTotal(nums, money.toPlainString()));
         } else {
             betTotalLiveData.setValue(null);
         }
@@ -430,7 +433,9 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
      */
     public void saveBetOrder() {
         if (betLiveData.getValue() != null) {
-            ArrayList<LotteryOrderModel> orderModels = new ArrayList<>();
+            ArrayList<LotteryOrderModel> orderModels = new ArrayList<>(
+                    betCartOrdersLiveData.getValue() != null ? betCartOrdersLiveData.getValue() : Collections.emptyList()
+            );
 
             for (LotteryBetRequest.BetOrderData orderData : betLiveData.getValue()) {
                 LotteryOrderModel lotteryOrderModel = new LotteryOrderModel();
@@ -450,7 +455,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 orderModels.add(lotteryOrderModel);
             }
 
-            betOrdersLiveData.setValue(orderModels);
+            betCartOrdersLiveData.setValue(orderModels);
             betLiveData.setValue(null);
         }
     }

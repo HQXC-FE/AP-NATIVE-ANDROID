@@ -9,6 +9,7 @@
             type="com.xtree.lottery.data.source.request.LotteryBetRequest.BetOrderData" />
 
         <import type="android.view.View" />
+        <import type="java.math.BigDecimal"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -59,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="20000"
-                android:text="@{String.valueOf(m.money)}"
+                android:text="@{BigDecimal.valueOf(m.money).toPlainString()}"
                 android:textSize="12sp"
                 android:textColor="@color/lt_color_text14" />
 
