@@ -23,8 +23,8 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
 public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
-    public abstract void onResult(T t);
-
+    public  void onResult(T t){};
+    public void onResult(T t, BusinessException ex) {}
     @Override
     public void onNext(T o) {
         LoadingDialog.finish();
@@ -44,8 +44,8 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             return;
         }
         BaseResponse baseResponse = (BaseResponse) o;
-        BusinessException ex = new BusinessException(baseResponse.getStatus(), baseResponse.getMessage(), baseResponse.getData());
         int status = baseResponse.getStatus() == -1 ? baseResponse.getCode() : baseResponse.getStatus();
+        BusinessException ex = new BusinessException(status, baseResponse.getMessage(), baseResponse.getData());
         switch (status) {
             case HttpCallBack.CodeRule.CODE_0:
             case HttpCallBack.CodeRule.CODE_10000:
@@ -55,6 +55,8 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                 }
                 //请求成功, 正确的操作方式
                 onResult((T) baseResponse.getData());
+                //为空 携带业务异常message
+                onResult((T) baseResponse.getData(), ex);
                 break;
             case HttpCallBack.CodeRule.CODE_300:
                 //请求失败，不打印Message
