@@ -1,19 +1,18 @@
 package com.xtree.recharge.ui.viewmodel;
 
 import android.app.Application;
-import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-import com.xtree.recharge.R;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.net.FixHttpCallBack;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.UuidUtil;
 import com.xtree.base.vo.ProfileVo;
+import com.xtree.recharge.R;
 import com.xtree.recharge.data.RechargeRepository;
 import com.xtree.recharge.data.source.request.ExRechargeOrderCheckRequest;
 import com.xtree.recharge.data.source.response.ExRechargeOrderCheckResponse;
@@ -265,9 +264,9 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
         Disposable disposable = (Disposable) model.getApiService().getPayment(bid)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FixHttpCallBack<RechargeVo>() {
+                .subscribeWith(new HttpCallBack<RechargeVo>() {
                     @Override
-                    public void onResult(RechargeVo vo,BusinessException ex) {
+                    public void onResult(RechargeVo vo, BusinessException ex) {
 //                        CfLog.d(vo.toString());
                         if (vo == null) {
                             paymentInfoVoErrorData.setValue(getApplication().getString(R.string.txt_rc_submit_succ_pay_in_minutes_pls));
