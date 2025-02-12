@@ -30,7 +30,6 @@ import com.xtree.home.vo.GameStatusVo;
 import com.xtree.home.vo.GameVo;
 import com.xtree.home.vo.NoticeVo;
 import com.xtree.home.vo.SettingsVo;
-import com.xtree.home.vo.VipInfoVo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -60,7 +59,6 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<Map> liveDataPlayUrl = new MutableLiveData<>();
     public MutableLiveData<CookieVo> liveDataCookie = new MutableLiveData<>();
     public MutableLiveData<ProfileVo> liveDataProfile = new MutableLiveData<>();
-    public MutableLiveData<VipInfoVo> liveDataVipInfo = new MutableLiveData<>();
     public MutableLiveData<SettingsVo> liveDataSettings = new MutableLiveData<>();
     public MutableLiveData<HashMap<String, ArrayList<AugVo>>> liveDataAug = new MutableLiveData<>();
     public MutableLiveData<EleVo> liveDataEle = new MutableLiveData<>();
@@ -410,28 +408,6 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         addSubscribe(disposable);
     }
 
-    public void getVipInfo() {
-        Disposable disposable = (Disposable) model.getApiService().getVipInfo()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<VipInfoVo>() {
-                    @Override
-                    public void onResult(VipInfoVo vo) {
-                        CfLog.i(vo.toString());
-                        SPUtils.getInstance().put(SPKeyGlobal.HOME_VIP_INFO, new Gson().toJson(vo));
-                        liveDataVipInfo.setValue(vo);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        //super.onError(t);
-                        //ToastUtils.showLong("请求失败");
-                    }
-                });
-        addSubscribe(disposable);
-    }
-
     public void getAugList(Context context) {
         LoadingDialog.show(context);
         Disposable disposable = (Disposable) model.getApiService().getAugList()
@@ -519,12 +495,6 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         ProfileVo vo = gson.fromJson(json, ProfileVo.class);
         if (vo != null) {
             liveDataProfile.setValue(vo);
-        }
-
-        json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_VIP_INFO);
-        VipInfoVo vo2 = gson.fromJson(json, VipInfoVo.class);
-        if (vo2 != null) {
-            liveDataVipInfo.setValue(vo2);
         }
 
     }
