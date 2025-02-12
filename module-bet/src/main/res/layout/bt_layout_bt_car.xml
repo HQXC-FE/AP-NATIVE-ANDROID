@@ -37,7 +37,7 @@
                     android:background="@mipmap/bt_icon_dan"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_platform" />
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_platform"
@@ -46,9 +46,9 @@
                     android:textColor="@color/bt_text_color_deep_primary"
                     android:textSize="@dimen/bt_text_14sp"
                     android:textStyle="bold"
+                    android:layout_marginStart="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_cg_type"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="FB体育" />
 
