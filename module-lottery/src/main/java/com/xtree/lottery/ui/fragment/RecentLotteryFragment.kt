@@ -83,7 +83,7 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
 
     override fun initView() {
         binding.rvRecent.layoutManager = LinearLayoutManager(requireContext())
-        mAdapter = RecentAdapter(ArrayList())
+        mAdapter = RecentAdapter(ArrayList(), viewModel.lotteryLiveData.value!!.alias)
         binding.rvRecent.adapter = mAdapter
         mAdapter.setEmptyView(R.layout.layout_no_data)
         viewModel.getRecentLottery()
