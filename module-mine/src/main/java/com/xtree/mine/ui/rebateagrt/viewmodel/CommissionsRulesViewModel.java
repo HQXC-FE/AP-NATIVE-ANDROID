@@ -73,13 +73,15 @@ public class CommissionsRulesViewModel extends BaseViewModel<MineRepository> {
 
     private final ArrayList<BindModel> com2Models = new ArrayList<BindModel>() {
         {
-            add(new CommissionsRulesModel("保底", "3","23%"));
-            add(new CommissionsRulesModel("10000-50000","3", "25%"));
-            add(new CommissionsRulesModel("50000-100,000","4", "27%"));
-            add(new CommissionsRulesModel("100000-200000","5","30%"));
-            add(new CommissionsRulesModel("200000-500000","6", "33%"));
-            add(new CommissionsRulesModel("500000-1000000", "8","35%"));
-            add(new CommissionsRulesModel( "100万以上", "10","40%"));
+            add(new CommissionsRulesModel("1000", "0","25%"));
+            add(new CommissionsRulesModel("1001-10000","3", "28%"));
+            add(new CommissionsRulesModel("10001-50000","4", "30%"));
+            add(new CommissionsRulesModel("50001-100000","5","32%"));
+            add(new CommissionsRulesModel("100001-200000","6", "34%"));
+            add(new CommissionsRulesModel("200001-500000", "7","36%"));
+            add(new CommissionsRulesModel( "500001-1000000", "8","38%"));
+            add(new CommissionsRulesModel( "1000001-2000000", "10","45%"));
+            add(new CommissionsRulesModel( "200万以上", "20","50%"));
         }
     };
 

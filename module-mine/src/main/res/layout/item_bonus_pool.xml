@@ -41,6 +41,7 @@
             android:layout_marginTop="@dimen/layout_margin"
             android:text="代理名："
             android:textColor="@color/clr_txt_01"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/tvw_date_title"
             app:layout_constraintTop_toBottomOf="@id/tvw_date_title" />
 
@@ -51,6 +52,7 @@
             android:text="ydcd008"
             android:textColor="@color/clr_red_01"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/tvw_name_title"
             app:layout_constraintStart_toEndOf="@id/tvw_name_title"
             app:layout_constraintTop_toTopOf="@id/tvw_name_title" />
@@ -62,6 +64,7 @@
             android:layout_marginTop="@dimen/layout_margin"
             android:text="开奖号码："
             android:textColor="@color/clr_txt_01"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/tvw_name_title"
             app:layout_constraintTop_toBottomOf="@id/tvw_name_title" />
 
@@ -72,6 +75,7 @@
             android:text="16173"
             android:textColor="@color/clr_txt_02"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintStart_toEndOf="@id/tvw_open_number_title"
             app:layout_constraintTop_toTopOf="@+id/tvw_open_number_title" />
 
@@ -80,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layout_margin"
-            android:text="返比金额："
+            android:text="彩金贡献金额："
             android:textColor="@color/clr_txt_01"
             app:layout_constraintStart_toStartOf="@id/tvw_open_number_title"
             app:layout_constraintTop_toBottomOf="@id/tvw_open_number_title" />
@@ -102,6 +106,7 @@
             android:layout_marginTop="@dimen/layout_margin"
             android:text="彩蛋号码："
             android:textColor="@color/clr_txt_01"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/tvw_return_money_title"
             app:layout_constraintTop_toBottomOf="@id/tvw_return_money_title" />
 
@@ -116,6 +121,7 @@
             android:text="6"
             android:textColor="@color/clr_txt_02"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvw_easter_number_title"
             app:layout_constraintTop_toTopOf="@+id/tvw_easter_number_title" />
@@ -125,7 +131,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/layout_margin"
-            android:text="触发会员："
+            android:text="招商账户："
             android:textColor="@color/clr_txt_01"
             app:layout_constraintStart_toStartOf="@id/tvw_easter_number_title"
             app:layout_constraintTop_toBottomOf="@id/tvw_easter_number_title" />
