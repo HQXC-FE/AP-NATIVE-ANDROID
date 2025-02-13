@@ -183,6 +183,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             KLog.d("************");
             viewModel.getNotices(); // 获取公告
             //viewModel.getProfile(); // 获取个人信息
+            //viewModel.getVipInfo(); // 获取VIP信息
             //viewModel.getFBGameTokenApi();
             //viewModel.getPMGameTokenApi();
         });
@@ -235,15 +236,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             }
 
         });
-        viewModel.liveDataVipInfo.observe(getViewLifecycleOwner(), vo -> {
-            CfLog.d("*** " + vo.toString());
-            //意昂3去除 VIP选项
-           /* if (vo.sp.equals("1")) {
-                binding.tvwVip.setText("VIP " + vo.display_level); // display_level
-            } else {
-                binding.tvwVip.setText("VIP " + vo.level); // level
-            }*/
-        });
         //App更新
         viewModel.liveDataUpdate.observe(getViewLifecycleOwner(), vo -> {
             updateVo = vo;
@@ -275,14 +267,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
         });
 
-        viewModel.liveDataRedPocket.observe(getViewLifecycleOwner(), vo -> {
-            CfLog.e("Check has money : " + vo.money);
-            //if (vo.status == 0) {
-            //    binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member_has_red, 0, 0);
-            //} else {
-            //    binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member, 0, 0);
-            //}
-        });
     }
 
     public void initView() {
@@ -302,7 +286,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             selectUpdate = true;
             viewModel.getProfile(); // 获取个人信息（刷新用户余额）
         });
-        binding.bnrTop.setIndicator(new CircleIndicator(getContext())); // 增加小圆点
+        //binding.bnrTop.setIndicator(new CircleIndicator(getContext())); // 增加小圆点
         //binding.bnrTop.setBannerGalleryEffect(20, 12, 0.8f);// 画廊效果
         //binding.bnrTop.setBannerRound2(20);
         binding.bnrTop.setAdapter(new BannerImageAdapter<BannersVo>(new ArrayList<>()) {
@@ -670,10 +654,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         }
     }
 
-    private void checkRedPocket() {
-        viewModel.getRedPocket();
-    }
-
     /**
      * 显示更新
      *
@@ -684,25 +664,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         if (updateView != null && updateView.isShow()) {
             return;
         }
-       /* if (vo.download_url.contains(".apk")){
-            AppUpdateDialog dialog = new AppUpdateDialog(getContext(), isWeakUpdate, vo, new AppUpdateDialog.IAppUpdateCallBack() {
-                @Override
-                public void onUpdateCancel() {
-                    updateView.dismiss();
-                }
-
-                @Override
-                public void onUpdateForce() {
-                }
-
-            });
-
-            updateView = new XPopup.Builder(getContext())
-                    .dismissOnBackPressed(false)
-                    .dismissOnTouchOutside(false)
-                    .asCustom(dialog);
-            updateView.show();
-        }*/
         AppUpdateDialog dialog = new AppUpdateDialog(getContext(), isWeakUpdate, vo, new AppUpdateDialog.IAppUpdateCallBack() {
             @Override
             public void onUpdateCancel() {
