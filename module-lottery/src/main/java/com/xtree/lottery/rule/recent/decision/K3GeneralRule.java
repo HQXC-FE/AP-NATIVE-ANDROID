@@ -30,6 +30,9 @@ public class K3GeneralRule {
     @Action
     public void then(Facts facts) {
         try {
+            // 设置标题
+            facts.put("title", "形态");
+
             List<Map<String, Object>> historyCodes = facts.get("historyCodes");
             for (Map<String, Object> history : historyCodes) {
                 List<Integer> workCode = (List<Integer>) history.get("workCode");
