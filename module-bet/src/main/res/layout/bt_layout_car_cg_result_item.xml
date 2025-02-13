@@ -39,7 +39,7 @@
                     android:id="@+id/tv_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/bt_color_bt_result_success"
+                    android:textColor="@color/clr_bet_result_text"
                     android:textSize="@dimen/bt_text_13sp"
                     android:layout_marginStart="5dp"
                     app:layout_constraintStart_toEndOf="@+id/tv_name"

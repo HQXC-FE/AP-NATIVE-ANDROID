@@ -38,11 +38,12 @@ public class CgBtResultAdapter extends BaseAdapter<BtResult> {
             binding.tvAmountCc.setText(mContext.getResources().getString(R.string.bt_bt_pay, String.valueOf(cgOddLimit.getBtTotalAmount())));
             binding.tvWinCc.setText(mContext.getResources().getString(R.string.bt_bt_win_dan, NumberUtils.format(cgOddLimit.getWin(cgOddLimit.getBtAmount()), 2)));
             binding.tvResult.setText(btResult.getStatusDesc());
-            if(btResult.isSuccessed()){
-                binding.tvResult.setTextColor(mContext.getResources().getColor(R.color.bt_color_bt_result_success));
-            }else{
-                binding.tvResult.setTextColor(mContext.getResources().getColor(R.color.bt_color_bt_result_failed));
-            }
+            //UI要求统一用主题色不区分
+//            if(btResult.isSuccessed()){
+//                binding.tvResult.setTextColor(mContext.getResources().getColor(R.color.bt_color_bt_result_success));
+//            }else{
+//                binding.tvResult.setTextColor(mContext.getResources().getColor(R.color.clr_bet_result_text));
+//            }
         } else {
             binding.cslCgDan.setVisibility(View.VISIBLE);
             binding.cslCgCc.setVisibility(View.GONE);

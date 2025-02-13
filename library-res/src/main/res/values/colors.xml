@@ -334,7 +334,7 @@
     <color name="bt_color_bt_timer">#66FFFFFF</color>
 
     <!-- 投注模块 end-->
-
+    <color name="clr_bet_result_text">#4CC4EF</color>
     <!-- 首页模块 begin -->
     <color name="clr_hm_txt_black">#000000</color>
     <color name="clr_hm_txt_grey_01">#b1b1b1</color>
