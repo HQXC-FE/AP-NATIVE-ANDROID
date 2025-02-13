@@ -49,7 +49,7 @@
                 android:paddingStart="20dp"
                 android:paddingEnd="8dp"
                 android:background="@drawable/bt_bg_bt_item_result"
-                android:textColor="@color/bt_color_under_bg_primary_text"
+                android:textColor="@color/white"
                 android:textSize="@dimen/bt_text_16sp"
                 android:textStyle="bold"
                 tools:text="投注成功" />
