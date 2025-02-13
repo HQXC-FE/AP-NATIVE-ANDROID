@@ -49,6 +49,7 @@
 
 -keep class me.xtree.mvvmhabit.http.BaseResponse { *; }
 -keep class me.xtree.mvvmhabit.http.BaseResponse2 { *; }
+-keep class me.xtree.mvvmhabit.http.BaseResponse3 { *; }
 -keep class me.xtree.mvvmhabit.http.PMBaseResponse { *; }
 
 
@@ -58,6 +59,10 @@
 -keep class com.xtree.home.vo.**{*;}
 -keep class com.xtree.mine.vo.**{*;}
 -keep class com.xtree.recharge.vo.**{*;}
+-keep class com.xtree.lottery.vo.**{*;}
+-keep class com.xtree.lottery.data.source.vo.**{*;}
+-keep class com.xtree.lottery.data.source.request.**{*;}
+-keep class com.xtree.lottery.data.source.response.**{*;}
 
 #-------------------------------------------------------------------------
 
