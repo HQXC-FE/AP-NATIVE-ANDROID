@@ -16,9 +16,9 @@ android {
             resValue "string", "channel_name", "eon4"  // 渠道名称
             resValue "string", "platform_set", "47"  // 平台代号,升级用 35-意昂, 38-意昂2 ，40-意昂3，47-意昂4(意昂凯捷F)
             resValue "string", "build_time", "${buildTime()}"
-            resValue "string", "mixpanel_token", "aeb0e83d57c9c765a9f0c1631f16e1d8"
-            resValue "string", "ms_secret_key", "b4636d50-41d2-49f4-b843-07572a8d282f"
-            resValue "string", "sentry_dsn", "https://0cefc03e1c8e991010eb93fb0722e362@o4507447554539520.ingest.us.sentry.io/4507604245217280"
+            resValue "string", "mixpanel_token", "a572f2f1cc1e69d3f7072c706a730896"
+            resValue "string", "ms_secret_key", "10e9c197-1d05-4a41-8740-345267d3ddb8"
+            resValue "string", "sentry_dsn", "https://4330e6b8f582bb8f84b3f97f7afd0e1c@o4507447554539520.ingest.us.sentry.io/4508816270032896"
             resValue "bool", "is_tag", "false" // 是否开启统计
             // 后面可能会改成 https://preyiang22test.oxldkm.com 如后续有连线问题 尝试看看
             resValue "string", "domain_api_list", "https://preyiang4.oxldkm.com;"
@@ -39,9 +39,9 @@ android {
             resValue "string", "channel_name", "eon4"  // 渠道名称
             resValue "string", "platform_set", "47"  // 平台代号,升级用 35-意昂, 38-意昂2 40-意昂3，47-意昂4(意昂凯捷F)
             resValue "string", "build_time", "${buildTime()}"
-            resValue "string", "mixpanel_token", "cce6df315eee2c445da416c6b717f114"
-            resValue "string", "ms_secret_key", "b4636d50-41d2-49f4-b843-07572a8d282f"
-            resValue "string", "sentry_dsn", "https://0cefc03e1c8e991010eb93fb0722e362@o4507447554539520.ingest.us.sentry.io/4507604245217280"
+            resValue "string", "mixpanel_token", "a572f2f1cc1e69d3f7072c706a730896"
+            resValue "string", "ms_secret_key", "10e9c197-1d05-4a41-8740-345267d3ddb8"
+            resValue "string", "sentry_dsn", "https://4330e6b8f582bb8f84b3f97f7afd0e1c@o4507447554539520.ingest.us.sentry.io/4508816270032896"
             resValue "bool", "is_tag", "true" // 是否开启统计
             resValue "string", "domain_api_list", "https://app1.b5f6oz.xyz;" +
                     "https://app1.b7x2bp.xyz;" +
