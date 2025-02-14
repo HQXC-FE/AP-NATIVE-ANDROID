@@ -35,6 +35,7 @@ import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.adapter.CacheViewHolder;
 import com.xtree.base.adapter.CachedAutoRefreshAdapter;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.mvvm.ExKt;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
@@ -72,6 +73,7 @@ import project.tqyb.com.library_res.databinding.ItemTextBinding;
  */
 public class BankWithdrawalDialog extends BottomPopupView implements IAmountCallback, IFruitHorCallback {
 
+    private final int selectType = 0;//默认设置顶部选项卡
     ItemTextBinding binding2;
     BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
     private String typenum;//上一级界面传递过来的typenum
@@ -79,7 +81,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     private ChooseInfoVo.ChannelInfo channelInfo;
     private GridViewViewAdapter adapter;
     private LifecycleOwner owner;
-    private final int selectType = 0;//默认设置顶部选项卡
     //private BankCardCashVo.ChanneBankVo channeBankVo; //选中的银行
     private WithdrawalBankInfoVo.UserBankInfo channeBankVo;
     private BankCardCashVo bankCardCashVo;//银行卡提现model
@@ -108,13 +109,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         super(context);
     }
 
-    public static BankWithdrawalDialog newInstance(Context context,
-                                                   LifecycleOwner owner,
-                                                   final String wtype,
-                                                   final String checkCode,
-                                                   ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo,
-                                                   final WithdrawalBankInfoVo infoVo,
-                                                   final BankWithdrawalClose closeCallback) {
+    public static BankWithdrawalDialog newInstance(Context context, LifecycleOwner owner, final String wtype, final String checkCode, ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo, final WithdrawalBankInfoVo infoVo, final BankWithdrawalClose closeCallback) {
         BankWithdrawalDialog dialog = new BankWithdrawalDialog(context);
         dialog.context = context;
         dialog.owner = owner;
@@ -506,9 +501,9 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
      */
     private void refreshSubmitUI(final WithdrawalSubmitVo submitVo, final String message) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+            ExKt.setGradientTextColorLeftToRight(binding.tvConfirmWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+            ExKt.setGradientTextColorLeftToRight(binding.tvOverWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
         }
         binding.llShowChooseCard.setVisibility(View.GONE);//顶部选项卡
         binding.llShowNoticeInfo.setVisibility(View.GONE);//注意事项
@@ -574,8 +569,9 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     private void refreshVerifyUI(final WithdrawalVerifyVo verifyVo) {
         //刷新顶部进度条颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+            ExKt.setGradientTextColorLeftToRight(binding.tvConfirmWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+
         }
         binding.llShowChooseCard.setVisibility(View.GONE);//顶部选项卡
         binding.llShowNoticeInfo.setVisibility(View.GONE);//注意事项
@@ -619,7 +615,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         binding.bankConfirmView.ivConfirmPrevious.setOnClickListener(v -> {
             //刷新顶部进度条颜色
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+                ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
                 binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.cl_over_tip));
             }
             //上一步 直接刷新整个页面
@@ -676,20 +672,19 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         if (showMessage == null) {
             return;
         }
-        errorPopView = new XPopup.Builder(getContext())
-                .asCustom(new MsgDialog(getContext(), getContext().getString(R.string.txt_kind_tips), showMessage, false, new MsgDialog.ICallBack() {
-                    @Override
-                    public void onClickLeft() {
-                        errorPopView.dismiss();
-                        //callBack.closeDialog();
-                    }
+        errorPopView = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), getContext().getString(R.string.txt_kind_tips), showMessage, false, new MsgDialog.ICallBack() {
+            @Override
+            public void onClickLeft() {
+                errorPopView.dismiss();
+                //callBack.closeDialog();
+            }
 
-                    @Override
-                    public void onClickRight() {
-                        errorPopView.dismiss();
-                        // callBack.closeDialog();
-                    }
-                }));
+            @Override
+            public void onClickRight() {
+                errorPopView.dismiss();
+                // callBack.closeDialog();
+            }
+        }));
         errorPopView.show();
     }
 
@@ -880,6 +875,8 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     }
 
     private void refreshTopUI(ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo) {
+        ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+        ExKt.removeGradientTextColor( binding.tvConfirmWithdrawalRequest,getContext().getColor(R.color.cl_over_tip));
         for (int i = 0; i < listVo.size(); i++) {
             if (i == 0) {
                 listVo.get(0).flag = true;
@@ -1281,7 +1278,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     /**
      * 提交订单
      */
-    private void requestVerify(final String money, final WithdrawalBankInfoVo.UserBankInfo selectUsdtInfo)  {
+    private void requestVerify(final String money, final WithdrawalBankInfoVo.UserBankInfo selectUsdtInfo) {
         LoadingDialog.show(getContext());
 
         HashMap<String, Object> map = new HashMap<>();
@@ -1289,7 +1286,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         map.put("money", money);
         map.put("wtype", wtype);
         map.put("nonce", UuidUtil.getID24());
-        map.put("check", check	);
+        map.put("check", check);
         CfLog.e("requestVerify -->" + map);
         viewModel.postWithdrawalVerify(map);
     }
@@ -1318,10 +1315,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     }
 
     private Map<String, String> getHeader() {
-        String cookie = "auth=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN)
-                + ";" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_COOKIE_NAME)
-                + "=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID)
-                + ";";
+        String cookie = "auth=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN) + ";" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_COOKIE_NAME) + "=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID) + ";";
 
         String auth = "bearer " + SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
         Map<String, String> header = new HashMap<>();
@@ -1387,9 +1381,9 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
      * 定义GridViewViewAdapter 显示大额固额金额选择
      */
     private static class GridViewViewAdapter extends BaseAdapter {
+        private final Context context;
         public IAmountCallback callback;
         public ArrayList<String> arrayList;
-        private final Context context;
 
         public GridViewViewAdapter(Context context, ArrayList<String> list, IAmountCallback callback) {
             super();

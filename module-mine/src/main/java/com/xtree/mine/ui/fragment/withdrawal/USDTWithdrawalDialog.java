@@ -27,6 +27,7 @@ import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.adapter.CacheViewHolder;
 import com.xtree.base.adapter.CachedAutoRefreshAdapter;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.mvvm.ExKt;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.StringUtils;
@@ -357,9 +358,9 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
      */
     private void refreshSubmitUI(final WithdrawalSubmitVo submitVo, final String message) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+            ExKt.setGradientTextColorLeftToRight(binding.tvConfirmWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+            ExKt.setGradientTextColorLeftToRight(binding.tvOverWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
         }
 
         binding.llVirtualConfirmView.llConfirmView.setVisibility(GONE);
@@ -423,8 +424,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     private void refreshVerifyUI(final WithdrawalVerifyVo verifyVo) {
         //刷新顶部进度条颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+            ExKt.setGradientTextColorLeftToRight(binding.tvConfirmWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
         }
 
         binding.llSetRequestView.setVisibility(View.GONE);
@@ -466,8 +467,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         binding.llVirtualConfirmView.ivConfirmPrevious.setOnClickListener(v -> {
             //刷新顶部进度条颜色
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-                binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.cl_over_tip));
+                ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+                ExKt.removeGradientTextColor(binding.tvConfirmWithdrawalRequest, getContext().getColor(R.color.cl_over_tip));
             }
             binding.llSetRequestView.setVisibility(View.VISIBLE);
             binding.llVirtualConfirmView.llConfirmView.setVisibility(View.GONE);
@@ -602,9 +603,9 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
                 showCollectionDialog(trc20BankInfoList);
             } else if (changVo.name.toUpperCase().contains("ERC20")) {
                 showCollectionDialog(erc20BankInfoList);
-            }else if (changVo.name.toUpperCase().contains("ARBITRUM")) {
+            } else if (changVo.name.toUpperCase().contains("ARBITRUM")) {
                 showCollectionDialog(erc20ArbitrumBankInfoList);
-            }else if (changVo.name.toUpperCase().contains("SOLANA")) {
+            } else if (changVo.name.toUpperCase().contains("SOLANA")) {
                 showCollectionDialog(solanaBankInfoList);
             } else {
                 showCollectionDialog(infoVo.user_bank_info);
@@ -671,6 +672,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     }
 
     private void refreshTopUI(ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo) {
+        ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
         listVo.get(0).flag = true;
         recyclerViewAdapter = new FruitHorUSDTRecyclerViewAdapter(listVo, this);
 
@@ -852,6 +854,9 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
      * 设置提款 请求 下一步
      */
     private void requestVerify(final String money, final WithdrawalInfoVo.UserBankInfo selectorBankInfo) {
+        if (selectorBankInfo == null) {
+            return;
+        }
         LoadingDialog.show(getContext());
         HashMap<String, Object> map = new HashMap<>();
         map.put("bank_id", selectorBankInfo.id);
@@ -1025,8 +1030,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
        /* if (selectVo.name.equals(selectUsdtInfo.name)) {
             selectorTopChannel = selectVo;
         }*/
-        changVo=selectVo;
-        wtype=selectVo.name;
+        changVo = selectVo;
+        wtype = selectVo.name;
         viewModel.getWithdrawalInfo(wtype, checkCode);
     }
 

@@ -210,3 +210,9 @@ fun TextView.setGradientTextColorLeftToRight(startColor: Int, endColor: Int) {
         invalidate()
     }
 }
+fun TextView.removeGradientTextColor(defaultColor: Int) {
+    paint.shader = null // 移除 Shader
+    setTextColor(defaultColor) // 重新设置文本颜色
+    invalidate() // 触发重绘
+}
+

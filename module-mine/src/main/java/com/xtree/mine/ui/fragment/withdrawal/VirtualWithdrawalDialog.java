@@ -21,6 +21,7 @@ import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.adapter.CacheViewHolder;
 import com.xtree.base.adapter.CachedAutoRefreshAdapter;
+import com.xtree.base.mvvm.ExKt;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.StringUtils;
 import com.xtree.base.utils.UuidUtil;
@@ -51,29 +52,27 @@ import project.tqyb.com.library_res.databinding.ItemTextBinding;
  * 虚拟币提款
  */
 public class VirtualWithdrawalDialog extends BottomPopupView {
+    ChooseWithdrawViewModel viewModel;
+    @NonNull
+    DialogBankWithdrawalVirtualBinding binding;
+    ItemTextBinding binding2;
+    BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
     private String checkCode;
     private String usdtType;
     private Context context;
     private LifecycleOwner owner;
-    ChooseWithdrawViewModel viewModel;
     private String wtype;
     private WithdrawalInfoVo.UserBankInfo selectorBankInfo;//选中的支付地址
     private WithdrawalListVo.WithdrawalItemVo listVo;
     private WithdrawalInfoVo infoVo;
-
     private WithdrawalVerifyVo verifyVo;
     private WithdrawalSubmitVo submitVo;
-
     private VirtualCashVo.UsdtInfo selectUsdtInfo;//选中的支付
     private VirtualCashVo virtualCashVo;
-
     private VirtualSecurityVo virtualSecurityVo;
     private VirtualConfirmVo virtualConfirmVo;
-    @NonNull
-    DialogBankWithdrawalVirtualBinding binding;
     private BankWithdrawalDialog.BankWithdrawalClose bankWithdrawalClose;
     private BasePopupView errorPopView;
-
     private String userid;
     private BasePopupView ppwError;//显示异常弹窗
 
@@ -123,9 +122,11 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         binding = DialogBankWithdrawalVirtualBinding.bind(findViewById(R.id.ll_root));
         binding.ivwClose.setOnClickListener(v -> dismiss());
         binding.tvwTitle.setText(listVo.title);
+        ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
         refreshUI(infoVo);
 
     }
+
     /**
      * 刷新渠道页面
      *
@@ -266,6 +267,7 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         });
 
     }
+
     /**
      * 刷新提款结果页
      *
@@ -275,9 +277,9 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
 
         //刷新顶部进度条颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+            ExKt.setGradientTextColorLeftToRight(binding.tvConfirmWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+            ExKt.setGradientTextColorLeftToRight(binding.tvOverWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
         }
         binding.llVirtualConfirmView.setVisibility(GONE);
         binding.llOverApply.setVisibility(VISIBLE);
@@ -337,11 +339,52 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         }
 
     }
+
     private void requestData() {
 
         LoadingDialog.show(getContext());
         viewModel.getChooseWithdrawVirtualMoYu(checkCode, usdtType);
     }
+
+    /**
+     * 刷新确认提款UI
+     */
+//    private void refreshSecurityUI() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_choose_20));
+//        }
+//        binding.llSetRequestView.setVisibility(View.GONE);
+//        binding.llVirtualConfirmView.setVisibility(View.VISIBLE);
+//        if (!TextUtils.isEmpty(virtualCashVo.user.username)) {
+//            binding.tvConfirmWithdrawalAmount.setText(virtualCashVo.user.username);
+//        }
+//
+//        binding.tvConfirmWithdrawalTypeShow.setText(StringUtils.formatToSeparate(Float.valueOf(virtualCashVo.user.availablebalance)));
+//        //可提款金额
+//        binding.tvConfirmAmountShow.setText(virtualSecurityVo.datas.money);
+//        binding.tvWithdrawalVirtualTypeShow.setText(virtualSecurityVo.usdt_type);
+//        binding.tvWithdrawalTypeShow.setText(virtualSecurityVo.usdt_type);
+//        binding.tvWithdrawalAmountTypeShow.setText(virtualSecurityVo.usdt_type);
+//        if (virtualSecurityVo.datas.arrive == null) {
+//            binding.tvWithdrawalActualArrivalShow.setVisibility(View.GONE);
+//        } else {
+//            binding.tvWithdrawalActualArrivalShow.setText(virtualSecurityVo.datas.arrive);
+//        }
+//
+//        binding.tvWithdrawalExchangeRateShow.setText(virtualSecurityVo.exchangerate);
+//        binding.tvWithdrawalAddressShow.setText(virtualSecurityVo.usdt_card);
+//        binding.tvWithdrawalHandlingFeeShow.setText(virtualSecurityVo.datas.handing_fee);
+//
+//        //下一步
+//        binding.ivConfirmNext.setOnClickListener(v -> {
+//            requestConfirmVirtual(virtualSecurityVo);
+//        });
+//        //上一步
+//        binding.ivConfirmPrevious.setOnClickListener(v -> {
+//            binding.llSetRequestView.setVisibility(View.VISIBLE);
+//            binding.llVirtualConfirmView.setVisibility(View.GONE);
+//        });
+//    }
 
     /**
      * 刷新初始UI
@@ -377,7 +420,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
 //        initListener();
 //
 //    }
-
     private void initListener() {
         hideKeyBoard();
         //提款金额输入框与提款金额显示View
@@ -431,46 +473,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
     }
 
     /**
-     * 刷新确认提款UI
-     */
-//    private void refreshSecurityUI() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_choose_20));
-//        }
-//        binding.llSetRequestView.setVisibility(View.GONE);
-//        binding.llVirtualConfirmView.setVisibility(View.VISIBLE);
-//        if (!TextUtils.isEmpty(virtualCashVo.user.username)) {
-//            binding.tvConfirmWithdrawalAmount.setText(virtualCashVo.user.username);
-//        }
-//
-//        binding.tvConfirmWithdrawalTypeShow.setText(StringUtils.formatToSeparate(Float.valueOf(virtualCashVo.user.availablebalance)));
-//        //可提款金额
-//        binding.tvConfirmAmountShow.setText(virtualSecurityVo.datas.money);
-//        binding.tvWithdrawalVirtualTypeShow.setText(virtualSecurityVo.usdt_type);
-//        binding.tvWithdrawalTypeShow.setText(virtualSecurityVo.usdt_type);
-//        binding.tvWithdrawalAmountTypeShow.setText(virtualSecurityVo.usdt_type);
-//        if (virtualSecurityVo.datas.arrive == null) {
-//            binding.tvWithdrawalActualArrivalShow.setVisibility(View.GONE);
-//        } else {
-//            binding.tvWithdrawalActualArrivalShow.setText(virtualSecurityVo.datas.arrive);
-//        }
-//
-//        binding.tvWithdrawalExchangeRateShow.setText(virtualSecurityVo.exchangerate);
-//        binding.tvWithdrawalAddressShow.setText(virtualSecurityVo.usdt_card);
-//        binding.tvWithdrawalHandlingFeeShow.setText(virtualSecurityVo.datas.handing_fee);
-//
-//        //下一步
-//        binding.ivConfirmNext.setOnClickListener(v -> {
-//            requestConfirmVirtual(virtualSecurityVo);
-//        });
-//        //上一步
-//        binding.ivConfirmPrevious.setOnClickListener(v -> {
-//            binding.llSetRequestView.setVisibility(View.VISIBLE);
-//            binding.llVirtualConfirmView.setVisibility(View.GONE);
-//        });
-//    }
-
-    /**
      * 刷新完成申请UI
      */
     private void refreshConfirmUI() {
@@ -503,9 +505,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
             dismiss();
         });
     }
-
-    ItemTextBinding binding2;
-    BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
 
     /**
      * 显示USDT收款地址
@@ -605,8 +604,8 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
     private void refreshVerifyUI(final WithdrawalVerifyVo verifyVo) {
         //刷新顶部进度条颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+            ExKt.setGradientTextColorLeftToRight(binding.tvConfirmWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
         }
         binding.llSetRequestView.setVisibility(GONE);
         binding.llVirtualConfirmView.setVisibility(VISIBLE);
@@ -641,11 +640,12 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
             binding.llVirtualConfirmView.setVisibility(GONE);
             //刷新顶部进度条颜色
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-                binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.cl_over_tip));
+                ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
+                ExKt.removeGradientTextColor(binding.tvConfirmWithdrawalRequest, getContext().getColor(R.color.cl_over_tip));
             }
         });
     }
+
     /**
      * 设置提款 完成申请
      */
@@ -678,6 +678,7 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         CfLog.e("requestVerify -->" + map);
         viewModel.postWithdrawalVerify(map);
     }
+
     /**
      * 设置提款 完成申请
      */

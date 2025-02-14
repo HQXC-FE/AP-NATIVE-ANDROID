@@ -1172,12 +1172,12 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginEnd">@dimen/layout_margin</item>
-        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:gravity">right|center_vertical</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:textColor">@color/clr_txt_black_01</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
-
     <!--  提款 成功/失败 风格-->
     <style name="style_withdraw_image_value">
         <item name="android:layout_centerInParent">true</item>
