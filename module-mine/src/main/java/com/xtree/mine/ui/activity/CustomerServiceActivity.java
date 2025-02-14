@@ -3,6 +3,9 @@ package com.xtree.mine.ui.activity;
 import static com.xtree.base.router.RouterActivityPath.Mine.PAGER_CUSTOMER_SERVICE;
 
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.widget.CheckBox;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -37,6 +40,7 @@ public class CustomerServiceActivity extends BaseActivity<ActivityCustomerServic
     private boolean isCheck ;
 
     private BasePopupView basePopupView = null;
+    private String customeHint = "遇到问题?点击反馈问题";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
@@ -58,12 +62,11 @@ public class CustomerServiceActivity extends BaseActivity<ActivityCustomerServic
 
     @Override
     public void initView() {
-        if (mProfileVo != null){
-            binding.tvUserName.setText(mProfileVo.username);
-        }else {
+        SpannableString spannableHaveRedString = new SpannableString(customeHint);
+        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getColor(R.color.clr_main_13));
+        spannableHaveRedString.setSpan(foregroundColorSpan , 5 , customeHint.length() , 0);
 
-        }
-
+        binding.tvCustomServiceHint.setText(spannableHaveRedString);
         binding.ivwBack.setOnClickListener(v -> {
             this.finish();
         });
