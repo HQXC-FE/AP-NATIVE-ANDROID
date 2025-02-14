@@ -25,6 +25,7 @@ import com.xtree.mine.databinding.ItemBindCardBinding;
 import com.xtree.mine.ui.viewmodel.BindUsdtViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.mine.vo.UsdtVo;
+import com.xtree.mine.vo.UserBindBaseVo;
 import com.xtree.mine.vo.UserUsdtJumpVo;
 
 import java.util.HashMap;
@@ -42,6 +43,8 @@ public class BindUsdtFragment extends BaseFragment<FragmentBindUsdtBinding, Bind
     CachedAutoRefreshAdapter<UsdtVo> mAdapter;
     private String tokenSign = "";
     private String mark = "bindusdt";
+
+    private UserBindBaseVo<UsdtVo>  bindBaseVo ;
 
     public BindUsdtFragment() {
     }
@@ -86,44 +89,16 @@ public class BindUsdtFragment extends BaseFragment<FragmentBindUsdtBinding, Bind
                 binding2.tvBindCardTime.setText(vo.utime);
                 binding2.tvBankNumber.setText(vo.usdt_card);
 
-
-
-            /*    binding2.tvwUserName.setText(vo.user_name);
-                binding2.tvwBindTime.setText(vo.utime);//绑定时间
-                binding2.tvwType.setText(vo.usdt_type); //类型
-
-                binding2.tvwAccount.setText(vo.usdt_card);//账户
-                binding2.tvwStatus.setVisibility(View.GONE);
-                binding2.tvwTypeTitle.setText(R.string.txt_type_c);
-                binding2.tvwAccTitle.setText(R.string.txt_wallet_address_c);
-
-                if (mUserUsdtJumpVo.isShowType) {
-                    binding2.llType.setVisibility(View.VISIBLE);
-                } else {
-                    binding2.llType.setVisibility(View.GONE);
-                }*/
-
-             /*   if (vo.status.equals("1")) {
-                    binding2.tvwRebind.setVisibility(View.VISIBLE);
-                } else {
-                    binding2.tvwRebind.setVisibility(View.GONE);
-                }
-                if (TextUtils.equals("1", vo.lockbankoprate)) {
-                    binding2.tvwRebind.setVisibility(View.VISIBLE);
-                } else {
-                    binding2.tvwRebind.setVisibility(View.GONE);
-                }*/
                 /**
                 * lockbankoprate  TRUE  FALSE
                  *
                  * 后台基本配置为yes  == FALSE 隐藏   no  == TRUE  显示
                 */
-                if (vo.lockbankoprate == true) {
-                    binding2.tvwRebind.setVisibility(View.VISIBLE);
-                } else {
+                if (bindBaseVo.isLockbankoprate() == false) {
                     binding2.tvwRebind.setVisibility(View.GONE);
+                } else {
+                    binding2.tvwRebind.setVisibility(View.VISIBLE);
                 }
-
 
                 binding2.tvwRebind.setOnClickListener(v -> {
                     Bundle bundle = getArguments();
@@ -185,6 +160,7 @@ public class BindUsdtFragment extends BaseFragment<FragmentBindUsdtBinding, Bind
                 return;
             }
             if (vo.banklist != null) {
+                bindBaseVo = vo ;
                 mAdapter.clear();
                 mAdapter.addAll(vo.banklist);
             }

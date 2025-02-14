@@ -1,5 +1,7 @@
 package com.xtree.mine.vo;
 
+import com.xtree.base.utils.CfLog;
+
 public class UsdtVo {
 
     public String id; // "3139",
@@ -26,19 +28,15 @@ public class UsdtVo {
     //1、lockbankoprate参数值:yes，前台 管理USDT页面隐藏“重新绑定”按钮；
     //2、lockbankoprate参数值:no，前台 管理USDT页面显示“重新绑定”按钮；
 
-    public boolean lockbankoprate ;
+    private boolean lockbankoprate ;
 
-    @Override
-    public String toString() {
-        return "UsdtVo{" +
-                "id='" + id + '\'' +
-                ", user_name='" + user_name + '\'' +
-                ", usdt_type='" + usdt_type + '\'' +
-                ", usdt_card='" + usdt_card + '\'' +
-                ", status='" + status + '\'' +
-                ", atime='" + atime + '\'' +
-                ", utime='" + utime + '\'' +
-                ", lockbankoprate='" + lockbankoprate + '\'' +
-                '}';
+    public void setLockbankoprate(boolean lockbankoprate) {
+        this.lockbankoprate = lockbankoprate;
+        CfLog.e("setLockbankoprate ----->" + this.lockbankoprate);
     }
+
+    public boolean isLockbankoprate() {
+        return lockbankoprate;
+    }
+
 }
