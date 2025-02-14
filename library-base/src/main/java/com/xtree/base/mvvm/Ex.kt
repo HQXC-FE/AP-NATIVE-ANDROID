@@ -1,11 +1,14 @@
 package com.xtree.base.mvvm
 
 import android.graphics.Bitmap
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -193,4 +196,17 @@ fun setImageUrl(
         .diskCacheStrategy(diskCacheStrategy)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(view)
+}
+
+fun TextView.setGradientTextColorLeftToRight(startColor: Int, endColor: Int) {
+    post {
+        val shader = LinearGradient(
+            0f, 0f, width.toFloat(), 0f, // 水平方向渐变
+            intArrayOf(startColor, endColor), // 渐变颜色
+            null,
+            Shader.TileMode.CLAMP
+        )
+        paint.shader = shader
+        invalidate()
+    }
 }
