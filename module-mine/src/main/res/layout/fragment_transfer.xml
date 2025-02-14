@@ -90,7 +90,7 @@
                 android:drawableStart="@drawable/cm_ic_switch_selector"
                 android:drawablePadding="6dp"
                 android:text="@string/txt_hide_no_blc_game"
-                android:textColor="@color/clr_white" />
+                android:textColor="@color/clr_txt_grey_09" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_all_game_balance"
