@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
-            android:background="@drawable/bg_customer_service_top">
+            android:background="@drawable/bg_ac_customer_service_top">
 
             <TextView
                 style="@style/style_cm_title"
@@ -55,7 +55,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+
                 android:layout_marginTop="4dp"
                 >
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -74,7 +74,7 @@
                         android:background="@mipmap/online_app_icon"
                         app:layout_constraintStart_toStartOf="@id/custom_app_cl"
                         app:layout_constraintTop_toTopOf="@id/custom_app_cl"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="80dp"
                         android:layout_marginTop="20dp"
                         />
                     <TextView
@@ -85,9 +85,11 @@
                         android:textSize="@dimen/bt_text_16sp"
                         android:textStyle="bold"
                         android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
                         app:layout_constraintStart_toEndOf="@id/custom_app_icon"
-                        app:layout_constraintTop_toTopOf="@id/custom_app_icon"/>
-                    <TextView
+                        app:layout_constraintTop_toTopOf="@id/custom_app_icon"
+                        android:text="欢迎来到客服中心"/>
+                  <!--  <TextView
                         android:id="@+id/tvWelcom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -96,15 +98,15 @@
                         android:textSize="@dimen/bt_text_12sp"
                         android:layout_marginStart="20dp"
                         app:layout_constraintStart_toEndOf="@id/custom_app_icon"
-                        app:layout_constraintTop_toBottomOf="@id/tvUserName"/>
+                        app:layout_constraintTop_toBottomOf="@id/tvUserName"/>-->
                     <ImageView
                         android:id="@+id/custom_line_1"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="20dp"
-                        android:background="@mipmap/custom_line_2"
+                        android:background="@mipmap/custom_line_1"
                         app:layout_constraintStart_toStartOf="@id/custom_app_icon"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/custom_app_icon"
@@ -114,10 +116,9 @@
                         android:id="@+id/custom_line_2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="20dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="20dp"
-                        android:background="@mipmap/custom_line_1"
+                        android:background="@mipmap/custom_line_2"
                         app:layout_constraintStart_toStartOf="@id/custom_line_1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/custom_line_1"
@@ -170,13 +171,35 @@
                         android:layout_width="match_parent"
                         android:layout_height="20dp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp">
+                    <TextView
+                        android:id="@+id/tvCustomServiceHint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/customer_service_text_hint"
+                        android:textSize="@dimen/me_text_size_sp12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
                 <LinearLayout
                     android:id="@+id/custom_choose_qa_line"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:background="@drawable/bg_customer_qa_item"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     >
@@ -266,7 +289,7 @@
                             android:id="@+id/tvQAForgetLoginPassword"
                             style="@style/style_qa_txt"
                             android:text="@string/txt_qa_forget_login_password"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
                             app:layout_constraintTop_toBottomOf="@id/ivQABindCardLine"/>
 
@@ -371,12 +394,12 @@
                             app:layout_constraintTop_toBottomOf="@id/tvQAAddUSDT"
                             android:visibility="invisible"
                             />
-                        <View
+                       <!-- <View
                             android:layout_height="20dp"
                             android:layout_width="match_parent"
                             app:layout_constraintStart_toStartOf="@id/ivQAAddUSDTLine"
                             app:layout_constraintTop_toBottomOf="@id/ivQAAddUSDTLine"
-                            />
+                            />-->
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
