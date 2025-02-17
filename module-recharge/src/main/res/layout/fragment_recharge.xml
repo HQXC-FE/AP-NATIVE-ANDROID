@@ -337,13 +337,11 @@
                                     android:layout_height="42dp"
                                     android:layout_marginStart="4dp"
                                     android:layout_marginTop="8dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:background="@drawable/bg_edit_recharge">
+                                    android:layout_marginEnd="4dp">
 
                                     <EditText
                                         android:id="@+id/edt_name"
                                         style="@style/style_cm_edit"
-                                        android:background="@null"
                                         android:hint="@string/txt_pls_enter_ur_real_name"
                                         android:imeOptions="actionDone"
                                         android:text=""
@@ -407,17 +405,18 @@
                                         style="@style/style_cm_edit"
                                         android:layout_width="match_parent"
                                         android:elevation="1dp"
+                                        android:background="@null"
                                         android:text="@string/txt_enter_recharge_amount"
                                         android:textColor="@color/clr_txt_color_hint"
                                         android:textSize="14sp"
                                         tools:enabled="true" />
 
                                     <EditText
+                                        style="@style/style_cm_edit"
                                         android:id="@+id/edt_amount"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/bg_edit_recharge"
-                                        android:hint="@string/txt_enter_recharge_amount"
+                                        android:background="@drawable/bg_edit_recharge_selector"
                                         android:imeOptions="actionDone"
                                         android:inputType="number"
                                         android:lines="1"

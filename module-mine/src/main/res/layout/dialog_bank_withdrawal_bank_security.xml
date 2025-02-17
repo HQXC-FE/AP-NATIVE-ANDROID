@@ -76,6 +76,7 @@
                     android:textColor="@color/clr_txt_withdraw_money"
                     android:textSize="14sp"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/tv_withdrawal_amount_show"
                     android:layout_width="wrap_content"
@@ -105,24 +106,19 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ll_virtual_hint"
             android:layout_marginTop="4dp">
-<!--android:background="@drawable/bg_withdraw_money_input"-->
+            <!--android:background="@drawable/bg_withdraw_money_input"-->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_withdraw_money_input"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
+                android:layout_height="match_parent">
 
                 <com.xtree.base.widget.RegionNumberEditText
                     android:id="@+id/et_input_money"
-                    style="@style/style_bank_edit"
-                    android:layout_marginLeft="1dp"
-                    android:drawablePadding="4dp"
+                    style="@style/style_cm_edit"
+                    android:drawableStart="@mipmap/me_icon_wlt_bank"
                     android:drawableLeft="@mipmap/me_icon_wlt_bank"
+                    android:drawablePadding="5dp"
                     android:hint="@string/txt_input_money"
                     android:inputType="numberDecimal" />
-
-
             </RelativeLayout>
 
         </LinearLayout>
@@ -210,27 +206,27 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <Button
                     android:id="@+id/tv_actual_withdrawal_next"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/me_bg_withdrawal_next"
                     android:text="下一步"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:background="@drawable/me_bg_withdrawal_next"
-                    />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_actual_withdrawal_tip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:drawableLeft="@mipmap/cm_ic_hint_main"
                     android:layout_below="@id/tv_actual_withdrawal_next"
                     android:layout_alignLeft="@id/tv_actual_withdrawal_next"
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@mipmap/cm_ic_hint_main"
                     android:text="@string/txt_kind_tips"
                     android:textColor="@color/clr_withdrawal_text_bank_tip"
                     android:textSize="14sp" />
