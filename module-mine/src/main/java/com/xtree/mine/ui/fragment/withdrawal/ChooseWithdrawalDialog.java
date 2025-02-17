@@ -100,7 +100,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
     private BasePopupView loadingView = null;
     private BasePopupView bankPopupView = null;
     private BasePopupView fundPSWPopView; // 资金密码
-    private BankWithdrawalDialog.BankWithdrawalClose bankWithdrawalClose;
+    private BankWithdrawalClose bankWithdrawalClose;
     private FragmentActivity mActivity;
 
     @Override
@@ -117,7 +117,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
         super(context);
     }
 
-    public static ChooseWithdrawalDialog newInstance(Context context, LifecycleOwner owner, IChooseDialogBack callBack, BankWithdrawalDialog.BankWithdrawalClose bankWithdrawalClose) {
+    public static ChooseWithdrawalDialog newInstance(Context context, LifecycleOwner owner, IChooseDialogBack callBack, BankWithdrawalClose bankWithdrawalClose) {
         ChooseWithdrawalDialog dialog = new ChooseWithdrawalDialog(context);
 
         dialog.context = context;
@@ -127,7 +127,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
         return dialog;
     }
 
-    public static ChooseWithdrawalDialog newInstance(Context context, LifecycleOwner owner, IChooseDialogBack callBack, BankWithdrawalDialog.BankWithdrawalClose bankWithdrawalClose, final String checkCode, final FragmentActivity activity) {
+    public static ChooseWithdrawalDialog newInstance(Context context, LifecycleOwner owner, IChooseDialogBack callBack, BankWithdrawalClose bankWithdrawalClose, final String checkCode, final FragmentActivity activity) {
         ChooseWithdrawalDialog dialog = new ChooseWithdrawalDialog(context);
 
         dialog.context = context;
@@ -868,17 +868,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
     private void showBankWithdrawalDialog(final String name, final ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo, final WithdrawalBankInfoVo selectorInfoVo) {
         bankPopupView = new XPopup.Builder(getContext())
                 .moveUpToKeyboard(false)
-                .asCustom(BankWithdrawalDialog.newInstance(getContext(), owner, name, checkCode, listVo, selectorInfoVo, new BankWithdrawalDialog.BankWithdrawalClose() {
-                    @Override
-                    public void closeBankWithdrawal() {
-
-                    }
-
-                    @Override
-                    public void closeBankByPSW() {
-
-                    }
-                }));
+                .asCustom(BankWithdrawalDialog.newInstance(getContext(), owner, name, checkCode, listVo, selectorInfoVo));
         bankPopupView.show();
     }
 

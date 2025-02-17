@@ -47,7 +47,6 @@ import com.xtree.mine.vo.USDTConfirmVo;
 import com.xtree.mine.vo.USDTSecurityVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalInfoVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalListVo;
-import com.xtree.mine.vo.WithdrawVo.WithdrawalSubmitVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalVerifyVo;
 
 import java.text.DecimalFormat;
@@ -74,7 +73,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     private USDTCashVo cashMoYuVo;
     private USDTSecurityVo usdtSecurityVo;
     private USDTConfirmVo usdtConfirmVo;
-    private BankWithdrawalDialog.BankWithdrawalClose bankClose;
     private
     @NonNull
     DialogBankWithdrawalUsdtBinding binding;
@@ -93,7 +91,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     private ArrayList<WithdrawalInfoVo.UserBankInfo> erc20ArbitrumBankInfoList;//只支持erc20 arb提款地址
     private ArrayList<WithdrawalInfoVo.UserBankInfo> solanaBankInfoList;//只支持solana提款地址
     private WithdrawalVerifyVo verifyVo;
-    private WithdrawalSubmitVo submitVo;
     private WithdrawalListVo.WithdrawalItemVo changVo;//切换的Vo
     private BasePopupView errorPopView;
 
@@ -101,12 +98,10 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         super(context);
     }
 
-    public static USDTWithdrawalDialog newInstance(Context context, LifecycleOwner owner, ChooseInfoVo.ChannelInfo channelInfo, BankWithdrawalDialog.BankWithdrawalClose bankClose) {
+    public static USDTWithdrawalDialog newInstance(Context context, LifecycleOwner owner, ChooseInfoVo.ChannelInfo channelInfo) {
         USDTWithdrawalDialog dialog = new USDTWithdrawalDialog(context);
         dialog.owner = owner;
         dialog.channelInfo = channelInfo;
-        dialog.bankClose = bankClose;
-        CfLog.i("USDTWithdrawalDialog");
         return dialog;
     }
 
@@ -334,11 +329,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
 
         //提款完成申请
         viewModel.submitVoMutableLiveData.observe(owner, vo -> {
-            submitVo = vo;
-            if (submitVo != null) {
-                refreshSubmitUI(submitVo, null);
-            }
-
+            refreshSubmitUI(vo);
         });
         //提款完成申请 错误信息
         viewModel.submitVoErrorData.observe(owner, vo -> {
@@ -353,10 +344,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
 
     /**
      * 刷新 提款完成页面
-     *
-     * @param submitVo
      */
-    private void refreshSubmitUI(final WithdrawalSubmitVo submitVo, final String message) {
+    private void refreshSubmitUI(final String message) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
             ExKt.setGradientTextColorLeftToRight(binding.tvConfirmWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
@@ -366,45 +355,25 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         binding.llVirtualConfirmView.llConfirmView.setVisibility(GONE);
         binding.llOverApply.setVisibility(VISIBLE);
 
-        if (submitVo != null) {
-            if (submitVo != null && submitVo.message != null && !TextUtils.isEmpty(submitVo.message)) {
-                if (TextUtils.equals("账户提款申请成功", submitVo.message)) {
-                    binding.ivOverApply.setVisibility(VISIBLE);
-                    binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
-                    binding.tvOverMsg.setVisibility(VISIBLE);
-                    binding.tvOverMsg.setText(submitVo.message);
 
-                } else if (TextUtils.equals("请刷新后重试", submitVo.message)) {
-                    binding.tvOverMsg.setVisibility(VISIBLE);
-                    binding.tvOverMsg.setText(submitVo.message);
-                    binding.ivOverApply.setVisibility(VISIBLE);
-                    binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-                } else {
-                    binding.tvOverMsg.setVisibility(VISIBLE);
-                    binding.tvOverMsg.setText(submitVo.message);
-                    binding.ivOverApply.setVisibility(VISIBLE);
-                    binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-                }
-            }
-        } else if (message != null && TextUtils.isEmpty(message)) {
-            if (TextUtils.equals("账户提款申请成功", message)) {
-                binding.ivOverApply.setVisibility(VISIBLE);
-                binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
-                binding.tvOverMsg.setVisibility(VISIBLE);
-                binding.tvOverMsg.setText(submitVo.message);
+        if (TextUtils.equals("账户提款申请成功", message)) {
+            binding.ivOverApply.setVisibility(VISIBLE);
+            binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
+            binding.tvOverMsg.setVisibility(VISIBLE);
+            binding.tvOverMsg.setText(message);
 
-            } else if (TextUtils.equals("请刷新后重试", message)) {
-                binding.tvOverMsg.setVisibility(VISIBLE);
-                binding.tvOverMsg.setText(submitVo.message);
-                binding.ivOverApply.setVisibility(VISIBLE);
-                binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-            } else {
-                binding.tvOverMsg.setVisibility(VISIBLE);
-                binding.tvOverMsg.setText(submitVo.message);
-                binding.ivOverApply.setVisibility(VISIBLE);
-                binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-            }
+        } else if (TextUtils.equals("请刷新后重试", message)) {
+            binding.tvOverMsg.setVisibility(VISIBLE);
+            binding.tvOverMsg.setText(message);
+            binding.ivOverApply.setVisibility(VISIBLE);
+            binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
+        } else {
+            binding.tvOverMsg.setVisibility(VISIBLE);
+            binding.tvOverMsg.setText(message);
+            binding.ivOverApply.setVisibility(VISIBLE);
+            binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
         }
+
 
         //继续提款
         binding.ivContinueConfirmNext.setOnClickListener(v -> {
@@ -472,6 +441,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
             }
             binding.llSetRequestView.setVisibility(View.VISIBLE);
             binding.llVirtualConfirmView.llConfirmView.setVisibility(View.GONE);
+            binding.llOverApply.setVisibility(View.GONE); //订单结果页面隐藏
+
         });
 
     }
@@ -806,51 +777,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     }
 
     /**
-     * 刷新确认提款UI
-     */
-//    private void refreshSecurityUI() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_blue_07));
-//        }
-//        binding.llSetRequestView.setVisibility(View.GONE);
-//        binding.tvUserNameShow.setText(cashMoYuVo.user.username);
-//        binding.llVirtualConfirmView.llConfirmView.setVisibility(View.VISIBLE);
-//        DialogWithdrawalUsdtConfirmBinding bindView = binding.llVirtualConfirmView;
-//        binding.llVirtualConfirmView.tvConfirmUserNameShow.setText(usdtSecurityVo.user.username);
-//        bindView.tvConfirmWithdrawalTypeShow.setText(cashMoYuVo.user.availablebalance);
-//        bindView.tvConfirmAmountShow.setText(usdtSecurityVo.usdt_type);
-//        bindView.tvWithdrawalVirtualTypeShow.setText(usdtSecurityVo.usdt_type);
-//
-//        bindView.tvWithdrawalActualArrivalShow.setText(usdtSecurityVo.datas.arrive);
-//        bindView.tvWithdrawalExchangeRateShow.setText(usdtSecurityVo.exchangerate);
-//        bindView.tvWithdrawalAddressShow.setText(usdtSecurityVo.usdt_card);
-//        // 提款金额
-//        bindView.tvWithdrawalAmountTypeShow.setText(usdtSecurityVo.datas.money);
-//        bindView.tvWithdrawalHandlingFeeShow.setText(usdtSecurityVo.datas.handing_fee);
-//
-//        //下一步
-//        bindView.ivConfirmNext.setOnClickListener(v -> {
-//            //String money  , String realCount  ,String handingFee ,String usdt_type ,String usdtType ,  String checkCode
-//            String money = binding.etInputMoney.getText().toString().trim();
-//            String realCount = binding.tvInfoActualNumberShow.getText().toString().trim();
-//            String handingFee = binding.tvCollectionUsdt.getText().toString().trim();
-//            String usdt_type = usdtSecurityVo.usdt_type;
-//            String usdtType = usdtSecurityVo.usdt_type;
-//
-//            requestConfirmUSDT(money, realCount, handingFee, usdt_type, usdtType, checkCode, usdtSecurityVo);
-//        });
-//        //上一步
-//        bindView.ivConfirmPrevious.setOnClickListener(v -> {
-//            binding.llSetRequestView.setVisibility(View.VISIBLE);
-//            binding.llVirtualConfirmView.llConfirmView.setVisibility(View.GONE);
-//            //tv_confirm_withdrawal_request
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.cl_over_tip));
-//            }
-//        });
-//    }
-
-    /**
      * 设置提款 请求 下一步
      */
     private void requestVerify(final String money, final WithdrawalInfoVo.UserBankInfo selectorBankInfo) {
@@ -876,38 +802,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         if (imm.isActive()) {
             imm.hideSoftInputFromWindow(this.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
-    }
-
-    /**
-     * 刷新完成申请UI
-     */
-    private void refreshConfirmUI() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_choose_20));
-        }
-        binding.llVirtualConfirmView.llConfirmView.setVisibility(View.GONE);
-        binding.llOverApply.setVisibility(View.VISIBLE);
-        //msg_type 为2 或者msg_detail为账户提款申请成功
-        if (usdtConfirmVo.msg_detail.equals("账户提款申请成功") && usdtConfirmVo.msg_type.equals("2")) {
-            binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
-        } else if (usdtConfirmVo.error != null) {
-            binding.tvOverMsg.setText("账户提款申请失败");
-            binding.tvOverDetail.setText(usdtConfirmVo.msg_detail);
-            binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-        } else {
-            binding.tvOverMsg.setText("账户提款申请失败");
-            binding.tvOverDetail.setText(usdtConfirmVo.msg_detail);
-            binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-        }
-        //继续提现
-        binding.ivContinueConfirmNext.setOnClickListener(v -> {
-            dismiss();
-        });
-        //关闭
-        binding.ivContinueConfirmClose.setOnClickListener(v -> {
-            dismiss();
-            bankClose.closeBankWithdrawal();
-        });
     }
 
     /**

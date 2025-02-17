@@ -56,7 +56,6 @@ import com.xtree.mine.vo.PlatWithdrawConfirmVo;
 import com.xtree.mine.vo.PlatWithdrawVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalBankInfoVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalListVo;
-import com.xtree.mine.vo.WithdrawVo.WithdrawalSubmitVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalVerifyVo;
 
 import java.util.ArrayList;
@@ -101,7 +100,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     private String check;//新增返回参数：check ,需带入下一个接口
     private WithdrawalListVo.WithdrawalItemVo changVo;//切换的Vo
     private WithdrawalVerifyVo verifyVo;
-    private WithdrawalSubmitVo submitVo;
     private WithdrawalBankInfoVo.UserBankInfo selectUsdtInfo;//选中的提款银行卡
     private BasePopupView errorPopView = null; // 底部弹窗
 
@@ -109,7 +107,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         super(context);
     }
 
-    public static BankWithdrawalDialog newInstance(Context context, LifecycleOwner owner, final String wtype, final String checkCode, ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo, final WithdrawalBankInfoVo infoVo, final BankWithdrawalClose closeCallback) {
+    public static BankWithdrawalDialog newInstance(Context context, LifecycleOwner owner, final String wtype, final String checkCode, ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo, final WithdrawalBankInfoVo infoVo) {
         BankWithdrawalDialog dialog = new BankWithdrawalDialog(context);
         dialog.context = context;
         dialog.owner = owner;
@@ -118,7 +116,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         dialog.listVo = listVo;
         dialog.infoVo = infoVo;
         dialog.check = infoVo.check;
-//        dialog.closeCallback = closeCallback;
         return dialog;
     }
 
@@ -342,94 +339,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     }
 
     private void initViewObservable() {
-        /* //银行卡提现详情model
-        viewModel.bankCardCashMoYuVoMutableLiveData.observe(this.owner, vo -> {
-            bankCardCashVo = vo;
-            dismissLoading();
-            if (bankCardCashVo == null || bankCardCashVo.banks == null || bankCardCashVo.rest == null) {
-                if (bankCardCashVo.msg_type == 2 && !TextUtils.isEmpty(bankCardCashVo.message)) {
-                    showError(bankCardCashVo.message);
-                    return;
-                } else {
-                    ToastUtils.showError(getContext().getString(R.string.txt_network_error));
-                    dismiss();
-                }
-
-            } else if (bankCardCashVo.msg_type == 1 || bankCardCashVo.msg_type == 2) {
-                ToastUtils.showError(bankCardCashVo.message);
-                dismiss();
-                return;
-
-            } else if (bankCardCashVo.msg_type == 2 && TextUtils.equals(getContext().getString(R.string.txt_exhausted), bankCardCashVo.message)) {
-                ToastUtils.showError(bankCardCashVo.message);
-                dismiss();
-                return;
-            }
-            //"ur_here": "资金密码检查",
-            else if (!TextUtils.isEmpty(bankCardCashVo.ur_here) && TextUtils.equals(getContext().getString(R.string.txt_withdraw_password_check), bankCardCashVo.ur_here)) {
-                ToastUtils.showError(bankCardCashVo.ur_here);
-                // bankClose.closeBankByPSW();
-                //dismiss();
-                return;
-            } else if ("2".equals(bankCardCashVo.msg_type) && getContext().getString(R.string.txt_fund_account_locked).equals(bankCardCashVo.message)) {
-                ToastUtils.showError(bankCardCashVo.message);
-                dismiss();
-                return;
-            } else {
-                //1.初始化顶部选项卡
-                refreshTopUI(bankCardCashVo);
-                //2.为注意view设置相关值
-                refreshNoticeView(bankCardCashVo);
-                //3.刷新第一次获取的数据
-                refreshInitView(bankCardCashVo);
-            }
-
-        });
-        //银行卡提现 下一步
-        viewModel.platWithdrawMoYuVoMutableLiveData.observe(this.owner, vo -> {
-            platWithdrawVo = vo;
-            if (platWithdrawVo == null || platWithdrawVo.datas == null || platWithdrawVo.user == null) {
-                // 针对异常情况
-                if (platWithdrawVo.msg_type == 2 && !TextUtils.isEmpty(platWithdrawVo.message)) {
-                    ToastUtils.showError(platWithdrawVo.message);
-                    return;
-                } else {
-                    ToastUtils.showError(getContext().getString(R.string.txt_network_error));
-                    dismiss();
-                }
-            } else if (platWithdrawVo.datas != null) {
-                refreshWithdrawView(platWithdrawVo);
-            } else if (getContext().getString(R.string.txt_withdraw_password_check).equals(platWithdrawVo.ur_here)) {
-                //业务异常跳转资金安全密码
-                ToastUtils.showError(getContext().getString(R.string.txt_withdraw_fun_timeout));
-            } else if ("2".equals(platWithdrawVo.msg_type) && getContext().getString(R.string.txt_fund_account_locked).equals(platWithdrawVo.message)) {
-                ToastUtils.showError(platWithdrawVo.message);
-                dismiss();
-                return;
-            } else if (getContext().getString(R.string.txt_withdraw_relogin).equals(platWithdrawVo.message)) {
-                ToastUtils.showError(platWithdrawVo.message);
-                popLoginView();
-            }
-
-        });
-        //银行卡提现 确认
-        viewModel.platWithdrawConfirmMoYuVoMutableLiveData.observe(this.owner, ov -> {
-            TagUtils.tagEvent(getContext(), "wd", "bkc");
-            if (ov == null || ov.user == null) {
-                // 针对异常情况
-                if (ov.msg_type == 2 && !TextUtils.isEmpty(ov.message)) {
-                    ToastUtils.showError(ov.message);
-                    return;
-                } else {
-                    ToastUtils.showError(getContext().getString(R.string.txt_network_error));
-                    dismiss();
-                }
-            } else {
-                platWithdrawConfirmVo = ov;
-                refreshWithdrawConfirmView(platWithdrawConfirmVo);
-            }
-
-        });*/
 
         // 新接口
         //获取当前渠道详情
@@ -477,17 +386,14 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         });
         //提款完成申请
         viewModel.submitVoMutableLiveData.observe(owner, vo -> {
-            submitVo = vo;
-            if (submitVo != null) {
-                refreshSubmitUI(submitVo, null);
-            }
+            refreshSubmitUI(vo);
 
         });
         //提款完成申请 错误信息
         viewModel.submitVoErrorData.observe(owner, vo -> {
             final String message = vo;
-            if (message != null && !TextUtils.isEmpty(message)) {
-                refreshSubmitUI(null, message);
+            if (!TextUtils.isEmpty(message)) {
+                showErrorDialog(message);
             } else {
                 ToastUtils.showError(getContext().getString(R.string.txt_network_error));
             }
@@ -496,10 +402,8 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
 
     /**
      * 刷新 提款完成页面
-     *
-     * @param submitVo
      */
-    private void refreshSubmitUI(final WithdrawalSubmitVo submitVo, final String message) {
+    private void refreshSubmitUI(final String message) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
             ExKt.setGradientTextColorLeftToRight(binding.tvConfirmWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
@@ -515,45 +419,22 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         binding.nsDefaultView.setVisibility(View.GONE);//默认提款
         binding.nsConfirmWithdrawalRequest.setVisibility(View.GONE); //提款确认页
         binding.nsOverView.setVisibility(View.VISIBLE);//提款完成申请页
-        if (submitVo != null) {
-            if (submitVo != null && submitVo.message != null && !TextUtils.isEmpty(submitVo.message)) {
-                if (TextUtils.equals("账户提款申请成功", submitVo.message)) {
-                    binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
-                    binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
-                    binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
-                    binding.llOverViewApply.tvOverMsg.setText(submitVo.message);
+        if (TextUtils.equals("账户提款申请成功", message)) {
+            binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
+            binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
+            binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
+            binding.llOverViewApply.tvOverMsg.setText(message);
 
-                } else if (TextUtils.equals("请刷新后重试", submitVo.message)) {
-                    binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
-                    binding.llOverViewApply.tvOverMsg.setText(submitVo.message);
-                    binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
-                    binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-                } else {
-                    binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
-                    binding.llOverViewApply.tvOverMsg.setText(submitVo.message);
-                    binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
-                    binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-                }
-            }
-        } else if (message != null && !TextUtils.isEmpty(message)) {
-            if (TextUtils.equals("账户提款申请成功", message)) {
-                binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
-                binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
-                binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
-                binding.llOverViewApply.tvOverMsg.setText(message);
-
-            } else if (TextUtils.equals("请刷新后重试", message)) {
-                binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
-                binding.llOverViewApply.tvOverMsg.setText(message);
-                binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
-                binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-            } else {
-                binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
-                binding.llOverViewApply.tvOverMsg.setText(message);
-                binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
-                binding.llOverViewApply.tvMessageTip.setVisibility(View.GONE);
-                binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-            }
+        } else if (TextUtils.equals("请刷新后重试", message)) {
+            binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
+            binding.llOverViewApply.tvOverMsg.setText(message);
+            binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
+            binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
+        } else {
+            binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
+            binding.llOverViewApply.tvOverMsg.setText(message);
+            binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
+            binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
         }
         //继续提款
         binding.llOverViewApply.ivContinueConfirmNext.setOnClickListener(v -> {
@@ -653,17 +534,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         viewModel.postWithdrawalSubmit(map);
 
     }
-//    private void showError(String errorMessage) {
-//        binding.nsErrorView.setVisibility(View.VISIBLE);
-//        binding.tvShowErrorMessage.setText(errorMessage);
-//        binding.nsSetWithdrawalRequest.setVisibility(View.GONE);//单数据页面展示
-//        binding.nsSetWithdrawalRequestMore.setVisibility(View.GONE);//多金额页面隐藏
-//        binding.nsH5View.setVisibility(View.GONE);//h5隐藏
-//        binding.nsOverView.setVisibility(View.GONE); //订单结果页面隐藏
-//        binding.nsConfirmWithdrawalRequest.setVisibility(View.GONE); //确认提款页面隐藏
-//        binding.maskH5View.setVisibility(View.GONE);//WebView界面隐藏
-//
-//    }
 
     /**
      * 显示异常Dialog
@@ -780,85 +650,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
                 refreshRequestView(bankInfoVo);
             }
         }
-        /*selectChanneVo = bankCardCashVo.channel_list.get(0);
-        // 展示错误信息 例如关闭提款通道
-        *//*if (bankCardCashVo.channel_list.get(0).isShowErrorView == 1)
-        {
-            binding.nsErrorView.setVisibility(View.VISIBLE);//展示错误信息页面
-            binding.nsSetWithdrawalRequest.setVisibility(View.GONE);//原始数据页面隐藏
-            binding.nsSetWithdrawalRequestMore.setVisibility(View.GONE);//多金额页面隐藏
-            binding.nsH5View.setVisibility(View.GONE);//h5页面隐藏
-            binding.nsConfirmWithdrawalRequest.setVisibility(View.GONE); //确认提款页面隐藏
-
-            binding.tvShowErrorMessage.setText(bankCardCashVo.channel_list.get(0).thiriframe_msg);
-        }
-        else
-        {
-
-        }*//*
-        //展示WebView界面
-        if (bankCardCashVo.channel_list.get(0).isWebView == 1) {
-            binding.nsDefaultView.setVisibility(View.GONE);
-            binding.nsErrorView.setVisibility(View.GONE);//隐藏错误信息页面隐藏
-            binding.nsSetWithdrawalRequest.setVisibility(View.GONE);//单数据页面展示
-            binding.nsSetWithdrawalRequestMore.setVisibility(View.GONE);//多金额页面隐藏
-            binding.nsConfirmWithdrawalRequest.setVisibility(View.GONE); //确认提款页面隐藏
-            binding.maskH5View.setVisibility(View.VISIBLE);
-            binding.nsH5View.setVisibility(View.VISIBLE);//h5展示
-            String url = bankCardCashVo.channel_list.get(0).thiriframe_url;
-            if (!StringUtils.isStartHttp(url)) {
-                url = DomainUtil.getDomain2() + url;
-            }
-            binding.nsH5View.loadUrl(url, getHeader());
-            initWebView();
-            binding.nsH5View.setWebViewClient(new WebViewClient() {
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    showMaskLoading();
-                    view.loadUrl(url);
-                    return true;
-                }
-
-                @Override
-                public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                    // LoadingDialog.show(getContext());
-                }
-
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    super.onPageFinished(view, url);
-                    //LoadingDialog.finish();
-                    dismissLoading();
-                    binding.maskH5View.setVisibility(View.GONE);
-                }
-
-            });
-        }
-        //展示原生页面
-        else if (bankCardCashVo.channel_list.get(0).isWebView == 2) {
-            //展示多金额页面
-            if (bankCardCashVo.channel_list.get(0).fixamount_list_status == 1) {
-                binding.nsErrorView.setVisibility(View.GONE);//展示错误信息页面
-                binding.nsSetWithdrawalRequest.setVisibility(View.GONE);//单数据页面展示
-                binding.nsSetWithdrawalRequestMore.setVisibility(View.VISIBLE);//多金额页面隐藏
-                binding.nsConfirmWithdrawalRequest.setVisibility(View.GONE); //确认提款页面隐藏
-                binding.nsH5View.setVisibility(View.GONE);//h5隐藏
-                refreshRequestMoreView(bankCardCashVo, bankCardCashVo.channel_list.get(0));
-                refreshSelectAmountUI(bankCardCashVo.channel_list.get(0));
-            } else {
-                binding.nsErrorView.setVisibility(View.GONE);//展示错误信息页面
-                binding.nsSetWithdrawalRequest.setVisibility(View.VISIBLE);//单数据页面展示
-                binding.nsSetWithdrawalRequestMore.setVisibility(View.GONE);//多金额页面隐藏
-                binding.nsConfirmWithdrawalRequest.setVisibility(View.GONE); //确认提款页面隐藏
-                binding.nsH5View.setVisibility(View.GONE);//h5隐藏
-                if (bankCardCashVo != null && !bankCardCashVo.channel_list.isEmpty()){
-                    refreshRequestView(bankCardCashVo, bankCardCashVo.channel_list.get(0));
-                }else{
-                    CfLog.e("bankCardCashVo.channel_list.isEmpty()");
-                }
-            }
-        }*/
-
     }
 
     private void initWebView() {
@@ -876,7 +667,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
 
     private void refreshTopUI(ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo) {
         ExKt.setGradientTextColorLeftToRight(binding.tvSetWithdrawalRequest, getContext().getColor(R.color.clr_main_start), getContext().getColor(R.color.clr_main_end));
-        ExKt.removeGradientTextColor( binding.tvConfirmWithdrawalRequest,getContext().getColor(R.color.cl_over_tip));
+        ExKt.removeGradientTextColor(binding.tvConfirmWithdrawalRequest, getContext().getColor(R.color.cl_over_tip));
         for (int i = 0; i < listVo.size(); i++) {
             if (i == 0) {
                 listVo.get(0).flag = true;
@@ -921,13 +712,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         binding.tvShowNoticeInfo.setText(HtmlCompat.fromHtml(textSource, HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    /**
-     * 刷新多金额选择View
-     */
-//    private void refreshRequestMoreView(BankCardCashVo bankCardCashVo, BankCardCashVo.ChannelVo channelVo) {
-//        refreshUserView(bankCardCashVo);
-//        refreshAmountUI(bankCardCashVo, channelVo);
-//    }
 
     /**
      * 刷新单输入View
@@ -978,33 +762,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
             binding.tvWithdrawalAmountMethodMore.setText(info.quota);
         }
 
-      /*  if (binding.nsSetWithdrawalRequest.getVisibility() == View.VISIBLE) {
-            if (bankCardCashVo.user != null) {
-                if (bankCardCashVo.user.username != null) {
-                    binding.bankWithdrawalView.tvUserNameShow.setText(bankCardCashVo.user.username);
-                } else if (bankCardCashVo.user.nickname != null) {
-                    binding.bankWithdrawalView.tvUserNameShow.setText(bankCardCashVo.user.nickname);
-                }
-            } else if (mProfileVo != null && mProfileVo.username != null) {
-                final String name = StringUtils.splitWithdrawUserName(mProfileVo.username);
-                binding.bankWithdrawalView.tvUserNameShow.setText(name);
-            }
-            binding.bankWithdrawalView.tvWithdrawalTypeShow.setText("银行卡");
-            binding.bankWithdrawalView.tvWithdrawalAmountMethod.setText(bankCardCashVo.user.cafAvailableBalance);
-        } else if (binding.nsSetWithdrawalRequestMore.getVisibility() == View.VISIBLE) {
-            if (bankCardCashVo.user != null) {
-                if (bankCardCashVo.user.username != null) {
-                    binding.bankWithdrawalView.tvUserNameShow.setText(bankCardCashVo.user.username);
-                } else if (bankCardCashVo.user.nickname != null) {
-                    binding.bankWithdrawalView.tvUserNameShow.setText(bankCardCashVo.user.nickname);
-                }
-            } else if (mProfileVo != null && mProfileVo.username != null) {
-                final String name = StringUtils.splitWithdrawUserName(mProfileVo.username);
-                binding.bankWithdrawalView.tvUserNameShow.setText(name);
-            }
-            binding.tvWithdrawalTypeShowMore.setText("银行卡");
-            binding.tvWithdrawalAmountMethodMore.setText(bankCardCashVo.user.cafAvailableBalance);
-        }*/
 
     }
 
@@ -1031,28 +788,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
             }
             binding.tvActualWithdrawalAmountBankShowMore.setText(bankInfoString);
         }
-        /*String textSource = "单笔最低提现金额：" + channelVo.min_money + ",最高:" + channelVo.max_money;
-        if (binding.nsSetWithdrawalRequest.getVisibility() == View.VISIBLE) {
-            binding.bankWithdrawalView.tvWithdrawalAmountShow.setText(textSource);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binding.bankWithdrawalView.tvWithdrawalAmountShow.setTextColor(getContext().getColor(R.color.clr_withdrawal_text_tip));
-            }
-            if (!bankCardCashVo.banks.isEmpty()){
-                String bankInfoString = bankCardCashVo.banks.get(0).bank_name + " " + bankCardCashVo.banks.get(0).account;
-                binding.bankWithdrawalView.tvActualWithdrawalAmountBankShow.setText(bankInfoString);
-            }else{
-                CfLog.e("bankCardCashVo.banks  is null");
-            }
-        } else if (binding.nsSetWithdrawalRequestMore.getVisibility() == View.VISIBLE) {
-            binding.tvWithdrawalAmountShowMore.setText(textSource);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binding.bankWithdrawalView.tvWithdrawalAmountShow.setTextColor(getContext().getColor(R.color.clr_withdrawal_text_tip));
-            }
-            binding.tvActualWithdrawalAmountBankShowMore.setText(bankCardCashVo.banks.get(0).bank_name + " " + bankCardCashVo.banks.get(0).account);
-        }
-        if (!bankCardCashVo.banks.isEmpty()){
-            channeBankVo = bankCardCashVo.banks.get(0);
-        }*/
 
     }
 
@@ -1069,45 +804,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
             CfLog.i("refreshSelectAmountUI channelVo.size = 0?");
         }
     }
-
-    /*暂时废弃
-    private void refreshWithdrawConfirmView() {
-        binding.llShowChooseCard.setVisibility(View.GONE);//顶部通用、大额提现View隐藏
-        binding.nsDefaultView.setVisibility(View.GONE);
-        binding.llShowNoticeInfo.setVisibility(View.GONE); //顶部提示信息隐藏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_choose_20));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_choose_20));
-            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_choose_20));
-        }
-        binding.nsErrorView.setVisibility(View.GONE);//展示错误信息页面
-        binding.nsSetWithdrawalRequest.setVisibility(View.GONE);//单数据页面展示
-        binding.nsSetWithdrawalRequestMore.setVisibility(View.GONE);//多金额页面隐藏
-        binding.maskH5View.setVisibility(View.GONE);
-        binding.nsH5View.setVisibility(View.GONE);//h5隐藏
-        binding.nsConfirmWithdrawalRequest.setVisibility(View.GONE); //确认提款页面隐藏
-        binding.nsOverView.setVisibility(View.VISIBLE);//订单结果页面
-        binding.llOverViewApply.ivOverApply.setBackground(getContext().getDrawable(R.mipmap.ic_over_apply_err));
-        binding.etInputMoneyMore.clearFocus();
-        binding.bankWithdrawalView.etInputMoney.clearFocus();
-        binding.nsOverView.setOnClickListener(v -> {
-            CfLog.e("ivContinueConfirmNextnsOverView");
-        });
-        binding.llOverViewApply.ivContinueConfirmNext.setOnClickListener(v -> {
-            ToastUtils.showError("ivContinueConfirmNext");
-            CfLog.e("ivContinueConfirmNext");
-            dismiss();
-        });
-        binding.llOverViewApply.ivContinueConfirmClose.setOnClickListener(v -> {
-            ToastUtils.showError("ivContinueConfirmClose");
-            dismiss();
-        });
-        binding.llOverViewApply.ivOverApply.setOnClickListener(v -> {
-            ToastUtils.showError("ivOverApply");
-            dismiss();
-        });
-    }*/
 
     /**
      * 刷新确认提交订单页面
@@ -1137,57 +833,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         binding.bankConfirmView.tvWithdrawalExchangeRateShow.setText(platWithdrawVo.datas.bankcity);
         binding.bankConfirmView.tvWithdrawalAddressShow.setText(platWithdrawVo.datas.truename);
         binding.bankConfirmView.tvWithdrawalHandlingFeeShow.setText(platWithdrawVo.datas.bankno);
-    }
-
-    /**
-     * 刷新提交点订单后页面
-     */
-    private void refreshWithdrawConfirmView(PlatWithdrawConfirmVo vo) {
-        //msg_type 1 2 状态均为成功
-        if (vo.msg_type == 1 || (vo.msg_type == 2 && TextUtils.equals("账户提款申请成功", vo.msg_detail))) {
-            //成功
-            binding.llShowChooseCard.setVisibility(View.GONE);//顶部通用、大额提现View隐藏
-            binding.nsDefaultView.setVisibility(View.GONE);
-            binding.llShowNoticeInfo.setVisibility(View.GONE); //顶部提示信息隐藏
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-                binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_blue_07));
-                binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_blue_07));
-                binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_blue_07));
-            }
-            binding.nsErrorView.setVisibility(View.GONE);//展示错误信息页面
-            binding.nsSetWithdrawalRequest.setVisibility(View.GONE);//单数据页面展示
-            binding.nsSetWithdrawalRequestMore.setVisibility(View.GONE);//多金额页面隐藏
-            binding.maskH5View.setVisibility(View.GONE);
-            binding.nsH5View.setVisibility(View.GONE);//h5隐藏
-            binding.nsConfirmWithdrawalRequest.setVisibility(View.GONE); //确认提款页面隐藏
-            binding.nsOverView.setVisibility(View.VISIBLE);//订单结果页面
-
-            binding.llOverViewApply.tvOverMsg.setText(vo.msg_detail);
-        } else if (vo.msg_type == 2 && !TextUtils.equals("账户提款申请成功", vo.msg_detail)) {
-            binding.nsConfirmWithdrawalRequest.setVisibility(View.VISIBLE); //确认提款页面展示
-            showErrorBySystem(vo.msg_detail);
-            /*//失败
-            binding.llOverViewApply.ivOverApply.setBackground(getContext().getDrawable(R.mipmap.ic_over_apply_err));
-            binding.llOverViewApply.tvOverMsg.setText(vo.msg_detail);
-            binding.llOverViewApply.tvMessageTip.setVisibility(View.GONE);*/
-        } else if (vo.msg_type == 4) {
-            //稍后刷新重试
-            binding.llOverViewApply.tvOverMsg.setText(vo.msg_detail);
-            binding.llOverViewApply.tvMessageTip.setVisibility(View.GONE);
-        } else {
-            //失败
-            binding.llOverViewApply.ivOverApply.setBackground(getContext().getDrawable(R.mipmap.ic_over_apply_err));
-            binding.llOverViewApply.tvOverMsg.setText(vo.msg_detail);
-            binding.llOverViewApply.tvMessageTip.setVisibility(View.GONE);
-        }
-        binding.llOverViewApply.ivContinueConfirmNext.setOnClickListener(v -> {
-            dismiss();
-        });
-      /*  binding.llOverViewApply.ivContinueConfirmClose.setOnClickListener(v -> {
-            dismiss();
-        });*/
-
     }
 
     /**
@@ -1369,12 +1014,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
             }));
         }
         ppwError.show();
-    }
-
-    public interface BankWithdrawalClose {
-        void closeBankWithdrawal();
-
-        void closeBankByPSW();//资金密码检查
     }
 
     /**

@@ -780,6 +780,7 @@
                     android:layout_marginRight="20dp"
                     android:background="@drawable/bg_dialog_withdraw_close"
                     android:text="@string/txt_withdraw_close"
+                    android:visibility="gone"
                     android:textColor="@color/update_progress_start_color"
                     android:textSize="16sp" />
                 <!--<ImageView

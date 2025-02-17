@@ -70,7 +70,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
     public MutableLiveData<WithdrawalInfoVo> withdrawalInfoVoMutableLiveData = new MutableLiveData<>();// 获取提现渠道 错误信息
     public MutableLiveData<WithdrawalBankInfoVo> bankInfoVoMutableLiveData = new MutableLiveData<>();//银行卡获取提款渠道详细信息
     public MutableLiveData<WithdrawalVerifyVo> verifyVoMutableLiveData = new MutableLiveData<>();//验证当前渠道信息
-    public MutableLiveData<WithdrawalSubmitVo> submitVoMutableLiveData = new MutableLiveData<>();//提款提交
+    public MutableLiveData<String> submitVoMutableLiveData = new MutableLiveData<>();//提款提交
     public MutableLiveData<WithdrawalBankInfoVo> withdrawalBankInfoVoMutableLiveData = new MutableLiveData<>();// 银行卡获取提款渠道详细信息
     public MutableLiveData<String> withdrawalListErrorData = new MutableLiveData<>();// 获取提现渠道 错误信息
     public MutableLiveData<String> bankInfoVoErrorData = new MutableLiveData<>();// / 银行卡获取提款渠道详细信息 错误信息
@@ -83,169 +83,6 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
 
     public ChooseWithdrawViewModel(@NonNull Application application, MineRepository model) {
         super(application, model);
-    }
-
-    /**
-     * 【魔域】获取提款方式
-     */
-    public void getChooseWithdrawInfo(final String checkCode) {
-        Disposable disposable = (Disposable) model.getApiService().getChooseWithdrawInfo(checkCode).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer())
-
-                .subscribeWith(new HttpCallBack<ChooseInfoMoYuVo>() {
-
-                    @Override
-                    public void onResult(ChooseInfoMoYuVo chooseInfoVo) {
-                        if (!TextUtils.isEmpty(chooseInfoVo.ur_here) || chooseInfoVo.wdChannelList == null || chooseInfoVo.wdChannelList.isEmpty()) {
-                            //异常状态
-                            chooseInfoMoYuVoMutableLiveData.setValue(chooseInfoVo);
-                        } else {
-                            for (int i = 0; i < chooseInfoVo.wdChannelList.size(); i++) {
-                                if (chooseInfoVo.wdChannelList.get(i).configkey.contains("usdt") || chooseInfoVo.wdChannelList.get(i).title.contains("USDT提款")) {
-                                    chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_usdt_type);
-                                    chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.usdtchanneluse_msg;
-                                    if (chooseInfoVo.bankcardstatus_usdt) {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 1;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = true;
-                                    } else {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 0;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = false;
-                                    }
-
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("bank") || chooseInfoVo.wdChannelList.get(i).configkey.contains("hipaytx") || chooseInfoVo.wdChannelList.get(i).configkey.contains("hipayht") || chooseInfoVo.wdChannelList.get(i).configkey.contains("generalchannel") || chooseInfoVo.wdChannelList.get(i).configkey.contains("银行卡") || chooseInfoVo.wdChannelList.get(i).configkey.contains("onepayfast3") || chooseInfoVo.wdChannelList.get(i).title.contains("银行卡提款")) {
-
-                                    //对应银行卡提款字段匹配
-                                    CfLog.e(" ChooseInfoVo.ChannelInfo = " + chooseInfoVo.wdChannelList.get(i).toString());
-                                    chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.bankchanneluse_msg;
-                                    chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_card_type);
-                                    if (chooseInfoVo.bankcardstatus_rmb) {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 1;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = true;
-                                    } else {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 0;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = false;
-                                    }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("ebpay") || chooseInfoVo.wdChannelList.get(i).title.contains("EBPAY提款")) {
-                                    chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.ebpaychanneluse_msg;
-                                    chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_ebpay_type);
-                                    if (chooseInfoVo.bankcardstatus_ebpay) {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 1;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = true;
-                                    } else {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 0;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = false;
-                                    }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("topay") || chooseInfoVo.wdChannelList.get(i).title.contains("TOPAY提款")) {
-                                    chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.topaychanneluse_msg;
-                                    chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_topay_type);
-                                    if (chooseInfoVo.bankcardstatus_topay) {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 1;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = true;
-                                    } else {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 0;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = false;
-                                    }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("hiwallet") || chooseInfoVo.wdChannelList.get(i).title.contains("CNYT提款")) {
-                                    chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.hiwalletchanneluse_msg;
-                                    chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_gcnyt_type);
-                                    if (chooseInfoVo.bankcardstatus_hiwallet) {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 1;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = true;
-                                    } else {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 0;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = false;
-                                    }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("gopay") || chooseInfoVo.wdChannelList.get(i).title.contains("GOPAY提款")) {
-                                    chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.gopaychanneluse_msg;
-                                    chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_gopay_type);
-                                    if (chooseInfoVo.bankcardstatus_gopay) {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 1;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = true;
-                                    } else {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 0;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = false;
-                                    }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("mpay") || chooseInfoVo.wdChannelList.get(i).title.contains("MPAY提款")) {
-                                    chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_mpay_type);
-                                    chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.mpaychanneluse_msg;
-                                    if (chooseInfoVo.bankcardstatus_mpay) {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 1;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = true;
-                                    } else {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 0;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = false;
-                                    }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("gobao") || chooseInfoVo.wdChannelList.get(i).title.contains("GOBAO提款")) {
-                                    chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_gobao_type);
-                                    chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.gobaochanneluse_msg;
-                                    if (chooseInfoVo.bankcardstatus_gobao) {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 1;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = true;
-                                    } else {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 0;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = false;
-                                    }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("okpay") || chooseInfoVo.wdChannelList.get(i).title.contains("OKPAY提款")) {
-                                    chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_okpay_type);
-                                    chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.okpaychanneluse_msg;
-                                    if (chooseInfoVo.bankcardstatus_okpay) {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 1;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = true;
-                                    } else {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 0;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = false;
-                                    }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("onepayzfb") || chooseInfoVo.wdChannelList.get(i).title.contains("极速支付宝提款")) {
-                                    chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_zfb_type);
-                                    chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.onepayzfbchanneluse_msg;
-                                    if (chooseInfoVo.bankcardstatus_onepayzfb) {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 1;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = true;
-                                    } else {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 0;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = false;
-                                    }
-                                } else if (chooseInfoVo.wdChannelList.get(i).configkey.contains("onepaywx") || chooseInfoVo.wdChannelList.get(i).title.contains("极速微信提款")) {
-                                    chooseInfoVo.wdChannelList.get(i).bindType = getApplication().getString(R.string.txt_bind_wechat_type);
-                                    chooseInfoVo.wdChannelList.get(i).channeluseMessage = chooseInfoVo.onepaywxchanneluse_msg;
-                                    if (chooseInfoVo.bankcardstatus_onepaywx) {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 1;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = true;
-                                    } else {
-                                        chooseInfoVo.wdChannelList.get(i).channeluse = 0;
-                                        chooseInfoVo.wdChannelList.get(i).isBind = false;
-                                    }
-                                }
-                            }
-                            chooseInfoMoYuVoMutableLiveData.setValue(chooseInfoVo);
-                        }
-                    }
-
-                    //增加网络异常抓取
-                    @Override
-                    public void onError(Throwable t) {
-                        //super.onError(t);  ex.message = "连接超时";
-                        Throwable throwable = t;
-                        String message = throwable.getMessage();
-                        CfLog.e("onError message =  " + message);
-                        ChooseInfoMoYuVo chooseInfoVo = new ChooseInfoMoYuVo();
-                        //链接超时
-                        chooseInfoVo.networkStatus = 1; //链接超时
-                        chooseInfoMoYuVoMutableLiveData.setValue(chooseInfoVo);
-
-                    }
-
-                    @Override
-                    public void onFail(BusinessException t) {
-                        // super.onFail(t);
-                        Throwable throwable = t;
-                        String message = throwable.getMessage();
-                        CfLog.e("onFail message =  " + message);
-                        ChooseInfoMoYuVo chooseInfoVo = new ChooseInfoMoYuVo();
-                        chooseInfoVo.networkStatus = 1; //链接超时
-                        chooseInfoMoYuVoMutableLiveData.setValue(chooseInfoVo);
-                    }
-                });
-        addSubscribe(disposable);
     }
 
     /**
@@ -293,25 +130,6 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
         });
         addSubscribe(disposable);
 
-    }
-
-    /**
-     * 【魔域】银行卡 提款提交
-     */
-    public void getPlatWithdrawMoYu(HashMap<String, String> map) {
-        Disposable disposable = (Disposable) model.getApiService().postMoYuPlatWithdrawBank(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<PlatWithdrawVo>() {
-            @Override
-            public void onResult(PlatWithdrawVo platWithdrawVo) {
-                if (platWithdrawVo.user != null) {
-                    if (platWithdrawVo.user.username != null) {
-                        platWithdrawVo.user.username = StringUtils.splitWithdrawUserName(platWithdrawVo.user.username);
-                    }
-                }
-
-                platWithdrawMoYuVoMutableLiveData.setValue(platWithdrawVo);
-            }
-        });
-        addSubscribe(disposable);
     }
 
     /**
@@ -403,39 +221,6 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
     }
 
     /**
-     * [魔域] 获取虚拟币提款 确认提款信息
-     */
-    public void postPlatWithdrawVirtualMoYu(HashMap<String, String> map) {
-        Disposable disposable = (Disposable) model.getApiService().postMoYuPlatWithdrawVirtual(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<VirtualSecurityVo>() {
-            @Override
-            public void onResult(VirtualSecurityVo virtualSecurityVo) {
-                if (virtualSecurityVo.user != null) {
-                    if (virtualSecurityVo.user.username != null) {
-                        virtualSecurityVo.user.username = StringUtils.splitWithdrawUserName(virtualSecurityVo.user.username);
-                    } else if (virtualSecurityVo.user.nickname != null) {
-                        virtualSecurityVo.user.nickname = StringUtils.splitWithdrawUserName(virtualSecurityVo.user.nickname);
-                    }
-                }
-                virtualSecurityMoYuVoMutableLiveData.setValue(virtualSecurityVo);
-            }
-        });
-        addSubscribe(disposable);
-    }
-
-    /**
-     * [魔域]虚拟币提款完成申请
-     */
-    public void postConfirmWithdrawVirtualMoYu(HashMap<String, String> map) {
-        Disposable disposable = (Disposable) model.getApiService().postMoYuConfirmWithdrawVirtual(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<VirtualConfirmVo>() {
-            @Override
-            public void onResult(VirtualConfirmVo virtualConfirmVo) {
-                virtualConfirmMuYuVoMutableLiveData.setValue(virtualConfirmVo);
-            }
-        });
-        addSubscribe(disposable);
-    }
-
-    /**
      * 获取流水
      */
     public void getAwardRecord() {
@@ -503,48 +288,6 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
         });
         addSubscribe(disposable);
     }
-
-    /*获取其他提款方式*/
-    public void getWithdrawOther(final String check, final String type) {
-        Disposable disposable = (Disposable) model.getApiService().getChooseWithdrawOther(check, type).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<OtherWebWithdrawVo>() {
-            @Override
-            public void onResult(OtherWebWithdrawVo vo) {
-                CfLog.e("getWithdrawOther =  " + vo.toString());
-                if (vo != null) {
-                    otherWebWithdrawVoMutableLiveData.setValue(vo);
-                }
-            }
-
-            //增加网络异常抓取
-            @Override
-            public void onError(Throwable t) {
-                //super.onError(t);  ex.message = "连接超时";
-                Throwable throwable = t;
-                String message = throwable.getMessage();
-                CfLog.e("onError message =  " + message);
-                AwardsRecordVo awardrecordVo = new AwardsRecordVo();
-                //链接超时
-                awardrecordVo.networkStatus = 1; //链接超时
-                awardrecordVoMutableLiveData.setValue(awardrecordVo);
-
-            }
-
-            @Override
-            public void onFail(BusinessException t) {
-                // super.onFail(t);
-                String message = t.message;
-                CfLog.e("onError message =  " + message);
-                AwardsRecordVo awardrecordVo = new AwardsRecordVo();
-                //链接超时
-                awardrecordVo.networkStatus = 1; //链接超时
-                awardrecordVoMutableLiveData.setValue(awardrecordVo);
-            }
-
-        });
-        addSubscribe(disposable);
-
-    }
-
 
     //接入提款新接口
 
@@ -778,12 +521,8 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().postWithdrawalSubmit(map).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<WithdrawalSubmitVo>() {
             @Override
             public void onResult(WithdrawalSubmitVo vo, BusinessException exception) {
-                if (vo == null) {
-                    onFail(exception);
-                    return;
-                }
                 CfLog.e("withdrawalInfoVoMutableLiveData  vo .getStatus = " + vo);
-                submitVoMutableLiveData.setValue(vo);
+                submitVoMutableLiveData.setValue(exception.message);
             }
 
             //增加网络异常抓取

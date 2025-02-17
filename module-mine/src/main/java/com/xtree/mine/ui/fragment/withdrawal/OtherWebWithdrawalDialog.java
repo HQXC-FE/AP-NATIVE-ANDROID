@@ -146,48 +146,6 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
         viewModel = new ChooseWithdrawViewModel((Application) Utils.getContext(), Injection.provideHomeRepository());
     }
 
-    private void initViewObservable() {
-
-//        viewModel.otherWebWithdrawVoMutableLiveData.observe(owner, vo -> {
-//            dismissLoading();
-//            otherWebWithdrawVo = vo;
-//            if (otherWebWithdrawVo.channel_list != null && !otherWebWithdrawVo.channel_list.isEmpty()) {
-//
-//                if (TextUtils.equals("1", otherWebWithdrawVo.channel_list.get(0).thiriframe_status)
-//                        && !TextUtils.isEmpty(otherWebWithdrawVo.channel_list.get(0).thiriframe_url)) {
-//                    refreshSetUI();
-//                } else if (otherWebWithdrawVo.channel_list.get(0).thiriframe_msg != null
-//                        && !TextUtils.isEmpty(otherWebWithdrawVo.channel_list.get(0).thiriframe_msg)) {
-//                    //异常状态
-//                    binding.maskH5View.setVisibility(View.VISIBLE);
-//                    binding.nsH5View.setVisibility(View.GONE);
-//                    dismissLoading();
-//                    showErrorByChannel(otherWebWithdrawVo.channel_list.get(0).thiriframe_msg);
-//                }
-//            } else if (!TextUtils.isEmpty(otherWebWithdrawVo.message) && TextUtils.equals(getContext().getString(R.string.txt_no_withdrawals_available_tip), otherWebWithdrawVo.message)) {
-//                refreshErrByNumber(otherWebWithdrawVo.message);
-//            } else {
-//                showErrorMessage(otherWebWithdrawVo.message);
-//            }
-//
-//        });
-
-    }
-
-    /**
-     * 刷新显示没有提款次数
-     */
-    private void refreshErrByNumber(String message) {
-
-        binding.llVirtualTop.setVisibility(View.GONE);
-        binding.llShowChooseCard.setVisibility(View.GONE);
-        binding.llVirtualUsdtSelector.setVisibility(View.GONE);
-        binding.nsH5View.setVisibility(View.GONE);
-        binding.maskH5View.setVisibility(View.GONE);
-        binding.llBankWithdrawalNumberError.setVisibility(View.VISIBLE);//显示错误信息
-        binding.tvShowNumberErrorMessage.setText(message);
-
-    }
 
     private void showErrorMessage(final String message) {
         if (message == null || message.isEmpty()) {
@@ -332,80 +290,7 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
                 });
     }
 
-    /**
-     * 刷新初始UI
-     */
-//    private void refreshSetUI() {
-//        if (otherWebWithdrawVo.channel_list.isEmpty() || otherWebWithdrawVo.channel_list == null) {
-//            binding.llShowChooseCard.setVisibility(View.GONE);
-//        } else {
-//            refreshTopUI(otherWebWithdrawVo);
-//            initOtherWebView(otherWebWithdrawVo);
-//        }
-//
-//        //注意：每天限制提款5次，您已提款1次 提款时间为00:01至00:00，您今日剩余提款额度为 199900.00元
-//        final String notice = "<font color=#EE5A5A>注意:</font>";
-//        String times, count, starttime, endtime, rest;
-//        times = "<font color=#EE5A5A>" + otherWebWithdrawVo.times + "</font>";
-//        count = "<font color=#EE5A5A>" + otherWebWithdrawVo.count + "</font>";
-//        starttime = "<font color=#000000>" + otherWebWithdrawVo.wraptime.starttime + "</font>";
-//        endtime = "<font color=#000000>" + otherWebWithdrawVo.wraptime.endtime + "</font>";
-//        rest = StringUtils.formatToSeparate(Float.valueOf(otherWebWithdrawVo.rest));
-//        String testTxt = "<font color=#EE5A5A>" + rest + "</font>";
-//        String format = getContext().getResources().getString(R.string.txt_withdraw_bank_top_tip);
-//        String textSource = String.format(format, notice, times, count, starttime, endtime, testTxt);
-//
-//        binding.tvNotice.setText(HtmlCompat.fromHtml(textSource, HtmlCompat.FROM_HTML_MODE_LEGACY));
-//
-//    }
 
-    private void refreshTopUI(OtherWebWithdrawVo vo) {
-
-        recyclerViewAdapter = new FruitHorOtherRecyclerViewAdapter(vo.channel_list, this);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        binding.rvShowChooseCard.setLayoutManager(layoutManager);
-        binding.rvShowChooseCard.addItemDecoration(new FruitHorRecyclerViewAdapter.SpacesItemDecoration(10));
-        binding.rvShowChooseCard.setAdapter(recyclerViewAdapter);
-        binding.rvShowChooseCard.setItemAnimator(new DefaultItemAnimator());
-    }
-
-    private void requestData() {
-        showMaskLoading();
-        viewModel.getWithdrawOther(checkCode, chooseInfoVo.type);
-    }
-
-    /* 由于权限原因弹窗*/
-    private void showErrorByChannel(final String message) {
-        if (ppwError == null) {
-            final String title = getContext().getString(R.string.txt_kind_tips);
-
-            ppwError = new XPopup.Builder(getContext()).asCustom(new BaseDialog(getContext(), title, message, true, new BaseDialog.ICallBack() {
-                @Override
-                public void onClickLeft() {
-                    ppwError.dismiss();
-                    dismiss();
-                }
-
-                @Override
-                public void onClickRight() {
-                    ppwError.dismiss();
-                    dismiss();
-                }
-            }));
-        }
-        ppwError.show();
-    }
-
-    /*显示銀行卡提款loading */
-    private void showMaskLoading() {
-        if (maskLoadPopView == null) {
-            maskLoadPopView = new XPopup.Builder(getContext()).asCustom(new LoadingDialog(getContext()));
-        }
-
-        maskLoadPopView.show();
-    }
 
     /*关闭loading*/
     private void dismissLoading() {

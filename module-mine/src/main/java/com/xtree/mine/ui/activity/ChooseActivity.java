@@ -23,6 +23,7 @@ import com.xtree.mine.databinding.FragmentChooseWithdrawBinding;
 import com.xtree.mine.ui.fragment.AwardsRecordDialog;
 import com.xtree.mine.ui.fragment.FundPSWVerifyFragment;
 import com.xtree.mine.ui.fragment.FundPassWordFragment;
+import com.xtree.mine.ui.fragment.withdrawal.BankWithdrawalClose;
 import com.xtree.mine.ui.fragment.withdrawal.BankWithdrawalDialog;
 import com.xtree.mine.ui.fragment.withdrawal.ChooseWithdrawalDialog;
 import com.xtree.mine.ui.viewmodel.ChooseWithdrawViewModel;
@@ -162,7 +163,7 @@ public class ChooseActivity extends BaseActivity<FragmentChooseWithdrawBinding, 
                             finish();
                         }
 
-                    }, new BankWithdrawalDialog.BankWithdrawalClose() {
+                    }, new BankWithdrawalClose() {
                         @Override
                         public void closeBankWithdrawal() {
                             CfLog.e("closeDialog  --> closeBankWithdrawal");

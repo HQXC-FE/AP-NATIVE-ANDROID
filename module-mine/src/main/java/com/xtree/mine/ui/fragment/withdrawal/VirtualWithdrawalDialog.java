@@ -7,7 +7,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
@@ -32,12 +31,8 @@ import com.xtree.mine.R;
 import com.xtree.mine.data.Injection;
 import com.xtree.mine.databinding.DialogBankWithdrawalVirtualBinding;
 import com.xtree.mine.ui.viewmodel.ChooseWithdrawViewModel;
-import com.xtree.mine.vo.VirtualCashVo;
-import com.xtree.mine.vo.VirtualConfirmVo;
-import com.xtree.mine.vo.VirtualSecurityVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalInfoVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalListVo;
-import com.xtree.mine.vo.WithdrawVo.WithdrawalSubmitVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalVerifyVo;
 
 import java.text.DecimalFormat;
@@ -66,15 +61,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
     private WithdrawalListVo.WithdrawalItemVo listVo;
     private WithdrawalInfoVo infoVo;
     private WithdrawalVerifyVo verifyVo;
-    private WithdrawalSubmitVo submitVo;
-    private VirtualCashVo.UsdtInfo selectUsdtInfo;//选中的支付
-    private VirtualCashVo virtualCashVo;
-    private VirtualSecurityVo virtualSecurityVo;
-    private VirtualConfirmVo virtualConfirmVo;
-    private BankWithdrawalDialog.BankWithdrawalClose bankWithdrawalClose;
-    private BasePopupView errorPopView;
-    private String userid;
-    private BasePopupView ppwError;//显示异常弹窗
 
     public VirtualWithdrawalDialog(@NonNull Context context) {
         super(context);
@@ -242,17 +228,10 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         });
         //完成提交
         viewModel.submitVoMutableLiveData.observe(owner, vo -> {
-            submitVo = vo;
-            if (submitVo != null) {
-                if (submitVo != null && TextUtils.isEmpty(submitVo.message)) {
-                    refreshSubmitUI(submitVo, null);
-                } else if (!TextUtils.isEmpty(submitVo.message) && TextUtils.equals(getContext().getString(R.string.txt_withdraw_submit_tip), submitVo.message)) {
-                    refreshSubmitUI(submitVo, null);
-                } else if (!TextUtils.isEmpty(submitVo.message) && !TextUtils.equals(getContext().getString(R.string.txt_withdraw_submit_tip), submitVo.message)) {
-                    ToastUtils.showError(submitVo.message);
-                } else {
-                    ToastUtils.showError(getContext().getString(R.string.txt_network_error));
-                }
+            if (!TextUtils.isEmpty(vo)) {
+                refreshSubmitUI(vo);
+            } else {
+                ToastUtils.showError(getContext().getString(R.string.txt_network_error));
             }
 
         });
@@ -270,10 +249,8 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
 
     /**
      * 刷新提款结果页
-     *
-     * @param submitVo
      */
-    private void refreshSubmitUI(final WithdrawalSubmitVo submitVo, final String message) {
+    private void refreshSubmitUI(final String message) {
 
         //刷新顶部进度条颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -293,50 +270,24 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
             dismiss();
         });
 
-        if (submitVo != null) {
-            if (submitVo != null && submitVo.message != null && !TextUtils.isEmpty(submitVo.message)) {
-                if (TextUtils.equals("账户提款申请成功", submitVo.message)) {
-                    binding.ivOverApply.setVisibility(VISIBLE);
-                    binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
-                    binding.tvOverMsg.setVisibility(VISIBLE);
-                    binding.tvOverMsg.setText(submitVo.message);
+        if (TextUtils.equals("账户提款申请成功", message)) {
+            binding.ivOverApply.setVisibility(VISIBLE);
+            binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
+            binding.tvOverMsg.setVisibility(VISIBLE);
+            binding.tvOverMsg.setText(message);
 
-                } else if (TextUtils.equals("请刷新后重试", submitVo.message)) {
-                    binding.tvOverMsg.setVisibility(VISIBLE);
-                    binding.tvOverMsg.setText(submitVo.message);
-                    binding.ivOverApply.setVisibility(VISIBLE);
-                    binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-                } else {
-                    binding.tvOverMsg.setVisibility(VISIBLE);
-                    binding.tvOverMsg.setText(submitVo.message);
-                    binding.ivOverApply.setVisibility(VISIBLE);
-                    binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-                }
-            }
-        } else if (message != null && !TextUtils.isEmpty(message)) {
-            if (TextUtils.equals("账户提款申请成功", message)) {
-                binding.ivOverApply.setVisibility(VISIBLE);
-                binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
-                binding.tvOverMsg.setVisibility(VISIBLE);
-                if (TextUtils.isEmpty(message)) {
-                    binding.tvOverMsg.setText(message);
-                }
-            } else if (TextUtils.equals("请刷新后重试", message)) {
-                binding.tvOverMsg.setVisibility(VISIBLE);
-                if (TextUtils.isEmpty(message)) {
-                    binding.tvOverMsg.setText(message);
-                }
-                binding.ivOverApply.setVisibility(VISIBLE);
-                binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-            } else {
-                binding.tvOverMsg.setVisibility(VISIBLE);
-                if (TextUtils.isEmpty(message)) {
-                    binding.tvOverMsg.setText(message);
-                }
-                binding.ivOverApply.setVisibility(VISIBLE);
-                binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-            }
+        } else if (TextUtils.equals("请刷新后重试", message)) {
+            binding.tvOverMsg.setVisibility(VISIBLE);
+            binding.tvOverMsg.setText(message);
+            binding.ivOverApply.setVisibility(VISIBLE);
+            binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
+        } else {
+            binding.tvOverMsg.setVisibility(VISIBLE);
+            binding.tvOverMsg.setText(message);
+            binding.ivOverApply.setVisibility(VISIBLE);
+            binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
         }
+
 
     }
 
@@ -470,40 +421,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         if (imm.isActive()) {
             imm.hideSoftInputFromWindow(this.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
-    }
-
-    /**
-     * 刷新完成申请UI
-     */
-    private void refreshConfirmUI() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.clr_choose_20));
-        }
-        binding.llVirtualConfirmView.setVisibility(View.GONE);
-        binding.llOverApply.setVisibility(View.VISIBLE);
-        if (virtualConfirmVo.msg_detail != null) {
-            //msg_type 2的状态提款成功
-            if (virtualConfirmVo.msg_detail.equals("账户提款申请成功") && virtualConfirmVo.msg_type.equals("2")) {
-                binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
-            } else if (virtualConfirmVo.msg_detail.equals("请刷新后重试")) {
-                binding.tvOverMsg.setText("账户提款申请失败");
-                binding.tvOverDetail.setText(virtualConfirmVo.msg_detail);
-                binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-            } else {
-                binding.tvOverMsg.setText("账户提款申请失败");
-                binding.tvOverDetail.setText(virtualConfirmVo.msg_detail);
-                binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
-            }
-        }
-
-        //继续提现
-        binding.ivContinueConfirmNext.setOnClickListener(v -> {
-            dismiss();
-        });
-        //关闭
-        binding.ivContinueConfirmPrevious.setOnClickListener(v -> {
-            dismiss();
-        });
     }
 
     /**
@@ -677,32 +594,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         map.put("nonce", UuidUtil.getID24());
         CfLog.e("requestVerify -->" + map);
         viewModel.postWithdrawalVerify(map);
-    }
-
-    /**
-     * 设置提款 完成申请
-     */
-    private void requestConfirmVirtual(VirtualSecurityVo vo) {
-        LoadingDialog.show(getContext());
-        HashMap<String, String> map = new HashMap<>();
-
-        map.put("controller", "security");
-        map.put("action", "platwithdraw");
-        map.put("flag", "confirm");
-        map.put("cardid", "");
-        map.put("check", vo.check);
-        map.put("handing_fee", vo.datas.handing_fee);
-        map.put("money", vo.datas.money);
-        map.put("nonce", UuidUtil.getID24());
-        map.put("realCount", "");
-        map.put("usdtType", vo.drawal_type);
-        map.put("usdt_type", vo.usdt_type);
-        map.put("usdtid", userid);//选中的提款地址
-
-        CfLog.i("requestConfirmVirtual -->" + map);
-
-        viewModel.postConfirmWithdrawVirtualMoYu(map);
-
     }
 
 }
