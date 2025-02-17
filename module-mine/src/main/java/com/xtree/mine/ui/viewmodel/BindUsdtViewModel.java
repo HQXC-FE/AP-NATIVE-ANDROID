@@ -13,6 +13,7 @@ import com.xtree.base.vo.ProfileVo;
 import com.xtree.mine.data.MineRepository;
 import com.xtree.mine.vo.UsdtVo;
 import com.xtree.mine.vo.UserBindBaseVo;
+import com.xtree.mine.vo.UserFirstBindUSDTVo;
 import com.xtree.mine.vo.UserUsdtConfirmVo;
 
 import java.util.HashMap;
@@ -40,6 +41,8 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
     public SingleLiveData<Boolean> liveDataVerify = new SingleLiveData<>(); // 验证账户
     public MutableLiveData<ProfileVo> liveDataProfile = new MutableLiveData<>(); // 个人信息
     public String key = ""; // usdt
+
+    public SingleLiveData<UserFirstBindUSDTVo> firstBindUSDTVoSingleLiveData = new SingleLiveData<>(); // 绑定卡结果
 
     public BindUsdtViewModel(@NonNull Application application, MineRepository model) {
         super(application, model);
@@ -167,6 +170,51 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
     public void doBindCardBySubmit(HashMap queryMap, HashMap map) {
 
         Disposable disposable = (Disposable) model.getApiService().doBindUsdt(key, queryMap, map)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<UserUsdtConfirmVo>() {
+                    @Override
+                    public void onResult(UserUsdtConfirmVo vo) {
+                        CfLog.d("******");
+                        if (vo.msg_type == 1 || vo.msg_type == 2) {
+                            ToastUtils.showLong(vo.message); // 异常
+                        } else if (vo.msg_type == 3) {
+                            ToastUtils.showLong(vo.message); // "绑定成功！温馨提示：新绑定卡需0小时后才能提现"
+                            liveDataBindCardResult.setValue(vo);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        super.onError(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+
+    public void doFirstBindCardBySubmit(HashMap map) {
+
+        Disposable disposable = (Disposable) model.getApiService().doFirstBindUsdt( map)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<UserFirstBindUSDTVo>() {
+                    @Override
+                    public void onResult(UserFirstBindUSDTVo vo) {
+                        firstBindUSDTVoSingleLiveData.setValue(vo);
+                    }
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        super.onError(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+    public void doFirstBindUsdtSubmit(HashMap map) {
+
+        Disposable disposable = (Disposable) model.getApiService().doFirstBindUsdtSubmit( map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<UserUsdtConfirmVo>() {

@@ -564,5 +564,5 @@
     <color name="clr_txt_fastest_high">#EE1A34</color>
     <color name="clr_txt_fastest_medium">#FFE145</color>
     <color name="clr_txt_fastest_low">#51FF6D</color>
-
+    <color name="color_line_bind_usdt_stroke">#F7DFD1</color>
 </resources>
