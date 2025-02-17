@@ -489,6 +489,9 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
                 //设置默认选中的提币地址
                 selectorBankInfo = bankInfoList.get(0);
                 binding.tvBindAddress.setText(showAddress);
+            } else {
+                selectorBankInfo = null;
+                binding.tvBindAddress.setText(" ");
             }
         } else {
             //收款地址 设置默认数据
@@ -697,7 +700,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
                 ToastUtils.showLong(R.string.txt_input_amount_tip);
             } else if (Double.valueOf(binding.etInputMoney.getText().toString()) < Double.valueOf(infoVo.min_money)) {
                 ToastUtils.showLong(R.string.txt_input_amount_tip);
-            } else if (TextUtils.isEmpty(binding.tvBindAddress.getText().toString())) {
+            } else if (TextUtils.isEmpty(binding.tvBindAddress.getText().toString().trim())) {
                 ToastUtils.showLong(R.string.txt_select_withdrawal_address);
             } else {
                 hideKeyBoard();
@@ -714,9 +717,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
      * 设置提款 请求 下一步
      */
     private void requestVerify(final String money, final WithdrawalInfoVo.UserBankInfo selectorBankInfo) {
-        if (selectorBankInfo == null) {
-            return;
-        }
         LoadingDialog.show(getContext());
         HashMap<String, Object> map = new HashMap<>();
         map.put("bank_id", selectorBankInfo.id);
