@@ -446,4 +446,7 @@
         \n\n 9. 贵使用者新绑定银行卡，为了账户资金安全，需等待6小时后才可提现。</string>
 
     <string name="customer_service_text_hint">遇到问题?点击反馈问题</string>
+    <string name="txt_add_virtual_account">添加虚拟账户</string>
+    <string name="txt_bind_wallet_address">为了您的资金能够迅速到账, 请确保填写的钱包地址无误</string>
 </resources>
+

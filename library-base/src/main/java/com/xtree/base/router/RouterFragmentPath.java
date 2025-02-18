@@ -54,6 +54,7 @@ public class RouterFragmentPath {
         public static final String PAGER_BIND_USDT = MINE + "/BindUsdtList";
         public static final String PAGER_BIND_USDT_ADD = MINE + "/BindUsdtAdd";
         public static final String PAGER_BIND_USDT_REBIND = MINE + "/BindUsdtRebind";
+        public static final String PAGER_BIND_USDT_ADD_FIRST = MINE + "/BindUsdtAddFirst";
 
         public static final String PAGER_ACCOUNT_CHANGE = MINE + "/AccountChange"; //账变记录
         public static final String PAGER_PROFIT_LOSS = MINE + "/ProfitLoss"; // 盈亏报表
