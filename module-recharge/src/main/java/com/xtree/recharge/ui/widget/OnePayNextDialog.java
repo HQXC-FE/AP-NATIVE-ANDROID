@@ -2,11 +2,12 @@ package com.xtree.recharge.ui.widget;
 
 import android.content.Context;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.lxj.xpopup.core.BottomPopupView;
@@ -64,6 +65,9 @@ public class OnePayNextDialog extends BottomPopupView {
             }
         });
         binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
+        // 文字大小可随长度而改变,解决长度太长显示不全的问题(HQAP2-3310)
+        TextViewCompat.setAutoSizeTextTypeWithDefaults(binding.tvwAmountHint, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+        TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(binding.tvwAmountHint, 12, 14, 1, TypedValue.COMPLEX_UNIT_SP);
         binding.edtAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -78,21 +82,8 @@ public class OnePayNextDialog extends BottomPopupView {
                 } else {
                     binding.tvwRealAmount.setText(s);
                 }
-                if (binding.tvwRealAmount.length() == 0) {
-                    binding.tvwAmountHint.setVisibility(View.VISIBLE);
-                } else {
-                    binding.tvwAmountHint.setVisibility(View.INVISIBLE);
-                }
-
 
                 String amount = s.toString();
-
-
-                if (!TextUtils.isEmpty(amount) && (Double.parseDouble(amount) < loadMin || Double.parseDouble(amount) > loadMax)) {
-                    binding.tvwTipAmount.setVisibility(View.VISIBLE);
-                } else {
-                    binding.tvwTipAmount.setVisibility(View.GONE);
-                }
 
                 if (!amount.equals(mAmountAdapter.getAmount())) {
                     mAmountAdapter.setAmount(amount);
@@ -121,6 +112,7 @@ public class OnePayNextDialog extends BottomPopupView {
         binding.rcvAmount.setAdapter(mAmountAdapter);
         binding.rcvAmount.setLayoutManager(new GridLayoutManager(getContext(), 4));
         binding.tvwTipBottom.setText(kindTips);
+        setNextButton();
 
     }
 
@@ -128,22 +120,34 @@ public class OnePayNextDialog extends BottomPopupView {
 
         binding.btnNext.setEnabled(false); // 默认禁用
 
+        binding.tvwTipAmount.setText(getContext().getString(R.string.txt_enter_correct_amount, "" + loadMin, "" + loadMax));
+        binding.tvwTipAmount.setVisibility(View.GONE);
 
-        String txt = binding.tvwRealAmount.getText().toString();
+        String txt = binding.tvwRealAmount.getText().toString().trim();
         double amount = Double.parseDouble(0 + txt);
-        if (amount < loadMin || amount > loadMax) {
-            return;
-        }
 
         if (curRechargeVo.fixedamount_channelshow && curRechargeVo.fixedamount_info.length > 0) {
+            binding.edtAmount.setEnabled(false);
+            binding.tvwAmountHint.setText(R.string.txt_choose_recharge_amount); // 请选择金额
             // 固额 如果输入框的金额不是固额列表中的其中一个
-            if (!txt.isEmpty() && !Arrays.asList(curRechargeVo.fixedamount_info).contains(txt)) {
+            if (amount > 0 && !Arrays.asList(curRechargeVo.fixedamount_info).contains(txt)) {
                 // "充值金额异常,请选择列表中的固定金额！",
+                binding.tvwTipAmount.setText(getContext().getString(R.string.txt_choose_recharge_amount));
+                binding.tvwTipAmount.setVisibility(View.VISIBLE);
+                return;
+            }
+        } else {
+            binding.edtAmount.setEnabled(true);
+            String hint = getContext().getString(R.string.txt_enter_recharge_amount, "" + loadMin, "" + loadMax);
+            binding.tvwAmountHint.setText(hint); // 请输入充值金额(最低%1$s元，最高%2$s元)
+            if (amount > 0 && loadMax != 0 && (amount < loadMin || amount > loadMax)) {
+                binding.tvwTipAmount.setVisibility(View.VISIBLE);
                 return;
             }
         }
 
-        binding.btnNext.setEnabled(true);
+        binding.tvwAmountHint.setVisibility(amount > 0 ? INVISIBLE : VISIBLE);
+        binding.btnNext.setEnabled(amount > 0);
     }
 
     // 定义回调接口
