@@ -59,8 +59,8 @@ android {
                     "http://139.186.137.79:16811;" +
                     "http://124.221.214.240:16811;" +
                     "http://139.186.201.117:16811;" +
-                    "http://43.155.0.147:16811;" +
-                    "http://43.154.246.56:16811;" +
+                    "http://150.109.117.29:16811;" +
+                    "http://43.154.74.20:16811;" +
                     "https://app5.t4v1su.click;"
             resValue "string", "domain_url_list", "https://h51.x9f4ke.click;" +
                     "https://h51.v3t8zx.click;" +
