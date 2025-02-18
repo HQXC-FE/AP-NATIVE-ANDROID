@@ -12,11 +12,11 @@
             android:id="@+id/cl_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
             android:background="@color/clr_awards_bt_end"
+            android:shadowColor="@color/clr_btn_grey01"
             android:shadowDx="0"
             android:shadowDy="-1"
-            android:shadowColor="@color/clr_btn_grey01">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tv_title"
@@ -59,81 +59,100 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/clr_grey_080"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:visibility="invisible"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <EditText
-            android:id="@+id/et_pwd"
-            style="@style/style_edt_pwd"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="16dp"
-            android:hint="请输入用户资金密码"
-            android:maxLength="18"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_title" />
-
-        <CheckBox
-            android:id="@+id/ckb_eye"
-            style="@style/style_cm_ckb_eye"
-            app:layout_constraintBottom_toBottomOf="@+id/et_pwd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/et_pwd" />
-
-        <EditText
-            android:id="@+id/et_new_pwd"
-            style="@style/style_edt_pwd"
-            android:layout_marginTop="20dp"
-            android:hint="请输入新的资金密码，密码长度为6位"
-            android:maxLength="6"
-            app:layout_constraintEnd_toEndOf="@+id/et_pwd"
-            app:layout_constraintStart_toStartOf="@+id/et_pwd"
-            app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
-
-        <CheckBox
-            android:id="@+id/ckb_eye_new"
-            style="@style/style_cm_ckb_eye"
-            app:layout_constraintBottom_toBottomOf="@+id/et_new_pwd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/et_new_pwd" />
-
-        <EditText
-            android:id="@+id/et_again_pwd"
-            style="@style/style_edt_pwd"
-            android:layout_marginTop="20dp"
-            android:hint="请再次输入密码"
-            android:maxLength="6"
-            app:layout_constraintEnd_toEndOf="@+id/et_new_pwd"
-            app:layout_constraintStart_toStartOf="@+id/et_new_pwd"
-            app:layout_constraintTop_toBottomOf="@+id/et_new_pwd" />
-
-        <CheckBox
-            android:id="@+id/ckb_eye_again"
-            style="@style/style_cm_ckb_eye"
-            app:layout_constraintBottom_toBottomOf="@+id/et_again_pwd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/et_again_pwd" />
-
-        <Button
-            android:id="@+id/tvw_confirm"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/bg_btn_selector"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/txt_confirm"
-            android:textColor="@color/clr_text_code_selector"
-            android:textSize="16sp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_again_pwd" />
+            app:layout_constraintTop_toBottomOf="@+id/cl_title">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="16dp">
+
+                <EditText
+                    android:id="@+id/et_pwd"
+                    style="@style/style_edt_pwd"
+                    android:layout_width="match_parent"
+                    android:hint="请输入用户资金密码"
+                    android:maxLength="18" />
+
+                <CheckBox
+                    android:id="@+id/ckb_eye"
+                    style="@style/style_cm_ckb_eye"
+                    android:layout_gravity="right|center_vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/et_pwd"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/et_pwd" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp">
+
+                <EditText
+                    android:id="@+id/et_new_pwd"
+                    style="@style/style_edt_pwd"
+                    android:layout_width="match_parent"
+                    android:hint="请输入新的资金密码，密码长度为6位"
+                    android:maxLength="6" />
+
+                <CheckBox
+                    android:id="@+id/ckb_eye_new"
+                    style="@style/style_cm_ckb_eye"
+                    android:layout_gravity="right|center_vertical" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp">
+
+                <EditText
+                    android:id="@+id/et_again_pwd"
+                    style="@style/style_edt_pwd"
+                    android:layout_width="match_parent"
+                    android:hint="请再次输入密码"
+                    android:maxLength="6" />
+
+                <CheckBox
+                    android:id="@+id/ckb_eye_again"
+                    style="@style/style_cm_ckb_eye"
+                    android:layout_gravity="right|center_vertical" />
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/tvw_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/bg_btn_selector"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/txt_confirm"
+                android:textColor="@color/clr_text_code_selector"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
