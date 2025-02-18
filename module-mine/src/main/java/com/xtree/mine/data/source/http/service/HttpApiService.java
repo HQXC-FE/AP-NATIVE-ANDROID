@@ -54,6 +54,7 @@ import com.xtree.mine.vo.UsdtVo;
 import com.xtree.mine.vo.UserBankConfirmVo;
 import com.xtree.mine.vo.UserBankProvinceVo;
 import com.xtree.mine.vo.UserBindBaseVo;
+import com.xtree.mine.vo.UserFirstBindUSDTVo;
 import com.xtree.mine.vo.UserUsdtConfirmVo;
 import com.xtree.mine.vo.VerificationCodeVo;
 import com.xtree.mine.vo.VerifyVo;
@@ -771,4 +772,22 @@ public interface HttpApiService {
      */
     @GET("/api/report/bounsreport?")
     Flowable<BaseResponse<BounsReportVo>> getBonusReport(@QueryMap Map<String, String> map);
+
+    /**?
+     *一种是账户未绑定银行卡：输入资金密码后，为绑定USDT界面
+     * 一种是账户已经绑定银行卡，输入资金密码后，输入上次绑定银行卡界面
+     * client=m&controller=security&action=addusdt
+     */
+    @POST("/user/?controller=security&action=adduserusdt&client=m")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<UserFirstBindUSDTVo> doFirstBindUsdt(@Body Map<String, String> map);
+
+    /**
+     * 绑定提交
+     * @param map
+     * @return
+     */
+    @POST("/user/?controller=security&action=adduserusdt&client=m")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<UserUsdtConfirmVo> doFirstBindUsdtSubmit( @Body Map<String, String> map);
 }
