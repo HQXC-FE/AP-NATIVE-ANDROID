@@ -429,7 +429,7 @@ public class VerifyViewModel extends BaseViewModel<MineRepository> {
 
                 String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
                 ProfileVo mProfileVo = new Gson().fromJson(json, ProfileVo.class);
-                if (!mProfileVo.is_binding_usdt )
+                if (!mProfileVo.is_binding_usdt && !mProfileVo.is_binding_card )
                 {
                     Bundle bundle = new Bundle();
                     bundle.putString("check",vo.tokenSign);
