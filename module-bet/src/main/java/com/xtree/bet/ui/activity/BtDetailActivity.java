@@ -221,7 +221,6 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    System.out.println("================ BtDetailActivity sportsTimerDisposable ========================");
                     secoend = secoend+1;
                     updateMatchTime(mMatch);
                 });
@@ -296,7 +295,6 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         String videoUrl = "";
         if (!mMatch.getVideoUrls().isEmpty()) {
             videoUrl = mMatch.getVideoUrls().get(0);
-            System.out.println("================= getGSYVideoOptionBuilder videoUrl =================="+videoUrl);
         }
         String score = "";
         List<Integer> scoreList = mMatch.getScore(Constants.getScoreType());
@@ -588,12 +586,10 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                     int currentTime = match.getTimeS() + secoend;
                     binding.tvTime.setText(match.getStage() + " " + formatTime(currentTime));
                     binding.tvTimeTop.setText(match.getStage() + " " + formatTime(currentTime));
-                    System.out.println("================ 足球 BtDetailActivity formatTime ===================="+formatTime(currentTime));
                 }else if(match.getSportId().equals("2")){ //篮球
                     int currentTime = match.getTimeS() - secoend;
                     binding.tvTime.setText(match.getStage() + " " + formatTime(currentTime));
                     binding.tvTimeTop.setText(match.getStage() + " " + formatTime(currentTime));
-                    System.out.println("================ 篮球 BtDetailActivity formatTime ===================="+formatTime(currentTime));
                 }else{ //其它
                     binding.tvTime.setText(match.getStage() + " " + match.getTime());
                     binding.tvTimeTop.setText(match.getStage() + " " + match.getTime());

@@ -595,7 +595,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     }
 
     public void resetTime() {
-        System.out.println("===================== LeagueAdapter resetTime =======================");
         secoend = 0;
     }
 

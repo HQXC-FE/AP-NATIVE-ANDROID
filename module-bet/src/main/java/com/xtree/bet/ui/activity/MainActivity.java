@@ -473,7 +473,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 getMatchData(sportId, mOrderBy, mLeagueIdList, null,
                         playMethodType, searchDatePos, false, true);
                 if ((sportId == null || TextUtils.equals("1111", sportId)) && (playMethodPos == 0 || playMethodPos == 3)) {
-                    System.out.println("############## tabSportAdapter sportId ##############"+sportId);
                     viewModel.getHotMatchCount(playMethodType, viewModel.hotLeagueList);
                 }
             }

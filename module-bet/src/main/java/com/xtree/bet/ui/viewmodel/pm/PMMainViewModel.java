@@ -436,7 +436,6 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
         }
         map.put("sys", "7");
-        System.out.println("############ PM statistical playMethodType ############" + playMethodType);
         Disposable disposable = (Disposable) model.getPMApiService().initPB(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
