@@ -400,5 +400,6 @@
     <string name="txt_update_bottom_error_tip">如更新失败请打开浏览器下载安装</string>
 
     <string name="txt_security_google_auth_warning">为了您的资金安全请务必设置谷歌验证码</string>
-
+    <string name="txt_add_virtual_account">添加虚拟账户</string>
+    <string name="txt_bind_wallet_address">为了您的资金能够迅速到账, 请确保填写的钱包地址无误</string>
 </resources>

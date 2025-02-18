@@ -1,9 +1,9 @@
 package com.xtree.mine.vo;
 
-public class UserUsdtConfirmVo extends UserBindBaseVo {
+public class UserFirstBindUSDTVo extends UserBindBaseVo {
 
     public String usdt_card; // 0xERC666dflSLK6K2374klks66fk32497j929hr983
-    public String usdt_type; // ERC20_USDT
+    public String  usdt_type; // ERC20_USDT
     public String flag; // confirm
 
     //public String ur_here; // "重新绑定检查", 接口-1
@@ -20,6 +20,23 @@ public class UserUsdtConfirmVo extends UserBindBaseVo {
     //public String checkcode; // "e9df4d737157bafa143e616a6505959f",
     //public String checkcode_timeout; // null,
     //public String usdt_type; // ["ERC20_USDT","TRC20_USDT"],
+    public String checkcode ;
+
+    @Override
+    public String toString() {
+        return "UserFirstBindUSDTVo{" +
+                "usdt_card='" + usdt_card + '\'' +
+                ", usdt_type='" + usdt_type + '\'' +
+                ", flag='" + flag + '\'' +
+                ", account='" + account + '\'' +
+                ", id='" + id + '\'' +
+                ", action='" + action + '\'' +
+                ", oldid='" + oldid + '\'' +
+                ", checkcode='" + checkcode + '\'' +
+                ", msg_type='" + msg_type + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 
 
 
