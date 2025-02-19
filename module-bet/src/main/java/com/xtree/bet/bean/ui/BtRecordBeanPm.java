@@ -3,8 +3,6 @@ package com.xtree.bet.bean.ui;
 import android.os.Parcel;
 
 import com.xtree.base.utils.TimeUtils;
-import com.xtree.bet.bean.response.fb.BtResultInfo;
-import com.xtree.bet.bean.response.fb.BtResultOptionInfo;
 import com.xtree.bet.bean.response.pm.BtRecordRsp;
 
 import java.util.ArrayList;
@@ -100,7 +98,8 @@ public class BtRecordBeanPm implements BtResult {
     @Override
     public List<BtResultOption> getBetResultOption() {
         List<BtResultOption> resultOptionList = new ArrayList<>();
-        for(BtRecordRsp.RecordsBean.DetailBean detailBean : recordsBean.detailList){
+        for (BtRecordRsp.RecordsBean.DetailBean detailBean : recordsBean.detailList) {
+            detailBean.preBetAmount = recordsBean.preBetAmount;
             resultOptionList.add(new BtResultOptionPm(detailBean));
         }
         return resultOptionList;

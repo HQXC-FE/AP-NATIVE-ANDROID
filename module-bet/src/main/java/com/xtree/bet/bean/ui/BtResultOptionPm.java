@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.xtree.bet.R;
-import com.xtree.bet.bean.response.fb.BtResultOptionInfo;
 import com.xtree.bet.bean.response.pm.BtRecordRsp;
 
 import java.util.HashMap;
@@ -26,7 +25,7 @@ public class BtResultOptionPm implements BtResultOption {
         btResultMap.put("4", "赢");
         btResultMap.put("5", "赢半");
         btResultMap.put("6", "输半");
-        btResultMap.put("7", "玩法取消");
+        btResultMap.put("7", "赛事取消");
         btResultMap.put("8", "赛事延期");
         btResultMap.put("11", "比赛延迟");
         btResultMap.put("12", "比赛中断");
@@ -56,7 +55,7 @@ public class BtResultOptionPm implements BtResultOption {
 
     @Override
     public long getMatchTime() {
-        if(detailBean == null || detailBean.beginTime == null){
+        if (detailBean == null || detailBean.beginTime == null) {
             return 0;
         }
         return Long.valueOf(detailBean.beginTime);
@@ -74,7 +73,7 @@ public class BtResultOptionPm implements BtResultOption {
 
     @Override
     public String getScore() {
-        if(detailBean == null || TextUtils.isEmpty(detailBean.scoreBenchmark)){
+        if (detailBean == null || TextUtils.isEmpty(detailBean.scoreBenchmark)) {
             return "";
         }
         return detailBean.scoreBenchmark;
@@ -87,8 +86,13 @@ public class BtResultOptionPm implements BtResultOption {
 
     @Override
     public String getTeamName() {
+        //未结算注单显示空白
+        if (detailBean.betStatus == 0) {
+            return "";
+        }
         return detailBean.matchInfo;
     }
+
     @Override
     public String getBtResult() {
         return btResultMap.get(String.valueOf(detailBean.betResult));
@@ -96,10 +100,41 @@ public class BtResultOptionPm implements BtResultOption {
 
     @Override
     public String getFullScore() {
-        if(detailBean == null || TextUtils.isEmpty(detailBean.settleScore)){
+        if (detailBean == null) {
             return "";
         }
-        return detailBean.settleScore;
+
+        //未结算注单和结算异常比分为空
+        if (detailBean.betStatus == 0 || detailBean.betStatus == 2) {
+            return "";
+        }
+        //5387单子修改  PM注单记录页展示比分
+        if (detailBean.matchType == 2) {//滚球盘赛事
+            if (detailBean.betStatus == 1) {
+                //2.2.提早结算注单为基准比分   提前结算的，拉单接口会返回提前结算金额
+                if (detailBean.preBetAmount != null && detailBean.preBetAmount != 0.0) {
+                    return detailBean.scoreBenchmark;//基准比分
+                }
+            } else if (detailBean.betStatus == 3) {
+                //2.4.滚球时的取消注单为
+                //2.4.1.有比分的状况：基准比分
+                //2.4.2.无比分的状况：空白文案
+                if (!TextUtils.isEmpty(detailBean.scoreBenchmark)) {
+                    return detailBean.scoreBenchmark;
+                } else {
+                    return "";
+                }
+            }
+        }
+        //3.取消赛事／取消盘口／取消投注项：【取消赛事】
+        if (detailBean.cancelType == 1) {
+            return "【取消赛事】";
+        }
+
+        if (TextUtils.isEmpty(detailBean.settleScore)) {
+            return "";
+        }
+        return detailBean.settleScore;//结算比分
     }
 
     @Override
