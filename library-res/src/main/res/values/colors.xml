@@ -615,5 +615,5 @@
     <color name="clr_bg_bet_detail_light">#FFABAE</color>
     <color name="clr_bg_bet_detail_deep">#B00000</color>
     <color name="clr_feed_back_tip">#592424</color>
-
+    <color name="color_line_bind_usdt_stroke">#F7DFD1</color>
 </resources>
