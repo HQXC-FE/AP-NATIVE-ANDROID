@@ -34,7 +34,9 @@ import com.xtree.live.message.MessageTokenError;
 import com.xtree.live.message.MessageUnread;
 import com.xtree.live.message.MessageVote;
 import com.xtree.live.message.RoomType;
+import com.xtree.live.uitl.UnreadUtils;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -42,9 +44,13 @@ public class DispatchMessageListener {
     public static final String TAG = "DispatchMessageListener";
     private final Set<MessageListener> messageListeners;
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public DispatchMessageListener() {
-        messageListeners = new ArraySet<>();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            messageListeners = new ArraySet<>();
+        } else {
+            messageListeners = new HashSet<>();
+        }
+
     }
 
     public void receiveMessage(String action, JsonObject data) throws JsonSyntaxException {

@@ -8,15 +8,18 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.xtree.live.message.MessageMsg;
-import com.xtree.live.message.RoomType;
-import com.xtree.live.socket.ChatClient;
 import androidx.annotation.NonNull;
 
 import com.google.gson.JsonObject;
 import com.shuyu.gsyvideoplayer.utils.NetworkUtils;
+import com.xtree.base.utils.DomainUtil;
+import com.xtree.live.BuildConfig;
+import com.xtree.live.LiveConfig;
 import com.xtree.live.chat.InRoomMessage;
 import com.xtree.live.chat.LeaveRoomMessage;
+import com.xtree.live.message.MessageMsg;
+import com.xtree.live.message.RoomType;
+import com.xtree.live.uitl.JsonUtil;
 
 import java.util.Objects;
 
@@ -54,7 +57,7 @@ public class ChatWebSocketManager {
 
     private volatile String mVid = "";
     private volatile @RoomType int mType;
-    private volatile String userToken = AppConfig.getAppToken();
+    private volatile String userToken = LiveConfig.getAppToken();
 
 
     //正在连接
@@ -70,38 +73,41 @@ public class ChatWebSocketManager {
 
     public ChatWebSocketManager(int connectionType) {
         this.mConnectionType = connectionType;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            mDispatchMessageListener = new DispatchMessageListener();
+//        }
         mDispatchMessageListener = new DispatchMessageListener();
         HandlerThread handlerThread = new HandlerThread("WebSocketThread");
         handlerThread.start();
         mHandler = new ChatWebSocketHandler(handlerThread.getLooper(), new ChatWebSocketListener() {
             @Override
             public void onReconnection() {
-                LogUtil.d(TAG, "onReconnection");
+                Log.d(TAG, "onReconnection");
                 getChatTokenDelay();
             }
 
             @Override
             public void onOpen(Message message) {
-                LogUtil.d(TAG, "onOpen");
+                Log.d(TAG, "onOpen");
                 mPastAttemptCount = 1;
                 mIsConnecting = false;
                 try {
                     JsonObject json = (JsonObject) message.obj;
                     mDispatchMessageListener.receiveMessage("open", json);
                 } catch (Throwable e) {
-                    CrashReport.postCatchedException(e);
+
                 }
             }
 
             @Override
             public void onMessage(Message message) {
-                Log.d("onMessage", "onMessage: 收到的消息："+message.toString());
+                Log.d("onMessage", "onMessage: 收到的消息：" + message.toString());
                 try {
                     JsonObject json = (JsonObject) message.obj;
                     String action = JsonUtil.getString(json, "action");
                     mDispatchMessageListener.receiveMessage(action, json);
                 } catch (Throwable e) {
-                    CrashReport.postCatchedException(e);
+
                 }
             }
         });
@@ -115,40 +121,42 @@ public class ChatWebSocketManager {
         mDispatchMessageListener.unregisterMessageListener(listener);
     }
 
-    public void pushMessage(Message message) {
+    public void pushMessage(com.xtree.live.message.Message message) {
         mDispatchMessageListener.receiveMessage(message);
     }
 
     private boolean initialize(@NonNull String token) {
-        LogUtil.d(TAG, "method:initialize  threadName:" + Thread.currentThread().getName());
+        Log.d(TAG, "method:initialize  threadName:" + Thread.currentThread().getName());
         try {
             if (mChatClient != null) mChatClient.closeSession();
         } catch (Throwable e) {
-            LogUtil.d(TAG, e.getMessage());
+            Log.d(TAG, e.getMessage());
         }
 
         try {
-            Uri uri = ApiClient.parseDomain();
+            String baseUrl = DomainUtil.getApiUrl();
+            Uri uri = Uri.parse(baseUrl);
             String scheme = "ws";
             if ("https".equals(uri.getScheme())) scheme = "wss";
-            mChatClient = ChatClientFactory.createClient(mConnectionType, scheme, uri.getHost(), token, mHandler);
+//            mChatClient = ChatClientFactory.createClient(mConnectionType, scheme, uri.getHost(), token, mHandler);
             mChatClient.connectSession();
             return true;
         } catch (Exception e) {
-            CrashReport.postCatchedException(e);
+
             throw new RuntimeException(e);
         }
     }
 
     private int mPastAttemptCount = 1;
+
     private void getChatTokenDelay() {
-        LogUtil.d(TAG, "getChatTokenDelay");
-        long backoff =  BackoffUtil.exponentialBackoff(mPastAttemptCount++, 30000);
-        LogUtil.d(TAG, "backoff :" + backoff);
-        //重试
-        if(!mHandler.hasMessages(FLAG_GET_TOKEN)){
-            mHandler.sendMessageDelayed(getPostMessage(mHandler, runnable), backoff);
-        }
+        Log.d(TAG, "getChatTokenDelay");
+//        long backoff = BackoffUtil.exponentialBackoff(mPastAttemptCount++, 30000);
+//        Log.d(TAG, "backoff :" + backoff);
+//        //重试
+//        if (!mHandler.hasMessages(FLAG_GET_TOKEN)) {
+//            mHandler.sendMessageDelayed(getPostMessage(mHandler, runnable), backoff);
+//        }
     }
 
     private static Message getPostMessage(Handler handler, Runnable r) {
@@ -166,48 +174,50 @@ public class ChatWebSocketManager {
             return;
         }
         try {
-            LogUtil.d(TAG, "refresh token");
+            Log.d(TAG, "refresh token");
             refreshToken();
-            String newUserToken = AppConfig.getAppToken();
-            LogUtil.d(TAG, " oldUserToken:  " + userToken);
-            LogUtil.d(TAG, " newUserToken:  " + newUserToken);
-            if(initialize(newUserToken)){
+            String newUserToken = LiveConfig.getAppToken();
+            Log.d(TAG, " oldUserToken:  " + userToken);
+            Log.d(TAG, " newUserToken:  " + newUserToken);
+            if (initialize(newUserToken)) {
                 userToken = newUserToken;
-                LogUtil.d(TAG, " initialize success");
+                Log.d(TAG, " initialize success");
                 return;
-            }else {
-                LogUtil.d(TAG, " initialize failure");
+            } else {
+                Log.d(TAG, " initialize failure");
             }
         } catch (Throwable t) {
-            if(AppManager.debuggable())//noinspection CallToPrintStackTrace
+            if (BuildConfig.DEBUG)//noinspection CallToPrintStackTrace
                 t.printStackTrace();
-            CrashReport.postCatchedException(t);
+
         }
         getChatTokenDelay();
     }
 
-    /** @noinspection ResultOfMethodCallIgnored*/
+    /**
+     * @noinspection ResultOfMethodCallIgnored
+     */
     @SuppressLint("CheckResult")
     private static void refreshToken() {
-        ApiClient.apiStore().refreshToken(AppConfig.getChannel()).blockingGet();
+//        ApiClient.apiStore().refreshToken(AppConfig.getChannel()).blockingGet();
     }
 
     public void start() {
-        LogUtil.d(TAG, "start");
-        //切换用户
-        if (!userToken.equals(AppConfig.getAppToken())) {
-            if (AppManager.debuggable()) {
-                LogUtil.d(TAG, "切换用户");
-                LogUtil.d(TAG, "userToken:" + userToken);
-                LogUtil.d(TAG, "AppConfig.getToken():" + AppConfig.getAppToken());
-            }
-            userToken = AppConfig.getAppToken();
-            mIsConnecting = true;
-            mHandler.sendMessage(getPostMessage(mHandler, runnable));
-            return;
-        }
+        Log.d(TAG, "start");
+//        //切换用户
+//        if (!userToken.equals(AppConfig.getAppToken())) {
+//            if (BuildConfig.DEBUG) {
+//                Log.d(TAG, "切换用户");
+//                Log.d(TAG, "userToken:" + userToken);
+//                Log.d(TAG, "AppConfig.getToken():" + AppConfig.getAppToken());
+//            }
+//            userToken = AppConfig.getAppToken();
+//            mIsConnecting = true;
+//            mHandler.sendMessage(getPostMessage(mHandler, runnable));
+//            return;
+//        }
         if (mChatClient != null && mChatClient.isConnected()) {
-            LogUtil.d(TAG, "connection is alive, return");
+            Log.d(TAG, "connection is alive, return");
             return;
         }
         if (mIsConnecting) return;
@@ -216,7 +226,7 @@ public class ChatWebSocketManager {
     }
 
     public void stop() {
-        LogUtil.d(TAG, "stop");
+        Log.d(TAG, "stop");
         mIsConnecting = false;
         mHandler.removeCallbacksAndMessages(null);
         mHandler.post(() -> closeSession(mChatClient));
@@ -233,31 +243,31 @@ public class ChatWebSocketManager {
         }
     }
 
-    public void inRoom(String vid){
-        if(TextUtils.isEmpty(vid))return;
-        if(mChatClient == null)return;
-        mHandler.post(()->{
-            if(mChatClient != null && mChatClient.isConnected()){
+    public void inRoom(String vid) {
+        if (TextUtils.isEmpty(vid)) return;
+        if (mChatClient == null) return;
+        mHandler.post(() -> {
+            if (mChatClient != null && mChatClient.isConnected()) {
                 try {
-                    if(AppManager.debuggable())LogUtil.d(TAG, "inRoom vid:"+ vid);
+                    if (BuildConfig.DEBUG) Log.d(TAG, "inRoom vid:" + vid);
                     mChatClient.inRoom(new InRoomMessage(vid));
-                }catch (RuntimeException t){
-                    CrashReport.postCatchedException(t);
+                } catch (RuntimeException t) {
+
                 }
             }
         });
     }
 
-    public void leaveRoom(String vid){
-        if(TextUtils.isEmpty(vid))return;
-        if(mChatClient == null)return;
-        mHandler.post(()->{
-            if(mChatClient != null && mChatClient.isConnected()){
+    public void leaveRoom(String vid) {
+        if (TextUtils.isEmpty(vid)) return;
+        if (mChatClient == null) return;
+        mHandler.post(() -> {
+            if (mChatClient != null && mChatClient.isConnected()) {
                 try {
-                    if(AppManager.debuggable())LogUtil.d(TAG, "leaveRoom vid:"+ vid);
+                    if (BuildConfig.DEBUG) Log.d(TAG, "leaveRoom vid:" + vid);
                     mChatClient.leaveRoom(new LeaveRoomMessage(vid));
-                }catch (Throwable t){
-                    CrashReport.postCatchedException(t);
+                } catch (Throwable t) {
+
                 }
             }
         });

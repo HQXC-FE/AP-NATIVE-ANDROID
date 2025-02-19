@@ -9,4 +9,6 @@ public class SPKey {
     public static final String UID = "uid";
 
     public static final String UNREAD = "unread_list";
+
+    public static final String TOKEN = "live_token";
 }

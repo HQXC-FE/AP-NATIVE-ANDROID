@@ -9,6 +9,7 @@ import com.hjq.gson.factory.GsonFactory;
 import com.xtree.base.utils.SPUtil;
 import com.xtree.live.BuildConfig;
 import com.xtree.live.SPKey;
+import com.xtree.live.message.ChatRoomInfo;
 
 import org.jsoup.Connection;
 
