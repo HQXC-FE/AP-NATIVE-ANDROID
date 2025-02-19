@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Emojicon</string>
+    <string name="people">Emoji &amp; people</string>
+    <string name="nature">Animals &amp; nature</string>
+    <string name="places">Travel &amp; places</string>
+    <string name="symbols">Symbols</string>
+    <string name="objects">Objects</string>
+</resources>
