@@ -15,6 +15,7 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.widget.CustomerServiceDialogActivity;
 
@@ -114,7 +115,18 @@ public class AppUtil {
             serviceLink.append(Constant.URL_CUSTOMER_SERVICE);
         }
         CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
-        goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink.toString());
+        if (DomainUtil.getH5Domain2().startsWith("https://")){
+            goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink.toString());
+        }else{
+            FastestTopDomainUtil.getInstance().start();
+            if (DomainUtil.getH5Domain2().startsWith("https://")){
+                goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink.toString());
+            }else {
+                CfLog.e("goCustomerServiceWeb ----未获取Https 域名");
+                goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink.toString());
+            }
+        }
+
     }
 
 
