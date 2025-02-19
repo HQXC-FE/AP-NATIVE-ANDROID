@@ -16,7 +16,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/head_area"
                 android:layout_width="match_parent"
-                android:layout_height="316dp"
+                android:layout_height="296dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -47,7 +47,7 @@
                         android:textSize="14sp" />
 
                     <ImageView
-                        android:id="@+id/ivwVip"
+                        android:id="@+id/ivw_vip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -79,8 +79,8 @@
                 <RelativeLayout
                     android:id="@+id/middle_area"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:paddingStart="20dp"
+                    android:layout_height="150dp"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="20dp"
                     android:background="@mipmap/me_bg_top_00"
@@ -166,6 +166,7 @@
                             android:id="@+id/tvw_1k_recycle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
                             android:background="@mipmap/ic_one_click"
                             android:paddingLeft="15dp"
                             android:paddingTop="5dp"
@@ -232,7 +233,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/me_level_hint"
-                                android:textColor="#FFD2B3"
+                                android:textColor="@color/me_level_color"
                                 android:textSize="10sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -243,18 +244,18 @@
                                 android:layout_width="0dp"
                                 android:layout_height="5dp"
                                 android:layout_below="@+id/tvw_level_hint"
-                                android:layout_marginTop="5dp"
+                                android:layout_marginTop="3dp"
                                 android:layout_marginEnd="48dp"
                                 android:background="@drawable/me_level_progressbar_bg"
                                 android:max="100"
                                 android:progress="10"
                                 android:progressDrawable="@drawable/me_level_progressbar"
-                                app:layout_constraintEnd_toStartOf="@id/ivwLevel"
+                                app:layout_constraintEnd_toStartOf="@id/ivw_level"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/tvw_level_hint" />
 
                             <ImageView
-                                android:id="@+id/ivwLevel"
+                                android:id="@+id/ivw_level"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/me_vip_level"
@@ -266,7 +267,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:layout_marginStart="12dp"
                             android:orientation="horizontal"
                             app:layout_constraintLeft_toLeftOf="@+id/level_area"
                             app:layout_constraintTop_toBottomOf="@+id/level_area">
