@@ -86,10 +86,6 @@ public class BtResultOptionPm implements BtResultOption {
 
     @Override
     public String getTeamName() {
-        //未结算注单显示空白
-        if (detailBean.betStatus == 0) {
-            return "";
-        }
         return detailBean.matchInfo;
     }
 
