@@ -14,7 +14,7 @@
         android:id="@+id/ll_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/clr_bg_main_black"
+        android:background="@color/clr_main_bg"
         android:orientation="vertical"
         tools:context=".ui.fragment.BindUsdtRebindFragment">
 
@@ -32,7 +32,6 @@
                 android:id="@+id/tvw_title"
                 style="@style/style_cm_title"
                 android:text="@string/txt_add_virtual_account"
-                android:textColor="@color/clr_white"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -58,7 +57,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:background="@color/clr_yellow_3">
+                android:background="@drawable/bg_bind_top_bg">
                 <TextView
                     style="@style/style_cm_tip_small_orange"
                     android:text="@string/txt_note_asterisks_cannot_empty" />
