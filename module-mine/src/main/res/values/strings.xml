@@ -534,4 +534,5 @@
     <string name="txt_lottery_point">彩票返点：</string>
     <string name="txt_lottery_point_warning">自身保留返点： %s</string>
     <string name="txt_set_success">设置成功</string>
+
 </resources>
