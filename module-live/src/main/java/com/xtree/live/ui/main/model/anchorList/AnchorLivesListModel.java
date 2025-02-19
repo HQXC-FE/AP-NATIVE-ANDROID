@@ -1,8 +1,12 @@
 package com.xtree.live.ui.main.model.anchorList;
 
 import com.xtree.base.mvvm.recyclerview.BindModel;
+import com.xtree.base.utils.SPUtil;
+import com.xtree.live.SPKey;
 
 import java.util.ArrayList;
+
+import me.xtree.mvvmhabit.base.BaseApplication;
 
 /**
  * 获取正在直播的列表   来源 /api/front/lives
@@ -30,6 +34,119 @@ public class AnchorLivesListModel extends BindModel {
         public String avatar;//主播头像
         public String userNickname;//用户昵称
         public String heat;//主播热度（后台-设置-网站信息-默认热度值 +（主播的v_user_count*v_user_multiple））
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getVid() {
+            return vid;
+        }
+
+        public void setVid(String vid) {
+            this.vid = vid;
+        }
+
+        public String getUid() {
+            return uid;
+        }
+
+        public void setUid(String uid) {
+            SPUtil.get(BaseApplication.getInstance()).put(SPKey.UID,uid);
+            this.uid = uid;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public int getIsLive() {
+            return isLive;
+        }
+
+        public void setIsLive(int isLive) {
+            this.isLive = isLive;
+        }
+
+        public int getLoadingBar() {
+            return loadingBar;
+        }
+
+        public void setLoadingBar(int loadingBar) {
+            this.loadingBar = loadingBar;
+        }
+
+        public String getPull() {
+            return pull;
+        }
+
+        public void setPull(String pull) {
+            this.pull = pull;
+        }
+
+        public int getMatchId() {
+            return matchId;
+        }
+
+        public void setMatchId(int matchId) {
+            this.matchId = matchId;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getThumb() {
+            return thumb;
+        }
+
+        public void setThumb(String thumb) {
+            this.thumb = thumb;
+        }
+
+        public int getIsLoop() {
+            return isLoop;
+        }
+
+        public void setIsLoop(int isLoop) {
+            this.isLoop = isLoop;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+
+        public String getUserNickname() {
+            return userNickname;
+        }
+
+        public void setUserNickname(String userNickname) {
+            this.userNickname = userNickname;
+        }
+
+        public String getHeat() {
+            return heat;
+        }
+
+        public void setHeat(String heat) {
+            this.heat = heat;
+        }
 
         @Override
         public String toString() {

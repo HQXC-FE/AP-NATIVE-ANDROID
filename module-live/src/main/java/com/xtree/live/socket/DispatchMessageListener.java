@@ -10,6 +10,7 @@ import com.blankj.utilcode.util.ThreadUtils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.hjq.gson.factory.GsonFactory;
+import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
 import com.xtree.live.chat.Counter;
 import com.xtree.live.message.Message;
@@ -163,11 +164,11 @@ public class DispatchMessageListener {
     private void executeMsg(MessageMsg message) {
         if (!ChatWebSocketManager.getInstance().isAtCurrentConversation(message)) {
             //room_type 2,非群聊未读消息播报语音 虚拟房间的消息 不响铃
-            if (message.getIsVir() == 0 && RoomType.PAGE_CHAT_PRIVATE == message.getRoomType() && !Objects.equals(AppConfig.getUserId(), message.getSender())) {
+            if (message.getIsVir() == 0 && RoomType.PAGE_CHAT_PRIVATE == message.getRoomType() && LiveConfig.isNotificationBeepOn() && !Objects.equals(LiveConfig.getUserId(), message.getSender())) {
                 Log.d(TAG, "-------play new msg----");
-                MediaUtil.playNotificationBeep(AppManager.getContext(), R.raw.strong_notification);
+//                MediaUtil.playNotificationBeep(AppManager.getContext(), R.raw.strong_notification);
             }
-            if(!Objects.equals(AppConfig.getUserId(), message.getSender())){
+            if(!Objects.equals(LiveConfig.getUserId(), message.getSender())){
                 UnreadUtils.increaseUnreadCount(message.getIsVir() == 1, message.getVid());
             }
         }
