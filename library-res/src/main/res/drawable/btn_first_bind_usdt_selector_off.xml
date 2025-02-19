@@ -5,7 +5,7 @@
             <corners android:radius="10dp"
                 />
             <solid android:color="@color/clr_btn_grey02" />
-            <stroke android:width="2dp" android:color="@color/color_line_bind_usdt_stroke" />
+            <stroke android:width="2dp" android:color="@color/color_bind_usdt_stroke" />
         </shape>
     </item>
 
@@ -15,7 +15,7 @@
                 android:endColor="@color/clr_btn_grey02"
                 android:startColor="@color/clr_btn_grey01" />
             <corners android:radius="10dp" />
-            <stroke android:width="2dp" android:color="@color/color_line_bind_usdt_stroke" />
+            <stroke android:width="2dp" android:color="@color/color_bind_usdt_stroke" />
         </shape>
     </item>
 
@@ -25,7 +25,7 @@
                 android:endColor="@color/clr_btn_grey02"
                 android:startColor="@color/clr_btn_grey02" />
             <corners android:radius="10dp" />
-            <stroke android:width="2dp" android:color="@color/color_line_bind_usdt_stroke" />
+            <stroke android:width="2dp" android:color="@color/color_bind_usdt_stroke" />
         </shape>
     </item>
 </selector>

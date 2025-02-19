@@ -394,7 +394,7 @@
     <color name="clr_green_01">#20B56E</color>
 
     <!--<color name="clr_blue_02">#247BF4</color>-->
-    <color name="clr_blue_03">#119BFF</color>
+    <!--<color name="clr_blue_03">#119BFF</color>-->
     <!--<color name="clr_blue_04">#C7E3FF</color>-->
     <!--<color name="clr_blue_05">#376CAA</color>-->
     <!--<color name="clr_blue_05a">#415AB0</color>-->
@@ -542,6 +542,7 @@
     <!--  金额已选中  -->
     <color name="clr_purple_05">#9179E7</color>
     <color name="clr_rc_txt_hi">#5B5768</color>
+    <color name="clr_blue_03">#119BFF</color>
 
     <color name="clr_rc_manual_1">#CC6A74</color>
     <!-- 分隔线 -->
@@ -564,7 +565,7 @@
 
     <!-- 测速浮窗-->
     <color name="clr_txt_fastest_high">#EE1A34</color>
-    <color name="clr_txt_fastest_medium">#FBC400</color>
-    <color name="clr_txt_fastest_low">#00C41F</color>
-
+    <color name="clr_txt_fastest_medium">#FFE145</color>
+    <color name="clr_txt_fastest_low">#51FF6D</color>
+    <color name="color_line_bind_usdt_stroke">#F7DFD1</color>
 </resources>
