@@ -371,6 +371,7 @@
                         <TextView style="@style/style_wallet_space" />
 
                         <TextView
+                            android:visibility="invisible"
                             android:id="@+id/tvw_bonus"
                             style="@style/style_menu_black"
                             android:drawableTop="@mipmap/me_bonus"

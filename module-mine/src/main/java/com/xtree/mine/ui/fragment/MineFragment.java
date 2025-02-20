@@ -334,7 +334,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             }
         });
 
-        binding.tvwBonus.setOnClickListener(v -> startContainerFragment(RouterFragmentPath.Mine.PAGER_BONUS_REPORT));
+        //binding.tvwBonus.setOnClickListener(v -> startContainerFragment(RouterFragmentPath.Mine.PAGER_BONUS_REPORT));
     }
 
     private void goWebView(String title, String path) {
