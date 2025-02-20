@@ -491,7 +491,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         });
         //App更新
         viewModel.liveDataUpdate.observe(this, vo -> {
-            CfLog.i("****** ");
+            CfLog.e("******viewModel.liveDataUpdate =" +vo.toString());
             updateVo = vo;
             if (updateVo == null) {
                 ToastUtils.showSuccess(getResources().getString(R.string.txt_update_version));
