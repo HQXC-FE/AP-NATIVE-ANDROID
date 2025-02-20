@@ -94,9 +94,6 @@ import me.xtree.mvvmhabit.bus.Messenger;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
-/**
- * Created by goldze on 2018/6/21
- */
 @Route(path = RouterActivityPath.Bet.PAGER_BET_HOME)
 public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMainViewModel> implements OnRefreshLoadMoreListener, View.OnClickListener {
 
@@ -1218,10 +1215,16 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         viewModel.getAnnouncement();
         binding.ivwClose.setOnClickListener(view -> {
             binding.llNotice.setVisibility(View.GONE);
+            binding.tvwNotice.setVisibility(View.GONE);
+            binding.ivNoticeLeft.setVisibility(View.GONE);
+            binding.ivwClose.setVisibility(View.GONE);
             binding.ivwNotice.setVisibility(View.VISIBLE);
         });
         binding.ivwNotice.setOnClickListener(view -> {
             binding.llNotice.setVisibility(View.VISIBLE);
+            binding.tvwNotice.setVisibility(View.VISIBLE);
+            binding.ivNoticeLeft.setVisibility(View.VISIBLE);
+            binding.ivwClose.setVisibility(View.VISIBLE);
             binding.ivwNotice.setVisibility(View.INVISIBLE);
         });
         binding.llNotice.setOnClickListener(view -> {
@@ -1233,7 +1236,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     protected void onResume() {
         super.onResume();
         initTimer();
-        initSportsTimer();
+        //initSportsTimer();
         setCgBtCar();
         if (mLeagueAdapter != null) {
             mLeagueAdapter.notifyDataSetChanged();
@@ -1522,6 +1525,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         viewModel.announcementData.observe(this, list -> {
             if (list == null || list.isEmpty()) {
                 binding.llNotice.setVisibility(View.GONE);
+                binding.llNotice.setVisibility(View.GONE);
+                binding.tvwNotice.setVisibility(View.GONE);
+                binding.ivNoticeLeft.setVisibility(View.GONE);
+                binding.ivwClose.setVisibility(View.GONE);
                 binding.ivwNotice.setVisibility(View.GONE);
             } else {
                 StringBuffer sb = new StringBuffer();
@@ -1532,6 +1539,11 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     sb.append(vo.co + "      ");
                 }
                 binding.llNotice.setVisibility(View.VISIBLE);
+                binding.tvwNotice.setVisibility(View.VISIBLE);
+                binding.ivNoticeLeft.setVisibility(View.VISIBLE);
+                binding.ivwClose.setVisibility(View.VISIBLE);
+                binding.tvwNotice.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
                 binding.tvwNotice.setText(sb.toString());
             }
         });
