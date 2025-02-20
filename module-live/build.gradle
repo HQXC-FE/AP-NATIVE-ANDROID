@@ -29,9 +29,18 @@ dependencies {
     //组件依赖基础库
     kapt rootProject.ext.dependencies["arouter-compiler"]
 
+    // exoplayer
+    implementation "androidx.media:media:1.7.0"
+    implementation "androidx.media3:media3-exoplayer:1.4.0"
+    implementation "androidx.media3:media3-exoplayer-dash:1.4.0"
+    implementation "androidx.media3:media3-ui:1.4.0"
+    implementation 'androidx.media3:media3-datasource-rtmp:1.4.0'
+    implementation 'androidx.media3:media3-exoplayer-hls:1.4.0'
+
     //通信
     // WebSocket
     implementation 'org.java-websocket:Java-WebSocket:1.5.6'
-    //mqtt
+    //mqFtt
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
+
 }

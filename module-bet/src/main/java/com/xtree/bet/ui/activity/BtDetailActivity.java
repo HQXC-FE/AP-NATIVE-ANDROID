@@ -1,5 +1,6 @@
 package com.xtree.bet.ui.activity;
 
+import static com.lxj.xpopup.XPopup.requestOverlayPermission;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
@@ -8,8 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,9 +116,11 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
     }
 
     public static void start(Context context, Match match) {
+
         Intent intent = new Intent(context, BtDetailActivity.class);
         SPUtils.getInstance().put(KEY_MATCH, new Gson().toJson(match));
         //intent.putExtra(KEY_MATCH, match);
+        System.out.println("================= BtDetailActivity Match getSportId ================="+match.getSportId());
         context.startActivity(intent);
     }
 
@@ -568,4 +574,5 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             }
         }
     }
+
 }
