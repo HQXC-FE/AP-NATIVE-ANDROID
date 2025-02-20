@@ -70,4 +70,9 @@ public class SPKeyGlobal {
     //域名拼接推广Code至嗨客服
     public static final String APP_REGISTER_CODE = "register_promotion_code";
 
+    //极速充值客服
+    public static final String OP_HICHAT_URL_SUFFIX ="op_hichat_url_suffix";
+    //极速充值客服-详情链接（旧）
+    public static final String ONEPAY_CUSTOMER_SERVICE_LINK ="onepay_customer_service_link";
+
 }

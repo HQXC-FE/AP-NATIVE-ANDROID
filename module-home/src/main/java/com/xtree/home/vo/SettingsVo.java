@@ -26,7 +26,7 @@ public class SettingsVo implements Parcelable {
     public int app_response_speed_max = -1;
     //新客服列表
     public String []hichat_url_suffix ;//// ["\/im\/chat?platformCode=THRB&channelLink=OKGV5vPNGc", "\/im\/chat?platformCode=THRB&channelLink=OKGV5vPNGc"]
-
+    public String[] op_hichat_url_suffix; // ["\/im\/chat?platformCode=THRB&channelLink=OKGV5vPNGc", "\/im\/chat?platformCode=THRB&channelLink=OKGV5vPNGc"]
     // Constructor for Parcelable
     protected SettingsVo(Parcel in) {
         public_key = in.readString();
@@ -36,7 +36,7 @@ public class SettingsVo implements Parcelable {
         customer_service_url = in.readString();
         customer_service_urls = in.createStringArray();
         x9_customer_service_url = in.createStringArray();
-        hichat_url_suffix = in.createStringArray();
+
         ws_check_interval = in.readLong();
         ws_retry_number = in.readLong();
         ws_retry_waiting_time = in.readLong();
@@ -44,6 +44,7 @@ public class SettingsVo implements Parcelable {
         app_response_speed_calculation = in.readLong();
         app_response_speed_max = in.readInt();
         hichat_url_suffix = in.createStringArray();
+        op_hichat_url_suffix = in.createStringArray();
     }
 
     public static final Creator<SettingsVo> CREATOR = new Creator<SettingsVo>() {
@@ -80,6 +81,7 @@ public class SettingsVo implements Parcelable {
         parcel.writeLong(app_response_speed_calculation);
         parcel.writeInt(app_response_speed_max);
         parcel.writeStringArray(hichat_url_suffix);
+        parcel.writeStringArray(op_hichat_url_suffix);
     }
 
     @Override

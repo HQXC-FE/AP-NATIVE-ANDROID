@@ -49,9 +49,10 @@ public class ExTransferPayeeFragment extends BaseFragment<FragmentExtransferPaye
         serviceChatFlow = new Comm100ChatWindows(requireActivity());
         serviceChatFlow.setOnClickListener(new Comm100ChatWindows.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view, String url, Map<String, String> remark) {
                 viewModel.close();
             }
+
         });
         serviceChatFlow.show();
     }

@@ -2,6 +2,8 @@ package com.xtree.base.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -16,7 +18,20 @@ import com.xtree.base.widget.CustomerServiceDialogActivity;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
 public class AppUtil {
-
+    public static String getAppVersion(Context context) {
+        try {
+            // 获取 PackageManager 实例
+            PackageManager packageManager = context.getPackageManager();
+            // 获取当前应用的 PackageInfo 对象
+            PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            // 获取版本号
+            String versionName = packageInfo.versionName;
+            return versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
     /**
      * 跳转到客服
      *

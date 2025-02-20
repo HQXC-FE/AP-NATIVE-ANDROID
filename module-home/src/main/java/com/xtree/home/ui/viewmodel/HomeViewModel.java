@@ -36,7 +36,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -317,7 +320,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         map.put("fields", "customer_service_url,public_key,barrage_api_url," +
                 "x9_customer_service_url," + "promption_code,default_promption_code," +
                 "ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time," +
-                "app_response_speed_calculation,app_response_speed_max,hichat_url_suffix,sport_match_cache");
+                "app_response_speed_calculation,app_response_speed_max,hichat_url_suffix,sport_match_cache" +
+                ",op_hichat_url_suffix");
         Disposable disposable = (Disposable) model.getApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
@@ -344,6 +348,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         FastestMonitorCache.INSTANCE.setSPEED_CALCULATION(vo.app_response_speed_calculation);
                         //设置测速显示上限
                         FastestMonitorCache.INSTANCE.setApp_response_speed_max(vo.app_response_speed_max);
+                        SPUtils.getInstance().put(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, new LinkedHashSet(vo.op_hichat_url_suffix==null?
+                                Collections.emptyList(): Arrays.asList(vo.op_hichat_url_suffix)));
 
                         liveDataSettings.setValue(vo);
                     }
