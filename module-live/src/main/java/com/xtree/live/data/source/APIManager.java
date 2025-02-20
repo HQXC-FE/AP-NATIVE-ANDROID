@@ -12,8 +12,11 @@ public class APIManager {
     public static final String NO_AUTH_FORWARD = "/api/sports/fbxc/forward";
     //未登录获取赛事详情、比分
     public static final String NO_AUth_GET_MATCH_DETAIL = "/v1/match/getMatchDetail";
-
+    //获取正在直播的列表
     public static final String FRONT_LIVES = "/api/front/lives";
+    //主播房间资讯
+    // DESCRIPTION 进入某一房间前获得该房间资讯
+    public static final String ANCHOR_ROOM_INFO = "/api/LiStre/getRoomInfo";
     //获取赛事详情、比分
     public static final String GET_MATCH_DETAIL = "/v1/match/getMatchDetail";
     //获取 FB杏彩体育请求服务地址

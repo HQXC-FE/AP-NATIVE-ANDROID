@@ -16,6 +16,7 @@ import com.xtree.live.data.source.request.ChatRoomListRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
+import com.xtree.live.data.source.request.RoomInfoRequest;
 import com.xtree.live.data.source.request.SearchAssistantRequest;
 import com.xtree.live.data.source.request.SendToAssistantRequest;
 import com.xtree.live.data.source.request.SubscriptionRequest;
@@ -23,6 +24,7 @@ import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
+import com.xtree.live.data.source.response.LiveRoomBean;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.SearchAssistantResponse;
@@ -114,6 +116,10 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     @Override
     public Flowable<BaseResponse<List<FrontLivesResponse>>> getFrontLives(FrontLivesRequest request) {
         return mHttpDataSource.getFrontLives(request);
+    }
+    @Override
+    public Flowable<BaseResponse<LiveRoomBean>> getRoomInfo(RoomInfoRequest request) {
+        return mHttpDataSource.getRoomInfo(request);
     }
 
     /**

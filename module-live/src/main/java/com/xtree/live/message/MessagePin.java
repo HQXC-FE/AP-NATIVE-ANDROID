@@ -89,7 +89,7 @@ public class MessagePin extends MessageChat{
         }
         //群组消息置顶
         if(0 == pinType){
-            JsonElement pinObj = GsonFactory.getSingletonGson().fromJson(data, new TypeToken<>() {});
+            JsonElement pinObj = GsonFactory.getSingletonGson().fromJson(data, new TypeToken<JsonElement>() {});
             inRoomBean.setPinObj(pinObj);
             inRoomBean.setPinType(pinType);
         }

@@ -24,7 +24,7 @@ public class BNCObject implements BNC, Parcelable {
         objectKey = in.readString();
     }
 
-    public static final Creator<BNCObject> CREATOR = new Creator<>() {
+    public static final Creator<BNCObject> CREATOR = new Creator<BNCObject>() {
         @Override
         public BNCObject createFromParcel(Parcel in) {
             return new BNCObject(in);

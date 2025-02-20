@@ -27,10 +27,12 @@ import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
+import com.xtree.live.data.source.request.RoomInfoRequest;
 import com.xtree.live.data.source.request.SubscriptionRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
+import com.xtree.live.data.source.response.LiveRoomBean;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.fb.Match;
@@ -67,26 +69,25 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         liveAnchorModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.ALL.getValue(), page, limit, success, error);
         liveAnchorModel.setItemType(0);
 
-
-        LiveHotModel liveFootBallModel = new LiveHotModel(FrontLivesType.FOOTBALL.getLabel());
-        liveFootBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.FOOTBALL.getValue(), page, limit, success, error);
-        liveFootBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
-        liveFootBallModel.setItemType(1);
-
-        LiveHotModel liveBasketBallModel = new LiveHotModel(FrontLivesType.BASKETBALL.getLabel());
-        liveBasketBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.BASKETBALL.getValue(), page, limit, success, error);
-        liveBasketBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
-        liveBasketBallModel.setItemType(1);
-
-        LiveHotModel liveOtherModel = new LiveHotModel(FrontLivesType.OTHER.getLabel());
-        liveOtherModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.OTHER.getValue(), page, limit, success, error);
-        liveOtherModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
-        liveOtherModel.setItemType(1);
+//        LiveHotModel liveFootBallModel = new LiveHotModel(FrontLivesType.FOOTBALL.getLabel());
+//        liveFootBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.FOOTBALL.getValue(), page, limit, success, error);
+//        liveFootBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
+//        liveFootBallModel.setItemType(1);
+//
+//        LiveHotModel liveBasketBallModel = new LiveHotModel(FrontLivesType.BASKETBALL.getLabel());
+//        liveBasketBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.BASKETBALL.getValue(), page, limit, success, error);
+//        liveBasketBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
+//        liveBasketBallModel.setItemType(1);
+//
+//        LiveHotModel liveOtherModel = new LiveHotModel(FrontLivesType.OTHER.getLabel());
+//        liveOtherModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.OTHER.getValue(), page, limit, success, error);
+//        liveOtherModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
+//        liveOtherModel.setItemType(1);
 
         add(liveAnchorModel);
-        add(liveFootBallModel);
-        add(liveBasketBallModel);
-        add(liveOtherModel);
+//        add(liveFootBallModel);
+//        add(liveBasketBallModel);
+//        add(liveOtherModel);
     }};
     private final ArrayList<Integer> typeList = new ArrayList() {
         {
@@ -99,6 +100,8 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     public ObservableField<ArrayList<String>> tabs = new ObservableField<>(new ArrayList<>());
     public MutableLiveData<ArrayList<BindModel>> datas = new MutableLiveData<>(new ArrayList<>());
     public MutableLiveData<ArrayList<Integer>> itemType = new MutableLiveData<>();
+
+    public MutableLiveData<LiveRoomBean> liveRoomInfo = new MutableLiveData<>();
 
     public LiveViewModel(@NonNull Application application) {
         super(application);
@@ -181,7 +184,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                 .subscribe(new HttpCallBack<ReviseHotResponse>() {
                     @Override
                     public void onResult(ReviseHotResponse o) {
-
+                        CfLog.d(o.toString());
                     }
                 });
     }
@@ -239,6 +242,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                     }
                 });
         addSubscribe(disposable);
+
     }
 
     private void getBannerList() {
@@ -360,6 +364,33 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                     }
                 });
         addSubscribe(disposable);
+    }
+
+    /**
+     * 获取直播间详情
+     * @param uid
+     */
+    private void getRoomInfo(int uid){
+        String channelCode = X9LiveInfo.INSTANCE.getChannel();
+        RoomInfoRequest request = new RoomInfoRequest();
+        request.setUid(uid);
+        request.setChannel_code(channelCode);
+        addSubscribe((Disposable) model.getRoomInfo(request)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<LiveRoomBean>() {
+                    @Override
+                    public void onResult(LiveRoomBean liveRoomBean) {
+                        liveRoomInfo.postValue(liveRoomBean);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
+                })
+        );
+
     }
 
     public void getAnchorSort() {
