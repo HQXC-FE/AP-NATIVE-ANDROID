@@ -180,13 +180,4 @@ public class RechargeOrderWebDialog extends BottomPopupView {
         //return super.getMaxHeight();
         return (XPopupUtils.getScreenHeight(getContext()) * 75 / 100);
     }
-
-    private void copy(String txt) {
-        CfLog.d(txt);
-        ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData cd = ClipData.newPlainText("txt", txt);
-        cm.setPrimaryClip(cd);
-        ToastUtils.showLong(R.string.txt_copied);
-    }
-
 }
