@@ -102,6 +102,6 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
         //System.out.println("============== LiveFragment mMatch.getSportId() =================="+mMatch.getId());
         //LiveMatchDetailActivity.start(getContext(),mMatch.getId());
 
-        FloatingWindowActivity.start(getContext());
+        //FloatingWindowActivity.start(getContext());
     }
 }

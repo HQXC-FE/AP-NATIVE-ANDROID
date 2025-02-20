@@ -195,8 +195,12 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
      * 设置顶部背景图
      */
     private void setTopBg() {
-        if (mMatch != null && mMatch.getSportId() != null) {
-            binding.ctlBg.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
+        try{
+            if (mMatch != null && mMatch.getSportId() != null) {
+                binding.ctlBg.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
