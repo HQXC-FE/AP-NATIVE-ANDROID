@@ -195,9 +195,10 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
      * 设置顶部背景图
      */
     private void setTopBg() {
-        if (mMatch != null && mMatch.getSportId() != null) {
-            binding.ctlBg.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
-        }
+        //TODO SportId数据为空 崩溃 暂时注释
+//        if (mMatch != null && mMatch.getSportId() != null) {
+//            binding.ctlBg.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
+//        }
     }
 
     /**
@@ -266,7 +267,8 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
         }
         ImageView thumb = new ImageView(this);
         if (mMatch != null) {
-            thumb.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
+            //TODO SportId数据为空 崩溃 暂时注释
+//            thumb.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
         }
         Map header = new HashMap();
         if (!TextUtils.isEmpty(mMatch.getReferUrl())) {
@@ -350,7 +352,7 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
 
     @Override
     public void initViewObservable() {
-        viewModel.matchData.observe(this, match -> {
+        /*viewModel.matchData.observe(this, match -> {
             this.mMatch = match;
             if (match == null) {
                 return;
@@ -430,7 +432,7 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
             } else {
                 mScoreDataView.setMatch(match, false);
             }
-        });
+        });*/
     }
 
     @Override
