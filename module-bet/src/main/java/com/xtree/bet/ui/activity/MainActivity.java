@@ -1604,7 +1604,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             if (!(binding.rvLeague.getExpandableListAdapter() instanceof LeagueAdapter)) {
                 binding.rvLeague.setAdapter(mLeagueAdapter);
             }
-            mLeagueAdapter.resetTime();//自动记时归0，校正成接口时间
             mLeagueAdapter.setData(mLeagueList);
             if (mIsChange) {
                 setGoingOnAllExpand(true);
