@@ -1,6 +1,7 @@
 package com.xtree.live.ui.main.bet;
 
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
@@ -9,10 +10,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.Messenger;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.SslErrorHandler;
@@ -23,28 +20,24 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
-import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.router.RouterFragmentPath;
+import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TimeUtils;
-import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.constant.Constants;
-import com.xtree.bet.ui.activity.BtDetailActivity;
 import com.xtree.bet.ui.fragment.BtDetailOptionFragment;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
@@ -52,21 +45,15 @@ import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FbBtDetailViewModel;
 import com.xtree.bet.ui.viewmodel.pm.PmBtDetailViewModel;
 import com.xtree.bet.weight.BaseDetailDataView;
-import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.ui.main.model.constant.DetailLivesType;
-import com.xtree.service.WebSocketService;
-import com.xtree.service.message.MessageData;
-import com.xtree.service.message.MessageType;
 import com.xtree.service.message.PushServiceConnection;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.sentry.Sentry;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -76,15 +63,13 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardGSYVideoPlayer> implements View.OnClickListener {
     private final static String KEY_MATCH = "KEY_MATCH_ID";
 
-    private List<Category> mCategories = new ArrayList<>();
-
     private BaseDetailDataView mScoreDataView;
 
     private BtDetailOptionFragment fragment;
 
     private Match mMatch;
 
-    private static int mMatchID = -1;
+    private static Long mMatchID = -1L;
 
     private int tabPos;
 
@@ -97,6 +82,9 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
     private FragmentStateAdapter mAdapter;
 
     private PushServiceConnection pushServiceConnection;
+    private LiveFloatingWindows mLiveFloatingWindows;
+
+    //private BettingNetFloatingWindows mBettingNetFloatingWindows;
 
     public Match getmMatch() {
         return mMatch;
@@ -125,10 +113,25 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
                 .init();
     }
 
-    public static void start(Context context, int matchID) {
+    public static void start(Context context, Long matchID) {
         Intent intent = new Intent(context, LiveMatchDetailActivity.class);
         //SPUtils.getInstance().put(KEY_MATCH, new Gson().toJson(match));
+        System.out.println("=============== LiveMatchDetailActivity matchID ================"+matchID);
         mMatchID = matchID;
+//        try{
+//            int id = Integer.parseInt(matchID);
+//            mMatchID = id;
+//        } catch(NumberFormatException ex){ // handle your exception
+//            ex.printStackTrace();
+//        }
+        System.out.println("=============== LiveMatchDetailActivity mMatchID ================"+mMatchID);
+        //intent.putExtra(KEY_MATCH, match);
+        context.startActivity(intent);
+    }
+
+    public static void start(Context context, String  matchID) {
+        Intent intent = new Intent(context, LiveMatchDetailActivity.class);
+        //SPUtils.getInstance().put(KEY_MATCH, new Gson().toJson(match));
         //intent.putExtra(KEY_MATCH, match);
         context.startActivity(intent);
     }
@@ -173,7 +176,7 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
         initFragmet();
         initVideoPlayer();
         setWebView();
-
+        initLiveFloatWindows();
     }
 
     @Override
@@ -186,15 +189,6 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
     @Override
     public void onResume() {
         super.onResume();
-//        viewModel.addSubscribe(Observable.interval(5, 5, TimeUnit.SECONDS)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(aLong -> {
-//                    if(mMatch != null){
-//                        viewModel.getMatchDetail(mMatch.getId());
-//                    }
-//                })
-//        );
     }
 
     /**
@@ -214,6 +208,7 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
         binding.tvLive.setOnClickListener(this);
         binding.tvAnimi.setOnClickListener(this);
         binding.ivBack.setOnClickListener(this);
+
     }
 
     private void setWebView() {
@@ -476,5 +471,83 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
             }
         }
     }
+    //加载悬浮窗
+    private void initLiveFloatWindows() {
+        System.out.println("================= initLiveFloatWindows 加载悬浮窗 ====================");
+        initNetFloatWindows();
+    }
+
+
+    private void initNetFloatWindows() {
+//        mBettingNetFloatingWindows = BettingNetFloatingWindows.getInstance(this, (useAgent, isChangeDomain, checkBox) -> {
+//            checkBox.setChecked(useAgent);
+//            setDomain(useAgent);
+//            //resetViewModel();
+//            setChangeDomainVisible();
+//            //uploadException(useAgent, isChangeDomain);
+//            mBettingNetFloatingWindows.hideSecondaryLayout();
+//        });
+//        mBettingNetFloatingWindows.show();
+
+        mLiveFloatingWindows = LiveFloatingWindows.getInstance(this, (useAgent, isChangeDomain, checkBox) -> {
+            checkBox.setChecked(useAgent);
+            setDomain(useAgent);
+            //resetViewModel();
+            setChangeDomainVisible();
+            //uploadException(useAgent, isChangeDomain);
+            mLiveFloatingWindows.hideSecondaryLayout();
+        });
+        mLiveFloatingWindows.show();
+    }
+
+    /**
+     * 设置当前场馆所用的domain线路
+     *
+     * @param isChecked
+     */
+    private void setDomain(boolean isChecked) {
+        SPUtils.getInstance().put(SPKeyGlobal.KEY_USE_AGENT + mPlatform, isChecked);
+        if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+            // FB体育使用线路位置
+            int useLinePotion = SPUtils.getInstance().getInt(SPKeyGlobal.KEY_USE_LINE_POSITION + mPlatform, 0);
+
+            if (isChecked) {
+                if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
+                    SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, DomainUtil.getApiUrl());
+                } else {
+                    SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, DomainUtil.getApiUrl());
+                }
+            } else {
+                if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
+                    SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, BtDomainUtil.getFbxcDomainUrl().get(useLinePotion));
+                } else {
+                    SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, BtDomainUtil.getFbDomainUrl().get(useLinePotion));
+                }
+            }
+        } else {
+            if (isChecked) {
+                if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+                    SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, DomainUtil.getApiUrl());
+                } else {
+                    SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, DomainUtil.getApiUrl());
+                }
+            } else {
+                if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+                    SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, BtDomainUtil.getDefaultPmxcDomainUrl());
+                } else {
+                    SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, BtDomainUtil.getDefaultPmDomainUrl());
+                }
+            }
+        }
+    }
+
+    /**
+     * 是否使用代理或其他非默认线路
+     */
+    private void setChangeDomainVisible() {
+        boolean isAgent = SPUtils.getInstance().getBoolean(SPKeyGlobal.KEY_USE_AGENT + mPlatform);
+        mLiveFloatingWindows.setIsSelected(isAgent);
+    }
+
 
 }

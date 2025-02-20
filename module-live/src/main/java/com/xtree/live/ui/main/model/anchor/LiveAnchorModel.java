@@ -1,6 +1,5 @@
 package com.xtree.live.ui.main.model.anchor;
 
-import static androidx.test.platform.app.InstrumentationRegistry.getArguments;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -57,7 +56,7 @@ public class LiveAnchorModel extends BindModel {
             String token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
             boolean isLogin = !TextUtils.isEmpty(token);
             if(isLogin){
-                int matchID = Integer.parseInt(((LiveAnchorItemModel) bindModels.get(modelPosition)).getMatchId());
+                String  matchID = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getMatchId();
                 LiveMatchDetailActivity.start(context, matchID);
             }else{
                 goLogin();

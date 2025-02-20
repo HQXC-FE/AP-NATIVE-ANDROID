@@ -26,4 +26,12 @@ dependencies {
     implementation project(':module-bet')
     //组件依赖基础库
     kapt rootProject.ext.dependencies["arouter-compiler"]
+
+    // exoplayer
+    implementation "androidx.media:media:1.7.0"
+    implementation "androidx.media3:media3-exoplayer:1.4.0"
+    implementation "androidx.media3:media3-exoplayer-dash:1.4.0"
+    implementation "androidx.media3:media3-ui:1.4.0"
+    implementation 'androidx.media3:media3-datasource-rtmp:1.4.0'
+    implementation 'androidx.media3:media3-exoplayer-hls:1.4.0'
 }

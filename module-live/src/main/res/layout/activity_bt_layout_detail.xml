@@ -171,6 +171,7 @@
                         android:layout_height="230dp"
                         android:visibility="gone" />
 
+
                     <WebView
                         android:id="@+id/wv_amin"
                         android:layout_width="match_parent"
