@@ -175,8 +175,8 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
 
         initFragmet();
         initVideoPlayer();
-        setWebView();
-        initLiveFloatWindows();
+//        setWebView();
+//        initLiveFloatWindows();
     }
 
     @Override
@@ -195,13 +195,10 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
      * 设置顶部背景图
      */
     private void setTopBg() {
-        try{
-            if (mMatch != null && mMatch.getSportId() != null) {
-                binding.ctlBg.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        //TODO SportId数据为空 崩溃 暂时注释
+//        if (mMatch != null && mMatch.getSportId() != null) {
+//            binding.ctlBg.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
+//        }
     }
 
     /**

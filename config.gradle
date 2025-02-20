@@ -46,6 +46,7 @@ ext {
             "glide-compiler"                       : "com.github.bumptech.glide:compiler:4.16.0",
             //json解析
             "gson"                                 : "com.google.code.gson:gson:2.10.1",
+            "GsonFactory"                          : "com.github.getActivity:GsonFactory:9.0",
             //material-dialogs
             "material-dialogs-core"                : "com.afollestad.material-dialogs:core:0.9.6.0",
             "material-dialogs-commons"             : "com.afollestad.material-dialogs:commons:0.9.6.0",

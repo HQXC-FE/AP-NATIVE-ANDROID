@@ -71,8 +71,8 @@ public class LiveAnchorModel extends BindModel {
     public FetchListener<List<FrontLivesResponse>> frontLivesResponseFetchListener;
 
     public ObservableBoolean enableLoadMore = new ObservableBoolean(true);
-    public ObservableField<Object> finishRefresh = new ObservableField<Object>(null);
-    public ObservableField<Object> autoRefresh = new ObservableField<Object>(null);
+    public ObservableField<Object> finishRefresh = new ObservableField<Object>(new Object[]{null});
+    public ObservableField<Object> autoRefresh = new ObservableField<Object>(new Object[]{null});
     private int currentPage = 1;
     public OnRefreshLoadMoreListener onRefreshLoadMoreListener = new OnRefreshLoadMoreListener() {
 
