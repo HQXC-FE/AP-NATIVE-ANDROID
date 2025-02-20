@@ -7,7 +7,6 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -15,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.R;
@@ -30,14 +28,11 @@ import com.xtree.bet.bean.ui.PlayGroupFb;
 import com.xtree.bet.bean.ui.PlayGroupPm;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.constant.Constants;
-import com.xtree.bet.constant.FBConstants;
-import com.xtree.bet.constant.SPKey;
 import com.xtree.bet.contract.BetContract;
 import com.xtree.bet.databinding.BtFbLeagueGroupBinding;
 import com.xtree.bet.databinding.BtFbMatchListBinding;
 import com.xtree.bet.manager.BtCarManager;
 import com.xtree.bet.ui.activity.BtDetailActivity;
-import com.xtree.bet.ui.activity.MainActivity;
 import com.xtree.bet.ui.fragment.BtCarDialogFragment;
 import com.xtree.bet.weight.AnimatedExpandableListViewMax;
 import com.xtree.bet.weight.BaseDetailDataView;
@@ -58,7 +53,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     private String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
     private int liveHeaderPosition;
     private int noLiveHeaderPosition;
-    private int secoend = 0;
 
     private PageHorizontalScrollView.OnScrollListener mOnScrollListener;
 
@@ -67,7 +61,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     }
 
     public void setHeaderIsExpand(int position, boolean headerIsExpand) {
-        if(!mDatas.isEmpty() && mDatas.size() > position) {
+        if (!mDatas.isEmpty() && mDatas.size() > position) {
             mDatas.get(position).setExpand(headerIsExpand);
         }
     }
@@ -247,7 +241,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                 binding.tvSportName.setVisibility(View.GONE);
                 binding.ivExpand.setSelected(league.isExpand());
                 binding.tvHeaderName.setText(league.getLeagueName());
-                if(league.getLeagueName().equals(mContext.getResources().getString(R.string.bt_game_going_on))){
+                if (league.getLeagueName().equals(mContext.getResources().getString(R.string.bt_game_going_on))) {
                     binding.ivHeader.setBackgroundResource(R.mipmap.bt_icon_going_on);
                 } else if (league.getLeagueName().equals(mContext.getResources().getString(R.string.bt_game_waiting))) {
                     binding.ivHeader.setBackgroundResource(R.mipmap.bt_icon_waiting);
@@ -310,7 +304,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
         binding.tvTeamNameMain.setText(match.getTeamMain());
         binding.tvTeamNameVisitor.setText(match.getTeamVistor());
-        if(match.needCheckHomeSide() && match.isGoingon()) {
+        if (match.needCheckHomeSide() && match.isGoingon()) {
             if (match.isHomeSide()) {
                 binding.tvTeamNameMain.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.bt_bg_server), null);
                 binding.tvTeamNameVisitor.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
@@ -318,13 +312,13 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                 binding.tvTeamNameMain.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                 binding.tvTeamNameVisitor.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.bt_bg_server), null);
             }
-        }else{
+        } else {
             binding.tvTeamNameMain.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             binding.tvTeamNameVisitor.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
 
         List<Integer> scoreList = match.getScore(Constants.getScoreType());
-        if (!match.isGoingon()){
+        if (!match.isGoingon()) {
             binding.tvScoreMain.setText("");
             binding.tvScoreVisitor.setText("");
         } else if (scoreList != null && scoreList.size() > 1) {
@@ -338,20 +332,12 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             binding.tvMatchTime.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_HH_MM));
         } else {
             String mc = match.getStage();
-            if(mc != null) {
+            if (mc != null) {
                 if (TextUtils.equals(Constants.getFbSportId(), match.getSportId()) || TextUtils.equals(Constants.getBsbSportId(), match.getSportId())) { // 足球和篮球
                     if (mc.contains("休息") || mc.contains("结束")) {
                         binding.tvMatchTime.setText(match.getStage());
                     } else {
-                        if(match.getSportId().equals("1")){ //足球
-                            int currentTime = match.getTimeS() + secoend;
-                            binding.tvMatchTime.setText(mc + " " + formatTime(currentTime));
-                        }else if(match.getSportId().equals("2")){ //篮球
-                            int currentTime = match.getTimeS() - secoend;
-                            binding.tvMatchTime.setText(mc + " " + formatTime(currentTime));
-                        }else{ //其它
-                            binding.tvMatchTime.setText(mc + " " + match.getTime());
-                        }
+                        binding.tvMatchTime.setText(mc + " " + match.getTime());
                     }
                 } else {
                     binding.tvMatchTime.setText(match.getStage());
@@ -379,7 +365,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         }
         List<PlayGroup> playGroupList = playGroup.getPlayGroupList(match.getSportId());
 
-        if(!playGroupList.isEmpty()) {
+        if (!playGroupList.isEmpty()) {
 
             for (int i = 0; i < firstPagePlayType.getChildCount(); i++) {
                 setPlayTypeGroup(match, parent, (LinearLayout) firstPagePlayType.getChildAt(i), playGroupList.get(0).getOriginalPlayTypeList().get(i));
@@ -408,7 +394,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                     }
                 }
             }
-
 
             binding.llRoot.setOnClickListener(view -> {
                 BtDetailActivity.start(mContext, match);
@@ -475,8 +460,12 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                     optionView.setVisibility(View.GONE);
                 } else {
                     optionView.setVisibility(View.VISIBLE);
-                    Option option = options.get(j - 1);
-
+                    Option option;
+                    if (j - 1 >= options.size()) {//处理数组越界
+                        option = null;
+                    } else {
+                        option = options.get(j - 1);
+                    }
                     TextView uavailableTextView = (TextView) optionView.getChildAt(0);
                     TextView nameTextView = (TextView) optionView.getChildAt(1);
                     DiscolourTextView oddTextView = (DiscolourTextView) optionView.getChildAt(2);
@@ -550,7 +539,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                 //option.setSelected(BtCarManager.has(betConfirmOption));
                 RxBus.getDefault().post(new BetContract(BetContract.ACTION_OPEN_CG));
             } else {
-                if(ClickUtil.isFastClick()){
+                if (ClickUtil.isFastClick()) {
                     return;
                 }
                 BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
@@ -588,21 +577,5 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             itemView = view;
         }
     }
-
-    public void countItemTime() {
-        secoend = secoend+1;
-        notifyDataSetChanged(); // 刷新列表
-    }
-
-    public void resetTime() {
-        secoend = 0;
-    }
-
-    public static String formatTime(int totalSeconds) {
-        int minutes = totalSeconds / 60;
-        int seconds = totalSeconds % 60;
-        return String.format("%02d:%02d", minutes, seconds);
-    }
-
 
 }

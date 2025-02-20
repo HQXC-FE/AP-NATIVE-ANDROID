@@ -94,6 +94,9 @@ import me.xtree.mvvmhabit.bus.Messenger;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
+/**
+ * Created by goldze on 2018/6/21
+ */
 @Route(path = RouterActivityPath.Bet.PAGER_BET_HOME)
 public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMainViewModel> implements OnRefreshLoadMoreListener, View.OnClickListener {
 
@@ -470,6 +473,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 getMatchData(sportId, mOrderBy, mLeagueIdList, null,
                         playMethodType, searchDatePos, false, true);
                 if ((sportId == null || TextUtils.equals("1111", sportId)) && (playMethodPos == 0 || playMethodPos == 3)) {
+                    System.out.println("############## tabSportAdapter sportId ##############"+sportId);
                     viewModel.getHotMatchCount(playMethodType, viewModel.hotLeagueList);
                 }
             }
@@ -959,24 +963,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     /**
-     * 按秒更新赛事时间
-     */
-    private void initSportsTimer() {
-        if (sportsTimerDisposable != null) {
-            viewModel.removeSubscribe(sportsTimerDisposable);
-        }
-        sportsTimerDisposable = Observable.interval((long)1.3, (long)1.3, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                   if(mLeagueAdapter != null){
-                       mLeagueAdapter.countItemTime();
-                   }
-                });
-        viewModel.addSubscribe(sportsTimerDisposable);
-    }
-
-    /**
      * 监听第一次进入主页时获取列表数据是否完成，如果未完成，弹出切换线路提示弹窗
      */
     private void initFirstNetworkFinishTimer() {
@@ -1215,16 +1201,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         viewModel.getAnnouncement();
         binding.ivwClose.setOnClickListener(view -> {
             binding.llNotice.setVisibility(View.GONE);
-            binding.tvwNotice.setVisibility(View.GONE);
-            binding.ivNoticeLeft.setVisibility(View.GONE);
-            binding.ivwClose.setVisibility(View.GONE);
             binding.ivwNotice.setVisibility(View.VISIBLE);
         });
         binding.ivwNotice.setOnClickListener(view -> {
             binding.llNotice.setVisibility(View.VISIBLE);
-            binding.tvwNotice.setVisibility(View.VISIBLE);
-            binding.ivNoticeLeft.setVisibility(View.VISIBLE);
-            binding.ivwClose.setVisibility(View.VISIBLE);
             binding.ivwNotice.setVisibility(View.INVISIBLE);
         });
         binding.llNotice.setOnClickListener(view -> {
@@ -1236,7 +1216,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     protected void onResume() {
         super.onResume();
         initTimer();
-        //initSportsTimer();
         setCgBtCar();
         if (mLeagueAdapter != null) {
             mLeagueAdapter.notifyDataSetChanged();
@@ -1525,10 +1504,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         viewModel.announcementData.observe(this, list -> {
             if (list == null || list.isEmpty()) {
                 binding.llNotice.setVisibility(View.GONE);
-                binding.llNotice.setVisibility(View.GONE);
-                binding.tvwNotice.setVisibility(View.GONE);
-                binding.ivNoticeLeft.setVisibility(View.GONE);
-                binding.ivwClose.setVisibility(View.GONE);
                 binding.ivwNotice.setVisibility(View.GONE);
             } else {
                 StringBuffer sb = new StringBuffer();
@@ -1539,11 +1514,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     sb.append(vo.co + "      ");
                 }
                 binding.llNotice.setVisibility(View.VISIBLE);
-                binding.tvwNotice.setVisibility(View.VISIBLE);
-                binding.ivNoticeLeft.setVisibility(View.VISIBLE);
-                binding.ivwClose.setVisibility(View.VISIBLE);
-                binding.tvwNotice.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-
                 binding.tvwNotice.setText(sb.toString());
             }
         });
