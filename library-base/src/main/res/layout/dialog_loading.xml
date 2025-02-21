@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="意昂凯捷F"
+            android:text="意昂F凯捷"
             android:textColor="@color/bt_color_option_draw"
             android:textSize="14dp"
             app:layout_constraintEnd_toEndOf="parent"
