@@ -17,6 +17,7 @@ import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.mvvm.recyclerview.BaseDatabindingAdapter;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.router.RouterActivityPath;
+import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.live.R;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.ui.main.bet.LiveMatchDetailActivity;
@@ -59,7 +60,12 @@ public class LiveAnchorModel extends BindModel {
                 String  matchID = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getMatchId();
                 int uid = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getUid();
                 String vid = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getVid();
-                LiveMatchDetailActivity.start(context, matchID,uid,vid);
+//                LiveMatchDetailActivity.start(context, matchID,uid,vid);
+                ARouter.getInstance().build(RouterFragmentPath.Live.LIVE_DETAIL)
+                        .withString("matchID",matchID)
+                        .withString("vid",vid)
+                        .withInt("uid",uid)
+                        .navigation();
             }else{
                 goLogin();
             }

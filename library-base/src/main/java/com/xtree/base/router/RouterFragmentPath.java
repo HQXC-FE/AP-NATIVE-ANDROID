@@ -162,5 +162,6 @@ public class RouterFragmentPath {
         public static final String PAGER_LIVE_ATTENTION = LIVE + "/attention";//主播列表
         public static final String PAGER_LIVE_CHAT_ANCHOR = LIVE + "/anchor";//主播助理
         public static final String PAGER_LIVE_CHAT_PRIVATE = LIVE + "/privateChat";//主播助理私聊
+        public static final String LIVE_DETAIL = LIVE +"/activity/LiveDetail";
     }
 }

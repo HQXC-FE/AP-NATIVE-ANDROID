@@ -27,6 +27,7 @@ import java.util.Map;
 import me.xtree.mvvmhabit.R;
 import me.xtree.mvvmhabit.base.BaseViewModel.ParameterField;
 import me.xtree.mvvmhabit.bus.Messenger;
+import me.xtree.mvvmhabit.utils.FragmentUtils;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.MaterialDialogUtils;
 
@@ -355,4 +356,9 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     public <T extends ViewModel> T createViewModel(Fragment fragment, Class<T> cls) {
         return new ViewModelProvider(fragment, null).get(cls);
     }
+    
+    protected void addFragmentToContent(Fragment fragment,String tag){
+        FragmentUtils.addFragment(getFragmentManager(),this,fragment,android.R.id.content,tag);
+    }
+
 }

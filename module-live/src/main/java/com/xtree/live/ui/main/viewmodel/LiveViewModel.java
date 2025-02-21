@@ -60,7 +60,7 @@ import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
- * Created by KAKA on 2024/9/9.
+ * Created by KAKA on 2024/9/9
  * Describe: 直播门户viewModel
  */
 public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabLayout.OnTabSelectedListener {
@@ -370,7 +370,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
      * 获取直播间详情
      * @param uid
      */
-    private void getRoomInfo(int uid){
+    public void getRoomInfo(int uid){
         String channelCode = X9LiveInfo.INSTANCE.getChannel();
         RoomInfoRequest request = new RoomInfoRequest();
         request.setUid(uid);

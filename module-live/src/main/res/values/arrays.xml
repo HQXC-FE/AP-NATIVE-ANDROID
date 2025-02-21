@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="live_title">
+        <item>广场</item>
+        <item>投注</item>
+        <item>主播私聊</item>
+        <item>主播助理</item>
+    </string-array>
+
+</resources>
