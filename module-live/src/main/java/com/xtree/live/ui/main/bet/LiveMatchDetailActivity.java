@@ -274,8 +274,7 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
         }
         ImageView thumb = new ImageView(this);
         if (mMatch != null) {
-            //TODO SportId数据为空 崩溃 暂时注释
-//            thumb.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
+            thumb.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
         }
         Map header = new HashMap();
         if (!TextUtils.isEmpty(mMatch.getReferUrl())) {
@@ -314,8 +313,8 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
     /**
      * 初始化播放器相关控件
      */
-    private void initFragmet() {//PAGER_LIVE_CHAT
-        Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_CHAT).navigation();
+    private void initFragmet() {
+        Fragment homeFragment = new Fragment();
         Fragment liveBetFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_BET).navigation();
         Fragment liveFragment = new Fragment();
         Fragment rechargeFragment = new Fragment();
@@ -359,7 +358,7 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
 
     @Override
     public void initViewObservable() {
-        /*viewModel.matchData.observe(this, match -> {
+        viewModel.matchData.observe(this, match -> {
             this.mMatch = match;
             if (match == null) {
                 return;
@@ -439,7 +438,7 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
             } else {
                 mScoreDataView.setMatch(match, false);
             }
-        });*/
+        });
     }
 
     @Override

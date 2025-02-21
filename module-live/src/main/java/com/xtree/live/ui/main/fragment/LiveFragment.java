@@ -100,7 +100,7 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
         Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
         Match mMatch = gson.fromJson(SPUtils.getInstance().getString("KEY_MATCH_ID"), Match.class);
         //System.out.println("============== LiveFragment mMatch.getSportId() =================="+mMatch.getId());
-//        LiveMatchDetailActivity.start(getContext(),mMatch.getId());
+        //LiveMatchDetailActivity.start(getContext(),mMatch.getId());
 
 //        FloatingWindowActivity.start(getContext());
     }
