@@ -234,7 +234,8 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
 
         //检查更新
         binding.tvwUpgrade.setOnClickListener(v -> {
-            viewModel.getUpdate();
+            //viewModel.getUpdate();
+            ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_APP_UPDATE).navigation();
         });
         binding.tvwBangzhuZhongxin.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_INFO);

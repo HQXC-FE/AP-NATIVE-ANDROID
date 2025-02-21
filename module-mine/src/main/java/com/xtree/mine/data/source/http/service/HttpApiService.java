@@ -681,4 +681,5 @@ public interface HttpApiService {
      */
     @GET("/api/account/vipinfo")
     Flowable<BaseResponse<VipInfoVo>> getVipInfo();
+
 }

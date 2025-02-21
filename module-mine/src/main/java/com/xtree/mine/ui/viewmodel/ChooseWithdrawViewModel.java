@@ -11,6 +11,7 @@ import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.StringUtils;
 import com.xtree.base.utils.TagUtils;
+import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.mine.R;
 import com.xtree.mine.data.MineRepository;
 import com.xtree.mine.vo.AwardsRecordVo;
@@ -75,6 +76,9 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
     public MutableLiveData<WithdrawalSubmitVo> submitVoMutableLiveData = new MutableLiveData<>();//提款提交
 
     public MutableLiveData<String> submitVoErrorData = new MutableLiveData<>();//提款提交
+
+
+    public MutableLiveData<AppUpdateVo> liveDataUpdate = new MutableLiveData<>();//更新
 
     public ChooseWithdrawViewModel(@NonNull Application application) {
         super(application);
@@ -848,6 +852,31 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                         submitVoErrorData.setValue(errorMessage);
                     }
 
+                });
+        addSubscribe(disposable);
+    }
+
+    /**
+     * App更新接口
+     */
+    public void getUpdate() {
+        Disposable disposable = (Disposable) model.getApiService().getUpdate()
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<AppUpdateVo>() {
+                    @Override
+                    public void onResult(AppUpdateVo updateVo) {
+                        if (updateVo == null) {
+                            CfLog.e("data is null");
+                        }
+                        liveDataUpdate.setValue(updateVo);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        CfLog.e("error, " + t);
+                    }
                 });
         addSubscribe(disposable);
     }

@@ -846,7 +846,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         int intervalTime = SPUtils.getInstance().getInt(SPKeyGlobal.APP_INTERVAL_TIME, 30);
         long lastCheckTime = SPUtils.getInstance().getLong(SPKeyGlobal.APP_LAST_CHECK_TIME, 0);
         if (System.currentTimeMillis() - lastCheckTime >= (intervalTime * 60 * 1000)) {
-            viewModel.getUpdate();
+            //viewModel.getUpdate();
+            //使用App更新组件
+            ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_APP_UPDATE).navigation();
         }
     }
 
