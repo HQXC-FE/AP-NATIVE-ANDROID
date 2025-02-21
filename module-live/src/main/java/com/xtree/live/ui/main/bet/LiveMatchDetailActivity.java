@@ -47,6 +47,8 @@ import com.xtree.bet.ui.viewmodel.pm.PmBtDetailViewModel;
 import com.xtree.bet.weight.BaseDetailDataView;
 import com.xtree.live.R;
 import com.xtree.live.ui.main.model.constant.DetailLivesType;
+import com.xtree.live.ui.main.viewmodel.LiveDetailViewModel;
+import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 import com.xtree.service.message.PushServiceConnection;
 
 import java.util.ArrayList;
@@ -83,6 +85,9 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
 
     private PushServiceConnection pushServiceConnection;
     private LiveFloatingWindows mLiveFloatingWindows;
+
+    private static int mUid;
+    private static String mVid;
 
     //private BettingNetFloatingWindows mBettingNetFloatingWindows;
 
@@ -129,7 +134,9 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
         context.startActivity(intent);
     }
 
-    public static void start(Context context, String  matchID) {
+    public static void start(Context context, String  matchID,int uid,String vid) {
+        mUid = uid;
+        mVid = vid;
         Intent intent = new Intent(context, LiveMatchDetailActivity.class);
         //SPUtils.getInstance().put(KEY_MATCH, new Gson().toJson(match));
         //intent.putExtra(KEY_MATCH, match);
@@ -146,7 +153,6 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
             return new ViewModelProvider(this, factory).get(PmBtDetailViewModel.class);
         }
     }
-
 
     @Override
     public void initView() {
@@ -175,6 +181,7 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
 
         initFragmet();
         initVideoPlayer();
+
 //        setWebView();
 //        initLiveFloatWindows();
     }
@@ -182,8 +189,8 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
     @Override
     public void initData() {
         System.out.println("=============== initData LiveMatchDetail MatchID ================"+mMatchID);
-        viewModel.getMatchDetail(mMatchID);
-        viewModel.addSubscription();
+//        viewModel.getMatchDetail(mMatchID);
+//        viewModel.addSubscription();
     }
 
     @Override
@@ -313,9 +320,9 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
         Fragment liveFragment = new Fragment();
         Fragment rechargeFragment = new Fragment();
         fragmentList.add(homeFragment);
-//        fragmentList.add(liveBetFragment);
-//        fragmentList.add(liveFragment);
-//        fragmentList.add(rechargeFragment);
+        fragmentList.add(liveBetFragment);
+        fragmentList.add(liveFragment);
+        fragmentList.add(rechargeFragment);
 
         mAdapter = new FragmentStateAdapter(getSupportFragmentManager(), getLifecycle()) {
             @NonNull
@@ -339,9 +346,9 @@ public class LiveMatchDetailActivity extends LiveGSYBaseActivityDetail<StandardG
         String txtMsgAssistant = DetailLivesType.ANCHOR_ASSISTANT.getLabel();
 
         tabList.add(txtSquare);
-//        tabList.add(txtBetting);
-//        tabList.add(txtPrivate);
-//        tabList.add(txtMsgAssistant);
+        tabList.add(txtBetting);
+        tabList.add(txtPrivate);
+        tabList.add(txtMsgAssistant);
 
         new TabLayoutMediator(binding.tblType, binding.vpMain, (tab, position) -> {
             tab.setText(tabList.get(position));

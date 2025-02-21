@@ -68,6 +68,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import me.xtree.mvvmhabit.bus.RxBus;
+import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -120,7 +121,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         Intent intent = new Intent(context, BtDetailActivity.class);
         SPUtils.getInstance().put(KEY_MATCH, new Gson().toJson(match));
         //intent.putExtra(KEY_MATCH, match);
-        System.out.println("================= BtDetailActivity Match getSportId ================="+match.getSportId());
+        KLog.i("BtDetailActivity","获取比赛ID: "+match.getId());
         context.startActivity(intent);
     }
 

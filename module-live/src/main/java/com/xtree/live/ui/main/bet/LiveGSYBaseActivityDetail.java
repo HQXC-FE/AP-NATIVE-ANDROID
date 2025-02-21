@@ -12,12 +12,8 @@ import com.shuyu.gsyvideoplayer.listener.VideoAllCallBack;
 import com.shuyu.gsyvideoplayer.utils.OrientationOption;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
-
-import com.xtree.bet.databinding.BtLayoutDetailBinding;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
 import com.xtree.live.databinding.ActivityBtLayoutDetailBinding;
-import com.xtree.live.ui.main.viewmodel.LiveDetailViewModel;
-import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 
 import me.xtree.mvvmhabit.base.BaseActivity;
 

@@ -69,6 +69,10 @@ public abstract class TemplateBtDetailViewModel extends BaseViewModel<BetReposit
 
     }
 
+//    public void getRoomInfo(int uid){
+//
+//    }
+
     public void updateCategoryData(){
         /*for (String key : mCategoryMap.keySet()) {
             Category category = mCategoryMap.get(key);

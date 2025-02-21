@@ -16,6 +16,8 @@ public class LiveAnchorItemModel extends BindModel {
     private String thumb;//	直播间封面
     private String matchId;//	比赛id
     private String avatar;//	主播头像
+    private int uid;//主播间ID
+    private String vid;//直播间vid
     private String userNickname;//	用户昵称
     private String heat;//		主播热度（后台-设置-网站信息-默认热度值 +（主播的v_user_count*v_user_multiple））
     private Integer isLive;//		直播状态：-1创建 0未直播 1正常 2取消，只返回返回状态为1的数据
@@ -75,6 +77,22 @@ public class LiveAnchorItemModel extends BindModel {
 
     public void setIsLive(Integer isLive) {
         this.isLive = isLive;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public String getVid() {
+        return vid;
+    }
+
+    public void setVid(String vid) {
+        this.vid = vid;
     }
 
     @Override

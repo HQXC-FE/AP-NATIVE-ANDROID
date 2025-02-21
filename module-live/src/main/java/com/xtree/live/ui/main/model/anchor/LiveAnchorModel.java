@@ -57,7 +57,9 @@ public class LiveAnchorModel extends BindModel {
             boolean isLogin = !TextUtils.isEmpty(token);
             if(isLogin){
                 String  matchID = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getMatchId();
-                LiveMatchDetailActivity.start(context, matchID);
+                int uid = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getUid();
+                String vid = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getVid();
+                LiveMatchDetailActivity.start(context, matchID,uid,vid);
             }else{
                 goLogin();
             }
@@ -124,6 +126,8 @@ public class LiveAnchorModel extends BindModel {
             itemModel.setUserNickname(response.getUserNickname());
             itemModel.setHeat("" + response.getHeat());
             itemModel.setMatchId(String.valueOf(response.getMatchId()));
+            itemModel.setUid(response.getUid());
+            itemModel.setVid(response.getVid());
             bindModels.add(itemModel);
         }
         datas.set(bindModels);
