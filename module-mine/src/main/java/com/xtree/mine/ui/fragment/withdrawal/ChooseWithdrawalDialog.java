@@ -43,6 +43,7 @@ import com.xtree.mine.vo.withdrawals.WithdrawalListVo;
 import com.xtree.mine.vo.withdrawals.WithdrawalQuotaVo;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -631,17 +632,25 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
      */
     private ArrayList<WithdrawalListVo.WithdrawalItemVo> sortTypeList(ArrayList<WithdrawalListVo.WithdrawalItemVo> infoList) {
         //列表去重
-        Set<WithdrawalListVo.WithdrawalItemVo> set = new LinkedHashSet<>(infoList);
-        ArrayList<WithdrawalListVo.WithdrawalItemVo> newList = new ArrayList<>(set);
-
-        CfLog.e("sortTypeList  infoList1= " + newList.size());
-        ArrayList<WithdrawalListVo.WithdrawalItemVo> arrayList = new ArrayList<WithdrawalListVo.WithdrawalItemVo>();
-        for (int i = 0; i < newList.size(); i++) {
+//        Set<WithdrawalListVo.WithdrawalItemVo> set = new LinkedHashSet<>(infoList);
+//        ArrayList<WithdrawalListVo.WithdrawalItemVo> newList = new ArrayList<>(set);
+//
+//        CfLog.e("sortTypeList  infoList1= " + newList.size());
+//        ArrayList<WithdrawalListVo.WithdrawalItemVo> arrayList = new ArrayList<WithdrawalListVo.WithdrawalItemVo>();
+//        for (int i = 0; i < newList.size(); i++) {
+//            //只添加enable为 true状态的，即是开启该提款通道的体况方式
+//            if (newList.get(i).enable) {
+//                arrayList.add(newList.get(i));
+//            }
+//        }
+        ArrayList<WithdrawalListVo.WithdrawalItemVo> arrayList = new ArrayList<>();
+        for (int i = 0; i < infoList.size(); i++) {
             //只添加enable为 true状态的，即是开启该提款通道的体况方式
-            if (newList.get(i).enable) {
-                arrayList.add(newList.get(i));
+            if (infoList.get(i).enable == true) {
+                arrayList.add(infoList.get(i));
             }
         }
+        removeDupliByType(arrayList);
         return arrayList;
     }
 
@@ -660,24 +669,32 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
                     targetList.add(vo);
                 }
             }
-            removeDupliByType(targetList);
+//            removeDupliByType(targetList);
         }
     }
 
-    private static ArrayList<WithdrawalListVo.WithdrawalItemVo> removeDupliByType(ArrayList<WithdrawalListVo.WithdrawalItemVo> list) {
+    private void removeDupliByType(ArrayList<WithdrawalListVo.WithdrawalItemVo> list) {
         ArrayList<WithdrawalListVo.WithdrawalItemVo> wdList = new ArrayList<>();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            list.stream().forEach(
-                    p -> {
-                        if (!wdList.contains(p)) {
-                            wdList.add(p);
-                        }
-                    }
-            );
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            list.stream().forEach(
+//                    p -> {
+//                        if (!wdList.contains(p)) {
+//                            wdList.add(p);
+//                        }
+//                    }
+//            );
+//        }
+        HashSet<String> seenTypes = new HashSet<>(); // 用于存储已见过的类型
+        for (WithdrawalListVo.WithdrawalItemVo p: list) {
+            if (!seenTypes.contains(p.type)) { // 根据 type 字段去重
+                wdList.add(p);
+                seenTypes.add(p.type); // 将该类型标记为已见
+            }
         }
-        TreeSet<WithdrawalListVo.WithdrawalItemVo> treeSet = new TreeSet<WithdrawalListVo.WithdrawalItemVo>(list);
-        ArrayList<WithdrawalListVo.WithdrawalItemVo> newList = new ArrayList<>(treeSet);
-        return newList;
+//        LinkedHashSet<WithdrawalListVo> treeSet = new LinkedHashSet<>(list);
+//        ArrayList<WithdrawalListVo> newList = new ArrayList<>(treeSet);
+        list.clear();
+        list.addAll(wdList);
     }
 
     /**
