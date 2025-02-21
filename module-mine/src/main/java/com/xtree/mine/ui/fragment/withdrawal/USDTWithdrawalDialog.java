@@ -713,6 +713,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         changVo = selectVo;
         wtype=selectVo.name;
         //获取当前选中的提款详情
-        viewModel.getWithdrawalInfo(selectVo.name,infoVo.code );
+        viewModel.getWithdrawalInfo(selectVo.name,checkCode);
     }
 }
