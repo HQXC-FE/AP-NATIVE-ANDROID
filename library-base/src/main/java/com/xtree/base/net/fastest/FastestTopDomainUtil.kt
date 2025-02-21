@@ -396,10 +396,17 @@ class FastestTopDomainUtil private constructor() {
      * 线路竞速
      */
     private fun setFasterApiDomain() {
-        val apis = Utils.getContext().getString(R.string.domain_api_list) // 不能为空,必须正确
-        val apiList = listOf(*apis.split(";".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray())
-        addApiDomainList(apiList)
+
+        addApiDomainList(FastestMonitorCache.scoreCacheList.map { it.url }.run {
+            if (isEmpty()) {
+                val apis = Utils.getContext().getString(R.string.domain_api_list) // 不能为空,必须正确
+                listOf(*apis.split(";".toRegex()).dropLastWhile { it.isEmpty() }
+                    .toTypedArray())
+            } else {
+                this
+            }
+        })
+
 //        if (mCurApiDomainList.size >= 4) {
 //            getFastestApiDomain(false)
 //        } else {
