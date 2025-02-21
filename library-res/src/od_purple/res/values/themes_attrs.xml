@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Purple Theme example-->
+
+    <attr name="primaryAttr" format="reference" />
+    <attr name="primaryVariantAttr" format="reference" />
+    <attr name="secondaryAttr" format="reference" />
+    <attr name="tertiaryAttr" format="reference" />
+
+    <attr name="textDescriptionAttr" format="reference" />
+    <attr name="textPrimaryAttr" format="reference" />
+    <attr name="textSecondaryAttr" format="reference" />
+    <attr name="textTertiaryAttr" format="reference" />
+    <attr name="textQuaternaryAttr" format="reference" />
+    <attr name="textQuinaryAttr" format="reference" />
+    <attr name="textSenaryAttr" format="reference" />
+    <attr name="textForgotAttr" format="reference" />
+
+    <attr name="clr_item_text_attr" format="reference" />
+    <attr name="ivw_bg_attr" format="reference" />
+    <attr name="clr_rc_rate_attr" format="reference" />
+    <attr name="ivw_hot_attr" format="reference" />
+    <attr name="ivw_rcmd_attr" format="reference" />
+    <attr name="ivw_icon_attr" format="reference" />
+
+    <attr name="rc_channel_attr" format="reference" />
+    <attr name="style_cm_title_attr" format="reference" />
+
+    <attr name="recharge_btn_next_attr" format="reference" />
+    <attr name="common_btn_attr" format="reference" />
+    <attr name="dialog_order_bank_top_attr" format="reference" />
+    <attr name="dialog_order_bank_info_attr" format="reference" />
+    <attr name="withdrawal_btn_attr" format="reference" />
+    <attr name="btn_get_code_attr" format="reference" />
+    <attr name="info2_grey_50_attr" format="reference" />
+    <attr name="info_grey_50_attr" format="reference" />
+
+    <attr name="play_method_attr" format="reference" />
+
+</resources>

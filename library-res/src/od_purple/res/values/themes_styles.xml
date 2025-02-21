@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    注意，这里不能直接用在view里面，请使用themes_attrs里面的自定义属性-->
+    <!-- Purple Theme example-->
+    <style name="primaryAttrStyle">
+        <item name="android:textColor">@color/primaryColor</item>
+    </style>
+
+    <style name="primaryVariantAttrStyle">
+        <item name="android:textColor">@color/primaryVariant</item>
+    </style>
+
+    <style name="secondaryAttrStyle">
+        <item name="android:textColor">@color/secondaryColor</item>
+    </style>
+
+    <style name="tertiaryAttrStyle">
+        <item name="android:textColor">@color/tertiaryColor</item>
+    </style>
+
+    <style name="textDescriptionAttrStyle">
+        <item name="android:textColor">@color/textDescriptionColor</item>
+    </style>
+
+    <style name="textPrimaryAttrStyle">
+        <item name="android:textColor">@color/textPrimaryColor</item>
+    </style>
+
+    <style name="textSecondaryAttrStyle">
+        <item name="android:textColor">@color/textSecondaryColor</item>
+    </style>
+
+    <style name="textTertiaryAttrStyle">
+        <item name="android:textColor">@color/textTertiaryColor</item>
+    </style>
+
+    <style name="textQuaternaryAttrStyle">
+        <item name="android:textColor">@color/textQuaternaryColor</item>
+    </style>
+
+    <style name="textQuinaryAttrStyle">
+        <item name="android:textColor">@color/textQuinaryColor</item>
+    </style>
+
+    <style name="textSenaryAttrStyle">
+        <item name="android:textColor">@color/textSenaryColor</item>
+    </style>
+
+    <style name="textForgotAttrStyle">
+        <item name="android:textColor">@color/textForgotColor</item>
+    </style>
+
+    <style name="clr_item_text_style">
+        <item name="android:textColor">@color/clr_item_text_selector</item>
+    </style>
+
+    <style name="clr_rc_rate_style">
+        <item name="android:textColor">@color/clr_rc_rate_selector</item>
+    </style>
+
+    <style name="ivw_bg_style">
+        <item name="android:src">@drawable/bg_item_rc_type_selector</item>
+    </style>
+
+    <style name="ivw_hot_style">
+        <item name="android:src">@drawable/rc_ic_hot</item>
+    </style>
+
+    <style name="iivw_rcmd_style">
+        <item name="android:src">@drawable/rc_ic_recommend</item>
+    </style>
+
+    <style name="ivw_icon_style">
+        <item name="android:src">@drawable/rc_ic_type_cs</item>
+    </style>
+
+    <style name="rc_channel_style">
+        <item name="android:background">@drawable/bg_channel_selector</item>
+        <item name="android:textColor">@drawable/bg_channel_text_selector</item>
+    </style>
+
+    <!-- 每个页面标题栏的样式-右边小按钮 -->
+    <style name="cm_title_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/layout_margin</item>
+        <item name="android:layout_marginEnd">@dimen/layout_margin</item>
+        <item name="android:layout_marginTop">@dimen/layout_margin</item>
+        <item name="android:textColor">@color/clr_txt_black_01</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="recharge_btn_next_style">
+        <item name="android:background">@drawable/bg_btn_long_selector</item>
+        <item name="android:textColor">@drawable/recharge_btn_next_text_selector</item>
+    </style>
+
+    <style name="dialog_order_bank_top_style">
+        <item name="android:src">@drawable/bg_dialog_order_bank_top</item>
+    </style>
+
+    <style name="dialog_order_bank_info_style">
+        <item name="android:background">@drawable/bg_dialog_order_bank_info</item>
+    </style>
+
+    <style name="withdrawal_btn_style">
+        <item name="android:background">@drawable/bg_btn_withdrawal</item>
+    </style>
+
+    <!-- 我的-安全中心-验证 获取验证码 -->
+    <style name="btn_get_code_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">6dp</item>
+        <item name="android:background">@drawable/bg_btn_get_code_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minEms">6</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:text">获取验证码</item>
+        <item name="android:textColor">@drawable/text_get_code_selector</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="info2_grey_50_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textColor">@color/textTertiaryColor</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="info_grey_50_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginStart">@dimen/layout_margin</item>
+        <item name="android:layout_marginEnd">@dimen/layout_margin</item>
+        <item name="android:textColor">@color/textQuaternaryColor</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="play_method_style">
+        <item name="android:background">@drawable/bg_play_method_selector</item>
+        <item name="android:textColor">@drawable/play_method_text_selector</item>
+    </style>
+</resources>
