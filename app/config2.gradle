@@ -33,7 +33,7 @@ android {
             versionCode 111
             resValue "string", "app_name", "意昂体育2"
             resValue "string", "domain_api", "http://139.186.201.117:46803"
-            resValue "string", "domain_url", "https://www.u2s4s7.xyz"
+            resValue "string", "domain_url", "https://h52.l7a9fp.vip"
             resValue "string", "channel_name", "eon2"  // 渠道名称
             resValue "string", "platform_set", "38"  // 平台代号,升级用 35-意昂, 38-意昂2
             resValue "string", "build_time", "${buildTime()}"
@@ -41,34 +41,38 @@ android {
             resValue "string", "ms_secret_key", "0ad1d127-3d6e-47f0-8904-1fd9eff9d97b"
             resValue "string", "sentry_dsn", "https://0cefc03e1c8e991010eb93fb0722e362@o4507447554539520.ingest.us.sentry.io/4507604245217280"
             resValue "bool", "is_tag", "true" // 是否开启统计
-            resValue "string", "domain_api_list", "https://app1.r4n2h7.xyz;" +
-                    "https://app1.ygrsy.vip;" +
-                    "https://app1.ydrjp.vip;" +
-                    "https://app1.fxqnp.vip;" +
-                    "https://app2.ifgko.vip;" +
-                    "https://app2.hxsgn.vip;" +
-                    "https://app2.s2f6z5.xyz;" +
-                    "https://app2.t6y2m4.xyz;" +
-                    "https://app5.v3k2o5.xyz;" +
-                    "https://app3.h1g8d8.xyz;" +
-                    "https://app3.l9y7e5.xyz;" +
-                    "https://app3.e5b4f7.xyz;" +
-                    "https://app3.t1l4c3.xyz;" +
-                    "https://app4.pdqxd.vip;" +
-                    "http://119.45.14.75:46803;" +
+            resValue "string", "domain_api_list", "http://119.45.14.75:46803;" +
                     "http://119.45.63.172:46803;" +
                     "http://146.56.229.55:46803;" +
                     "http://43.143.77.164:46803;" +
                     "http://101.43.108.235:46803;" +
                     "http://139.186.137.79:46803;" +
                     "http://124.221.214.240:46803;" +
-                    "http://139.186.201.117:46803;"
-            resValue "string", "domain_url_list", "https://www.u2s4s7.xyz;" +
-                    "https://www.d4v2o1.xyz;" +
-                    "https://www.o9s9u4.xyz;" +
-                    "https://www.h4r3a2.xyz;" +
-                    "https://www.j9b1x3.xyz;" +
-                    "https://www.n5q2b8.xyz;"
+                    "http://139.186.201.117:46803;" +
+                    "https://app.7jcvs.com:46803;" +
+                    "https://app1.y9w4di.vip;" +
+                    "https://app1.w6b7la.vip;" +
+                    "https://app1.r5e9ds.vip;" +
+                    "https://app1.k7k3lw.vip;" +
+                    "https://app2.e9l6is.vip;" +
+                    "https://app2.c7v5mh.vip;" +
+                    "https://app2.f4v5wd.vip;" +
+                    "https://app2.n1t2ww.vip;" +
+                    "https://app3.r6y5lb.vip;" +
+                    "https://app3.i4o1br.vip;" +
+                    "https://app3.g1u6oc.vip;" +
+                    "https://app3.j4h7lk.vip;" +
+                    "https://app4.g2c8ne.vip;"
+            resValue "string", "domain_url_list", "https://h51.g1d3nf.vip;" +
+                    "https://h51.w1y2jh.vip;" +
+                    "https://h51.d2z4dv.vip;" +
+                    "https://h52.j6f2lh.vip;" +
+                    "https://h52.l7a9fp.vip;" +
+                    "https://h52.i1c7qa.vip;" +
+                    "https://h53.f2q3jc.vip;" +
+                    "https://h53.h9f4ev.vip;" +
+                    "https://h53.u3u4wu.vip;" +
+                    "https://h54.a8n9tw.vip;"
             resValue "string", "domain_url_list_third", "https://e2cn2app.wrumc.vip/e2/app_config_e2.json;" +
                     "https://e2cn2app.xzdzm.vip/e2/app_config_e2.json;" +
                     "https://e2aliapp.rglob.vip/e2/app_config_e2.json;" +
