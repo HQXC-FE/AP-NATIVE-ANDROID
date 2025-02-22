@@ -352,10 +352,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         }
         //可提款金额
         binding.llVirtualConfirmView.tvConfirmWithdrawalTypeShow.setText(verifyVo.quota);
-        //提款金额方式
-        binding.llVirtualConfirmView.tvConfirmAmountShow.setText(verifyVo.user_bank_info.usdt_type);
-        //提款类型
-        binding.llVirtualConfirmView.tvWithdrawalAmountTypeShow.setText(verifyVo.user_bank_info.usdt_type);
+
         //虚拟币类型
         binding.llVirtualConfirmView.tvWithdrawalVirtualTypeShow.setText(verifyVo.user_bank_info.usdt_type);
         //实际提款金额
