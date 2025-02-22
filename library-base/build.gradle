@@ -92,4 +92,7 @@ dependencies {
     api rootProject.ext.dependencies["okhttp-dnsoverhttps"]
 
     api rootProject.ext.dependencies["GsonFactory"]
+    api rootProject.ext.dependencies["autodispose"]
+
+
 }

@@ -23,6 +23,10 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
 import com.xtree.live.R;
 import com.xtree.live.data.LiveRepository;
+import com.xtree.live.data.source.httpnew.LiveRep;
+import com.xtree.live.data.source.httpnew.LiveService;
+import com.xtree.live.data.source.httpnew.RepositoryManager;
+import com.xtree.live.data.source.httpnew.RxLifecycleUtils;
 import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
@@ -372,13 +376,8 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
      */
     public void getRoomInfo(int uid){
         String channelCode = X9LiveInfo.INSTANCE.getChannel();
-        RoomInfoRequest request = new RoomInfoRequest();
-        request.setUid(uid);
-        request.setChannel_code(channelCode);
-        addSubscribe((Disposable) model.getRoomInfo(request)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<LiveRoomBean>() {
+        LiveRep.getInstance().getRoomInfo(uid,channelCode)
+                .subscribe(new HttpCallBack<LiveRoomBean>() {
                     @Override
                     public void onResult(LiveRoomBean liveRoomBean) {
                         liveRoomInfo.postValue(liveRoomBean);
@@ -388,8 +387,10 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                     public void onError(Throwable t) {
                         super.onError(t);
                     }
-                })
-        );
+
+                });
+
+
 
     }
 

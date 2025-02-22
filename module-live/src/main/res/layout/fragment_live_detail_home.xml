@@ -24,8 +24,8 @@
             app:tabIndicator="@drawable/shape_tabindicator_live"
             app:tabMode="scrollable"
             app:tabPadding="2dp"
-            app:tabSelectedTextColor="#302E36"
-            app:tabTextColor="#9A96A4">
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextColor="@color/red">
 
         </com.google.android.material.tabs.TabLayout>
 

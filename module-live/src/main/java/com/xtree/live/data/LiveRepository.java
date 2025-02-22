@@ -117,10 +117,6 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     public Flowable<BaseResponse<List<FrontLivesResponse>>> getFrontLives(FrontLivesRequest request) {
         return mHttpDataSource.getFrontLives(request);
     }
-    @Override
-    public Flowable<BaseResponse<LiveRoomBean>> getRoomInfo(RoomInfoRequest request) {
-        return mHttpDataSource.getRoomInfo(request);
-    }
 
     /**
      * 获取主播列表

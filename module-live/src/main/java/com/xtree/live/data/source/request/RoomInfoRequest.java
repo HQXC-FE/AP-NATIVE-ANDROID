@@ -1,6 +1,10 @@
 package com.xtree.live.data.source.request;
 
 public class RoomInfoRequest {
+    public RoomInfoRequest(int uid, String channel_code) {
+        this.uid = uid;
+        this.channel_code = channel_code;
+    }
 
     private int uid;
     private String channel_code;

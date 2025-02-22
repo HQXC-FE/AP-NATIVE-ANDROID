@@ -134,20 +134,6 @@ public class HttpDataSourceImpl implements HttpDataSource {
     }
 
     /**
-     *     //主播房间资讯
-     *     // DESCRIPTION 进入某一房间前获得该房间资讯
-     * @param request
-     * @return
-     */
-    @Override
-    public Flowable<BaseResponse<LiveRoomBean>> getRoomInfo(RoomInfoRequest request) {
-        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
-        return liveService.get(APIManager.ANCHOR_ROOM_INFO, map).map(responseBody -> JSON.parseObject(responseBody.string(),
-                new TypeReference<BaseResponse<LiveRoomBean>>() {
-                }));
-    }
-
-    /**
      * 获取主播列表
      *
      * @param request

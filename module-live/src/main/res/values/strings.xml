@@ -3,4 +3,6 @@
     <string name="show_floating_window">显示悬浮窗口</string>
     <string name="dismiss_floating_window">隐藏悬浮窗口</string>
     <string name="floatingwindow_app_name">floatingwindow</string>
+    <string name="chat_private_with_host">主播私聊</string>
+    <string name="live_chat">聊天</string>
 </resources>

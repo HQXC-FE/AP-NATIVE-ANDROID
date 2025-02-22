@@ -1,32 +1,49 @@
 package com.xtree.live.ui.main.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.blankj.utilcode.util.DeviceUtils;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
+import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.databinding.FragmentLiveDetailHomeBinding;
+import com.xtree.live.inter.LiveDetailMainView;
+import com.xtree.live.inter.PVid;
+import com.xtree.live.inter.UnreadChanged;
+import com.xtree.live.message.ChatBarMode;
+import com.xtree.live.message.ExpandLiveInfo;
+import com.xtree.live.message.MessageMsg;
 import com.xtree.live.message.RoomType;
-
-import java.util.ArrayList;
+import com.xtree.live.message.SimpleMessageListener;
+import com.xtree.live.message.inroom.GlobalRoom;
+import com.xtree.live.message.inroom.PrivateRoom;
+import com.xtree.live.socket.ChatWebSocketManager;
+import com.xtree.live.uitl.ActionGetter;
+import com.xtree.live.uitl.UnreadUtils;
+import com.xtree.live.uitl.WordUtil;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 
-public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeBinding, BaseViewModel> {
+public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeBinding, BaseViewModel> implements LiveDetailMainView, ExpandLiveInfo, UnreadChanged, PVid {
 
-    int
+    private int mUid, matchType, matchId;
+    private String mVid, pVid;
+    private int mCurrentPosition;
+
+    private FragmentManager childFragmentManager;
 
     public static LiveDetailHomeFragment newInstance(int anchorId, String vId, String privateVid, int matchType, int matchId) {
         LiveDetailHomeFragment fragment = new LiveDetailHomeFragment();
@@ -52,90 +69,40 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
 
     @Override
     public void initView() {
-        initViewPager2();
+        if (getArguments() != null) {
+            mUid = getArguments().getInt("uid");
+            mVid = getArguments().getString("vid");
+            pVid = getArguments().getString("pVid");
+            matchType = getArguments().getInt("match_type");
+            matchId = getArguments().getInt("match_id");
+        }
+        ChatWebSocketManager.getInstance().registerMessageListener(messageListener);
+        initTab();
+
     }
 
-    private void initViewPager2() {
-        ArrayList<String> fragmentTypes = new ArrayList<>();
+    @Override
+    public void onResume() {
+        super.onResume();
+        unreadChanged();
+    }
 
-        //-1 全部  0足球  1篮球  2 其他  3电竞
-        int matchId = matchId();
-        int matchType = matchType();
-        if (matchType == MatchType.FOOTBALL) {
-            fragmentTypes.add("football_status");
-            fragmentTypes.add("football_predicate");
-        } else if (matchType == MatchType.BASKETBALL) {
-            fragmentTypes.add("basketball_status");
-            fragmentTypes.add("basketball_predicate");
-        } else if (matchType == MatchType.ESPORTS) {
-            fragmentTypes.add("esport_predicate");
+    private void initTab() {
+        String[] tabTitles = getResources().getStringArray(R.array.live_title);
+        for (int i = 0; i < tabTitles.length; i++) {
+            binding.tabLayout.addTab(binding.tabLayout.newTab().setText(tabTitles[i]).setTag(i));
         }
-        fragmentTypes.add("live_ranking");
-        fragmentTypes.add("live_preview");
-        if(DeviceUtils.isTablet()){
-            mBinding.tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-        }else {
-            mBinding.tabLayout.setTabGravity(TabLayout.GRAVITY_START);
-        }
-        mBinding.viewpager.setOffscreenPageLimit(fragmentTypes.size());
-        mBinding.viewpager.setAdapter(new FragmentStateAdapter(this) {
-            @NonNull
-            @Override
-            public Fragment createFragment(int position) {
-                switch (fragmentTypes.get(position)) {
-                    case "chat_global"://广场
-                        GlobalRoom room = new GlobalRoom(RoomType.PAGE_CHAT_GLOBAL, vid(), "");
-                        room.uid = uid();
-                        return ChatFragment.newInstance(RoomType.PAGE_CHAT_GLOBAL, room.uid, room.vid, ChatBarMode.CHATBAR_MODE_NONE,room, "", "");
-                    case "chat_private"://主播私聊
-                        PrivateRoom pRoom = new PrivateRoom(RoomType.PAGE_CHAT_PRIVATE_ANCHOR, pVid(), "", 0);
-                        pRoom.isOnline = 0;
-                        return ChatFragment.newInstance(RoomType.PAGE_CHAT_PRIVATE_ANCHOR, uid(), pRoom.vid, ChatBarMode.CHATBAR_MODE_NONE, pRoom,"1", "" + uid());
-                    case "chat_list"://聊天
-                        return ChatRoomContainerFragment.newInstance(ChatBarMode.CHATBAR_MODE_LOW, "2", "" + uid());
-                    case "football_status":
-                    case "basketball_status":// 赛况
-                        return MatchStatusFragment.newInstanceLive(matchType, matchId);
-                    case "football_predicate":// 前瞻
-                        return PredicateSportFragment.newInstance(202, matchId);
-                    case "basketball_predicate":
-                        return PredicateSportFragment.newInstance(201, matchId);
-                    case "esport_predicate":
-                        return ESportPredicateFragment.newInstance(1, matchId);
-                    case "live_ranking":// 排行榜
-                        return RankingViewPagerFragment.newInstance(uid());
-                    case "live_preview":// 预告
-                        return PreviewFragment.newInstance(uid());
-                    case "live_activity"://活动
-                        return ActivityFragment.newInstance(uid(), matchId());
-                }
-                return new Fragment();
-            }
 
-            @Override
-            public int getItemCount() {
-                return fragmentTypes.size();
-            }
-
-            @Override
-            public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-                super.onAttachedToRecyclerView(recyclerView);
-                recyclerView.setItemViewCacheSize(fragmentTypes.size());
-            }
-        });
-        mBinding.viewpager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-            }
-        });
-        mBinding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                mCurrentPosition = tab.getPosition();
+                replaceFragment(mCurrentPosition);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+
             }
 
             @Override
@@ -143,53 +110,127 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
 
             }
         });
+    }
 
-        TabLayoutMediator mediator = new TabLayoutMediator(mBinding.tabLayout, mBinding.viewpager,false, false,  (tab, position) -> {
-            String fragmentType = fragmentTypes.get(position);
-//            if ("chat_private".equals(fragmentType) || "chat_list".equals(fragmentType) ) {
-//                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-//                badgeDrawable.setVisible(false);
-//                if ("chat_list".equals(fragmentType)) {
-//                    showBadge(tab, totalUnread());
-//                }
-//                if ("chat_private".equals(fragmentType)) {
-//                    showBadge(tab, privateUnread());
+    private void replaceFragment(int mCurrentPosition) {
+        if (childFragmentManager == null) {
+            childFragmentManager = getChildFragmentManager();
+        }
+        FragmentTransaction fragmentTransaction = childFragmentManager.beginTransaction();
+
+        // 顺序是 广场-投注-主播私聊-主播助理
+        //对应的fragment分别是 chatFragment bet
+        if (mCurrentPosition == 1) {
+            Fragment liveBetFragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_BET).navigation();
+            fragmentTransaction.replace(R.id.home_content, liveBetFragment);
+        } else if (mCurrentPosition == 3) {
+            Fragment rechargeFragment = (BaseFragment) new Fragment();
+            fragmentTransaction.replace(R.id.home_content, rechargeFragment);
+        } else if (mCurrentPosition == 2) {// 主播私聊
+            PrivateRoom pRoom = new PrivateRoom(RoomType.PAGE_CHAT_PRIVATE_ANCHOR, pVid(), "", 0);
+            pRoom.isOnline = 0;
+
+            Fragment chatFragment = (BaseFragment) ARouter.getInstance()
+                    .build(RouterFragmentPath.Live.PAGER_LIVE_CHAT)
+                    .withInt("roomType", RoomType.PAGE_CHAT_PRIVATE_ANCHOR)
+                    .withInt("uid", mUid)
+                    .withString("vid", pVid())
+                    .withInt("chatBarMode", ChatBarMode.CHATBAR_MODE_NONE)
+                    .withParcelable("roomInfo", pRoom)
+                    .withString("pm_source_type", "1")
+                    .withString("pm_source_type_str", "" + mUid)
+                    .navigation();
+            fragmentTransaction.replace(R.id.home_content, chatFragment);
+        } else {//广场
+            GlobalRoom room = new GlobalRoom(RoomType.PAGE_CHAT_GLOBAL, mVid, "");
+            room.uid = mUid;
+            Fragment chatFragment = (BaseFragment) ARouter.getInstance().
+                    build(RouterFragmentPath.Live.PAGER_LIVE_CHAT)
+                    .withInt("roomType", RoomType.PAGE_CHAT_PRIVATE_ANCHOR)
+                    .withInt("uid", mUid)
+                    .withString("vid", mVid)
+                    .withInt("chatBarMode", ChatBarMode.CHATBAR_MODE_NONE)
+                    .withParcelable("roomInfo", room)
+                    .withString("pm_source_type", "")
+                    .withString("pm_source_type_str", "")
+                    .navigation();
+
+            fragmentTransaction.replace(R.id.home_content, chatFragment);
+        }
+
+
+    }
+
+    private final SimpleMessageListener messageListener = new SimpleMessageListener(){
+        @Override
+        public void onReceiveUnreadMessage(MessageMsg message) {
+//            if(message.getIsVir() == 1){//虚拟房间
+//                if (RoomType.PAGE_CHAT_PRIVATE == message.getRoomType() && AppConfig.isNotificationBeepOn()) {
+//                    LogUtil.d(TAG, "-------play new msg----");
+//                    MediaUtil.playNotificationBeep(AppManager.getContext(), R.raw.strong_notification);
 //                }
 //            }
-            String title = "";
-            switch (fragmentType) {
-                case "chat_global":
-                    title = WordUtil.getString(R.string.chat_global);
-                    break;
-                case "chat_private":
-                    title = WordUtil.getString(R.string.chat_private_with_host);
-                    break;
-                case "chat_list":
-                    title = WordUtil.getString(R.string.live_chat);
-                    break;
-                case "football_status":
-                case "basketball_status":
-                    title = WordUtil.getString(R.string.match_status);
-                    break;
-                case "football_predicate":
-                case "esport_predicate":
-                case "basketball_predicate":
-                    title = WordUtil.getString(R.string.predicte);
-                    break;
-                case "live_activity":
-                    title = WordUtil.getString(R.string.live_activity);
-                    break;
-                case "live_ranking":
-                    title = WordUtil.getString(R.string.live_ranking);
-                    break;
-                case "live_preview":
-                    title = WordUtil.getString(R.string.live_preview);
-                    break;
+            onGetUnreadCount(UnreadUtils.calculateTotal(), Math.abs(UnreadUtils.getUnreadCount(pVid())));
+        }
+    };
 
+
+    @Override
+    public void showLiveInfo() {
+        ExpandLiveInfo expand = ActionGetter.getExpandLiveInfo(this);
+        if(expand != null)expand.showLiveInfo();
+        binding.tabLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLiveInfo() {
+        ExpandLiveInfo expand = ActionGetter.getExpandLiveInfo(this);
+        if(expand != null)expand.hideLiveInfo();
+        binding.tabLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onGetUnreadCount(int total, int pCount) {
+        for (int i = 0; i < binding.tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = binding.tabLayout.getTabAt(i);
+            if(tab ==null)return;
+            if(TextUtils.isEmpty(tab.getText()))return;
+            String tabText = tab.getText().toString();
+            if(WordUtil.getString(R.string.chat_private_with_host).equals(tabText)){
+                showBadge(tab, pCount);
+            }else if(WordUtil.getString(R.string.live_chat).equals(tabText)){
+                showBadge(tab, total);
             }
-            tab.setText(title);
-        });
-        mediator.attach();
+        }
+    }
+
+    @Override
+    public String pVid() {
+        return pVid;
+    }
+
+    @Override
+    public void setPVid(String pVid) {
+        getArguments().putString("pVid", pVid);
+    }
+
+    @Override
+    public void unreadChanged() {
+        onGetUnreadCount(UnreadUtils.calculateTotal(), UnreadUtils.getUnreadCount(pVid()));
+    }
+
+    private void showBadge(TabLayout.Tab tab, int total) {
+        BadgeDrawable badge = tab.getOrCreateBadge();
+        badge.setMaxCharacterCount(3);
+        badge.setBadgeGravity(BadgeDrawable.TOP_END);
+        if (total == 0) {
+            badge.setVisible(false);
+        } else {
+            int displayCount = UnreadUtils.showRealUnreadCount(total);
+            badge.setBadgeTextColor(Color.TRANSPARENT);
+            badge.setVisible(true);
+            badge.setNumber(displayCount);
+        }
     }
 
 }

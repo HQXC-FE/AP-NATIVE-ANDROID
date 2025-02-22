@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.gyf.immersionbar.ImmersionBar;
 import com.trello.rxlifecycle4.components.support.RxFragment;
 
@@ -44,6 +45,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         KLog.i("****** " + getClass().getSimpleName());
+        ARouter.getInstance().inject(this);
         initParam();
     }
 

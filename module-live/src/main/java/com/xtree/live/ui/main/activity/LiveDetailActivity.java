@@ -36,9 +36,7 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
     String vid;
 
     private int mType = -1;
-    private int mCurrentPosition;
     LiveDetailHomeFragment mLiveDetailFragment;
-    private FragmentManager childFragmentManager;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -53,57 +51,19 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
     @Override
     public void initView() {
 
-//        initTab();
-        initPresent();
         initObservable();
+    }
+
+    @Override
+    public void initData() {
+        super.initData();
+        initPresent();
     }
 
     private void initPresent() {
         //获取当前直播间详情
         viewModel.getRoomInfo(uid);
     }
-
-    /*private void initTab() {
-        String[] tabTitles = getResources().getStringArray(R.array.live_title);
-        for (int i = 0; i < tabTitles.length; i++) {
-            binding.tabLayout.addTab(binding.tabLayout.newTab().setText(tabTitles[i]).setTag(i));
-        }
-
-        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                mCurrentPosition = tab.getPosition();
-                replaceFragment(mCurrentPosition);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-    }*/
-
-   /* private void replaceFragment(int mCurrentPosition) {
-        if(childFragmentManager == null){
-            childFragmentManager = getCh
-        }
-        // 顺序是 广场-投注-主播私聊-主播助理
-        //对应的fragment分别是 chatFragment bet
-        if(mCurrentPosition==1){
-            Fragment liveBetFragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_BET).navigation();
-        } else if(mCurrentPosition == 3 ){
-            Fragment rechargeFragment = (BaseFragment)new Fragment();
-        } else {
-            Fragment chatFragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_CHAT).navigation();
-        }
-
-
-    }*/
 
     private void initObservable() {
         //首先获取到直播间的信息，这个直播详情也需要这个数据

@@ -53,9 +53,6 @@ public interface HttpDataSource {
      */
     Flowable<BaseResponse<List<FrontLivesResponse>>> getFrontLives(FrontLivesRequest request);
 
-    Flowable<BaseResponse<LiveRoomBean>> getRoomInfo(RoomInfoRequest request);
-
-
     /**
      * 获取主播列表
      *
