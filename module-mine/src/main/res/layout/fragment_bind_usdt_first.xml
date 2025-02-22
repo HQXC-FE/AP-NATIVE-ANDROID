@@ -75,6 +75,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    android:maxLines="1"
                     android:text="ERC20_USDT" />
                 <TextView
                     android:id="@+id/tvwTRC20"
@@ -83,7 +84,25 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:text="TRC20_USDT"
+                    android:maxLines="1"
                   />
+                <TextView
+                    android:id="@+id/tvwArbitrum"
+                    style="@style/style_first_bind_usdt_selector_off"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:text="Arbitrum" />
+                <TextView
+                    android:id="@+id/tvwSolana"
+                    style="@style/style_first_bind_usdt_selector_off"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="Solana"
+                    android:maxLines="1"
+                    />
             </LinearLayout>
 
             <TextView
