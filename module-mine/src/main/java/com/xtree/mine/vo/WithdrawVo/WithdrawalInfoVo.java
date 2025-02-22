@@ -8,6 +8,8 @@ import me.xtree.mvvmhabit.http.BaseResponse2;
  * 提款渠道详情
  */
 public class WithdrawalInfoVo{
+    //"chain": "TRC20_USDT" 表示user_bank_info字段中usdt_type字段对应的"TRC20_USDT"的提款地址可使用
+    public String chain;
     public String code;
     public String fast_iframe_url;//第三方支付 不为空时候加载web页面
 
