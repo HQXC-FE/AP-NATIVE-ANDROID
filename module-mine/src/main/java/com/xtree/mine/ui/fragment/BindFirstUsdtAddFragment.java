@@ -65,10 +65,18 @@ public class BindFirstUsdtAddFragment extends BaseFragment<FragmentBindUsdtFirst
 
         binding.tvwERC20.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+
                 binding.tvwERC20.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector);
                 binding.tvwERC20.setTextColor(getContext().getColor(R.color.white));
                 binding.tvwTRC20.setBackgroundResource(R.drawable.btn_first_bind_usdt_selector_off);
                 binding.tvwTRC20.setTextColor(getContext().getColor(R.color.clr_txt_title));
+
+                binding.tvwArbitrum.setBackgroundResource(R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwArbitrum.setTextColor(getContext().getColor(R.color.clr_txt_title));
+                binding.tvwSolana.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwSolana.setTextColor(getContext().getColor(R.color.clr_txt_title));
+
             }
 
             binding.tvwTipAddress.setText(R.string.txt_remind_usdt_erc20);
@@ -82,10 +90,48 @@ public class BindFirstUsdtAddFragment extends BaseFragment<FragmentBindUsdtFirst
                 binding.tvwERC20.setTextColor(getContext().getColor(R.color.clr_txt_title));
                 binding.tvwTRC20.setBackgroundResource(R.drawable.btn_first_bind_usdt_selector);
                 binding.tvwTRC20.setTextColor(getContext().getColor(R.color.white));
+
+                binding.tvwArbitrum.setBackgroundResource(R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwArbitrum.setTextColor(getContext().getColor(R.color.clr_txt_title));
+                binding.tvwSolana.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwSolana.setTextColor(getContext().getColor(R.color.clr_txt_title));
             }
             binding.tvwTipAddress.setText(R.string.txt_remind_usdt_trc20);
             binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_trc20);
             type ="TRC20_USDT" ;
+        });
+        binding.tvwArbitrum.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                binding.tvwERC20.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwERC20.setTextColor(getContext().getColor(R.color.clr_txt_title));
+                binding.tvwTRC20.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwTRC20.setTextColor(getContext().getColor(R.color.clr_txt_title));
+
+                binding.tvwArbitrum.setBackgroundResource(R.drawable.btn_first_bind_usdt_selector);
+                binding.tvwArbitrum.setTextColor(getContext().getColor(R.color.white));
+                binding.tvwSolana.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwSolana.setTextColor(getContext().getColor(R.color.clr_txt_title));
+
+            }
+            binding.tvwTipAddress.setText(R.string.txt_remind_usdt_arbitrum);
+            binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_arbitrum);
+            type ="Arbitrum" ;
+        });
+        binding.tvwSolana.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                binding.tvwERC20.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwERC20.setTextColor(getContext().getColor(R.color.clr_txt_title));
+                binding.tvwTRC20.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwTRC20.setTextColor(getContext().getColor(R.color.clr_txt_title));
+
+                binding.tvwArbitrum.setBackgroundResource(R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwArbitrum.setTextColor(getContext().getColor(R.color.clr_txt_title));
+                binding.tvwSolana.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector);
+                binding.tvwSolana.setTextColor(getContext().getColor(R.color.white));
+            }
+            binding.tvwTipAddress.setText(R.string.txt_remind_usdt_solana);
+            binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_solana);
+            type ="Solana" ;
         });
 
         binding.ivwNext.setOnClickListener(v -> {

@@ -1691,13 +1691,13 @@
     </style>
     <!-- 通用 按钮 左右两边圆弧形的 -->
     <style name="style_first_bind_usdt_selector_on">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">120dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/btn_first_bind_usdt_selector</item>
-        <item name="android:padding">12dp</item>
+        <item name="android:padding">8dp</item>
         <item name="android:gravity">center</item>
         <item name="android:text"></item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/clr_white</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:shadowDx">0</item>
@@ -1706,13 +1706,13 @@
     </style>
 
     <style name="style_first_bind_usdt_selector_off">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">120dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/btn_first_bind_usdt_selector_off</item>
-        <item name="android:padding">12dp</item>
+        <item name="android:padding">8dp</item>
         <item name="android:gravity">center</item>
         <item name="android:text"></item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/clr_txt_title</item>
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:shadowDx">0</item>
