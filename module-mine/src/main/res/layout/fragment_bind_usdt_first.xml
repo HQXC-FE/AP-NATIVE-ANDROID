@@ -62,48 +62,50 @@
                     style="@style/style_cm_tip_small_orange"
                     android:text="@string/txt_note_asterisks_cannot_empty" />
             </LinearLayout>
-
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@color/white"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/tvwERC20"
-                    style="@style/style_first_bind_usdt_selector_on"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:maxLines="1"
-                    android:text="ERC20_USDT" />
-                <TextView
-                    android:id="@+id/tvwTRC20"
-                    style="@style/style_first_bind_usdt_selector_off"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="TRC20_USDT"
-                    android:maxLines="1"
-                  />
-                <TextView
-                    android:id="@+id/tvwArbitrum"
-                    style="@style/style_first_bind_usdt_selector_off"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:maxLines="1"
-                    android:text="Arbitrum" />
-                <TextView
-                    android:id="@+id/tvwSolana"
-                    style="@style/style_first_bind_usdt_selector_off"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="Solana"
-                    android:maxLines="1"
-                    />
-            </LinearLayout>
+                android:layout_height="wrap_content" >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@color/white"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/tvwERC20"
+                            style="@style/style_first_bind_usdt_selector_on"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginRight="4dp"
+                            android:layout_weight="1"
+                            android:maxLines="1"
+                            android:text="ERC20_USDT"
+                            android:maxLength="12"/>
+                        <TextView
+                            android:id="@+id/tvwTRC20"
+                            style="@style/style_first_bind_usdt_selector_off"
+                            android:layout_weight="1"
+                            android:text="TRC20_USDT"
+                            android:maxLines="1"
+                            android:layout_marginRight="4dp"
+                            />
+                        <TextView
+                            android:id="@+id/tvwArbitrum"
+                            style="@style/style_first_bind_usdt_selector_off"
+                            android:layout_marginRight="4dp"
+                            android:layout_weight="1"
+                            android:maxLines="1"
+                            android:text="Arbitrum" />
+                        <TextView
+                            android:id="@+id/tvwSolana"
+                            style="@style/style_first_bind_usdt_selector_off"
+                            android:layout_weight="1"
+                            android:text="Solana"
+                            android:maxLines="1"
+                            android:layout_marginRight="4dp"
+                            />
+                    </LinearLayout>
+            </ScrollView>
+
 
             <TextView
                 style="@style/style_bind_title"
