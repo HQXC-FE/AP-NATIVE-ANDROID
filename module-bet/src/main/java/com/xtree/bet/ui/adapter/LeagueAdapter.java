@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     private String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
     private int liveHeaderPosition;
     private int noLiveHeaderPosition;
+    private int seconed = 0;
 
     private PageHorizontalScrollView.OnScrollListener mOnScrollListener;
 
@@ -224,8 +226,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             binding.llHeader.setVisibility(View.GONE);
             binding.rlLeague.setVisibility(View.VISIBLE);
             binding.tvLeagueName.setText(league.getLeagueName());
-            Glide.with(mContext)
-                    .load(league.getIcon())
+            Glide.with(mContext).load(league.getIcon())
                     //.apply(new RequestOptions().placeholder(placeholderRes))
                     .into(binding.ivIcon);
             binding.vSpace.setVisibility(isExpanded ? View.GONE : View.VISIBLE);
@@ -576,6 +577,98 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         public ChildHolder(View view) {
             itemView = view;
         }
+    }
+
+
+
+    public void updateVisibleItems(ExpandableListView listView) {
+        listView.post(() -> {
+            System.out.println("=========== updateVisibleItems ===============");
+            int first = listView.getFirstVisiblePosition();
+            int last = listView.getLastVisiblePosition();
+
+            for (int i = first; i <= last; i++) {
+                long packedPosition = listView.getExpandableListPosition(i);
+                int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
+                int childPosition = ExpandableListView.getPackedPositionChild(packedPosition);
+                System.out.println("=========== ***** updateVisibleItems 222 ***** ===============");
+                if (groupPosition < getGroupCount()) {
+                    View view = listView.getChildAt(i - first);
+                    if (view != null) {
+                        TextView tvMatchTime = view.findViewById(R.id.tv_match_time);
+                        if (tvMatchTime != null) {
+                            Match match = (Match) getChild(groupPosition, childPosition);
+                            if (match != null) {
+                                String mc = match.getStage();
+                                System.out.println("=========== mc ==============="+match.getStage());
+                                if (TextUtils.equals(Constants.getFbSportId(), match.getSportId()) || TextUtils.equals(Constants.getBsbSportId(), match.getSportId())) { // 足球和篮球
+                                    if (mc.contains("休息") || mc.contains("结束")) {
+                                        tvMatchTime.setText(match.getStage());
+                                    } else {
+                                        int normalTime = 0;
+                                        if(tvMatchTime.getTag(R.id.tag_normal_time) != null){
+                                            normalTime = (int) tvMatchTime.getTag(R.id.tag_normal_time);
+                                        }
+                                        System.out.println("=========== ***** 比赛时间 ***** ==============="+mc + " " + match.getTime());
+                                        if(match.getSportId().equals("1")){ //足球
+                                            System.out.println("=========== 足球 normalTime ==============="+normalTime);
+                                            System.out.println("=========== 接口 match.getTimeS() ==============="+match.getTimeS());
+                                            if(normalTime != match.getTimeS()){ //接口时间变更对比
+                                                tvMatchTime.setTag(R.id.tag_normal_time,match.getTimeS());
+                                                tvMatchTime.setTag(R.id.tag_add_time,0);
+                                                System.out.println("=========== 接口时间变更 ==============="+normalTime);
+                                                tvMatchTime.setText(mc + " " + formatTime(match.getTimeS()));
+                                            }else{
+                                                //int seconed = 0;
+                                                if(tvMatchTime.getTag(R.id.tag_add_time) != null){
+                                                    seconed = (int) tvMatchTime.getTag(R.id.tag_add_time);
+                                                    seconed = seconed + 1;
+                                                    System.out.println("=========== 增加时间 ==============="+tvMatchTime.getTag(R.id.tag_add_time));
+                                                    tvMatchTime.setTag(R.id.tag_add_time,seconed);
+                                                    int currentTime = match.getTimeS() + seconed;
+                                                    tvMatchTime.setText(mc + " " + formatTime(currentTime));
+                                                    System.out.println("=========== 添加时间 ==============="+formatTime(currentTime));
+                                                }else{
+                                                    System.out.println("=========== 正常时间 ==============="+formatTime(match.getTimeS()));
+                                                    tvMatchTime.setText(mc + " " + formatTime(match.getTimeS()));
+                                                }
+
+                                            }
+                                        }else if(match.getSportId().equals("2")){ //篮球
+                                            if(tvMatchTime.getTag(R.id.tag_normal_time) != tvMatchTime){
+                                                tvMatchTime.setText(mc + " " + match.getTime());
+                                                tvMatchTime.setTag(R.id.tag_add_time,0);
+                                            }else{
+                                                tvMatchTime.setTag(R.id.tag_normal_time,match.getTimeS());
+                                                int seconed = (int) tvMatchTime.getTag(R.id.tag_add_time);
+                                                seconed = seconed - 1;
+                                                tvMatchTime.setTag(R.id.tag_add_time,seconed);
+                                                int currentTime = match.getTimeS() + seconed;
+                                                tvMatchTime.setText(mc + " " + formatTime(currentTime));
+                                            }
+                                        }else{ //其它
+                                            System.out.println("=========== Other  ==============="+mc + " " + match.getTime());
+                                            tvMatchTime.setText(mc + " " + formatTime(match.getTimeS()));
+                                        }
+                                    }
+
+                                } else {
+                                    System.out.println("=========== Spcial ==============="+mc + " " + match.getTime());
+                                    tvMatchTime.setText(match.getStage());
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        });
+    }
+
+    public static String formatTime(int totalSeconds) {
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%02d : %02d", minutes, seconds);
     }
 
 }

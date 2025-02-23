@@ -11,6 +11,7 @@ import android.animation.ObjectAnimator;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -121,6 +122,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private List<Long> mLeagueIdList = new ArrayList<>();
 
     private Disposable timerDisposable;
+    //private Disposable matchTimerDisposable;
     private Disposable firstNetworkFinishedDisposable;
     private Disposable firstNetworkExceptionDisposable;
 
@@ -981,10 +983,26 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
+                    System.out.println("================== MainActivity initTimer ===================");
                     refreshLeague();
                     viewModel.statistical(playMethodType);
                 });
         viewModel.addSubscribe(timerDisposable);
+    }
+
+    private void initMatchTimer() { //比赛时间记时
+//        if (matchTimerDisposable != null) {
+//            viewModel.removeSubscribe(matchTimerDisposable);
+//        }
+//        matchTimerDisposable = Observable.interval(0, 1, TimeUnit.SECONDS)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(aLong -> {
+//                    System.out.println("================== MainActivity initMatchTimer ===================");
+//                    mLeagueAdapter.updateVisibleItems(binding.rvLeague);
+//
+//                });
+//        viewModel.addSubscribe(matchTimerDisposable);
     }
 
     /**
@@ -1243,6 +1261,8 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     protected void onResume() {
         super.onResume();
         initTimer();
+        initMatchTimer();
+        startStopwatch();
         setCgBtCar();
         if (mLeagueAdapter != null) {
             mLeagueAdapter.notifyDataSetChanged();
@@ -1252,13 +1272,16 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     @Override
     protected void onStop() {
         super.onStop();
+        stopStopwatch();
         viewModel.removeSubscribe(timerDisposable);
+        //viewModel.removeSubscribe(matchTimerDisposable);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         BtCarManager.destroy();
+        stopStopwatch();
         SPUtils.getInstance(BET_EXPAND).clear();
         mBettingNetFloatingWindows.removeView();
         mBettingNetFloatingWindows.clearInstance();
@@ -1695,46 +1718,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             return;
         }
         List<SportTypeItem> list = mStatisticalData.get(String.valueOf(playMethodType));
-        //CfLog.i("playMethodType1     " + playMethodType + "   " + new Gson().toJson(mStatisticalData));
-        //CfLog.i("playMethodType1     " + mSportName);
 
-        //List<SportTypeItem> newList = new ArrayList<>();
-        //
-        //int allCount = 0;
-        //HashMap<Integer, SportTypeItem> matchGames = viewModel.getMatchGames();
-        //
-        //for (int i = 0; i < list.size(); i++) {
-        //    Integer count = list.get(i).num;
-        //    if (count != null) {
-        //        if (count == 0 && i != 0) {
-        //            continue;
-        //        }
-        //        SportTypeItem item = list.get(i);
-        //        item.name = matchGames.get(item.id).name;
-        //        if (item.name.equals(mSportName)) {
-        //            item.isSelected = true;
-        //        } else {
-        //            item.isSelected = false;
-        //        }
-        //        item.iconId = Constants.SPORT_ICON[i];
-        //        newList.add(item);
-        //    } else {
-        //        break;
-        //    }
-        //
-        //    if (playMethodPos == 1) {
-        //        if (i == 0) {
-        //            continue;
-        //        }
-        //        CfLog.i("allCount     " + allCount);
-        //        allCount += count;
-        //    }
-        //}
-        //
-        //if (playMethodPos == 1) {
-        //    CfLog.i("allCount     " + allCount);
-        //    newList.get(0).num = allCount;
-        //}
         if (playMethodPos == 0 || playMethodPos == 3) {
             if (list != null && list.get(0) != null) {
                 list.get(0).num = mHotMatchCount;
@@ -1892,4 +1876,36 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         getMatchData(String.valueOf(getSportId()), mOrderBy, mLeagueIdList, null,
                 playMethodType, searchDatePos, false, false);
     }
+
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private int elapsedTime = 0; // 记录已经经过的时间（秒）
+
+    private Runnable stopwatchRunnable = new Runnable() {
+        @Override
+        public void run() {
+            elapsedTime++;
+            if(mLeagueAdapter != null){
+                mLeagueAdapter.updateVisibleItems(binding.rvLeague);
+            }
+            handler.postDelayed(this, 1000); // 每秒更新一次
+        }
+    };
+
+    // 启动记时
+    private void startStopwatch() {
+        handler.post(stopwatchRunnable);
+    }
+
+    // 停止记时（防止内存泄漏）
+    private void stopStopwatch() {
+        handler.removeCallbacks(stopwatchRunnable);
+    }
+
+    // 重置记时
+    private void resetStopwatch() {
+        stopStopwatch();
+        elapsedTime = 0;
+    }
+
+
 }
