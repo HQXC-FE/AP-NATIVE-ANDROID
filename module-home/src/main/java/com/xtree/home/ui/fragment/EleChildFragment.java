@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.xtree.base.adapter.CacheViewHolder;
 import com.xtree.base.adapter.CachedAutoRefreshAdapter;
-import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
@@ -28,11 +27,7 @@ import com.xtree.home.databinding.FragmentEleChildBinding;
 import com.xtree.home.ui.viewmodel.HomeViewModel;
 import com.xtree.home.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.home.vo.Ele;
-import com.xtree.home.vo.EleVo;
 import com.xtree.home.vo.GameVo;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
 
@@ -98,7 +93,7 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
                 Ele vo1 = get(position);
                 //CfLog.i(vo1.toString());
                 Glide.with(EleChildFragment.this.requireContext())
-                        .load(DomainUtil.getDomain2() + vo1.getPicture())
+                        .load(DomainUtil.getApiUrl() + vo1.getPicture())
                         .placeholder(R.mipmap.cm_placeholder_image)
                         .into(binding.ibGame);
                 binding.tvGame.setText(vo1.getName());
@@ -109,7 +104,7 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
                     }
                     String eventName = gameVo.name.length() > 2 ? gameVo.name.substring(0, 2) : "gm2";
                     TagUtils.tagEvent(getContext(), eventName, vo1.getId()); // 打点
-                    BrowserActivity.start(getContext(), gameVo.name, DomainUtil.getDomain() + gameVo.playURL + vo1.getId(), false, true);
+                    BrowserActivity.start(getContext(), gameVo.name, DomainUtil.getApiUrl() + "/" + gameVo.playURL + vo1.getId(), false, true);
                 });
             }
 
