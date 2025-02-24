@@ -20,6 +20,7 @@ import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.LoadingDialog;
 import com.xtree.home.BR;
 import com.xtree.home.R;
 import com.xtree.home.databinding.EleItemBinding;
@@ -31,21 +32,21 @@ import com.xtree.home.vo.EleVo;
 import com.xtree.home.vo.GameVo;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
 
 public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, HomeViewModel> {
 
     private int position;
-    private EleVo eleVo;
+    private int curPage = 1;
     private GameVo gameVo;
     private CachedAutoRefreshAdapter<Ele> adapter;
 
-    public static EleChildFragment newInstance(int position, EleVo eleVo, GameVo vo) {
+    public static EleChildFragment newInstance(int position, GameVo vo) {
         EleChildFragment fragment = new EleChildFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("position", position);
-        bundle.putParcelable("eleVo", eleVo);
         bundle.putParcelable("gameVo", vo);
         fragment.setArguments(bundle);
         return fragment;
@@ -75,11 +76,15 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
             return;
         }
         position = getArguments().getInt("position");
-        eleVo = getArguments().getParcelable("eleVo");
         gameVo = getArguments().getParcelable("gameVo");
 
+        binding.refreshLayout.setEnableRefresh(false);
+        binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            requestData();
+        });
         binding.rvEleChild.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        binding.rvEleChild.addItemDecoration(new SpacesItemDecoration(15));
+        binding.rvEleChild.addItemDecoration(new SpacesItemDecoration(10));
+
         adapter = new CachedAutoRefreshAdapter<Ele>() {
             @NonNull
             @Override
@@ -91,7 +96,7 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
             public void onBindViewHolder(@NonNull CacheViewHolder holder, int position) {
                 EleItemBinding binding = EleItemBinding.bind(holder.itemView);
                 Ele vo1 = get(position);
-                CfLog.i(vo1.toString());
+                //CfLog.i(vo1.toString());
                 Glide.with(EleChildFragment.this.requireContext())
                         .load(DomainUtil.getDomain2() + vo1.getPicture())
                         .placeholder(R.mipmap.cm_placeholder_image)
@@ -102,7 +107,6 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
                     if (ClickUtil.isFastClick()) {
                         return;
                     }
-                    CfLog.i(vo1.toString());
                     String eventName = gameVo.name.length() > 2 ? gameVo.name.substring(0, 2) : "gm2";
                     TagUtils.tagEvent(getContext(), eventName, vo1.getId()); // 打点
                     BrowserActivity.start(getContext(), gameVo.name, DomainUtil.getDomain() + gameVo.playURL + vo1.getId(), false, true);
@@ -110,18 +114,35 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
             }
 
         };
-        if (position == 0) {
-            adapter.addAll(eleVo.getList());
-        } else {
-            ArrayList<Ele> hotList = new ArrayList();
-            for (Ele ele : eleVo.getList()) {
-                if (ele.is_hot().equals("true") || ele.is_hot().equals("1")) {
-                    hotList.add(ele);
-                }
-            }
-            adapter.addAll(hotList);
-        }
+        //第一次加载时，显示加载圈
+        LoadingDialog.show(requireContext());
+        requestData();
         binding.rvEleChild.setAdapter(adapter);
+    }
+
+    @Override
+    public void initViewObservable() {
+        super.initViewObservable();
+        viewModel.liveDataEle.observe(getViewLifecycleOwner(), eleVo -> {
+            if (eleVo.getList() == null || eleVo.getList().isEmpty()) {
+                if (curPage == 1) {
+                    binding.tvwNoData.setVisibility(View.VISIBLE);
+                }
+                binding.refreshLayout.finishLoadMoreWithNoMoreData();
+                return;
+            } else {
+                binding.refreshLayout.finishLoadMore();
+            }
+            adapter.addAll(eleVo.getList());
+            curPage += 1;
+        });
+    }
+
+    /**
+     * 加载更多
+     */
+    private void requestData() {
+        viewModel.getEle(gameVo.cid, curPage, 20, gameVo.cateId, position);
     }
 
     private static class SpacesItemDecoration extends RecyclerView.ItemDecoration {
