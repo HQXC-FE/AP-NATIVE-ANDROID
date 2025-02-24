@@ -297,6 +297,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
                     binding.tvBindAddress.setText(showAddress);
                 } else {
                     selectorBankInfo = null;
+                    binding.tvBindAddress.setText(" ");
                 }
             } else {
                 //收款地址 设置默认数据
