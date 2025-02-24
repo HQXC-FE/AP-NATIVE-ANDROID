@@ -9,10 +9,12 @@ import me.xtree.mvvmhabit.utils.Utils
  */
 object X9LiveInfo {
 
+    var uid: Int = 0
     var token = ""
     var sign = ""
     var visitor = ""
     var oaid = TagUtils.getDeviceId(Utils.getContext())
     var channel = ""
     var webApi = ""
+    var appApi = ""
 }

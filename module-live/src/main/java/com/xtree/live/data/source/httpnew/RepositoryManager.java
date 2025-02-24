@@ -1,6 +1,7 @@
 package com.xtree.live.data.source.httpnew;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.media3.common.C;
 
@@ -49,7 +50,8 @@ public class RepositoryManager {
 
     private RepositoryManager(Context context) throws Exception{
         this.mContext = context;
-        String  baseUrl = DomainUtil.getApiUrl();
+//        String  baseUrl = DomainUtil.getApiUrl();
+        String baseUrl = "https://zhibo-apps.oxldkm.com";
         //baseurl  最好是加密
         initRequestManager(baseUrl);
         // 检测 切换URL 的逻辑 可以在这里设置新的 URL
@@ -79,6 +81,7 @@ public class RepositoryManager {
         //留作将来 域名加密，解密用
         mApiRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .addConverterFactory(CipherConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
@@ -93,6 +96,7 @@ public class RepositoryManager {
 
         mJsonRetrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .addConverterFactory(CipherConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)

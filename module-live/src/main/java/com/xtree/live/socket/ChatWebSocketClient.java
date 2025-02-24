@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.hjq.gson.factory.GsonFactory;
 import com.xtree.live.BuildConfig;
+import com.xtree.live.chat.Helper;
 import com.xtree.live.chat.InRoomMessage;
 import com.xtree.live.chat.LeaveRoomMessage;
 import com.xtree.live.uitl.JsonUtil;
@@ -57,14 +58,14 @@ public class ChatWebSocketClient extends WebSocketClient implements ChatClient {
     public ChatWebSocketClient(URI serverUri, Map<String, String> headers, ChatWebSocketHandler handler) {
         super(serverUri, headers);
         mHandler = handler;
-//        if("wss".equals(serverUri.getScheme())) {
-//            try {
-//                Helper.PairSSL ssl = Helper.getPairSSL();
-//                setSocketFactory(ssl.getSslContext().getSocketFactory());
-//            } catch (Throwable e) {
-////                CrashReport.postCatchedException(e);
-//            }
-//        }
+        if("wss".equals(serverUri.getScheme())) {
+            try {
+                Helper.PairSSL ssl = Helper.getPairSSL();
+                setSocketFactory(ssl.getSslContext().getSocketFactory());
+            } catch (Throwable e) {
+//                CrashReport.postCatchedException(e);
+            }
+        }
     }
 
     @Override

@@ -21,7 +21,10 @@ public class LiveConfig {
         SPUtil.get(BaseApplication.getInstance()).put(SPKey.MMKV_KEY_BEEP, isChecked);
     }
 
-    public static String getAppToken() {
+    public static String getLiveToken() {
         return SPUtil.get(BaseApplication.getInstance()).get(SPKey.TOKEN, null);
+    }
+    public static void setLiveToken(String token){
+        SPUtil.get(BaseApplication.getInstance()).put(SPKey.TOKEN,token);
     }
 }

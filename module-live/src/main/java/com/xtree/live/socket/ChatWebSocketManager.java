@@ -9,21 +9,32 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 import com.shuyu.gsyvideoplayer.utils.NetworkUtils;
-import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.live.BuildConfig;
 import com.xtree.live.LiveConfig;
 import com.xtree.live.chat.InRoomMessage;
 import com.xtree.live.chat.LeaveRoomMessage;
 import com.xtree.live.message.MessageMsg;
 import com.xtree.live.message.RoomType;
+import com.xtree.live.uitl.BackoffUtil;
 import com.xtree.live.uitl.JsonUtil;
+import com.xtree.service.WebSocketManager;
+import com.xtree.service.WebSocketService;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import me.xtree.mvvmhabit.utils.Utils;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import okio.ByteString;
 
 public class ChatWebSocketManager {
     private static final int FLAG_GET_TOKEN = Integer.MAX_VALUE - 1;
@@ -57,7 +68,7 @@ public class ChatWebSocketManager {
 
     private volatile String mVid = "";
     private volatile @RoomType int mType;
-    private volatile String userToken = LiveConfig.getAppToken();
+    private volatile String userToken = LiveConfig.getLiveToken();
 
 
     //正在连接
@@ -134,11 +145,13 @@ public class ChatWebSocketManager {
         }
 
         try {
-            String baseUrl = DomainUtil.getApiUrl();
+            String baseUrl = X9LiveInfo.INSTANCE.getAppApi();
             Uri uri = Uri.parse(baseUrl);
             String scheme = "ws";
             if ("https".equals(uri.getScheme())) scheme = "wss";
-//            mChatClient = ChatClientFactory.createClient(mConnectionType, scheme, uri.getHost(), token, mHandler);
+            mChatClient = ChatClientFactory.createClient(mConnectionType, scheme, uri.getHost(), token, mHandler);
+            String url = scheme + "://" + uri.getHost() + "/wss/?userToken=" + token;
+            newWebsocket(url);
             mChatClient.connectSession();
             return true;
         } catch (Exception e) {
@@ -147,16 +160,60 @@ public class ChatWebSocketManager {
         }
     }
 
+    OkHttpClient client =new OkHttpClient.Builder()
+            .readTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(20,TimeUnit.SECONDS)
+                .build();
+    private void newWebsocket(String url) {
+        Request request = new Request.Builder().url(url).build();
+                client.newWebSocket(request, new WebSocketListener() {
+            @Override
+            public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
+                super.onClosed(webSocket, code, reason);
+            }
+
+            @Override
+            public void onClosing(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
+                super.onClosing(webSocket, code, reason);
+            }
+
+            @Override
+            public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable Response response) {
+                super.onFailure(webSocket, t, response);
+            }
+
+            @Override
+            public void onMessage(@NonNull WebSocket webSocket, @NonNull String text) {
+                super.onMessage(webSocket, text);
+                Log.d("WebSocketListener", "onMessage: text "+text);
+
+            }
+
+            @Override
+            public void onMessage(@NonNull WebSocket webSocket, @NonNull ByteString bytes) {
+                super.onMessage(webSocket, bytes);
+            }
+
+            @Override
+            public void onOpen(@NonNull WebSocket webSocket, @NonNull Response response) {
+                super.onOpen(webSocket, response);
+                Log.d("WebSocketListener", "onMessage: text "+response.message());
+            }
+        });
+    }
+
     private int mPastAttemptCount = 1;
 
     private void getChatTokenDelay() {
-        Log.d(TAG, "getChatTokenDelay");
-//        long backoff = BackoffUtil.exponentialBackoff(mPastAttemptCount++, 30000);
-//        Log.d(TAG, "backoff :" + backoff);
-//        //重试
-//        if (!mHandler.hasMessages(FLAG_GET_TOKEN)) {
-//            mHandler.sendMessageDelayed(getPostMessage(mHandler, runnable), backoff);
-//        }
+        if(!TextUtils.isEmpty(LiveConfig.getLiveToken())) {
+            Log.d(TAG, "getChatTokenDelay");
+            long backoff = BackoffUtil.exponentialBackoff(mPastAttemptCount++, 30000);
+            Log.d(TAG, "backoff :" + backoff);
+            //重试
+            if (!mHandler.hasMessages(FLAG_GET_TOKEN)) {
+                mHandler.sendMessageDelayed(getPostMessage(mHandler, runnable), backoff);
+            }
+        }
     }
 
     private static Message getPostMessage(Handler handler, Runnable r) {
@@ -176,7 +233,8 @@ public class ChatWebSocketManager {
         try {
             Log.d(TAG, "refresh token");
             refreshToken();
-            String newUserToken = LiveConfig.getAppToken();
+            String newUserToken = LiveConfig.getLiveToken();
+
             Log.d(TAG, " oldUserToken:  " + userToken);
             Log.d(TAG, " newUserToken:  " + newUserToken);
             if (initialize(newUserToken)) {
@@ -204,18 +262,18 @@ public class ChatWebSocketManager {
 
     public void start() {
         Log.d(TAG, "start");
-//        //切换用户
-//        if (!userToken.equals(AppConfig.getAppToken())) {
-//            if (BuildConfig.DEBUG) {
-//                Log.d(TAG, "切换用户");
-//                Log.d(TAG, "userToken:" + userToken);
-//                Log.d(TAG, "AppConfig.getToken():" + AppConfig.getAppToken());
-//            }
-//            userToken = AppConfig.getAppToken();
-//            mIsConnecting = true;
-//            mHandler.sendMessage(getPostMessage(mHandler, runnable));
-//            return;
-//        }
+        //切换用户
+        if (!userToken.equals(LiveConfig.getLiveToken())) {
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "切换用户");
+                Log.d(TAG, "userToken:" + userToken);
+                Log.d(TAG, "AppConfig.getToken():" + LiveConfig.getLiveToken());
+            }
+            userToken = LiveConfig.getLiveToken();
+            mIsConnecting = true;
+            mHandler.sendMessage(getPostMessage(mHandler, runnable));
+            return;
+        }
         if (mChatClient != null && mChatClient.isConnected()) {
             Log.d(TAG, "connection is alive, return");
             return;

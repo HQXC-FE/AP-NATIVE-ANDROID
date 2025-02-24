@@ -94,6 +94,8 @@ public class HttpDataSourceImpl implements HttpDataSource {
         X9LiveInfo.INSTANCE.setVisitor(liveData.getVisitorId());
         //Todo 这边我不确定会有多少疙 api 所以战时设定成第一位
         X9LiveInfo.INSTANCE.setWebApi(liveData.getWebApi().get(0));
+        X9LiveInfo.INSTANCE.setAppApi(liveData.getAppApi().get(0));
+
 
         //抓包可去掉证书replace("https", "http")
         LiveClient.setApi(liveData.getAppApi().get(0));

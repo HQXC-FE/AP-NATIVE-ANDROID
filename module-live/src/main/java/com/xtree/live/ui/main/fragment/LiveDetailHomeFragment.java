@@ -3,6 +3,7 @@ package com.xtree.live.ui.main.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +12,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
 import com.xtree.base.router.RouterFragmentPath;
+import com.xtree.bet.ui.viewmodel.fb.FbBtDetailViewModel;
 import com.xtree.live.BR;
 import com.xtree.live.R;
+import com.xtree.live.data.factory.AppViewModelFactory;
 import com.xtree.live.databinding.FragmentLiveDetailHomeBinding;
 import com.xtree.live.inter.LiveDetailMainView;
 import com.xtree.live.inter.PVid;
@@ -30,14 +34,17 @@ import com.xtree.live.message.SimpleMessageListener;
 import com.xtree.live.message.inroom.GlobalRoom;
 import com.xtree.live.message.inroom.PrivateRoom;
 import com.xtree.live.socket.ChatWebSocketManager;
+import com.xtree.live.ui.main.viewmodel.LiveDetailHomeViewModel;
+import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 import com.xtree.live.uitl.ActionGetter;
 import com.xtree.live.uitl.UnreadUtils;
 import com.xtree.live.uitl.WordUtil;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
+import me.xtree.mvvmhabit.base.BaseModel;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 
-public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeBinding, BaseViewModel> implements LiveDetailMainView, ExpandLiveInfo, UnreadChanged, PVid {
+public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeBinding, LiveDetailHomeViewModel> implements LiveDetailMainView, ExpandLiveInfo, UnreadChanged, PVid {
 
     private int mUid, matchType, matchId;
     private String mVid, pVid;
@@ -58,6 +65,12 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requireActivity().setTheme(R.style.Theme_MaterialComponents_DayNight_NoActionBar);
+    }
+
+    @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.fragment_live_detail_home;
     }
@@ -65,6 +78,12 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
     @Override
     public int initVariableId() {
         return BR.viewModel;
+    }
+
+    @Override
+    public LiveDetailHomeViewModel initViewModel() {
+        com.xtree.live.data.factory.AppViewModelFactory factory = AppViewModelFactory.getInstance(requireActivity().getApplication());
+        return new ViewModelProvider(this, factory).get(LiveDetailHomeViewModel.class);
     }
 
     @Override
@@ -84,7 +103,9 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
     @Override
     public void onResume() {
         super.onResume();
-        unreadChanged();
+//        unreadChanged();
+        Log.d("currentime", "onResult 22 : currentime: "+System.currentTimeMillis());
+        ChatWebSocketManager.getInstance().start();
     }
 
     private void initTab() {

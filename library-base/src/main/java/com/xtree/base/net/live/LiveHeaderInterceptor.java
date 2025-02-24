@@ -48,11 +48,7 @@ public class LiveHeaderInterceptor implements Interceptor {
         String reqStr ;
 
         if (formatParams(request).endsWith("&&")){
-           // CfLog.e(" 截取前 ||formatParams(request) -----------= " +formatParams(request));
-
             reqStr =   formatParams(request).substring( 0 ,formatParams(request).length()-1);
-
-            //CfLog.e(" 截取后 ||newReqStr -----------= " +reqStr);
         }else {
             reqStr = formatParams(request);
         }
@@ -79,31 +75,9 @@ public class LiveHeaderInterceptor implements Interceptor {
         String signStr = reqStr + "key=" + clientSpecialKey + "/" + uriPathRevKey + "/"
                 + time + "/" + X9LiveInfo.INSTANCE.getVisitor() + "/" + X9LiveInfo.INSTANCE.getOaid() + "/" + version;
 
-      /*  CfLog.e("*************************** 加密前  start *************************");
-
-        CfLog.e("signStr  ---> = " + signStr);
-        CfLog.e("*************************** 加密前  end *************************");*/
         String xLiveSign = MD5Util.generateMd5(signStr);
 
         builder.addHeader("x-live-Sign", xLiveSign);
-
-
-        /*CfLog.e("*************************** intercept  start *************************");
-        CfLog.e("Content-Type = " + builder.build().headers("Content-Type"));
-        CfLog.e("Cx-live-Brand = " + builder.build().headers("x-live-Brand"));
-        CfLog.e("x-live-Token = " + builder.build().headers("x-live-Token"));
-        CfLog.e("x-live-Visitor = " + builder.build().headers("x-live-Visitor"));
-        CfLog.e("x-live-Oaid = " + builder.build().headers("x-live-Oaid"));
-        CfLog.e("x-live-Channel = " + builder.build().headers("x-live-Channel"));
-        CfLog.e("x-live-Time = " + builder.build().headers("x-live-Time"));
-
-
-        CfLog.e("x-live-Version = " + builder.build().headers("x-live-Version"));
-        CfLog.e("x-live-Brand = " + builder.build().headers("x-live-Brand"));
-        CfLog.e("x-live-Model = " + builder.build().headers("x-live-Model"));
-        CfLog.e("x-live-Version-OS = " + builder.build().headers("x-live-Version-OS"));
-
-        CfLog.e("*************************** intercept  end *************************");*/
 
         return chain.proceed(builder.build());
     }

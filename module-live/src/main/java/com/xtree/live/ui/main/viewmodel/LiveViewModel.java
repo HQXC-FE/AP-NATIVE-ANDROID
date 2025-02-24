@@ -6,6 +6,7 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 
 import android.app.Application;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -21,6 +22,7 @@ import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
+import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.httpnew.LiveRep;
@@ -381,6 +383,9 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                     @Override
                     public void onResult(LiveRoomBean liveRoomBean) {
                         liveRoomInfo.postValue(liveRoomBean);
+                        if(liveRoomBean.getInfo()!=null){
+                            X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
+                        }
                     }
 
                     @Override
