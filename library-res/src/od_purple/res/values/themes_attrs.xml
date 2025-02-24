@@ -36,5 +36,8 @@
     <attr name="info_grey_50_attr" format="reference" />
 
     <attr name="play_method_attr" format="reference" />
+    <attr name="rc_dlg_hourglass_attr" format="reference" />
+    <attr name="rc_dlg_bg_title_attr" format="reference" />
+    <attr name="rc_dlg_bg_top_attr" format="reference" />
 
 </resources>

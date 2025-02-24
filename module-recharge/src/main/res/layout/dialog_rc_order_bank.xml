@@ -7,7 +7,11 @@
 
     <ImageView
         android:id="@+id/ivw_bg_top"
-        style="@style/style_rc_dlg_bg_top"
+         style="?attr/rc_dlg_bg_top_attr"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="0dp"
+        android:adjustViewBounds="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +34,11 @@
 
         <ImageView
             android:id="@+id/ivw_top"
-            style="@style/style_rc_dlg_bg_title"
+                      style="?attr/rc_dlg_bg_title_attr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -99,7 +107,12 @@
 
                 <TextView
                     android:id="@+id/tvw_copy_money"
-                    style="@style/style_rc_dlg_copy"
+                    style="?attr/textTertiaryAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:gravity="end"
+                    android:textSize="14sp"
                     android:layout_marginEnd="12dp"
                     android:text="@string/txt_copy"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -178,91 +191,163 @@
                 android:layout_marginTop="@dimen/layout_margin">
 
                 <TextView
-                    style="@style/style_rc_dlg_key"
+                    style="?attr/textSecondaryAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:text="@string/txt_to_bank_name" />
 
                 <TextView
                     android:id="@+id/tvw_to_bank_name"
-                    style="@style/style_rc_dlg_value"
+                    style="?attr/textPrimaryAttr"
+                    android:gravity="end"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
                     tools:text="XXX" />
 
                 <TextView
                     android:id="@+id/tvw_copy_bank_name"
-                    style="@style/style_rc_dlg_copy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:textSize="14sp"
+                    style="?attr/textForgotAttr"
                     android:text="@string/txt_copy" />
             </LinearLayout>
 
             <LinearLayout style="@style/style_rc_dlg_ll">
 
                 <TextView
-                    style="@style/style_rc_dlg_key"
+                    style="?attr/textSecondaryAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:text="@string/txt_to_bank_name_detail" />
 
                 <TextView
                     android:id="@+id/tvw_to_bank_name_detail"
-                    style="@style/style_rc_dlg_value"
+                    style="?attr/textPrimaryAttr"
+                    android:gravity="end"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
                     tools:text="XXX" />
 
                 <TextView
                     android:id="@+id/tvw_copy_branch"
-                    style="@style/style_rc_dlg_copy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:textSize="14sp"
+                    style="?attr/textForgotAttr"
                     android:text="@string/txt_copy" />
             </LinearLayout>
 
             <LinearLayout style="@style/style_rc_dlg_ll">
 
                 <TextView
-                    style="@style/style_rc_dlg_key"
+                    style="?attr/textSecondaryAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:text="@string/txt_bank_acct_name" />
 
                 <TextView
                     android:id="@+id/tvw_bank_acct_name"
-                    style="@style/style_rc_dlg_value"
+                    style="?attr/textPrimaryAttr"
+                    android:gravity="end"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
                     tools:text="XXX" />
 
                 <TextView
                     android:id="@+id/tvw_copy_acc_name"
-                    style="@style/style_rc_dlg_copy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:textSize="14sp"
+                    style="?attr/textForgotAttr"
                     android:text="@string/txt_copy" />
             </LinearLayout>
 
             <LinearLayout style="@style/style_rc_dlg_ll">
 
                 <TextView
-                    style="@style/style_rc_dlg_key"
+                    style="?attr/textSecondaryAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:text="@string/txt_bank_acct_card" />
 
                 <TextView
                     android:id="@+id/tvw_bank_acct_card"
-                    style="@style/style_rc_dlg_value"
+                    style="?attr/textPrimaryAttr"
+                    android:gravity="end"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
                     tools:text="XXX" />
 
                 <TextView
                     android:id="@+id/tvw_copy_acc_num"
-                    style="@style/style_rc_dlg_copy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:textSize="14sp"
+                    style="?attr/textForgotAttr"
                     android:text="@string/txt_copy" />
             </LinearLayout>
 
             <LinearLayout style="@style/style_rc_dlg_ll">
 
                 <TextView
-                    style="@style/style_rc_dlg_key"
+                    style="?attr/textSecondaryAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:text="@string/txt_bank_rc_amount" />
 
                 <TextView
                     android:id="@+id/tvw_money2"
-                    style="@style/style_rc_dlg_value"
+                    style="?attr/textPrimaryAttr"
+                    android:gravity="end"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
                     tools:text="XXX" />
 
                 <TextView
                     android:id="@+id/tvw_copy_money2"
-                    style="@style/style_rc_dlg_copy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:textSize="14sp"
+                    style="?attr/textForgotAttr"
                     android:text="@string/txt_copy" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tvw_ok"
-                style="@style/style_btn_long"
+                style="?attr/common_btn_attr"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:textSize="16sp"
                 android:text="@string/txt_rc_already_pay" />
 
             <TextView

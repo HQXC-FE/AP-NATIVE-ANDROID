@@ -144,4 +144,16 @@
         <item name="android:background">@drawable/bg_play_method_selector</item>
         <item name="android:textColor">@drawable/play_method_text_selector</item>
     </style>
+
+    <style name="style_rc_dlg_hourglass">
+        <item name="android:src">@drawable/cm_ic_hourglass</item>
+    </style>
+
+    <style name="style_rc_dlg_bg_title">
+        <item name="android:src">@drawable/bg_dlg_top</item>
+    </style>
+
+    <style name="style_rc_dlg_bg_top">
+        <item name="android:src">@drawable/bg_dlg_top</item>
+    </style>
 </resources>

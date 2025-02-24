@@ -13,6 +13,8 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
@@ -43,6 +45,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
+import com.xtree.base.widget.recycleview.GridSpaceItemDecoration
+import com.xtree.base.widget.recycleview.LinearItemDecoration
 
 /**
  *Created by KAKA on 2024/3/8.
@@ -300,4 +304,27 @@ fun View.clickNoRepeat(interval: Long = 500, action: (view: View) -> Unit) {
         lastClickTime = currentTime
         action(it)
     }
+}
+
+fun RecyclerView.initLinear(
+    space: Int,
+    @RecyclerView.Orientation orientation: Int,
+    reverseLayout: Boolean = false
+) {
+    layoutManager = LinearLayoutManager(context, orientation, reverseLayout)
+    val divider = LinearItemDecoration(space)
+    itemAnimator = null
+    addItemDecoration(divider)
+    setHasFixedSize(true)
+}
+
+fun RecyclerView.initGrid(
+    space: Int,
+    spanCount: Int,
+) {
+    layoutManager = GridLayoutManager(context, spanCount)
+    val divider = GridSpaceItemDecoration(space, true)
+    itemAnimator = null
+    addItemDecoration(divider)
+    setHasFixedSize(true)
 }

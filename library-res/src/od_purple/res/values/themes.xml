@@ -35,6 +35,9 @@
         <item name="info2_grey_50_attr">@style/info2_grey_50_style</item>
         <item name="info_grey_50_attr">@style/info_grey_50_style</item>
         <item name="play_method_attr">@style/play_method_style</item>
+        <item name="rc_dlg_hourglass_attr">@style/style_rc_dlg_hourglass</item>
+        <item name="rc_dlg_bg_title_attr">@style/style_rc_dlg_bg_title</item>
+        <item name="rc_dlg_bg_top_attr">@style/style_rc_dlg_bg_top</item>
     </style>
 
 </resources>

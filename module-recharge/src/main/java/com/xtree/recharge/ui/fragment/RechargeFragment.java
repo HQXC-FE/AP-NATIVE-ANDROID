@@ -89,6 +89,7 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.bus.RxBus;
+import me.xtree.mvvmhabit.utils.ConvertUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -253,8 +254,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             onClickPaymentType(vo);
         });
 
-        binding.rcvPmt.setLayoutManager(new GridLayoutManager(getContext(), 4));
-        //binding.rcvPmt.setAdapter(rechargeAdapter);
+        ExKt.initGrid(binding.rcvPmt, ConvertUtils.dp2px(5f), 4);
         binding.rcvPmt.setAdapter(mTypeAdapter);
         binding.rcvPmt.setNestedScrollingEnabled(false); // 禁止滑动
 
@@ -264,12 +264,12 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             viewModel.curRechargeLiveData.setValue(curRechargeVo);
             onClickPayment(vo);
         });
-        binding.rcvPayChannel.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        ExKt.initLinear(binding.rcvPayChannel, ConvertUtils.dp2px(8f), LinearLayoutManager.HORIZONTAL, false);
         binding.rcvPayChannel.setAdapter(mChannelAdapter);
 
         mAmountAdapter = new AmountAdapter(getContext(), str -> binding.edtAmount.setText(str));
+        ExKt.initGrid(binding.rcvAmount, ConvertUtils.dp2px(8f), 4);
         binding.rcvAmount.setAdapter(mAmountAdapter);
-        binding.rcvAmount.setLayoutManager(new GridLayoutManager(getContext(), 4));
 
         binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
         binding.ivwRule.setOnClickListener(v -> {

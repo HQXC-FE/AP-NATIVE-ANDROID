@@ -173,7 +173,12 @@
                 tools:text="PAY00123456789" />
 
             <TextView
-                style="@style/style_rc_dlg_copy"
+                     style="?attr/textTertiaryAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:gravity="end"
+                    android:textSize="14sp"
                 android:onClick="@{() -> StringUtils.copy(model.bankInfoData.merchantOrder)}"
                 android:text="@string/txt_copy" />
 
@@ -193,7 +198,12 @@
 
             <TextView
                 android:id="@+id/tvw_copy_bank_name"
-                style="@style/style_rc_dlg_copy"
+                     style="?attr/textTertiaryAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:gravity="end"
+                    android:textSize="14sp"
                 android:onClick="@{() -> StringUtils.copy(model.bankInfoData.bankName)}"
                 android:text="@string/txt_copy" />
         </LinearLayout>
@@ -212,7 +222,12 @@
 
             <TextView
                 android:id="@+id/tvw_copy_branch"
-                style="@style/style_rc_dlg_copy"
+                     style="?attr/textTertiaryAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:gravity="end"
+                    android:textSize="14sp"
                 android:onClick="@{() -> StringUtils.copy(model.bankInfoData.bankArea)}"
                 android:text="@string/txt_copy" />
         </LinearLayout>
@@ -231,7 +246,12 @@
 
             <TextView
                 android:id="@+id/tvw_copy_acc_name"
-                style="@style/style_rc_dlg_copy"
+                     style="?attr/textTertiaryAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:gravity="end"
+                    android:textSize="14sp"
                 android:onClick="@{() -> StringUtils.copy(model.bankInfoData.bankAccountName)}"
                 android:text="@string/txt_copy" />
         </LinearLayout>
@@ -250,7 +270,12 @@
 
             <TextView
                 android:id="@+id/tvw_copy_acc_num"
-                style="@style/style_rc_dlg_copy"
+                     style="?attr/textTertiaryAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:gravity="end"
+                    android:textSize="14sp"
                 android:onClick="@{() -> StringUtils.copy(model.bankInfoData.bankAccount)}"
                 android:text="@string/txt_copy" />
         </LinearLayout>
@@ -269,7 +294,12 @@
 
             <TextView
                 android:id="@+id/tvw_copy_money2"
-                style="@style/style_rc_dlg_copy"
+                     style="?attr/textTertiaryAttr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="12dp"
+                    android:gravity="end"
+                    android:textSize="14sp"
                 android:onClick="@{() -> StringUtils.copy(model.bankInfoData.payAmount)}"
                 android:text="@string/txt_copy" />
         </LinearLayout>
