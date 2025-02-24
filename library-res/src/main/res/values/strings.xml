@@ -404,4 +404,7 @@
     <string name="txt_bind_wallet_address">为了您的资金能够迅速到账, 请确保填写的钱包地址无误</string>
     <string name="txt_remind_usdt_arbitrum">Arbitrum地址以0x开头的数字和字母组成的42位</string>
     <string name="txt_remind_usdt_solana">Solana地址以数字和字母组成的44位</string>
+
+    <string name="txt_remind_usdt_arb">Arbitrum地址以0x开头的数字和字母组成的42位</string>
+    <string name="txt_remind_usdt_sol">Solana地址数字和字母组成的44位</string>
 </resources>

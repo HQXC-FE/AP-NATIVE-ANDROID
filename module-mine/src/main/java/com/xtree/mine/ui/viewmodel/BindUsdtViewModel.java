@@ -15,6 +15,7 @@ import com.xtree.mine.vo.UsdtVo;
 import com.xtree.mine.vo.UserBindBaseVo;
 import com.xtree.mine.vo.UserFirstBindUSDTVo;
 import com.xtree.mine.vo.UserUsdtConfirmVo;
+import com.xtree.mine.vo.UserUsdtTypeVo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,6 @@ import java.util.Map;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
-import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -31,7 +31,7 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
 
     public SingleLiveData<UserBindBaseVo<UsdtVo>> liveDataCardList = new SingleLiveData<>();
-    //public SingleLiveData<UserUsdtTypeVo> liveDataTypeList = new SingleLiveData<>();
+    public SingleLiveData<UserUsdtTypeVo> liveDataTypeList = new SingleLiveData<>();
     public SingleLiveData<UserUsdtConfirmVo> liveDataBindCardCheck = new SingleLiveData<>(); // 绑定卡确认
     public SingleLiveData<UserUsdtConfirmVo> liveDataBindCardResult = new SingleLiveData<>(); // 绑定卡结果
     public SingleLiveData<UserUsdtConfirmVo> liveDataRebindCard01 = new SingleLiveData<>(); // 重新绑定
@@ -40,7 +40,11 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
     public SingleLiveData<UserUsdtConfirmVo> liveDataRebindCard04 = new SingleLiveData<>(); // 重新绑定
     public SingleLiveData<Boolean> liveDataVerify = new SingleLiveData<>(); // 验证账户
     public MutableLiveData<ProfileVo> liveDataProfile = new MutableLiveData<>(); // 个人信息
+
+
+    public SingleLiveData<UserUsdtTypeVo> liveBindUSDTList = new SingleLiveData<>();
     public String key = ""; // usdt
+
     public SingleLiveData<UserFirstBindUSDTVo> firstBindUSDTVoSingleLiveData = new SingleLiveData<>(); // 绑定卡结果
 
     public BindUsdtViewModel(@NonNull Application application, MineRepository model) {
@@ -64,6 +68,42 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
                         } else {
                             liveDataCardList.setValue(vo); // smstype 6-成功
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        super.onError(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    public void  getBindUserType(String key, Map<String, String> map ){
+        Disposable disposable = (Disposable) model.getApiService().getBindUsdtList( map)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<UserUsdtTypeVo>() {
+                    /*@Override
+                    public void onResult(UserBindBaseVo<UsdtVo> vo) {
+                        CfLog.d("******");
+                        if (vo.msg_type == 1 || vo.msg_type == 2) {
+                            ToastUtils.showLong(vo.message); // 异常 2-用户无此访问权限
+                            finish();
+                        } else if (vo.status == 1) {
+                            // 列表无数据,应该跳到增加绑定
+                            liveBindUSDTList.setValue(vo);
+                        } else {
+                            liveBindUSDTList.setValue(vo); // smstype 6-成功
+                        }
+                    }*/
+
+                    @Override
+                    public void onResult(UserUsdtTypeVo userUsdtTypeVo) {
+
+                        CfLog.e("getBindUserType  == " +userUsdtTypeVo.toString());
+                        liveBindUSDTList.setValue(userUsdtTypeVo);
+
                     }
 
                     @Override
@@ -192,6 +232,51 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
         addSubscribe(disposable);
     }
 
+
+    public void doFirstBindCardBySubmit(HashMap map) {
+
+        Disposable disposable = (Disposable) model.getApiService().doFirstBindUsdt( map)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<UserFirstBindUSDTVo>() {
+                    @Override
+                    public void onResult(UserFirstBindUSDTVo vo) {
+                        firstBindUSDTVoSingleLiveData.setValue(vo);
+                    }
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        super.onError(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+    public void doFirstBindUsdtSubmit(HashMap map) {
+
+        Disposable disposable = (Disposable) model.getApiService().doFirstBindUsdtSubmit( map)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<UserUsdtConfirmVo>() {
+                    @Override
+                    public void onResult(UserUsdtConfirmVo vo) {
+                        CfLog.d("******");
+                        if (vo.msg_type == 1 || vo.msg_type == 2) {
+                            ToastUtils.showLong(vo.message); // 异常
+                        } else if (vo.msg_type == 3) {
+                            ToastUtils.showLong(vo.message); // "绑定成功！温馨提示：新绑定卡需0小时后才能提现"
+                            liveDataBindCardResult.setValue(vo);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        super.onError(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
     public void doRebindCard01(HashMap queryMap, HashMap map) {
         doRebindCard(queryMap, map, liveDataRebindCard01);
     }
@@ -251,50 +336,6 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onError(Throwable t) {
                         CfLog.e("error, " + t.toString());
-                    }
-                });
-        addSubscribe(disposable);
-    }
-
-    public void doFirstBindCardBySubmit(HashMap map) {
-
-        Disposable disposable = (Disposable) model.getApiService().doFirstBindUsdt( map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<UserFirstBindUSDTVo>() {
-                    @Override
-                    public void onResult(UserFirstBindUSDTVo vo) {
-                        firstBindUSDTVoSingleLiveData.setValue(vo);
-                    }
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        super.onError(t);
-                    }
-                });
-        addSubscribe(disposable);
-    }
-    public void doFirstBindUsdtSubmit(HashMap map) {
-
-        Disposable disposable = (Disposable) model.getApiService().doFirstBindUsdtSubmit( map)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<UserUsdtConfirmVo>() {
-                    @Override
-                    public void onResult(UserUsdtConfirmVo vo) {
-                        CfLog.d("******");
-                        if (vo.msg_type == 1 || vo.msg_type == 2) {
-                            ToastUtils.showLong(vo.message); // 异常
-                        } else if (vo.msg_type == 3) {
-                            ToastUtils.showLong(vo.message); // "绑定成功！温馨提示：新绑定卡需0小时后才能提现"
-                            liveDataBindCardResult.setValue(vo);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        super.onError(t);
                     }
                 });
         addSubscribe(disposable);
