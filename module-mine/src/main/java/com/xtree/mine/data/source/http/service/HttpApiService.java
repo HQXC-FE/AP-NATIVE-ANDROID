@@ -56,6 +56,7 @@ import com.xtree.mine.vo.UserBankProvinceVo;
 import com.xtree.mine.vo.UserBindBaseVo;
 import com.xtree.mine.vo.UserFirstBindUSDTVo;
 import com.xtree.mine.vo.UserUsdtConfirmVo;
+import com.xtree.mine.vo.UserUsdtTypeVo;
 import com.xtree.mine.vo.VerificationCodeVo;
 import com.xtree.mine.vo.VerifyVo;
 import com.xtree.mine.vo.VipUpgradeInfoVo;
@@ -295,6 +296,17 @@ public interface HttpApiService {
      */
     @GET("/user/user{key}info?")
     Flowable<UserBindBaseVo<UsdtVo>> getUsdtList(@Path("key") String key, @QueryMap Map<String, String> map);
+
+    /**
+     * 查询绑定USDT 货币类型
+     * @return
+     * /user/?controller=user&action=userusdtinfo&check=d1d82e95e2989d904d979c207a734bb3&mark=&client=m
+     * /user/?controller=security&action=adduserusdt&client=m
+     * https://hxing5pre.hxing5vip.com
+     * /user/?controller=user&action=userusdtinfo&check=8357b272d82c79bf0abb13f358b6f266&mark=bindusdt&client=m
+     */
+    @GET("/user/?")
+    Flowable<UserUsdtTypeVo> getBindUsdtList(@QueryMap Map<String, String> map);
 
     ///**
     // * 查询 USDT 类型

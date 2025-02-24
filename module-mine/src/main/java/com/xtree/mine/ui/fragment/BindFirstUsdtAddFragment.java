@@ -35,6 +35,7 @@ import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.mine.vo.UserFirstBindUSDTVo;
 import com.xtree.mine.vo.UserUsdtConfirmVo;
 import com.xtree.mine.vo.UserUsdtJumpVo;
+import com.xtree.mine.vo.UserUsdtTypeVo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +60,7 @@ public class BindFirstUsdtAddFragment extends BaseFragment<FragmentBindUsdtFirst
 
     private String check ;//回填资金密码页面返回check
     private UserFirstBindUSDTVo userFirstBindUSDTVo ;
+    private UserUsdtTypeVo bindVo ;
 
     public BindFirstUsdtAddFragment() {
     }
@@ -71,10 +73,12 @@ public class BindFirstUsdtAddFragment extends BaseFragment<FragmentBindUsdtFirst
 
     @Override
     public void initView() {
+
+
         binding.llRoot.setOnClickListener(v -> hideKeyBoard());
         binding.ivwBack.setOnClickListener(v -> getActivity().finish());
 
-        binding.tvwERC20.setOnClickListener(v -> {
+       /* binding.tvwERC20.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
 
@@ -143,7 +147,7 @@ public class BindFirstUsdtAddFragment extends BaseFragment<FragmentBindUsdtFirst
             binding.tvwTipAddress.setText(R.string.txt_remind_usdt_sol);
             binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_sol);
             type ="Solana" ;
-        });
+        });*/
 
         binding.ivwNext.setOnClickListener(v -> {
             doNext();
@@ -176,6 +180,7 @@ public class BindFirstUsdtAddFragment extends BaseFragment<FragmentBindUsdtFirst
         }
         String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
         mProfileVo = new Gson().fromJson(json, ProfileVo.class);
+        getCardList();
     }
 
     @Override
@@ -227,6 +232,13 @@ public class BindFirstUsdtAddFragment extends BaseFragment<FragmentBindUsdtFirst
         viewModel.liveDataBindCardResult.observe(this, userUsdtConfirmVo -> {
             CfLog.e("  viewModel.liveDataBindCardResult  viewModel.liveDataBindCardResult  viewModel.liveDataBindCardResult  viewModel.liveDataBindCardResult");
             getActivity().finish();
+        });
+
+        //
+        viewModel.liveBindUSDTList.observe(this , vo->{
+            CfLog.e(" viewModel.liveBindUSDTList  vo = "+vo.toString());
+            bindVo = vo ;
+            refreshUI(bindVo);
         });
     }
 
@@ -280,6 +292,151 @@ public class BindFirstUsdtAddFragment extends BaseFragment<FragmentBindUsdtFirst
         map.put("nonce", UuidUtil.getID24());
         LoadingDialog.show(getContext());
         viewModel.doFirstBindUsdtSubmit( map);
+    }
+
+    private void  refreshUI(UserUsdtTypeVo bindVo){
+        if (bindVo.usdt_type.size() >3){
+            binding.tvwERC20.setText(bindVo.usdt_type.get(0).toString());
+            binding.tvwTRC20.setText(bindVo.usdt_type.get(1).toString());
+            binding.tvwArbitrum.setText(bindVo.usdt_type.get(2).toString());
+            binding.tvwSolana.setText(bindVo.usdt_type.get(3).toString());
+
+        } else if (bindVo.usdt_type.size() ==3) {
+            binding.tvwSolana.setVisibility(View.GONE);
+            binding.tvwERC20.setText(bindVo.usdt_type.get(0).toString());
+            binding.tvwTRC20.setText(bindVo.usdt_type.get(1).toString());
+            binding.tvwArbitrum.setText(bindVo.usdt_type.get(2).toString());
+
+        }else if (bindVo.usdt_type.size() ==2) {
+            binding.tvwSolana.setVisibility(View.GONE);
+            binding.tvwArbitrum.setVisibility(View.GONE);
+            binding.tvwERC20.setText(bindVo.usdt_type.get(0).toString());
+            binding.tvwTRC20.setText(bindVo.usdt_type.get(1).toString());
+
+        }else if (bindVo.usdt_type.size() ==1) {
+            binding.tvwSolana.setVisibility(View.GONE);
+            binding.tvwArbitrum.setVisibility(View.GONE);
+            binding.tvwTRC20.setVisibility(View.GONE);
+            binding.tvwERC20.setText(bindVo.usdt_type.get(0).toString());
+            binding.tvwTRC20.setText(bindVo.usdt_type.get(1).toString());
+        }
+        topClick();
+    }
+    private void  topClick(){
+        binding.tvwERC20.setOnClickListener(v -> {
+            String string = binding.tvwERC20.getText().toString().trim() ;
+
+            if (TextUtils.equals("ERC20_USDT", string)){
+                type ="ERC20_USDT" ;
+            } else if (TextUtils.equals("TRC20_USDT", string)) {
+                type ="TRC20_USDT" ;
+            }else if (TextUtils.equals("Arbitrum", string)) {
+                type ="Arbitrum" ;
+            }
+            else if (TextUtils.equals("Solana", string)) {
+                type ="Solana" ;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                binding.tvwERC20.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector);
+                binding.tvwERC20.setTextColor(getContext().getColor(R.color.white));
+                binding.tvwTRC20.setBackgroundResource(R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwTRC20.setTextColor(getContext().getColor(R.color.clr_txt_title));
+
+                binding.tvwArbitrum.setBackgroundResource(R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwArbitrum.setTextColor(getContext().getColor(R.color.clr_txt_title));
+                binding.tvwSolana.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwSolana.setTextColor(getContext().getColor(R.color.clr_txt_title));
+            }
+            binding.tvwTipAddress.setText(R.string.txt_remind_usdt_erc20);
+            binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_erc20);
+
+
+        });
+        binding.tvwTRC20.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                binding.tvwERC20.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwERC20.setTextColor(getContext().getColor(R.color.clr_txt_title));
+                binding.tvwTRC20.setBackgroundResource(R.drawable.btn_first_bind_usdt_selector);
+                binding.tvwTRC20.setTextColor(getContext().getColor(R.color.white));
+
+                binding.tvwArbitrum.setBackgroundResource(R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwArbitrum.setTextColor(getContext().getColor(R.color.clr_txt_title));
+                binding.tvwSolana.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwSolana.setTextColor(getContext().getColor(R.color.clr_txt_title));
+            }
+            binding.tvwTipAddress.setText(R.string.txt_remind_usdt_trc20);
+            binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_trc20);
+            type ="TRC20_USDT" ;
+        });
+        binding.tvwArbitrum.setOnClickListener(v -> {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                binding.tvwERC20.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwERC20.setTextColor(getContext().getColor(R.color.clr_txt_title));
+                binding.tvwTRC20.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwTRC20.setTextColor(getContext().getColor(R.color.clr_txt_title));
+
+                binding.tvwArbitrum.setBackgroundResource(R.drawable.btn_first_bind_usdt_selector);
+                binding.tvwArbitrum.setTextColor(getContext().getColor(R.color.white));
+                binding.tvwSolana.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwSolana.setTextColor(getContext().getColor(R.color.clr_txt_title));
+
+            }
+            String tvwAr = binding.tvwArbitrum.getText().toString().trim();
+             if (TextUtils.equals("Arbitrum",tvwAr) || tvwAr.toLowerCase().contains("Arbitrum")|| tvwAr.toLowerCase().contains("arbitrum") ) {
+                type ="Arbitrum" ;
+                 binding.tvwTipAddress.setText(R.string.txt_remind_usdt_arb);
+                 binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_arb);
+
+            }
+            else if (TextUtils.equals("Solana",tvwAr) || tvwAr.toLowerCase().contains("Solana") ||tvwAr.toLowerCase().contains("solana")) {
+                type ="Solana" ;
+                 binding.tvwTipAddress.setText(R.string.txt_remind_usdt_sol);
+                 binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_sol);
+            }
+
+        });
+        binding.tvwSolana.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                binding.tvwERC20.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwERC20.setTextColor(getContext().getColor(R.color.clr_txt_title));
+                binding.tvwTRC20.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwTRC20.setTextColor(getContext().getColor(R.color.clr_txt_title));
+
+                binding.tvwArbitrum.setBackgroundResource(R.drawable.btn_first_bind_usdt_selector_off);
+                binding.tvwArbitrum.setTextColor(getContext().getColor(R.color.clr_txt_title));
+                binding.tvwSolana.setBackgroundResource( R.drawable.btn_first_bind_usdt_selector);
+                binding.tvwSolana.setTextColor(getContext().getColor(R.color.white));
+            }
+            String tvwAr = binding.tvwSolana.getText().toString().trim();
+            if (TextUtils.equals("Arbitrum",tvwAr) || tvwAr.toLowerCase().contains("Arbitrum")|| tvwAr.toLowerCase().contains("arbitrum") ) {
+                type ="Arbitrum" ;
+                binding.tvwTipAddress.setText(R.string.txt_remind_usdt_arb);
+                binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_arb);
+
+            }
+            else if (TextUtils.equals("Solana",tvwAr) || tvwAr.toLowerCase().contains("Solana") ||tvwAr.toLowerCase().contains("solana")) {
+                type ="Solana" ;
+                binding.tvwTipAddress.setText(R.string.txt_remind_usdt_sol);
+                binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_sol);
+            }
+
+        });
+    }
+    private void getCardList() {
+        //https://hxing5pre.hxing5vip.com/user/?controller=user&action=userusdtinfo&check=8357b272d82c79bf0abb13f358b6f266&mark=bindusdt&client=m
+        HashMap map = new HashMap();
+        //controller=user&action=userusdtinfo&check=8357b272d82c79bf0abb13f358b6f266&mark=bindusdt&client=m
+        map.put("controller", "user");
+        map.put("action", "userusdtinfo");
+        map.put("check", check);
+        map.put("mark", "bindusdt");
+        map.put("client", "m");
+        //viewModel.getCardList(map);
+
+        viewModel.getBindUserType(check ,map );
+
     }
 
 }
