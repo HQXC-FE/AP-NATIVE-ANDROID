@@ -5,13 +5,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/clr_bg_main_black">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:visibility="visible"
@@ -47,9 +47,9 @@
             app:layout_constraintTop_toBottomOf="@+id/cl_title"
             app:tabIndicatorHeight="0dp"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/clr_main_01"
-            app:tabTextAppearance="@style/style_aug_tab"
-            app:tabTextColor="@color/clr_txt_black_01" />
+            app:tabSelectedTextColor="@color/clr_orange_14"
+            android:textSize="16sp"
+            app:tabTextColor="@color/clr_txt_01" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_ele"
