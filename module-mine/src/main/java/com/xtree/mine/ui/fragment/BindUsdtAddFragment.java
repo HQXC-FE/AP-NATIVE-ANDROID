@@ -333,22 +333,23 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
 
                 binding2.tvwTitle.setOnClickListener(v -> {
                     binding.tvwChoose.setText(txt);
-                    if (txt.contains("TRC")) {
+                    if (txt.contains("TRC") ||txt.contains("TRC20")||txt.contains("trc20")) {
                         binding.tvwTipAddress.setText(R.string.txt_remind_usdt_trc20);
                         binding.tvwTipAddress.setVisibility(View.VISIBLE);
-                    } else if (txt.contains("ERC")) {
+                    } else if (txt.contains("ERC")||txt.contains("ERC20")||txt.contains("erc20")) {
                         binding.tvwTipAddress.setText(R.string.txt_remind_usdt_erc20);
                         binding.tvwTipAddress.setVisibility(View.VISIBLE);
-                    } else if (txt.contains("Arbitrum")) {
+                    } else if (txt.contains("Arbitrum")||txt.contains("ARBITRUM")||txt.contains("ARB")) {
                         binding.tvwTipAddress.setText(R.string.txt_remind_usdt_arbitrum);
                         binding.tvwTipAddress.setVisibility(View.VISIBLE);
-                    }else if (txt.contains("Solana")) {
+                    }else if (txt.contains("Solana")||txt.contains("SOLANA")||txt.contains("SOL")) {
                         binding.tvwTipAddress.setText(R.string.txt_remind_usdt_solana);
                         binding.tvwTipAddress.setVisibility(View.VISIBLE);
                     }
                     else {
                         binding.tvwTipAddress.setText(mUserUsdtJumpVo.remind);
                     }
+
 
 
                     ppw.dismiss();
