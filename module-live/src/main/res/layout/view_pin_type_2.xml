@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?><!--suppress AndroidUnknownAttribute -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:parentTag="com.xtree.live.widge.PinView"
+    tools:viewBindingIgnore="true">
+
+    <View
+        android:id="@+id/pin_ads_margin_top"
+        android:layout_width="wrap_content"
+        android:layout_height="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/new_bg_pin_body_top"
+        app:layout_constraintBottom_toBottomOf="@+id/pin_ads_header_container"
+        app:layout_constraintEnd_toEndOf="@+id/pin_ads_header_container"
+        app:layout_constraintStart_toStartOf="@+id/pin_ads_header_container"
+        app:layout_constraintTop_toTopOf="@+id/pin_ads_body_container" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/pin_ads_pretty_anchor"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="12dp"
+        android:src="@mipmap/ic_pin_anchor_avatar"
+        app:layout_constraintBottom_toBottomOf="@+id/pin_ads_header_container"
+        app:layout_constraintDimensionRatio="133:148"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/pin_ads_body_container" />
+
+    <LinearLayout
+        android:id="@+id/pin_ads_body_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:baselineAligned="false"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/pin_ads_pretty_anchor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pin_ads_margin_top"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/pin_ad_link_layout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/pin_ad_link_text2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/white"
+                tools:text="AAA(测试测试测试测试测测试测试测试测试测试测试试测试 )\t渠道公告" />
+
+            <TextView
+                android:id="@+id/pin_ad_link_jump2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:autoLink="all"
+                android:background="@drawable/new_bg_pin_goto_button"
+                android:drawablePadding="4dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:paddingHorizontal="8dp"
+                android:text="点击注册"
+                android:textColor="@color/white"
+                app:drawableEndCompat="@drawable/svg_pin_go_website_arrow" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pin_ad_link_layout3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/pin_ad_link_text3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@color/white"
+                tools:text="AAA(测试测试测试测试测测试测试测试测试测试测试试测试 )\t渠道公告" />
+
+            <TextView
+                android:id="@+id/pin_ad_link_jump3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:autoLink="all"
+                android:background="@drawable/new_bg_pin_goto_button"
+                android:drawablePadding="4dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:paddingHorizontal="8dp"
+                android:text="点击注册"
+                android:textColor="@color/white"
+                app:drawableEndCompat="@drawable/svg_pin_go_website_arrow" />
+        </LinearLayout>
+
+        <com.xtree.live.widge.MarqueeTextView
+            android:id="@+id/pin_ads_marquee_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:textColor="#DDB7B7B7"
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:text="AAA(测试 )\t渠道公告 https://icons8.com 1234 AAA(测试 )\t渠道公告 1234 AAA(测试 )\t渠道公告 1234"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/pin_ads_header_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:background="@drawable/new_bg_pin_body_bottom"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pin_ads_body_container">
+
+
+        <LinearLayout
+            android:id="@+id/pin_ad_link_layout1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/pin_ad_link_text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="渠道公告1" />
+
+            <TextView
+                android:id="@+id/pin_ad_link_jump1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:paddingHorizontal="8dp"
+                android:text="点击注册"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/pin_expand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:src="@drawable/selector_pin_expand" />
+    </LinearLayout>
+
+    <com.xtree.live.widge.SystemMessageLayout
+        android:id="@id/pin_system_message_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/pin_ads_header_container"
+        app:layout_constraintStart_toStartOf="@+id/pin_ads_header_container"
+        app:layout_constraintTop_toBottomOf="@id/pin_ads_header_container" />
+</merge>
+

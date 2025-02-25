@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_chat_back"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:paddingHorizontal="12dp"
+        android:tintMode="src_atop"
+        android:tint="@color/black"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:src="@mipmap/cm_ic_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:layout_marginHorizontal="48dp"
+        android:lines="1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1234444444444444444" />
+
+    <LinearLayout
+        android:id="@+id/ll_online"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseCompoundDrawables">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_online"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/bg_chat_online" />
+
+        <TextView
+            android:id="@+id/tv_online"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:textColor="#46C94F"
+            android:textSize="11sp"
+            tools:text="在线" />
+    </LinearLayout>
+</merge>

@@ -23,7 +23,7 @@ public class ChatClientFactory {
      * @return
      */
     static ChatClient createClient(int clientType, String scheme, String host, String token, ChatWebSocketHandler handler) throws Exception {
-        String url = scheme + "://" + host + "/wss/?userToken=" + token;
+        String url = scheme + "://" + host + "/wss/?xLiveToken=" + token;
         if (BuildConfig.DEBUG) Log.d("ChatWebSocketManager", url);
         return new ChatWebSocketClient(URI.create(url), getHeaders(), handler);
 //        }

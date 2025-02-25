@@ -1,4 +1,4 @@
-package com.xtree.live.weight;
+package com.xtree.live.widge;
 
 import android.content.Context;
 import android.util.AttributeSet;

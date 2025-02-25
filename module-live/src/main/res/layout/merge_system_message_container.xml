@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.LinearLayout">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/new_bg_pin_system_message_head"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/message_applaud"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:paddingVertical="2dp"
+            android:paddingHorizontal="6dp"
+            android:text="@string/chat_room_welcome"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <ViewSwitcher
+        android:id="@+id/pin_system_message_switcher"
+        android:layout_gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <com.xtree.live.widge.MessageTextView
+            style="@style/ChatItem.UserName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="2dp"
+            android:autoLink="web|email|map"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="6dp"
+            android:background="@drawable/new_bg_pin_system_message_content"
+            android:minHeight="16sp"
+            android:textColorLink="#127BD1"
+            android:textSize="12sp"
+            android:lines="1"
+            android:ellipsize="end"
+            tools:viewBindingIgnore="true"
+            tools:text="小9送红运，杏彩送豪礼小9送红运，杏彩送豪礼"
+            tools:visibility="visible" />
+
+        <com.xtree.live.widge.MessageTextView
+            style="@style/ChatItem.UserName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="2dp"
+            android:autoLink="web|email|map"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:ellipsize="end"
+            android:lineSpacingExtra="6dp"
+            android:background="@drawable/new_bg_pin_system_message_content"
+            android:minHeight="16sp"
+            android:textColorLink="#127BD1"
+            android:textSize="12sp"
+            tools:viewBindingIgnore="true"
+            tools:text="小9送红运，杏彩送豪礼小9送红运，杏彩送豪礼"
+            tools:visibility="visible" />
+    </ViewSwitcher>
+</merge>

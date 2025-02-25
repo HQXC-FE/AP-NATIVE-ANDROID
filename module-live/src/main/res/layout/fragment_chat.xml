@@ -1,34 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:ignore="ContentDescription, HardcodedText">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tbl_type"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/chatbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:padding="2dp"
+            android:layout_height="?actionBarSize"
+            android:background="?tabBackground"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tabBackground="@color/white"
-            app:tabGravity="center"
-            app:tabIndicatorColor="@color/clr_purple_01"
-            app:tabMode="scrollable"
-            app:tabPadding="2dp"
-            app:tabSelectedTextColor="@color/clr_purple_01"
-            app:tabTextColor="@color/black">
+            tools:visibility="visible">
 
-        </com.google.android.material.tabs.TabLayout>
+            <include layout="@layout/merge_chat_room_toolbar"/>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp_main"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.xtree.live.widge.PanelSwitchLayout
+            android:id="@+id/panel_switch_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:android11KeyboardFeature="false"
+            app:inputLayoutId="@+id/ll_send_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chatbar">
+
+            <com.xtree.live.widge.LinearContentContainer
+                android:id="@+id/content_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:animationSpeed="standard"
+                app:edit_view="@id/edit_text">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <com.xtree.live.widge.AutoHidePanelRecyclerView
+                        android:id="@+id/chat_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="12dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp" />
+
+
+                    <com.xtree.live.widge.ConversationScrollToView
+                        android:id="@+id/fab_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:visibility="visible" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_send_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/add_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:visibility="gone"
+                        app:srcCompat="@mipmap/ic_chat_send_picture"
+                        tools:visibility="visible" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/emotion_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/select_chat_send_emoji" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_live_chat_input_new"
+                        android:gravity="center_vertical"
+                        android:minHeight="40dp"
+                        android:orientation="horizontal">
+
+                        <io.github.rockerhieu.emojicon.EmojiconEditText
+                            android:id="@+id/edit_text"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="8dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:hint="请输入内容"
+                            android:inputType="textMultiLine|textShortMessage"
+                            android:maxLines="6"
+                            android:textColor="#333333"
+                            android:textColorHint="#999999"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="Autofill, TextFields"
+                            tools:text="【创作者】任务，" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/send"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        app:srcCompat="@mipmap/ic_chat_send_message" />
+                </LinearLayout>
+            </com.xtree.live.widge.LinearContentContainer>
+            <!-- 面板区域，仅能包含PanelView-->
+            <com.xtree.live.inter.PanelContainer
+                android:id="@+id/panel_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.xtree.live.widge.PanelView
+                    android:id="@+id/panel_emotion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:panel_layout="@layout/layout_emoji_panel"
+                    app:panel_trigger="@id/emotion_btn" />
+
+            </com.xtree.live.inter.PanelContainer>
+
+        </com.xtree.live.widge.PanelSwitchLayout>
+
+
+        <com.xtree.live.widge.PinView
+            android:id="@+id/cl_pin"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/chatbar" />
 
+        <ScrollView
+            android:id="@+id/ads_page"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/chatbar"
+            tools:visibility="visible">
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:overScrollMode="never">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/iv_close_ads"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/bg_new_badge_num"
+            android:padding="2dp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintStart_toStartOf="@+id/ads_page"
+            app:layout_constraintTop_toTopOf="@+id/ads_page" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/groupAds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="ads_page,iv_close_ads" />
+
+        <com.xtree.live.widge.DateTextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_chat_date"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp"
+            android:textColor="#9912141B"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_pin"
+            app:layout_goneMarginTop="10dp"
+            tools:text="10 - 24"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

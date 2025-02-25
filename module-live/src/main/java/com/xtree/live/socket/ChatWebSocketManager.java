@@ -150,8 +150,8 @@ public class ChatWebSocketManager {
             String scheme = "ws";
             if ("https".equals(uri.getScheme())) scheme = "wss";
             mChatClient = ChatClientFactory.createClient(mConnectionType, scheme, uri.getHost(), token, mHandler);
-            String url = scheme + "://" + uri.getHost() + "/wss/?userToken=" + token;
-            newWebsocket(url);
+//            String url = scheme + "://" + uri.getHost() + "/wss/?xLiveToken=" + token;
+//            newWebsocket(url);
             mChatClient.connectSession();
             return true;
         } catch (Exception e) {
@@ -160,7 +160,7 @@ public class ChatWebSocketManager {
         }
     }
 
-    OkHttpClient client =new OkHttpClient.Builder()
+/*    OkHttpClient client =new OkHttpClient.Builder()
             .readTimeout(20, TimeUnit.SECONDS)
                 .connectTimeout(20,TimeUnit.SECONDS)
                 .build();
@@ -200,7 +200,7 @@ public class ChatWebSocketManager {
                 Log.d("WebSocketListener", "onMessage: text "+response.message());
             }
         });
-    }
+    }*/
 
     private int mPastAttemptCount = 1;
 

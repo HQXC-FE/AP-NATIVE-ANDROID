@@ -21,4 +21,8 @@ public class WordUtil {
     public static String getString(Context context, int res, Object... formatArgs) {
         return context.getResources().getString(res, formatArgs);
     }
+
+    public static int getColor(int res) {
+        return BaseApplication.getInstance().getResources().getColor(res);
+    }
 }

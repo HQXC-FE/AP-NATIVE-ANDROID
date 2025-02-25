@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ChatItem.UserName" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:minEms">4</item>
+        <item name="android:textColor">#025BE8</item>
+    </style>
+
+    <style name="ChatItem.UserName2" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:minEms">4</item>
+        <item name="android:textColor">#025BE8</item>
+    </style>
+
+</resources>

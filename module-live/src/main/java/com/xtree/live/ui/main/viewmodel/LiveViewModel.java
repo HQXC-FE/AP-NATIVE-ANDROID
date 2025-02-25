@@ -21,9 +21,11 @@ import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.SPUtil;
 import com.xtree.base.vo.FBService;
 import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
+import com.xtree.live.SPKey;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.httpnew.LiveRep;
 import com.xtree.live.data.source.httpnew.LiveService;
@@ -57,6 +59,7 @@ import java.util.List;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.sentry.Sentry;
+import me.xtree.mvvmhabit.base.BaseApplication;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
 import me.xtree.mvvmhabit.http.BaseResponse;
@@ -385,6 +388,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         liveRoomInfo.postValue(liveRoomBean);
                         if(liveRoomBean.getInfo()!=null){
                             X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
+                            SPUtil.get(BaseApplication.getInstance()).put(SPKey.UID,uid);
                         }
                     }
 

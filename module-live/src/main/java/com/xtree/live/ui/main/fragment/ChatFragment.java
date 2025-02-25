@@ -29,6 +29,7 @@ import com.xtree.live.data.factory.AppViewModelFactory;
 import com.xtree.live.databinding.FragmentChatBinding;
 import com.xtree.live.ui.main.model.chat.LiveWebSocketViewModel;
 import com.xtree.live.ui.main.service.LiveWebSocketService;
+import com.xtree.live.ui.main.viewmodel.LiveDetailHomeViewModel;
 import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 import com.xtree.service.message.MessageData;
 import com.xtree.service.message.MessageType;
@@ -44,7 +45,7 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
 @Route(path = RouterFragmentPath.Live.PAGER_LIVE_CHAT)
-public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveViewModel> {
+public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHomeViewModel> {
     private ArrayList<Fragment> fragmentList = new ArrayList<>();
     private ArrayList<String> tabList = new ArrayList<>();
     private FragmentStateAdapter mAdapter;
@@ -56,54 +57,54 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveViewMode
 
     @Override
     public void initView() {
-        url = "https://zhibo-apis.oxldkm.com" + "/wss/?xLiveToken=" + "e3e4812409ba683babeb566b9e31493cbf6ac755225903bd890e043d99af46f8fb0f842b5d30fc6ccb299000f3586fdb";
-        //协议转换
-        if (url.startsWith("https")) {
-            url = url.replaceFirst("https", "wss");
-        } else if (url.startsWith("http")) {
-            url = url.replaceFirst("http", "ws");
-        }
-
-        mAdapter = new FragmentStateAdapter(getChildFragmentManager(), getLifecycle()) {
-            @NonNull
-            @Override
-            public Fragment createFragment(int position) {
-                return fragmentList.get(position);
-            }
-
-            @Override
-            public int getItemCount() {
-                return fragmentList.size();
-            }
-        };
-
-        binding.vpMain.setAdapter(mAdapter);
-        binding.vpMain.setUserInputEnabled(true); // ViewPager2 左右滑动
-
-        new TabLayoutMediator(binding.tblType, binding.vpMain, (tab, position) -> {
-            tab.setText(tabList.get(position));
-        }).attach();
-
-        Fragment bindMsgFragment = new Fragment();
-        Fragment bindMsgPersonFragment = new Fragment();
-
-        String txtSquare = getString(R.string.txt_live_chat_square);
-        String txtBetting = getString(R.string.txt_live_chat_betting);
-        String txtPrivate = getString(R.string.txt_live_chat_private);
-        String txtMsgAssistant = getString(R.string.txt_live_chat_assistant);
-
-        fragmentList.add(bindMsgFragment);
-        fragmentList.add(bindMsgPersonFragment);
-        fragmentList.add(bindMsgFragment);
-        fragmentList.add(bindMsgPersonFragment);
-        tabList.add(txtSquare);
-        tabList.add(txtBetting);
-        tabList.add(txtPrivate);
-        tabList.add(txtMsgAssistant);
-
-        mAdapter.notifyDataSetChanged();
-
-        initPushService();
+//        url = "https://zhibo-apis.oxldkm.com" + "/wss/?xLiveToken=" + "e3e4812409ba683babeb566b9e31493cbf6ac755225903bd890e043d99af46f8fb0f842b5d30fc6ccb299000f3586fdb";
+//        //协议转换
+//        if (url.startsWith("https")) {
+//            url = url.replaceFirst("https", "wss");
+//        } else if (url.startsWith("http")) {
+//            url = url.replaceFirst("http", "ws");
+//        }
+//
+//        mAdapter = new FragmentStateAdapter(getChildFragmentManager(), getLifecycle()) {
+//            @NonNull
+//            @Override
+//            public Fragment createFragment(int position) {
+//                return fragmentList.get(position);
+//            }
+//
+//            @Override
+//            public int getItemCount() {
+//                return fragmentList.size();
+//            }
+//        };
+//
+//        binding.vpMain.setAdapter(mAdapter);
+//        binding.vpMain.setUserInputEnabled(true); // ViewPager2 左右滑动
+//
+//        new TabLayoutMediator(binding.tblType, binding.vpMain, (tab, position) -> {
+//            tab.setText(tabList.get(position));
+//        }).attach();
+//
+//        Fragment bindMsgFragment = new Fragment();
+//        Fragment bindMsgPersonFragment = new Fragment();
+//
+//        String txtSquare = getString(R.string.txt_live_chat_square);
+//        String txtBetting = getString(R.string.txt_live_chat_betting);
+//        String txtPrivate = getString(R.string.txt_live_chat_private);
+//        String txtMsgAssistant = getString(R.string.txt_live_chat_assistant);
+//
+//        fragmentList.add(bindMsgFragment);
+//        fragmentList.add(bindMsgPersonFragment);
+//        fragmentList.add(bindMsgFragment);
+//        fragmentList.add(bindMsgPersonFragment);
+//        tabList.add(txtSquare);
+//        tabList.add(txtBetting);
+//        tabList.add(txtPrivate);
+//        tabList.add(txtMsgAssistant);
+//
+//        mAdapter.notifyDataSetChanged();
+//
+//        initPushService();
     }
 
     @Override
@@ -117,21 +118,21 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveViewMode
     }
 
     @Override
-    public LiveViewModel initViewModel() {
+    public LiveDetailHomeViewModel initViewModel() {
         AppViewModelFactory factory = AppViewModelFactory.getInstance(getActivity().getApplication());
-        return new ViewModelProvider(this, factory).get(LiveViewModel.class);
+        return new ViewModelProvider(this, factory).get(LiveDetailHomeViewModel.class);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        if (pushServiceConnection.isBound()) {
-            getActivity().unbindService(pushServiceConnection);
-        }
-        if (pushObserver != null && liveWebSocketViewModel != null) {
-            liveWebSocketViewModel.getWsTokenLiveData.removeObserver(pushObserver);
-        }
+//        if (pushServiceConnection.isBound()) {
+//            getActivity().unbindService(pushServiceConnection);
+//        }
+//        if (pushObserver != null && liveWebSocketViewModel != null) {
+//            liveWebSocketViewModel.getWsTokenLiveData.removeObserver(pushObserver);
+//        }
     }
 
     private void initPushService() {

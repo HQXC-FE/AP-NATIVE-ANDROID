@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="message_image" type="id" />
+    <item name="message_retry_load_image" type="id" />
+    <item name="message_send_time" type="id" />
+    <item name="message_user" type="id" />
+    <item name="message_text" type="id" />
+    <item name="message_loading_image" type="id" />
+    <item name="message_send_loading" type="id" />
+    <item name="message_retry_send" type="id" />
+    <item name="message_user_avatar" type="id" />
+    <item name="message_content_container" type="id" />
+    <item name="message_guide_line" type="id" />
+    <item name="message_banner_image" type="id" />
+    <item name="message_banner_loading_image" type="id" />
+    <item name="message_banner_title" type="id" />
+    <item name="message_banner_text" type="id" />
+</resources>
