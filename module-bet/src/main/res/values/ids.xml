@@ -2,4 +2,5 @@
 <resources>
     <item name="tag_normal_time" type="id"/>
     <item name="tag_add_time" type="id"/>
+    <item name="tag_last_time" type="id"/>
 </resources>

@@ -338,7 +338,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                     if (mc.contains("休息") || mc.contains("结束")) {
                         binding.tvMatchTime.setText(match.getStage());
                     } else {
-                        binding.tvMatchTime.setText(mc + " " + match.getTime());
+                        //binding.tvMatchTime.setText(mc + " " + match.getTime());
                     }
                 } else {
                     binding.tvMatchTime.setText(match.getStage());
@@ -579,11 +579,8 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         }
     }
 
-
-
     public void updateVisibleItems(ExpandableListView listView) {
         listView.post(() -> {
-            System.out.println("=========== updateVisibleItems ===============");
             int first = listView.getFirstVisiblePosition();
             int last = listView.getLastVisiblePosition();
 
@@ -591,7 +588,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                 long packedPosition = listView.getExpandableListPosition(i);
                 int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
                 int childPosition = ExpandableListView.getPackedPositionChild(packedPosition);
-                System.out.println("=========== ***** updateVisibleItems 222 ***** ===============");
                 if (groupPosition < getGroupCount()) {
                     View view = listView.getChildAt(i - first);
                     if (view != null) {
@@ -599,62 +595,92 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                         if (tvMatchTime != null) {
                             Match match = (Match) getChild(groupPosition, childPosition);
                             if (match != null) {
+                                int seconed;
                                 String mc = match.getStage();
-                                System.out.println("=========== mc ==============="+match.getStage());
+
                                 if (TextUtils.equals(Constants.getFbSportId(), match.getSportId()) || TextUtils.equals(Constants.getBsbSportId(), match.getSportId())) { // 足球和篮球
                                     if (mc.contains("休息") || mc.contains("结束")) {
+                                        System.out.println("=========== 休息mc结束 ===============" + match.getStage());
                                         tvMatchTime.setText(match.getStage());
                                     } else {
                                         int normalTime = 0;
-                                        if(tvMatchTime.getTag(R.id.tag_normal_time) != null){
+                                        if (tvMatchTime.getTag(R.id.tag_normal_time) != null) {
                                             normalTime = (int) tvMatchTime.getTag(R.id.tag_normal_time);
                                         }
-                                        System.out.println("=========== ***** 比赛时间 ***** ==============="+mc + " " + match.getTime());
-                                        if(match.getSportId().equals("1")){ //足球
-                                            System.out.println("=========== 足球 normalTime ==============="+normalTime);
-                                            System.out.println("=========== 接口 match.getTimeS() ==============="+match.getTimeS());
-                                            if(normalTime != match.getTimeS()){ //接口时间变更对比
-                                                tvMatchTime.setTag(R.id.tag_normal_time,match.getTimeS());
-                                                tvMatchTime.setTag(R.id.tag_add_time,0);
-                                                System.out.println("=========== 接口时间变更 ==============="+normalTime);
+                                        System.out.println("=========== ***** 比赛时间 ***** ===============" + mc + " " + match.getTime());
+                                        if (match.getSportId().equals("1")) { //足球
+                                            //System.out.println("=========== 足球 normalTime ==============="+normalTime);
+                                            //System.out.println("=========== 接口 match.getTimeS() ==============="+match.getTimeS());
+                                            if (normalTime != match.getTimeS()) { //接口时间变更对比
+                                                tvMatchTime.setTag(R.id.tag_normal_time, match.getTimeS());
+                                                tvMatchTime.setTag(R.id.tag_add_time, 0);
+                                                System.out.println("=========== 接口时间变更 ===============" + normalTime);
                                                 tvMatchTime.setText(mc + " " + formatTime(match.getTimeS()));
-                                            }else{
+                                            } else {
                                                 //int seconed = 0;
-                                                if(tvMatchTime.getTag(R.id.tag_add_time) != null){
+                                                if (tvMatchTime.getTag(R.id.tag_add_time) != null) {
                                                     seconed = (int) tvMatchTime.getTag(R.id.tag_add_time);
                                                     seconed = seconed + 1;
-                                                    System.out.println("=========== 增加时间 ==============="+tvMatchTime.getTag(R.id.tag_add_time));
-                                                    tvMatchTime.setTag(R.id.tag_add_time,seconed);
+                                                    System.out.println("=========== 增加时间 ===============" + tvMatchTime.getTag(R.id.tag_add_time));
+                                                    tvMatchTime.setTag(R.id.tag_add_time, seconed);
                                                     int currentTime = match.getTimeS() + seconed;
                                                     tvMatchTime.setText(mc + " " + formatTime(currentTime));
-                                                    System.out.println("=========== 添加时间 ==============="+formatTime(currentTime));
-                                                }else{
-                                                    System.out.println("=========== 正常时间 ==============="+formatTime(match.getTimeS()));
+                                                    System.out.println("=========== 添加时间 ===============" + formatTime(currentTime));
+                                                } else {
+                                                    System.out.println("=========== 取不到值就显示正常时间 ===============" + formatTime(match.getTimeS()));
                                                     tvMatchTime.setText(mc + " " + formatTime(match.getTimeS()));
                                                 }
 
                                             }
-                                        }else if(match.getSportId().equals("2")){ //篮球
-                                            if(tvMatchTime.getTag(R.id.tag_normal_time) != tvMatchTime){
-                                                tvMatchTime.setText(mc + " " + match.getTime());
-                                                tvMatchTime.setTag(R.id.tag_add_time,0);
-                                            }else{
-                                                tvMatchTime.setTag(R.id.tag_normal_time,match.getTimeS());
-                                                int seconed = (int) tvMatchTime.getTag(R.id.tag_add_time);
-                                                seconed = seconed - 1;
-                                                tvMatchTime.setTag(R.id.tag_add_time,seconed);
-                                                int currentTime = match.getTimeS() + seconed;
-                                                tvMatchTime.setText(mc + " " + formatTime(currentTime));
+                                        } else if ((match.getSportName().equals("篮球") && match.getSportId().equals("2") || (match.getSportName().equals("篮球") && match.getSportId().equals("3")))) { //篮球
+                                            System.out.println("=========== 篮球 normalTime ===============" + normalTime);
+                                            System.out.println("=========== 篮球 match.getTimeS() ===============" + match.getTimeS());
+                                            if (normalTime != match.getTimeS()) { //接口时间变更对比
+                                                tvMatchTime.setTag(R.id.tag_normal_time, match.getTimeS());
+                                                tvMatchTime.setTag(R.id.tag_add_time, 0);
+                                                if (tvMatchTime.getTag(R.id.tag_add_time) != null) {
+                                                    seconed = (int) tvMatchTime.getTag(R.id.tag_add_time);
+                                                    System.out.println("=========== 接口时间变更 需要减少的秒数 ===============" + seconed);
+                                                }
+                                                System.out.println("=========== 接口时间变更 normalTime ===============" + normalTime);
+                                                System.out.println("=========== 接口时间变更 match.getTimeS() ===============" + match.getTimeS());
+                                                System.out.println("=========== 接口时间变更 formatTime(match.getTimeS() ===============" + mc + " " + formatTime(match.getTimeS()));
+                                                //tvMatchTime.setText(mc + " " + formatTime(match.getTimeS()));
+                                            } else {
+                                                if (tvMatchTime.getTag(R.id.tag_add_time) != null) {
+                                                    int currentTime;
+                                                    seconed = (int) tvMatchTime.getTag(R.id.tag_add_time);
+                                                    seconed = seconed + 1;
+                                                    System.out.println("=========== 接口时间变更 normalTime ===============" + normalTime);
+                                                    tvMatchTime.setTag(R.id.tag_add_time, seconed);
+                                                    if (match.getTimeS() > seconed) {
+                                                        currentTime = normalTime - seconed;
+                                                    } else {
+                                                        currentTime = normalTime;
+                                                    }
+
+                                                    if (tvMatchTime.getTag(R.id.tag_last_time) != null) {
+                                                        int lastTime = (int) tvMatchTime.getTag(R.id.tag_last_time);
+                                                        if (currentTime > lastTime) { //看看什么情况currentime 大于上次时间
+                                                            tvMatchTime.setText(mc + " " + formatTime(lastTime));
+                                                            System.out.println("=========== 篮球按秒记时时间 lastTime  ===============" + match.getId() + " : " + mc + " " + formatTime(lastTime));
+                                                        }
+                                                    } else {
+                                                        System.out.println("=========== 篮球按秒记时时间 currentTime ===============" + match.getId() + " : " + mc + " " + formatTime(currentTime));
+                                                        tvMatchTime.setText(mc + " " + formatTime(currentTime));
+                                                    }
+
+                                                } else {
+                                                    //System.out.println("=========== 正常时间 ==============="+formatTime(match.getTimeS()));
+                                                    tvMatchTime.setText(mc + " " + formatTime(match.getTimeS()));
+                                                }
                                             }
-                                        }else{ //其它
-                                            System.out.println("=========== Other  ==============="+mc + " " + match.getTime());
-                                            tvMatchTime.setText(mc + " " + formatTime(match.getTimeS()));
+                                        } else { //其它比赛
+                                            System.out.println("=========== Other  ===============" + mc + " " + match.getTime());
+                                            System.out.println("===========  match.getSportId()  ===============" + match.getSportId());
+                                            //tvMatchTime.setText(mc + " " + match.getTime());
                                         }
                                     }
-
-                                } else {
-                                    System.out.println("=========== Spcial ==============="+mc + " " + match.getTime());
-                                    tvMatchTime.setText(match.getStage());
                                 }
                             }
                         }
@@ -665,7 +691,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         });
     }
 
-    public static String formatTime(int totalSeconds) {
+    public String formatTime(int totalSeconds) {
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
         return String.format("%02d : %02d", minutes, seconds);
