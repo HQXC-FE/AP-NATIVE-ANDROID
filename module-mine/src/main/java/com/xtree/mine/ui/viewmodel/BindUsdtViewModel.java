@@ -84,20 +84,6 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<UserUsdtTypeVo>() {
-                    /*@Override
-                    public void onResult(UserBindBaseVo<UsdtVo> vo) {
-                        CfLog.d("******");
-                        if (vo.msg_type == 1 || vo.msg_type == 2) {
-                            ToastUtils.showLong(vo.message); // 异常 2-用户无此访问权限
-                            finish();
-                        } else if (vo.status == 1) {
-                            // 列表无数据,应该跳到增加绑定
-                            liveBindUSDTList.setValue(vo);
-                        } else {
-                            liveBindUSDTList.setValue(vo); // smstype 6-成功
-                        }
-                    }*/
-
                     @Override
                     public void onResult(UserUsdtTypeVo userUsdtTypeVo) {
 
