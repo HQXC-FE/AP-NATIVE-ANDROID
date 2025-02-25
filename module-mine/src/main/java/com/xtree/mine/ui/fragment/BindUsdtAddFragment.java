@@ -32,6 +32,7 @@ import com.xtree.mine.ui.viewmodel.BindUsdtViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.mine.vo.UserUsdtConfirmVo;
 import com.xtree.mine.vo.UserUsdtJumpVo;
+import com.xtree.mine.vo.UserUsdtTypeVo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
     private final String controller = "security";
     private String action = "adduserusdt"; // adduserusdt
     private String mark = "bindusdt"; // bindusdt
-    //private String tokenSign = "";
+    private String tokenSign = "";
     private String id = "";
     int digitalNum = 0;
     String type = ""; // ERC20_USDT,TRC20_USDT
@@ -64,6 +65,8 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
 
     UserUsdtConfirmVo mConfirmVo;
     private BasePopupView loadingView;//显示loadView
+
+    private UserUsdtTypeVo bindVo ;
 
     public BindUsdtAddFragment() {
     }
@@ -79,8 +82,9 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
             binding.tvwChoose.setVisibility(View.VISIBLE);
             binding.tvwChooseTitle.setVisibility(View.VISIBLE);
             binding.tvwTipAddress.setText("");
-            setUsdtType();
+            //setUsdtType();
             //getUsdtType();
+            getCardList();
         } else {
             binding.tvwChoose.setVisibility(View.GONE);
             binding.tvwChooseTitle.setVisibility(View.GONE);
@@ -142,7 +146,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
             CfLog.i(mUserUsdtJumpVo.toString());
             action = mUserUsdtJumpVo.action;
             mark = mUserUsdtJumpVo.mark;
-            //tokenSign = mUserUsdtJumpVo.tokenSign;
+            tokenSign = mUserUsdtJumpVo.tokenSign;
             type = mUserUsdtJumpVo.type;
             //id = mUserUsdtJumpVo.id;
             viewModel.key = mUserUsdtJumpVo.key;
@@ -203,6 +207,18 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
                 binding.llConfirm.setVisibility(View.GONE);
             }
         });
+
+        viewModel.liveBindUSDTList.observe(this , vo->{
+            CfLog.e(" viewModel.liveBindUSDTList  vo = "+vo.toString());
+            bindVo = vo ;
+            if (typeList == null ){
+                typeList = new ArrayList<>();
+            }
+            for (int i = 0 ; i < bindVo.usdt_type.size() ; i++){
+                typeList.add(bindVo.usdt_type.get(i));
+            }
+
+        });
     }
 
     private void setConfirmView() {
@@ -213,12 +229,12 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         binding.tvwAcc.setText(mConfirmVo.usdt_card);
     }
 
-    private void setUsdtType() {
+  /*  private void setUsdtType() {
         typeList.add("ERC20_USDT");
         typeList.add("TRC20_USDT");
         typeList.add("Arbitrum");
         typeList.add("Solana");
-    }
+    }*/
 
     //private void getUsdtType() {
     //    HashMap map = new HashMap();
@@ -317,22 +333,24 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
 
                 binding2.tvwTitle.setOnClickListener(v -> {
                     binding.tvwChoose.setText(txt);
-                    if (txt.contains("TRC")) {
+                    //if (TextUtils.equals("Arbitrum",tvwAr) || tvwAr.toLowerCase().contains("Arbitrum")|| tvwAr.toLowerCase().contains("arbitrum") )
+                    if (txt.contains("TRC") ||txt.contains("TRC20")||txt.contains("trc20")) {
                         binding.tvwTipAddress.setText(R.string.txt_remind_usdt_trc20);
                         binding.tvwTipAddress.setVisibility(View.VISIBLE);
-                    } else if (txt.contains("ERC")) {
+                    } else if (txt.contains("ERC")||txt.contains("ERC20")||txt.contains("erc20")) {
                         binding.tvwTipAddress.setText(R.string.txt_remind_usdt_erc20);
                         binding.tvwTipAddress.setVisibility(View.VISIBLE);
-                    } else if (txt.contains("Arbitrum")) {
+                    } else if (txt.contains("Arbitrum")||txt.contains("ARBITRUM")||txt.contains("ARB")) {
                         binding.tvwTipAddress.setText(R.string.txt_remind_usdt_arbitrum);
                         binding.tvwTipAddress.setVisibility(View.VISIBLE);
-                    }else if (txt.contains("Solana")) {
+                    }else if (txt.contains("Solana")||txt.contains("SOLANA")||txt.contains("SOL")) {
                         binding.tvwTipAddress.setText(R.string.txt_remind_usdt_solana);
                         binding.tvwTipAddress.setVisibility(View.VISIBLE);
                     }
                     else {
                         binding.tvwTipAddress.setText(mUserUsdtJumpVo.remind);
                     }
+
 
                     ppw.dismiss();
                 });
@@ -397,5 +415,20 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         if (loadingView != null) {
             loadingView.dismiss();
         }
+    }
+
+    private void getCardList() {
+        //https://hxing5pre.hxing5vip.com/user/?controller=user&action=userusdtinfo&check=8357b272d82c79bf0abb13f358b6f266&mark=bindusdt&client=m
+        HashMap map = new HashMap();
+        //controller=user&action=userusdtinfo&check=8357b272d82c79bf0abb13f358b6f266&mark=bindusdt&client=m
+        map.put("controller", "user");
+        map.put("action", "userusdtinfo");
+        map.put("check", tokenSign);
+        map.put("mark", "bindusdt");
+        map.put("client", "m");
+        //viewModel.getCardList(map);
+
+        viewModel.getBindUserType(tokenSign ,map );
+
     }
 }
