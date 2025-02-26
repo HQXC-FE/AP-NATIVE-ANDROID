@@ -10,12 +10,12 @@
 
     <TextView
         android:id="@+id/tvw_title"
+        style="?attr/channelTextSelectAttr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:gravity="center"
         android:text="@string/txt_kind_tips"
-        android:textColor="@color/clr_black"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -45,14 +45,13 @@
 
     <TextView
         android:id="@+id/tvw_msg2"
-        style="@style/style_cm_tip_small_grey"
+        style="?attr/textPrimaryAttr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fadeScrollbars="false"
         android:gravity="center"
         android:scrollbars="vertical"
-        android:textColor="@color/clr_grey_60"
         android:textSize="14sp"
         android:visibility="gone"
         tools:text="这是内容 长的4行52字这是内容"
@@ -60,9 +59,9 @@
 
     <LinearLayout
         android:id="@+id/layout_tvw"
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:gravity="center">
 
         <TextView
@@ -72,7 +71,7 @@
 
         <TextView
             android:id="@+id/tvw_right"
-            style="@style/style_btn_short"
+            style="?attr/btn_short_attr"
             android:text="@string/txt_confirm" />
     </LinearLayout>
 

@@ -224,7 +224,7 @@
                     android:layout_below="@id/tv_actual_withdrawal_next"
                     android:layout_alignLeft="@id/tv_actual_withdrawal_next"
                     android:text="@string/txt_kind_tips"
-                    android:textColor="@color/cl_withdrawal_tip"
+                    style="?attr/channelTextSelectAttr"
                     android:textSize="14sp" />
 
                 <TextView

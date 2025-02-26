@@ -124,7 +124,7 @@
 
             <TextView
                 android:id="@+id/tvShowExample"
-                style="@style/style_btn_short"
+                style="?attr/btn_short_attr"
                 android:layout_width="80dp"
                 android:layout_height="22dp"
                 android:layout_gravity="center_vertical|end"

@@ -26,7 +26,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:text="@string/txt_kind_tips"
-        android:textColor="@color/clr_black"
+        style="?attr/channelTextSelectAttr"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -38,7 +38,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="0dp"
         android:gravity="center"
-        android:textColor="@color/clr_grey_60"
+       style="?attr/textPrimaryAttr"
         android:textSize="14sp"
         tools:text="当前渠道【 】充值到账成功率较低，为了保证快速到账，请使用以下渠道进行充值或联系客服进行处理！" />
 

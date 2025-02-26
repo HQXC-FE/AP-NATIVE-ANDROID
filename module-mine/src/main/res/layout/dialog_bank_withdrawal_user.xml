@@ -334,7 +334,7 @@
                             android:text="@string/txt_kind_tips"
                             android:layout_below="@id/iv_withdrawal_next"
                             android:textSize="@dimen/bt_text_14sp"
-                            android:textColor="@color/cl_withdrawal_tip"
+                            style="?attr/channelTextSelectAttr"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                         <TextView

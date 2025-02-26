@@ -29,7 +29,9 @@
     <style name="textSecondaryAttrStyle">
         <item name="android:textColor">@color/textSecondaryColor</item>
     </style>
-
+    <style name="channelTextSelectStyle">
+        <item name="android:textColor">@color/channelTextSelectColor</item>
+    </style>
     <style name="textTertiaryAttrStyle">
         <item name="android:textColor">@color/textTertiaryColor</item>
     </style>
@@ -53,7 +55,12 @@
     <style name="clr_item_text_style">
         <item name="android:textColor">@color/clr_item_text_selector</item>
     </style>
-
+    <style name="bg_google_auth_style">
+        <item name="android:src">@drawable/bg_google_auth</item>
+    </style>
+    <style name="bg_rc_dialog_style">
+        <item name="android:background">@drawable/bg_rc_dialog</item>
+    </style>
     <style name="clr_rc_rate_style">
         <item name="android:textColor">@color/clr_rc_rate_selector</item>
     </style>
@@ -156,7 +163,29 @@
     <style name="style_rc_dlg_bg_top">
         <item name="android:src">@drawable/bg_dlg_top</item>
     </style>
+    <style name="style_rc_reg_hi_wallet">
+        <item name="android:drawableStart">@drawable/rc_reg_hi_wallet</item>
+        <item name="android:textColor">@color/textPrimaryColor</item>
+    </style>
+    <style name="style_rc_down_hi_wallet">
+        <item name="android:drawableStart">@drawable/rc_reg_hi_wallet</item>
+        <item name="android:textColor">@color/textPrimaryColor</item>
+    </style>
     <style name="style_home_top_notice">
         <item name="android:textColor">@color/textSecondaryColor</item>
+    </style>
+    <style name="style_btn_short">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginStart">6dp</item>
+        <item name="android:layout_marginEnd">6dp</item>
+        <item name="android:background">@drawable/bg_btn_short_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:text">@string/txt_confirm</item>
+        <item name="android:textColor">@color/clr_text_btn_selector</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginLeft">20dp</item>
     </style>
 </resources>

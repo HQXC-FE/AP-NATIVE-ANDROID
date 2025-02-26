@@ -62,7 +62,7 @@
                 tools:text="PAY00123456789" />
 
             <TextView
-                     style="?attr/textTertiaryAttr"
+                     style="?attr/tertiaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="12dp"
@@ -87,7 +87,7 @@
 
             <TextView
                 android:id="@+id/tvw_copy_bank_name"
-                     style="?attr/textTertiaryAttr"
+                     style="?attr/tertiaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="12dp"
@@ -112,7 +112,7 @@
 
             <TextView
                 android:id="@+id/tvw_copy_branch"
-                     style="?attr/textTertiaryAttr"
+                     style="?attr/tertiaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="12dp"
@@ -136,7 +136,7 @@
 
             <TextView
                 android:id="@+id/tvw_copy_acc_name"
-                     style="?attr/textTertiaryAttr"
+                     style="?attr/tertiaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="12dp"
@@ -160,7 +160,7 @@
 
             <TextView
                 android:id="@+id/tvw_copy_acc_num"
-                     style="?attr/textTertiaryAttr"
+                     style="?attr/tertiaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="12dp"
@@ -184,7 +184,7 @@
 
             <TextView
                 android:id="@+id/tvw_copy_money2"
-                     style="?attr/textTertiaryAttr"
+                     style="?attr/tertiaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="12dp"

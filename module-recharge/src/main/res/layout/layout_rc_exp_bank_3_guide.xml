@@ -250,7 +250,7 @@
 
             <TextView
                 android:id="@+id/tvw_right"
-                style="@style/style_btn_short"
+                style="?attr/btn_short_attr"
                 android:text="确认提交" />
         </LinearLayout>
 

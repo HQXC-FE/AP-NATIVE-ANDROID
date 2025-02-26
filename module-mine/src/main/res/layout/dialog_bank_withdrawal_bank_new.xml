@@ -512,7 +512,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/tv_actual_withdrawal_next_more"
                                 android:layout_alignLeft="@id/tv_actual_withdrawal_next_more"
-                                android:text="@string/txt_kind_tips"
+                                style="?attr/channelTextSelectAttr"
                                 android:textColor="@color/cl_withdrawal_tip"
                                 android:textSize="14sp" />
 

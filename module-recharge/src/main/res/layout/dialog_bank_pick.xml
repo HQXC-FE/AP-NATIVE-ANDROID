@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="com.xtree.recharge.ui.viewmodel.BankPickViewModel" />
@@ -12,8 +12,10 @@
         <import type="android.view.View" />
 
         <import type="androidx.core.content.ContextCompat" />
+
         <import type="com.xtree.recharge.R" />
     </data>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,43 +28,33 @@
 
             <ImageView
                 android:id="@+id/ivw_bg_top"
+                style="?attr/bg_google_auth_attr"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:scaleType="fitXY"
-                android:src="@mipmap/bg_google_auth"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0"/>
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/ivw_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
-                    android:src="@mipmap/bg_dlg_top"
-                    android:visibility="invisible"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+
 
                 <TextView
                     android:id="@+id/tvw_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:text="请选择您的付款银行"
                     android:textColor="@color/clr_white"
                     android:textSize="18sp"
-                    android:text="请选择您的付款银行"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -75,14 +67,24 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/layout_margin"
                     android:contentDescription="close"
+                    android:onClick="@{() -> model.finish()}"
                     android:padding="4dp"
                     android:src="@mipmap/ic_pop_close3"
-                    android:onClick="@{() -> model.finish()}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                style="?attr/bg_rc_dialog_attr"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_title" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/search_layout"
@@ -98,15 +100,15 @@
                 <EditText
                     android:id="@+id/edt_key"
                     style="@style/style_cm_auth_edit"
+                    textChangedListener="@{model}"
+                    android:background="@drawable/selector_bank_pick_bg"
                     android:hint="输入关键字搜索银行"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLength="24"
-                    textChangedListener="@{model}"
                     android:text="@={model.searchTextLiveData}"
                     android:textColor="@color/clr_purple_12"
                     android:textColorHint="@color/clr_text_color_hint"
-                    android:background="@drawable/selector_bank_pick_bg"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -115,8 +117,8 @@
                     android:layout_width="19dp"
                     android:layout_height="19dp"
                     android:layout_margin="8dp"
-                    android:src="@{model.showDelete?ContextCompat.getDrawable(context,R.mipmap.icon_bt_ex_delete):ContextCompat.getDrawable(context,R.mipmap.icon_bt_ex_search)}"
                     android:onClick="@{() -> model.clearSearch()}"
+                    android:src="@{model.showDelete?ContextCompat.getDrawable(context,R.mipmap.icon_bt_ex_delete):ContextCompat.getDrawable(context,R.mipmap.icon_bt_ex_search)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -145,18 +147,18 @@
                     android:drawableStart="@mipmap/rc_exp_warn"
                     android:drawablePadding="6dp"
                     android:gravity="center"
-                    android:textSize="12sp"
                     android:text="请选择正确的付款银行，否则将严重影响上分时间"
-                    android:textColor="@color/clr_rc_exp_choose_bank_txt" />
+                    android:textColor="@color/clr_rc_exp_choose_bank_txt"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="12dp"
                 itemData="@{model.groupDatas}"
                 itemViewType="@{model.groupItemType}"
                 viewPool="@{model.recycledViewPool}"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="12dp"
                 android:visibility="@{model.showSearch?View.GONE:View.VISIBLE}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -166,20 +168,20 @@
                 app:layout_constraintVertical_bias="0" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="12dp"
                 itemData="@{model.searchDatas}"
                 itemViewType="@{model.itemType}"
                 onBindListener="@{model.searchListener}"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="12dp"
                 android:visibility="@{model.showSearch?View.VISIBLE:View.GONE}"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tip_layout"
-                app:layout_constraintVertical_bias="0"/>
+                app:layout_constraintVertical_bias="0"
+                app:spanCount="3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

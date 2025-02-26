@@ -57,7 +57,7 @@
         android:layout_marginTop="100dp"
         android:gravity="center"
         android:text="@string/txt_kind_tips"
-        android:textColor="@color/clr_black"
+        style="?attr/channelTextSelectAttr"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/ivw_bg"

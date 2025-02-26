@@ -15,6 +15,7 @@
     <attr name="textQuinaryAttr" format="reference" />
     <attr name="textSenaryAttr" format="reference" />
     <attr name="textForgotAttr" format="reference" />
+    <attr name="channelTextSelectAttr" format="reference" />
 
     <attr name="clr_item_text_attr" format="reference" />
     <attr name="ivw_bg_attr" format="reference" />
@@ -34,11 +35,16 @@
     <attr name="btn_get_code_attr" format="reference" />
     <attr name="info2_grey_50_attr" format="reference" />
     <attr name="info_grey_50_attr" format="reference" />
+    <attr name="bg_google_auth_attr" format="reference" />
+    <attr name="bg_rc_dialog_attr" format="reference" />
 
     <attr name="play_method_attr" format="reference" />
     <attr name="rc_dlg_hourglass_attr" format="reference" />
     <attr name="rc_dlg_bg_title_attr" format="reference" />
     <attr name="rc_dlg_bg_top_attr" format="reference" />
+    <attr name="rc_reg_hi_wallet_attr" format="reference" />
+    <attr name="rc_down_hi_wallet_attr" format="reference" />
+    <attr name="btn_short_attr" format="reference" />
     <attr name="home_top_notic" format="reference" />
 
 </resources>

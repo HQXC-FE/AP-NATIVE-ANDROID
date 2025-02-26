@@ -95,7 +95,7 @@
                     <TextView
                         android:layout_marginTop="10dp"
                         android:id="@+id/tv_senior_boot"
-                        style="@style/style_btn_short"
+                        style="?attr/btn_short_attr"
                         android:layout_below="@id/tv_senior_player"
                         android:layout_centerHorizontal="true"
                         android:text="@string/txt_rc_skip_boot"
@@ -132,7 +132,7 @@
                     <TextView
                         android:layout_marginTop="10dp"
                         android:id="@+id/tv_enter_boot"
-                        style="@style/style_btn_short"
+                        style="?attr/btn_short_attr"
                         android:layout_below="@id/tv_new_player"
                         android:layout_centerHorizontal="true"
                         android:text="@string/txt_rc_enter_boot"

@@ -17,7 +17,10 @@
         <item name="textQuinaryAttr">@style/textQuinaryAttrStyle</item>
         <item name="textSenaryAttr">@style/textSenaryAttrStyle</item>
         <item name="textForgotAttr">@style/textForgotAttrStyle</item>
+        <item name="channelTextSelectAttr">@style/channelTextSelectStyle</item>
 
+        <item name="bg_google_auth_attr">@style/bg_google_auth_style</item>
+        <item name="bg_rc_dialog_attr">@style/bg_rc_dialog_style</item>
         <item name="clr_item_text_attr">@style/clr_item_text_style</item>
         <item name="clr_rc_rate_attr">@style/clr_rc_rate_style</item>
         <item name="ivw_hot_attr">@style/ivw_hot_style</item>
@@ -38,6 +41,9 @@
         <item name="rc_dlg_hourglass_attr">@style/style_rc_dlg_hourglass</item>
         <item name="rc_dlg_bg_title_attr">@style/style_rc_dlg_bg_title</item>
         <item name="rc_dlg_bg_top_attr">@style/style_rc_dlg_bg_top</item>
+        <item name="rc_reg_hi_wallet_attr">@style/style_rc_reg_hi_wallet</item>
+        <item name="rc_down_hi_wallet_attr">@style/style_rc_down_hi_wallet</item>
+        <item name="btn_short_attr">@style/style_btn_short</item>
         <item name="home_top_notic">@style/style_rc_dlg_bg_top</item>
     </style>
 

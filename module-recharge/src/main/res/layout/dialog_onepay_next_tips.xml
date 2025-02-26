@@ -58,7 +58,7 @@
         android:layout_marginTop="100dp"
         android:gravity="center"
         android:text="@string/txt_kind_tips"
-        android:textColor="@color/clr_black"
+        style="?attr/channelTextSelectAttr"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/ivw_bg"
@@ -95,7 +95,7 @@
 
         <TextView
             android:id="@+id/tvw_right"
-            style="@style/style_btn_short"
+            style="?attr/btn_short_attr"
             android:text="@string/ok"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

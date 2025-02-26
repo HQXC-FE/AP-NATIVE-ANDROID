@@ -68,7 +68,7 @@
                 android:text="@string/txt_lock_card" />
             <TextView
                 android:id="@+id/tvw_add"
-                style="@style/style_btn_short"
+                style="?attr/btn_short_attr"
                 android:minEms="6"
                 android:text="@string/txt_add_bind" />
         </LinearLayout>

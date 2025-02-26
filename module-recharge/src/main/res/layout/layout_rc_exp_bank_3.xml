@@ -245,7 +245,7 @@
 
             <TextView
                 android:id="@+id/tvw_left"
-                style="@style/style_btn_short"
+                style="?attr/btn_short_attr"
                 android:onClick="@{() -> model.onBackPressed()}"
                 android:text="上一步" />
 
@@ -255,7 +255,7 @@
 
             <TextView
                 android:id="@+id/tvw_right"
-                style="@style/style_btn_short"
+                style="?attr/btn_short_attr"
                 android:onClick="@{() -> model.uploadVoucher()}"
                 android:text="确认提交" />
         </LinearLayout>

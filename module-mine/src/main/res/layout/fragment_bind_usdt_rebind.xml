@@ -77,7 +77,7 @@
 
                 <TextView
                     android:id="@+id/tvw_submit_old"
-                    style="@style/style_btn_short"
+                    style="?attr/btn_short_attr"
                     android:enabled="false"
                     android:text="@string/txt_next"/>
             </LinearLayout>
@@ -157,7 +157,7 @@
 
                 <TextView
                     android:id="@+id/ivw_next"
-                    style="@style/style_btn_short"
+                    style="?attr/btn_short_attr"
                     android:text="@string/txt_next" />
             </LinearLayout>
         </LinearLayout>
@@ -267,7 +267,7 @@
 
                 <TextView
                     android:id="@+id/tvw_submit"
-                    style="@style/style_btn_short"
+                    style="?attr/btn_short_attr"
                     android:text="@string/txt_next"/>
             </LinearLayout>
 
