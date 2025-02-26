@@ -76,11 +76,7 @@ public class RechargeReportAdapter extends CachedAutoRefreshAdapter<RechargeOrde
             @Override
             public void onFinish() {
                 itemTime.setTextColor(ctx.getResources().getColor(R.color.red));
-                if ("0".equals(vo.status)) {
-                    itemTime.setText("--");
-                } else {
-                    itemTime.setText("支付超时");
-                }
+                itemTime.setText("支付超时");
             }
         };
 
