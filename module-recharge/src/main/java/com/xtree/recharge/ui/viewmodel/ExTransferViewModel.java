@@ -1207,12 +1207,12 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         rechargeLiveData.setValue(rechargeViewModel);
 
         //外部传入的极速渠道名称
-        String expTitleValue = rechargeViewModel.liveDataExpTitle.getValue();
-        if (!TextUtils.isEmpty(expTitleValue)) {
-            titleLiveData.setValue(expTitleValue);
-            rechargeViewModel.liveDataExpTitle.setValue(null);
-            return;
-        }
+//        String expTitleValue = rechargeViewModel.liveDataExpTitle.getValue();
+//        if (!TextUtils.isEmpty(expTitleValue)) {
+//            titleLiveData.setValue(expTitleValue);
+//            rechargeViewModel.liveDataExpTitle.setValue(null);
+//            return;
+//        }
 
         //充值页当前选择的渠道
         RechargeVo rechargeVo = rechargeViewModel.curRechargeLiveData.getValue();

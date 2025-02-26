@@ -1357,7 +1357,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                     CfLog.i("RechargeOrderVo, bankId: " + vo.bankId);
                     LoadingDialog.show(getContext());
                     viewModel.checkOrder(vo.bankId); // 根据充值渠道ID 查询订单详情 (极速充值)
-                    viewModel.liveDataExpTitle.setValue(vo.payport_nickname);
+//                    viewModel.liveDataExpTitle.setValue(vo.payport_nickname);
                 } else {
                     //goPay(vo);
                     new XPopup.Builder(getContext()).asCustom(new BrowserDialog(getContext(), "", vo.orderurl)).show();
@@ -1737,7 +1737,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         viewModel.liveDataExpOrderData.observe(getViewLifecycleOwner(), vo -> {
             CfLog.i(vo.toString());
 
-            viewModel.liveDataExpTitle.setValue(null);
+//            viewModel.liveDataExpTitle.setValue(null);
 
             isNeedReset = true; // 取消选中,如果用户再点击,又要查未完成订单和详情
             String realName = binding.edtName.getText().toString().trim();
@@ -1781,10 +1781,10 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             request.setPayBankName(vo.getData().getPayBankName()); // binding.tvwBankCard.getText().toString()
 
             //根据bid设置标题
-            RechargeVo rechargeVo = viewModel.getChargeInfoById(request.getPid());
-            if (rechargeVo != null) {
-                viewModel.liveDataExpTitle.setValue(rechargeVo.title);
-            }
+//            RechargeVo rechargeVo = viewModel.getChargeInfoById(request.getPid());
+//            if (rechargeVo != null) {
+//                viewModel.liveDataExpTitle.setValue(rechargeVo.title);
+//            }
 
             RxBus.getDefault().postSticky(request);
             String status = vo.getData().getStatus();
@@ -1813,12 +1813,12 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         });
 
         // 无极速订单, 显示点击渠道后需要显示的 选择银行卡/姓名/金额等
-        viewModel.liveDataExpNoOrder.observe(this, isNoOrder -> {
-            CfLog.i("*****");
-            if (isNoOrder) {
-                viewModel.liveDataExpTitle.setValue(null);
-            }
-        });
+//        viewModel.liveDataExpNoOrder.observe(this, isNoOrder -> {
+//            CfLog.i("*****");
+//            if (isNoOrder) {
+//                viewModel.liveDataExpTitle.setValue(null);
+//            }
+//        });
 
         viewModel.liveDataRcBanners.observe(this, list -> {
             CfLog.i("*****");
