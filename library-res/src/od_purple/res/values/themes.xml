@@ -38,6 +38,7 @@
         <item name="rc_dlg_hourglass_attr">@style/style_rc_dlg_hourglass</item>
         <item name="rc_dlg_bg_title_attr">@style/style_rc_dlg_bg_title</item>
         <item name="rc_dlg_bg_top_attr">@style/style_rc_dlg_bg_top</item>
+        <item name="home_top_notic">@style/style_rc_dlg_bg_top</item>
     </style>
 
 </resources>

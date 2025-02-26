@@ -156,4 +156,7 @@
     <style name="style_rc_dlg_bg_top">
         <item name="android:src">@drawable/bg_dlg_top</item>
     </style>
+    <style name="style_home_top_notice">
+        <item name="android:textColor">@color/textSecondaryColor</item>
+    </style>
 </resources>

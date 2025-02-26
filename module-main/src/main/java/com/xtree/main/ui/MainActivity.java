@@ -179,8 +179,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         normalItemView.initialize(drawable, drawable, text);
         normalItemView.setDefaultDrawable(getResources().getDrawable(drawable));
         normalItemView.setSelectedDrawable(getResources().getDrawable(drawableSelect));
-        normalItemView.setTextDefaultColor(getResources().getColor(R.color.main_bottom_unselect));
-        normalItemView.setTextCheckedColor(getResources().getColor(R.color.main_bottom_select));
+        normalItemView.setTextDefaultColor(getResources().getColor(R.color.textMainUnSelectorColor));
+        normalItemView.setTextCheckedColor(getResources().getColor(R.color.textMainSelectorColor));
         normalItemView.setIconTopMargin(ConvertUtils.dp2px(29f));
         normalItemView.setIconWH(ConvertUtils.dp2px(30f), ConvertUtils.dp2px(30f));
         normalItemView.setTextTopMarginOnIcon(ConvertUtils.dp2px(1.5f));

@@ -215,8 +215,9 @@
                     android:marqueeRepeatLimit="marquee_forever"
                     android:singleLine="true"
                     android:text=""
-                    android:textColor="@color/clr_hm_txt_grey_03"
-                    tools:text="Demo" />
+                    tools:text="Demo"
+                    style="?attr/style_home_top_notice"
+                    />
 
                 <ImageView
                     android:id="@+id/ivw_close"
