@@ -170,10 +170,7 @@ public class RechargeFloatingWindows extends FloatingWindows {
                             List<RechargeOrderVo> rechargeOrderVoList = new ArrayList<>();
                             if (vo.result != null) {
                                 for (RechargeOrderVo rechargeOrderVo : vo.result) {
-                                    if (rechargeOrderVo.recharge_json_exporetime == null) {
-                                        continue;
-                                    }
-                                    if (rechargeOrderVo.status.equals("0") && !rechargeOrderVo.recharge_json_exporetime.equals("-1")) {
+                                    if (rechargeOrderVo.status.equals("0")) {
                                         rechargeOrderVoList.add(rechargeOrderVo);
                                     }
                                 }

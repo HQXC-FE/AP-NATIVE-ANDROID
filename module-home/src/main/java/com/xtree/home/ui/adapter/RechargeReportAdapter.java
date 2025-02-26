@@ -27,10 +27,6 @@ public class RechargeReportAdapter extends CachedAutoRefreshAdapter<RechargeOrde
         this.callBack = callBack;
     }
 
-    public interface ICallBack {
-        void onCallBack(RechargeOrderVo vo);
-    }
-
     @NonNull
     @Override
     public CacheViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -80,7 +76,11 @@ public class RechargeReportAdapter extends CachedAutoRefreshAdapter<RechargeOrde
             @Override
             public void onFinish() {
                 itemTime.setTextColor(ctx.getResources().getColor(R.color.red));
-                itemTime.setText("支付超时");
+                if ("0".equals(vo.status)) {
+                    itemTime.setText("--");
+                } else {
+                    itemTime.setText("支付超时");
+                }
             }
         };
 
@@ -99,5 +99,9 @@ public class RechargeReportAdapter extends CachedAutoRefreshAdapter<RechargeOrde
         itemWay.setOnClickListener(v -> {
             callBack.onCallBack(vo);
         });
+    }
+
+    public interface ICallBack {
+        void onCallBack(RechargeOrderVo vo);
     }
 }

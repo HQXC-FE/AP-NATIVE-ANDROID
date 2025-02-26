@@ -355,6 +355,10 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
                                 case "03": //失败
                                     liveDataExpNoOrder.setValue(true);
                                     break;
+                                case "14": // 回单审核中
+                                    liveDataCurOrder.setValue(vo);
+                                    liveDataExpNoOrder.setValue(false);
+                                    break;
                                 default:
                                     long differenceInSeconds = 0;
                                     try {
@@ -503,27 +507,31 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
                                 case "03": //失败
                                     liveDataExpNoOrder.setValue(true);
                                     break;
+                                case "14": // 回单审核中
+                                    liveDataCurOrder.setValue(vo);
+                                    liveDataExpNoOrder.setValue(false);
+                                    break;
                                 default:
-//                                    long differenceInSeconds = 0;
-//                                    try {
-//                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                                        Date now = Calendar.getInstance().getTime();
-//                                        Date end = null;
-//                                        end = format.parse(vo.getData().getExpireTime());
-//                                        differenceInSeconds = (now.getTime() - end.getTime());
-//                                    } catch (ParseException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                    CfLog.i("sec: " + differenceInSeconds);
-//                                    if (differenceInSeconds < 0) {
-//                                        if (rechargeVoAtomicReference.get() != null) {
-//                                            curRechargeLiveData.setValue(rechargeVoAtomicReference.get());
-//                                        }
-                                        liveDataCurOrder.setValue(vo);
-                                        liveDataExpNoOrder.setValue(false);
-//                                    } else {
-//                                        liveDataExpNoOrder.setValue(true); // 订单无效/没有订单
-//                                    }
+                                    long differenceInSeconds = 0;
+                                    try {
+                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        Date now = Calendar.getInstance().getTime();
+                                        Date end = null;
+                                        end = format.parse(vo.getData().getExpireTime());
+                                        differenceInSeconds = (now.getTime() - end.getTime());
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    CfLog.i("sec: " + differenceInSeconds);
+                                    if (differenceInSeconds < 0) {
+                                        if (rechargeVoAtomicReference.get() != null) {
+                                            curRechargeLiveData.setValue(rechargeVoAtomicReference.get());
+                                        }
+                                    liveDataCurOrder.setValue(vo);
+                                    liveDataExpNoOrder.setValue(false);
+                                    } else {
+                                        liveDataExpNoOrder.setValue(true); // 订单无效/没有订单
+                                    }
                                     break;
                             }
                         } else {
@@ -633,6 +641,10 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
                                 case "00": //成功
                                 case "03": //失败
                                     liveDataExpNoOrder.setValue(true);
+                                    break;
+                                case "14": // 回单审核中
+                                    liveDataCurOrder.setValue(vo);
+                                    liveDataExpNoOrder.setValue(false);
                                     break;
                                 default:
                                     long differenceInSeconds = 0;
