@@ -343,6 +343,10 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 //                        if(binding.tvMatchTime.getTag(R.id.tag_normal_time) == null && binding.tvMatchTime.getTag(R.id.tag_add_time) == null){
 //                            binding.tvMatchTime.setText(mc + " " + match.getTime());
 //                        }
+                        //其它类型运动
+                        if (!isFootBallOrBasketBall(match.getSportId())) {
+                            binding.tvMatchTime.setText(mc + " " + match.getTime());
+                        }
                     }
                 } else {
                     binding.tvMatchTime.setText(match.getStage());
@@ -624,11 +628,8 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         String stage = match.getStage();
         String sportId = match.getSportId();
 
-        // 判断是否为足球或篮球
-        boolean isFootballOrBasketball = TextUtils.equals(Constants.getFbSportId(), sportId) || TextUtils.equals(Constants.getBsbSportId(), sportId);
-
         //其它类型运动
-        if (!isFootballOrBasketball) {
+        if (!isFootBallOrBasketBall(match.getSportId())) {
             return;
         }
 
@@ -661,9 +662,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             tvMatchTime.setTag(R.id.tag_add_time, 0);
             tvMatchTime.setText(stage + " " + formatTime(match.getTimeS()));
         } else {
-            if (stage.contains("未开赛")) {
-                return;
-            }
             // 计时增加
             int seconds = getTagIntValue(tvMatchTime, R.id.tag_add_time);
             seconds++;
@@ -697,17 +695,13 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
             int currentTime = normalTime > seconds ? normalTime - seconds : normalTime;
             int lastTime = getTagIntValue(tvMatchTime, R.id.tag_last_time);
-
-            if (stage.contains("未开赛")) {
-                return;
-            }
             //篮球时间是递减的,保证不能显示负数
             if (lastTime > 0 && currentTime > lastTime) {
                 tvMatchTime.setText(stage + " " + formatTime(lastTime));
-                System.out.println("=========== 篮球按秒记时(使用上次时间) =============" + match.getId() + " : " + stage + " " + formatTime(lastTime));
+                CfLog.i("=========== 篮球按秒记时(使用上次时间) =============" + match.getId() + " : " + stage + " " + formatTime(lastTime));
             } else {
                 tvMatchTime.setText(stage + " " + formatTime(currentTime));
-                System.out.println("=========== 篮球按秒记时 =============" + match.getId() + " : " + stage + " " + formatTime(currentTime));
+                CfLog.i("=========== 篮球按秒记时 =============" + match.getId() + " : " + stage + " " + formatTime(currentTime));
             }
         }
     }
@@ -720,10 +714,18 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         return tag instanceof Integer ? (int) tag : 0;
     }
 
+    private boolean isFootBallOrBasketBall(String sportId){
+        // 判断是否为足球或篮球
+        boolean isFootballOrBasketball = TextUtils.equals(Constants.getFbSportId(), sportId) || TextUtils.equals(Constants.getBsbSportId(), sportId);
+        return isFootballOrBasketball;
+    }
+
     public String formatTime(int totalSeconds) {
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
         return String.format("%02d : %02d", minutes, seconds);
     }
+
+
 
 }
