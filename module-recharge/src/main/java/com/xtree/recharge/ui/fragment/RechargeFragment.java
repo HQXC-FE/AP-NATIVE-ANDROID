@@ -85,8 +85,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -705,7 +703,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                     }
                     url = DomainUtil.getApiUrl() + separator + url;
                 }
-                showWebPayDialog(vo.title, url);
+                showWebPayDialog(vo.title, url, curRechargeVo != null && Arrays.asList(arrayBrowser).contains(curRechargeVo.paycode));
             } else if (vo.paycode.contains(viewModel.ONE_PAY_FIX)) {
                 // 极速充值
                 CfLog.i(vo.bid + " , " + vo.title + " , " + vo.paycode);
@@ -1360,7 +1358,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 //                    viewModel.liveDataExpTitle.setValue(vo.payport_nickname);
                 } else {
                     //goPay(vo);
-                    showWebPayDialog(vo.payport_nickname,vo.orderurl);
+                    showWebPayDialog(vo.payport_nickname, vo.orderurl, true);
                 }
             } else {
                 viewModel.getOrderDetail(id); // 普通充值
@@ -1725,7 +1723,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                 url = DomainUtil.getApiUrl() + separator + url;
             }
             CfLog.d(vo.title + ", jump: " + url);
-            showWebPayDialog(vo.title, url);
+            showWebPayDialog(vo.title, url, curRechargeVo != null && Arrays.asList(arrayBrowser).contains(curRechargeVo.paycode));
         });
 
         viewModel.liveDataRechargePay.observe(getViewLifecycleOwner(), vo -> {
@@ -1860,8 +1858,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
      * 显示网页版的充值界面 <br/>
      * 某些网页版的充值方式 需要加个外跳的按钮, 解决内部加载白屏的问题
      */
-    private void showWebPayDialog(String title, String url) {
-        boolean isShowBank = curRechargeVo != null && Arrays.asList(arrayBrowser).contains(curRechargeVo.paycode);
+    private void showWebPayDialog(String title, String url, boolean isShowBank) {
         BrowserDialog dialog = new RechargeBrowserDialog(getContext(), title, url).setShowBank(isShowBank).set3rdLink(true);
 
         new XPopup.Builder(getContext()).asCustom(dialog).show();
