@@ -1360,7 +1360,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 //                    viewModel.liveDataExpTitle.setValue(vo.payport_nickname);
                 } else {
                     //goPay(vo);
-                    new XPopup.Builder(getContext()).asCustom(new BrowserDialog(getContext(), "", vo.orderurl)).show();
+                    showWebPayDialog(vo.payport_nickname,vo.orderurl);
                 }
             } else {
                 viewModel.getOrderDetail(id); // 普通充值
