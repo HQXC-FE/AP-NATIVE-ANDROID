@@ -983,26 +983,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    System.out.println("================== MainActivity initTimer ===================");
                     refreshLeague();
                     viewModel.statistical(playMethodType);
                 });
         viewModel.addSubscribe(timerDisposable);
-    }
-
-    private void initMatchTimer() { //比赛时间记时
-//        if (matchTimerDisposable != null) {
-//            viewModel.removeSubscribe(matchTimerDisposable);
-//        }
-//        matchTimerDisposable = Observable.interval(0, 1, TimeUnit.SECONDS)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(aLong -> {
-//                    System.out.println("================== MainActivity initMatchTimer ===================");
-//                    mLeagueAdapter.updateVisibleItems(binding.rvLeague);
-//
-//                });
-//        viewModel.addSubscribe(matchTimerDisposable);
     }
 
     /**
@@ -1261,7 +1245,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     protected void onResume() {
         super.onResume();
         initTimer();
-        initMatchTimer();
         startStopwatch();
         setCgBtCar();
         if (mLeagueAdapter != null) {
@@ -1274,7 +1257,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         super.onStop();
         stopStopwatch();
         viewModel.removeSubscribe(timerDisposable);
-        //viewModel.removeSubscribe(matchTimerDisposable);
     }
 
     @Override
@@ -1880,6 +1862,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private Handler handler = new Handler(Looper.getMainLooper());
     private int elapsedTime = 0; // 记录已经经过的时间（秒）
 
+    //比赛记录时间
     private Runnable stopwatchRunnable = new Runnable() {
         @Override
         public void run() {

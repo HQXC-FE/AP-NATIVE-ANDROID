@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.R;
@@ -54,7 +55,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     private String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
     private int liveHeaderPosition;
     private int noLiveHeaderPosition;
-    private int seconed = 0;
+    private boolean isUpdateTime;
 
     private PageHorizontalScrollView.OnScrollListener mOnScrollListener;
 
@@ -338,9 +339,10 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                     if (mc.contains("休息") || mc.contains("结束")) {
                         binding.tvMatchTime.setText(match.getStage());
                     } else {
-                        if(binding.tvMatchTime.getTag(R.id.tag_normal_time) == null || binding.tvMatchTime.getTag(R.id.tag_add_time) == null){
-                            binding.tvMatchTime.setText(mc + " " + match.getTime());
-                        }
+                        //没有保存当前时间的视为当前不展示的item,正常跟随adapter刷新,展示的就跟随读秒刷新
+//                        if(binding.tvMatchTime.getTag(R.id.tag_normal_time) == null && binding.tvMatchTime.getTag(R.id.tag_add_time) == null){
+//                            binding.tvMatchTime.setText(mc + " " + match.getTime());
+//                        }
                     }
                 } else {
                     binding.tvMatchTime.setText(match.getStage());
@@ -614,16 +616,16 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
     /**
      * 更新比赛时间显示
+     *
      * @param tvMatchTime 时间显示的TextView
-     * @param match 比赛数据对象
+     * @param match       比赛数据对象
      */
     private void updateMatchTimeDisplay(TextView tvMatchTime, Match match) {
         String stage = match.getStage();
         String sportId = match.getSportId();
 
         // 判断是否为足球或篮球
-        boolean isFootballOrBasketball = TextUtils.equals(Constants.getFbSportId(), sportId) ||
-                TextUtils.equals(Constants.getBsbSportId(), sportId);
+        boolean isFootballOrBasketball = TextUtils.equals(Constants.getFbSportId(), sportId) || TextUtils.equals(Constants.getBsbSportId(), sportId);
 
         //其它类型运动
         if (!isFootballOrBasketball) {
@@ -631,20 +633,19 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         }
 
         // 处理休息或结束状态
-        if (stage.contains("休息") || stage.contains("结束")) {
-            System.out.println("=========== 休息或结束状态 =============" + stage);
-            tvMatchTime.setText(stage);
+        if (stage.contains("休息") || stage.contains("结束") || stage.contains("未开赛") || stage.contains("未开始")) {
+            CfLog.i("======= 休息 结束 未开赛 =====");
             return;
         }
 
         // 获取并处理时间数据
         int normalTime = getTagIntValue(tvMatchTime, R.id.tag_normal_time);
-        System.out.println("=========== 比赛时间 =============" + stage + " " + match.getTime());
+        CfLog.i("=========== 比赛时间 =============" + stage + " " + match.getTime());
 
-        if ("1".equals(sportId)) {
+        if (sportId.equals("1")) {
             // 足球时间处理
             updateFootballTime(tvMatchTime, match, normalTime, stage);
-        } else if (("2".equals(sportId) || "3".equals(sportId)) && "篮球".equals(match.getSportName())) {
+        } else if ((sportId.equals("2") || sportId.equals("3")) && match.getSportName().equals("篮球")) {
             // 篮球时间处理
             updateBasketballTime(tvMatchTime, match, normalTime, stage);
         }
@@ -655,19 +656,28 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
      */
     private void updateFootballTime(TextView tvMatchTime, Match match, int normalTime, String stage) {
         if (normalTime != match.getTimeS()) {
-            // 接口时间发生变更
+            // 接口时间发生变更,重置增加时间
             tvMatchTime.setTag(R.id.tag_normal_time, match.getTimeS());
             tvMatchTime.setTag(R.id.tag_add_time, 0);
-            System.out.println("=========== 接口时间变更 =============" + normalTime);
             tvMatchTime.setText(stage + " " + formatTime(match.getTimeS()));
         } else {
+            if (stage.contains("未开赛")) {
+                return;
+            }
             // 计时增加
             int seconds = getTagIntValue(tvMatchTime, R.id.tag_add_time);
             seconds++;
             tvMatchTime.setTag(R.id.tag_add_time, seconds);
+            int lastTime = getTagIntValue(tvMatchTime, R.id.tag_last_time);
             int currentTime = match.getTimeS() + seconds;
-            System.out.println("=========== 添加时间 =============" + formatTime(currentTime));
+            CfLog.i("=========== 比赛ID =============" + match.getId());
+            CfLog.i("=========== 增加的秒数 =============" + seconds);
+            CfLog.i("=========== 原始的秒数 =============" + match.getTimeS());
+            CfLog.i("=========== 上次的时间 =============" + formatTime(lastTime));
+            CfLog.i("=========== 原始时间 =============" + formatTime(match.getTimeS()));
+            CfLog.i("=========== 添加时间 =============" + formatTime(currentTime));
             tvMatchTime.setText(stage + " " + formatTime(currentTime));
+            tvMatchTime.setTag(R.id.tag_last_time, currentTime);
         }
     }
 
@@ -679,7 +689,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             // 接口时间变更
             tvMatchTime.setTag(R.id.tag_normal_time, match.getTimeS());
             tvMatchTime.setTag(R.id.tag_add_time, 0);
-            System.out.println("=========== 接口时间变更 =============");
         } else {
             // 计时减少
             int seconds = getTagIntValue(tvMatchTime, R.id.tag_add_time);
@@ -689,14 +698,16 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             int currentTime = normalTime > seconds ? normalTime - seconds : normalTime;
             int lastTime = getTagIntValue(tvMatchTime, R.id.tag_last_time);
 
+            if (stage.contains("未开赛")) {
+                return;
+            }
+            //篮球时间是递减的,保证不能显示负数
             if (lastTime > 0 && currentTime > lastTime) {
                 tvMatchTime.setText(stage + " " + formatTime(lastTime));
-                System.out.println("=========== 篮球按秒记时(使用上次时间) =============" +
-                        match.getId() + " : " + stage + " " + formatTime(lastTime));
+                System.out.println("=========== 篮球按秒记时(使用上次时间) =============" + match.getId() + " : " + stage + " " + formatTime(lastTime));
             } else {
                 tvMatchTime.setText(stage + " " + formatTime(currentTime));
-                System.out.println("=========== 篮球按秒记时 =============" +
-                        match.getId() + " : " + stage + " " + formatTime(currentTime));
+                System.out.println("=========== 篮球按秒记时 =============" + match.getId() + " : " + stage + " " + formatTime(currentTime));
             }
         }
     }
