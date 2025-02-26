@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:viewBindingIgnore="true"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/anchor"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:src="@mipmap/ic_banner_right_soccer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@id/message_banner_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/anchor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/anchor"
+        android:scaleType="centerCrop"
+        tools:ignore="ContentDescription"
+        tools:src="@mipmap/icon_gift" />
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@id/message_banner_loading_image"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        app:layout_constraintBottom_toBottomOf="@id/message_banner_image"
+        app:layout_constraintEnd_toEndOf="@id/message_banner_image"
+        app:layout_constraintStart_toStartOf="@id/message_banner_image"
+        app:layout_constraintTop_toTopOf="@id/message_banner_image" />
+
+    <TextView
+        android:id="@id/message_banner_title"
+        style="@style/TextAppearance.Material3.TitleSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="#571A2C"
+        app:layout_constraintBottom_toBottomOf="@id/message_banner_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/message_banner_image"
+        app:layout_constraintTop_toTopOf="@id/message_banner_image"
+        tools:text="十年老盘⚽【玩球专区推荐】⚽️十年老盘⚽【玩球专区推荐】⚽️十年老盘⚽【玩球专区推荐】⚽️十年老盘⚽【玩球专区推荐】⚽️" />
+
+    <TextView
+        android:id="@id/message_banner_text"
+        style="@style/TextAppearance.Material3.BodySmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/bg_new_banner_content"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/anchor"
+        tools:text="各位球友们，在小9直攝看球聊球，有杏宇招牌为您保驾护航！十年信營，大额无忧，老牌台子，種定室谱！海量福利，好运爆棚！请专线注册登录【点这里】" />
+</merge>

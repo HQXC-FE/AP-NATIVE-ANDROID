@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    tools:ignore="ContentDescription"
+    tools:viewBindingIgnore="true">
+
+    <ImageView
+        android:id="@id/message_user_avatar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@mipmap/ic_default_profile" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@id/message_content_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/message_incoming_container_bg"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/message_guide_line"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/message_user_avatar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="wrap"
+        app:layout_constraintWidth_percent="1">
+
+        <com.xtree.live.widge.MessageTextView
+            android:id="@id/message_user"
+            style="@style/ChatItem.UserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="暱稱暱稱暱稱暱稱暱稱暱稱暱稱暱稱暱稱" />
+
+        <ImageView
+            android:id="@id/message_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/message_user"
+            tools:src="@mipmap/ic_default_live_thumb"
+            tools:visibility="visible" />
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@id/message_loading_image"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/message_image"
+            app:layout_constraintEnd_toEndOf="@id/message_image"
+            app:layout_constraintStart_toStartOf="@id/message_image"
+            app:layout_constraintTop_toTopOf="@id/message_image" />
+
+        <ImageView
+            android:id="@id/message_retry_load_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/message_image_send_retry"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/message_image"
+            app:layout_constraintEnd_toEndOf="@id/message_image"
+            app:layout_constraintStart_toStartOf="@id/message_image"
+            app:layout_constraintTop_toTopOf="@id/message_image"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@id/message_send_time"
+            style="@style/ChatItem.Time.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/message_image"
+            app:layout_constraintEnd_toEndOf="@id/message_image"
+            tools:text="12:24" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@id/message_guide_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="32dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:chat="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:viewBindingIgnore="true"
+    tools:ignore="ContentDescription">
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@id/message_send_loading"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="4dp"
+        android:padding="2dp"
+        android:progressDrawable="@drawable/message_pending"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/message_content_container"
+        app:layout_constraintEnd_toStartOf="@id/message_content_container"
+        tools:visibility="visible" />
+    <ImageView
+        android:id="@id/message_retry_send"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="4dp"
+        app:srcCompat="@drawable/retry_send_message"
+        android:padding="2dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/message_content_container"
+        tools:visibility="visible" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@id/message_content_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:padding="4dp"
+        android:gravity="end"
+        android:background="@drawable/message_outgoing_container_bg"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/message_user_avatar"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="wrap"
+        app:layout_constraintStart_toEndOf="@id/message_guide_line"
+        app:layout_constraintWidth_percent="1">
+
+
+        <ImageView
+            android:id="@id/message_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@mipmap/ic_default_live_thumb"
+            tools:visibility="visible" />
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@id/message_loading_image"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="@id/message_image"
+            app:layout_constraintEnd_toEndOf="@id/message_image"
+            app:layout_constraintStart_toStartOf="@id/message_image"
+            app:layout_constraintTop_toTopOf="@id/message_image" />
+
+        <ImageView
+            android:id="@id/message_retry_load_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:src="@drawable/message_image_send_retry"
+            app:layout_constraintBottom_toBottomOf="@id/message_image"
+            app:layout_constraintEnd_toEndOf="@id/message_image"
+            app:layout_constraintStart_toStartOf="@id/message_image"
+            app:layout_constraintTop_toTopOf="@id/message_image"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@id/message_send_time"
+            style="@style/ChatItem.Time.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/message_image"
+            app:layout_constraintEnd_toEndOf="@id/message_image"
+            tools:text="12:24" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@id/message_user_avatar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@mipmap/ic_default_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@id/message_guide_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="32dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

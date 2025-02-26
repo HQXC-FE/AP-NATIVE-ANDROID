@@ -93,6 +93,6 @@ dependencies {
 
     api rootProject.ext.dependencies["GsonFactory"]
     api rootProject.ext.dependencies["autodispose"]
-
+    api rootProject.ext.dependencies["SVGAPlayer"]
 
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#F3F5F8"
+    android:orientation="vertical"
+    android:padding="6dp"
+    tools:viewBindingIgnore="true"
+    tools:ignore="HardcodedText, ContentDescription">
+
+    <com.xtree.live.widge.MessageTextView
+        android:id="@id/message_user"
+        style="@style/ChatItem.UserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:autoLink="web|email|map"
+        android:minHeight="16sp"
+        android:lineSpacingExtra="6dp"
+        android:textColorLink="@color/chatTextLinkColor"
+        android:textSize="12sp"
+        tools:text="小9送红运，杏彩送豪礼小9送红运，杏彩送豪礼"
+        tools:visibility="visible" />
+
+</LinearLayout>

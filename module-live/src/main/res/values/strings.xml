@@ -103,5 +103,17 @@
 
     <string name="chat_room_pin_head">置顶消息</string>
 
+    <string name="tips">提示</string>
+    <string name="permissions_message_format">当前应用缺少【%s】权限，该功能暂时无法使用。如若需要，请单击【设置】按钮前往设置中心进行权限授权。</string>
+    <string name="setting">设置</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="permissions_camera">摄像头</string>
+    <string name="permissions_photos">照片和视频</string>
+    <string name="copy_success">复制成功</string>
+    <string name="chat_send_message_no_login">游客不能在广场发言，请您先登录！可直接私聊主播哦</string>
+    <string name="chat_send_message_hint">请输入内容</string>
+    <string name="input_params_error">输入参数异常</string>
+    <string name="chat_send_message_size_too_big">内容超过500字</string>
 
 </resources>

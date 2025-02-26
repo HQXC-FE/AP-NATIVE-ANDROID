@@ -2,9 +2,11 @@ package com.xtree.live;
 
 import android.text.TextUtils;
 
+import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.SPUtil;
 
 import me.xtree.mvvmhabit.base.BaseApplication;
+import me.xtree.mvvmhabit.utils.SPUtils;
 
 public class LiveConfig {
 
@@ -27,4 +29,10 @@ public class LiveConfig {
     public static void setLiveToken(String token){
         SPUtil.get(BaseApplication.getInstance()).put(SPKey.TOKEN,token);
     }
+
+    public static boolean isLogin(){
+        String token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN,null);
+        return !TextUtils.isEmpty(token);
+    }
+
 }

@@ -101,7 +101,8 @@ ext {
             "BaseQuickAdapter"                     : "io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.14",
             //html解析
             "jsoup"                                : "org.jsoup:jsoup:1.14.3",
-            "autodispose"                          : "com.uber.autodispose:autodispose-android-archcomponents:1.4.0"
+            "autodispose"                          : "com.uber.autodispose:autodispose-android-archcomponents:1.4.0",
+            "SVGAPlayer"                           : "com.github.yyued:SVGAPlayer-Android:2.6.1",
 
     ]
 }
