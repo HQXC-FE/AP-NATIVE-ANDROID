@@ -1069,11 +1069,15 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     }
 
     public void toPayee() {
-        startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_PAYEE);
+        if (!canonicalName.equals(ExTransferPayeeFragment.class.getCanonicalName())) {
+            startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_PAYEE);
+        }
     }
 
     public void toConfirm() {
-        startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_CONFIRM);
+        if (!canonicalName.equals(ExTransferConfirmFragment.class.getCanonicalName())) {
+            startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_CONFIRM);
+        }
     }
 
     public void toVoucher() {

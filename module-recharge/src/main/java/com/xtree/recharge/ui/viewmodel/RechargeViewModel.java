@@ -504,26 +504,26 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
                                     liveDataExpNoOrder.setValue(true);
                                     break;
                                 default:
-                                    long differenceInSeconds = 0;
-                                    try {
-                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                        Date now = Calendar.getInstance().getTime();
-                                        Date end = null;
-                                        end = format.parse(vo.getData().getExpireTime());
-                                        differenceInSeconds = (now.getTime() - end.getTime());
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                    CfLog.i("sec: " + differenceInSeconds);
-                                    if (differenceInSeconds < 0) {
-                                        if (rechargeVoAtomicReference.get() != null) {
-                                            curRechargeLiveData.setValue(rechargeVoAtomicReference.get());
-                                        }
+//                                    long differenceInSeconds = 0;
+//                                    try {
+//                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                                        Date now = Calendar.getInstance().getTime();
+//                                        Date end = null;
+//                                        end = format.parse(vo.getData().getExpireTime());
+//                                        differenceInSeconds = (now.getTime() - end.getTime());
+//                                    } catch (ParseException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                    CfLog.i("sec: " + differenceInSeconds);
+//                                    if (differenceInSeconds < 0) {
+//                                        if (rechargeVoAtomicReference.get() != null) {
+//                                            curRechargeLiveData.setValue(rechargeVoAtomicReference.get());
+//                                        }
                                         liveDataCurOrder.setValue(vo);
                                         liveDataExpNoOrder.setValue(false);
-                                    } else {
-                                        liveDataExpNoOrder.setValue(true); // 订单无效/没有订单
-                                    }
+//                                    } else {
+//                                        liveDataExpNoOrder.setValue(true); // 订单无效/没有订单
+//                                    }
                                     break;
                             }
                         } else {
