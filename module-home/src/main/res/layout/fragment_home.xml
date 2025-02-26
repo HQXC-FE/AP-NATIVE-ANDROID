@@ -216,7 +216,7 @@
                     android:singleLine="true"
                     android:text=""
                     tools:text="Demo"
-                    style="?attr/style_home_top_notice"
+                    style="?attr/home_top_notic"
                     />
 
                 <ImageView
