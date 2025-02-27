@@ -45,6 +45,7 @@
     <attr name="rc_reg_hi_wallet_attr" format="reference" />
     <attr name="rc_down_hi_wallet_attr" format="reference" />
     <attr name="btn_short_attr" format="reference" />
+    <attr name="withdraw_money_account_attr" format="reference" />
     <attr name="home_top_notic" format="reference" />
 
 </resources>

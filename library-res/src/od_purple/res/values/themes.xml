@@ -44,6 +44,7 @@
         <item name="rc_reg_hi_wallet_attr">@style/style_rc_reg_hi_wallet</item>
         <item name="rc_down_hi_wallet_attr">@style/style_rc_down_hi_wallet</item>
         <item name="btn_short_attr">@style/style_btn_short</item>
+        <item name="withdraw_money_account_attr">@style/style_withdraw_money_account</item>
         <item name="home_top_notic">@style/style_rc_dlg_bg_top</item>
     </style>
 
