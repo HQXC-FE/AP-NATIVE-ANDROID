@@ -1358,14 +1358,6 @@
         <item name="android:textStyle">bold</item>
         <item name="android:layout_marginLeft">1dp</item>
     </style>
-
-    <!--activity背景透明-->
-    <style name="style_trans_theme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
     <!-- 奥丁通用 按钮 背景为颜色,可变色(大部分地方使用) -->
     <style name="odin_style_btn">
         <item name="android:layout_width">match_parent</item>

@@ -12,13 +12,11 @@
         <activity
             android:name=".ui.activity.ChooseActivity"
             android:exported="false"
-            android:screenOrientation="behind"
-            android:theme="@style/style_trans_theme" />
+            android:screenOrientation="behind" />
         <activity
             android:name=".ui.activity.ActivityFlow"
             android:exported="false"
-            android:screenOrientation="behind"
-            android:theme="@style/style_trans_theme" />
+            android:screenOrientation="behind" />
         <activity
             android:name=".ui.activity.GlobeVerifyActivity"
             android:launchMode="singleTop"
