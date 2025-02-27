@@ -43,43 +43,37 @@ android {
             resValue "string", "ms_secret_key", "10e9c197-1d05-4a41-8740-345267d3ddb8"
             resValue "string", "sentry_dsn", "https://4330e6b8f582bb8f84b3f97f7afd0e1c@o4507447554539520.ingest.us.sentry.io/4508816270032896"
             resValue "bool", "is_tag", "true" // 是否开启统计
-            resValue "string", "domain_api_list", "https://app1.b5f6oz.xyz;" +
-                    "https://app1.b7x2bp.xyz;" +
-                    "https://app1.g2y8by.xyz;" +
-                    "https://app1.d1h9kq.xyz;" +
-                    "https://app1.p9d8af.xyz;" +
-                    "https://app2.v2n9bo.xyz;" +
-                    "https://app2.c1d8wp.xyz;" +
-                    "https://app2.y4l8ev.xyz;" +
-                    "https://app2.c9i9gv.xyz;" +
-                    "https://app2.w3f5bf.xyz;" +
-                    "https://app3.h2l5yj.xyz;" +
-                    "https://app3.b3h6ha.xyz;" +
-                    "https://app3.f9d5mm.xyz;" +
-                    "https://app3.p5t7nh.xyz;" +
-                    "https://app3.x6z4ai.xyz;" +
-                    "https://app4.k8t7rl.xyz;" +
-                    "https://app4.q6l1rv.xyz;" +
-                    "https://app4.o6l4da.xyz;" +
-                    "http://175.27.143.79:46820;" +
-                    "http://111.231.12.228:46820;" +
-                    "http://139.186.156.33:46820;" +
-                    "http://43.134.194.101:46820;" +
-                    "http://43.129.64.206:46820;"
-            resValue "string", "domain_url_list", "https://h51.k8z8dv.xyz;" +
-                    "https://h51.r2p8ss.xyz;" +
-                    "https://h51.d1b9bu.xyz;" +
-                    "https://h51.j3z5la.xyz;" +
-                    "https://h52.n7k1kr.xyz;" +
-                    "https://h52.addpg.vip;" +
-                    "https://h52.y8q7ra.xyz;" +
-                    "https://h52.toaob.vip;" +
-                    "https://h53.kghqo.vip;" +
-                    "https://h53.mbqqv.vip;" +
-                    "https://h53.rhury.vip;" +
-                    "https://h53.xufzy.vip;" +
-                    "https://h54.l8y4cj.xyz;" +
-                    "https://h54.x4m5hw.xyz;"
+            resValue "string", "domain_api_list", "https://app1.y7e2ux.vip;" +
+                    "https://app1.e5h2ml.vip;" +
+                    "https://app1.h2g9hs.vip;" +
+                    "https://app1.s6u3bo.vip;" +
+                    "https://app2.s4x9lj.vip;" +
+                    "https://app2.j7s3fm.vip;" +
+                    "https://app2.u2d1jc.vip;" +
+                    "https://app2.m5u1lm.vip;" +
+                    "https://app3.t9t6mz.vip;" +
+                    "https://app3.w5e9es.vip;" +
+                    "https://app3.a2f9do.vip;" +
+                    "https://app3.k1b7oo.vip;" +
+                    "https://app4.e6t5sc.vip;" +
+                    "http://119.45.14.75:46830;" +
+                    "http://119.45.63.172:46830;" +
+                    "http://146.56.229.55:46830;" +
+                    "http://43.143.77.164:46830;" +
+                    "http://101.43.108.235:46830;" +
+                    "http://139.186.137.79:46830;" +
+                    "http://124.221.214.240:46830;" +
+                    "http://139.186.201.117:46830;"
+            resValue "string", "domain_url_list", "https://h51.q2b9bw.vip;" +
+                    "https://h51.s3r1yj.vip;" +
+                    "https://h51.l9q2gg.vip;" +
+                    "https://h52.k9q8ln.vip;" +
+                    "https://h52.j4f8gs.vip;" +
+                    "https://h52.e1p1dw.vip;" +
+                    "https://h53.r1i4yj.vip;" +
+                    "https://h53.n4n5zj.vip;" +
+                    "https://h53.q2r9si.vip;" +
+                    "https://h54.v6r4kx.vip ;"
             resValue "string", "domain_url_list_third", "https://e3scdnapp.nprxv.vip/e3/app_config_e3.json" +
                     ";https://e3scdnapp.dogko.vip/e3/app_config_e3.json" +
                     ";https://e3cn2app.rizyw.vip/e3/app_config_e3.json" +
