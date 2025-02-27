@@ -9,7 +9,11 @@ android {
         flavors.each { flavor ->
             def channelJson = file("${rootProject.projectDir.path}/channel_config/channels/${flavor.json_name}.json").getText("UTF-8")
             def channelInfo = new JsonSlurper().parseText(channelJson)
-            print("渠道 ：" + flavor.channel)
+            def appName = flavor.channel_name.endsWith("_pre") ?
+                    channelInfo.app_name +"-v"+ channelInfo.versionCode :
+                    channelInfo.app_name
+            println("渠道 ：" + flavor.channel_name)
+            println("应用名称 ：" + appName)
             def domainUrlListStr = ""
             channelInfo.domain_url_list.each { domain ->
                 domainUrlListStr += domain.toString()
@@ -27,7 +31,7 @@ android {
                 applicationId channelInfo.applicationId
                 versionName channelInfo.versionName
                 versionCode channelInfo.versionCode
-                resValue "string", "app_name", "\"${channelInfo.app_name}\""
+                resValue "string", "app_name", "\"${appName}\""
                 resValue "string", "channel_name",  "\"${channelInfo.channel_name}\""  // 渠道名称
                 resValue "string", "build_time", "${buildTime()}"
                 resValue "string", "mixpanel_token",  "\"${channelInfo.mixpanel_token}\""
@@ -42,7 +46,7 @@ android {
                 multiDexEnabled true
                 dimension "channelName"
                 manifestPlaceholders = [
-                        label       : channelInfo.app_name,
+                        label       : appName,
                         channel_name: flavor.channel_name
                 ]
             }
