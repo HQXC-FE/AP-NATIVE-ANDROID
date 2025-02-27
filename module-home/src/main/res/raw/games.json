@@ -25,7 +25,6 @@
 
   { "id":"401", "title": "XXXX", "picture": "hm_gm_dj_01", "typeId": 401, "pId": 4 ,    	"playURL":"lhgame/play", "isH5": true, "cid":28, "imageName": "XCImage.esports_LH" } ,
   { "id":"402", "title": "XXXX", "picture": "hm_gm_dj_02", "typeId": 402, "pId": 4 ,    	"isH5": true, "cid":30, "imageName": "XCImage.esports_IMONE", "gameId": 2758 } ,
-  { "id":"404", "title": "XXXX", "picture": "hm_gm_dj_04", "typeId": 404, "pId": 4 ,    	"isH5": true, "cid":40, "imageName": "XCImage.esports_OBGDJ" } ,
 
   { "id":"501", "title": "XXXX", "picture": "hm_gm_qp_01", "typeId": 501, "pId": 5 ,    	"playURL":"yygame/play?autoThrad", "isH5": true, "cid":20, "imageName": "XCImage.chess_YY" } ,
   { "id":"502", "title": "XXXX", "picture": "hm_gm_qp_02", "typeId": 502, "pId": 5 ,    	"isH5": true, "cid":32, "imageName": "XCImage.chess_OBGQP" } ,
