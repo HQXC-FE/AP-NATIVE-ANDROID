@@ -74,10 +74,12 @@ android {
                     "https://h53.n4n5zj.vip;" +
                     "https://h53.q2r9si.vip;" +
                     "https://h54.v6r4kx.vip ;"
-            resValue "string", "domain_url_list_third", "https://e3scdnapp.nprxv.vip/e3/app_config_e3.json" +
-                    ";https://e3scdnapp.dogko.vip/e3/app_config_e3.json" +
-                    ";https://e3cn2app.rizyw.vip/e3/app_config_e3.json" +
-                    ";https://e3cn2app.hjttz.vip/e3/app_config_e3.json"
+            resValue "string", "domain_url_list_third", "https://e4cn2app.m3h7vx.vip/e4/app_config_e4.json" +
+                    ";https://e4cn2app.m9z9rz.vip/e4/app_config_e4.jsonn" +
+                    ";https://e4scdnapp.c5z9fx.vip/e4/app_config_e4.json" +
+                    ";https://e4scdnapp.s4o4sa.vip/e4/app_config_e4.json"+
+                    ";https://e4aliapp.c4e2eb.vip/e4/app_config_e4.json"+
+                    "https://e4aliapp.c7v9hy.vip/e4/app_config_e4.json"
             multiDexEnabled true
             dimension "channelName"
         }
