@@ -1,7 +1,11 @@
 package com.xtree.live.data.source.httpnew;
 
+import com.xtree.live.SPKey;
 import com.xtree.live.data.source.response.LiveRoomBean;
+import com.xtree.live.message.MessageRecord;
 import com.xtree.live.message.inroom.InRoomData;
+
+import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
@@ -22,5 +26,12 @@ public interface LiveService {
 //    直播间渠道公告
     @POST("api/chat/pin")
     Flowable<BaseResponse<InRoomData>> pin(@Body RequestBody body);
+
+    // 取历史消息
+    @GET("api/chat/history")
+    Flowable<BaseResponse<List<MessageRecord>>> getChatHistory(@Query("room_type") int type, @Query("vid") String vid, @Query("last_id") String lastId, @Query("limit") int limit, @Query(SPKey.CHANNEL_CODE) String code);
+
+    @GET("api/chat/anchorHistory")
+    Flowable<BaseResponse<List<MessageRecord>>> getAnchorChatHistory(@Query("anchorId") int uid, @Query("last_id") String lastId, @Query("limit") int limit, @Query(SPKey.CHANNEL_CODE) String code);
 
 }

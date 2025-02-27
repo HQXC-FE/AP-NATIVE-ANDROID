@@ -8,4 +8,7 @@
     <color name="bt_color_odd_down">#4AC6A1</color>
     <color name="chatTextLinkColor">#127BD1</color>
 
+    <color name="onLineColor">#46C94F</color>
+    <color name="offLineColor">#999999</color>
+
 </resources>

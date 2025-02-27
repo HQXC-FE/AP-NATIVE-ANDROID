@@ -17,7 +17,7 @@ import java.util.List;
 public interface ChatView extends BaseViewNew, SendMessage {
 
     void onGetChatHistory(boolean isRefresh, @Nullable List<MessageRecord> beans);
-    void onUpdateChatHistory(@Nullable List<MessageRecord> beans);
+//    void onUpdateChatHistory(@Nullable List<MessageRecord> beans);
 
     void pinData(MessagePin bean);
 

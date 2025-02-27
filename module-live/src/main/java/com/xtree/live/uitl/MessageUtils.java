@@ -20,4 +20,11 @@ public class MessageUtils {
         return path;
     }
 
+    public static String replaceDefaultUrl(String path){
+        if (!TextUtils.isEmpty(path) && !path.startsWith("http") && !path.startsWith("https")) {
+            return path.replace("default/", DomainUtil.getApiUrl());
+        }
+        return path;
+    }
+
 }

@@ -115,5 +115,18 @@
     <string name="chat_send_message_hint">请输入内容</string>
     <string name="input_params_error">输入参数异常</string>
     <string name="chat_send_message_size_too_big">内容超过500字</string>
+    <string name="mute_room_hint">全员禁言中</string>
+    <string name="emoji_text">表情</string>
+    <string name="emoji_gif">贴图</string>
+    <string name="chat_online">在线</string>
+    <string name="chat_offline">离线</string>
+    <string name="kick_out_user_tips">您已被踢出群聊</string>
+    <string name="when_agnent_left_sender_nickname">提示</string>
+    <string name="when_agnent_left_tips_message">助理当前不在线，消息将以离线方式发给助理</string>
+    <string name="loading">加载中</string>
+    <string name="network_error">网络连接异常，请稍后再试</string>
+    <string name="send_message_too_quickly">发言过快,请稍后重试</string>
+
+
 
 </resources>

@@ -11,4 +11,5 @@ public class SPKey {
     public static final String UNREAD = "unread_list";
 
     public static final String TOKEN = "live_token";
+    public static final String CHANNEL_CODE = "channel_code";
 }

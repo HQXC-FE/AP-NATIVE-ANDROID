@@ -1,6 +1,7 @@
 package com.xtree.live.data.source.http;
 
 import android.text.TextUtils;
+import android.widget.Space;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -10,6 +11,8 @@ import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.AESUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
+import com.xtree.live.LiveConfig;
+import com.xtree.live.SPKey;
 import com.xtree.live.data.source.APIManager;
 import com.xtree.live.data.source.ApiService;
 import com.xtree.live.data.source.HttpDataSource;
@@ -95,6 +98,8 @@ public class HttpDataSourceImpl implements HttpDataSource {
         //Todo 这边我不确定会有多少疙 api 所以战时设定成第一位
         X9LiveInfo.INSTANCE.setWebApi(liveData.getWebApi().get(0));
         X9LiveInfo.INSTANCE.setAppApi(liveData.getAppApi().get(0));
+        LiveConfig.setLiveToken(liveData.getXLiveToken());
+        LiveConfig.setChannelCode(liveData.getChannelCode());
 
 
         //抓包可去掉证书replace("https", "http")

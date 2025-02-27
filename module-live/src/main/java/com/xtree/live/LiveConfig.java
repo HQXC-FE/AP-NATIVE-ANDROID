@@ -35,4 +35,11 @@ public class LiveConfig {
         return !TextUtils.isEmpty(token);
     }
 
+    public static String getChannelCode() {
+        return SPUtil.get(BaseApplication.getInstance()).get(SPKey.CHANNEL_CODE, null);
+    }
+    public static void setChannelCode(String token){
+        SPUtil.get(BaseApplication.getInstance()).put(SPKey.CHANNEL_CODE,token);
+    }
+
 }

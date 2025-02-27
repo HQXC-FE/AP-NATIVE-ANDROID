@@ -1,10 +1,12 @@
 package me.xtree.mvvmhabit.base;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.Nullable;
@@ -375,4 +377,46 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
 
         return isTranslucentOrFloating;
     }
+
+    private ProgressDialog mProgressDialog;
+    protected final Handler loadingHandler = new Handler();
+    private final Runnable loadingRunnable = this::showProgressDialog;
+    public void showLoading() {
+        loadingHandler.removeCallbacks(loadingRunnable);
+        loadingHandler.post(loadingRunnable);
+    }
+
+    public void showLoading(long delay) {
+        loadingHandler.removeCallbacks(loadingRunnable);
+        loadingHandler.postDelayed(loadingRunnable, delay);
+    }
+
+    public void hideLoading() {
+        loadingHandler.removeCallbacks(loadingRunnable);
+        dismissProgressDialog();
+    }
+    public void showProgressDialog() {
+        if(isDestroyed())return;
+        showProgressDialog("加载中");
+    }
+    public void showProgressDialog(CharSequence message) {
+        if(isDestroyed())return;
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this, R.style.ThemeOverlay_AppCompat_Dialog_Alert);
+            mProgressDialog.setMessage(message);
+        }
+
+        if (mProgressDialog != null && !mProgressDialog.isShowing()) {
+            mProgressDialog.show();
+        }
+    }
+
+    public void dismissProgressDialog() {
+        if(isDestroyed())return;
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            // progressDialog.hide(); 会导致android.view.WindowLeaked
+            mProgressDialog.dismiss();
+        }
+    }
+
 }
