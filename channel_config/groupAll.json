@@ -1,10 +1,14 @@
 [
   {
-    "channel_name": "od_purple",
-    "label": "奥丁-紫色"
+    "theme": "od_purple",
+    "channel_name": "od_purple_pre",
+    "json_name": "od_purple_pre",
+    "label": "奥丁-紫色-pre"
   },
   {
-    "channel_name": "od2",
-    "label": "奥丁2"
+    "theme": "od_purple",
+    "channel_name": "od_purple_ol",
+    "json_name": "od_purple_ol",
+    "label": "奥丁-紫色-pre"
   }
 ]

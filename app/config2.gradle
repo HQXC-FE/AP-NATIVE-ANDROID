@@ -7,10 +7,9 @@ android {
         def json = file("${rootProject.projectDir.path}/channel_config/groupAll.json").getText("UTF-8")
         def flavors = new JsonSlurper().parseText(json)
         flavors.each { flavor ->
-            def fileName = flavor.channel_name
-            def channelJson = file("${rootProject.projectDir.path}/channel_config/channels/${fileName}.json").getText("UTF-8")
+            def channelJson = file("${rootProject.projectDir.path}/channel_config/channels/${flavor.json_name}.json").getText("UTF-8")
             def channelInfo = new JsonSlurper().parseText(channelJson)
-            print("渠道 ：" + flavor.channel_name)
+            print("渠道 ：" + flavor.channel)
             def domainUrlListStr = ""
             channelInfo.domain_url_list.each { domain ->
                 domainUrlListStr += domain.toString()
@@ -23,19 +22,8 @@ android {
             channelInfo.domain_api_list.each { domain ->
                 domainApiListStr += domain.toString()
             }
-            def domainUrlListPreStr = ""
-            channelInfo.domain_url_list_pre.each { domain ->
-                domainUrlListPreStr += domain.toString()
-            }
-            def domainListThirdPreStr = ""
-            channelInfo.domain_url_list_third_pre.each { domain ->
-                domainListThirdPreStr += domain.toString()
-            }
-            def domainApiListPreStr = ""
-            channelInfo.domain_api_list_pre.each { domain ->
-                domainApiListPreStr += domain.toString()
-            }
             "${flavor.channel_name}" {
+
                 applicationId channelInfo.applicationId
                 versionName channelInfo.versionName
                 versionCode channelInfo.versionCode
@@ -51,11 +39,6 @@ android {
                 resValue "string", "domain_url_list_third", "\"${domainListThirdStr}\""
                 resValue "string", "domain_api", "\"${channelInfo.domain_api}\""
                 resValue "string", "domain_api_list", "\"${domainApiListStr}\""
-                resValue "string", "domain_url_pre",  "\"${channelInfo.domain_url_pre}\""
-                resValue "string", "domain_url_list_pre", "\"${domainUrlListPreStr}\""
-                resValue "string", "domain_url_list_third_pre", "\"${domainListThirdPreStr}\""
-                resValue "string", "domain_api_pre", "\"${channelInfo.domain_api_pre}\""
-                resValue "string", "domain_api_list_pre", "\"${domainApiListPreStr}\""
                 multiDexEnabled true
                 dimension "channelName"
                 manifestPlaceholders = [

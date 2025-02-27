@@ -12,16 +12,16 @@ android {
         versionName rootProject.ext.android.versionName
         flavorDimensions "channelName"
     }
-
-    productFlavors {
-        def json = file("${rootProject.projectDir.path}/channel_config/groupAll.json").getText("UTF-8")
-        def flavors = new JsonSlurper().parseText(json)
-        flavors.each { flavor ->
-            "${flavor.channel_name}" {
-            }
-        }
-    }
-
+//    productFlavors {
+//        def json = file("${rootProject.projectDir.path}/channel_config/groupAll.json").getText("UTF-8")
+//        def flavors = new JsonSlurper().parseText(json)
+//        flavors.each { flavor ->
+//            "${flavor.channel_name}" {
+//                def themeRes = "src/${flavor.theme}/res"
+//                sourceSets.main.res.srcDirs = [themeRes, "src/main/res"]
+//            }
+//        }
+//    }
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
@@ -34,6 +34,15 @@ android {
             }
         }
     }
+    afterEvaluate {
+        def json = file("${rootProject.projectDir.path}/channel_config/groupAll.json").getText("UTF-8")
+        def flavors = new JsonSlurper().parseText(json)
+        flavors.each { flavor ->
+            def themeRes = "src/${flavor.theme}/res"
+            sourceSets.main.res.srcDirs = [themeRes, "src/main/res"]
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

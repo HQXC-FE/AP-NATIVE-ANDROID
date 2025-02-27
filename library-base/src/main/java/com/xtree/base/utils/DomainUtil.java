@@ -92,9 +92,9 @@ public class DomainUtil {
         int domainMode = SPUtils.getInstance().getInt(SPKeyGlobal.DOMAIN_MODE, 0);
 
         //测试环境
-        if (BuildConfig.DEBUG && domainMode == 2) {
-            return Utils.getContext().getString(R.string.domain_api_list_pre);
-        }
+//        if (BuildConfig.DEBUG && domainMode == 2) {
+//            return Utils.getContext().getString(R.string.domain_api_list_pre);
+//        }
         return Utils.getContext().getString(R.string.domain_api_list);
     }
 
@@ -105,9 +105,9 @@ public class DomainUtil {
         int domainMode = SPUtils.getInstance().getInt(SPKeyGlobal.DOMAIN_MODE, 0);
 
         //测试环境
-        if (BuildConfig.DEBUG && domainMode == 2) {
-            return Utils.getContext().getString(R.string.domain_url_list_pre);
-        }
+//        if (BuildConfig.DEBUG && domainMode == 2) {
+//            return Utils.getContext().getString(R.string.domain_url_list_pre);
+//        }
         return Utils.getContext().getString(R.string.domain_url_list);
     }
 
@@ -118,9 +118,9 @@ public class DomainUtil {
         int domainMode = SPUtils.getInstance().getInt(SPKeyGlobal.DOMAIN_MODE, 0);
 
         //测试环境
-        if (BuildConfig.DEBUG && domainMode == 2) {
-            return Utils.getContext().getString(R.string.domain_url_list_third_pre);
-        }
+//        if (BuildConfig.DEBUG && domainMode == 2) {
+//            return Utils.getContext().getString(R.string.domain_url_list_third_pre);
+//        }
         return Utils.getContext().getString(R.string.domain_url_list_third);
     }
 
@@ -131,9 +131,9 @@ public class DomainUtil {
         int domainMode = SPUtils.getInstance().getInt(SPKeyGlobal.DOMAIN_MODE, 0);
 
         //测试环境
-        if (BuildConfig.DEBUG && domainMode == 2) {
-            return Utils.getContext().getString(R.string.domain_url_pre);
-        }
+//        if (BuildConfig.DEBUG && domainMode == 2) {
+//            return Utils.getContext().getString(R.string.domain_url_pre);
+//        }
         return Utils.getContext().getString(R.string.domain_url);
     }
 
