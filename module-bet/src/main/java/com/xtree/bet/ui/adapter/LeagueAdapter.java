@@ -7,6 +7,7 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.TimeUtils;
@@ -56,6 +58,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     private int liveHeaderPosition;
     private int noLiveHeaderPosition;
     private boolean isUpdateTime;
+    private boolean isUpdateFootBallOrBasketBallState;
 
     private PageHorizontalScrollView.OnScrollListener mOnScrollListener;
 
@@ -215,20 +218,22 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             holder = (GroupHolder) convertView.getTag();
         }
 
-        if (holder == null || holder.itemView == null) {
+        if (holder == null || holder.binding == null) {
             if (convertView == null) {
                 convertView = View.inflate(mContext, R.layout.bt_fb_league_group, null);
             }
             return convertView;
         }
 
-        BtFbLeagueGroupBinding binding = BtFbLeagueGroupBinding.bind(holder.itemView);
+        BtFbLeagueGroupBinding binding = holder.binding;
         if (!league.isHead()) {
             binding.llHeader.setVisibility(View.GONE);
             binding.rlLeague.setVisibility(View.VISIBLE);
             binding.tvLeagueName.setText(league.getLeagueName());
             Glide.with(mContext).load(league.getIcon())
-                    //.apply(new RequestOptions().placeholder(placeholderRes))
+                    .load(league.getIcon())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    //.placeholder(R.drawable.placeholder_icon)
                     .into(binding.ivIcon);
             binding.vSpace.setVisibility(isExpanded ? View.GONE : View.VISIBLE);
             binding.groupIndicator.setImageResource(isExpanded ? R.mipmap.bt_icon_expand : R.mipmap.bt_icon_unexpand);
@@ -339,12 +344,8 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                     if (mc.contains("休息") || mc.contains("结束")) {
                         binding.tvMatchTime.setText(match.getStage());
                     } else {
-                        //没有保存当前时间的视为当前不展示的item,正常跟随adapter刷新,展示的就跟随读秒刷新
-//                        if(binding.tvMatchTime.getTag(R.id.tag_normal_time) == null && binding.tvMatchTime.getTag(R.id.tag_add_time) == null){
-//                            binding.tvMatchTime.setText(mc + " " + match.getTime());
-//                        }
-                        //其它类型运动
-                        if (!isFootBallOrBasketBall(match.getSportId())) {
+                        //其它类型运动正常跟随Adapter刷新
+                        if (!isUpdateFootBallOrBasketBallState) {
                             binding.tvMatchTime.setText(mc + " " + match.getTime());
                         }
                     }
@@ -424,31 +425,28 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
      * @param binding
      */
     private void initPointer(BtFbMatchListBinding binding) {
-        for (int i = 0; i < 2; i++) {
-            ImageView ivPointer = new ImageView(mContext);
-            ivPointer.setBackgroundResource(R.drawable.bt_bg_play_type_group_pointer_selected);
-            int width = i == binding.hsvPlayTypeGroup.getCurrentPage() ? ConvertUtils.dp2px(12) : ConvertUtils.dp2px(7);
-            int height = ConvertUtils.dp2px(2);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
-            params.rightMargin = ConvertUtils.dp2px(2);
-            ivPointer.setSelected(i == binding.hsvPlayTypeGroup.getCurrentPage());
-            ivPointer.setLayoutParams(params);
-            binding.llPointer.addView(ivPointer);
-        }
-        binding.hsvPlayTypeGroup.setOnPageSelectedListener(currentPage -> {
-            for (int i = 0; i < binding.llPointer.getChildCount(); i++) {
-                if (currentPage == i) {
-                    binding.llPointer.getChildAt(i).setSelected(true);
-                } else {
-                    binding.llPointer.getChildAt(i).setSelected(false);
-                }
-                int width = currentPage == i ? ConvertUtils.dp2px(12) : ConvertUtils.dp2px(7);
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.llPointer.getChildAt(i).getLayoutParams();
-                params.width = width;
-                binding.llPointer.getChildAt(i).setLayoutParams(params);
-
+        if (binding.llPointer.getChildCount() == 0) { // 只在第一次初始化
+            for (int i = 0; i < 2; i++) {
+                ImageView ivPointer = new ImageView(mContext);
+                ivPointer.setBackgroundResource(R.drawable.bt_bg_play_type_group_pointer_selected);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        ConvertUtils.dp2px(i == 0 ? 12 : 7), ConvertUtils.dp2px(2));
+                params.rightMargin = ConvertUtils.dp2px(2);
+                ivPointer.setLayoutParams(params);
+                binding.llPointer.addView(ivPointer);
             }
-        });
+        }
+        updatePointer(binding, binding.hsvPlayTypeGroup.getCurrentPage());
+    }
+
+    private void updatePointer(BtFbMatchListBinding binding, int currentPage) {
+        for (int i = 0; i < binding.llPointer.getChildCount(); i++) {
+            View pointer = binding.llPointer.getChildAt(i);
+            pointer.setSelected(i == currentPage);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) pointer.getLayoutParams();
+            params.width = ConvertUtils.dp2px(i == currentPage ? 12 : 7);
+            pointer.setLayoutParams(params);
+        }
         binding.hsvPlayTypeGroup.setOnScrollListener(mOnScrollListener);
     }
 
@@ -572,11 +570,11 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     }*/
 
     private static class GroupHolder {
-        public GroupHolder(View view) {
-            itemView = view;
-        }
+        final BtFbLeagueGroupBinding binding;
 
-        View itemView;
+        GroupHolder(View view) {
+            binding = BtFbLeagueGroupBinding.bind(view);
+        }
     }
 
     private static class ChildHolder {
@@ -588,6 +586,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     }
 
     public void updateVisibleItems(ExpandableListView listView) {
+        isUpdateFootBallOrBasketBallState = true;
         listView.post(() -> {
             // 获取可见范围的起始和结束位置
             int first = listView.getFirstVisiblePosition();
@@ -635,13 +634,12 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
         // 处理休息或结束状态
         if (stage.contains("休息") || stage.contains("结束") || stage.contains("未开赛") || stage.contains("未开始")) {
-            CfLog.i("======= 休息 结束 未开赛 =====");
             return;
         }
 
         // 获取并处理时间数据
         int normalTime = getTagIntValue(tvMatchTime, R.id.tag_normal_time);
-        CfLog.i("=========== 比赛时间 =============" + stage + " " + match.getTime());
+        //CfLog.i("=========== 比赛时间 =============" + stage + " " + match.getTime());
 
         if (sportId.equals("1")) {
             // 足球时间处理
@@ -668,12 +666,12 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             tvMatchTime.setTag(R.id.tag_add_time, seconds);
             int lastTime = getTagIntValue(tvMatchTime, R.id.tag_last_time);
             int currentTime = match.getTimeS() + seconds;
-            CfLog.i("=========== 比赛ID =============" + match.getId());
-            CfLog.i("=========== 增加的秒数 =============" + seconds);
-            CfLog.i("=========== 原始的秒数 =============" + match.getTimeS());
-            CfLog.i("=========== 上次的时间 =============" + formatTime(lastTime));
-            CfLog.i("=========== 原始时间 =============" + formatTime(match.getTimeS()));
-            CfLog.i("=========== 添加时间 =============" + formatTime(currentTime));
+            //CfLog.i("=========== 比赛ID =============" + match.getId());
+            //CfLog.i("=========== 增加的秒数 =============" + seconds);
+            //CfLog.i("=========== 原始的秒数 =============" + match.getTimeS());
+            //CfLog.i("=========== 上次的时间 =============" + formatTime(lastTime));
+            //CfLog.i("=========== 原始时间 =============" + formatTime(match.getTimeS()));
+            //CfLog.i("=========== 添加时间 =============" + formatTime(currentTime));
             tvMatchTime.setText(stage + " " + formatTime(currentTime));
             tvMatchTime.setTag(R.id.tag_last_time, currentTime);
         }
@@ -698,10 +696,10 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             //篮球时间是递减的,保证不能显示负数
             if (lastTime > 0 && currentTime > lastTime) {
                 tvMatchTime.setText(stage + " " + formatTime(lastTime));
-                CfLog.i("=========== 篮球按秒记时(使用上次时间) =============" + match.getId() + " : " + stage + " " + formatTime(lastTime));
+                //CfLog.i("=========== 篮球按秒记时(使用上次时间) =============" + match.getId() + " : " + stage + " " + formatTime(lastTime));
             } else {
                 tvMatchTime.setText(stage + " " + formatTime(currentTime));
-                CfLog.i("=========== 篮球按秒记时 =============" + match.getId() + " : " + stage + " " + formatTime(currentTime));
+               // CfLog.i("=========== 篮球按秒记时 =============" + match.getId() + " : " + stage + " " + formatTime(currentTime));
             }
         }
     }
@@ -725,6 +723,8 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         int seconds = totalSeconds % 60;
         return String.format("%02d : %02d", minutes, seconds);
     }
+
+
 
 
 
