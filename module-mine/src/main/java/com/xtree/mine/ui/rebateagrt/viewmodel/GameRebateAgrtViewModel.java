@@ -549,7 +549,7 @@ public class GameRebateAgrtViewModel extends BaseViewModel<MineRepository> imple
                             if (gameRebateAgrtRequest.p <= 1) {
                                 gameRebateDatas.clear();
                                 if (vo.getYesterday_bill() != null) {
-                                    gameRebateAgrtHeadModel.yesterdayRebate.set(vo.getYesterday_bill().getSelfMoney());
+                                    gameRebateAgrtHeadModel.yesterdayRebate.set(vo.getYesterday_bill());
                                 }
                                 if (vo.getContract() != null && vo.getContract().getRule() != null && vo.getContract().getRule().size() > 0) {
                                     //设置规则提示
