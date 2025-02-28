@@ -438,6 +438,12 @@ public class VerifyViewModel extends BaseViewModel<MineRepository> {
                 //url = DomainUtil.getDomain2() + "/user/userebpayinfo?check=" + vo.tokenSign + "&mark=" + vo.mark;
                 //startUsdt(ctx, title, vo);
                 break;
+            case Constant.BIND_EDPAY:
+                title = ctx.getString(R.string.txt_bind_edpay); //"绑定EDPAY";
+                remind = ctx.getString(R.string.txt_remind_edpay);
+                //url = DomainUtil.getDomain2() + "/user/userebpayinfo?check=" + vo.tokenSign + "&mark=" + vo.mark;
+                //startUsdt(ctx, title, vo);
+                break;
             case Constant.BIND_TOPAY:
                 title = ctx.getString(R.string.txt_bind_topay); //"绑定TOPAY";
                 remind = ctx.getString(R.string.txt_remind_topay);
