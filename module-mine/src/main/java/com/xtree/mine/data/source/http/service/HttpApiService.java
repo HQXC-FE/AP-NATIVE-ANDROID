@@ -433,20 +433,6 @@ public interface HttpApiService {
     Flowable<LotteryDetailVo> getBtCpOrderDetail(@Path("id") String id);
 
     /**
-     * 获取 FB体育请求服务地址
-     */
-    @POST("/api/sports/fb/getToken")
-    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<FBService>> getFBGameTokenApi();
-
-    /**
-     * 获取 PM体育请求服务地址
-     */
-    @POST("/api/sports/obg/getToken")
-    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<PMService>> getPMGameTokenApi();
-
-    /**
      * 获取 用户手机与信箱
      */
     @POST("/api/account/newforgetpassword")
