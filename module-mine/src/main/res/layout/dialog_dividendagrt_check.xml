@@ -17,7 +17,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_dialog_top_clrmain06a_r12">
+            android:background="@color/clr_white">
 
             <include
                 android:id="@+id/layout_toolbar"
