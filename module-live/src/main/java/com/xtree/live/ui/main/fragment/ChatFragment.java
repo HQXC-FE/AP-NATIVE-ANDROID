@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ import com.bumptech.glide.request.target.Target;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.xtree.base.router.RouterFragmentPath;
+import com.xtree.base.utils.CfLog;
 import com.xtree.live.BR;
 import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
@@ -107,9 +109,12 @@ import io.github.rockerhieu.emojicon.OnEmojiconClickedListener;
 import io.github.rockerhieu.emojicon.emoji.Emojicon;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.internal.util.AppendOnlyLinkedArrayList;
+import io.reactivex.schedulers.Schedulers;
 import me.xtree.mvvmhabit.base.BaseActivity;
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -205,9 +210,10 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
         public void onReceiveMessageOpen(MessageOpen message) {
             //发送pending消息
             viewModel.postPendingMessages(() -> {
-                if (isVisible() && isResumed()) {
-                    viewModel.enterRoom(roomType, mUid, mVid, wholeChatList());
-                }
+                viewModel.enterRoom(roomType, mUid, mVid, wholeChatList());
+//                if (isVisible() && isResumed()) {
+//                    viewModel.enterRoom(roomType, mUid, mVid, wholeChatList());
+//                }
             });
         }
 
@@ -368,6 +374,10 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
 //                photoPicker.showPicker(requireActivity());
             }
         });
+
+
+        Log.e("chatroom","roomType = "+roomType +" uid："+mUid +" vid: "+mVid +" roomInfo: "+ roomInfo.toString());
+
         ViewGroup.LayoutParams layoutParams = binding.chatbar.getLayoutParams();
         int visible = View.GONE;
         if (chatBarMode == ChatBarMode.CHATBAR_MODE_HIGH) {
@@ -575,6 +585,55 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
             hideLoading();
         });
 
+        viewModel.liveRoomData.observe(this,liveRoomBean -> {
+            if (isPrivate()) {
+                ChatWebSocketManager.getInstance().setInRoom(mVid, roomType);
+                PVid pVid = ActionGetter.getPVid(this);
+                if (pVid != null) {
+                    pVid.setPVid(liveRoomBean.getVid());
+                }
+            }
+        });
+
+        viewModel.listSystemMessageRecord.observe(this,list->{
+            if (list == null || list.isEmpty()) return;
+            mHandler.removeCallbacks(runnable);
+            welcomeMessages.clear();
+            welcomeMessages.addAll(list);
+            index = 0;
+            postWelcomeMessage();
+        });
+
+        viewModel.inRoomDataMutableLiveData.observe(this,bean -> {
+            if (isGlobal()) {
+                if (mCanDisplayBanner) {
+                    mCanDisplayBanner = false;
+                    viewModel.getAdList();
+                }
+                setPinData(bean);
+            } else if (isGroup()) {
+                setPinData(bean);
+            }
+        });
+
+        viewModel.listAdBeanMutable.observe(this,beans->{
+
+            if (beans == null || beans.isEmpty()) return;
+            Observable<AdsBean> observable = Observable.fromIterable(beans)
+                    .subscribeOn(Schedulers.newThread())
+                    .filter(bean -> !TextUtils.isEmpty(bean.getImgAddress())
+                            && !TextUtils.isEmpty(bean.getAdId())
+                            && bean.getAdId().equals("006"))
+                    .take(1);
+
+            observable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from((LifecycleOwner) this)))
+                    .subscribe(this::onProcessAdsData, Throwable::printStackTrace);
+
+        });
+
     }
 
     public void setCharBar() {
@@ -682,13 +741,13 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     }
 
     private void initEmojiPanel() {
-        ArrayList<String> list = new ArrayList<>();
-        list.add(WordUtil.getString(R.string.emoji_text));
-        list.add(WordUtil.getString(R.string.emoji_gif));
-        getChildFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fl_emoji_icons, EmojiPagerFragment.newInstance(list), "emojiFragment")
-                .commitAllowingStateLoss();
+//        ArrayList<String> list = new ArrayList<>();
+//        list.add(WordUtil.getString(R.string.emoji_text));
+//        list.add(WordUtil.getString(R.string.emoji_gif));
+//        getChildFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.fl_emoji_icons, EmojiPagerFragment.newInstance(list), "emojiFragment")
+//                .commitAllowingStateLoss();
     }
 
 
@@ -696,10 +755,14 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
 
     private void loopInvokeInRoomLog() {
         if (isGlobal()) {
-//            if(isVisibleUser()) getLiveInroomLog();
+            if(isVisibleUser) getLiveInroomLog();
             mHandler.removeCallbacks(mLoopInvokeInRoomLogRunnable);
             mHandler.postDelayed(mLoopInvokeInRoomLogRunnable, 60000);
         }
+    }
+
+    public void getLiveInroomLog() {
+        viewModel.getLiveInroomLog(mVid);
     }
 
     private void involveSvgaViewMargin(int svgaViewMarginBottom) {
@@ -862,11 +925,6 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     }
 
     @Override
-    public void getAdsSuccess(List<AdsBean> beans) {
-        viewModel.processAdsData(beans);
-    }
-
-    @Override
     public void onProcessChatHistories(boolean isUpdateFresh, boolean isRefresh, List<ConversationMessage> chatHistories) {
         if (isRefresh) {
             mAdapter.setList(chatHistories);
@@ -954,7 +1012,6 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
         });
     }
 
-    @Override
     public void onProcessAdsData(AdsBean bean) {
         binding.image.setOnClickListener(view -> doTobUrl(bean.getAdvertisingUrl()));
         binding.ivCloseAds.setOnClickListener(view -> binding.groupAds.setVisibility(View.GONE));
@@ -993,19 +1050,6 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     }
 
     @Override
-    public void onPin(InRoomData bean) {
-        if (isGlobal()) {
-            if (mCanDisplayBanner) {
-                mCanDisplayBanner = false;
-                viewModel.getAdList();
-            }
-            setPinData(bean);
-        } else if (isGroup()) {
-            setPinData(bean);
-        }
-    }
-
-    @Override
     public String lastMsgId() {
         return mPageInfo.lastMsgId;
     }
@@ -1027,7 +1071,6 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
 
     @Override
     public void setRoomVid(String roomVid) {
-
         if (isPrivate()) {
             ChatWebSocketManager.getInstance().setInRoom(mVid, roomType);
             PVid pVid = ActionGetter.getPVid(this);
@@ -1041,16 +1084,6 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     @Override
     public List<ConversationMessage> wholeChatList() {
         return mAdapter.getData();
-    }
-
-    @Override
-    public void onGetLiveInroomLog(List<SystemMessageRecord> list) {
-        if (list == null || list.isEmpty()) return;
-        mHandler.removeCallbacks(runnable);
-        welcomeMessages.clear();
-        welcomeMessages.addAll(list);
-        index = 0;
-        postWelcomeMessage();
     }
 
     @Override
@@ -1085,7 +1118,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
 
     @Override
     public void sendText(String text) {
-        viewModel.sendText(roomType, text);
+        viewModel.sendText(roomType,mVid, text);
     }
 
     @Override

@@ -16,9 +16,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import me.xtree.mvvmhabit.base.BaseApplication;
+
 public class PartAuthority {
 
-    private static final String AUTHORITY                 = BuildConfig.APPLICATION_ID;
+    private static final String AUTHORITY                 = "com.xingcai_pre.app.db";
     private static final String PART_URI_STRING           = "content://" + AUTHORITY + "/part";
     private static final String PART_THUMBNAIL_STRING     = "content://" + AUTHORITY + "/thumbnail";
     private static final String STICKER_URI_STRING        = "content://" + AUTHORITY + "/sticker";

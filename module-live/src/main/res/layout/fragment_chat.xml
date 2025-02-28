@@ -13,8 +13,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/chatbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="?tabBackground"
+            android:layout_height="24dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

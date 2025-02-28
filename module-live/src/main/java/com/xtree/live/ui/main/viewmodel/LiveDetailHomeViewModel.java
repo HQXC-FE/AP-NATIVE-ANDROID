@@ -11,7 +11,6 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 
 import com.blankj.utilcode.util.EncryptUtils;
@@ -22,13 +21,11 @@ import com.blankj.utilcode.util.Utils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hjq.gson.factory.GsonFactory;
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
 import com.xtree.live.chat.InOutRoomHelper;
 import com.xtree.live.chat.RequestUtils;
-import com.xtree.live.chat.Subscription;
 import com.xtree.live.data.AdsBean;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.httpnew.LiveRep;
@@ -52,13 +49,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
-import io.reactivex.internal.util.AppendOnlyLinkedArrayList;
 import io.reactivex.schedulers.Schedulers;
+import me.xtree.mvvmhabit.base.BaseApplication;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.http.BusinessException;
 import okhttp3.MediaType;
@@ -78,6 +71,10 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 
     public MutableLiveData<List<MessageRecord>> listMessageRecord = new MutableLiveData<List<MessageRecord>>();
     public MutableLiveData<Pair<Boolean, List<MessageRecord>>> pairMessageRecord = new MutableLiveData<>();
+    public MutableLiveData<LiveRoomBean> liveRoomData = new MutableLiveData<>();
+    public MutableLiveData<List<SystemMessageRecord>> listSystemMessageRecord = new MutableLiveData<>();
+    public MutableLiveData<InRoomData> inRoomDataMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<List<AdsBean>> listAdBeanMutable = new MutableLiveData<>();
 
 
     @Override
@@ -94,8 +91,8 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
     public final int DEFAULT_LIMIT = 50;
     private List<MessageRecord> pendingMessageRecordList;
 
-    public  Flowable<ConversationScrollButtonState> scrollButtonState;
-    private  RxStore<ConversationScrollButtonState> scrollButtonStateStore;
+    public Flowable<ConversationScrollButtonState> scrollButtonState;
+    private RxStore<ConversationScrollButtonState> scrollButtonStateStore;
 
     @Override
     public void onCreate() {
@@ -122,8 +119,8 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 
     private boolean isUpdatingChatHistory = false;
 
-    public void updateChatHistory(@RoomType int type,int uid,String vid) {
-        if (lackHistoryParams(type,uid,vid)) return;
+    public void updateChatHistory(@RoomType int type, int uid, String vid) {
+        if (lackHistoryParams(type, uid, vid)) return;
         if (isUpdatingChatHistory) return;
         isUpdatingChatHistory = true;
 
@@ -135,9 +132,9 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
         };
 
         if (type == RoomType.PAGE_CHAT_PRIVATE_ANCHOR) {
-            LiveRep.getInstance().getAnchorChatHistory(uid,"0",DEFAULT_LIMIT).subscribe(callBack);
+            LiveRep.getInstance().getAnchorChatHistory(uid, "0", DEFAULT_LIMIT).subscribe(callBack);
         } else {
-            LiveRep.getInstance().getChatHistory(type,vid,"0",DEFAULT_LIMIT).subscribe(callBack);
+            LiveRep.getInstance().getChatHistory(type, vid, "0", DEFAULT_LIMIT).subscribe(callBack);
         }
 
     }
@@ -145,23 +142,26 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
     //这个参数主要用于过滤 baseAdapter的bug notifyDataSet 调用onBindViewHolder 会触发loadMore
     private String mRequestMsgId;
     private boolean isAutoLoadMore = true;
-    public void loadMoreChatHistory(String lastMsgId, @RoomType int type,int uid,String vid) {
+
+    public void loadMoreChatHistory(String lastMsgId, @RoomType int type, int uid, String vid) {
         Log.d("api", "mRequestMsgId:" + mRequestMsgId + "\nlastMsgId:" + lastMsgId);
-        if(Objects.equals(mRequestMsgId, lastMsgId))return;
+        if (Objects.equals(mRequestMsgId, lastMsgId)) return;
         Log.d("api", "isAutoLoadMore:" + isAutoLoadMore);
-        if(!isAutoLoadMore)return;
-        getChatHistoryWithAutoLoad(false, lastMsgId, type, uid,vid,null);
+        if (!isAutoLoadMore) return;
+        getChatHistoryWithAutoLoad(false, lastMsgId, type, uid, vid, null);
     }
-    public void refreshChatHistory(@RoomType int type,int uid,String vid) {
+
+    public void refreshChatHistory(@RoomType int type, int uid, String vid) {
 
         isAutoLoadMore = true;
-        getChatHistoryWithAutoLoad(true, "0", type, uid,vid,null);
+        getChatHistoryWithAutoLoad(true, "0", type, uid, vid, null);
     }
 
     private boolean isGettingChatHistory;
-    private void getChatHistoryWithAutoLoad(boolean isRefresh, String lastMsgId, @RoomType int type,int uid,String vid, @Nullable Runnable autoload) {
 
-        if (lackHistoryParams(type,uid,vid)) return;
+    private void getChatHistoryWithAutoLoad(boolean isRefresh, String lastMsgId, @RoomType int type, int uid, String vid, @Nullable Runnable autoload) {
+
+        if (lackHistoryParams(type, uid, vid)) return;
         if (isGettingChatHistory) return;
         isGettingChatHistory = true;
 
@@ -173,21 +173,21 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 
                 mRequestMsgId = lastMsgId;
                 isAutoLoadMore = !isLoadEnd;
-                pairMessageRecord.postValue(new Pair<>(isRefresh,data));
+                pairMessageRecord.postValue(new Pair<>(isRefresh, data));
             }
 
             @Override
             public void onError(Throwable t) {
                 super.onError(t);
                 isAutoLoadMore = false;
-                pairMessageRecord.postValue(new Pair<>(isRefresh,null));
+                pairMessageRecord.postValue(new Pair<>(isRefresh, null));
             }
 
             @Override
             public void onFail(BusinessException t) {
                 super.onFail(t);
                 isAutoLoadMore = false;
-                pairMessageRecord.postValue(new Pair<>(isRefresh,null));
+                pairMessageRecord.postValue(new Pair<>(isRefresh, null));
             }
 
             @Override
@@ -200,26 +200,28 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
         };
 
         if (type == RoomType.PAGE_CHAT_PRIVATE_ANCHOR) {
-            LiveRep.getInstance().getAnchorChatHistory(uid,lastMsgId,DEFAULT_LIMIT).subscribe(callBack);
+            LiveRep.getInstance().getAnchorChatHistory(uid, lastMsgId, DEFAULT_LIMIT).subscribe(callBack);
         } else {
-            LiveRep.getInstance().getChatHistory(type,vid,lastMsgId,DEFAULT_LIMIT).subscribe(callBack);
+            LiveRep.getInstance().getChatHistory(type, vid, lastMsgId, DEFAULT_LIMIT).subscribe(callBack);
         }
 
     }
 
-    private boolean lackHistoryParams(int type,int uid,String vid) {
+    private boolean lackHistoryParams(int type, int uid, String vid) {
         if (type != RoomType.PAGE_CHAT_PRIVATE_ANCHOR && TextUtils.isEmpty(vid)) return true;
-        return type == RoomType.PAGE_CHAT_PRIVATE_ANCHOR && uid  == 0;
+        return type == RoomType.PAGE_CHAT_PRIVATE_ANCHOR && uid == 0;
     }
 
 
-    public void getLiveInroomLog() {
-        addSubscription(getApiStores().getLiveInroomLog(mvpView().getRoomVid(), 50, AppConfig.getChannel()), new BaseObserver<>() {
-            @Override
-            public void onSuccess(List<SystemMessageRecord> data, String msg) {
-                mvpView().onGetLiveInroomLog(data);
-            }
-        });
+    public void getLiveInroomLog(String vid) {
+
+        LiveRep.getInstance().getLiveInroomLog(vid, 50)
+                .subscribe(new HttpCallBack<List<SystemMessageRecord>>() {
+                    @Override
+                    public void onResult(List<SystemMessageRecord> systemMessageRecords) {
+                        listSystemMessageRecord.postValue(systemMessageRecords);
+                    }
+                });
     }
 
     /**
@@ -227,15 +229,14 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
      * 1 判断 是否获取vid  否则 inviteRoom 获取到 直接走inRoom
      * 广场不需要inRoom
      */
-    public void enterRoom(@RoomType int roomType,int uid,String vid,List<ConversationMessage> list) {
+    public void enterRoom(@RoomType int roomType, int uid, String vid, List<ConversationMessage> list) {
 
         if (roomType != RoomType.PAGE_CHAT_PRIVATE_ANCHOR && TextUtils.isEmpty(vid)) {
             if (roomType == RoomType.PAGE_CHAT_GLOBAL) {
                 requestGlobeVid(uid, () -> {
-                    String newVid = vid;
-                    InOutRoomHelper.inRoom(newVid);
-                    pin(RoomType.PAGE_CHAT_GLOBAL, newVid);
-                    refreshChatHistory(RoomType.PAGE_CHAT_GLOBAL,uid,vid);
+                    InOutRoomHelper.inRoom(vid);
+                    pin(RoomType.PAGE_CHAT_GLOBAL, vid);
+                    refreshChatHistory(RoomType.PAGE_CHAT_GLOBAL, uid, vid);
                 });
             }
             return;
@@ -243,73 +244,58 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
         pin(roomType, vid);
         if (list.isEmpty()) {
             InOutRoomHelper.inRoom(vid);
-            refreshChatHistory(roomType,uid,vid);
+            refreshChatHistory(roomType, uid, vid);
         } else {
             InOutRoomHelper.inRoom(vid);
             //漏消息无所谓
-            updateChatHistory(roomType,uid,vid);
+            updateChatHistory(roomType, uid, vid);
         }
     }
 
     public void requestGlobeVid(int uid, @NonNull Runnable runnable) {
-        addSubscription(getApiStores().getLiveDetail(uid, AppConfig.getChannel()),
-                new BaseObserver<>() {
 
-                    @Override
-                    public void onSuccess(LiveRoomBean data, String msg) {
-                        mvpView().setRoomVid(data.getVid());
-                        runnable.run();
-                    }
+        LiveRep.getInstance().getLiveDetail(uid).subscribe(new HttpCallBack<LiveRoomBean>() {
+            @Override
+            public void onResult(LiveRoomBean liveRoomBean) {
+                liveRoomData.postValue(liveRoomBean);
+                runnable.run();
+            }
 
-                });
+        });
+
     }
 
     public void pin(@RoomType int roomType, String vid) {
-        if(TextUtils.isEmpty(vid))return;
-        if(roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR)return;
-        if(roomType == RoomType.PAGE_CHAT_PRIVATE)return;
+        if (TextUtils.isEmpty(vid)) return;
+        if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR) return;
+        if (roomType == RoomType.PAGE_CHAT_PRIVATE) return;
         JsonObject json = new JsonObject();
         json.addProperty("room_type", roomType);
         json.addProperty("vid", vid);
-        addSubscription(getApiStores().pin(RequestUtils.getRequestBody(json)),
-                new BaseObserver<>() {
+
+        LiveRep.getInstance().pin(RequestUtils.getRequestBody(json))
+                .subscribe(new HttpCallBack<InRoomData>() {
                     @Override
-                    public void onSuccess(InRoomData data, String msg) {
-                        mvpView().onPin(data);
+                    public void onResult(InRoomData inRoomData) {
+                        inRoomDataMutableLiveData.postValue(inRoomData);
                     }
                 });
     }
 
 
     public void getAdList() {
-        addSubscription(getApiStores().getAdList(AppConfig.getChannel()),
-                new BaseObserver<>() {
-
-                    @Override
-                    public void onSuccess(List<AdsBean> data, String msg) {
-                        mvpView().getAdsSuccess(data);
-                    }
-
-                });
-    }
-
-
-    public void processAdsData(List<AdsBean> beans) {
-        if (beans == null || beans.isEmpty()) return;
-        Observable<AdsBean> observable = Observable.fromIterable(beans)
-                .subscribeOn(Schedulers.newThread())
-                .filter(bean -> !TextUtils.isEmpty(bean.getImgAddress())
-                        && !TextUtils.isEmpty(bean.getAdId())
-                        && bean.getAdId().equals("006"))
-                .take(1);
-        addSubscription(observable, bean -> {
-            mvpView().onProcessAdsData(bean);
+        LiveRep.getInstance().getAdList().subscribe(new HttpCallBack<List<AdsBean>>() {
+            @Override
+            public void onResult(List<AdsBean> adsBeans) {
+                listAdBeanMutable.postValue(adsBeans);
+            }
         });
+
     }
 
     @NonNull
     private static ArrayList<String> sendMessageApiPathList(int roomType) {
-        return new ArrayList<>() {{
+        return new ArrayList<String>() {{
             add("api");
             add("chat");
             if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR) {
@@ -325,7 +311,7 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 
     private Uri file2Uri(final File file) {
         if (!FileUtils.isFileExists(file)) return null;
-        String authority = AppManager.getContext().getPackageName() + ".fileProvider";
+        String authority = BaseApplication.getInstance().getPackageName() + ".fileProvider";
         return FileProvider.getUriForFile(Utils.getApp(), authority, file);
     }
 
@@ -341,196 +327,196 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 
     }
 
-    public void sendText(int roomType, String text) {
-        String sender = AppConfig.getUserId();
-        String vid = mvpView().getRoomVid();
+    public void sendText(int roomType, String vid,String text) {
+        String sender = LiveConfig.getUserId();;
         String seed = EncryptUtils.encryptMD5ToString(sender + vid + System.currentTimeMillis());
         sendText(roomType, seed, text, null);
     }
 
     private void sendText(@RoomType int roomType, String seed, String text, @Nullable Runnable onFinish) {
         //是否主播私聊
-        int msgType = roomType == RoomType.PAGE_CHAT_GLOBAL ? 0 : 1;
-        Map<String, Object> map = sendRequestMap(roomType, seed, msgType);
-        map.put("text", text);
-        BaseObserver<JsonElement> observer = new BaseObserver<>() {
-            @Override
-            public void onSuccess(JsonElement data, String msg) {
-                saveVid(roomType, data);
-                mvpView().onSendText(true, msg);
-                mvpView().onProcessReceiveMessage(createMessageTextPending(roomType, msgType, AppConfig.getUserId(), mvpView().getRoomVid(), seed, text, DeliverStatus.STATUS_COMPLETE));
-                onProcessReceiveAnchorMessage(roomType, data);
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                if (msg.equals(WordUtil.getString(R.string.you_are_ban))) {
-                    msg = WordUtil.getString(R.string.disallow_send_message_for_ban);
-                } else {
-                    mvpView().onProcessReceiveMessage(createMessageTextPending(roomType, msgType, AppConfig.getUserId(), mvpView().getRoomVid(), seed, text, DeliverStatus.STATUS_FAILED));
-                }
-                mvpView().onSendText(false, msg);
-            }
-
-            @Override
-            public void onError(Pair<Integer, String> error) {
-                mvpView().onSendText(false, error.second);
-                mvpView().onProcessReceiveMessage(createMessageTextPending(roomType, msgType, AppConfig.getUserId(), mvpView().getRoomVid(), seed, text, DeliverStatus.STATUS_FAILED));
-            }
-
-            @Override
-            public void onFinish() {
-                if (onFinish != null) onFinish.run();
-            }
-        };
-        if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR){
-            addSubscription(getApiStores().sendToAnchor(getRequestBody(map)), observer);
-        } else if (roomType == RoomType.PAGE_CHAT_PRIVATE){
-            addSubscription(getApiStores().sendToAssistant(getRequestBody(map)), observer);
-        }else {
-            addSubscription(getApiStores().sendMessage(getRequestBody(map)), observer);
-        }
+//        int msgType = roomType == RoomType.PAGE_CHAT_GLOBAL ? 0 : 1;
+//        Map<String, Object> map = sendRequestMap(roomType, seed, msgType);
+//        map.put("text", text);
+//        BaseObserver<JsonElement> observer = new BaseObserver<>() {
+//            @Override
+//            public void onSuccess(JsonElement data, String msg) {
+//                saveVid(roomType, data);
+//                mvpView().onSendText(true, msg);
+//                mvpView().onProcessReceiveMessage(createMessageTextPending(roomType, msgType, AppConfig.getUserId(), mvpView().getRoomVid(), seed, text, DeliverStatus.STATUS_COMPLETE));
+//                onProcessReceiveAnchorMessage(roomType, data);
+//            }
+//
+//            @Override
+//            public void onFailure(int code, String msg) {
+//                if (msg.equals(WordUtil.getString(R.string.you_are_ban))) {
+//                    msg = WordUtil.getString(R.string.disallow_send_message_for_ban);
+//                } else {
+//                    mvpView().onProcessReceiveMessage(createMessageTextPending(roomType, msgType, AppConfig.getUserId(), mvpView().getRoomVid(), seed, text, DeliverStatus.STATUS_FAILED));
+//                }
+//                mvpView().onSendText(false, msg);
+//            }
+//
+//            @Override
+//            public void onError(Pair<Integer, String> error) {
+//                mvpView().onSendText(false, error.second);
+//                mvpView().onProcessReceiveMessage(createMessageTextPending(roomType, msgType, AppConfig.getUserId(), mvpView().getRoomVid(), seed, text, DeliverStatus.STATUS_FAILED));
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                if (onFinish != null) onFinish.run();
+//            }
+//        };
+//        if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR) {
+//            addSubscription(getApiStores().sendToAnchor(getRequestBody(map)), observer);
+//        } else if (roomType == RoomType.PAGE_CHAT_PRIVATE) {
+//            addSubscription(getApiStores().sendToAssistant(getRequestBody(map)), observer);
+//        } else {
+//            addSubscription(getApiStores().sendMessage(getRequestBody(map)), observer);
+//        }
     }
 
 
     public void sendEmojiGif(@RoomType int roomType, String picture) {
-        String sender = AppConfig.getUserId();
-        String vid = mvpView().getRoomVid();
-        String seed = EncryptUtils.encryptMD5ToString(sender + vid + System.currentTimeMillis());
-        sendEmojiGif(roomType, seed, picture, null);
+//        String sender = LiveConfig.getUserId();
+//        String vid = mvpView().getRoomVid();
+//        String seed = EncryptUtils.encryptMD5ToString(sender + vid + System.currentTimeMillis());
+//        sendEmojiGif(roomType, seed, picture, null);
     }
 
     private void sendEmojiGif(@RoomType int roomType, String seed, String picture, @Nullable Runnable onFinish) {
-        Map<String, Object> map = sendRequestMap(roomType, seed, 5);
-        map.put("pic", picture);
-        BaseObserver<JsonElement> observer = new BaseObserver<>() {
-            @Override
-            public void onSuccess(JsonElement data, String msg) {
-                saveVid(roomType, data);
-                mvpView().onSendEmojiGif(true, msg);
-                mvpView().onProcessReceiveMessage(createMessageImagePending(roomType, 5, AppConfig.getUserId(), mvpView().getRoomVid(), seed, picture, DeliverStatus.STATUS_COMPLETE));
-                onProcessReceiveAnchorMessage(roomType, data);
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                if (msg.equals(WordUtil.getString(R.string.you_are_ban))) {
-                    msg = WordUtil.getString(R.string.disallow_send_message_for_ban);
-                } else {
-                    mvpView().onProcessReceiveMessage(createMessageImagePending(roomType, 5, AppConfig.getUserId(), mvpView().getRoomVid(), seed, picture, DeliverStatus.STATUS_FAILED));
-                }
-                mvpView().onSendEmojiGif(false, msg);
-            }
-
-            @Override
-            public void onError(Pair<Integer, String> error) {
-                mvpView().onSendEmojiGif(false, error.second);
-                mvpView().onProcessReceiveMessage(createMessageImagePending(roomType, 5, AppConfig.getUserId(), mvpView().getRoomVid(), seed, picture, DeliverStatus.STATUS_FAILED));
-            }
-
-            @Override
-            public void onFinish() {
-                if (onFinish != null) onFinish.run();
-            }
-        };
-        if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR){
-            addSubscription(getApiStores().sendToAnchor(getRequestBody(map)), observer);
-        } else if (roomType == RoomType.PAGE_CHAT_PRIVATE){
-            addSubscription(getApiStores().sendToAssistant(getRequestBody(map)), observer);
-        }else {
-            addSubscription(getApiStores().sendMessage(getRequestBody(map)), observer);
-        }
+//        Map<String, Object> map = sendRequestMap(roomType, seed, 5);
+//        map.put("pic", picture);
+//        BaseObserver<JsonElement> observer = new BaseObserver<>() {
+//            @Override
+//            public void onSuccess(JsonElement data, String msg) {
+//                saveVid(roomType, data);
+//                mvpView().onSendEmojiGif(true, msg);
+//                mvpView().onProcessReceiveMessage(createMessageImagePending(roomType, 5, AppConfig.getUserId(), mvpView().getRoomVid(), seed, picture, DeliverStatus.STATUS_COMPLETE));
+//                onProcessReceiveAnchorMessage(roomType, data);
+//            }
+//
+//            @Override
+//            public void onFailure(int code, String msg) {
+//                if (msg.equals(WordUtil.getString(R.string.you_are_ban))) {
+//                    msg = WordUtil.getString(R.string.disallow_send_message_for_ban);
+//                } else {
+//                    mvpView().onProcessReceiveMessage(createMessageImagePending(roomType, 5, AppConfig.getUserId(), mvpView().getRoomVid(), seed, picture, DeliverStatus.STATUS_FAILED));
+//                }
+//                mvpView().onSendEmojiGif(false, msg);
+//            }
+//
+//            @Override
+//            public void onError(Pair<Integer, String> error) {
+//                mvpView().onSendEmojiGif(false, error.second);
+//                mvpView().onProcessReceiveMessage(createMessageImagePending(roomType, 5, AppConfig.getUserId(), mvpView().getRoomVid(), seed, picture, DeliverStatus.STATUS_FAILED));
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                if (onFinish != null) onFinish.run();
+//            }
+//        };
+//        if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR) {
+//            addSubscription(getApiStores().sendToAnchor(getRequestBody(map)), observer);
+//        } else if (roomType == RoomType.PAGE_CHAT_PRIVATE) {
+//            addSubscription(getApiStores().sendToAssistant(getRequestBody(map)), observer);
+//        } else {
+//            addSubscription(getApiStores().sendMessage(getRequestBody(map)), observer);
+//        }
     }
 
 
     public void sendPhoto(@RoomType int roomType, File pic) {
-        String vid = mvpView().getRoomVid();
-        String sender = AppConfig.getUserId();
-        String seed = EncryptUtils.encryptMD5ToString(sender + vid + System.currentTimeMillis());
-        sendPhoto(roomType, seed, pic, null);
+//        String vid = mvpView().getRoomVid();
+//        String sender = AppConfig.getUserId();
+//        String seed = EncryptUtils.encryptMD5ToString(sender + vid + System.currentTimeMillis());
+//        sendPhoto(roomType, seed, pic, null);
     }
 
 
     private void sendPhoto(int roomType, String seed, File pic, @Nullable Runnable onFinish) {
-        String vid = mvpView().getRoomVid();
-        MultipartBody.Part filePart = MultipartBody.Part.createFormData("pic", seed + ".jpg", RequestBody.create(pic, MediaType.parse("image/*")));
-        Map<String, RequestBody> bodyMap = new HashMap<>();
-        Map<String, Object> map = sendRequestMap(roomType, seed, 2);
-        String timestamp = "" + ApiClient.getTimestamp();
-        String key = Helper.productSign(timestamp, sendMessageApiPathList(roomType));
-        String sign = RequestUtils.getApiFrontSign(map, key);
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            Object value = entry.getValue();
-            if(value != null)bodyMap.put(entry.getKey(), RequestBody.create(value.toString(), MediaType.parse("text/plain")));
-        }
-        BaseObserver<JsonElement> observer = new BaseObserver<>() {
-            @Override
-            public void onSuccess(JsonElement data, String msg) {
-                saveVid(roomType, data);
-                mvpView().onSendPhoto(true, msg);
-                Uri uri = file2Uri(pic);
-                if (uri != null) {
-                    mvpView().onProcessReceiveMessage(createMessageImagePending(roomType, 2, AppConfig.getUserId(), vid, seed, uri.toString(), DeliverStatus.STATUS_COMPLETE));
-                }
-                onProcessReceiveAnchorMessage(roomType, data);
-            }
-
-            @Override
-            public void onFailure(int code, String msg) {
-                mvpView().onSendPhoto(false, msg);
-                Uri uri = file2Uri(pic);
-                if (uri != null) {
-                    mvpView().onProcessReceiveMessage(createMessageImagePending(roomType, 2, AppConfig.getUserId(), vid, seed, uri.toString(), DeliverStatus.STATUS_FAILED));
-                }
-            }
-
-            @Override
-            public void onError(Pair<Integer, String> error) {
-                mvpView().onSendPhoto(false, error.second);
-                Uri uri = file2Uri(pic);
-                if (uri != null) {
-                    mvpView().onProcessReceiveMessage(createMessageImagePending(roomType, 2, AppConfig.getUserId(), vid, seed, uri.toString(), DeliverStatus.STATUS_FAILED));
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                if (onFinish != null) onFinish.run();
-            }
-        };
-        if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR){
-            addSubscription(getApiStores().sendToAnchor(timestamp, sign, filePart, bodyMap), observer);
-        } else if (roomType == RoomType.PAGE_CHAT_PRIVATE){
-            addSubscription(getApiStores().sendToAssistant(timestamp, sign, filePart, bodyMap), observer);
-        }else {
-            addSubscription(getApiStores().sendMessage(timestamp, sign, filePart, bodyMap), observer);
-        }
+//        String vid = mvpView().getRoomVid();
+//        MultipartBody.Part filePart = MultipartBody.Part.createFormData("pic", seed + ".jpg", RequestBody.create(pic, MediaType.parse("image/*")));
+//        Map<String, RequestBody> bodyMap = new HashMap<>();
+//        Map<String, Object> map = sendRequestMap(roomType, seed, 2);
+//        String timestamp = "" + ApiClient.getTimestamp();
+//        String key = Helper.productSign(timestamp, sendMessageApiPathList(roomType));
+//        String sign = RequestUtils.getApiFrontSign(map, key);
+//        for (Map.Entry<String, Object> entry : map.entrySet()) {
+//            Object value = entry.getValue();
+//            if (value != null)
+//                bodyMap.put(entry.getKey(), RequestBody.create(value.toString(), MediaType.parse("text/plain")));
+//        }
+//        BaseObserver<JsonElement> observer = new BaseObserver<>() {
+//            @Override
+//            public void onSuccess(JsonElement data, String msg) {
+//                saveVid(roomType, data);
+//                mvpView().onSendPhoto(true, msg);
+//                Uri uri = file2Uri(pic);
+//                if (uri != null) {
+//                    mvpView().onProcessReceiveMessage(createMessageImagePending(roomType, 2, AppConfig.getUserId(), vid, seed, uri.toString(), DeliverStatus.STATUS_COMPLETE));
+//                }
+//                onProcessReceiveAnchorMessage(roomType, data);
+//            }
+//
+//            @Override
+//            public void onFailure(int code, String msg) {
+//                mvpView().onSendPhoto(false, msg);
+//                Uri uri = file2Uri(pic);
+//                if (uri != null) {
+//                    mvpView().onProcessReceiveMessage(createMessageImagePending(roomType, 2, AppConfig.getUserId(), vid, seed, uri.toString(), DeliverStatus.STATUS_FAILED));
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Pair<Integer, String> error) {
+//                mvpView().onSendPhoto(false, error.second);
+//                Uri uri = file2Uri(pic);
+//                if (uri != null) {
+//                    mvpView().onProcessReceiveMessage(createMessageImagePending(roomType, 2, AppConfig.getUserId(), vid, seed, uri.toString(), DeliverStatus.STATUS_FAILED));
+//                }
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                if (onFinish != null) onFinish.run();
+//            }
+//        };
+//        if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR) {
+//            addSubscription(getApiStores().sendToAnchor(timestamp, sign, filePart, bodyMap), observer);
+//        } else if (roomType == RoomType.PAGE_CHAT_PRIVATE) {
+//            addSubscription(getApiStores().sendToAssistant(timestamp, sign, filePart, bodyMap), observer);
+//        } else {
+//            addSubscription(getApiStores().sendMessage(timestamp, sign, filePart, bodyMap), observer);
+//        }
     }
 
     private void saveVid(int roomType, JsonElement data) {
-        if(roomType != RoomType.PAGE_CHAT_PRIVATE_ANCHOR)return;
-        if(data instanceof  JsonObject){
-            String  vid = JsonUtil.getString((JsonObject) data, "vid");
-            if(!TextUtils.isEmpty(vid) && !Objects.equals(mvpView().getRoomVid(), vid)){
-                mvpView().setRoomVid(vid);
-                pin(roomType, vid);
-                InOutRoomHelper.inRoom(vid);
-                refreshChatHistory(roomType);
-            }
-        }
+//        if (roomType != RoomType.PAGE_CHAT_PRIVATE_ANCHOR) return;
+//        if (data instanceof JsonObject) {
+//            String vid = JsonUtil.getString((JsonObject) data, "vid");
+//            if (!TextUtils.isEmpty(vid) && !Objects.equals(mvpView().getRoomVid(), vid)) {
+//                mvpView().setRoomVid(vid);
+//                pin(roomType, vid);
+//                InOutRoomHelper.inRoom(vid);
+//                refreshChatHistory(roomType);
+//            }
+//        }
     }
 
     private void onProcessReceiveAnchorMessage(int roomType, JsonElement data) {
-        if(roomType != RoomType.PAGE_CHAT_PRIVATE_ANCHOR)return;
-        if(!(data instanceof  JsonObject))return;
-        JsonObject json = (JsonObject) data;
-        String message = JsonUtil.getString(json, "msg");
-        if(TextUtils.isEmpty(message))return;
-        MessageRecord messageRecord = JsonUtil.fromJson(GsonFactory.getSingletonGson(), JsonUtil.getString(json, "msg"), MessageRecord.class);
-        if(messageRecord == null)return;
-        ConversationMessage conversationMessage = new ConversationMessage(messageRecord, mvpView().uid());
-        conversationMessage.setDeliveryStatus(DeliverStatus.STATUS_COMPLETE);
-        mvpView().onProcessReceiveMessage(conversationMessage);
+//        if (roomType != RoomType.PAGE_CHAT_PRIVATE_ANCHOR) return;
+//        if (!(data instanceof JsonObject)) return;
+//        JsonObject json = (JsonObject) data;
+//        String message = JsonUtil.getString(json, "msg");
+//        if (TextUtils.isEmpty(message)) return;
+//        MessageRecord messageRecord = JsonUtil.fromJson(GsonFactory.getSingletonGson(), JsonUtil.getString(json, "msg"), MessageRecord.class);
+//        if (messageRecord == null) return;
+//        ConversationMessage conversationMessage = new ConversationMessage(messageRecord, mvpView().uid());
+//        conversationMessage.setDeliveryStatus(DeliverStatus.STATUS_COMPLETE);
+//        mvpView().onProcessReceiveMessage(conversationMessage);
     }
 
 
@@ -539,54 +525,56 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
      */
     @NonNull
     private ConversationMessage createMessageTextPending(@RoomType int roomType, int msgType, String sender, String vid, String seed, String text, @DeliverStatus int status) {
-        MessageRecord messageSend = new MessageRecord();
-        messageSend.setType(roomType);
-        messageSend.setVid(vid);
-        messageSend.setText(text);
-        messageSend.setSeed(seed);
-        messageSend.setSender(sender);
-        messageSend.setTime(TimeUtils.millis2String(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
-        UserInfo userBean = AppConfig.getUserBean();
-        if (userBean != null) {
-            messageSend.setSenderNickname(userBean.getUserNickname());
-            messageSend.setAvatar(userBean.getAvatar());
-            messageSend.setSenderExp(userBean.getExp());
-            messageSend.setSenderType(2);
-        } else {
-            messageSend.setSenderType(0);
-        }
-        messageSend.setMsgType(msgType);
-        ConversationMessage conversationMessage = new ConversationMessage(messageSend, mvpView().uid());
-        conversationMessage.setDeliveryStatus(status);
-        if (DeliverStatus.STATUS_PENDING == status)
-            pendingMessageRecordList.add(messageSend);
-        return conversationMessage;
+//        MessageRecord messageSend = new MessageRecord();
+//        messageSend.setType(roomType);
+//        messageSend.setVid(vid);
+//        messageSend.setText(text);
+//        messageSend.setSeed(seed);
+//        messageSend.setSender(sender);
+//        messageSend.setTime(TimeUtils.millis2String(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+//        UserInfo userBean = AppConfig.getUserBean();
+//        if (userBean != null) {
+//            messageSend.setSenderNickname(userBean.getUserNickname());
+//            messageSend.setAvatar(userBean.getAvatar());
+//            messageSend.setSenderExp(userBean.getExp());
+//            messageSend.setSenderType(2);
+//        } else {
+//            messageSend.setSenderType(0);
+//        }
+//        messageSend.setMsgType(msgType);
+//        ConversationMessage conversationMessage = new ConversationMessage(messageSend, mvpView().uid());
+//        conversationMessage.setDeliveryStatus(status);
+//        if (DeliverStatus.STATUS_PENDING == status)
+//            pendingMessageRecordList.add(messageSend);
+//        return conversationMessage;
+        return null;
     }
 
     @NonNull
     private ConversationMessage createMessageImagePending(int roomType, int msgType, String sender, String vid, String seed, String path, @DeliverStatus int status) {
-        MessageRecord messageSend = new MessageRecord();
-        messageSend.setType(roomType);
-        messageSend.setVid(vid);
-        messageSend.setSeed(seed);
-        messageSend.setSender(sender);
-        messageSend.setPic(path);
-        messageSend.setMsgType(msgType);
-        messageSend.setTime(TimeUtils.millis2String(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
-        UserInfo userBean = AppConfig.getUserBean();
-        if (userBean != null) {
-            messageSend.setSenderNickname(userBean.getUserNickname());
-            messageSend.setAvatar(userBean.getAvatar());
-            messageSend.setSenderExp(userBean.getExp());
-            messageSend.setSenderType(2);
-        } else {
-            messageSend.setSenderType(0);
-        }
-        if (DeliverStatus.STATUS_PENDING == status)
-            pendingMessageRecordList.add(messageSend);
-        ConversationMessage conversationMessage = new ConversationMessage(messageSend, mvpView().uid());
-        conversationMessage.setDeliveryStatus(status);
-        return conversationMessage;
+//        MessageRecord messageSend = new MessageRecord();
+//        messageSend.setType(roomType);
+//        messageSend.setVid(vid);
+//        messageSend.setSeed(seed);
+//        messageSend.setSender(sender);
+//        messageSend.setPic(path);
+//        messageSend.setMsgType(msgType);
+//        messageSend.setTime(TimeUtils.millis2String(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+//        UserInfo userBean = AppConfig.getUserBean();
+//        if (userBean != null) {
+//            messageSend.setSenderNickname(userBean.getUserNickname());
+//            messageSend.setAvatar(userBean.getAvatar());
+//            messageSend.setSenderExp(userBean.getExp());
+//            messageSend.setSenderType(2);
+//        } else {
+//            messageSend.setSenderType(0);
+//        }
+//        if (DeliverStatus.STATUS_PENDING == status)
+//            pendingMessageRecordList.add(messageSend);
+//        ConversationMessage conversationMessage = new ConversationMessage(messageSend, mvpView().uid());
+//        conversationMessage.setDeliveryStatus(status);
+//        return conversationMessage;
+        return null;
     }
 
     /**
@@ -656,26 +644,27 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
     @NonNull
     private Map<String, Object> sendRequestMap(int roomType, String seed, int msgType) {
         Map<String, Object> map = new HashMap<>();
-        map.put("fd", "1");
-        map.put("seed", seed);
-        map.put("sender", AppConfig.getUserId());
-        map.put("text", "");
-        map.put("msgType", msgType);
-        map.put("msg_type", msgType);
-        map.put("color", "#000");
-        map.put("vid", mvpView().getRoomVid());
-        map.put("type", Math.abs(roomType) + "");
-        map.put("channel_code", AppConfig.getChannel());
-        String pmSourceType = mvpView().pmSourceType();
-        if (!TextUtils.isEmpty(pmSourceType)) {
-            map.put("pm_source_type", pmSourceType);
-        }
-        String pmSourceTypeStr = mvpView().pmSourceTypeStr();
-        if (!TextUtils.isEmpty(pmSourceTypeStr)) {
-            map.put("pm_source_type_str", pmSourceTypeStr);
-        }
-        if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR)map.put("anchorId", "" + mvpView().uid());
-        if (roomType == RoomType.PAGE_CHAT_PRIVATE)map.put("assignId", "" + mvpView().uid());
+//        map.put("fd", "1");
+//        map.put("seed", seed);
+//        map.put("sender", AppConfig.getUserId());
+//        map.put("text", "");
+//        map.put("msgType", msgType);
+//        map.put("msg_type", msgType);
+//        map.put("color", "#000");
+//        map.put("vid", mvpView().getRoomVid());
+//        map.put("type", Math.abs(roomType) + "");
+//        map.put("channel_code", AppConfig.getChannel());
+//        String pmSourceType = mvpView().pmSourceType();
+//        if (!TextUtils.isEmpty(pmSourceType)) {
+//            map.put("pm_source_type", pmSourceType);
+//        }
+//        String pmSourceTypeStr = mvpView().pmSourceTypeStr();
+//        if (!TextUtils.isEmpty(pmSourceTypeStr)) {
+//            map.put("pm_source_type_str", pmSourceTypeStr);
+//        }
+//        if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR)
+//            map.put("anchorId", "" + mvpView().uid());
+//        if (roomType == RoomType.PAGE_CHAT_PRIVATE) map.put("assignId", "" + mvpView().uid());
         return map;
     }
 
@@ -687,10 +676,9 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
     }
 
 
-
     public void readMessage(String msgId) {
-        addSubscription(getApiStores().readMessage(mvpView().getRoomVid(), msgId, AppConfig.getChannel()), new NothingObserver());
+//        addSubscription(getApiStores().readMessage(mvpView().getRoomVid(), msgId, AppConfig.getChannel()), new NothingObserver());
     }
-    
+
 
 }

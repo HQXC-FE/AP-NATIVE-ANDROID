@@ -1,13 +1,17 @@
 package com.xtree.live.data.source.httpnew;
 
 import com.xtree.live.LiveConfig;
+import com.xtree.live.data.AdsBean;
 import com.xtree.live.data.source.response.LiveRoomBean;
 import com.xtree.live.message.MessageRecord;
+import com.xtree.live.message.SystemMessageRecord;
+import com.xtree.live.message.inroom.InRoomData;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
+import okhttp3.RequestBody;
 
 public class LiveRep extends BaseRepository implements LiveDataSource {
 
@@ -54,5 +58,40 @@ public class LiveRep extends BaseRepository implements LiveDataSource {
                 .compose(RxUtils.exceptionTransformer());
     }
 
+    @Override
+    public Flowable<LiveRoomBean> getLiveDetail(int uid) {
+        String channelCode = LiveConfig.getChannelCode();
+        return obtainJsonService(LiveService.class)
+                .getLiveDetail(uid, channelCode)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
+
+    @Override
+    public Flowable<List<SystemMessageRecord>> getLiveInroomLog(String vid, int limit) {
+        String channelCode = LiveConfig.getChannelCode();
+        return obtainJsonService(LiveService.class)
+                .getLiveInroomLog(vid, limit,channelCode)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
+
+    @Override
+    public Flowable<InRoomData> pin(RequestBody body) {
+
+        return obtainJsonService(LiveService.class)
+                .pin(body)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
+
+    @Override
+    public Flowable<List<AdsBean>> getAdList() {
+        String channelCode = LiveConfig.getChannelCode();
+        return obtainJsonService(LiveService.class)
+                .getAdList(channelCode)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
 
 }

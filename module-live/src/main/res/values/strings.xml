@@ -127,6 +127,7 @@
     <string name="network_error">网络连接异常，请稍后再试</string>
     <string name="send_message_too_quickly">发言过快,请稍后重试</string>
 
+    <string name="chat_global">广场</string>
 
 
 </resources>

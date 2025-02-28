@@ -25,15 +25,10 @@ public interface ChatView extends BaseViewNew, SendMessage {
 
     void doTobUrl(String url);
 
-    void getAdsSuccess(List<AdsBean> beans);
-
     void onProcessChatHistories(boolean isUpdateFresh, boolean isRefresh, List<ConversationMessage> chatHistories);
     void onProcessReceiveMessageList(List<ConversationMessage> chatHistories);
     void onProcessReceiveMessage(ConversationMessage message);
 
-    void onProcessAdsData(AdsBean bean);
-
-    void onPin(InRoomData bean);
     String lastMsgId();
 
     String defaultLastMsgId();
@@ -44,8 +39,6 @@ public interface ChatView extends BaseViewNew, SendMessage {
 
     @NonNull
     List<ConversationMessage> wholeChatList();
-
-    void onGetLiveInroomLog(List<SystemMessageRecord> data);
 
     void doBanUser(MessageBan ban);
 }

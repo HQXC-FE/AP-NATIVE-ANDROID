@@ -3,22 +3,24 @@ package com.xtree.live.ui.main.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.xtree.base.router.RouterFragmentPath;
-import com.xtree.bet.ui.viewmodel.fb.FbBtDetailViewModel;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.data.factory.AppViewModelFactory;
@@ -35,14 +37,13 @@ import com.xtree.live.message.inroom.GlobalRoom;
 import com.xtree.live.message.inroom.PrivateRoom;
 import com.xtree.live.socket.ChatWebSocketManager;
 import com.xtree.live.ui.main.viewmodel.LiveDetailHomeViewModel;
-import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 import com.xtree.live.uitl.ActionGetter;
 import com.xtree.live.uitl.UnreadUtils;
 import com.xtree.live.uitl.WordUtil;
 
+import java.util.ArrayList;
+
 import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.base.BaseModel;
-import me.xtree.mvvmhabit.base.BaseViewModel;
 
 public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeBinding, LiveDetailHomeViewModel> implements LiveDetailMainView, ExpandLiveInfo, UnreadChanged, PVid {
 
@@ -96,34 +97,89 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
             matchId = getArguments().getInt("match_id");
         }
         ChatWebSocketManager.getInstance().registerMessageListener(messageListener);
-        initTab();
+
+        initViewPager2();
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-//        unreadChanged();
-        Log.d("currentime", "onResult 22 : currentime: "+System.currentTimeMillis());
-        ChatWebSocketManager.getInstance().start();
-    }
+    private void initViewPager2() {
+        ArrayList<String> fragmentTypes = new ArrayList<>();
 
-    private void initTab() {
-        String[] tabTitles = getResources().getStringArray(R.array.live_title);
-        for (int i = 0; i < tabTitles.length; i++) {
-            binding.tabLayout.addTab(binding.tabLayout.newTab().setText(tabTitles[i]).setTag(i));
-        }
+        fragmentTypes.add("chat_global");//广场
+        fragmentTypes.add("bet_fragment");//投注
+        fragmentTypes.add("chat_private");//主播私聊
+        fragmentTypes.add("chat_list");//聊天 主播助理
+        binding.viewpager.setOffscreenPageLimit(fragmentTypes.size());
+        binding.viewpager.setAdapter(new FragmentStateAdapter(this) {
+            @NonNull
+            @Override
+            public Fragment createFragment(int position) {
+                switch (fragmentTypes.get(position)) {
+                    case "chat_global"://广场
+                        GlobalRoom room = new GlobalRoom(RoomType.PAGE_CHAT_GLOBAL, mVid, "");
+                        room.uid = mUid;
+                        Fragment chatFragment = (BaseFragment) ARouter.getInstance().
+                                build(RouterFragmentPath.Live.PAGER_LIVE_CHAT)
+                                .withInt("roomType", RoomType.PAGE_CHAT_GLOBAL)
+                                .withInt("uid", mUid)
+                                .withString("vid", mVid)
+                                .withInt("chatBarMode", ChatBarMode.CHATBAR_MODE_NONE)
+                                .withParcelable("roomInfo", room)
+                                .withString("pm_source_type", "")
+                                .withString("pm_source_type_str", "")
+                                .navigation();
+                        return chatFragment;
+                    case "chat_private"://主播私聊
+                        PrivateRoom pRoom = new PrivateRoom(RoomType.PAGE_CHAT_PRIVATE_ANCHOR, pVid(), "", 0);
+                        pRoom.isOnline = 0;
+
+                        Fragment chatFragment2 = (BaseFragment) ARouter.getInstance().
+                                build(RouterFragmentPath.Live.PAGER_LIVE_CHAT)
+                                .withInt("roomType", RoomType.PAGE_CHAT_PRIVATE_ANCHOR)
+                                .withInt("uid", mUid)
+                                .withString("vid", pVid)
+                                .withInt("chatBarMode", ChatBarMode.CHATBAR_MODE_NONE)
+                                .withParcelable("roomInfo", pRoom)
+                                .withString("pm_source_type", "1")
+                                .withString("pm_source_type_str", "" + mUid)
+                                .navigation();
+                        return chatFragment2;
+
+                    case "chat_list"://聊天 主播助理
+//                        return ChatRoomContainerFragment.newInstance(ChatBarMode.CHATBAR_MODE_LOW, "2", "" + uid());
+                        return new Fragment();
+                    case "bet_fragment"://投注
+                        return (Fragment) (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_BET).navigation();
+                }
+                return new Fragment();
+            }
+
+            @Override
+            public int getItemCount() {
+                return fragmentTypes.size();
+            }
+
+            @Override
+            public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+                super.onAttachedToRecyclerView(recyclerView);
+                recyclerView.setItemViewCacheSize(fragmentTypes.size());
+            }
+        });
+
+        binding.viewpager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+            }
+        });
 
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                mCurrentPosition = tab.getPosition();
-                replaceFragment(mCurrentPosition);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
@@ -131,58 +187,41 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
 
             }
         });
-    }
 
-    private void replaceFragment(int mCurrentPosition) {
-        if (childFragmentManager == null) {
-            childFragmentManager = getChildFragmentManager();
-        }
-        FragmentTransaction fragmentTransaction = childFragmentManager.beginTransaction();
+        TabLayoutMediator mediator = new TabLayoutMediator(binding.tabLayout, binding.viewpager, false, false, (tab, position) -> {
+            String fragmentType = fragmentTypes.get(position);
+//
+            String title = "";
+            switch (fragmentType) {
+                case "chat_global":
+                    title = WordUtil.getString(R.string.chat_global);
+                    break;
+                case "chat_private":
+                    title = WordUtil.getString(R.string.chat_private_with_host);
+                    break;
+                case "chat_list":
+                    title = WordUtil.getString(R.string.live_chat);
+                    break;
+                case "bet_fragment":
+                    title = "投注";
+                    break;
 
-        // 顺序是 广场-投注-主播私聊-主播助理
-        //对应的fragment分别是 chatFragment bet
-        if (mCurrentPosition == 1) {
-            Fragment liveBetFragment = (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_BET).navigation();
-            fragmentTransaction.replace(R.id.home_content, liveBetFragment);
-        } else if (mCurrentPosition == 3) {
-            Fragment rechargeFragment = (BaseFragment) new Fragment();
-            fragmentTransaction.replace(R.id.home_content, rechargeFragment);
-        } else if (mCurrentPosition == 2) {// 主播私聊
-            PrivateRoom pRoom = new PrivateRoom(RoomType.PAGE_CHAT_PRIVATE_ANCHOR, pVid(), "", 0);
-            pRoom.isOnline = 0;
 
-            Fragment chatFragment = (BaseFragment) ARouter.getInstance()
-                    .build(RouterFragmentPath.Live.PAGER_LIVE_CHAT)
-                    .withInt("roomType", RoomType.PAGE_CHAT_PRIVATE_ANCHOR)
-                    .withInt("uid", mUid)
-                    .withString("vid", pVid())
-                    .withInt("chatBarMode", ChatBarMode.CHATBAR_MODE_NONE)
-                    .withParcelable("roomInfo", pRoom)
-                    .withString("pm_source_type", "1")
-                    .withString("pm_source_type_str", "" + mUid)
-                    .navigation();
-            fragmentTransaction.replace(R.id.home_content, chatFragment);
-        } else {//广场
-            GlobalRoom room = new GlobalRoom(RoomType.PAGE_CHAT_GLOBAL, mVid, "");
-            room.uid = mUid;
-            Fragment chatFragment = (BaseFragment) ARouter.getInstance().
-                    build(RouterFragmentPath.Live.PAGER_LIVE_CHAT)
-                    .withInt("roomType", RoomType.PAGE_CHAT_PRIVATE_ANCHOR)
-                    .withInt("uid", mUid)
-                    .withString("vid", mVid)
-                    .withInt("chatBarMode", ChatBarMode.CHATBAR_MODE_NONE)
-                    .withParcelable("roomInfo", room)
-                    .withString("pm_source_type", "")
-                    .withString("pm_source_type_str", "")
-                    .navigation();
-
-            fragmentTransaction.replace(R.id.home_content, chatFragment);
-        }
-
+            }
+            tab.setText(title);
+        });
+        mediator.attach();
 
     }
 
-    private final SimpleMessageListener messageListener = new SimpleMessageListener(){
+    @Override
+    public void onResume() {
+        super.onResume();
+//        unreadChanged();
+        ChatWebSocketManager.getInstance().start();
+    }
+
+    private final SimpleMessageListener messageListener = new SimpleMessageListener() {
         @Override
         public void onReceiveUnreadMessage(MessageMsg message) {
 //            if(message.getIsVir() == 1){//虚拟房间
@@ -199,14 +238,14 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
     @Override
     public void showLiveInfo() {
         ExpandLiveInfo expand = ActionGetter.getExpandLiveInfo(this);
-        if(expand != null)expand.showLiveInfo();
+        if (expand != null) expand.showLiveInfo();
         binding.tabLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLiveInfo() {
         ExpandLiveInfo expand = ActionGetter.getExpandLiveInfo(this);
-        if(expand != null)expand.hideLiveInfo();
+        if (expand != null) expand.hideLiveInfo();
         binding.tabLayout.setVisibility(View.GONE);
     }
 
@@ -214,12 +253,12 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
     public void onGetUnreadCount(int total, int pCount) {
         for (int i = 0; i < binding.tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = binding.tabLayout.getTabAt(i);
-            if(tab ==null)return;
-            if(TextUtils.isEmpty(tab.getText()))return;
+            if (tab == null) return;
+            if (TextUtils.isEmpty(tab.getText())) return;
             String tabText = tab.getText().toString();
-            if(WordUtil.getString(R.string.chat_private_with_host).equals(tabText)){
+            if (WordUtil.getString(R.string.chat_private_with_host).equals(tabText)) {
                 showBadge(tab, pCount);
-            }else if(WordUtil.getString(R.string.live_chat).equals(tabText)){
+            } else if (WordUtil.getString(R.string.live_chat).equals(tabText)) {
                 showBadge(tab, total);
             }
         }
