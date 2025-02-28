@@ -174,11 +174,11 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             CfLog.i("****** ");
             startContainerFragment(RouterFragmentPath.Mine.PAGER_SECURITY_CENTER); // 安全中心
         });
-        binding.tvwDcCentre.setOnClickListener(v -> {
+      /*  binding.tvwDcCentre.setOnClickListener(v -> {
             CfLog.i("****** ");
 //            BrowserActivity.start(getContext(), DomainUtil.getH5Domain2() + Constant.URL_DC_CENTER); // 优惠中心
             startContainerFragment(RouterFragmentPath.Mine.PAGER_OFFER); // 优惠中心
-        });
+        });*/
 
         binding.tvwInviteFriend.setOnClickListener(v -> {
             CfLog.i("****** ");
@@ -526,7 +526,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         });
 
         viewModel.liveDataReward.observe(this, vo -> {
-            binding.tvwDcCentre.setSelected(vo.result);
+           // binding.tvwDcCentre.setSelected(vo.result);
             EventBus.getDefault().post(new EventVo(EVENT_RED_POINT, vo.result));
         });
          //用户VIP信息

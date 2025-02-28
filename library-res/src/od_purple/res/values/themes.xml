@@ -91,6 +91,7 @@
         <item name="home_me_ic_help_attr">@style/style_me_ic_help</item>
 
         <item name="home_me_backgroup_attr">@style/style_me_background</item>
+        <item name="home_me_backgroup_middle_attr">@style/style_me_middle_background</item>
         <item name="home_me_backgroup_top_attr">@style/style_me_background_top</item>
         <item name="home_me_backgroup_top_click_attr">@style/style_me_top_click</item>
         <item name="home_me_backgroup_bottom_attr">@style/style_me_background_top</item>

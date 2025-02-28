@@ -367,6 +367,11 @@
     <style name="style_me_background">
         <item name="android:background">@drawable/cm_bg_dark</item>
     </style>
+    //
+
+    <style name="style_me_middle_background">
+        <item name="android:background">@drawable/me_second_bg</item>
+    </style>
     <style name="style_me_background_top">
         <item name="android:background">@drawable/me_bg_top_00</item>
     </style>

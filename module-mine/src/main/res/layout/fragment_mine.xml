@@ -17,7 +17,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/head_area"
                 android:layout_width="match_parent"
-                android:layout_height="316dp"
+                android:layout_height="348dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -335,13 +335,17 @@
                     <TextView
                         android:id="@+id/tvw_wallet"
                         style="?attr/home_me_pocket_attr"
+                        android:text="123"
+                        android:textColor="@color/red"
                         />
 
                     <TextView style="@style/style_wallet_space" />
 
                     <TextView
                         android:id="@+id/tvw_trans"
-                        style="?attr/home_me_transfer_attr"/>
+                        style="?attr/home_me_transfer_attr"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/black" />
 
                     <TextView style="@style/style_wallet_space" />
 
@@ -377,7 +381,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                style="?attr/home_me_backgroup_attr"
+                style="?attr/home_me_backgroup_middle_attr"
                 android:scaleType="fitXY"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="@id/ll_menu2" />
@@ -391,7 +395,8 @@
                 android:paddingBottom="20dp"
                 app:layout_constraintEnd_toEndOf="@+id/head_area"
                 app:layout_constraintStart_toStartOf="@+id/head_area"
-                app:layout_constraintTop_toBottomOf="@+id/head_area">
+                app:layout_constraintTop_toBottomOf="@+id/head_area"
+              >
 
                 <TextView
                     android:id="@+id/more_service_hint"
