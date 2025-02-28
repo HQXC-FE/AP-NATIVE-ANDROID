@@ -19,6 +19,7 @@
                 android:id="@+id/tvw_title"
                 style="@style/style_cm_title"
                 android:text="@string/me_my_wallet"
+                android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

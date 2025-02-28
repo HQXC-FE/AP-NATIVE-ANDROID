@@ -26,6 +26,7 @@
             <TextView
                 style="@style/style_cm_title"
                 android:text="@string/txt_transfer"
+                android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -233,7 +234,7 @@
                         android:id="@+id/ivw_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/cm_ic_transfer" />
+                        android:src="@drawable/cm_ic_transfer" />
                 </LinearLayout>
 
                 <TextView

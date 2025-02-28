@@ -335,8 +335,7 @@
                     <TextView
                         android:id="@+id/tvw_wallet"
                         style="?attr/home_me_pocket_attr"
-                        android:text="123"
-                        android:textColor="@color/red"
+
                         />
 
                     <TextView style="@style/style_wallet_space" />
@@ -345,7 +344,7 @@
                         android:id="@+id/tvw_trans"
                         style="?attr/home_me_transfer_attr"
                         android:layout_height="match_parent"
-                        android:textColor="@color/black" />
+                        />
 
                     <TextView style="@style/style_wallet_space" />
 

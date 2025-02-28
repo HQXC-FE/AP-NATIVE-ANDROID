@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
-            android:background="@mipmap/cm_dialog_update_bg"
+            android:background="@drawable/cm_dialog_update_bg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,8 +35,8 @@
             android:id="@+id/ivw_bell"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:src="@mipmap/cm_dialog_update_bell"
+            android:layout_marginTop="-20dp"
+            android:src="@drawable/cm_dialog_update_bell"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
@@ -47,15 +47,15 @@
             android:id="@+id/tvw_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/txt_update"
-            android:textColor="@color/clr_black"
+            android:textColor="@color/channelTextSelectColor"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
             app:layout_constraintStart_toStartOf="@id/ivw_bg"
-            app:layout_constraintTop_toTopOf="@id/ivw_bg" />
+            app:layout_constraintTop_toBottomOf="@+id/ivw_bell" />
 
         <LinearLayout
             android:id="@+id/linearLayoutS"
