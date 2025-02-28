@@ -70,6 +70,11 @@
 
         <TextView
             style="@style/style_choose_account_item"
+            android:tag="bindedpay"
+            android:text="@string/txt_bind_edpay" />
+
+        <TextView
+            style="@style/style_choose_account_item"
             android:tag="bindtopay"
             android:text="@string/txt_bind_topay" />
 
