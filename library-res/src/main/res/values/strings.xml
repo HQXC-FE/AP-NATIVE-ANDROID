@@ -25,6 +25,7 @@
     <string name="txt_bind_card_type">bindcard</string>
     <string name="txt_bind_usdt_type">bindusdt</string>
     <string name="txt_bind_ebpay_type">bindebpay</string>
+    <string name="txt_bind_edpay_type">bindedpay</string>
     <string name="txt_bind_topay_type">bindtopay</string>
     <string name="txt_bind_gcnyt_type">bindhiwallet</string>
     <string name="txt_bind_mpay_type">bindmpay</string>
@@ -41,6 +42,7 @@
     <string name="txt_bind_wallet">钱包地址管理</string>
     <string name="txt_bind_usdt">绑定USDT</string>
     <string name="txt_bind_ebpay">绑定EBPAY</string>
+    <string name="txt_bind_edpay">绑定EDPAY</string>
     <string name="txt_bind_topay">绑定TOPAY</string>
     <string name="txt_bind_gcnyt">绑定CNYT</string>
     <string name="txt_bind_mpay">绑定MPAY</string>
@@ -59,6 +61,7 @@
     <string name="txt_remind_usdt_trc20">TRC20_USDT地址以T开头的数字和字母组成的34位</string>
     <string name="txt_remind_usdt_erc20">ERC20_USDT地址以0x开头的数字和字母组成的42位</string>
     <string name="txt_remind_ebpay">EBPAY地址以eb开头的数字和字母组成的34位</string>
+    <string name="txt_remind_edpay">EDPAY地址以PPD开头的数字或字母组成的19位</string>
     <string name="txt_remind_topay">TOPAY地址以tp开头的18位 或字母开头的16位</string>
     <string name="txt_remind_gcnyt">地址以CNYT开头的20位英文或数字</string>
     <string name="txt_remind_mpay">地址以mp开头加10位数字</string>

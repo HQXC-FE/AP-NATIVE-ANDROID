@@ -866,6 +866,10 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
             //极速支付宝提款17",
             errorMessage = String.format(formatOtherType, selectorVo.title);
             bindType = getContext().getString(R.string.txt_bind_zfb_type);
+        } else if (TextUtils.equals("16", selectorVo.type)) {
+            //EDpay提款16
+            errorMessage = String.format(formatOtherType, selectorVo.title);
+            bindType = getContext().getString(R.string.txt_bind_edpay_type);
         }
         String finalBindType = bindType;
         String finalBindType1 = bindType;
