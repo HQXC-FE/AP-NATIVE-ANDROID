@@ -21,6 +21,7 @@
             android:background="@color/bt_page_bg"
             android:orientation="vertical"
             android:visibility="gone"
+            tools:visibility="visible"
             app:layout_constraintTop_toTopOf="parent">
 
             <RelativeLayout
@@ -49,7 +50,7 @@
                     android:layout_marginBottom="4dp"
                     android:layout_centerVertical="true"
                     android:text="@string/bt_game_going_on"
-                    android:textColor="@color/bt_text_color_primary_1"
+                    style="?attr/textPrimaryAttr"
                     android:textSize="@dimen/bt_text_12sp" />
 
                 <ImageView
@@ -68,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:text="足球"
+                android:textColor="#AAAAAA"
                 android:textSize="@dimen/bt_text_12sp" />
 
         </LinearLayout>
@@ -94,7 +96,7 @@
                 android:layout_toRightOf="@+id/iv_icon"
                 android:padding="5dp"
                 android:layout_marginEnd="20dp"
-                android:textColor="@color/bt_text_color_primary_1"
+                style="?attr/textPrimaryAttr"
                 android:textSize="@dimen/bt_text_15sp"
                 android:textStyle="bold"
                 tools:text="墨西哥甲级联赛" />
@@ -113,8 +115,8 @@
     <View
         android:id="@+id/v_space"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/clr_transparent"
+        android:layout_height="1dp"
+        android:background="@color/textQuinaryColor"
         app:layout_constraintTop_toTopOf="parent" />
 
 </LinearLayout>
