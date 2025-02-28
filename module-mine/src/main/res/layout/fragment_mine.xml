@@ -11,7 +11,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@mipmap/cm_bg_dark">
+            style="?attr/home_me_backgroup_attr"
+           >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/head_area"
@@ -36,14 +37,14 @@
                         android:id="@+id/icon_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/me_icon_name" />
+                        android:src="@drawable/me_icon_name" />
 
                     <TextView
                         android:id="@+id/tvw_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/me_user_name_hint"
-                        android:textColor="@color/white"
+                        android:textColor="@color/textPrimaryColor"
                         android:textSize="14sp" />
 
                     <ImageView
@@ -64,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:padding="8dp"
-                        android:src="@mipmap/me_icon_setting"
+                        android:src="@drawable/me_icon_setting"
                         android:visibility="invisible" />
 
                     <ImageView
@@ -72,7 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
-                        android:src="@mipmap/me_icon_message" />
+                        android:src="@drawable/me_icon_message" />
 
                 </LinearLayout>
 
@@ -83,10 +84,10 @@
                     android:paddingStart="20dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="20dp"
-                    android:background="@mipmap/me_bg_top_00"
                     app:layout_constraintLeft_toLeftOf="@+id/topArea"
                     app:layout_constraintRight_toRightOf="@+id/topArea"
-                    app:layout_constraintTop_toBottomOf="@+id/topArea">
+                    app:layout_constraintTop_toBottomOf="@+id/topArea"
+                    style="?attr/home_me_backgroup_top_attr">
 
                     <LinearLayout
                         android:id="@+id/ll_login"
@@ -164,15 +165,16 @@
 
                         <TextView
                             android:id="@+id/tvw_1k_recycle"
+                            style="?attr/home_me_backgroup_top_click_attr"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@mipmap/ic_one_click"
                             android:paddingLeft="15dp"
                             android:paddingTop="5dp"
                             android:paddingRight="15dp"
                             android:paddingBottom="5dp"
                             android:textColor="@color/clr_txt_black02"
                             android:textSize="12sp"
+                            android:layout_marginTop="20dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -274,7 +276,7 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@mipmap/me_jinji_lijin" />
+                                style="?attr/home_me_top_lijin_attr"/>
 
                             <!--<TextView style="@style/style_wallet_space" />-->
 
@@ -282,7 +284,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/layout_margin"
-                                android:src="@mipmap/me_ic_week_red_pkg" />
+                               style="?attr/home_me_top_week_attr" />
 
                             <!--<TextView style="@style/style_wallet_space" />-->
 
@@ -301,13 +303,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/layout_margin"
-                                android:src="@mipmap/me_zhuanshu_huodong" />
+                                style="?attr/home_me_top_zhuanshu_attr"  />
                         </LinearLayout>
 
                         <ImageView
                             android:id="@+id/ivw_vip_10"
                             android:layout_width="84dp"
                             android:layout_height="72dp"
+                            android:layout_marginEnd="8dp"
                             android:layout_marginBottom="12dp"
                             android:background="@color/clr_transparent"
                             android:visibility="gone"
@@ -321,9 +324,9 @@
                 <LinearLayout
                     android:id="@+id/ll_menu"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="80dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
+
                     android:layout_marginRight="20dp"
                     android:orientation="horizontal"
                     app:layout_constraintLeft_toLeftOf="@+id/middle_area"
@@ -331,49 +334,42 @@
 
                     <TextView
                         android:id="@+id/tvw_wallet"
-                        style="@style/style_menu_white"
-                        android:drawableTop="@mipmap/me_my_pocket"
-                        android:text="@string/me_my_pocket" />
+                        style="?attr/home_me_pocket_attr"
+                        />
 
                     <TextView style="@style/style_wallet_space" />
 
                     <TextView
                         android:id="@+id/tvw_trans"
-                        style="@style/style_menu_white"
-                        android:drawableTop="@mipmap/me_transfer"
-                        android:text="@string/me_transfer" />
+                        style="?attr/home_me_transfer_attr"/>
 
                     <TextView style="@style/style_wallet_space" />
 
                     <TextView
                         android:id="@+id/tvw_bet"
-                        style="@style/style_menu_white"
-                        android:drawableTop="@mipmap/me_betting_record"
-                        android:text="@string/me_betting_record" />
+                        style="?attr/home_me_betting_record_attr"
+                        />
 
                     <TextView style="@style/style_wallet_space" />
 
                     <TextView
                         android:id="@+id/tvw_trans_record"
-                        style="@style/style_menu_white"
-                        android:drawableTop="@mipmap/me_account_record"
-                        android:text="@string/me_account_record" />
+                        style="?attr/home_me_account_record_attr" />
 
                     <TextView style="@style/style_wallet_space" />
 
                     <TextView
                         android:id="@+id/tvw_safe"
-                        style="@style/style_menu_white"
-                        android:drawableTop="@mipmap/me_account_safty"
-                        android:text="@string/me_account_safety"
-                        android:visibility="gone" />
+                        style="?attr/home_me_account_safty_attr"
+                        />
 
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/tvw_dc_centre"
                         style="@style/style_menu_white"
                         android:drawableTop="@drawable/bg_reward_selector"
                         android:text="@string/me_discount_centre"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        android:visibility="gone"/>-->
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -381,8 +377,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                style="?attr/home_me_backgroup_attr"
                 android:scaleType="fitXY"
-                android:src="@mipmap/me_second_bg"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="@id/ll_menu2" />
 
@@ -390,7 +386,7 @@
                 android:id="@+id/ll_menu2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="40dp"
                 android:orientation="vertical"
                 android:paddingBottom="20dp"
                 app:layout_constraintEnd_toEndOf="@+id/head_area"
@@ -428,33 +424,26 @@
 
                         <TextView
                             android:id="@+id/tvw_invite_friend"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_invite_friend"
-                            android:text="@string/me_invite_friend" />
+                            style="?attr/home_me_invite_friend_attr"
+                           />
 
                         <TextView style="@style/style_wallet_space" />
 
                         <TextView
                             android:id="@+id/tvw_guanfangheyin"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_guanfangheyin"
-                            android:text="@string/me_guanfang_heyin" />
+                            style="?attr/home_me_guanfangheyin_attr" />
 
                         <TextView style="@style/style_wallet_space" />
 
                         <TextView
                             android:id="@+id/tvw_yinkui_baobiao"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_yinkui_baobiao"
-                            android:text="@string/me_yinkui_baobiao" />
+                            style="?attr/home_me_yinkui_baobiao_attr" />
 
                         <TextView style="@style/style_wallet_space" />
 
                         <TextView
                             android:id="@+id/tvw_sanfang_zhuanzhang"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_sanfang_zhuanzhang"
-                            android:text="@string/me_sanfang_zhuanzhang" />
+                            style="?attr/home_me_sanfang_zhuanzhang_attr" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -463,33 +452,25 @@
 
                         <TextView
                             android:id="@+id/tvw_security_center"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_anquan_zhongxin"
-                            android:text="@string/me_anquan_zhongxin" />
+                            style="?attr/home_me_anquan_zhongxin_attr" />
 
                         <TextView style="@style/style_wallet_space" />
 
                         <TextView
                             android:id="@+id/tvw_zhanghu_shezhi"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_zhanghu_shezhi"
-                            android:text="@string/me_zhanghu_shezhi" />
+                            style="?attr/home_me_zhanghu_shezhi_attr" />
 
                         <TextView style="@style/style_wallet_space" />
 
                         <TextView
                             android:id="@+id/tvw_fanhui_baobiao"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_ic_rebate"
-                            android:text="@string/me_fanhui_baobiao" />
+                            style="?attr/home_me_fanhui_baobiao_attr" />
 
                         <TextView style="@style/style_wallet_space" />
 
                         <TextView
                             android:id="@+id/tvw_vip_zhongxin"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_vip_zhongxin"
-                            android:text="@string/me_vip_zhongxin" />
+                            style="?attr/home_me_vip_zhongxin_attr" />
 
                     </LinearLayout>
 
@@ -497,33 +478,25 @@
 
                         <TextView
                             android:id="@+id/tvw_tiyu_guize"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_tiyu_guize"
-                            android:text="@string/me_tiyu_guize" />
+                            style="?attr/home_me_tiyu_guize_attr" />
 
                         <TextView style="@style/style_wallet_space" />
 
                         <TextView
                             android:id="@+id/tvw_upgrade"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_upgrade"
-                            android:text="@string/txt_upgrade" />
+                            style="?attr/home_me_gr_upgrade_attr" />
 
                         <TextView style="@style/style_wallet_space" />
 
                         <TextView
                             android:id="@+id/tvw_usdt_jiaocheng"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_usdt_jiaocheng"
-                            android:text="@string/me_usdt_jiaocheng" />
+                            style="?attr/home_me_usdt_jiaocheng_attr" />
 
                         <TextView style="@style/style_wallet_space" />
 
                         <TextView
                             android:id="@+id/tvw_bangzhu_zhongxin"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_ic_help"
-                            android:text="@string/me_bangzhu_zhongxin" />
+                            style="?attr/home_me_ic_help_attr"  />
 
                     </LinearLayout>
 

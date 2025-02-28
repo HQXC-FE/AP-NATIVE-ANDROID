@@ -46,6 +46,44 @@
     <attr name="rc_down_hi_wallet_attr" format="reference" />
     <attr name="btn_short_attr" format="reference" />
     <attr name="withdraw_money_account_attr" format="reference" />
-    <attr name="home_top_notic" format="reference" />
+    <attr name="home_top_notice_attr" format="reference" />
+    <attr name="home_top_deposit_attr" format="reference" />
+    <attr name="home_top_trans_attr" format="reference" />
+    <attr name="home_top_withdraw_attr" format="reference" />
+    <attr name="home_top_cs_attr" format="reference" />
+    <attr name="home_top_balance_attr" format="reference" />
+    <attr name="home_top_name_attr" format="reference" />
+    <attr name="home_top_name_nologin_attr" format="reference" />
+    <attr name="home_me_pocket_attr" format="reference" />
+    <attr name="home_me_transfer_attr" format="reference" />
+    <attr name="home_me_betting_record_attr" format="reference" />
+    <attr name="home_me_account_record_attr" format="reference" />
+    <attr name="home_me_account_safty_attr" format="reference" />
+
+    <attr name="home_me_invite_friend_attr" format="reference" />
+    <attr name="home_me_guanfangheyin_attr" format="reference" />
+    <attr name="home_me_yinkui_baobiao_attr" format="reference" />
+    <attr name="home_me_sanfang_zhuanzhang_attr" format="reference" />
+
+    <attr name="home_me_anquan_zhongxin_attr" format="reference" />
+    <attr name="home_me_zhanghu_shezhi_attr" format="reference" />
+    <attr name="home_me_fanhui_baobiao_attr" format="reference" />
+    <attr name="home_me_vip_zhongxin_attr" format="reference" />
+
+    <attr name="home_me_tiyu_guize_attr" format="reference" />
+    <attr name="home_me_gr_upgrade_attr" format="reference" />
+    <attr name="home_me_usdt_jiaocheng_attr" format="reference" />
+    <attr name="home_me_ic_help_attr" format="reference" />
+    <attr name="home_me_backgroup_attr" format="reference" />
+    <attr name="home_me_backgroup_top_attr" format="reference" />
+    <attr name="home_me_backgroup_top_click_attr" format="reference" />
+    <attr name="home_me_backgroup_bottom_attr" format="reference" />
+
+    <attr name="home_me_top_lijin_attr" format="reference" />
+    <attr name="home_me_top_week_attr" format="reference" />
+    <attr name="home_me_top_zhuanshu_attr" format="reference" />
+
+
+
 
 </resources>

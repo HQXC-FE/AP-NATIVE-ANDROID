@@ -45,7 +45,61 @@
         <item name="rc_down_hi_wallet_attr">@style/style_rc_down_hi_wallet</item>
         <item name="btn_short_attr">@style/style_btn_short</item>
         <item name="withdraw_money_account_attr">@style/style_withdraw_money_account</item>
-        <item name="home_top_notic">@style/style_rc_dlg_bg_top</item>
+        <item name="home_top_notice_attr">@style/style_home_top_notice</item>
+        <item name="home_top_deposit_attr">@style/style_home_top_deposit</item>
+        <item name="home_top_trans_attr">@style/style_home_top_trans</item>
+        <item name="home_top_withdraw_attr">@style/style_home_top_withdraw</item>
+        <item name="home_top_cs_attr">@style/style_home_top_cs</item>
+        <item name="home_top_balance_attr">@style/style_home_top_balance</item>
+        <item name="home_top_name_attr">@style/style_home_top_name</item>
+        <item name="home_top_name_nologin_attr">@style/style_hm_txt_normal_12</item>
+        <!--我的钱包-->
+        <item name="home_me_pocket_attr">@style/style_my_pocket</item>
+        <!--转账-->
+        <item name="home_me_transfer_attr">@style/style_me_transfer</item>
+        <!--投注记录-->
+        <item name="home_me_betting_record_attr">@style/style_me_betting_record</item>
+        <!--账变记录-->
+        <item name="home_me_account_record_attr">@style/style_me_trans_record</item>
+        <!--账变记录-->
+        <item name="home_me_account_safty_attr">@style/style_me_account_safty</item>
+
+
+        <!--好友邀请-->
+        <item name="home_me_invite_friend_attr">@style/style_me_invite_friend</item>
+        <!--官方合营-->
+        <item name="home_me_guanfangheyin_attr">@style/style_me_guanfangheyin</item>
+        <!--盈亏报表-->
+        <item name="home_me_yinkui_baobiao_attr">@style/style_me_yinkui_baobiao</item>
+        <!--三方转账-->
+        <item name="home_me_sanfang_zhuanzhang_attr">@style/style_me_sanfang_zhuanzhang</item>
+        <!--安全中心-->
+        <item name="home_me_anquan_zhongxin_attr">@style/style_me_anquan_zhongxin</item>
+        <!--账户关联-->
+        <item name="home_me_zhanghu_shezhi_attr">@style/style_me_zhanghu_shezhi</item>
+        <!--反水报表-->
+        <item name="home_me_fanhui_baobiao_attr">@style/style_me_fanhui_baobiao</item>
+        <!--VIP中心-->
+        <item name="home_me_vip_zhongxin_attr">@style/style_me_vip_zhongxin</item>
+        <!--体育规则-->
+        <item name="home_me_tiyu_guize_attr">@style/style_me_tiyu_guize</item>
+        <!--检查更新-->
+        <item name="home_me_gr_upgrade_attr">@style/style_me_gr_upgrade</item>
+        <!--教程-->
+        <item name="home_me_usdt_jiaocheng_attr">@style/style_me_usdt_jiaocheng</item>
+        <!--帮助中心-->
+        <item name="home_me_ic_help_attr">@style/style_me_ic_help</item>
+
+        <item name="home_me_backgroup_attr">@style/style_me_background</item>
+        <item name="home_me_backgroup_top_attr">@style/style_me_background_top</item>
+        <item name="home_me_backgroup_top_click_attr">@style/style_me_top_click</item>
+        <item name="home_me_backgroup_bottom_attr">@style/style_me_background_top</item>
+
+        <item name="home_me_top_lijin_attr">@style/style_me_top_lijin_attr</item>
+        <item name="home_me_top_week_attr">@style/style_me_top_week_attr</item>
+        <item name="home_me_top_zhuanshu_attr">@style/style_me_top_shengr_attr</item>
+
+
     </style>
 
 </resources>

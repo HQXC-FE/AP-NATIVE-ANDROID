@@ -78,7 +78,7 @@
 
                     <TextView
                         android:id="@+id/tvw_pls_login"
-                        style="@style/style_hm_txt_normal_12"
+                        style="?attr/home_top_name_nologin_attr"
                         android:text="@string/hm_pls_login_view"
                         app:layout_constraintStart_toStartOf="@id/tvw_not_login"
                         app:layout_constraintTop_toBottomOf="@id/tvw_not_login" />
@@ -95,8 +95,7 @@
 
                     <TextView
                         android:id="@+id/tvw_name"
-                        android:layout_marginTop="5dp"
-                        style="@style/style_hm_txt_normal_12"
+                        style="?attr/home_top_name_attr"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Lorraine001" />
@@ -140,7 +139,7 @@
 
                     <TextView
                         android:id="@+id/tvw_balance"
-                        style="@style/style_hm_txt_bold"
+                        style="?attr/home_top_balance_attr"
                         app:layout_constraintStart_toStartOf="@id/tvw_name"
                         app:layout_constraintTop_toBottomOf="@id/tvw_name"
                         tools:text="￥980,000,000,000" />
@@ -158,22 +157,19 @@
 
                 <TextView
                     android:id="@+id/tvw_deposit"
-                    style="@style/style_hm_recharge"
                     android:layout_marginStart="0dp"
-                    android:drawableTop="@mipmap/hm_ic_deposit"
+                    style="?attr/home_top_deposit_attr"
                     android:text="@string/hm_txt_deposit" />
-
-                <TextView
-                    android:id="@+id/tvw_withdraw"
-                    style="@style/style_hm_recharge"
-                    android:drawableTop="@mipmap/hm_ic_withdraw"
-                    android:text="@string/hm_txt_withdraw" />
-
                 <TextView
                     android:id="@+id/tvw_trans"
-                    style="@style/style_hm_recharge"
-                    android:drawableTop="@mipmap/hm_ic_trans"
+                    style="?attr/home_top_trans_attr"
                     android:text="@string/hm_txt_trans" />
+                <TextView
+                    android:id="@+id/tvw_withdraw"
+                    style="?attr/home_top_withdraw_attr"
+                    android:text="@string/hm_txt_withdraw" />
+
+
 
                 <TextView
                     android:id="@+id/tvw_member"
@@ -184,8 +180,7 @@
 
                 <TextView
                     android:id="@+id/tvw_cs"
-                    style="@style/style_hm_recharge"
-                    android:drawableTop="@mipmap/hm_ic_cs"
+                    style="?attr/home_top_cs_attr"
                     android:text="@string/hm_txt_cs" />
 
             </LinearLayout>
@@ -208,7 +203,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_weight="1"
-                    android:drawableStart="@mipmap/hm_notice"
                     android:drawablePadding="6dp"
                     android:ellipsize="marquee"
                     android:focusable="true"
@@ -216,7 +210,7 @@
                     android:singleLine="true"
                     android:text=""
                     tools:text="Demo"
-                    style="?attr/home_top_notic"
+                    style="?attr/home_top_notice_attr"
                     />
 
                 <ImageView
@@ -240,7 +234,7 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/ll_menu"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:visibility="visible" />
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
