@@ -1207,17 +1207,17 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
         if (!TextUtils.isEmpty(vo.usdtrate)) {
             setUsdtRate(vo);
-        } else if (vo.paycode.equals("hiwallet")) {
+        } else if (vo.paycode.toLowerCase().contains("hiwallet")) {
             binding.tvwFxRate.setText(R.string.txt_rate_cnyt_cny);
-        } else if (vo.paycode.equals("hqppaytopay")) {
+        } else if (vo.paycode.toLowerCase().contains("topay")) {
             binding.tvwFxRate.setText(R.string.txt_rate_tog_cny);
-        } else if (vo.paycode.equals("ebpay")) {
+        } else if (vo.paycode.toLowerCase().contains("ebpay")) {
             binding.tvwFxRate.setText(R.string.txt_rate_eb_cny);
-        } else if (vo.paycode.equals("hqppaygobao")) {
+        } else if (vo.paycode.toLowerCase().contains("gobao")) {
             binding.tvwFxRate.setText(R.string.txt_rate_gobao_cny);
-        } else if (vo.paycode.equals("hqppayokpay")) {
+        } else if (vo.paycode.toLowerCase().contains("okpay")) {
             binding.tvwFxRate.setText(R.string.txt_rate_okpay_cny);
-        } else if (vo.paycode.equals("hqppaygopay")) {
+        } else if (vo.paycode.toLowerCase().contains("gopay")) {
             binding.tvwFxRate.setText(R.string.txt_rate_gopay_cny);
         } else {
             binding.tvwFxRate.setText("");
