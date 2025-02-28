@@ -270,7 +270,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         public static final int CODE_20205 = 20205;
         public static final int CODE_20206 = 20206;
         public static final int CODE_900001 = 900001; // 全局验证
-        public static final int CODE_14010 = 14010; //投注TOKEN失效
+        public static final int CODE_14010 = 14010; //FB场馆 TOKEN失效
         //请求成功, 正确的操作方式
         static final int CODE_0 = 0;
         //无效的Token
@@ -314,15 +314,15 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
          */
         public static final int CODE_10000001 = 10000001;
         /**
-         * token失效
+         * PM场馆token失效  调用收藏接口时，用户ID入参为空
          */
         public static final int CODE_401026 = 401026;
         /**
-         * token失效
+         * PM场馆token失效  用户登录过期
          */
         public static final int CODE_401013 = 401013;
         public static final int CODE_400467 = 400467;
-        public static final int CODE_401038 = 401038;
+        public static final int CODE_401038 = 401038;//网络异常，请稍后再试!
         /**
          * 提前结算提交申请成功,请等待确认
          */

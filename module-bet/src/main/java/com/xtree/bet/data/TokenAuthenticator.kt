@@ -111,9 +111,9 @@ class TokenAuthenticator : Interceptor {
 
             // 根据平台选择调用的 API
             val tokenApi = if (getTokenForPlatform().equals(BtDomainUtil.PLATFORM_FBXC, ignoreCase = true)) {
-                BetRepository.getInstance(httpDataSource, localDataSource).baseApiService.fbxcGameZeroTokenApi
+                BetRepository.getInstance(httpDataSource, localDataSource).baseApiService.fbxcGameTokenApi
             } else {
-                BetRepository.getInstance(httpDataSource, localDataSource).baseApiService.fbGameZeroTokenApi
+                BetRepository.getInstance(httpDataSource, localDataSource).baseApiService.fbGameTokenApi
             }
 
             // 获取 token 响应

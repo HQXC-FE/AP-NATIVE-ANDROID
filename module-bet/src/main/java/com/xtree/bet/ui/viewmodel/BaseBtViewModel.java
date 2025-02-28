@@ -87,9 +87,9 @@ public class BaseBtViewModel extends BaseViewModel<BetRepository> {
         Flowable<BaseResponse<FBService>> flowable;
         String mPlatform = SPUtils.getInstance().getString(KEY_PLATFORM);
         if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
-            flowable = model.getBaseApiService().getFBXCGameZeroTokenApi();
+            flowable = model.getBaseApiService().getFBXCGameTokenApi();
         } else {
-            flowable = model.getBaseApiService().getFBGameZeroTokenApi();
+            flowable = model.getBaseApiService().getFBGameTokenApi();
         }
         Disposable disposable = (Disposable) flowable
                 .compose(RxUtils.schedulersTransformer()) //线程调度
