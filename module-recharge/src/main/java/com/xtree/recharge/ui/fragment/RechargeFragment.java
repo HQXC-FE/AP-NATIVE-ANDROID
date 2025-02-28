@@ -89,9 +89,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     private static final long REFRESH_DELAY = 30 * 60 * 1000L; // 刷新间隔等待时间(如果长时间没刷新)
     private static final String ONE_PAY_FIX = "onepayfix"; // 极速充值包含的关键字
     private static final String KEY_MANUAL = "manual"; // 人工充值
-
-    private Method method;
-    private Object object;
     //RechargeAdapter rechargeAdapter;
     RechargeTypeAdapter mTypeAdapter; //顶部推荐充值渠道适配器
     RechargeChannelAdapter mChannelAdapter;//充值渠道适配器
@@ -122,7 +119,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     String[] arrayBrowser = new String[]{"onepayfix3", "onepayfix4", "onepayfix5", "onepayfix6"};
     List<String> payCodeList = new ArrayList<>(); // 含弹出支付窗口的充值渠道类型列表(从缓存加载用)
     long lastRefresh = System.currentTimeMillis(); // 上次刷新时间
-
     Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -152,6 +148,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             }
         }
     };
+    private Method method;
+    private Object object;
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -382,10 +380,10 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                     mAmountAdapter.setAmount(amount);
                     mAmountAdapter.notifyDataSetChanged();
                 }
-                if (amount.length() > 0){
+                if (amount.length() > 0) {
                     binding.btnNext.setEnabled(true); // 默认禁用.
                     binding.btnNext.setBackground(getContext().getDrawable(R.mipmap.cm_btn_recharge_long_disable));
-                }else{
+                } else {
                     binding.btnNext.setEnabled(false); // 默认禁用.
                     binding.btnNext.setBackground(getContext().getDrawable(R.mipmap.cm_btn_recharge_long_press));
                 }
@@ -1213,6 +1211,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             binding.tvwFxRate.setText(R.string.txt_rate_tog_cny);
         } else if (vo.paycode.toLowerCase().contains("ebpay")) {
             binding.tvwFxRate.setText(R.string.txt_rate_eb_cny);
+        } else if (vo.paycode.toLowerCase().contains("edpay")) {
+            binding.tvwFxRate.setText(R.string.txt_rate_ed_cny);
         } else if (vo.paycode.toLowerCase().contains("gobao")) {
             binding.tvwFxRate.setText(R.string.txt_rate_gobao_cny);
         } else if (vo.paycode.toLowerCase().contains("okpay")) {
@@ -1239,17 +1239,19 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         if (!TextUtils.isEmpty(vo.usdtrate)) {
             setUsdtRate(vo);
             return;
-        } else if (vo.paycode.equals("hiwallet")) {
+        } else if (vo.paycode.toLowerCase().contains("hiwallet")) {
             type = "CNYT";
-        } else if (vo.paycode.equals("hqppaytopay")) {
+        } else if (vo.paycode.toLowerCase().contains("topay")) {
             type = "TOG";
-        } else if (vo.paycode.equals("ebpay")) {
+        } else if (vo.paycode.toLowerCase().contains("ebpay")) {
             type = "EB";
-        } else if (vo.paycode.equals("hqppaygobao")) {
+        } else if (vo.paycode.toLowerCase().contains("edpay")) {
+            type = "ED";
+        }  else if (vo.paycode.toLowerCase().contains("gobao")) {
             type = "GB";
-        } else if (vo.paycode.equals("hqppayokpay")) {
+        } else if (vo.paycode.toLowerCase().contains("okpay")) {
             type = "OKG";
-        } else if (vo.paycode.equals("hqppaygopay")) {
+        } else if (vo.paycode.toLowerCase().contains("gopay")) {
             type = "GOP";
         } else {
             binding.tvwPrePay.setVisibility(View.GONE);
@@ -1370,23 +1372,27 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             html += fontLine + getString(R.string.txt_rc_tip_usdt_1);
             html += fontLine + getString(R.string.txt_rc_tip_usdt_2, tmp);
 
-        } else if (vo.paycode.equals("ebpay")) {
+        } else if (vo.paycode.toLowerCase().contains("ebpay")) {
             html += fontLine + getString(R.string.txt_rc_tip_ebpay_1);
             html += fontLine + getString(R.string.txt_rc_tip_ebpay_2);
 
+        } else if (vo.paycode.toLowerCase().contains("edpay")) {
+            html += fontLine + getString(R.string.txt_rc_tip_edpay_1);
+            html += fontLine + getString(R.string.txt_rc_tip_edpay_2);
+
         } else if (!vo.title.contains(getString(R.string.txt_alipay)) && !vo.title.contains(getString(R.string.txt_wechat))) {
-            tmp = vo.paycode.equals("ecnyhqppay") ? getString(R.string.txt_ecny) : getString(R.string.txt_bank_card);
+            tmp = vo.paycode.toLowerCase().contains("ecnyhqppay") ? getString(R.string.txt_ecny) : getString(R.string.txt_bank_card);
             //tmp = fontStart + tmp + fontEnd;
             html += fontLine + getString(R.string.txt_rc_tip_yhk_1, tmp);
 
             if (vo.randturnauto == 1) {
                 html += fontLine + getString(R.string.txt_rc_tip_yhk_2);
             }
-            if (vo.paycode.equals("ecnyhqppay")) {
+            if (vo.paycode.toLowerCase().contains("ecnyhqppay")) {
                 tmp = vo.randturnauto == 1 ? "3、" : "2、";
                 html += fontLine + tmp + getString(R.string.txt_rc_tip_yhk_3);
             }
-            if (vo.randturnauto != 1 && !vo.paycode.equals("ecnyhqppay")) {
+            if (vo.randturnauto != 1 && !vo.paycode.toLowerCase().contains("ecnyhqppay")) {
                 // 2、本通道只接受线上网银转账及手机银行转账。
                 tmp = fontStart + vo.title + fontEnd;
                 html += fontLine + getString(R.string.txt_rc_tip_yhk_2a, tmp);
@@ -1416,7 +1422,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         binding.llHiWallet.setVisibility(View.GONE);
         for (PaymentTypeVo typeVo : vo.chongzhiList) {
             for (RechargeVo t : typeVo.payChannelList) {
-                if (!TextUtils.isEmpty(t.paycode) && t.paycode.contains("hiwallet")) {
+                if (!TextUtils.isEmpty(t.paycode) && t.paycode.toLowerCase().contains("hiwallet")) {
                     binding.llHiWallet.setVisibility(View.VISIBLE);
                     return;
                 }
