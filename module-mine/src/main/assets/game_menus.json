@@ -406,7 +406,7 @@
     "name": "DB电竞",
     "key": "obgdj",
     "alias": "OBGDJ",
-    "needTransfer": true,
+    "needTransfer": false,
     "forward": {
       "esports": {
         "route": "GameFrame"
@@ -419,7 +419,7 @@
   },
   {
     "cid": 20,
-    "name": "云游棋牌",
+    "name": "YOO棋牌",
     "alias": "YY",
     "key": "yy",
     "needTransfer": true,
