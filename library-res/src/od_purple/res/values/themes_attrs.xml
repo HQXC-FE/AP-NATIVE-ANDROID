@@ -84,7 +84,10 @@
     <attr name="home_me_top_week_attr" format="reference" />
     <attr name="home_me_top_zhuanshu_attr" format="reference" />
 
-
+    <attr name="home_me_lottery_info_attr" format="reference" />
+    <attr name="home_me_question_attr" format="reference" />
+    <attr name="home_me_play_intro_attr" format="reference" />
+    <attr name="home_me_tutorial_attr" format="reference" />
 
 
 </resources>

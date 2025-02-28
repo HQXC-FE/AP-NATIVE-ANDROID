@@ -101,6 +101,12 @@
         <item name="home_me_top_zhuanshu_attr">@style/style_me_top_shengr_attr</item>
 
 
+        <item name="home_me_lottery_info_attr">@style/style_me_lottery_info</item>
+        <item name="home_me_question_attr">@style/style_me_question</item>
+        <item name="home_me_play_intro_attr">@style/style_me_play_intro</item>
+        <item name="home_me_tutorial_attr">@style/style_me_tutorial</item>
+
+
     </style>
 
 </resources>

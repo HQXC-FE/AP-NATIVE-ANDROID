@@ -367,7 +367,6 @@
     <style name="style_me_background">
         <item name="android:background">@drawable/cm_bg_dark</item>
     </style>
-    //
 
     <style name="style_me_middle_background">
         <item name="android:background">@drawable/me_second_bg</item>
@@ -387,4 +386,21 @@
     <style name="style_me_top_shengr_attr">
         <item name="android:background">@drawable/me_shengri_lijin</item>
     </style>
+<!--彩种信息-->
+    <style name="style_me_lottery_info">
+        <item name="android:src">@drawable/me_lottery_info</item>
+    </style>
+    <style name="style_me_question">
+        <item name="android:src">@drawable/me_question</item>
+    </style>
+    <style name="style_me_play_intro">
+        <item name="android:src">@drawable/me_play_intro</item>
+    </style>
+
+    <style name="style_me_tutorial">
+        <item name="android:src">@drawable/me_tutorial</item>
+    </style>
+
+
+
 </resources>
