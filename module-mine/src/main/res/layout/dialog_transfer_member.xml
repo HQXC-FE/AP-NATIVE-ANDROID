@@ -73,7 +73,7 @@
             <EditText
                 android:id="@+id/et_transfer_google_auth"
                 style="@style/style_cm_edt"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/layout_margin"
                 android:drawableStart="@mipmap/mine_bonus"
