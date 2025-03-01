@@ -534,6 +534,8 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
             involveSvgaViewMargin(binding.llSendText.getHeight());
         });
 
+        viewModel.enterRoom(roomType, mUid, mVid, wholeChatList());
+
     }
 
     @Override
@@ -1118,7 +1120,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
 
     @Override
     public void sendText(String text) {
-        viewModel.sendText(roomType,mVid, text);
+        viewModel.sendText(roomType,mUid,mVid, text);
     }
 
     @Override

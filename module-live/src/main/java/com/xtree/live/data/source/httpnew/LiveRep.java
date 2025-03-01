@@ -94,4 +94,13 @@ public class LiveRep extends BaseRepository implements LiveDataSource {
                 .compose(RxUtils.exceptionTransformer());
     }
 
+    @Override
+    public Flowable<InRoomData> sendToAnchor(RequestBody body) {
+
+        return obtainJsonService(LiveService.class)
+                .sendToAnchor(body)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
+
 }

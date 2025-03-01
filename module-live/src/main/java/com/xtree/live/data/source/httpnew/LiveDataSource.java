@@ -26,4 +26,7 @@ public interface LiveDataSource {
 
     Flowable<List<AdsBean>> getAdList();
 
+    Flowable<InRoomData> sendToAnchor(RequestBody body);
+
+
 }

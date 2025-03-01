@@ -327,17 +327,17 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 
     }
 
-    public void sendText(int roomType, String vid,String text) {
+    public void sendText(int roomType,int uid, String vid,String text) {
         String sender = LiveConfig.getUserId();;
         String seed = EncryptUtils.encryptMD5ToString(sender + vid + System.currentTimeMillis());
-        sendText(roomType, seed, text, null);
+        sendText(roomType,uid,vid, seed, text, null);
     }
 
-    private void sendText(@RoomType int roomType, String seed, String text, @Nullable Runnable onFinish) {
-        //是否主播私聊
-//        int msgType = roomType == RoomType.PAGE_CHAT_GLOBAL ? 0 : 1;
-//        Map<String, Object> map = sendRequestMap(roomType, seed, msgType);
-//        map.put("text", text);
+    private void sendText(@RoomType int roomType,int uid,String vid, String seed, String text, @Nullable Runnable onFinish) {
+//        是否主播私聊
+        int msgType = roomType == RoomType.PAGE_CHAT_GLOBAL ? 0 : 1;
+        Map<String, Object> map = sendRequestMap(roomType,uid,vid, seed, msgType);
+        map.put("text", text);
 //        BaseObserver<JsonElement> observer = new BaseObserver<>() {
 //            @Override
 //            public void onSuccess(JsonElement data, String msg) {
@@ -369,7 +369,8 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 //            }
 //        };
 //        if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR) {
-//            addSubscription(getApiStores().sendToAnchor(getRequestBody(map)), observer);
+//
+//            LiveRep.getInstance().sendToAnchor(RequestUtils.getRequestBody(map)).subscribe(callback);
 //        } else if (roomType == RoomType.PAGE_CHAT_PRIVATE) {
 //            addSubscription(getApiStores().sendToAssistant(getRequestBody(map)), observer);
 //        } else {
@@ -590,6 +591,7 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
             case 0:
             case 1:
                 sendText(messageRecord.getType(),
+                        uid,vid,
                         messageRecord.getSeed(),
                         messageRecord.getText(),
                         () -> postPendingMessages(runnable));
@@ -618,6 +620,7 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
             case 0:
             case 1:
                 sendText(messageRecord.getType(),
+                        uid,vid,
                         messageRecord.getSeed(),
                         messageRecord.getText(),
                         null);
@@ -642,29 +645,19 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
     }
 
     @NonNull
-    private Map<String, Object> sendRequestMap(int roomType, String seed, int msgType) {
+    private Map<String, Object> sendRequestMap(int roomType,int uid,String vid, String seed, int msgType) {
+        String channelCode = LiveConfig.getChannelCode();
         Map<String, Object> map = new HashMap<>();
-//        map.put("fd", "1");
-//        map.put("seed", seed);
-//        map.put("sender", AppConfig.getUserId());
-//        map.put("text", "");
-//        map.put("msgType", msgType);
-//        map.put("msg_type", msgType);
-//        map.put("color", "#000");
-//        map.put("vid", mvpView().getRoomVid());
-//        map.put("type", Math.abs(roomType) + "");
-//        map.put("channel_code", AppConfig.getChannel());
-//        String pmSourceType = mvpView().pmSourceType();
-//        if (!TextUtils.isEmpty(pmSourceType)) {
-//            map.put("pm_source_type", pmSourceType);
-//        }
-//        String pmSourceTypeStr = mvpView().pmSourceTypeStr();
-//        if (!TextUtils.isEmpty(pmSourceTypeStr)) {
-//            map.put("pm_source_type_str", pmSourceTypeStr);
-//        }
-//        if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR)
-//            map.put("anchorId", "" + mvpView().uid());
-//        if (roomType == RoomType.PAGE_CHAT_PRIVATE) map.put("assignId", "" + mvpView().uid());
+
+        map.put("seed", seed);
+        map.put("sender", LiveConfig.getUserId());
+        map.put("text", "");
+        map.put("msgType", msgType);
+        map.put("vid", vid);
+        map.put("channel_code", channelCode);
+        if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR)
+            map.put("anchorId", "" + uid);
+
         return map;
     }
 
