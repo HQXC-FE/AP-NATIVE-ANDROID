@@ -80,6 +80,8 @@ import com.xtree.bet.weight.PageHorizontalScrollView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -159,6 +161,8 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private TabSportAdapter tabSportAdapter;
     private BasePopupView closePpw;
 
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
     public List<League> getSettingLeagueList() {
         return settingLeagueList;
     }
@@ -176,29 +180,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         } else {
             return tabSportAdapter.getItem(sportTypePos == -1 ? 0 : sportTypePos).id;
         }
-
-        //String[] sportIds = tabSportAdapter.getItem(sportTypePos).id;
-        //String sportId = null;
-        //if (sportTypePos < sportIds.length) {
-        //    sportId = sportIds[sportTypePos == -1 ? 0 : sportTypePos];
-        //}
-        //// 以下规则只用于PM体育
-        //if (playMethodPos != 4) { // 刚开始进入PM体育场馆时，会有sportId为空的情况
-        //    if (sportId == null) { // 获取相应玩法中默认的球种
-        //        if (playMethodPos == 2) {
-        //            sportTypePos = 0;
-        //            sportId = sportIds[0];
-        //        } else {
-        //            sportTypePos = 1;
-        //            sportId = sportIds[1];
-        //        }
-        //        mSportName = viewModel.getSportName(playMethodType)[sportTypePos];
-        //    }
-        //}
-        //if (sportId == null) {
-        //    sportId = playMethodPos == 4 ? "0" : PMConstants.SPORT_IDS_DEFAULT[1];
-        //}
-        //return Integer.valueOf(sportId);
     }
 
     @Override
@@ -718,28 +699,19 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
      * @param betContract
      */
     private void handleExpandContract(BetContract betContract) {
-        String data = (String) betContract.getData();
-        int start = Integer.valueOf(data.split("/")[0]);
-        int end = Integer.valueOf(data.split("/")[1]);
-
-        boolean isGoingOn = mLeagueAdapter.isHandleGoingOnExpand(start); // 是否处理进行中的展开收起事件
+        String[] range = ((String) betContract.getData()).split("/");
+        int start = Integer.parseInt(range[0]);
+        int end = Integer.parseInt(range[1]);
+        boolean isGoingOn = mLeagueAdapter.isHandleGoingOnExpand(start);
+        boolean isAllExpand = isGoingOn ? !isGoingOnAllExpand() : !isWaitingAllExpand();
         if (isGoingOn) {
-            setGoingOnAllExpand(!isGoingOnAllExpand());
-            mLeagueAdapter.setHeaderIsExpand(mLeagueAdapter.getLiveHeaderPosition(), isGoingOnAllExpand());
+            setGoingOnAllExpand(isAllExpand);
+            mLeagueAdapter.setHeaderIsExpand(mLeagueAdapter.getLiveHeaderPosition(), isAllExpand);
         } else {
-            setWaitingAllExpand(!isWaitingAllExpand());
-            mLeagueAdapter.setHeaderIsExpand(mLeagueAdapter.getNoLiveHeaderPosition(), isWaitingAllExpand());
+            setWaitingAllExpand(isAllExpand);
+            mLeagueAdapter.setHeaderIsExpand(mLeagueAdapter.getNoLiveHeaderPosition(), isAllExpand);
         }
-        boolean isAllExpand = isGoingOn ? isGoingOnAllExpand() : isWaitingAllExpand();
-        binding.rvLeague.postDelayed(() -> {
-            for (int i = start; i < end; i++) {
-                if (isAllExpand) {
-                    binding.rvLeague.expandGroup(i);
-                } else {
-                    binding.rvLeague.collapseGroup(i);
-                }
-            }
-        }, 100);
+        binding.rvLeague.postDelayed(() -> expandCollapseRange(start, end, isAllExpand), 100);
     }
 
     private void initLeagueListView() {
@@ -749,31 +721,54 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         tvHeaderName = mHeader.findViewById(R.id.tv_header_name);
         ivHeaderName = mHeader.findViewById(R.id.iv_header);
         binding.rvLeague.addHeader(mHeader);
-        binding.rvLeague.setOnHeaderClick(() -> {
-            if (playMethodPos == 4) {
-                onChamptionHeaderClick();
-            } else {
-                onLeagueHeaderClick();
+
+        // 使用 setOnGroupClickListener 处理头部和组点击
+        binding.rvLeague.setOnGroupClickListener((parent, v, groupPosition, id) -> {
+            if (groupPosition < mLeagueList.size() && mLeagueList.get(groupPosition).isHead()) {
+                if (playMethodPos == 4) onChampionHeaderClick();
+                else onLeagueHeaderClick();
+                return true;
             }
+            toggleGroupExpansion(groupPosition); // 使用新定义的方法
+            return true;
         });
+
+        // 优化滑动监听
         binding.rvLeague.setOnScrollListener(new AnimatedExpandableListViewMax.OnScrollListenerImpl(mHeader, binding.rvLeague) {
+            private int lastFirstVisibleItem = -1;
+            private boolean isScrolling = false;
 
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                super.onScrollStateChanged(view, scrollState);
+            public void onScroll(android.widget.AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem != lastFirstVisibleItem) {
+                    lastFirstVisibleItem = firstVisibleItem;
+                    if (playMethodPos == 4) onScrollChampion(firstVisibleItem);
+                    else onScrollLeague(firstVisibleItem);
+                }
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                //super.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-                if (playMethodPos == 4) {
-                    onScrollChampion(firstVisibleItem);
-                } else {
-                    onScrollLeague(firstVisibleItem);
-                }
-
+            public void onScrollStateChanged(android.widget.AbsListView view, int scrollState) {
+                isScrolling = scrollState != SCROLL_STATE_IDLE;
+                if (!isScrolling) binding.rvLeague.setEnabled(true);
             }
         });
+
+        // 启用缓存以提升滑动性能
+        binding.rvLeague.setDrawingCacheEnabled(true);
+        binding.rvLeague.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+    }
+
+    private void toggleGroupExpansion(int groupPosition) {
+        if (binding.rvLeague.isGroupExpanded(groupPosition)) {
+            binding.rvLeague.collapseGroup(groupPosition);
+        } else {
+            binding.rvLeague.expandGroup(groupPosition);
+        }
+        binding.rvLeague.postDelayed(() -> {
+            if (playMethodPos == 4) checkChampionHeaderIsExpand();
+            else checkLeagueHeaderIsExpand(groupPosition);
+        }, 150);
     }
 
     private void onChamptionHeaderClick() {
@@ -794,110 +789,102 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         }, 100);
     }
 
+    private void onChampionHeaderClick() {
+        boolean isAllExpand = !isChampionAllExpand();
+        setChampionAllExpand(isAllExpand);
+        binding.rvLeague.postDelayed(() -> expandCollapseRange(1, mChampionMatchList.size(), isAllExpand), 100);
+    }
+
     private void onLeagueHeaderClick() {
-        int start;
-        int end;
-        boolean isAllExpand;
         int firstGroup = binding.rvLeague.getPackedPositionGroup(binding.rvLeague.getExpandableListPosition(binding.rvLeague.getFirstVisiblePosition()));
-        if (mLeagueAdapter.getNoLiveHeaderPosition() > firstGroup) { // 点击进行中
-            setGoingOnAllExpand(!isGoingOnAllExpand());
-            ivHeaderExpand.setSelected(isGoingOnAllExpand());
-            isAllExpand = isGoingOnAllExpand();
+        int start, end;
+        boolean isAllExpand;
+        if (mLeagueAdapter.getNoLiveHeaderPosition() > firstGroup) {
+            isAllExpand = !isGoingOnAllExpand();
+            setGoingOnAllExpand(isAllExpand);
+            ivHeaderExpand.setSelected(isAllExpand);
             start = 2;
             end = mLeagueAdapter.getNoLiveHeaderPosition() > 0 ? mLeagueAdapter.getNoLiveHeaderPosition() : mLeagueAdapter.getGroupCount();
         } else {
-            setWaitingAllExpand(!isWaitingAllExpand());
-            ivHeaderExpand.setSelected(isWaitingAllExpand());
-            isAllExpand = isWaitingAllExpand();
-            if (mLeagueAdapter.getNoLiveHeaderPosition() > 0) {
-                start = mLeagueAdapter.getNoLiveHeaderPosition() + 2;
-            } else { // 点击未开赛
-                start = 0;
-            }
+            isAllExpand = !isWaitingAllExpand();
+            setWaitingAllExpand(isAllExpand);
+            ivHeaderExpand.setSelected(isAllExpand);
+            start = mLeagueAdapter.getNoLiveHeaderPosition() > 0 ? mLeagueAdapter.getNoLiveHeaderPosition() + 2 : 0;
             end = mLeagueAdapter.getGroupCount();
         }
-        binding.rvLeague.postDelayed(() -> {
-            if (mLeagueList.size() > start) {
-                for (int i = start; i < end; i++) {
-                    if (isAllExpand) {
-                        binding.rvLeague.expandGroup(i);
-                    } else {
-                        binding.rvLeague.collapseGroup(i);
-                    }
-                }
-            }
-        }, 100);
+        binding.rvLeague.postDelayed(() -> expandCollapseRange(start, end, isAllExpand), 100);
     }
 
     private void onScrollChampion(int firstVisibleItem) {
-        if (mHeader == null || mChampionMatchList == null || mChampionMatchList.isEmpty()) {
-            return;
-        }
+        if (mHeader == null || mChampionMatchList.isEmpty()) return;
         int firstGroup = binding.rvLeague.getPackedPositionGroup(binding.rvLeague.getExpandableListPosition(firstVisibleItem));
         if (firstGroup >= 0 && mChampionMatchList.get(firstGroup).isHead()) {
-            ivHeaderExpand.setSelected(isChampionAllExpand());
-            tvHeaderName.setText(getResources().getString(R.string.bt_all_league));
-            ivHeaderName.setBackgroundResource(R.mipmap.bt_icon_all_league);
+            runOnUiThread(() -> {
+                ivHeaderExpand.setSelected(isChampionAllExpand());
+                tvHeaderName.setText(getString(R.string.bt_all_league));
+                ivHeaderName.setBackgroundResource(R.mipmap.bt_icon_all_league);
+            });
         }
     }
 
     private void onScrollLeague(int firstVisibleItem) {
-        if (mHeader == null || mLeagueList == null || mLeagueList.isEmpty() || firstVisibleItem < 0) {
-            return;
-        }
+        if (mHeader == null || mLeagueList.isEmpty() || firstVisibleItem < 0) return;
         int firstGroup = binding.rvLeague.getPackedPositionGroup(binding.rvLeague.getExpandableListPosition(firstVisibleItem));
-        int nextGroup = binding.rvLeague.getPackedPositionGroup(binding.rvLeague.getExpandableListPosition(firstVisibleItem + 1));
+        if (firstGroup == -1) return;
 
         View child = binding.rvLeague.getChildAt(1);
-        if (child == null) {
-            return;
-        }
-        int top = child.getTop();
-        int measuredHeight = mHeader.getMeasuredHeight();
-        int measuredWidth = mHeader.getMeasuredWidth();
-
-        if (firstGroup != 0 && nextGroup > -1 && mLeagueList.size() > nextGroup &&
-                mLeagueList.get(nextGroup).isHead() && mLeagueList.get(nextGroup).getHeadType() == League.HEAD_TYPE_LIVE_OR_NOLIVE) {
-            if (top < measuredHeight) {
-                int dy = measuredHeight - top;
-                mHeader.layout(0, -dy, measuredWidth, measuredHeight - dy);
+        if (child != null) {
+            int top = child.getTop();
+            int height = mHeader.getMeasuredHeight();
+            int width = mHeader.getMeasuredWidth();
+            int nextGroup = binding.rvLeague.getPackedPositionGroup(binding.rvLeague.getExpandableListPosition(firstVisibleItem + 1));
+            if (firstGroup != 0 && nextGroup > -1 && nextGroup < mLeagueList.size() &&
+                    mLeagueList.get(nextGroup).isHead() && mLeagueList.get(nextGroup).getHeadType() == League.HEAD_TYPE_LIVE_OR_NOLIVE) {
+                mHeader.layout(0, top < height ? height - top : 0, width, height - (top < height ? height - top : 0));
             } else {
-                mHeader.layout(0, 0, measuredWidth, measuredHeight);
+                mHeader.layout(0, 0, width, height);
             }
+        }
+
+        // 异步更新头部信息
+        executorService.execute(() -> {
+            League league = mLeagueList.get(firstGroup);
+            if (league.isHead() && league.getHeadType() == League.HEAD_TYPE_LIVE_OR_NOLIVE) {
+                runOnUiThread(() -> updateHeader(league.getLeagueName()));
+            }
+            if (mLeagueAdapter.getNoLiveHeaderPosition() > firstGroup) {
+                runOnUiThread(() -> {
+                    ivHeaderExpand.setSelected(isGoingOnAllExpand());
+                    tvHeaderName.setText(getString(R.string.bt_game_going_on));
+                    // 这里不需要再次调用 updateHeader，因为只更新 "进行中" 的标题
+                    ivHeaderName.setBackgroundResource(R.mipmap.bt_icon_going_on);
+                });
+            }
+        });
+    }
+
+    private void updateHeader(String leagueName) {
+        ivHeaderExpand.setSelected(isWaitingAllExpand());
+        tvHeaderName.setText(leagueName);
+        int iconRes;
+        if (leagueName.equals(getString(R.string.bt_game_going_on))) {
+            iconRes = R.mipmap.bt_icon_going_on;
+        } else if (leagueName.equals(getString(R.string.bt_game_waiting))) {
+            iconRes = R.mipmap.bt_icon_waiting;
         } else {
-            mHeader.layout(0, 0, measuredWidth, measuredHeight);
+            iconRes = R.mipmap.bt_icon_all_league;
         }
-        //firstGroup有可能等于-1，导致闪退
-        if (firstGroup == -1) {
-            return;
-        }
-        League league = mLeagueList.get(firstGroup);
-
-        if (league.isHead() && league.getHeadType() == League.HEAD_TYPE_LIVE_OR_NOLIVE) {
-            ivHeaderExpand.setSelected(isWaitingAllExpand());
-            tvHeaderName.setText(league.getLeagueName());
-            if (league.getLeagueName().equals(getResources().getString(R.string.bt_game_going_on))) {
-                ivHeaderName.setBackgroundResource(R.mipmap.bt_icon_going_on);
-            } else if (league.getLeagueName().equals(getResources().getString(R.string.bt_game_waiting))) {
-                ivHeaderName.setBackgroundResource(R.mipmap.bt_icon_waiting);
-            } else if (league.getLeagueName().equals(getResources().getString(R.string.bt_all_league))) {
-                ivHeaderName.setBackgroundResource(R.mipmap.bt_icon_all_league);
-            }
-        }
-        if (mLeagueAdapter.getNoLiveHeaderPosition() > firstGroup) {
-            ivHeaderExpand.setSelected(isGoingOnAllExpand());
-            tvHeaderName.setText(getResources().getString(R.string.bt_game_going_on));
-        }
+        ivHeaderName.setBackgroundResource(iconRes);
     }
 
-    private void setHeader(League league) {
-        ((TextView) mHeader.findViewById(R.id.tv_league_name)).setText(league.getLeagueName());
-        Glide.with(MainActivity.this)
-                .load(league.getIcon())
-                //.apply(new RequestOptions().placeholder(placeholderRes))
-                .into((ImageView) mHeader.findViewById(R.id.iv_icon));
-        ((ImageView) mHeader.findViewById(R.id.group_indicator)).setImageResource(league.isExpand() ? R.mipmap.bt_icon_expand : R.mipmap.bt_icon_unexpand);
-    }
+//    private void setHeader(League league) {
+//        ((TextView) mHeader.findViewById(R.id.tv_league_name)).setText(league.getLeagueName());
+//        Glide.with(MainActivity.this)
+//                .load(league.getIcon())
+//                //.apply(new RequestOptions().placeholder(placeholderRes))
+//                .into((ImageView) mHeader.findViewById(R.id.iv_icon));
+//        ((ImageView) mHeader.findViewById(R.id.group_indicator)).setImageResource(league.isExpand() ? R.mipmap.bt_icon_expand : R.mipmap.bt_icon_unexpand);
+//    }
 
     private void initBottomTab() {
         refreshMenu = (MenuItemView) newItem(R.mipmap.bt_icon_menu_refresh, getResources().getString(R.string.bt_bt_menu_refresh));
@@ -1168,14 +1155,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, DomainUtil.getApiUrl());
                 } else {
-                    System.out.println("########### MainActivity baseUrl 333333 ###########"+DomainUtil.getApiUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, DomainUtil.getApiUrl());
                 }
             } else {
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, BtDomainUtil.getDefaultPmxcDomainUrl());
                 } else {
-                    System.out.println("########### MainActivity baseUrl 44444 ###########"+ BtDomainUtil.getDefaultPmDomainUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, BtDomainUtil.getDefaultPmDomainUrl());
                 }
             }
@@ -1267,6 +1252,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         SPUtils.getInstance(BET_EXPAND).clear();
         mBettingNetFloatingWindows.removeView();
         mBettingNetFloatingWindows.clearInstance();
+        mHandler.removeCallbacksAndMessages(null);
+        if (!executorService.isShutdown()) {
+            executorService.shutdown();
+        }
     }
 
     List<Integer> playMethodTypeList = new ArrayList<>();
@@ -1309,7 +1298,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     textView.setTextSize(14);
                 }
                 binding.tabPlayMethod.addTab(binding.tabPlayMethod.newTab().setCustomView(textView));
-
             }
 
         });
@@ -1613,51 +1601,80 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
      */
     private void updateLeagueData() {
         if (mLeagueAdapter == null) {
-            mLeagueAdapter = new LeagueAdapter(MainActivity.this, mLeagueList);
+            mLeagueAdapter = new LeagueAdapter(this, mLeagueList);
             initLeagueListView();
             binding.rvLeague.setAdapter(mLeagueAdapter);
-            setGoingOnAllExpand(true);
-            setWaitingAllExpand(true);
-            goingOnExpandOrCollapseGroup();
-            waitingExpandOrCollapseGroup();
-            mLeagueAdapter.setOnScrollListener(new PageHorizontalScrollView.OnScrollListener() {
-                @Override
-                public void onScrolled() {
-                    binding.rvLeague.setEnabled(true);
-                }
-
-                @Override
-                public void onScrolling() {
-                    binding.rvLeague.setEnabled(false);
-                }
+            // 异步准备数据，UI 更新在主线程
+            executorService.execute(() -> {
+                //List<League> tempList = new ArrayList<>(mLeagueList); // 数据副本，避免并发修改
+                runOnUiThread(() -> {
+                    setGoingOnAllExpand(true);
+                    setWaitingAllExpand(true);
+                    expandAllGroups();
+                });
             });
         } else {
-            if (!(binding.rvLeague.getExpandableListAdapter() instanceof LeagueAdapter)) {
-                binding.rvLeague.setAdapter(mLeagueAdapter);
-            }
-            mLeagueAdapter.setData(mLeagueList);
-            if (mIsChange) {
-                setGoingOnAllExpand(true);
-                setWaitingAllExpand(true);
-                goingOnExpandOrCollapseGroup();
-                waitingExpandOrCollapseGroup();
-                if (!mLeagueList.isEmpty()) {
-                    mIsChange = false;
-                }
-            } else {
-
-            }
+            // 异步准备数据，UI 更新在主线程
+            executorService.execute(() -> {
+                List<League> tempList = new ArrayList<>(mLeagueList); // 数据副本
+                boolean shouldExpand = mIsChange && !tempList.isEmpty();
+                runOnUiThread(() -> {
+                    mLeagueAdapter.setData(tempList); // 主线程更新适配器数据
+                    if (shouldExpand) {
+                        setGoingOnAllExpand(true);
+                        setWaitingAllExpand(true);
+                        expandAllGroups();
+                        mIsChange = false;
+                    }
+                    updateVisibility();
+                });
+            });
         }
-
-        if (mLeagueList.isEmpty()) {
-            binding.nsvLeague.setVisibility(View.GONE);
-            binding.llEmpty.llEmpty.setVisibility(View.VISIBLE);
-        } else {
-            binding.nsvLeague.setVisibility(View.VISIBLE);
-            binding.llEmpty.llEmpty.setVisibility(View.GONE);
-        }
-
         mIsShowLoading = true;
+    }
+
+    private void updateVisibility() {
+        boolean isEmpty = (playMethodPos == 4 ? mChampionMatchList : mLeagueList).isEmpty();
+        binding.nsvLeague.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        binding.llEmpty.llEmpty.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+    }
+
+    private void expandAllGroups() {
+        if (mLeagueList.isEmpty()) return;
+
+        String[] liveRange = mLeagueAdapter.expandRangeLive().split("/");
+        String[] noLiveRange = mLeagueAdapter.expandRangeNoLive().split("/");
+        int liveStart = Integer.parseInt(liveRange[0]);
+        int liveEnd = Integer.parseInt(liveRange[1]);
+        int noLiveStart = Integer.parseInt(noLiveRange[0]);
+        int noLiveEnd = Integer.parseInt(noLiveRange[1]);
+
+        // 分批处理，避免一次性大量操作
+        final int batchSize = 10;
+        executorService.execute(() -> {
+            for (int i = liveStart; i < liveEnd; i += batchSize) {
+                int end = Math.min(i + batchSize, liveEnd);
+                int finalI = i;
+                runOnUiThread(() -> expandCollapseRange(finalI, end, isGoingOnAllExpand()));
+                try { Thread.sleep(50); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+            }
+            for (int i = noLiveStart; i < noLiveEnd; i += batchSize) {
+                int end = Math.min(i + batchSize, noLiveEnd);
+                int finalI = i;
+                runOnUiThread(() -> expandCollapseRange(finalI, end, isWaitingAllExpand()));
+                try { Thread.sleep(50); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+            }
+        });
+    }
+
+    private void expandCollapseRange(int start, int end, boolean expand) {
+        for (int i = start; i < end; i++) {
+            if (expand) {
+                binding.rvLeague.expandGroup(i);
+            } else {
+                binding.rvLeague.collapseGroup(i);
+            }
+        }
     }
 
     /**
@@ -1860,8 +1877,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private Handler handler = new Handler(Looper.getMainLooper());
-    private int elapsedTime = 0; // 记录已经经过的时间（秒）
-
+    int elapsedTime;
     //比赛记录时间
     private Runnable stopwatchRunnable = new Runnable() {
         @Override
@@ -1883,12 +1899,4 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private void stopStopwatch() {
         handler.removeCallbacks(stopwatchRunnable);
     }
-
-    // 重置记时
-    private void resetStopwatch() {
-        stopStopwatch();
-        elapsedTime = 0;
-    }
-
-
 }
