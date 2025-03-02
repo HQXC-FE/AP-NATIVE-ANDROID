@@ -5,6 +5,7 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -82,8 +83,10 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
     public void setData(List<League> mLeagueList) {
         this.mDatas = mLeagueList;
-        init();
-        notifyDataSetChanged();
+        if (mLeagueList != null) {
+            init();  // 仅在数据非空时调用 init
+            notifyDataSetChanged();
+        }
     }
 
     public LeagueAdapter(Context context, List<League> datas) {
@@ -199,224 +202,313 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup viewGroup) {
-        //Log.e("test", "=====groupPosition======" + groupPosition);
-        if (mDatas == null || mDatas.isEmpty() || mDatas.size() <= groupPosition) {
-            if (convertView == null) {
-                convertView = View.inflate(mContext, R.layout.bt_fb_league_group, null);
-            }
-            return convertView;
+        if (mDatas == null || groupPosition >= mDatas.size()) {
+            return convertView != null ? convertView :
+                    LayoutInflater.from(mContext).inflate(R.layout.bt_fb_league_group, viewGroup, false);
         }
-        League league = mDatas.get(groupPosition);
 
         GroupHolder holder;
         if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.bt_fb_league_group, null);
-            convertView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            holder = new GroupHolder(convertView);
+            BtFbLeagueGroupBinding binding = BtFbLeagueGroupBinding.inflate(
+                    LayoutInflater.from(mContext), viewGroup, false);
+            holder = new GroupHolder(binding.getRoot());
+            convertView = binding.getRoot();
             convertView.setTag(holder);
         } else {
             holder = (GroupHolder) convertView.getTag();
         }
 
-        if (holder == null || holder.binding == null) {
-            if (convertView == null) {
-                convertView = View.inflate(mContext, R.layout.bt_fb_league_group, null);
-            }
-            return convertView;
-        }
-
+        League league = mDatas.get(groupPosition);
         BtFbLeagueGroupBinding binding = holder.binding;
-        if (!league.isHead()) {
-            binding.llHeader.setVisibility(View.GONE);
-            binding.rlLeague.setVisibility(View.VISIBLE);
+
+        // 设置可见性
+        boolean isHead = league.isHead();
+        binding.llHeader.setVisibility(isHead ? View.VISIBLE : View.GONE);
+        binding.rlLeague.setVisibility(isHead ? View.GONE : View.VISIBLE);
+
+        if (!isHead) {
+            // 非头部联赛视图
             binding.tvLeagueName.setText(league.getLeagueName());
-            Glide.with(mContext).load(league.getIcon())
+            Glide.with(mContext)
                     .load(league.getIcon())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    //.placeholder(R.drawable.placeholder_icon)
                     .into(binding.ivIcon);
             binding.vSpace.setVisibility(isExpanded ? View.GONE : View.VISIBLE);
-            binding.groupIndicator.setImageResource(isExpanded ? R.mipmap.bt_icon_expand : R.mipmap.bt_icon_unexpand);
-            binding.rlLeague.setBackgroundResource(isExpanded ? R.drawable.bt_bg_league_top : R.drawable.bt_bg_league_top_collapse);
+            binding.groupIndicator.setImageResource(
+                    isExpanded ? R.mipmap.bt_icon_expand : R.mipmap.bt_icon_unexpand);
+            binding.rlLeague.setBackgroundResource(
+                    isExpanded ? R.drawable.bt_bg_league_top : R.drawable.bt_bg_league_top_collapse);
             league.setExpand(isExpanded);
         } else {
-            binding.llHeader.setVisibility(View.VISIBLE);
-            binding.rlLeague.setVisibility(View.GONE);
-
-            if (league.getHeadType() == League.HEAD_TYPE_LIVE_OR_NOLIVE) {
-                binding.rlHeader.setVisibility(View.VISIBLE);
-                binding.tvSportName.setVisibility(View.GONE);
-                binding.ivExpand.setSelected(league.isExpand());
-                binding.tvHeaderName.setText(league.getLeagueName());
-                if (league.getLeagueName().equals(mContext.getResources().getString(R.string.bt_game_going_on))) {
-                    binding.ivHeader.setBackgroundResource(R.mipmap.bt_icon_going_on);
-                } else if (league.getLeagueName().equals(mContext.getResources().getString(R.string.bt_game_waiting))) {
-                    binding.ivHeader.setBackgroundResource(R.mipmap.bt_icon_waiting);
-                } else if (league.getLeagueName().equals(mContext.getResources().getString(R.string.bt_all_league))) {
-                    binding.ivHeader.setBackgroundResource(R.mipmap.bt_icon_all_league);
-                }
-                binding.rlHeader.setOnClickListener(view -> {
-                    binding.ivExpand.setSelected(!league.isExpand());
-                    int start;
-                    int end;
-                    if (liveHeaderPosition == groupPosition) { // 点击进行中
-                        start = groupPosition + 2;
-                        end = noLiveHeaderPosition > 0 ? noLiveHeaderPosition : mDatas.size();
-                    } else if (noLiveHeaderPosition > 0) { // 点击未开赛
-                        start = noLiveHeaderPosition + 2;
-                        end = mDatas.size();
-                    } else { // 点击未开赛
-                        start = 0;
-                        end = mDatas.size();
-                    }
-                    RxBus.getDefault().post(new BetContract(BetContract.ACTION_EXPAND, start + "/" + end + ""));
-                });
-            } else {
-                binding.tvSportName.setText(league.getLeagueName() + "(" + league.getMatchCount() + ")");
-                binding.rlHeader.setVisibility(View.GONE);
-                binding.tvSportName.setVisibility(View.VISIBLE);
-            }
-            binding.vSpace.setVisibility(View.VISIBLE);
+            // 头部视图
+            configureHeader(binding, league, groupPosition);
         }
 
         return convertView;
     }
 
+    /**
+     * 配置头部视图
+     */
+    private void configureHeader(BtFbLeagueGroupBinding binding, League league, int groupPosition) {
+        if (league.getHeadType() == League.HEAD_TYPE_LIVE_OR_NOLIVE) {
+            binding.rlHeader.setVisibility(View.VISIBLE);
+            binding.tvSportName.setVisibility(View.GONE);
+            binding.ivExpand.setSelected(league.isExpand());
+            binding.tvHeaderName.setText(league.getLeagueName());
+
+            // 设置头部图标
+            int iconRes = getHeaderIcon(league.getLeagueName());
+            binding.ivHeader.setBackgroundResource(iconRes);
+
+            // 点击事件
+            binding.rlHeader.setOnClickListener(v -> {
+                boolean newExpandState = !league.isExpand();
+                binding.ivExpand.setSelected(newExpandState);
+                String range = calculateExpandRange(groupPosition);
+                RxBus.getDefault().post(new BetContract(BetContract.ACTION_EXPAND, range));
+            });
+        } else {
+            binding.tvSportName.setText(league.getLeagueName() + "(" + league.getMatchCount() + ")");
+            binding.rlHeader.setVisibility(View.GONE);
+            binding.tvSportName.setVisibility(View.VISIBLE);
+        }
+        binding.vSpace.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 获取头部图标资源
+     */
+    private int getHeaderIcon(String leagueName) {
+        if (leagueName.equals(mContext.getResources().getString(R.string.bt_game_going_on))) {
+            return R.mipmap.bt_icon_going_on;
+        } else if (leagueName.equals(mContext.getResources().getString(R.string.bt_game_waiting))) {
+            return R.mipmap.bt_icon_waiting;
+        } else if (leagueName.equals(mContext.getResources().getString(R.string.bt_all_league))) {
+            return R.mipmap.bt_icon_all_league;
+        }
+        return R.mipmap.bt_icon_all_league; // 默认图标
+    }
+
+    /**
+     * 计算展开范围
+     */
+    private String calculateExpandRange(int groupPosition) {
+        int start, end;
+        int dataSize = mDatas.size();
+        if (liveHeaderPosition == groupPosition) {
+            start = groupPosition + 2;
+            end = noLiveHeaderPosition > 0 ? noLiveHeaderPosition : dataSize;
+        } else if (noLiveHeaderPosition > 0) {
+            start = noLiveHeaderPosition + 2;
+            end = dataSize;
+        } else {
+            start = 0;
+            end = dataSize;
+        }
+        return start + "/" + end;
+    }
+
     @Override
     public View getRealChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-
-        ChildHolder holder;
         Match match = (Match) getChild(groupPosition, childPosition);
         if (match == null) {
-            if (convertView == null) {
-                convertView = View.inflate(mContext, R.layout.bt_fb_match_list, null);
-            }
-            return convertView;
+            return convertView != null ? convertView :
+                    LayoutInflater.from(mContext).inflate(R.layout.bt_fb_match_list, parent, false);
         }
 
+        ChildHolder holder;
         if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.bt_fb_match_list, null);
-            holder = new ChildHolder(convertView);
+            BtFbMatchListBinding binding = BtFbMatchListBinding.inflate(
+                    LayoutInflater.from(mContext), parent, false);
+            holder = new ChildHolder(binding.getRoot());
+            convertView = binding.getRoot();
             convertView.setTag(holder);
         } else {
             holder = (ChildHolder) convertView.getTag();
         }
 
-        if (holder == null || holder.itemView == null) {
-            holder = new ChildHolder(convertView);
-            convertView.setTag(holder);
-        }
+        BtFbMatchListBinding binding = holder.binding;
+        configureMatchView(binding, match, parent, groupPosition, childPosition,isLastChild);
 
-        BtFbMatchListBinding binding = BtFbMatchListBinding.bind(holder.itemView);
+        return convertView;
+    }
 
+    /**
+     * 配置比赛视图
+     */
+    /**
+     * 配置比赛视图
+     */
+    private void configureMatchView(BtFbMatchListBinding binding, Match match, ViewGroup parent,
+                                    int groupPosition, int childPosition, boolean isLastChild) {
+        // 队伍名称
         binding.tvTeamNameMain.setText(match.getTeamMain());
         binding.tvTeamNameVisitor.setText(match.getTeamVistor());
+        configureTeamSideIndicators(binding, match);
+
+        // 分数
+        configureScore(binding, match);
+
+        // 玩法计数
+        binding.tvPlaytypeCount.setText(match.getPlayTypeCount() + "+>");
+
+        // 比赛时间
+        configureMatchTime(binding, match);
+
+        // 图标状态
+        configureIcons(binding, match);
+
+        // 玩法组
+        configurePlayGroups(binding, match, parent);
+
+        // 点击事件
+        setClickListeners(binding, match);
+
+        // 背景和间距
+        binding.vSpace.setVisibility(isLastChild ? View.VISIBLE : View.GONE);
+        binding.cslRoot.setBackgroundResource(
+                isLastChild ? R.drawable.bt_bg_match_item_bottom : R.drawable.bt_bg_match_item);
+    }
+
+    /**
+     * 配置队伍主客场指示器
+     */
+    private void configureTeamSideIndicators(BtFbMatchListBinding binding, Match match) {
+        Drawable serverDrawable = mContext.getResources().getDrawable(R.drawable.bt_bg_server);
         if (match.needCheckHomeSide() && match.isGoingon()) {
             if (match.isHomeSide()) {
-                binding.tvTeamNameMain.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.bt_bg_server), null);
+                binding.tvTeamNameMain.setCompoundDrawablesWithIntrinsicBounds(null, null, serverDrawable, null);
                 binding.tvTeamNameVisitor.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             } else {
                 binding.tvTeamNameMain.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                binding.tvTeamNameVisitor.setCompoundDrawablesWithIntrinsicBounds(null, null, mContext.getResources().getDrawable(R.drawable.bt_bg_server), null);
+                binding.tvTeamNameVisitor.setCompoundDrawablesWithIntrinsicBounds(null, null, serverDrawable, null);
             }
         } else {
             binding.tvTeamNameMain.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             binding.tvTeamNameVisitor.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
+    }
 
-        List<Integer> scoreList = match.getScore(Constants.getScoreType());
+    /**
+     * 配置分数显示
+     */
+    private void configureScore(BtFbMatchListBinding binding, Match match) {
         if (!match.isGoingon()) {
             binding.tvScoreMain.setText("");
             binding.tvScoreVisitor.setText("");
-        } else if (scoreList != null && scoreList.size() > 1) {
-            binding.tvScoreMain.setText(String.valueOf(scoreList.get(0)));
-            binding.tvScoreVisitor.setText(String.valueOf(scoreList.get(1)));
+        } else {
+            List<Integer> scoreList = match.getScore(Constants.getScoreType());
+            if (scoreList != null && scoreList.size() > 1) {
+                binding.tvScoreMain.setText(String.valueOf(scoreList.get(0)));
+                binding.tvScoreVisitor.setText(String.valueOf(scoreList.get(1)));
+            }
         }
+    }
 
-        binding.tvPlaytypeCount.setText(match.getPlayTypeCount() + "+>");
-        // 比赛未开始
+    /**
+     * 配置比赛时间
+     */
+    private void configureMatchTime(BtFbMatchListBinding binding, Match match) {
         if (!match.isGoingon()) {
             binding.tvMatchTime.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_HH_MM));
         } else {
-            String mc = match.getStage();
-            if (mc != null) {
-                if (TextUtils.equals(Constants.getFbSportId(), match.getSportId()) || TextUtils.equals(Constants.getBsbSportId(), match.getSportId())) { // 足球和篮球
-                    if (mc.contains("休息") || mc.contains("结束")) {
-                        binding.tvMatchTime.setText(match.getStage());
-                    } else {
-                        //其它类型运动正常跟随Adapter刷新
-                        if (!isUpdateFootBallOrBasketBallState) {
-                            binding.tvMatchTime.setText(mc + " " + match.getTime());
-                        }
+            String stage = match.getStage();
+            if (stage != null) {
+                boolean isFootballOrBasketball = TextUtils.equals(Constants.getFbSportId(), match.getSportId()) ||
+                        TextUtils.equals(Constants.getBsbSportId(), match.getSportId());
+                if (isFootballOrBasketball) {
+                    if (stage.contains("休息") || stage.contains("结束")) {
+                        binding.tvMatchTime.setText(stage);
+                    } else if (!isUpdateFootBallOrBasketBallState) {
+                        binding.tvMatchTime.setText(stage + " " + match.getTime());
                     }
                 } else {
-                    binding.tvMatchTime.setText(match.getStage());
+                    binding.tvMatchTime.setText(stage);
                 }
             }
         }
+    }
 
+    /**
+     * 配置图标状态
+     */
+    private void configureIcons(BtFbMatchListBinding binding, Match match) {
         binding.ivCourt.setSelected(match.hasAs());
         binding.ivLive.setSelected(match.hasVideo());
-        binding.ivCornor.setVisibility(match.hasCornor() ? View.VISIBLE : View.GONE);
-        binding.ivCornor.setSelected(match.hasCornor());
-        binding.ivNeutrality.setVisibility(match.isNeutrality() ? View.VISIBLE : View.GONE);
-        binding.ivNeutrality.setSelected(match.isNeutrality());
+        boolean hasCornor = match.hasCornor();
+        binding.ivCornor.setVisibility(hasCornor ? View.VISIBLE : View.GONE);
+        binding.ivCornor.setSelected(hasCornor);
+        boolean isNeutrality = match.isNeutrality();
+        binding.ivNeutrality.setVisibility(isNeutrality ? View.VISIBLE : View.GONE);
+        binding.ivNeutrality.setSelected(isNeutrality);
+    }
 
+    /**
+     * 配置玩法组
+     */
+    private void configurePlayGroups(BtFbMatchListBinding binding, Match match, ViewGroup parent) {
         LinearLayout llTypeGroup = (LinearLayout) binding.hsvPlayTypeGroup.getChildAt(0);
-
         LinearLayout firstPagePlayType = (LinearLayout) llTypeGroup.getChildAt(0);
-
-        PlayGroup playGroup;
-
-        if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {
-            playGroup = new PlayGroupFb(match.getPlayTypeList());
-        } else {
-            playGroup = new PlayGroupPm(match.getPlayTypeList());
-        }
+        PlayGroup playGroup = TextUtils.equals(platform, PLATFORM_PM) ||
+                TextUtils.equals(platform, PLATFORM_PMXC) ?
+                new PlayGroupPm(match.getPlayTypeList()) :
+                new PlayGroupFb(match.getPlayTypeList());
         List<PlayGroup> playGroupList = playGroup.getPlayGroupList(match.getSportId());
 
         if (!playGroupList.isEmpty()) {
-
+            // 第一页玩法
+            List<PlayType> firstPlayTypes = playGroupList.get(0).getOriginalPlayTypeList();
             for (int i = 0; i < firstPagePlayType.getChildCount(); i++) {
-                setPlayTypeGroup(match, parent, (LinearLayout) firstPagePlayType.getChildAt(i), playGroupList.get(0).getOriginalPlayTypeList().get(i));
+                setPlayTypeGroup(match, parent, (LinearLayout) firstPagePlayType.getChildAt(i), firstPlayTypes.get(i));
             }
+
+            // 处理第二页和指针
             binding.llPointer.removeAllViews();
-            LinearLayout sencondPagePlayType = (LinearLayout) llTypeGroup.getChildAt(1);
+            LinearLayout secondPagePlayType = (LinearLayout) llTypeGroup.getChildAt(1);
             if (playGroupList.size() > 1) {
-                sencondPagePlayType.setVisibility(View.VISIBLE);
+                secondPagePlayType.setVisibility(View.VISIBLE);
                 binding.hsvPlayTypeGroup.setChildCount(2);
-                List<PlayType> playTypeList = playGroupList.get(1).getOriginalPlayTypeList();
-                for (int i = 0; i < sencondPagePlayType.getChildCount(); i++) {
-                    setPlayTypeGroup(match, parent, (LinearLayout) sencondPagePlayType.getChildAt(i), playTypeList.get(i));
+                List<PlayType> secondPlayTypes = playGroupList.get(1).getOriginalPlayTypeList();
+                for (int i = 0; i < secondPagePlayType.getChildCount(); i++) {
+                    setPlayTypeGroup(match, parent, (LinearLayout) secondPagePlayType.getChildAt(i), secondPlayTypes.get(i));
                 }
                 binding.llPointer.setVisibility(View.VISIBLE);
                 binding.llScoreData.setVisibility(View.GONE);
                 initPointer(binding);
             } else {
-                sencondPagePlayType.setVisibility(View.GONE);
+                secondPagePlayType.setVisibility(View.GONE);
                 binding.llPointer.setVisibility(View.GONE);
                 binding.llScoreData.removeAllViews();
                 if (match.isGoingon()) {
                     binding.llScoreData.setVisibility(View.VISIBLE);
-                    BaseDetailDataView mScoreDataView = BaseDetailDataView.getInstance(mContext, match, true);
-                    if (mScoreDataView != null) {
-                        binding.llScoreData.addView(mScoreDataView);
+                    BaseDetailDataView scoreDataView = BaseDetailDataView.getInstance(mContext, match, true);
+                    if (scoreDataView != null) {
+                        binding.llScoreData.addView(scoreDataView);
                     }
                 }
             }
-
-            binding.llRoot.setOnClickListener(view -> {
-                BtDetailActivity.start(mContext, match);
-            });
-
-            binding.rlPlayCount.setOnClickListener(view -> {
-                BtDetailActivity.start(mContext, match);
-            });
-
-            binding.vSpace.setVisibility(childPosition == getRealChildrenCount(groupPosition) - 1 ? View.VISIBLE : View.GONE);
-            binding.cslRoot.setBackgroundResource(childPosition == getRealChildrenCount(groupPosition) - 1 ? R.drawable.bt_bg_match_item_bottom : R.drawable.bt_bg_match_item);
         }
-        return convertView;
+    }
+
+    /**
+     * 设置点击事件
+     */
+    private void setClickListeners(BtFbMatchListBinding binding, Match match) {
+        View.OnClickListener detailClick = v -> BtDetailActivity.start(mContext, match);
+        binding.llRoot.setOnClickListener(detailClick);
+        binding.rlPlayCount.setOnClickListener(detailClick);
+    }
+
+    /**
+     * 优化的 ChildHolder
+     */
+    private static class ChildHolder {
+        final BtFbMatchListBinding binding;
+
+        ChildHolder(View view) {
+            binding = BtFbMatchListBinding.bind(view);
+        }
     }
 
     /**
@@ -577,13 +669,13 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         }
     }
 
-    private static class ChildHolder {
-        View itemView;
-
-        public ChildHolder(View view) {
-            itemView = view;
-        }
-    }
+//    private static class ChildHolder {
+//        View itemView;
+//
+//        public ChildHolder(View view) {
+//            itemView = view;
+//        }
+//    }
 
     public void updateVisibleItems(ExpandableListView listView) {
         isUpdateFootBallOrBasketBallState = true;
@@ -723,9 +815,4 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         int seconds = totalSeconds % 60;
         return String.format("%02d : %02d", minutes, seconds);
     }
-
-
-
-
-
 }
