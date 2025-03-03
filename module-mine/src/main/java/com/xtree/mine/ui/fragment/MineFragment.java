@@ -450,6 +450,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             // 之前这段是注解掉，但由于尚未取得完mVipInfoVo资料，会导致崩溃
             if (mVipInfoVo == null) {
                 //binding.tvwLevelHint.setVisibility(View.INVISIBLE);
+                viewModel.getVipInfo();
                 binding.pbrLevel.setProgress(0);
                 return;
             }
@@ -542,6 +543,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                     binding.ivwVip10.setVisibility(View.VISIBLE);
                     binding.ivwVip10.setOnClickListener(v -> binding.ivwLevel.performClick());
                 }
+                viewModel.getVipUpgradeInfo();
             }
         });
     }
