@@ -25,6 +25,7 @@ public class Constant {
     public static final String BIND_CARD = "bindcard"; // 绑定银行卡
     public static final String BIND_USDT = "bindusdt"; // 绑定usdt
     public static final String BIND_EBPAY = "bindebpay"; // 绑定ebpay
+    public static final String BIND_EDPAY = "bindedpay"; // 绑定edpay
     public static final String BIND_TOPAY = "bindtopay"; // 绑定topay
     public static final String BIND_HIWALLET = "bindhiwallet"; // 绑定hiwallet
     public static final String BIND_MPAY = "bindmpay"; // 绑定mpay
