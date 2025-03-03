@@ -32,7 +32,6 @@ import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.widget.AppUpdateDialog;
-import com.xtree.base.widget.AppUpdateErrorDialog;
 import com.xtree.base.widget.BrowserActivity;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
@@ -61,7 +60,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
     BasePopupView ppw;
     private AppUpdateVo updateVo;
     private BasePopupView updateView;
-    private BasePopupView showUpdateErrorView ;
+    private BasePopupView showUpdateErrorView;
 
     /**
      * 使用hide和show后，可见不可见切换时，不再执行fragment生命周期方法，
@@ -329,7 +328,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         mProfileVo = new Gson().fromJson(json, ProfileVo.class);
         json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_VIP_INFO);
         mVipInfoVo = new Gson().fromJson(json, VipInfoVo.class);
-        if (mVipInfoVo == null){
+        if (mVipInfoVo == null) {
             viewModel.getVipInfo();
         }
         viewModel.getVipUpgradeInfo();
@@ -448,11 +447,12 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         });
 
         viewModel.liveDataVipUpgrade.observe(this, vo -> {
-           /* if (mVipInfoVo == null) {
+            // 之前这段是注解掉，但由于尚未取得完mVipInfoVo资料，会导致崩溃
+            if (mVipInfoVo == null) {
                 //binding.tvwLevelHint.setVisibility(View.INVISIBLE);
                 binding.pbrLevel.setProgress(0);
                 return;
-            }*/
+            }
             if (vo.sp.equals("1")) {
                 if (vo.level < vo.vip_upgrade.size() - 1) {
                     int point = vo.vip_upgrade.get(vo.level + 1).display_active - mVipInfoVo.current_activity;
@@ -529,9 +529,9 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             binding.tvwDcCentre.setSelected(vo.result);
             EventBus.getDefault().post(new EventVo(EVENT_RED_POINT, vo.result));
         });
-         //用户VIP信息
+        //用户VIP信息
         viewModel.liveVipInfoVo.observe(this, vo -> {
-            mVipInfoVo = vo ;
+            mVipInfoVo = vo;
             if (mVipInfoVo != null) {
                 binding.ivwVip.setImageLevel(mVipInfoVo.display_level);
                 binding.ivwLevel.setImageLevel(mVipInfoVo.display_level);
@@ -617,6 +617,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                 .asCustom(updateErrorDialog);
         showUpdateErrorView.show();
     }*/
+
     /**
      * 判断用户是否登陆
      */
