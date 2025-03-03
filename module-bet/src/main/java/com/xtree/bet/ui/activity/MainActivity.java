@@ -24,6 +24,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -409,6 +410,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         binding.playMethod.getRoot().setOnClickListener(view -> {
 
         });
+
+        tabSportAdapter = new TabSportAdapter(new ArrayList<>(), viewModel.getMatchGames());
+        tabSportAdapter.setAnimationEnable(false);
+        binding.tabSportType.setAdapter(tabSportAdapter);
+        binding.tabSportType.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        binding.tabSportType.setHasFixedSize(true);
         //初始化网页版
         initGoWeb();
 
