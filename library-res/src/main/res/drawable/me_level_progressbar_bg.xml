@@ -7,7 +7,7 @@
         />
 
     <solid
-        android:color="#ffffff"
+        android:color="@color/me_progress_bar_bg"
         />
 
 </shape>

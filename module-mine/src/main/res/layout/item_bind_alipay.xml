@@ -149,9 +149,10 @@
     <LinearLayout
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
         <TextView
-            android:id="@+id/tvw_rebind"
+            android:id="@+id/tvwRebind"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/txt_mine_rebind_usdt"

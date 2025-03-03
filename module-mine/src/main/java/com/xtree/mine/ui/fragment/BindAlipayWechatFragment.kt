@@ -91,9 +91,10 @@ class BindAlipayWechatFragment : BaseFragment<FragmentBindAwBinding, BindCardVie
                     binding2.tvName.text = vo.wxzfb_username
                     binding2.tvNicknameContent.text = vo.nickname
                     binding2.tvwBindTime.text = vo.utime
-                    binding2.tvwRebind.setOnClickListener {
+                    //HQAP2-5517 需求隐藏 重新绑定按钮
+                    /*binding2.tvwRebind.setOnClickListener {
                         showRebindDialog()
-                    }
+                    }*/
                     binding2.ivCode.setOnClickListener {
                         XPopup.Builder(context)
                             .asCustom(ImageDialog(requireContext(), DomainUtil.getH5Domain2() + vo.qrcode_url,needToken = true))

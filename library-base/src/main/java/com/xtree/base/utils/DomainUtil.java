@@ -72,7 +72,7 @@ public class DomainUtil {
     }
 
     public static void setH5Url(String url) {
-        CfLog.i("url: " + url);
+        CfLog.e(">>>>>>>>>>>>>>>>>>>>>>url: " + url);
         // 设置域名，此处做各种判断
         if (!TextUtils.isEmpty(url) && url.startsWith("http") && url.length() > 10) {
             if (url.endsWith("/")) {
@@ -81,7 +81,7 @@ public class DomainUtil {
                 h5Url = url;
             }
             SPUtils.getInstance().put(SPKeyGlobal.KEY_H5_URL, h5Url);
-            CfLog.i("domainUrl: " + h5Url);
+            CfLog.e(">>>>>>>>>>>>>>>>>>>>>>domainUrl: " + h5Url);
         }
     }
 
