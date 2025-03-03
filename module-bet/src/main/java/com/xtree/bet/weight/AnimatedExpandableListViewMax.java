@@ -809,20 +809,15 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
                             expandGroup(packedPositionGroup);
                         }*/
                         // 例如，通过 Handler 或 runOnUiThread 来更新数据并通知适配器
-//                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                // 执行数据修改和通知适配器更新
-//                                int packedPositionGroup = getPackedPositionGroup(getExpandableListPosition(pointToPosition(x, y)));
-//                                if (isGroupExpanded(packedPositionGroup)) {
-//                                    collapseGroup(packedPositionGroup);
-//                                } else {
-//                                    expandGroup(packedPositionGroup);
-//                                }
-//                                // 如果需要修改适配器数据，确保通知它
-//                                adapter.notifyDataSetChanged();
-//                            }
-//                        });
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            // 执行数据修改和通知适配器更新
+                            int packedPositionGroup = getPackedPositionGroup(getExpandableListPosition(pointToPosition(x, y)));
+                            if (isGroupExpanded(packedPositionGroup)) {
+                                collapseGroupWithAnimation(packedPositionGroup);
+                            } else {
+                                expandGroupWithAnimation(packedPositionGroup);
+                            }
+                        });
                     }
                     return true;
                 }
