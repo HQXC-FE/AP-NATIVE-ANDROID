@@ -1,5 +1,6 @@
 package com.xtree.live.data.source.httpnew;
 
+import com.google.gson.JsonElement;
 import com.xtree.live.SPKey;
 import com.xtree.live.data.AdsBean;
 import com.xtree.live.data.source.response.LiveRoomBean;
@@ -8,14 +9,19 @@ import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.message.inroom.InRoomData;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import me.xtree.mvvmhabit.http.BaseResponse;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 public interface LiveService {
@@ -49,7 +55,21 @@ public interface LiveService {
 
     //主播私聊接口
     @POST("api/chat/sendToAnchor")
-    Flowable<BaseResponse<InRoomData>> sendToAnchor(@Body RequestBody body);
+    Flowable<BaseResponse<JsonElement>> sendToAnchor(@Body RequestBody body);
+    // 主播私聊带图片
+    @POST("api/chat/sendToAnchor")
+    Flowable<BaseResponse<JsonElement>> sendToAnchor(@Body RequestBody body,@Part MultipartBody.Part file);
+    // 助手私聊
+    @POST("api/chat/sendToAssistant")
+    Flowable<BaseResponse<JsonElement>> sendToAssistant(@Body RequestBody body);
+    @POST("api/chat/sendToAssistant")
+    Flowable<BaseResponse<JsonElement>> sendToAssistant(@Body RequestBody body,@Part MultipartBody.Part file);
+    //聊天室发言
+    @POST("api/chat/sendMessage")
+    Flowable<BaseResponse<JsonElement>> sendMessage(@Body RequestBody body);
+    //聊天室发言
+    @POST("api/chat/sendMessage")
+    Flowable<BaseResponse<JsonElement>> sendMessage(@Body RequestBody body,@Part MultipartBody.Part file);
 
 
 

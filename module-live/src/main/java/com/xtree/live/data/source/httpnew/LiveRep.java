@@ -1,5 +1,6 @@
 package com.xtree.live.data.source.httpnew;
 
+import com.google.gson.JsonElement;
 import com.xtree.live.LiveConfig;
 import com.xtree.live.data.AdsBean;
 import com.xtree.live.data.source.response.LiveRoomBean;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class LiveRep extends BaseRepository implements LiveDataSource {
@@ -95,12 +97,56 @@ public class LiveRep extends BaseRepository implements LiveDataSource {
     }
 
     @Override
-    public Flowable<InRoomData> sendToAnchor(RequestBody body) {
+    public Flowable<JsonElement> sendToAnchor(RequestBody body) {
 
         return obtainJsonService(LiveService.class)
                 .sendToAnchor(body)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer());
     }
+
+    @Override
+    public Flowable<JsonElement> sendToAnchor(RequestBody body,MultipartBody.Part file) {
+
+        return obtainJsonService(LiveService.class)
+                .sendToAnchor(body,file)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
+
+    @Override
+    public Flowable<JsonElement> sendToAssistant(RequestBody body) {
+
+        return obtainJsonService(LiveService.class)
+                .sendToAssistant(body)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
+    @Override
+    public Flowable<JsonElement> sendToAssistant(RequestBody body,MultipartBody.Part file) {
+
+        return obtainJsonService(LiveService.class)
+                .sendToAssistant(body,file)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
+
+    @Override
+    public Flowable<JsonElement> sendMessage(RequestBody body) {
+
+        return obtainJsonService(LiveService.class)
+                .sendMessage(body)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
+    @Override
+    public Flowable<JsonElement> sendMessage(RequestBody body,MultipartBody.Part file) {
+
+        return obtainJsonService(LiveService.class)
+                .sendMessage(body,file)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
+
 
 }

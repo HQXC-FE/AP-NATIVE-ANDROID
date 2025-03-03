@@ -1,5 +1,6 @@
 package com.xtree.live.data.source.httpnew;
 
+import com.google.gson.JsonElement;
 import com.xtree.live.data.AdsBean;
 import com.xtree.live.data.source.response.LiveRoomBean;
 import com.xtree.live.message.MessageRecord;
@@ -9,6 +10,7 @@ import com.xtree.live.message.inroom.InRoomData;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public interface LiveDataSource {
@@ -26,7 +28,14 @@ public interface LiveDataSource {
 
     Flowable<List<AdsBean>> getAdList();
 
-    Flowable<InRoomData> sendToAnchor(RequestBody body);
+    Flowable<JsonElement> sendToAnchor(RequestBody body);
+    Flowable<JsonElement> sendToAnchor(RequestBody body, MultipartBody.Part file);
+
+    Flowable<JsonElement> sendToAssistant(RequestBody body);
+    Flowable<JsonElement> sendToAssistant(RequestBody body,MultipartBody.Part file);
+
+    Flowable<JsonElement> sendMessage(RequestBody body);
+    Flowable<JsonElement> sendMessage(RequestBody body,MultipartBody.Part file);
 
 
 }

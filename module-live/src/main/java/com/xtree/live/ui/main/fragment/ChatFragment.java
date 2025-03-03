@@ -214,7 +214,8 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
 //                if (isVisible() && isResumed()) {
 //                    viewModel.enterRoom(roomType, mUid, mVid, wholeChatList());
 //                }
-            });
+            }
+            ,mUid,mVid);
         }
 
         @Override
@@ -375,6 +376,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
             }
         });
 
+        viewModel.setParamas(mUid,mVid,pm_source_type,pm_source_type_str);
 
         Log.e("chatroom","roomType = "+roomType +" uid："+mUid +" vid: "+mVid +" roomInfo: "+ roomInfo.toString());
 
@@ -409,7 +411,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
                     ConversationMessage message = (ConversationMessage) obj;
                     message.setDeliveryStatus(DeliverStatus.STATUS_PENDING);
                     mAdapter.notifyItemChanged(position);
-                    viewModel.sendMessage(message.getMessageRecord());
+                    viewModel.sendMessage(message.getMessageRecord(),mUid,mVid);
                 }
             }
         });
@@ -636,6 +638,8 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
 
         });
 
+        viewModel.conversationMessageMutableLiveData.observe(this, this::onProcessReceiveMessage);
+
     }
 
     public void setCharBar() {
@@ -743,13 +747,13 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     }
 
     private void initEmojiPanel() {
-//        ArrayList<String> list = new ArrayList<>();
-//        list.add(WordUtil.getString(R.string.emoji_text));
-//        list.add(WordUtil.getString(R.string.emoji_gif));
-//        getChildFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.fl_emoji_icons, EmojiPagerFragment.newInstance(list), "emojiFragment")
-//                .commitAllowingStateLoss();
+        ArrayList<String> list = new ArrayList<>();
+        list.add(WordUtil.getString(R.string.emoji_text));
+        list.add(WordUtil.getString(R.string.emoji_gif));
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fl_emoji_icons, EmojiPagerFragment.newInstance(list), "emojiFragment")
+                .commitAllowingStateLoss();
     }
 
 
@@ -1139,7 +1143,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
             ToastUtils.showShort(getString(R.string.network_error));
             return;
         }
-        viewModel.sendPhoto(roomType, pic);
+        viewModel.sendPhoto(roomType,mUid,mVid, pic);
     }
 
     @Override
@@ -1164,7 +1168,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     public void sendEmojiGif(String picture) {
         if (mLastSendEmojiGifTime == 0 || SystemClock.elapsedRealtime() - mLastSendEmojiGifTime > 3000) {
             mLastSendEmojiGifTime = SystemClock.elapsedRealtime();
-            viewModel.sendEmojiGif(roomType, picture);
+            viewModel.sendEmojiGif(roomType,mUid,mVid, picture);
         } else {
             ToastUtils.showShort(WordUtil.getString(R.string.send_message_too_quickly));
         }
