@@ -104,9 +104,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/ll_virtual_hint"
+            android:layout_marginTop="4dp"
             android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_marginTop="4dp">
+            android:focusableInTouchMode="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -184,12 +184,12 @@
 
             <TextView
                 android:id="@+id/tv_actual_withdrawal_amount_bank_show"
+                style="?attr/textPrimaryAttr"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="2dp"
                 android:drawableEnd="@mipmap/bt_icon_expand"
                 android:text=""
-                style="?attr/textPrimaryAttr"
                 android:textSize="16sp" />
 
             <View
@@ -210,21 +210,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
+
+                <TextView
                     android:id="@+id/tv_actual_withdrawal_next"
+                    style="?attr/withdrawal_btn_next_attr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:background="@mipmap/cm_btn_withdrawal_next" />
+                    android:gravity="center"
+                    android:text="@string/txt_next" />
 
                 <TextView
                     android:id="@+id/tv_actual_withdrawal_tip"
+                    style="?attr/channelTextSelectAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_actual_withdrawal_next"
                     android:layout_alignLeft="@id/tv_actual_withdrawal_next"
                     android:text="@string/txt_kind_tips"
-                    style="?attr/channelTextSelectAttr"
                     android:textSize="14sp" />
 
                 <TextView

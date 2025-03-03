@@ -29,9 +29,11 @@
     <style name="textSecondaryAttrStyle">
         <item name="android:textColor">@color/textSecondaryColor</item>
     </style>
+
     <style name="channelTextSelectStyle">
         <item name="android:textColor">@color/channelTextSelectColor</item>
     </style>
+
     <style name="textTertiaryAttrStyle">
         <item name="android:textColor">@color/textTertiaryColor</item>
     </style>
@@ -55,12 +57,15 @@
     <style name="clr_item_text_style">
         <item name="android:textColor">@color/clr_item_text_selector</item>
     </style>
+
     <style name="bg_google_auth_style">
         <item name="android:src">@drawable/bg_google_auth</item>
     </style>
+
     <style name="bg_rc_dialog_style">
         <item name="android:background">@drawable/bg_rc_dialog</item>
     </style>
+
     <style name="clr_rc_rate_style">
         <item name="android:textColor">@color/clr_rc_rate_selector</item>
     </style>
@@ -100,6 +105,16 @@
     <style name="recharge_btn_next_style">
         <item name="android:background">@drawable/bg_btn_long_selector</item>
         <item name="android:textColor">@drawable/recharge_btn_next_text_selector</item>
+    </style>
+
+    <style name="withdrawal_btn_next_style">
+        <item name="android:background">@drawable/cm_btn_long_press</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="withdrawal_btn_previous_style">
+        <item name="android:background">@drawable/cm_btn_long_disable</item>
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
     <style name="dialog_order_bank_top_style">
@@ -163,14 +178,17 @@
     <style name="style_rc_dlg_bg_top">
         <item name="android:src">@drawable/bg_dlg_top</item>
     </style>
+
     <style name="style_rc_reg_hi_wallet">
         <item name="android:drawableStart">@drawable/rc_reg_hi_wallet</item>
         <item name="android:textColor">@color/textPrimaryColor</item>
     </style>
+
     <style name="style_rc_down_hi_wallet">
         <item name="android:drawableStart">@drawable/rc_reg_hi_wallet</item>
         <item name="android:textColor">@color/textPrimaryColor</item>
     </style>
+
     <style name="style_home_top_notice">
         <item name="android:textColor">@color/textSecondaryColor</item>
         <item name="android:drawableStart">@drawable/hm_notice</item>
@@ -187,6 +205,7 @@
         <item name="android:textColor">@color/textHomeTextColor</item>
         <item name="android:textSize">12sp</item>
     </style>
+
     <style name="style_home_top_trans">
         <item name="android:drawableTop">@drawable/hm_ic_trans</item>
         <item name="android:layout_width">wrap_content</item>
@@ -198,6 +217,7 @@
         <item name="android:textColor">@color/textHomeTextColor</item>
         <item name="android:textSize">12sp</item>
     </style>
+
     <style name="style_home_top_withdraw">
         <item name="android:drawableTop">@drawable/hm_ic_withdraw</item>
         <item name="android:layout_width">wrap_content</item>
@@ -209,6 +229,7 @@
         <item name="android:textColor">@color/textHomeTextColor</item>
         <item name="android:textSize">12sp</item>
     </style>
+
     <style name="style_home_top_cs">
         <item name="android:drawableTop">@drawable/hm_ic_cs</item>
         <item name="android:layout_width">wrap_content</item>
@@ -229,6 +250,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="style_home_top_name">
         <item name="android:textColor">@color/textMainUnSelectorColor</item>
         <item name="android:layout_width">wrap_content</item>
@@ -237,6 +259,7 @@
         <item name="android:textSize">12sp</item>
         <item name="android:layout_marginTop">5dp</item>
     </style>
+
     <style name="style_hm_txt_normal_12">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -244,6 +267,7 @@
         <item name="android:textColor">@color/textMainUnSelectorColor</item>
         <item name="android:textSize">12sp</item>
     </style>
+
     <style name="style_btn_short">
         <item name="android:layout_width">120dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -277,10 +301,12 @@
         <item name="android:textColor">@color/textPrimaryColor</item>
         <item name="android:textSize">12sp</item>
     </style>
+
     <style name="style_my_pocket" parent="style_menu_white">
         <item name="android:drawableTop">@drawable/me_my_pocket</item>
         <item name="android:text">@string/me_my_pocket</item>
     </style>
+
     <style name="style_me_transfer" parent="style_menu_white">
         <item name="android:drawableTop">@drawable/me_transfer</item>
         <item name="android:text">@string/me_transfer</item>
@@ -295,6 +321,7 @@
         <item name="android:drawableTop">@drawable/me_betting_record</item>
         <item name="android:text">@string/me_betting_record</item>
     </style>
+
     <style name="style_me_trans_record" parent="style_menu_white">
         <item name="android:drawableTop">@drawable/me_account_record</item>
         <item name="android:text">@string/me_account_record</item>
@@ -315,26 +342,32 @@
         <item name="android:drawableTop">@drawable/me_invite_friend</item>
         <item name="android:text">@string/me_invite_friend</item>
     </style>
+
     <style name="style_me_guanfangheyin" parent="style_menu_black">
         <item name="android:drawableTop">@drawable/me_guanfangheyin</item>
         <item name="android:text">@string/me_guanfang_heyin</item>
     </style>
+
     <style name="style_me_yinkui_baobiao" parent="style_menu_black">
         <item name="android:drawableTop">@drawable/me_yinkui_baobiao</item>
         <item name="android:text">@string/me_yinkui_baobiao</item>
     </style>
+
     <style name="style_me_sanfang_zhuanzhang" parent="style_menu_black">
         <item name="android:drawableTop">@drawable/me_sanfang_zhuanzhang</item>
         <item name="android:text">@string/me_sanfang_zhuanzhang</item>
     </style>
+
     <style name="style_me_anquan_zhongxin" parent="style_menu_black">
         <item name="android:drawableTop">@drawable/me_anquan_zhongxin</item>
         <item name="android:text">@string/me_anquan_zhongxin</item>
     </style>
+
     <style name="style_me_zhanghu_shezhi" parent="style_menu_black">
         <item name="android:drawableTop">@drawable/me_zhanghu_shezhi</item>
         <item name="android:text">@string/me_zhanghu_shezhi</item>
     </style>
+
     <style name="style_me_fanhui_baobiao" parent="style_menu_black">
         <item name="android:drawableTop">@drawable/me_ic_rebate</item>
         <item name="android:text">@string/me_fanhui_baobiao</item>
@@ -349,10 +382,12 @@
         <item name="android:drawableTop">@drawable/me_tiyu_guize</item>
         <item name="android:text">@string/me_tiyu_guize</item>
     </style>
+
     <style name="style_me_gr_upgrade" parent="style_menu_black">
         <item name="android:drawableTop">@drawable/me_gr_upgrade</item>
         <item name="android:text">@string/txt_upgrade</item>
     </style>
+
     <style name="style_me_usdt_jiaocheng" parent="style_menu_black">
         <item name="android:drawableTop">@drawable/me_usdt_jiaocheng</item>
         <item name="android:text">@string/me_usdt_jiaocheng</item>
@@ -371,28 +406,35 @@
     <style name="style_me_middle_background">
         <item name="android:background">@drawable/me_second_bg</item>
     </style>
+
     <style name="style_me_background_top">
         <item name="android:background">@drawable/me_bg_top_00</item>
     </style>
+
     <style name="style_me_top_click">
         <item name="android:background">@drawable/ic_one_click</item>
     </style>
+
     <style name="style_me_top_lijin_attr">
         <item name="android:background">@drawable/me_jinji_lijin</item>
     </style>
+
     <style name="style_me_top_week_attr">
         <item name="android:background">@drawable/me_ic_week_red_pkg</item>
     </style>
+
     <style name="style_me_top_shengr_attr">
         <item name="android:background">@drawable/me_shengri_lijin</item>
     </style>
-<!--彩种信息-->
+    <!--彩种信息-->
     <style name="style_me_lottery_info">
         <item name="android:src">@drawable/me_lottery_info</item>
     </style>
+
     <style name="style_me_question">
         <item name="android:src">@drawable/me_question</item>
     </style>
+
     <style name="style_me_play_intro">
         <item name="android:src">@drawable/me_play_intro</item>
     </style>
@@ -400,7 +442,6 @@
     <style name="style_me_tutorial">
         <item name="android:src">@drawable/me_tutorial</item>
     </style>
-
 
 
 </resources>

@@ -28,6 +28,8 @@
     <attr name="style_cm_title_attr" format="reference" />
 
     <attr name="recharge_btn_next_attr" format="reference" />
+    <attr name="withdrawal_btn_next_attr" format="reference" />
+    <attr name="withdrawal_btn_previous_attr" format="reference" />
     <attr name="common_btn_attr" format="reference" />
     <attr name="dialog_order_bank_top_attr" format="reference" />
     <attr name="dialog_order_bank_info_attr" format="reference" />

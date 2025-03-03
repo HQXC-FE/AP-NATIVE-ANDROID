@@ -438,19 +438,24 @@
                     android:layout_marginTop="20dp"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <TextView
                         android:id="@+id/iv_next"
+                        style="?attr/withdrawal_btn_next_attr"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@mipmap/cm_btn_withdrawal_next" />
+                        android:gravity="center"
+                        android:text="@string/txt_next" />
 
-                    <ImageView
+                    <TextView
                         android:id="@+id/iv_previous"
+                        style="?attr/withdrawal_btn_previous_attr"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:background="@mipmap/cm_btn_withdrawal_previous"
-                        android:visibility="invisible" />
+                        android:gravity="center"
+                        android:text="@string/txt_recharge_view_pro"
+                        android:visibility="invisible"
+                        tools:visibility="visible" />
 
                 </LinearLayout>
 
@@ -598,18 +603,22 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <ImageView
+                            <TextView
                                 android:id="@+id/iv_confirm_next"
+                                style="?attr/withdrawal_btn_next_attr"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@mipmap/cm_btn_withdrawal_next" />
+                                android:gravity="center"
+                                android:text="@string/txt_next" />
 
-                            <ImageView
+                            <TextView
                                 android:id="@+id/iv_confirm_previous"
+                                style="?attr/withdrawal_btn_previous_attr"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/iv_confirm_next"
-                                android:background="@mipmap/cm_btn_withdrawal_previous" />
+                                android:gravity="center"
+                                android:text="@string/txt_recharge_view_pro" />
 
                         </RelativeLayout>
 

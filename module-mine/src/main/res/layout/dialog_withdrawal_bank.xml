@@ -58,8 +58,8 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical"
-        tools:visibility="visible"
-        android:padding="10dp">
+        android:padding="10dp"
+        tools:visibility="visible">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -417,6 +417,7 @@
 
                             <TextView
                                 android:id="@+id/tv_actual_withdrawal_amount_bank_show_more"
+                                style="?attr/textPrimaryAttr"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_below="@id/tv_actual_withdrawal_bank_more"
@@ -424,7 +425,6 @@
                                 android:layout_marginTop="8dp"
                                 android:drawableEnd="@mipmap/bt_icon_expand"
                                 android:text=""
-                                style="?attr/textPrimaryAttr"
                                 android:textSize="16sp" />
 
                             <View
@@ -446,21 +446,23 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
-                            <ImageView
+                            <TextView
                                 android:id="@+id/tv_actual_withdrawal_next_more"
+                                style="?attr/withdrawal_btn_next_attr"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
-                                android:background="@mipmap/cm_btn_withdrawal_next" />
+                                android:gravity="center"
+                                android:text="@string/txt_next" />
 
                             <TextView
                                 android:id="@+id/tv_actual_withdrawal_tip_more"
+                                style="?attr/channelTextSelectAttr"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/tv_actual_withdrawal_next_more"
                                 android:layout_alignLeft="@id/tv_actual_withdrawal_next_more"
                                 android:text="@string/txt_kind_tips"
-                                style="?attr/channelTextSelectAttr"
                                 android:textSize="14sp" />
 
                             <TextView
