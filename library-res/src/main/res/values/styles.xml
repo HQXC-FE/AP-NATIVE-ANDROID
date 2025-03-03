@@ -234,7 +234,6 @@
     </style>
 
 
-
     <!-- 充值页-选取金额 按钮背景 -->
     <style name="style_rdo_blc">
         <item name="android:layout_width">0dp</item>
@@ -900,7 +899,7 @@
         <item name="android:inputType">textPassword</item>
     </style>
     <!-- 登录页 输入验证码框 -->
-    <style name="style_cm_verification" >
+    <style name="style_cm_verification">
         <item name="android:layout_width">20dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginStart">0dp</item>
@@ -917,7 +916,7 @@
         <item name="android:textColorHint">@color/clr_grey_2</item>
     </style>
     <!-- 登录页 验证码图片样式 -->
-    <style name="style_cm_image_verification" >
+    <style name="style_cm_image_verification">
         <item name="android:layout_width">20dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
@@ -1482,7 +1481,7 @@
         <item name="android:drawableEnd">@mipmap/cm_ic_expand</item>
     </style>
     <!-- 绑定信息确认页面,占一整行的 -->
-    <style name="style_bind_confirm_bank_left_txt" >
+    <style name="style_bind_confirm_bank_left_txt">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">end</item>
@@ -1491,7 +1490,7 @@
         <item name="android:textSize">14sp</item>
     </style>
     <!-- 在线客服 常见问题  -->
-    <style name="style_qa_txt" >
+    <style name="style_qa_txt">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">start</item>

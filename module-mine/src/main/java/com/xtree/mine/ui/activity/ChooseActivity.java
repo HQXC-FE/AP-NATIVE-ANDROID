@@ -118,7 +118,7 @@ public class ChooseActivity extends BaseActivity<FragmentChooseWithdrawBinding, 
             });
             //提款列表數據
             viewModel.chooseInfoVoMutableLiveData.observe(this, vo -> {
-                showMaskLoading();
+//                showMaskLoading();
                 chooseInfoVo = vo;
                 if (chooseInfoVo.networkStatus == 1) {
                     //网络异常
@@ -233,8 +233,8 @@ public class ChooseActivity extends BaseActivity<FragmentChooseWithdrawBinding, 
      */
     private void showChooseList() {
 
-        showMaskLoading();
-        // LoadingDialog.show(this);
+//        showMaskLoading();
+//         LoadingDialog.show(this);
         basePopupView = new XPopup.Builder(this).dismissOnBackPressed(false).dismissOnTouchOutside(false)
                 .moveUpToKeyboard(false)
                 .asCustom(ChooseWithdrawalDialog.newInstance(this, this, new ChooseWithdrawalDialog.IChooseDialogBack() {
@@ -306,13 +306,13 @@ public class ChooseActivity extends BaseActivity<FragmentChooseWithdrawBinding, 
     }
 
     /*显示銀行卡提款loading */
-    private void showMaskLoading() {
-        if (loadingView == null) {
-            loadingView = new XPopup.Builder(this).asCustom(new LoadingDialog(this));
-        }
-
-        loadingView.show();
-    }
+//    private void showMaskLoading() {
+//        if (loadingView == null) {
+//            loadingView = new XPopup.Builder(this).asCustom(new LoadingDialog(this));
+//        }
+//
+//        loadingView.show();
+//    }
 
     /*关闭loading*/
     private void dismissMasksLoading() {

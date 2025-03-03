@@ -148,7 +148,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
 
         initView();
         initData();
-        LoadingDialog.show(getContext());
+//        LoadingDialog.show(getContext());
         initViewObservable();
         requestData();
 

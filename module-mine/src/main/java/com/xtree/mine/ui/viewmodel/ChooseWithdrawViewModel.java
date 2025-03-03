@@ -11,6 +11,7 @@ import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.StringUtils;
 import com.xtree.base.utils.TagUtils;
+import com.xtree.base.widget.LoadingDialog;
 import com.xtree.mine.R;
 import com.xtree.mine.data.MineRepository;
 import com.xtree.mine.vo.AwardsRecordVo;
@@ -506,6 +507,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onError(Throwable t) {
                         //super.onError(t);  ex.message = "连接超时";
+                        LoadingDialog.finish();
                         Throwable throwable = t;
                         String message = throwable.getMessage();
                         CfLog.e("onError message =  " + message);
@@ -529,6 +531,7 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onFail(BusinessException t) {
                         // super.onFail(t);
+                        LoadingDialog.finish();
                         String message = t.getMessage();
                         CfLog.e("onError message =  " + message);
                         AwardsRecordVo awardrecordVo = new AwardsRecordVo();
@@ -537,6 +540,9 @@ public class ChooseWithdrawViewModel extends BaseViewModel<MineRepository> {
                         awardrecordVoMutableLiveData.setValue(awardrecordVo);
                     }
 
+                    @Override
+                    public void onComplete() {
+                    }
                 });
         addSubscribe(disposable);
     }
