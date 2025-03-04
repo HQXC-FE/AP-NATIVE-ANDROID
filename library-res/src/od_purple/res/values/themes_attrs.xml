@@ -92,6 +92,6 @@
     <attr name="home_me_question_attr" format="reference" />
     <attr name="home_me_play_intro_attr" format="reference" />
     <attr name="home_me_tutorial_attr" format="reference" />
-
+    <attr name="me_msg_backgroup_attr" format="reference" />
 
 </resources>

@@ -33,9 +33,7 @@
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
-    <style name="PwdCheckboxStyle">
-        <item name="android:button">@drawable/checkbox_bg_selector</item>
-    </style>
+
 
     <declare-styleable name="CircleImageView">
         <attr name="imageCorn" format="dimension" />

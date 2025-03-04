@@ -3,6 +3,6 @@
     <corners android:radius="5dp" />
     <gradient
         android:angle="0"
-        android:endColor="#9179E7"
-        android:startColor="#CA9BE6" />
+        android:endColor="@color/msgTopTextColorEnd"
+        android:startColor="@color/msgTopTextColorStart" />
 </shape>
