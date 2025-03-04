@@ -29,7 +29,7 @@ public class PMHotMatchCountCallBack extends HttpCallBack<MatchListRsp> {
         mViewModel.getUC().getDismissDialogEvent().call();
         if (t instanceof BusinessException) {
             BusinessException error = (BusinessException) t;
-            if (error.code == CODE_401026 || error.code == CODE_401013 || error.code == CODE_401013) {
+            if (error.code == CODE_401026 || error.code == CODE_401013) {
                 mViewModel.getGameTokenApi();
 
             } else if (error.code == CODE_401038) {
