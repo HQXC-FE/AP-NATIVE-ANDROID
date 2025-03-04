@@ -5,7 +5,6 @@ import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,12 +45,8 @@ public class FruitHorRecyclerViewAdapter extends RecyclerView.Adapter {
 
         ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.showTextView.setText(bankWithdrawalList.get(position).title);
-        if (bankWithdrawalList.get(position).flag) {
-            viewHolder.showLayout.setBackgroundResource(R.drawable.bg_dialog_top_bank_selected);
-        } else {
-            viewHolder.showLayout.setBackgroundResource(R.drawable.bg_dialog_top_bank_noselected);
-        }
-        viewHolder.showLayout.setOnClickListener(v -> {
+        viewHolder.showTextView.setSelected(bankWithdrawalList.get(position).flag);
+        viewHolder.showTextView.setOnClickListener(v -> {
             referArray(bankWithdrawalList.get(position), bankWithdrawalList);
 
             notifyDataSetChanged();
@@ -91,13 +86,11 @@ public class FruitHorRecyclerViewAdapter extends RecyclerView.Adapter {
     private static class ViewHolder extends RecyclerView.ViewHolder {
         private View itemView;
         private TextView showTextView;
-        private LinearLayout showLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
             showTextView = itemView.findViewById(R.id.tv_top_child);
-            showLayout = itemView.findViewById(R.id.cl_title);
         }
 
         public View getItemView() {

@@ -3,7 +3,6 @@ package com.xtree.mine.ui.fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,9 +14,6 @@ import com.xtree.mine.vo.OtherWebWithdrawVo;
 import java.util.ArrayList;
 
 public class FruitHorOtherRecyclerViewAdapter extends RecyclerView.Adapter {
-    public interface IOtherFruitHorCallback {
-        void callbackWithFruitHor(OtherWebWithdrawVo.ChannelInfo selectVo);
-    }
     private ArrayList<OtherWebWithdrawVo.ChannelInfo> arrayList;
     private IOtherFruitHorCallback callback;
 
@@ -26,11 +22,12 @@ public class FruitHorOtherRecyclerViewAdapter extends RecyclerView.Adapter {
         this.arrayList = arrayList;
         this.callback = callback;
     }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.dialog_bank_withdrawal_top_other_child , parent,false) ;
-        final OtherViewHolder viewHolder = new OtherViewHolder(itemView) ;
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.dialog_bank_withdrawal_top_other_child, parent, false);
+        final OtherViewHolder viewHolder = new OtherViewHolder(itemView);
 
         return viewHolder;
     }
@@ -39,13 +36,8 @@ public class FruitHorOtherRecyclerViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         OtherViewHolder viewHolder = (OtherViewHolder) holder;
         viewHolder.showTextView.setText(arrayList.get(position).name);
-        viewHolder.showLayout.setBackgroundResource(R.drawable.bg_dialog_top_bank_selected);
-     /*   if (arrayList.get(position).flag) {
-            viewHolder.showLayout.setBackgroundResource(R.drawable.bg_dialog_top_bank_selected);
-        } else {
-            viewHolder.showLayout.setBackgroundResource(R.drawable.bg_dialog_top_bank_noselected);
-        }*/
-        viewHolder.showLayout.setOnClickListener(v -> {
+        viewHolder.showTextView.setSelected(true);
+        viewHolder.showTextView.setOnClickListener(v -> {
             referArray(arrayList.get(position), arrayList);
 
             notifyDataSetChanged();
@@ -64,6 +56,7 @@ public class FruitHorOtherRecyclerViewAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return this.arrayList.size();
     }
+
     private void referArray(OtherWebWithdrawVo.ChannelInfo viewModel, ArrayList<OtherWebWithdrawVo.ChannelInfo> arrayList) {
         for (int i = 0; i < arrayList.size(); i++) {
             if (arrayList.get(i).name.equals(viewModel.name)) {
@@ -74,16 +67,19 @@ public class FruitHorOtherRecyclerViewAdapter extends RecyclerView.Adapter {
 
         }
     }
+
+    public interface IOtherFruitHorCallback {
+        void callbackWithFruitHor(OtherWebWithdrawVo.ChannelInfo selectVo);
+    }
+
     private static class OtherViewHolder extends RecyclerView.ViewHolder {
         private View itemView;
         private TextView showTextView;
-        private LinearLayout showLayout;
 
         public OtherViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
             showTextView = itemView.findViewById(R.id.tv_top_child);
-            showLayout = itemView.findViewById(R.id.cl_title);
         }
 
         public View getItemView() {

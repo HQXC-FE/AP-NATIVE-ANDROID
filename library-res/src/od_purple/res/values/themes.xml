@@ -49,6 +49,7 @@
         <item name="btn_small_attr">@style/style_btn_small</item>
         <item name="img_no_data_attr">@style/img_no_data_style</item>
         <item name="withdraw_money_account_attr">@style/style_withdraw_money_account</item>
+        <item name="bg_dialog_top_bank_attr">@style/style_bg_dialog_top_bank</item>
         <item name="home_top_notice_attr">@style/style_home_top_notice</item>
         <item name="home_top_deposit_attr">@style/style_home_top_deposit</item>
         <item name="home_top_trans_attr">@style/style_home_top_trans</item>

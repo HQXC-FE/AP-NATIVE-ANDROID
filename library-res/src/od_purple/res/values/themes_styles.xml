@@ -128,6 +128,7 @@
     <style name="withdrawal_btn_style">
         <item name="android:background">@drawable/bg_btn_withdrawal</item>
     </style>
+
     <style name="img_no_data_style">
         <item name="android:drawableTop">@drawable/img_no_data</item>
     </style>
@@ -292,6 +293,11 @@
         <item name="android:padding">12dp</item>
         <item name="android:background">@drawable/btn_acc_item_selector</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="style_bg_dialog_top_bank">
+        <item name="android:background">@drawable/bg_dialog_top_bank_selector</item>
+        <item name="android:textColor">@drawable/bg_dialog_top_bank_text_selector</item>
     </style>
 
     <!-- 我的-5个菜单 白色字 -->

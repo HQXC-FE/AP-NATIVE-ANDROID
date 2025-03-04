@@ -46,12 +46,8 @@ public class USDTFruitHorRecyclerViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.showTextView.setText(arrayList.get(position).title);
-        if (arrayList.get(position).flag) {
-            viewHolder.showLayout.setBackgroundResource(R.drawable.bg_dialog_top_bank_selected);
-        } else {
-            viewHolder.showLayout.setBackgroundResource(R.drawable.bg_dialog_top_bank_noselected);
-        }
-        viewHolder.showLayout.setOnClickListener(v -> {
+        viewHolder.showTextView.setSelected(arrayList.get(position).flag);
+        viewHolder.showTextView.setOnClickListener(v -> {
             referArray(arrayList.get(position), arrayList);
 
             notifyDataSetChanged();
@@ -84,13 +80,11 @@ public class USDTFruitHorRecyclerViewAdapter extends RecyclerView.Adapter {
     private static class ViewHolder extends RecyclerView.ViewHolder {
         private View itemView;
         private TextView showTextView;
-        private LinearLayout showLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
             showTextView = itemView.findViewById(R.id.tv_top_child);
-            showLayout = itemView.findViewById(R.id.cl_title);
         }
 
         public View getItemView() {

@@ -3,9 +3,13 @@
     android:shape="rectangle">
 
     <gradient
+        android:centerX="0.5"
+        android:centerY="0.5"
         android:angle="0"
-        android:endColor="@color/clr_no_selector"
-        android:startColor="@color/clr_no_selector" />
+        android:gradientRadius="80dp"
+        android:centerColor="@color/moneyGradient1Color"
+        android:endColor="@color/moneyGradient3Color"
+        android:startColor="@color/moneyGradient2Color" />
     <corners
         android:topLeftRadius="10dp"
         android:topRightRadius="10dp" />
