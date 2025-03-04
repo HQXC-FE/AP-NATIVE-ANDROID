@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +46,10 @@ import com.xtree.bet.weight.BaseDetailDataView;
 import com.xtree.bet.weight.DiscolourTextView;
 import com.xtree.bet.weight.PageHorizontalScrollView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import me.xtree.mvvmhabit.base.BaseActivity;
 import me.xtree.mvvmhabit.bus.RxBus;
@@ -60,6 +65,11 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     private int noLiveHeaderPosition;
     private boolean isUpdateFootBallOrBasketBallState;
     private PageHorizontalScrollView.OnScrollListener mOnScrollListener;
+    //private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    //private final RequestOptions glideOptions = new RequestOptions()
+            //.diskCacheStrategy(DiskCacheStrategy.ALL)
+           // .dontAnimate();
 
     public LeagueAdapter(Context context, List<League> datas) {
         this.mContext = context;
@@ -87,17 +97,20 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     }
 
     public void setData(List<League> leagueList) {
-        this.mDatas = leagueList;
-        if (leagueList != null) {
-            init();
-            notifyDataSetChanged();
-        }
+        //executorService.execute(() -> {
+            List<League> newData = leagueList != null ? new ArrayList<>(leagueList) : new ArrayList<>();
+            mainHandler.post(() -> {
+                this.mDatas = newData;
+                init();
+                notifyDataSetChanged();
+            });
+       // });
     }
 
     private void init() {
         liveHeaderPosition = 0;
         noLiveHeaderPosition = 0;
-        if (mDatas == null || mDatas.isEmpty()) return;
+        if (mDatas.isEmpty()) return;
 
         int index = 0;
         for (int i = 0, size = mDatas.size(); i < size; i++) {
@@ -131,23 +144,22 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
     @Override
     public int getRealChildrenCount(int groupPosition) {
-        return (mDatas == null || groupPosition >= mDatas.size()) ? 0 :
-                mDatas.get(groupPosition).getMatchList().size();
+        return (groupPosition >= mDatas.size()) ? 0 : mDatas.get(groupPosition).getMatchList().size();
     }
 
     @Override
     public int getGroupCount() {
-        return mDatas != null ? mDatas.size() : 0;
+        return mDatas.size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return (mDatas != null && groupPosition < mDatas.size()) ? mDatas.get(groupPosition) : null;
+        return groupPosition < mDatas.size() ? mDatas.get(groupPosition) : null;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        if (mDatas == null || groupPosition >= mDatas.size()) return null;
+        if (groupPosition >= mDatas.size()) return null;
         List<Match> matchList = mDatas.get(groupPosition).getMatchList();
         return (matchList != null && childPosition < matchList.size()) ? matchList.get(childPosition) : null;
     }
@@ -168,16 +180,14 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup viewGroup) {
-        if (mDatas == null || groupPosition >= mDatas.size()) {
-            return convertView != null ? convertView :
-                    LayoutInflater.from(mContext).inflate(R.layout.bt_fb_league_group, viewGroup, false);
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        if (groupPosition >= mDatas.size()) {
+            return convertView != null ? convertView : LayoutInflater.from(mContext).inflate(R.layout.bt_fb_league_group, parent, false);
         }
 
         GroupHolder holder;
         if (convertView == null) {
-            BtFbLeagueGroupBinding binding = BtFbLeagueGroupBinding.inflate(
-                    LayoutInflater.from(mContext), viewGroup, false);
+            BtFbLeagueGroupBinding binding = BtFbLeagueGroupBinding.inflate(LayoutInflater.from(mContext), parent, false);
             holder = new GroupHolder(binding);
             convertView = binding.getRoot();
             convertView.setTag(holder);
@@ -485,16 +495,11 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
     private void updateOptionSelection(LinearLayout optionView, TextView nameTextView,
                                        DiscolourTextView oddTextView, BetConfirmOption betConfirmOption) {
-        if (BtCarManager.isCg()) {
-            boolean has = BtCarManager.has(betConfirmOption);
-            optionView.setSelected(has);
-            oddTextView.setSelected(has);
-            nameTextView.setSelected(has);
-        } else if (optionView.isSelected()) {
-            optionView.setSelected(false);
-            oddTextView.setSelected(false);
-            nameTextView.setSelected(false);
-        }
+        boolean isCg = BtCarManager.isCg();
+        boolean has = isCg && BtCarManager.has(betConfirmOption);
+        optionView.setSelected(has);
+        oddTextView.setSelected(has);
+        nameTextView.setSelected(has);
     }
 
     private void setOptionClickListener(LinearLayout llOption, OptionList optionList, Option option) {
@@ -571,15 +576,17 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
     private void updateFootballTime(TextView tvMatchTime, Match match, int normalTime, String stage) {
         int timeS = match.getTimeS();
-        if (normalTime != timeS) {
+        if (normalTime != timeS) { //已刷新接口,校正时间
             tvMatchTime.setTag(R.id.tag_normal_time, timeS);
             tvMatchTime.setTag(R.id.tag_add_time, 0);
+            System.out.println("============== updateFootballTime 111 ==============="+stage + " " + formatTime(timeS));
             tvMatchTime.setText(stage + " " + formatTime(timeS));
-        } else {
+        } else { //未刷新接口，自增秒数
             int seconds = getTagIntValue(tvMatchTime, R.id.tag_add_time) + 1;
             tvMatchTime.setTag(R.id.tag_add_time, seconds);
             int currentTime = timeS + seconds;
             tvMatchTime.setText(stage + " " + formatTime(currentTime));
+            System.out.println("============== updateFootballTime 222 ==============="+stage + " " + formatTime(timeS));
             tvMatchTime.setTag(R.id.tag_last_time, currentTime);
         }
     }
@@ -627,4 +634,5 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             this.binding = binding;
         }
     }
+
 }
