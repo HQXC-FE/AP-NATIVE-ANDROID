@@ -95,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="36dp"
-                        android:drawableTop="@mipmap/img_no_data"
+                        style="?attr/img_no_data_attr"
                         android:drawablePadding="12dp"
                         android:gravity="center"
                         android:text="@string/txt_no_data"

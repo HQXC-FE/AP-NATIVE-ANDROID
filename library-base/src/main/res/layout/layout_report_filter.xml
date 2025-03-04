@@ -129,7 +129,7 @@
 
     <TextView
         android:id="@+id/tvw_select"
-        style="@style/style_btn_small"
+        style="?attr/btn_small_attr"
         android:layout_width="305dp"
         android:layout_height="37dp"
         android:layout_gravity="center_horizontal"
@@ -138,13 +138,5 @@
         android:minEms="3"
         android:text="@string/txt_query"
         android:textSize="14sp" />
-    <ImageView
-        android:id="@+id/iv_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/fab_margin"
-        android:background="@mipmap/me_inquire_bg"
-        android:visibility="gone"/>
 
 </LinearLayout>
