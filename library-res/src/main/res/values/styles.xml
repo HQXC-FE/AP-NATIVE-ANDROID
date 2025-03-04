@@ -1345,7 +1345,7 @@
 
     <!--谷歌动态口令提示语风格-->
     <style name="style_google_prompt_bottom">
-        <item name="android:textColor">@color/bt_text_color_primary_3</item>
+        <item name="android:textColor">@color/textDescriptionColor</item>
         <item name="android:textSize">12sp</item>
     </style>
 
