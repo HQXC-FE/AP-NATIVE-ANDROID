@@ -28,7 +28,8 @@
                 android:text="@string/txt_msg_center"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/ivw_back"
@@ -62,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
             android:padding="2dp"
-            app:tabBackground="@color/white"
+            app:tabBackground="@color/mainListAcBackgroupColor"
             app:tabIndicatorColor="@color/clr_purple_01"
             app:tabPadding="2dp"
             app:tabMode="fixed"
@@ -75,7 +76,8 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/mainListAcBackgroupColor"/>
 
     </LinearLayout>
 

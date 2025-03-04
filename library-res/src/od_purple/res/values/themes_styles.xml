@@ -461,4 +461,10 @@
         <item name="android:padding">6dp</item>
     </style>
 
+    <style name="PwdCheckboxStyle">
+        <item name="android:button">@drawable/checkbox_bg_selector</item>
+    </style>
+    <style name="style_me_msg_bg">
+        <item name="android:background">@drawable/me_msg_backgroup</item>
+    </style>
 </resources>
