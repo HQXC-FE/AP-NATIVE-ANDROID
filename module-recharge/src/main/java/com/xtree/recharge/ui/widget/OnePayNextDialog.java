@@ -20,6 +20,8 @@ import com.xtree.recharge.vo.RechargeVo;
 
 import java.util.Arrays;
 
+import me.xtree.mvvmhabit.utils.ConvertUtils;
+
 public class OnePayNextDialog extends BottomPopupView {
 
     RechargeVo curRechargeVo;
@@ -67,7 +69,7 @@ public class OnePayNextDialog extends BottomPopupView {
         binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
         // 文字大小可随长度而改变,解决长度太长显示不全的问题(HQAP2-3310)
         TextViewCompat.setAutoSizeTextTypeWithDefaults(binding.tvwAmountHint, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM);
-        TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(binding.tvwAmountHint, 12, 14, 1, TypedValue.COMPLEX_UNIT_SP);
+        TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(binding.tvwAmountHint,12, 14, 1, TypedValue.COMPLEX_UNIT_SP);
         binding.edtAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
