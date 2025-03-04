@@ -35,7 +35,9 @@
                 android:text="@string/txt_reset_pwd"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:textStyle="bold"
+                />
 
             <ImageView
                 android:id="@+id/ivw_back"
