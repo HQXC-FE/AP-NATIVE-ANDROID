@@ -119,8 +119,9 @@
         <TextView
             android:id="@+id/iv_confirm_next"
             style="?attr/withdrawal_btn_next_attr"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="@string/txt_next" />
@@ -128,9 +129,10 @@
         <TextView
             android:id="@+id/iv_confirm_previous"
             style="?attr/withdrawal_btn_previous_attr"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/iv_confirm_next"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="@string/txt_recharge_view_pro" />

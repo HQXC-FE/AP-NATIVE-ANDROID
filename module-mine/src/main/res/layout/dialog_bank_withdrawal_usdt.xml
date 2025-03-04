@@ -432,9 +432,10 @@
 
                 <LinearLayout
                     android:id="@+id/ll_next_previous"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ll_collection_usdt"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
                     android:orientation="vertical">
 
@@ -565,22 +566,22 @@
 
                     <View style="@style/style_withdraw_dividing_line" />
 
-                    <LinearLayout
+                    <FrameLayout
                         android:id="@+id/ll_next_confirm_previous"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/ll_collection_usdt"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="10dp">
 
                         <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal">
 
                             <TextView
                                 android:id="@+id/iv_confirm_next"
                                 style="?attr/withdrawal_btn_next_attr"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="@string/txt_next" />
@@ -588,7 +589,7 @@
                             <TextView
                                 android:id="@+id/iv_confirm_previous"
                                 style="?attr/withdrawal_btn_previous_attr"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/iv_confirm_next"
                                 android:gravity="center"
@@ -596,7 +597,7 @@
 
                         </RelativeLayout>
 
-                    </LinearLayout>
+                    </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
             <!-- <include
@@ -620,7 +621,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@mipmap/ic_over_apply" />
+                    android:background="@drawable/ic_over_apply" />
 
                 <TextView
                     android:id="@+id/tv_over_msg"
@@ -638,19 +639,25 @@
                     android:text="@string/txt_account_suc_message"
                     android:textColor="@color/cl_over_tip" />
 
-                <ImageView
+                <TextView
                     android:id="@+id/iv_continue_confirm_next"
-                    android:layout_width="match_parent"
+                    style="?attr/withdrawal_btn_next_attr"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="40dp"
-                    android:background="@mipmap/ic_continue" />
+                    android:gravity="center"
+                    android:text="@string/txt_withdrawal_continue" />
 
-                <ImageView
+                <TextView
                     android:id="@+id/iv_continue_confirm_previous"
-                    android:layout_width="match_parent"
+                    style="?attr/withdrawal_btn_previous_attr"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/iv_continue_confirm_next"
-                    android:background="@mipmap/cm_btn_withdrawal_closure" />
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/txt_withdrawal_close" />
 
             </LinearLayout>
 

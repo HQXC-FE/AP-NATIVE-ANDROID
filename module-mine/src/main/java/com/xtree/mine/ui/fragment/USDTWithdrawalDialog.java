@@ -452,7 +452,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
             if (submitVo != null && submitVo.message != null && !TextUtils.isEmpty(submitVo.message)) {
                 if (TextUtils.equals("账户提款申请成功", submitVo.message)) {
                     binding.ivOverApply.setVisibility(VISIBLE);
-                    binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
+                    binding.ivOverApply.setBackgroundResource(R.drawable.ic_over_apply);
                     binding.tvOverMsg.setVisibility(VISIBLE);
                     binding.tvOverMsg.setText(submitVo.message);
 
@@ -460,18 +460,18 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
                     binding.tvOverMsg.setVisibility(VISIBLE);
                     binding.tvOverMsg.setText(submitVo.message);
                     binding.ivOverApply.setVisibility(VISIBLE);
-                    binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
+                    binding.ivOverApply.setBackgroundResource(R.drawable.ic_over_apply_err);
                 } else {
                     binding.tvOverMsg.setVisibility(VISIBLE);
                     binding.tvOverMsg.setText(submitVo.message);
                     binding.ivOverApply.setVisibility(VISIBLE);
-                    binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
+                    binding.ivOverApply.setBackgroundResource(R.drawable.ic_over_apply_err);
                 }
             }
         } else if (message != null && TextUtils.isEmpty(message)) {
             if (TextUtils.equals("账户提款申请成功", message)) {
                 binding.ivOverApply.setVisibility(VISIBLE);
-                binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
+                binding.ivOverApply.setBackgroundResource(R.drawable.ic_over_apply);
                 binding.tvOverMsg.setVisibility(VISIBLE);
                 binding.tvOverMsg.setText(submitVo.message);
 
@@ -479,12 +479,12 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
                 binding.tvOverMsg.setVisibility(VISIBLE);
                 binding.tvOverMsg.setText(submitVo.message);
                 binding.ivOverApply.setVisibility(VISIBLE);
-                binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
+                binding.ivOverApply.setBackgroundResource(R.drawable.ic_over_apply_err);
             } else {
                 binding.tvOverMsg.setVisibility(VISIBLE);
                 binding.tvOverMsg.setText(submitVo.message);
                 binding.ivOverApply.setVisibility(VISIBLE);
-                binding.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
+                binding.ivOverApply.setBackgroundResource(R.drawable.ic_over_apply_err);
             }
         }
 

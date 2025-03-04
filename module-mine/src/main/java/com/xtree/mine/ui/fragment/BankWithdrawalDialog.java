@@ -52,7 +52,7 @@ import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.TipDialog;
 import com.xtree.mine.R;
 import com.xtree.mine.data.Injection;
-import com.xtree.mine.databinding.DialogBankWithdrawalBankNewBinding;
+import com.xtree.mine.databinding.DialogBankWithdrawalBankBinding;
 import com.xtree.mine.ui.viewmodel.ChooseWithdrawViewModel;
 import com.xtree.mine.vo.ChooseInfoVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalBankInfoVo;
@@ -79,7 +79,7 @@ import project.tqyb.com.library_res.databinding.ItemTextBinding;
 public class BankWithdrawalDialog extends BottomPopupView implements IAmountCallback, IFruitHorCallback {
 
     ChooseWithdrawViewModel viewModel;
-    DialogBankWithdrawalBankNewBinding binding;
+    DialogBankWithdrawalBankBinding binding;
     ItemTextBinding binding2;
     BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
     private CashWithdrawalPopWindow webPopWindow;//webView 提款外部跳转浮窗
@@ -128,7 +128,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
 
     @Override
     protected int getImplLayoutId() {
-        return R.layout.dialog_bank_withdrawal_bank_new;
+        return R.layout.dialog_bank_withdrawal_bank;
     }
 
     @Override
@@ -160,7 +160,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     }
 
     private void initView() {
-        binding = DialogBankWithdrawalBankNewBinding.bind(findViewById(R.id.ll_bank_root));
+        binding = DialogBankWithdrawalBankBinding.bind(findViewById(R.id.ll_bank_root));
         binding.ivwClose.setOnClickListener(v -> {
             //dismiss();
             if (closeCallback != null) {
@@ -247,7 +247,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
             dismiss();
         });
         //关闭提现
-        binding.llOverViewApply.ivContinueConfirmClose.setOnClickListener(V -> {
+        binding.llOverViewApply.ivContinueConfirmPrevious.setOnClickListener(V -> {
             dismiss();
         });
         //外跳外部浏览器
@@ -646,7 +646,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
             if (submitVo != null && submitVo.message != null && !TextUtils.isEmpty(submitVo.message)) {
                 if (TextUtils.equals("账户提款申请成功", submitVo.message)) {
                     binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
-                    binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
+                    binding.llOverViewApply.ivOverApply.setBackgroundResource(R.drawable.ic_over_apply);
                     binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
                     binding.llOverViewApply.tvOverMsg.setText(submitVo.message);
 
@@ -654,18 +654,18 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
                     binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
                     binding.llOverViewApply.tvOverMsg.setText(submitVo.message);
                     binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
-                    binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
+                    binding.llOverViewApply.ivOverApply.setBackgroundResource(R.drawable.ic_over_apply_err);
                 } else {
                     binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
                     binding.llOverViewApply.tvOverMsg.setText(submitVo.message);
                     binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
-                    binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
+                    binding.llOverViewApply.ivOverApply.setBackgroundResource(R.drawable.ic_over_apply_err);
                 }
             }
         } else if (message != null && !TextUtils.isEmpty(message)) {
             if (TextUtils.equals("账户提款申请成功", message)) {
                 binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
-                binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply);
+                binding.llOverViewApply.ivOverApply.setBackgroundResource(R.drawable.ic_over_apply);
                 binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
                 binding.llOverViewApply.tvOverMsg.setText(message);
 
@@ -673,12 +673,12 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
                 binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
                 binding.llOverViewApply.tvOverMsg.setText(message);
                 binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
-                binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
+                binding.llOverViewApply.ivOverApply.setBackgroundResource(R.drawable.ic_over_apply_err);
             } else {
                 binding.llOverViewApply.tvOverMsg.setVisibility(VISIBLE);
                 binding.llOverViewApply.tvOverMsg.setText(submitVo.message);
                 binding.llOverViewApply.ivOverApply.setVisibility(VISIBLE);
-                binding.llOverViewApply.ivOverApply.setBackgroundResource(R.mipmap.ic_over_apply_err);
+                binding.llOverViewApply.ivOverApply.setBackgroundResource(R.drawable.ic_over_apply_err);
             }
         }
         //继续提款
@@ -686,7 +686,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
             dismiss();
         });
         //返回
-        binding.llOverViewApply.ivContinueConfirmClose.setOnClickListener(v -> {
+        binding.llOverViewApply.ivContinueConfirmPrevious.setOnClickListener(v -> {
             dismiss();
         });
     }
