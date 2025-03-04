@@ -360,6 +360,9 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
      * @param listVo
      */
     private void refreshTopUI(ArrayList<WithdrawalListVo> listVo) {
+        binding.tvSetWithdrawalRequest.setSelected(true);
+        binding.tvConfirmWithdrawalRequest.setSelected(false);
+        binding.tvOverWithdrawalRequest.setSelected(false);
         for (WithdrawalListVo vo : listVo) {
             vo.flag = false;
         }
@@ -384,8 +387,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
     private void refreshVerifyUI(final WithdrawalVerifyVo verifyVo) {
         //刷新顶部进度条颜色
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            binding.tvSetWithdrawalRequest.setSelected(true);
+            binding.tvConfirmWithdrawalRequest.setSelected(true);
         }
 
         binding.llSetRequestView.setVisibility(View.GONE);
@@ -421,8 +424,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
         binding.ivConfirmPrevious.setOnClickListener(v -> {
             //刷新顶部进度条颜色
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-                binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.cl_over_tip));
+                binding.tvSetWithdrawalRequest.setSelected(true);
+                binding.tvConfirmWithdrawalRequest.setSelected(false);
             }
             binding.llSetRequestView.setVisibility(View.VISIBLE);
             binding.llVirtualConfirmView.setVisibility(View.GONE);
@@ -437,9 +440,9 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
      */
     private void refreshSubmitUI(final WithdrawalSubmitVo submitVo, final String message) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvSetWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvConfirmWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
-            binding.tvOverWithdrawalRequest.setTextColor(getContext().getColor(R.color.red));
+            binding.tvSetWithdrawalRequest.setSelected(true);
+            binding.tvConfirmWithdrawalRequest.setSelected(true);
+            binding.tvOverWithdrawalRequest.setSelected(true);
         }
 
         binding.llVirtualConfirmView.setVisibility(GONE);

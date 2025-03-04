@@ -77,31 +77,31 @@
 
                     <TextView
                         android:id="@+id/tv_set_withdrawal_request"
+                        style="?attr/withdraw_title_progress_attr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="@string/txt_set_withdrawal_request"
-                        android:textColor="@color/red" />
+                        android:text="@string/txt_set_withdrawal_request" />
 
                     <TextView
                         android:id="@+id/tv_confirm_withdrawal_request"
+                        style="?attr/withdraw_title_progress_attr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignTop="@id/tv_set_withdrawal_request"
                         android:layout_marginLeft="130dp"
-                        android:text="@string/text_confirm_withdrawal_message"
-                        android:textColor="@color/cl_over_tip" />
+                        android:text="@string/text_confirm_withdrawal_message" />
 
                     <TextView
                         android:id="@+id/tv_over_withdrawal_request"
+                        style="?attr/withdraw_title_progress_attr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="8dp"
-                        android:text="@string/text_over_withdrawal_request"
-                        android:textColor="@color/cl_over_tip" />
+                        android:text="@string/text_over_withdrawal_request" />
 
                     <ImageView
                         android:layout_width="wrap_content"

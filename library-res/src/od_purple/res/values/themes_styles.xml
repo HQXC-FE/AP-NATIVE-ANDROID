@@ -300,6 +300,10 @@
         <item name="android:textColor">@drawable/bg_dialog_top_bank_text_selector</item>
     </style>
 
+    <style name="style_withdraw_title_progress">
+        <item name="android:textColor">@drawable/text_withdrawal_title_progress_selector</item>
+    </style>
+
     <!-- 我的-5个菜单 白色字 -->
     <style name="style_menu_white">
         <item name="android:layout_width">wrap_content</item>
