@@ -130,6 +130,12 @@
     <string name="chat_global">广场</string>
     <string name="you_are_ban">当前用户已被禁言</string>
     <string name="disallow_send_message_for_ban">禁言状态下无法发言</string>
+    <string name="search_assistant_nickname">搜索助理昵称</string>
+    <string name="search_assistant_btn">搜索</string>
+    <string name="search_assistant_message_success">搜索添加助理成功</string>
+    <string name="search_assistant_message_fail">查无此助理、或添加失败</string>
+    <string name="represent_pic">图片</string>
+    <string name="empty_common">暂无数据</string>
 
 
 </resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:drawable="@drawable/svg_pin_chat_room"/>
+    <item android:state_selected="true" android:drawable="@drawable/svg_pin_chat_room"/>
+    <item android:drawable="@drawable/svg_unpin_chat_room"/>
+</selector>

@@ -358,7 +358,14 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     public <T extends ViewModel> T createViewModel(Fragment fragment, Class<T> cls) {
         return new ViewModelProvider(fragment, null).get(cls);
     }
-    
+
+    protected Bundle getSavedArguments() {
+        if (getArguments() == null) {
+            setArguments(new Bundle());
+        }
+        return getArguments();
+    }
+
     protected void addFragmentToContent(Fragment fragment,String tag){
         FragmentUtils.addFragment(getFragmentManager(),this,fragment,android.R.id.content,tag);
     }

@@ -146,8 +146,7 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
                         return chatFragment2;
 
                     case "chat_list"://聊天 主播助理
-//                        return ChatRoomContainerFragment.newInstance(ChatBarMode.CHATBAR_MODE_LOW, "2", "" + uid());
-                        return new Fragment();
+                        return ChatRoomContainerFragment.newInstance(ChatBarMode.CHATBAR_MODE_LOW, "2", "" + mUid);
                     case "bet_fragment"://投注
                         return (Fragment) (BaseFragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_BET).navigation();
                 }
