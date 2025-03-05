@@ -486,4 +486,7 @@
     <style name="style_login_check_backgroup">
         <item name="android:background">@drawable/checkbox_bg_selector</item>
     </style>
+    <style name="style_home_top_banner">
+        <item name="android:src">@drawable/hm_bnr_01</item>
+    </style>
 </resources>

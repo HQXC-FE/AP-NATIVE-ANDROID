@@ -99,4 +99,5 @@
     <attr name="login_ac_backgroup_attr" format="reference" />
     <attr name="login_eye_backgroup_attr" format="reference" />
     <attr name="login_check_backgroup_attr" format="reference" />
+    <attr name="home_top_banner_attr" format="reference" />
 </resources>

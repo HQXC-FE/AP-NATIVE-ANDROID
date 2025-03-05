@@ -117,6 +117,7 @@
         <item name="login_eye_backgroup_attr">@style/style_login_eye_backgroup</item>
 
         <item name="login_check_backgroup_attr">@style/style_login_check_backgroup</item>
+        <item name="home_top_banner_attr">@style/style_home_top_banner</item>
     </style>
 
 </resources>
