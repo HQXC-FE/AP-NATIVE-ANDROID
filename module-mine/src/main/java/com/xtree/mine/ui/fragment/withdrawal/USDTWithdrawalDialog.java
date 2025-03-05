@@ -499,7 +499,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
                 ToastUtils.showLong(R.string.txt_input_amount_tip);
             } else if (Double.valueOf(binding.etInputMoney.getText().toString()) < Double.valueOf(infoVo.min_money)) {
                 ToastUtils.showLong(R.string.txt_input_amount_tip);
-            } else if (TextUtils.isEmpty(binding.tvBindAddress.getText().toString())) {
+            } else if (TextUtils.isEmpty(binding.tvBindAddress.getText().toString().trim())) {
                 ToastUtils.showLong(R.string.txt_select_withdrawal_address);
             } else {
                 hideKeyBoard();
