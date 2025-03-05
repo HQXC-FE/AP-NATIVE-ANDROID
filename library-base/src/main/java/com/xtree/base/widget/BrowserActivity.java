@@ -759,7 +759,7 @@ public class BrowserActivity extends AppCompatActivity {
 
             CfLog.d("HTTP Error:  " + "errorUrl:" + errorUrl + ",   initialUrl:" + initialUrl + ",   URL: " + mUrl + ",   Status Code: " + statusCode);
             // 仅处理初始 URL 的 HTTP 错误
-            if (TextUtils.equals(mUrl, initialUrl) || TextUtils.equals(mUrl, null) || TextUtils.equals(mUrl, errorUrl) && !isFirstOpenBrowser) {
+            if ((TextUtils.equals(mUrl, initialUrl) || TextUtils.equals(mUrl, null) || TextUtils.equals(mUrl, errorUrl)) && !isFirstOpenBrowser) {
                 String msg = "状态码:" + statusCode + "；加载链接：" + initialUrl;
                 //处理403 404 500 502等错误
                 uploadH5Error(msg, initialUrl);
