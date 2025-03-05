@@ -122,6 +122,7 @@
 
         <item name="login_check_backgroup_attr">@style/style_login_check_backgroup</item>
         <item name="home_top_banner_attr">@style/style_home_top_banner</item>
+        <item name="main_bottom_image_attr">@style/style_main_bottom_image</item>
     </style>
 
 </resources>

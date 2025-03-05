@@ -32,11 +32,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="75dp"
-            android:background="@mipmap/ic_tab_background"
+            style="?attr/main_bottom_image_attr"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
