@@ -18,7 +18,8 @@
         <TextView
             android:id="@+id/tvw_bt_result"
             style="@style/style_item_report_title_center"
-            tools:text="输" />
+            android:text=""
+            />
 
         <TextView
             style="@style/style_item_report_title_end"

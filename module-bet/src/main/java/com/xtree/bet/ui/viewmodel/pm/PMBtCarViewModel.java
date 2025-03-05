@@ -108,7 +108,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                     @Override
                     public void onResult(List<BtConfirmInfo> btConfirmInfoList, BusinessException exception) {
                         if (btConfirmInfoList == null || btConfirmInfoList.isEmpty()) {
-                            onFail(exception);
+                            btConfirmInfoDate.postValue(new ArrayList<>());
                             return;
                         }
                         List<BetConfirmOption> mBetConfirmOptionList = new ArrayList<>();

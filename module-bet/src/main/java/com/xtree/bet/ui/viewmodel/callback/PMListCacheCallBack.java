@@ -30,7 +30,7 @@ import java.util.Map;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class PMCacheListCallBack extends HttpCallBack<MatchListCacheRsp> {
+public class PMListCacheCallBack extends HttpCallBack<MatchListCacheRsp> {
 
     private PMMainViewModel mViewModel;
     private boolean mHasCache;
@@ -99,7 +99,7 @@ public class PMCacheListCallBack extends HttpCallBack<MatchListCacheRsp> {
         }
     }
 
-    public PMCacheListCallBack(PMMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
+    public PMListCacheCallBack(PMMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
                                int playMethodType, int sportPos, String sportId, int orderBy, List<Long> leagueIds,
                                int searchDatePos, int oddType, List<Long> matchids/*, boolean isStepSecond*/) {
         mViewModel = viewModel;

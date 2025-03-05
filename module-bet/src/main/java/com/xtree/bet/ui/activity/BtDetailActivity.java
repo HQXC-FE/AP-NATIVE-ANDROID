@@ -62,14 +62,12 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
-/**
- * Created by goldze on 2018/6/21
- */
 public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlayer> implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     private final static String KEY_MATCH = "KEY_MATCH_ID";
     private List<Category> mCategories = new ArrayList<>();
@@ -78,9 +76,13 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
 
     private BtDetailOptionFragment fragment;
 
+    private Disposable sportsTimerDisposable;
+
     private Match mMatch;
 
     private int tabPos;
+
+    private int secoend = 0;
 
     private String mPlatform = SPUtils.getInstance().getString(KEY_PLATFORM);
 
@@ -211,6 +213,20 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                     }*/
                 })
         );
+
+        if (sportsTimerDisposable != null) {
+            viewModel.removeSubscribe(sportsTimerDisposable);
+        }
+        sportsTimerDisposable = Observable.interval(1, 1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    secoend = secoend+1;
+                    updateMatchTime(mMatch);
+                });
+        viewModel.addSubscribe(sportsTimerDisposable);
+
+
     }
 
     /**
@@ -347,12 +363,6 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 }
             }
         }
-        /*if (detailPlayTypeAdapter == null) {
-            detailPlayTypeAdapter = new MatchDetailAdapter(BtDetailActivity.this, mCategories.get(tabPos).getPlayTypeList());
-            //binding.aelOption.setAdapter(detailPlayTypeAdapter);
-        } else {
-            detailPlayTypeAdapter.setData(mCategories.get(tabPos).getPlayTypeList());
-        }*/
     }
 
     @Override
@@ -413,20 +423,9 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 }
             }
 
-            // 比赛未开始
-            if (!match.isGoingon()) {
-                binding.tvTimeTop.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_HH_MM));
-                binding.tvTime.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_1));
-                binding.tvScore.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_HH_MM));
-            } else {
-                if (TextUtils.equals(Constants.getFbSportId(), match.getSportId()) || TextUtils.equals(Constants.getBsbSportId(), match.getSportId())) { // 足球和篮球
-                    binding.tvTime.setText(match.getStage() + " " + match.getTime());
-                    binding.tvTimeTop.setText(match.getStage() + " " + match.getTime());
-                } else {
-                    binding.tvTime.setText(match.getStage());
-                    binding.tvTimeTop.setText(match.getStage());
-                }
-            }
+            secoend = 0;
+
+            updateMatchTime(match);
 
             if (binding.llData.getChildCount() == 0) {
                 mScoreDataView = BaseDetailDataView.getInstance(this, match, false);
@@ -571,5 +570,40 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 fragment.expand();
             }
         }
+    }
+
+    private void updateMatchTime(Match match){
+        // 比赛未开始
+        if (!match.isGoingon()) {
+            binding.tvTimeTop.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_HH_MM));
+            binding.tvTime.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_1));
+            binding.tvScore.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_HH_MM));
+        } else {
+            if (TextUtils.equals(Constants.getFbSportId(), match.getSportId()) || TextUtils.equals(Constants.getBsbSportId(), match.getSportId())) { // 足球和篮球
+                //int currentTime = match.getTimeS() + secoend;
+
+                if(match.getSportId().equals("1")){ //足球
+                    int currentTime = match.getTimeS() + secoend;
+                    binding.tvTime.setText(match.getStage() + " " + formatTime(currentTime));
+                    binding.tvTimeTop.setText(match.getStage() + " " + formatTime(currentTime));
+                }else if(match.getSportId().equals("2")){ //篮球
+                    int currentTime = match.getTimeS() - secoend;
+                    binding.tvTime.setText(match.getStage() + " " + formatTime(currentTime));
+                    binding.tvTimeTop.setText(match.getStage() + " " + formatTime(currentTime));
+                }else{ //其它
+                    binding.tvTime.setText(match.getStage() + " " + match.getTime());
+                    binding.tvTimeTop.setText(match.getStage() + " " + match.getTime());
+                }
+            } else {
+                binding.tvTime.setText(match.getStage());
+                binding.tvTimeTop.setText(match.getStage());
+            }
+        }
+    }
+
+    public static String formatTime(int totalSeconds) {
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 }

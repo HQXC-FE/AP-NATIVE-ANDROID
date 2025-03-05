@@ -26,8 +26,6 @@ import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.MatchFb;
 import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.OptionList;
-import com.xtree.bet.bean.ui.PlayGroup;
-import com.xtree.bet.bean.ui.PlayGroupFb;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.constant.FBConstants;
 import com.xtree.bet.constant.SportTypeItem;
@@ -145,76 +143,8 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         return mMapMatch;
     }
 
-    //@Override
-    //public void setSportIds(int playMethodPos) {
-    //    if (playMethodPos == 0 || playMethodPos == 3 || playMethodPos == 1) {//今日滚球串关
-    //        SPORT_IDS = SPORT_IDS_ALL;
-    //    } else {
-    //        SPORT_IDS = SPORT_IDS_NOMAL;
-    //    }
-    //}
-
     public void setSportItems(int playMethodPos, int playMethodType) {
         sportItemData.postValue(new String[]{});
-        //if (playMethodPos == 0 || playMethodPos == 3) {//今日或串关
-        //    if (SPORT_NAMES != SPORT_NAMES_TODAY_CG) {
-        //        SPORT_NAMES = SPORT_NAMES_TODAY_CG;
-        //    }
-        //} else if (playMethodPos == 1) {//滚球
-        //    if (SPORT_NAMES != SPORT_NAMES_LIVE) {
-        //        SPORT_NAMES = SPORT_NAMES_LIVE;
-        //    }
-        //} else {//早盘和冠军
-        //    if (SPORT_NAMES != SPORT_NAMES_NOMAL) {
-        //        SPORT_NAMES = SPORT_NAMES_NOMAL;
-        //    }
-        //}
-        //setSportIds(playMethodPos);
-        //if (playMethodPos == 4) {
-        //    MatchTypeInfo matchTypeInfo;
-        //    Map<String, MatchTypeStatisInfo> mapMatchTypeStatisInfo = new HashMap<>();
-        //    List<String> additionalIds = new ArrayList<>();
-        //    List<String> additionalNames = new ArrayList<>();
-        //    List<Integer> additionalIcons = new ArrayList<>();
-        //    for (int i = 0; i < SPORT_IDS.length; i++) {
-        //        additionalIds.add(SPORT_IDS[i]);
-        //        additionalNames.add(FBConstants.SPORT_NAMES[i]);
-        //        additionalIcons.add(Constants.SPORT_ICON[i]);
-        //    }
-        //    if (mStatisticalInfo != null) {
-        //        for (MatchTypeInfo typeInfo : mStatisticalInfo.sl) {
-        //            if (typeInfo.ty == playMethodType) {
-        //                matchTypeInfo = typeInfo;
-        //                for (MatchTypeStatisInfo matchTypeStatisInfo :
-        //                        matchTypeInfo.ssl) {
-        //                    mapMatchTypeStatisInfo.put(String.valueOf(matchTypeStatisInfo.sid), matchTypeStatisInfo);
-        //                }
-        //                break;
-        //            }
-        //        }
-        //    }
-        //
-        //    for (int i = 0; i < SPORT_IDS_ADDITIONAL.length; i++) {
-        //        MatchTypeStatisInfo matchTypeStatisInfo = mapMatchTypeStatisInfo.get(SPORT_IDS_ADDITIONAL[i]);
-        //        if (matchTypeStatisInfo != null && matchTypeStatisInfo.c > 0) {
-        //            additionalIds.add(SPORT_IDS_ADDITIONAL[i]);
-        //            additionalNames.add(SPORT_NAMES_ADDITIONAL[i]);
-        //            additionalIcons.add(SPORT_ICON_ADDITIONAL[i]);
-        //        }
-        //    }
-        //    String[] ids = new String[additionalIds.size()];
-        //    String[] names = new String[additionalNames.size()];
-        //    int[] icons = new int[additionalIcons.size()];
-        //    additionalIds.toArray(ids);
-        //    additionalNames.toArray(names);
-        //    for (int i = 0; i < additionalIcons.size(); i++) {
-        //        icons[i] = additionalIcons.get(i);
-        //    }
-        //    SPORT_IDS = ids;
-        //    SPORT_NAMES = names;
-        //    Constants.SPORT_ICON = icons;
-        //}
-
     }
 
     /**
@@ -230,7 +160,7 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         fBListReq.setType(6);
         fBListReq.setLeagueIds(leagueIds);
 
-        Object callBack = isUseCacheApiService(getSportCacheType())
+        Object callBack = isUseCacheApiService()
                 ? new FBhotMatchCacheCallBack(this)
                 : new FBhotMatchCallBack(this);
 
@@ -294,9 +224,6 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         fBListReq.setCurrent(mCurrentPage);
         fBListReq.setOddType(oddType);
 
-        //HashMap<Integer, SportTypeItem> matchGames = getMatchGames();
-        //CfLog.i(sportId+"   "+new Gson().toJson(matchGames));
-        //SportTypeItem item = matchGames.get(sportId);
         if (sportPos == -1 || TextUtils.equals(sportId, "0") || TextUtils.equals(sportId, "1111")) {
             fBListReq.setSportId(null);
         }
@@ -321,7 +248,7 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         // 根据是否使用缓存选择回调类
-        Object callBack = isUseCacheApiService(getSportCacheType())
+        Object callBack = isUseCacheApiService()
                 ? new LeagueListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
                 orderBy, leagueIds, searchDatePos, oddType, matchids, needSecondStep, finalType, isStepSecond)
                 : new LeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
@@ -393,19 +320,10 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         fbListReq.setCurrent(mCurrentPage);
         fbListReq.setSize(300);
         fbListReq.setOddType(oddType);
-        //HashMap<Integer, SportTypeItem> matchGames = getMatchGames();
-        //SportTypeItem item = matchGames.get(sportId);
-        //if (TextUtils.equals(item.name, "热门") || TextUtils.equals(item.name, "全部")) {
-        //    String sportIds = "";
-        //    for (int i = 1; i < SPORT_IDS.length; i++) {
-        //        sportIds += SPORT_IDS[i] + ",";
-        //    }
-        //    FBListReq.setSportId(sportIds);
-        //}
 
         Flowable flowable = getFbListFlowable(fbListReq);
 
-        Object callBack = isUseCacheApiService(getSportCacheType())
+        Object callBack = isUseCacheApiService()
                 ? new FBChampionListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId, orderBy, leagueIds, oddType, matchids)
                 : new FBChampionListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId, orderBy, leagueIds, oddType, matchids);
 
@@ -421,11 +339,10 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         Map<String, String> map = new HashMap<>();
         map.put("languageType", "CMN");
-
         Flowable flowable = getFbStatisticalFlowable(map);
 
         // 根据缓存类型决定回调类
-        Object callBack = isUseCacheApiService(getSportCacheType())
+        Object callBack = isUseCacheApiService()
                 ? new FBStatisticalCacheCallBack(this, mMatchGames, sportCountMap)
                 : new FBStatisticalCallBack(this, mMatchGames, sportCountMap);
 
@@ -552,6 +469,13 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
+                        resultErrorLeagueData.setValue("");
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        super.onFail(t);
+                        resultErrorLeagueData.setValue("");
                     }
                 });
         addSubscribe(disposable);
@@ -621,38 +545,6 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     }
 
-    private List<Option> getMatchOptionList(List<Match> matchList) {
-        List<Option> optionList = new ArrayList<>();
-        for (Match match : matchList) {
-            if (match.isHead()) {
-                continue;
-            }
-            PlayGroup newPlayGroup = new PlayGroupFb(match.getPlayTypeList());
-            newPlayGroup.getPlayGroupList(match.getSportId());
-
-            for (PlayType playType : newPlayGroup.getPlayTypeList()) {
-                playType.getOptionLists();
-                for (Option option : playType.getOptionList(match.getSportId())) {
-                    if (option != null && playType.getOptionLists() != null && !playType.getOptionLists().isEmpty()) {
-                        StringBuffer code = new StringBuffer();
-                        code.append(match.getId());
-                        code.append(playType.getPlayType());
-                        code.append(playType.getPlayPeriod());
-                        code.append(playType.getOptionLists().get(0).getId());
-                        code.append(option.getOptionType());
-                        code.append(option.getId());
-                        if (!TextUtils.isEmpty(option.getLine())) {
-                            code.append(option.getLine());
-                        }
-                        option.setCode(code.toString());
-                    }
-                    optionList.add(option);
-                }
-            }
-        }
-        return optionList;
-    }
-
     private List<Option> getChampionMatchOptionList(List<Match> matchList) {
         List<Option> optionArrayList = new ArrayList<>();
         for (Match match : matchList) {
@@ -719,7 +611,7 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     private Flowable getFbListFlowable(FBListReq fBListReq) {
         Flowable flowable;
-        if (isUseCacheApiService(getSportCacheType())) {
+        if (isUseCacheApiService()) {
             String token;
             if (getSportCacheType().equals(SportCacheType.FB)) {
                 token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
@@ -740,7 +632,7 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
     private Flowable getFbStatisticalFlowable(Map<String, String> map) {
         Flowable flowable;
         String token;
-        if (isUseCacheApiService(getSportCacheType())) {
+        if (isUseCacheApiService()) {
             if (getSportCacheType().equals(SportCacheType.FB)) {
                 token = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
                 map.put("_accessToken", token);
@@ -757,7 +649,8 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         return flowable;
     }
 
-    private boolean isUseCacheApiService(SportCacheType sportCacheType) {
+    private boolean isUseCacheApiService() {
+        SportCacheType sportCacheType = getSportCacheType();
         if (sportCacheType.equals(SportCacheType.FB) || sportCacheType.equals(SportCacheType.FBXC)) {
             return true;
         } else {
@@ -818,7 +711,7 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     // 根据平台返回相应的 SportCacheType
     private SportCacheType getSportCacheTypeForPlatform(String platform, List<Integer> sportCacheList) {
-        if (sportCacheList.contains(9)) {
+        if (sportCacheList.contains(9)) { //9是安卓平台缓存标志开启的代号
             // 如果缓存数据包含 9，根据平台返回对应的 SportCacheType
             if (TextUtils.equals(platform, PLATFORM_FB)) {
                 return SportCacheType.FB;

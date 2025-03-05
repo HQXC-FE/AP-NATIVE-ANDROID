@@ -266,6 +266,11 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
     @Override
     public void initViewObservable() {
         viewModel.btConfirmInfoDate.observe(this, betConfirmOptions -> {
+            if (betConfirmOptions == null || betConfirmOptions.isEmpty()) {
+                ToastUtils.showShort("比赛投注信息变更，请重新投注");
+                dismiss();
+                return;
+            }
             hasCloseOption = false;
             for (int i = 0; i < betConfirmOptionList.size(); i++) {
                 if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {

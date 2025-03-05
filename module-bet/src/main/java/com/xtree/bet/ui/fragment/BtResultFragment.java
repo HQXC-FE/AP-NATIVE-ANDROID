@@ -6,6 +6,7 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
+import android.animation.ObjectAnimator;
 import android.app.Application;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -79,51 +80,6 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
     @Override
     public void initView() {
         binding.ivBack.setOnClickListener(v -> requireActivity().finish());
-        //String[] titleList = {"体育"};
-        //for (int i = 0; i < titleList.length; i++) {
-        //    TextView textView = new TextView(requireContext());
-        //    textView.setText(titleList[i]);
-        //    ColorStateList colorStateList = getResources().getColorStateList(R.color.bt_color_bet_top_tab_item_text);
-        //    textView.setTextColor(colorStateList);
-        //    if (i == 0) {
-        //        textView.setTextSize(16);
-        //    } else {
-        //        textView.setTextSize(14);
-        //    }
-        //    binding.tabPlayMethod.addTab(binding.tabPlayMethod.newTab().setCustomView(textView));
-        //}
-        //binding.tabPlayMethod.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-        //    @Override
-        //    public void onTabSelected(TabLayout.Tab tab) {
-        //        ((TextView) tab.getCustomView()).setTextSize(16);
-        //        if (playMethodPos != tab.getPosition()) {
-        //            if (tab.getPosition() == 1 && (TextUtils.equals(mPlatform, PLATFORM_PMXC) || TextUtils.equals(mPlatform, PLATFORM_PM))) {
-        //                binding.tabSearchDate.setVisibility(View.GONE);
-        //                binding.tabSportType.setVisibility(View.GONE);
-        //            } else {
-        //                binding.tabSearchDate.setVisibility(View.VISIBLE);
-        //                binding.tabSportType.setVisibility(View.VISIBLE);
-        //            }
-        //            autoClickItem(binding.tabSportType, 0);
-        //            playMethodPos = tab.getPosition();
-        //            if (playMethodPos == 0) {
-        //                tabSportAdapter.setList(mResult.get("1"));
-        //            } else if (playMethodPos == 1) {
-        //                tabSportAdapter.setList(mResult.get("2"));
-        //            }
-        //        }
-        //    }
-        //
-        //    @Override
-        //    public void onTabUnselected(TabLayout.Tab tab) {
-        //        ((TextView) tab.getCustomView()).setTextSize(14);
-        //    }
-        //
-        //    @Override
-        //    public void onTabReselected(TabLayout.Tab tab) {
-        //
-        //    }
-        //});
         tabSportAdapter = new TabSportResultAdapter(new ArrayList<>(), viewModel.getMatchGames());
         binding.tabSportType.setAdapter(tabSportAdapter);
         binding.tabSportType.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false));
@@ -135,6 +91,7 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
                 tabSportAdapter.setSelectedPosition(position);
                 sportTypePos = position;
                 long startTime = dateResultList.get(searchDatePos).getTime();
+                showLoadDialog();
                 viewModel.matchResultPage(String.valueOf(startTime), String.valueOf(startTime + 86400000L), playMethodPos, String.valueOf(getSportId()));
             }
 
@@ -171,6 +128,7 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
                     searchDatePos = tab.getPosition();
                     long startTime = dateResultList.get(searchDatePos).getTime();
                     if (!tabSportAdapter.getData().isEmpty()) {
+                        showLoadDialog();
                         viewModel.matchResultPage(String.valueOf(startTime), String.valueOf(startTime + 86400000L), playMethodPos, String.valueOf(getSportId()));
                     }
                 }
@@ -289,9 +247,11 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
                 tabSportAdapter.setList(mResult.get("2"));
             }
             long startTime = dateResultList.get(searchDatePos).getTime();
+            showLoadDialog();
             viewModel.matchResultPage(String.valueOf(startTime), String.valueOf(startTime + 86400000L), playMethodPos, String.valueOf(getSportId()));
         });
         viewModel.resultLeagueData.observe(this, list -> {
+            dismissLoadDialog();
             allLeagueList = list;
             if (resultAdapter == null) {
                 resultAdapter = new LeagueResultAdapter(requireContext(), list);
@@ -308,6 +268,7 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
             }
             extractedLeague();
         });
+        viewModel.resultErrorLeagueData.observe(this, it -> dismissLoadDialog());
     }
 
     private void extractedLeague() {
@@ -338,6 +299,18 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
         } else {
             return tabSportAdapter.getItem(sportTypePos == -1 ? 0 : sportTypePos).id;
         }
+    }
+
+    public void showLoadDialog() {
+        if (binding.ivLoading.getVisibility() == View.GONE) {
+            binding.ivLoading.setVisibility(View.VISIBLE);
+            ObjectAnimator.ofFloat(binding.ivLoading, "rotation", 0f, 360f).setDuration(700).start();
+        }
+    }
+
+    public void dismissLoadDialog() {
+        binding.ivLoading.clearAnimation();
+        binding.ivLoading.setVisibility(View.GONE);
     }
 
 }

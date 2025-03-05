@@ -34,7 +34,7 @@ import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class PMCacheLeagueListCallBack extends HttpCallBack<MatchLeagueListCacheRsp> {
+public class PMLeagueListCacheCallBack extends HttpCallBack<MatchLeagueListCacheRsp> {
 
     private PMMainViewModel mViewModel;
     private boolean mHasCache;
@@ -68,7 +68,7 @@ public class PMCacheLeagueListCallBack extends HttpCallBack<MatchLeagueListCache
      */
     private List<BaseBean> mNoliveMatchList = new ArrayList<>();
 
-    public PMCacheLeagueListCallBack(PMMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
+    public PMLeagueListCacheCallBack(PMMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
                                      int currentPage, int playMethodType, int sportPos, String sportId, int orderBy, List<Long> leagueIds,
                                      int searchDatePos, int oddType, List<Long> matchids, int finalType, boolean isStepSecond) {
         mViewModel = viewModel;
