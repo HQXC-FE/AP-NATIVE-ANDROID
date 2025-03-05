@@ -8,7 +8,6 @@ import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.HotLeagueInfo;
 import com.xtree.bet.bean.response.fb.FbMatchListCacheRsp;
 import com.xtree.bet.bean.response.fb.FbStatisticalInfoCacheRsp;
-import com.xtree.bet.bean.response.fb.MatchInfo;
 
 import java.util.Map;
 
@@ -35,28 +34,12 @@ public interface ApiService {
     Flowable<BaseResponse<HotLeagueInfo>> getSettings(@QueryMap(encoded = true) Map<String, String> filters);
 
     /**
-     * 获取 FB token 参数 cachedToken=1
-     * @return
-     */
-    @POST("/api/sports/fb/getToken?cachedToken=1")
-    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<FBService>> getFBGameTokenApi();
-
-    /**
      * 获取 FB token 参数 cachedToken=0
      * @return
      */
     @POST("/api/sports/fb/getToken?cachedToken=0")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<FBService>> getFBGameZeroTokenApi();
-
-    /**
-     * 获取 FBXC token 参数 cachedToken=1
-     * @return
-     */
-    @POST("/api/sports/fbxc/getToken?cachedToken=1")
-    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<FBService>> getFBXCGameTokenApi();
+    Flowable<BaseResponse<FBService>> getFBGameTokenApi();
 
     /**
      * 获取 FBXC token 参数 cachedToken=0
@@ -64,7 +47,7 @@ public interface ApiService {
      */
     @POST("/api/sports/fbxc/getToken?cachedToken=0")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<FBService>> getFBXCGameZeroTokenApi();
+    Flowable<BaseResponse<FBService>> getFBXCGameTokenApi();
 
     /**
      * 获取 PM体育请求服务地址
