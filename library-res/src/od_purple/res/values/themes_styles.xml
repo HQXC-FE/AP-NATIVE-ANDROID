@@ -471,4 +471,19 @@
     <style name="style_me_msg_bg">
         <item name="android:background">@drawable/me_msg_backgroup</item>
     </style>
+
+    <style name="style_login_bg">
+        <item name="android:background">@drawable/me_login_bg</item>
+    </style>
+    <style name="style_login_backgroup">
+        <item name="android:background">@drawable/bg_login_backgroup</item>
+    </style>
+
+    <style name="style_login_eye_backgroup">
+        <item name="android:background">@drawable/ic_eye_login_selector</item>
+    </style>
+
+    <style name="style_login_check_backgroup">
+        <item name="android:background">@drawable/checkbox_bg_selector</item>
+    </style>
 </resources>

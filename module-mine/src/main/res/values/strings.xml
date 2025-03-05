@@ -30,7 +30,8 @@
     <string name="me_usdt_jiaocheng">教程</string>
     <string name="txt_upgrade">检查更新</string>
     <string name="me_logout_login">退出登录</string>
-    <string name="me_login">登录</string>
+    <string name="me_login">登 录</string>
+    <string name="me_login_sure_register">确 认 注 册</string>
     <string name="me_account_hint">请输入账号</string>
     <string name="me_pwd_hint">请输入密码</string>
     <string name="me_pwd_rember">记住密码</string>
@@ -423,4 +424,5 @@
     <string name="txt_title_code">如何获取%s个人收款码</string>
     <string name="txt_no_data_tip">暂无数据</string>
     <string name="txt_check_detail">查看详情</string>
+    <string name="txt_register_bottom_login">已有账户？马上登录</string>
 </resources>

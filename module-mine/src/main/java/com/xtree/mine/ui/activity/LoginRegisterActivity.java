@@ -10,9 +10,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.Editable;
+import android.text.Html;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.UnderlineSpan;
 import android.util.Base64;
 import android.view.View;
 import android.widget.CheckBox;
@@ -89,10 +93,11 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
     private static final int HANDLER_REFRESH_IMAGE_VER_LOGIN = 7;//刷新图片UI
     private static final int HANDLER_REFRESH_VER_LOGIN_VIEW = 8;//刷新显示登录二维码UI
 
-    private RegisterVerificationHandler mRegisterHandler;
+
+    //private RegisterVerificationHandler mRegisterHandler;
     protected Handler mainThreadHandler;
 
-    private class RegisterVerificationHandler extends Handler {
+    /*private class RegisterVerificationHandler extends Handler {
 
         RegisterVerificationHandler(Looper looper) {
             super(looper);
@@ -153,9 +158,9 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
             }
         }
 
-    }
+    }*/
 
-    private void refreshLoginVerView() {
+    /*private void refreshLoginVerView() {
         binding.toRegisterArea.setVisibility(View.VISIBLE);
         binding.loginArea.setVisibility(View.VISIBLE);
         binding.llLoginVerification.setVisibility(View.VISIBLE);//显示登录二维码
@@ -184,7 +189,7 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         msg.what = HANDLER_REFRESH_VER;
         sendMessage(msg);
 
-    }
+    }*/
 
     private void refreshLoginVeriImage(final RegisterVerificationCodeVo vo) {
         if (!TextUtils.isEmpty(vo.image_url)) {
@@ -224,6 +229,9 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
 
     private RegisterVerificationCodeVo registerVerificationCodeVo;//注册验证码
     private RegisterVerificationCodeVo loginRegCodeVo;//登录验证码
+
+    private String goRegister = getString(R.string.txt_login_to_register);
+    private String goLogin = getString(R.string.txt_login_to_login);
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -268,7 +276,7 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         }*/
 
 
-        mRegisterHandler = new RegisterVerificationHandler((Looper.getMainLooper()));
+      /*  mRegisterHandler = new RegisterVerificationHandler((Looper.getMainLooper()));*/
         mainThreadHandler = new Handler();
 
         mTopSpeedDomainFloatingWindows = new TopSpeedDomainFloatingWindows(this);
@@ -285,22 +293,27 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         viewType = intent.getIntExtra(ENTER_TYPE, LOGIN_TYPE);
         //登录页面
         if (viewType == LOGIN_TYPE) {
-            binding.toRegisterArea.setVisibility(View.VISIBLE);
-            binding.loginArea.setVisibility(View.VISIBLE);
-            binding.toLoginArea.setVisibility(View.GONE);
+            binding.tvRegisterLoginChange.setText(getText(R.string.me_login));
+            binding.meLoginArea.setVisibility(View.VISIBLE);
             binding.meRegisterArea.setVisibility(View.GONE);
-            binding.tvwRegisterWarning.setVisibility(View.GONE);
-            binding.ivwRegisterWarning.setVisibility(View.GONE);
+            binding.btnLogin.setText(getString(R.string.me_login));
+            SpannableString spannableString = new SpannableString(goRegister);
+            //还没有账号？ 前去注册
+
+            binding.tvwLogin.setText(Html.fromHtml("<font color='#9597A5'>还没有账号？</font><font color='#5B5768'> 前去注册</font>"));
+
         }
         //注册页面
         if (viewType == REGISTER_TYPE) {
-            binding.toLoginArea.setVisibility(View.VISIBLE);
+
+            binding.tvRegisterLoginChange.setText(getText(R.string.me_register));
             binding.meRegisterArea.setVisibility(View.VISIBLE);
+            binding.meLoginArea.setVisibility(View.GONE);
+            binding.btnLogin.setText(getString(R.string.me_login_sure_register));
+            binding.tvwLogin.setText(Html.fromHtml("<font color='#9597A5'>已有账号？ </font><font color='#5B5768'> 马上登录</font>"));
+
             hideRegister();
-            binding.toRegisterArea.setVisibility(View.GONE);
-            binding.loginArea.setVisibility(View.GONE);
-            binding.tvwRegisterWarning.setVisibility(View.VISIBLE);
-            binding.ivwRegisterWarning.setVisibility(View.VISIBLE);
+
         }
 
         boolean isRememberPwd = SPUtil.get(getApplication()).get(Spkey.REMEMBER_PWD, false);
@@ -325,9 +338,9 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         binding.tvwForgetPwd.setOnClickListener(v -> goForgetPassword());
 
         //binding.tvwAgreement.setOnClickListener(v -> goMain());
-        binding.tvwSkipLogin.setOnClickListener(v -> goMain(false));
+       /* binding.tvwSkipLogin.setOnClickListener(v -> goMain(false));
         binding.tvwCs.setOnClickListener(v -> AppUtil.goCustomerService(this));
-
+*/
         binding.btnLogin.setOnClickListener(v -> {
 
             if (!ifAgree()) {
@@ -373,37 +386,7 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         binding.tvwAgreement.setOnClickListener(v -> {
             showAgreementDialog(binding.ckbAgreement);
         });
-        binding.tvwAgreementRegister.setOnClickListener(v -> {
-            showAgreementDialog(binding.registerAgreementCheckbox);
-        });
 
-        binding.toRegisterArea.setOnClickListener(v -> {
-            //显示注册页面，隐藏登录界面
-            binding.toLoginArea.setVisibility(View.VISIBLE);
-            binding.meRegisterArea.setVisibility(View.VISIBLE);
-            binding.toRegisterArea.setVisibility(View.GONE);
-            binding.loginArea.setVisibility(View.GONE);
-            binding.tvwRegisterWarning.setVisibility(View.VISIBLE);
-            binding.ivwRegisterWarning.setVisibility(View.VISIBLE);
-            //读取Seting接口 获取是否展示注册二维码View
-            if (settingsVo != null && TextUtils.equals("1", settingsVo.register_captcha_switch)) {
-                binding.llEdtVerification.setVisibility(View.VISIBLE);
-                //显示注册页面 刷新 获取 注册验证码
-                Message msg = new Message();
-                msg.what = HANDLER_INIT_VER;
-                sendMessage(msg);
-            }
-
-        });
-        binding.toLoginArea.setOnClickListener(v -> {
-            binding.toRegisterArea.setVisibility(View.VISIBLE);
-            binding.loginArea.setVisibility(View.VISIBLE);
-            binding.toLoginArea.setVisibility(View.GONE);
-            binding.meRegisterArea.setVisibility(View.GONE);
-            hideRegister();
-            binding.tvwRegisterWarning.setVisibility(View.GONE);
-            binding.ivwRegisterWarning.setVisibility(View.GONE);
-        });
 
         binding.edtAccReg.addTextChangedListener(new TextWatcher() {
 
@@ -438,9 +421,9 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
                 }
 
                 if (mIsAcc && mIsPwd1 && mIsPwd2) {
-                    binding.btnRegister.setBackgroundResource(R.drawable.bg_register_enable);
+                    binding.btnLogin.setBackgroundResource(R.drawable.bg_register_enable);
                 } else {
-                    binding.btnRegister.setBackgroundResource(R.drawable.bg_register_unable);
+                    binding.btnLogin.setBackgroundResource(R.drawable.bg_register_unable);
                 }
             }
 
@@ -489,9 +472,9 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
 
                 CfLog.i((mIsAcc && mIsPwd1 && mIsPwd2) + "");
                 if (mIsAcc && mIsPwd1 && mIsPwd2) {
-                    binding.btnRegister.setBackgroundResource(R.drawable.bg_register_enable);
+                    binding.btnLogin.setBackgroundResource(R.drawable.bg_register_enable);
                 } else {
-                    binding.btnRegister.setBackgroundResource(R.drawable.bg_register_unable);
+                    binding.btnLogin.setBackgroundResource(R.drawable.bg_register_unable);
                 }
             }
 
@@ -525,9 +508,9 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
 
                 CfLog.i((mIsAcc && mIsPwd1 && mIsPwd2) + "");
                 if (mIsAcc && mIsPwd1 && mIsPwd2) {
-                    binding.btnRegister.setBackgroundResource(R.drawable.bg_register_enable);
+                    binding.btnLogin.setBackgroundResource(R.drawable.bg_register_enable);
                 } else {
-                    binding.btnRegister.setBackgroundResource(R.drawable.bg_register_unable);
+                    binding.btnLogin.setBackgroundResource(R.drawable.bg_register_unable);
                 }
             }
 
@@ -537,15 +520,15 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
             }
         });
 
-        binding.btnRegister.setOnClickListener(view -> {
+        binding.btnLogin.setOnClickListener(view -> {
 
                     String account = binding.edtAccReg.getText().toString().trim();
                     String pwd1 = binding.edtPwd1.getText().toString();
                     String pwd2 = binding.edtPwd2.getText().toString();
                     String verificationTxt = binding.edtVerification.getText().toString();
-                    if (!binding.registerAgreementCheckbox.isChecked()) {
+                    if (!binding.ckbAgreement.isChecked()) {
                         ToastUtils.showLong(getResources().getString(R.string.me_agree_hint));
-                        showAgreementDialog(binding.registerAgreementCheckbox);
+                        showAgreementDialog(binding.ckbAgreement);
                         return;
                     }
 
@@ -660,7 +643,7 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
                         }
                     }
         });
-        //点击 注册 验证码图片 手动刷新验证码图片
+     /*   //点击 注册 验证码图片 手动刷新验证码图片
         binding.ivVerification.setOnClickListener(v -> {
             LoadingDialog.show(this);
             Message msg = new Message();
@@ -674,7 +657,7 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
             Message msg = new Message();
             msg.what = HANDLER_INIT_VER_LOGIN;
             sendMessage(msg);
-        });
+        });*/
         viewModel.getPromotion();
     }
 
@@ -752,7 +735,7 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
 
         });
         //登录异常 需要刷新出 登录二维码
-        viewModel.liveDataLoginVerFail.observe(this, vo -> {
+       /* viewModel.liveDataLoginVerFail.observe(this, vo -> {
             if (vo.code == HttpCallBack.CodeRule.CODE_20204 ||
                     vo.code == HttpCallBack.CodeRule.CODE_20205 ||
                     vo.code == HttpCallBack.CodeRule.CODE_20206) {
@@ -780,12 +763,12 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
                 msg.what = HANDLER_REFRESH_REG_VER_VIEW;
                 sendMessage(msg);
             }
-        });
+        });*/
         //获取pro接口数据
         viewModel.promotionCodeVoMutableLiveData.observe(this, vo -> {
             promotionCodeVo = vo;
         });
-        //获取注册验证码
+    /*    //获取注册验证码
         viewModel.verificationCodeMutableLiveData.observe(this, vo -> {
             registerVerificationCodeVo = vo;
             if (!TextUtils.isEmpty(registerVerificationCodeVo.image_url)) {
@@ -815,12 +798,12 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
                 msg.obj = loginRegCodeVo;
                 sendMessage(msg);
             }
-        });
+        });*/
     }
 
-    protected void sendMessage(Message message) {
+  /*  protected void sendMessage(Message message) {
         mRegisterHandler.sendMessage(message);
-    }
+    }*/
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -882,7 +865,7 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
     }
 
     private void goForgetPassword() {
-        startContainerFragment(RouterFragmentPath.Mine.PAGER_FORGET_PASSWORD); // 三方转账
+        startContainerFragment(RouterFragmentPath.Mine.PAGER_FORGET_PASSWORD); // 忘记密码
     }
 
     private SecretKey checkSecretKey() throws Exception {

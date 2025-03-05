@@ -112,7 +112,11 @@
         <item name="home_me_play_intro_attr">@style/style_me_play_intro</item>
         <item name="home_me_tutorial_attr">@style/style_me_tutorial</item>
         <item name="me_msg_backgroup_attr">@style/style_me_msg_bg</item>
+        <item name="login_activity_attr">@style/style_login_bg</item>
+        <item name="login_ac_backgroup_attr">@style/style_login_backgroup</item>
+        <item name="login_eye_backgroup_attr">@style/style_login_eye_backgroup</item>
 
+        <item name="login_check_backgroup_attr">@style/style_login_check_backgroup</item>
     </style>
 
 </resources>
