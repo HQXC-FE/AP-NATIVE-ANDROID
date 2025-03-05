@@ -589,10 +589,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(binding.etInputMoney.getWindowToken(), 0);
         }
-        //注册监听
-        initListener();
-
-
     }
 
     private void refreshTopUI(ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo) {
