@@ -197,15 +197,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
     }
 
     private void initBottomTab() {
-        homeMenuItem = newItem(R.mipmap.mn_hm_unselected, R.mipmap.mn_hm_selected, getString(R.string.txt_pg_home));
-        activityMenuItem = newItem(R.mipmap.mn_dc_unselected, R.mipmap.mn_dc_selected, getString(R.string.txt_pg_discount));
-        rechargeMenuItem = newItem(R.mipmap.mn_rc_unselected, R.mipmap.mn_rc_selected, getString(R.string.txt_pg_recharge));
-        meMenuItem = newItem(R.mipmap.mn_psn_unselected, R.mipmap.mn_psn_selected, getString(R.string.txt_pg_mine));
+        homeMenuItem = newItem(R.drawable.mn_hm_unselected, R.drawable.mn_hm_selected, getString(R.string.txt_pg_home));
+        activityMenuItem = newItem(R.drawable.mn_dc_unselected, R.drawable.mn_dc_selected, getString(R.string.txt_pg_discount));
+        rechargeMenuItem = newItem(R.drawable.mn_rc_unselected, R.drawable.mn_rc_selected, getString(R.string.txt_pg_recharge));
+        meMenuItem = newItem(R.drawable.mn_psn_unselected, R.drawable.mn_psn_selected, getString(R.string.txt_pg_mine));
 
         navigationController = binding.pagerBottomTab.custom()
                 .addItem(homeMenuItem)
                 .addItem(activityMenuItem)
-                .addItem(newRoundItem(R.mipmap.ic_tab_main))
+                .addItem(newRoundItem(R.drawable.ic_tab_main))
                 .addItem(rechargeMenuItem)
                 .addItem(meMenuItem)
                 .build();

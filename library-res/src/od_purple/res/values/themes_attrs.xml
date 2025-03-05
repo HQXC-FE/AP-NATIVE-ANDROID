@@ -104,4 +104,7 @@
     <attr name="login_eye_backgroup_attr" format="reference" />
     <attr name="login_check_backgroup_attr" format="reference" />
     <attr name="home_top_banner_attr" format="reference" />
+    <attr name="main_bottom_image_attr" format="reference" />
+
+
 </resources>
