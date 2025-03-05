@@ -152,9 +152,8 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
         //获取当前渠道详情
         viewModel.withdrawalInfoVoMutableLiveData.observe(owner, vo -> {
             infoVo = vo;
+            bankInfoList.clear();
             if (infoVo != null && !infoVo.user_bank_info.isEmpty()) {
-                bankInfoList.clear();
-
                 for (int i = 0; i < infoVo.user_bank_info.size(); i++) {
                     WithdrawalInfoVo.UserBankInfo bankInfo = infoVo.user_bank_info.get(i);
                     if (!TextUtils.isEmpty(infoVo.chain) && infoVo.chain.toUpperCase().contains(bankInfo.usdt_type.toUpperCase())) {
@@ -269,10 +268,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(binding.etInputMoney.getWindowToken(), 0);
         }
-        //注册监听
-        initListener();
-
-
     }
 
     /**
@@ -282,44 +277,35 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
      * @param infoVo
      */
     private void refreshChangeUI(WithdrawalListVo.WithdrawalItemVo changVo, WithdrawalInfoVo infoVo) {
-        if (!TextUtils.isEmpty(infoVo.chain) && infoVo.chain.toUpperCase().contains(changVo.name.toUpperCase())) {
-            if (!bankInfoList.isEmpty()) {
-                String showAddress = bankInfoList.get(0).usdt_type + "--" + bankInfoList.get(0).account;
-                CfLog.e("设置默认选中的提币地址=" + showAddress);
-                //设置默认选中的提币地址
-                selectorBankInfo = bankInfoList.get(0);
-                binding.tvBindAddress.setText(showAddress);
-            } else {
-                selectorBankInfo = null;
-                binding.tvBindAddress.setText(" ");
-            }
+        //根据传入列表的地址数据判断提币数组数据 TRC情况下 只显示trc地址
+        if (!bankInfoList.isEmpty()) {
+            String showAddress = bankInfoList.get(0).usdt_type + "--" + bankInfoList.get(0).account;
+            CfLog.e("设置默认选中的提币地址=" + showAddress);
+            //设置默认选中的提币地址
+            selectorBankInfo = bankInfoList.get(0);
+            binding.tvBindAddress.setText(showAddress);
         } else {
-            //收款地址 设置默认数据
-            if (infoVo.user_bank_info != null && !infoVo.user_bank_info.isEmpty()) {
-                String showAddress = infoVo.user_bank_info.get(0).usdt_type + "--" + infoVo.user_bank_info.get(0).account;
-                //设置默认选中的提币地址
-                selectorBankInfo = infoVo.user_bank_info.get(0);
-                binding.tvBindAddress.setText(showAddress);
-            } else {
-                selectorBankInfo = null;
-                binding.tvBindAddress.setText(" ");
-                CfLog.e("****************** infoVo.user_bank_info is  null *********** ");
-            }
+            selectorBankInfo = null;
+            binding.tvBindAddress.setText(" ");
         }
+
         //刷新提款类型
         if (changVo.name.contains("提款")) {
             binding.tvWithdrawalTypeShow.setText(changVo.name);
         } else {
             binding.tvWithdrawalTypeShow.setText(changVo.name + "提款");
         }
+
+        String rate = infoVo.rate;//汇率
+        //tv_info_exchange_rate
+        binding.tvInfoExchangeRateShow.setText(rate);
+        binding.tvWithdrawalAmountShow.setText(infoVo.quota);//提款余额
+        String temp = infoVo.min_money + "元,最高" + infoVo.max_money + "元";
+        binding.tvWithdrawalSingleShow.setText(temp); //单笔提现金额
+
         //点击USDT收款地址
         binding.tvBindAddress.setOnClickListener(v -> {
-            if (!TextUtils.isEmpty(infoVo.chain) && infoVo.chain.toUpperCase().contains(changVo.name.toUpperCase())) {
-                showCollectionDialog(bankInfoList);
-            } else {
-                showCollectionDialog(infoVo.user_bank_info);
-            }
-
+            showCollectionDialog(bankInfoList);
         });
     }
 
