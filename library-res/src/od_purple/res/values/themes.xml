@@ -51,6 +51,8 @@
         <item name="withdraw_money_account_attr">@style/style_withdraw_money_account</item>
         <item name="bg_dialog_top_bank_attr">@style/style_bg_dialog_top_bank</item>
         <item name="withdraw_title_progress_attr">@style/style_withdraw_title_progress</item>
+        <item name="bg_floating_attr">@style/style_bg_floating</item>
+        <item name="iv_floating_close_attr">@style/style_iv_floating_close</item>
         <item name="home_top_notice_attr">@style/style_home_top_notice</item>
         <item name="home_top_deposit_attr">@style/style_home_top_deposit</item>
         <item name="home_top_trans_attr">@style/style_home_top_trans</item>

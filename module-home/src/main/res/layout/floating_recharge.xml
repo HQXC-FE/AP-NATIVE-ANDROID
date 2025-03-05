@@ -4,28 +4,26 @@
     android:id="@+id/cl_floating_window"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:src="@mipmap/bg_floating"
     android:visibility="gone"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
     <ImageView
         android:id="@+id/ivw_background"
+        style="?attr/bg_floating_attr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/bg_floating"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvw_title"
+        style="?attr/textPrimaryAttr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="70dp"
         android:text="@string/txt_floating_title"
-        android:textColor="@color/clr_black"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,11 +43,11 @@
 
     <ImageView
         android:id="@+id/ivw_close"
+        style="?attr/iv_floating_close_attr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
         android:layout_marginEnd="20dp"
-        android:background="@mipmap/me_close_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -113,9 +111,9 @@
 
     <TextView
         android:id="@+id/tvw_no_data"
+        style="?attr/img_no_data_attr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@mipmap/ic_no_data"
         android:gravity="center"
         android:text="暂无数据"
         android:textColor="@color/clr_grey_13"

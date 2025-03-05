@@ -51,6 +51,8 @@
     <attr name="withdraw_money_account_attr" format="reference" />
     <attr name="bg_dialog_top_bank_attr" format="reference" />
     <attr name="withdraw_title_progress_attr" format="reference" />
+    <attr name="bg_floating_attr" format="reference" />
+    <attr name="iv_floating_close_attr" format="reference" />
     <attr name="img_no_data_attr" format="reference" />
     <attr name="home_top_notice_attr" format="reference" />
     <attr name="home_top_deposit_attr" format="reference" />

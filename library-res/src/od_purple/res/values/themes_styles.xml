@@ -304,6 +304,14 @@
         <item name="android:textColor">@drawable/text_withdrawal_title_progress_selector</item>
     </style>
 
+    <style name="style_bg_floating">
+        <item name="android:src">@drawable/bg_floating</item>
+    </style>
+
+    <style name="style_iv_floating_close">
+        <item name="android:src">@drawable/iv_floating_close</item>
+    </style>
+
     <!-- 我的-5个菜单 白色字 -->
     <style name="style_menu_white">
         <item name="android:layout_width">wrap_content</item>
