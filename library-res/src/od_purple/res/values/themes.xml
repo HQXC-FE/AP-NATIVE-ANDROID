@@ -30,6 +30,7 @@
         <item name="rc_channel_attr">@style/rc_channel_style</item>
         <item name="style_cm_title_attr">@style/rc_channel_style</item>
         <item name="recharge_btn_next_attr">@style/recharge_btn_next_style</item>
+        <item name="transfer_btn_next_attr">@style/transfer_btn_next_style</item>
         <item name="withdrawal_btn_next_attr">@style/withdrawal_btn_next_style</item>
         <item name="withdrawal_btn_previous_attr">@style/withdrawal_btn_previous_style</item>
         <item name="common_btn_attr">@style/recharge_btn_next_style</item>

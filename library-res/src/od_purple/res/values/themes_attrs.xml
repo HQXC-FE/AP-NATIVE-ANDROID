@@ -28,6 +28,7 @@
     <attr name="style_cm_title_attr" format="reference" />
 
     <attr name="recharge_btn_next_attr" format="reference" />
+    <attr name="transfer_btn_next_attr" format="reference" />
     <attr name="withdrawal_btn_next_attr" format="reference" />
     <attr name="withdrawal_btn_previous_attr" format="reference" />
     <attr name="common_btn_attr" format="reference" />
@@ -85,7 +86,7 @@
     <attr name="home_me_usdt_jiaocheng_attr" format="reference" />
     <attr name="home_me_ic_help_attr" format="reference" />
     <attr name="home_me_backgroup_attr" format="reference" />
-    <attr name="home_me_backgroup_middle_attr" format="reference"/>
+    <attr name="home_me_backgroup_middle_attr" format="reference" />
     <attr name="home_me_backgroup_top_attr" format="reference" />
     <attr name="home_me_backgroup_top_click_attr" format="reference" />
     <attr name="home_me_backgroup_bottom_attr" format="reference" />

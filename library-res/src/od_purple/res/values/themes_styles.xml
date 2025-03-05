@@ -107,6 +107,11 @@
         <item name="android:textColor">@drawable/recharge_btn_next_text_selector</item>
     </style>
 
+    <style name="transfer_btn_next_style">
+        <item name="android:background">@drawable/bg_btn_long2_selector</item>
+        <item name="android:textColor">@drawable/recharge_btn_next_text_selector</item>
+    </style>
+
     <style name="withdrawal_btn_next_style">
         <item name="android:background">@drawable/cm_btn_long_press</item>
         <item name="android:textColor">@color/white</item>
@@ -492,6 +497,7 @@
     <style name="style_login_bg">
         <item name="android:background">@drawable/me_login_bg</item>
     </style>
+
     <style name="style_login_backgroup">
         <item name="android:background">@drawable/bg_login_backgroup</item>
     </style>
@@ -503,9 +509,11 @@
     <style name="style_login_check_backgroup">
         <item name="android:background">@drawable/checkbox_bg_selector</item>
     </style>
+
     <style name="style_home_top_banner">
         <item name="android:src">@drawable/hm_bnr_01</item>
     </style>
+
     <style name="style_main_bottom_image">
         <item name="android:background">@drawable/ic_tab_background</item>
     </style>
