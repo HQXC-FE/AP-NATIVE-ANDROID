@@ -564,7 +564,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
             imm.hideSoftInputFromWindow(binding.etInputMoney.getWindowToken(), 0);
         }
         //注册监听
-        initListener();
+//        initListener();
 
 
     }
