@@ -500,19 +500,6 @@
                             tools:text="123123" />
                     </LinearLayout>
 
-                    <View style="@style/style_withdraw_dividing_line" />
-
-                    <LinearLayout style="@style/style_withdraw_confirm_ll">
-
-                        <TextView
-                            style="@style/style_withdraw_show_title"
-                            android:text="@string/txt_confirm_amount" />
-
-                        <TextView
-                            android:id="@+id/tv_confirm_amount_show"
-                            style="@style/style_withdraw_confirm_value"
-                            tools:text="123123" />
-                    </LinearLayout>
 
                     <View style="@style/style_withdraw_dividing_line" />
 
@@ -528,19 +515,6 @@
                             tools:text="123123" />
                     </LinearLayout>
 
-                    <View style="@style/style_withdraw_dividing_line" />
-
-                    <LinearLayout style="@style/style_withdraw_confirm_ll">
-
-                        <TextView
-                            style="@style/style_withdraw_show_title"
-                            android:text="@string/txt_virtual_type" />
-
-                        <TextView
-                            android:id="@+id/tv_withdrawal_virtual_type_show"
-                            style="@style/style_withdraw_confirm_value"
-                            tools:text="123123" />
-                    </LinearLayout>
 
                     <View style="@style/style_withdraw_dividing_line" />
 
