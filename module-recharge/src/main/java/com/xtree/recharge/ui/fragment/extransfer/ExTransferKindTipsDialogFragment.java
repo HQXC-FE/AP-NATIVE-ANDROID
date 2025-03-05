@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.recharge.BR;
 import com.xtree.recharge.R;
@@ -57,6 +58,8 @@ public class ExTransferKindTipsDialogFragment extends BaseDialogFragment<LayoutR
 
     @Override
     public void initView() {
+        binding.ivwClose.setOnClickListener(v -> dismissAllowingStateLoss());
+        binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
         binding.tvwRight.setOnClickListener(v -> dismissAllowingStateLoss());
         String key = SPKeyGlobal.RC_NOT_RC_EXP_TIP_TODAY_COUNT;
         binding.cbTipPm.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -138,7 +141,7 @@ public class ExTransferKindTipsDialogFragment extends BaseDialogFragment<LayoutR
         Window window = Objects.requireNonNull(getDialog()).getWindow();
         WindowManager.LayoutParams params = Objects.requireNonNull(window).getAttributes();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.height = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(params);
         View decorView = window.getDecorView();
         decorView.setBackground(new ColorDrawable(Color.TRANSPARENT));

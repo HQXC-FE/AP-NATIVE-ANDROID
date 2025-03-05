@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -13,147 +14,134 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ll_root"
         style="@style/style_rc_dlg_root"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/ivw_bg_top"
-             style="?attr/rc_dlg_bg_top_attr"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="0dp"
-        android:adjustViewBounds="true"
+            style="?attr/bg_google_auth_attr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/ivw_bg_bottom"
-            style="@style/style_rc_dlg_bg_top2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivw_bg_top" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="58dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/ivw_top"
-                          style="?attr/rc_dlg_bg_title_attr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/tvw_title"
                 style="@style/style_rc_dlg_title"
-                android:text="银行卡充值"
+                android:text="@{model.titleLiveData}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="标题" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <FrameLayout
+            style="?attr/bg_rc_dialog_attr"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cl_title">
 
-
-            <LinearLayout
-                android:id="@+id/ll_amount"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <ImageView
-                    android:layout_width="wrap_content"
+
+                <LinearLayout
+                    android:id="@+id/ll_amount"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"
-                    android:src="@mipmap/icon_erplyslip_1_kind_tips" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="15dp"
-                    android:text="注意"
-                    android:textColor="@color/clr_txt_black_03"
-                    android:textSize="14sp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="16dp"
+                        android:src="@mipmap/icon_erplyslip_1_kind_tips" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:text="网上私聊软件群组论坛所谓的半价/优惠代充充值“都是骗子”，已有多名受害者被骗资料造成个人财损，请勿相信这类信息，谨防上当受害"
-                    android:textColor="@color/clr_red_19"
-                    android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="15dp"
+                        android:text="注意"
+                        android:textColor="@color/clr_txt_black_03"
+                        android:textSize="14sp" />
 
-                <TextView
-                    style="@style/style_rc_tip_small_grey"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginEnd="20dp"
-                    android:drawableStart="@mipmap/cm_ic_hint_purple"
-                    android:drawablePadding="2dp"
-                    android:text="@{model.tip1}"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:text="网上私聊软件群组论坛所谓的半价/优惠代充充值“都是骗子”，已有多名受害者被骗资料造成个人财损，请勿相信这类信息，谨防上当受害"
+                        android:textColor="@color/clr_red_19"
+                        android:textSize="14sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"
-                    android:text="如不按流程操作造成损失愿意自己承担"
-                    android:textColor="@color/clr_withdrawal_usdt_tip"
-                    android:textSize="14sp" />
+                    <TextView
+                        style="@style/style_rc_tip_small_grey"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginEnd="20dp"
+                        android:drawableStart="@mipmap/cm_ic_hint_purple"
+                        android:drawablePadding="2dp"
+                        android:text="@{model.tip1}" />
 
-                <TextView
-                    android:id="@+id/tvwRight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@mipmap/cm_btn_long2"
-                    android:gravity="center"
-                    android:text="我同意"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@id/ivw_bg"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ivReceipt" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="16dp"
+                        android:text="如不按流程操作造成损失愿意自己承担"
+                        android:textColor="@color/clr_withdrawal_usdt_tip"
+                        android:textSize="14sp" />
 
-                <CheckBox
-                    android:id="@+id/cb_tip_pm"
-                    style="@style/style_cm_ckb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="30dp"
-                    android:text="@string/txt_rc_not_tip"
-                    android:textColor="@color/clr_purple_01"
-                    android:textSize="12sp"
-                    android:theme="@style/PMTipCheckBoxTheme"
-                    app:layout_constraintEnd_toEndOf="@+id/tvw_msg"
-                    app:layout_constraintStart_toStartOf="@+id/tvw_msg"
-                    app:layout_constraintTop_toBottomOf="@+id/tvw_confirm" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvwRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@mipmap/cm_btn_long2"
+                        android:gravity="center"
+                        android:text="我同意"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@id/ivw_bg"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ivReceipt" />
 
-        </androidx.core.widget.NestedScrollView>
+                    <CheckBox
+                        android:id="@+id/cb_tip_pm"
+                        style="@style/style_cm_ckb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="30dp"
+                        android:text="@string/txt_rc_not_tip"
+                        android:textColor="@color/clr_purple_01"
+                        android:textSize="12sp"
+                        android:theme="@style/PMTipCheckBoxTheme"
+                        app:layout_constraintEnd_toEndOf="@+id/tvw_msg"
+                        app:layout_constraintStart_toStartOf="@+id/tvw_msg"
+                        app:layout_constraintTop_toBottomOf="@+id/tvw_confirm" />
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
