@@ -592,6 +592,9 @@ public class USDTWithdrawalDialog extends BottomPopupView implements FruitHorUSD
     }
 
     private void refreshTopUI(ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo) {
+        for (WithdrawalListVo.WithdrawalItemVo vo : listVo) {
+            vo.flag = false;
+        }
         listVo.get(0).flag = true;
         recyclerViewAdapter = new FruitHorUSDTRecyclerViewAdapter(listVo, this);
 
