@@ -99,5 +99,9 @@
     <attr name="home_me_play_intro_attr" format="reference" />
     <attr name="home_me_tutorial_attr" format="reference" />
     <attr name="me_msg_backgroup_attr" format="reference" />
-
+    <attr name="login_activity_attr" format="reference" />
+    <attr name="login_ac_backgroup_attr" format="reference" />
+    <attr name="login_eye_backgroup_attr" format="reference" />
+    <attr name="login_check_backgroup_attr" format="reference" />
+    <attr name="home_top_banner_attr" format="reference" />
 </resources>
