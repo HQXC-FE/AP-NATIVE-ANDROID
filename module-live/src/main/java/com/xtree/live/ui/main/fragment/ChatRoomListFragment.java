@@ -126,7 +126,7 @@ public class ChatRoomListFragment extends BaseFragment<FragmentChatRoomListBindi
                     binding.etAssistantSearch.setText("");
                     binding.etAssistantSearch.clearFocus();
                     if (!TextUtils.isEmpty(nickname)) {
-                        mvpPresenter.searchAssistant(nickname);
+//                        mvpPresenter.searchAssistant(nickname);
                     }
                 }
                 return false;
@@ -144,7 +144,7 @@ public class ChatRoomListFragment extends BaseFragment<FragmentChatRoomListBindi
                 binding.etAssistantSearch.setText("");
                 binding.etAssistantSearch.clearFocus();
                 if (!TextUtils.isEmpty(nickname)) {
-                    mvpPresenter.searchAssistant(nickname);
+//                    mvpPresenter.searchAssistant(nickname);
                 }
             });
         } else {
@@ -303,7 +303,7 @@ public class ChatRoomListFragment extends BaseFragment<FragmentChatRoomListBindi
         }
     }
 
-    @Override
+//    @Override
     public void onGetChatRoomList(List<ChatRoomInfo> beans) {
         binding.swipeLayout.setRefreshing(false);
         if (beans == null) return;
@@ -314,29 +314,29 @@ public class ChatRoomListFragment extends BaseFragment<FragmentChatRoomListBindi
         unreadChanged();
     }
 
-    @Override
+//    @Override
     public void onRefreshDone() {
         binding.swipeLayout.setRefreshing(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void OnPublishPinChatRoomEvent(ChatRoomInfo chatRoomInfo){
-        if(isVisibleUser()){
-            onPinChatRoom(chatRoomInfo);
-        }else {
-            for (int i = 0; i < mAdapter.getData().size(); i++) {
-                ChatRoomInfo tmp = mAdapter.getData().get(i);
-                if(Objects.equals(tmp.getVid(), chatRoomInfo.getVid())){
-                    tmp.setIsPin(chatRoomInfo.getIsPin());
-                    tmp.setPinTime(chatRoomInfo.getPinTime());
-                    onPinChatRoom(tmp);
-                    break;
-                }
-            }
-        }
+//        if(isVisibleUser()){
+//            onPinChatRoom(chatRoomInfo);
+//        }else {
+//            for (int i = 0; i < mAdapter.getData().size(); i++) {
+//                ChatRoomInfo tmp = mAdapter.getData().get(i);
+//                if(Objects.equals(tmp.getVid(), chatRoomInfo.getVid())){
+//                    tmp.setIsPin(chatRoomInfo.getIsPin());
+//                    tmp.setPinTime(chatRoomInfo.getPinTime());
+//                    onPinChatRoom(tmp);
+//                    break;
+//                }
+//            }
+//        }
     }
 
-    @Override
+//    @Override
     public void onPinChatRoom(ChatRoomInfo chatRoomInfo) {
         int index = mAdapter.getData().indexOf(chatRoomInfo);
         if(index >= 0){
@@ -432,7 +432,7 @@ public class ChatRoomListFragment extends BaseFragment<FragmentChatRoomListBindi
 
 
     private void getChatRoomList() {
-        mvpPresenter.getChatRoomList("1,2");
+//        mvpPresenter.getChatRoomList("1,2");
     }
 
 
@@ -444,65 +444,65 @@ public class ChatRoomListFragment extends BaseFragment<FragmentChatRoomListBindi
     }
 
 
-    @Override
-    public void onDelayHiddenSearchItem() {
-        Animation animateOut = AnimationUtils.loadAnimation(getContext(), R.anim.anim_fade_out);
-        animateOut.setDuration(250);
-        ViewUtil.animateOut(binding.clAssistantMessage, animateOut);
-    }
-    @Override
-    public void onGetAnchorAssistant(@Nullable ChatRoomInfo chatRoomInfo) {
-        if(chatRoomInfo != null){
-            int index = mAdapter.getData().indexOf(chatRoomInfo);
-            if(index >= 0){
-                ChatRoomInfo infoInList = mAdapter.getData().get(index);
-                if(infoInList.getIsPin() == 1){
-                    mAdapter.getRecyclerView().scrollToPosition(mAdapter.getHeaderLayoutCount() + index);
-                    playSearchResultAnimation(mAdapter.getHeaderLayoutCount() + index);
-                }else {
-                    for (int i = 0; i < mAdapter.getData().size(); i++) {
-                        ChatRoomInfo tmp = mAdapter.getData().get(i);
-                        if(tmp.getIsPin() == 0){//第一个非pin
-                            if(Objects.equals(tmp.getVid(), chatRoomInfo.getVid())){
-                                //做动画
-                                playSearchResultAnimation(i);
-                                break;
-                            }else {
-                                swapItemView(i, index, true);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }else {
-                int unPinIndex = -1;
-                for (int i = 0; i < mAdapter.getData().size(); i++) {
-                    ChatRoomInfo tmp = mAdapter.getData().get(i);
-                    if(tmp.getIsPin() == 0){//第一个非pin
-                        unPinIndex = i;
-                        break;
-                    }
-                }
-                if(unPinIndex == -1){
-                    mAdapter.addData(chatRoomInfo);
-                    mAdapter.getRecyclerView().scrollToPosition(mAdapter.getData().size());
-                    //做动画
-                    playSearchResultAnimation(unPinIndex);
-                }else {
-                    mAdapter.addData(unPinIndex, chatRoomInfo);
-                    mAdapter.getRecyclerView().scrollToPosition(unPinIndex);
-                    //做动画
-                    playSearchResultAnimation(unPinIndex);
-                }
-            }
-        }
-        Animation animateIn = AnimationUtils.loadAnimation(getContext(), R.anim.anim_fade_enter);
-        animateIn.setDuration(250);
-        ViewUtil.animateIn(binding.clAssistantMessage, animateIn);
-        binding.tvAssistantMessageFail.setVisibility(chatRoomInfo != null ? View.GONE :View.VISIBLE);
-        binding.tvAssistantMessageSuccess.setVisibility(chatRoomInfo != null ? View.VISIBLE : View.GONE);
-        mvpPresenter.delayHiddenSearchItem();
-    }
+//    @Override
+//    public void onDelayHiddenSearchItem() {
+//        Animation animateOut = AnimationUtils.loadAnimation(getContext(), R.anim.anim_fade_out);
+//        animateOut.setDuration(250);
+//        ViewUtil.animateOut(binding.clAssistantMessage, animateOut);
+//    }
+//    @Override
+//    public void onGetAnchorAssistant(@Nullable ChatRoomInfo chatRoomInfo) {
+//        if(chatRoomInfo != null){
+//            int index = mAdapter.getData().indexOf(chatRoomInfo);
+//            if(index >= 0){
+//                ChatRoomInfo infoInList = mAdapter.getData().get(index);
+//                if(infoInList.getIsPin() == 1){
+//                    mAdapter.getRecyclerView().scrollToPosition(mAdapter.getHeaderLayoutCount() + index);
+//                    playSearchResultAnimation(mAdapter.getHeaderLayoutCount() + index);
+//                }else {
+//                    for (int i = 0; i < mAdapter.getData().size(); i++) {
+//                        ChatRoomInfo tmp = mAdapter.getData().get(i);
+//                        if(tmp.getIsPin() == 0){//第一个非pin
+//                            if(Objects.equals(tmp.getVid(), chatRoomInfo.getVid())){
+//                                //做动画
+//                                playSearchResultAnimation(i);
+//                                break;
+//                            }else {
+//                                swapItemView(i, index, true);
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
+//            }else {
+//                int unPinIndex = -1;
+//                for (int i = 0; i < mAdapter.getData().size(); i++) {
+//                    ChatRoomInfo tmp = mAdapter.getData().get(i);
+//                    if(tmp.getIsPin() == 0){//第一个非pin
+//                        unPinIndex = i;
+//                        break;
+//                    }
+//                }
+//                if(unPinIndex == -1){
+//                    mAdapter.addData(chatRoomInfo);
+//                    mAdapter.getRecyclerView().scrollToPosition(mAdapter.getData().size());
+//                    //做动画
+//                    playSearchResultAnimation(unPinIndex);
+//                }else {
+//                    mAdapter.addData(unPinIndex, chatRoomInfo);
+//                    mAdapter.getRecyclerView().scrollToPosition(unPinIndex);
+//                    //做动画
+//                    playSearchResultAnimation(unPinIndex);
+//                }
+//            }
+//        }
+//        Animation animateIn = AnimationUtils.loadAnimation(getContext(), R.anim.anim_fade_enter);
+//        animateIn.setDuration(250);
+//        ViewUtil.animateIn(binding.clAssistantMessage, animateIn);
+//        binding.tvAssistantMessageFail.setVisibility(chatRoomInfo != null ? View.GONE :View.VISIBLE);
+//        binding.tvAssistantMessageSuccess.setVisibility(chatRoomInfo != null ? View.VISIBLE : View.GONE);
+////        mvpPresenter.delayHiddenSearchItem();
+//    }
 
     private void playSearchResultAnimation(int index){
 //        mAdapter.notifyItemChanged(mAdapter.getHeaderLayoutCount() + index, 1);

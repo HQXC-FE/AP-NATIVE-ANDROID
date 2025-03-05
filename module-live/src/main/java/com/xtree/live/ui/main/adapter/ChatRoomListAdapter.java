@@ -37,7 +37,9 @@ public class ChatRoomListAdapter extends BaseQuickAdapter<ChatRoomInfo, BaseView
     private final int USER_ICON_SIZE = ConvertUtils.dp2px(36);
 
     public ChatRoomListAdapter() {
-        super(R.layout.item_live_chat_room_list,  presenter.getRoomInfoList());
+        super(R.layout.item_live_chat_room_list
+//                presenter.getRoomInfoList()
+        );
         addChildClickViewIds(R.id.pinChatRoom);
     }
 
@@ -95,7 +97,7 @@ public class ChatRoomListAdapter extends BaseQuickAdapter<ChatRoomInfo, BaseView
             holder.setGone(R.id.pinChatRoom, false);
             holder.getView(R.id.pinChatRoom).setSelected(item.getIsPin() == 1);
             holder.getView(R.id.pinChatRoom).setOnClickListener(view->{
-                mPresenter.pinChatRoom(item);
+//                mPresenter.pinChatRoom(item);
             });
         }else {
             holder.setGone(R.id.pinChatRoom, true);
