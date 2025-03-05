@@ -19,7 +19,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.recharge.BR;
 import com.xtree.recharge.R;
@@ -58,8 +57,6 @@ public class ExTransferKindTipsDialogFragment extends BaseDialogFragment<LayoutR
 
     @Override
     public void initView() {
-        binding.ivwClose.setOnClickListener(v -> dismissAllowingStateLoss());
-        binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
         binding.tvwRight.setOnClickListener(v -> dismissAllowingStateLoss());
         String key = SPKeyGlobal.RC_NOT_RC_EXP_TIP_TODAY_COUNT;
         binding.cbTipPm.setOnCheckedChangeListener((buttonView, isChecked) -> {

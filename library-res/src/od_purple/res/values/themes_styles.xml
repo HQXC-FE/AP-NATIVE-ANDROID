@@ -312,6 +312,14 @@
         <item name="android:src">@drawable/iv_floating_close</item>
     </style>
 
+    <style name="style_ic_floating">
+        <item name="android:src">@drawable/ic_floating</item>
+    </style>
+
+    <style name="style_bg_floating_way">
+        <item name="android:background">@drawable/bg_floating_way</item>
+    </style>
+
     <!-- 我的-5个菜单 白色字 -->
     <style name="style_menu_white">
         <item name="android:layout_width">wrap_content</item>
@@ -476,6 +484,7 @@
     <style name="PwdCheckboxStyle">
         <item name="android:button">@drawable/checkbox_bg_selector</item>
     </style>
+
     <style name="style_me_msg_bg">
         <item name="android:background">@drawable/me_msg_backgroup</item>
     </style>

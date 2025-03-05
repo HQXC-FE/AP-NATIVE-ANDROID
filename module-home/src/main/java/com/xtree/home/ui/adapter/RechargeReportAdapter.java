@@ -58,7 +58,6 @@ public class RechargeReportAdapter extends CachedAutoRefreshAdapter<RechargeOrde
         TextView itemWay = holder.itemView.findViewById(R.id.item_way);
         TextView itemTime = holder.itemView.findViewById(R.id.item_time);
 
-        itemTime.setTextColor(ctx.getResources().getColor(R.color.black));
         itemMoney.setText(vo.money);
         itemWay.setText(vo.payport_nickname);
 

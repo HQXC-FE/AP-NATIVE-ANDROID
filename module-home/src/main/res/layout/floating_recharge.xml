@@ -65,11 +65,12 @@
 
         <TextView
             android:id="@+id/tvw_way"
+            style="?attr/bg_floating_way_attr"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_floating_way"
+            android:layout_height="33dp"
             android:gravity="center"
             android:text="@string/txt_floating_way"
+            android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,24 +78,26 @@
 
         <TextView
             android:id="@+id/tvw_money"
+            style="?attr/bg_floating_way_attr"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
+            android:layout_height="33dp"
             android:layout_marginEnd="1dp"
-            android:background="@drawable/bg_floating_money"
             android:gravity="center"
             android:text="@string/txt_floating_money"
+            android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@id/tvw_way"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvw_time"
+            style="?attr/bg_floating_way_attr"
             android:layout_width="75dp"
-            android:layout_height="wrap_content"
+            android:layout_height="33dp"
             android:layout_marginStart="1dp"
-            android:background="@drawable/bg_floating_time"
             android:gravity="center"
             android:text="@string/txt_floating_time"
+            android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@id/tvw_way"
             app:layout_constraintTop_toTopOf="parent" />
