@@ -16,6 +16,7 @@ import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.QrcodeUtil;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.DialogRcOrderWebBinding;
@@ -23,9 +24,6 @@ import com.xtree.recharge.vo.RechargePayVo;
 
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
-/**
- * 充值订单 web页面
- */
 public class RechargeOrderWebDialog extends BottomPopupView {
 
     RechargePayVo mRechargePayVo;
@@ -69,6 +67,8 @@ public class RechargeOrderWebDialog extends BottomPopupView {
         binding.tvwTipChannel.setText(tip);
         AppUtil.setTypeFaceDin(getContext(), binding.tvwMoney);
 
+        binding.tvwCopy.setOnClickListener(v -> copy(mRechargePayVo.qrcodeurl));
+
         String txt = mRechargePayVo.maxexpiretime + getContext().getString(R.string.txt_minutes); // xx分钟
         txt = "<font color=#EE5A5A> " + txt + " </font>"; // 加彩色
         txt = getContext().getString(R.string.txt_rc_submit_succ_pay_in_minutes_pls, txt).replace("\n", "<br>");
@@ -87,6 +87,7 @@ public class RechargeOrderWebDialog extends BottomPopupView {
             binding.tvwQrcodeTitle.setVisibility(View.VISIBLE);
             binding.llQrcodeUrl.setVisibility(View.VISIBLE);
             binding.ivwQrcode.setVisibility(View.VISIBLE);
+            binding.ivwQrcode.setImageBitmap(QrcodeUtil.getQrcode(mRechargePayVo.qrcodeurl));
             binding.tvwOk.setVisibility(View.VISIBLE);
             binding.tvwShowPay.setVisibility(View.GONE); // 隐藏
             binding.tvwTipChannel.setVisibility(View.INVISIBLE);
@@ -182,5 +183,4 @@ public class RechargeOrderWebDialog extends BottomPopupView {
         //return super.getMaxHeight();
         return (XPopupUtils.getScreenHeight(getContext()) * 75 / 100);
     }
-
 }
