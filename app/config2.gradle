@@ -30,40 +30,38 @@ android {
             versionCode 100
             resValue "string", "app_name", "恒行6"
             resValue "string", "domain_api", "https://app1.e3f4g.xyz"
-            resValue "string", "domain_url", "https://h51.n1o2p.xyz"
+            resValue "string", "domain_url", "https://h51.l5t5uk.vip"
             resValue "string", "channel_name", "hengxing6"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
             resValue "bool", "is_tag", "true" // 是否开启统计
             resValue "string", "mixpanel_token", "5b010a2b31cbfd8c759cf6b135efe3d7"
             resValue "string", "ms_secret_key", "3c668bf3-b6b2-4146-86b2-7c000c2d1d49"
             resValue "string", "sentry_dsn", "https://552dcc17bc3f9472be954a1fd5b5610b@o4507447554539520.ingest.us.sentry.io/4508341154676736"
-            resValue "string", "domain_api_list", "https://app1.e3f4g.xyz;" +
-                    "https://app1.h5i6j.xyz;" +
-                    "https://app1.k7l8m.xyz;" +
-                    "https://app2.w5x6y.xyz;" +
-                    "https://app2.z7a8b.xyz;" +
-                    "https://app2.c9d0e.xyz;" +
-                    "https://app3.f1g2h.xyz;" +
-                    "https://app3.i3j4k.xyz;" +
-                    "https://app3.l5m6n.xyz;" +
-                    "https://app4.o7p8q.xyz;" +
+            resValue "string", "domain_api_list", "https://app1.h4v5xr.vip;" +
+                    "https://app1.d3q1wi.vip;" +
+                    "https://app1.y8u8gh.vip;" +
+                    "https://app2.y2e6ao.vip;" +
+                    "https://app2.k1f9jo.vip;" +
+                    "https://app2.g7u5jb.vip;" +
+                    "https://app3.a3k7pl.vip;" +
+                    "https://app3.x5u2qy.vip;" +
+                    "https://app3.l7n4pv.vip;" +
+                    "https://app4.x2v2ez.vip;" +
                     "http://175.27.143.79:16812;" +
                     "http://111.231.12.228:16812;" +
                     "http://139.186.156.33:16812;" +
                     "http://43.134.194.101:16820;" +
                     "http://43.129.64.206:16820;"
-
-            resValue "string", "domain_url_list", "https://h51.n1o2p.xyz;" +
-                    "https://h51.q3r4s.xyz;" +
-                    "https://h51.t5u6v.xyz;" +
-                    "https://h52.w7x8y.xyz;" +
-                    "https://h52.z9a0b.xyz;" +
-                    "https://h52.c1d2e.xyz;" +
-                    "https://h53.f3g4h.xyz;" +
-                    "https://h53.i5j6k.xyz;" +
-                    "https://h53.l7m8n.xyz;" +
-                    "https://h54.o9p0q.xyz;"
-
+            resValue "string", "domain_url_list",
+                    "https://h51.d8a6br.vip;" +
+                    "https://h51.v1g2pk.vip;" +
+                    "https://h52.d9n5be.vip;" +
+                    "https://h52.m4e6rj.vip;" +
+                    "https://h52.a3m5mw.vip;" +
+                    "https://h53.d4g2vj.vip;" +
+                    "https://h53.v8s5qw.vip;" +
+                    "https://h53.q1d6bx.vip;" +
+                    "https://h54.t7f5xt.vip;"
             resValue "string", "domain_url_list_third", "https://hx6aliapp.h7i8j.xyz/hx6/app_config_heng6.json" +
                     ";https://hx6aliapp.k9l0m.xyz/hx6/app_config_heng6.json" +
                     ";https://hx6cn2app.b3c4d.xyz/hx6/app_config_heng6.json" +

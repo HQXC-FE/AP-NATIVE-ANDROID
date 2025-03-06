@@ -31,7 +31,7 @@
             android:gravity="center"
             android:padding="12dp"
             android:textStyle="bold"
-            android:textColor="@color/clr_txt_title"
+            android:textColor="@color/clr_txt_white_cm"
             android:text=""
             tools:text="提款" />
     </LinearLayout>

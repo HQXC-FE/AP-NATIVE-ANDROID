@@ -42,7 +42,6 @@
     <string name="txt_bind_wallet">钱包地址管理</string>
     <string name="txt_bind_usdt">绑定USDT</string>
     <string name="txt_bind_ebpay">绑定EBPAY</string>
-    <string name="txt_bind_edpay">绑定EDPAY</string>
     <string name="txt_bind_topay">绑定TOPAY</string>
     <string name="txt_bind_gcnyt">绑定CNYT</string>
     <string name="txt_bind_mpay">绑定MPAY</string>
@@ -401,13 +400,14 @@
     <!--测速浮窗-->
     <string name="txt_fastest_tip">当前线路网络速度较慢，是否切换</string>
     <string name="txt_update_bottom_error_tip">如更新失败请打开浏览器下载安装</string>
+    <string name="txt_remind_usdt_arbitrum">Arbitrum地址以0x开头的数字和字母组成的42位</string>
+    <string name="txt_remind_usdt_solana">Solana地址以数字和字母组成的44位</string>
 
     <string name="txt_security_google_auth_warning">为了您的资金安全请务必设置谷歌验证码</string>
     <string name="txt_add_virtual_account">添加虚拟账户</string>
     <string name="txt_bind_wallet_address">为了您的资金能够迅速到账, 请确保填写的钱包地址无误</string>
+=========
     <string name="txt_remind_usdt_arbitrum">Arbitrum地址以0x开头的数字和字母组成的42位</string>
     <string name="txt_remind_usdt_solana">Solana地址以数字和字母组成的44位</string>
-
-    <string name="txt_remind_usdt_arb">Arbitrum地址以0x开头的数字和字母组成的42位</string>
-    <string name="txt_remind_usdt_sol">Solana地址数字和字母组成的44位</string>
+>>>>>>>>> Temporary merge branch 2
 </resources>

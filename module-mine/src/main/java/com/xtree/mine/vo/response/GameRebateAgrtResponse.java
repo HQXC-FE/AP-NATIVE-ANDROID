@@ -26,7 +26,7 @@ public class GameRebateAgrtResponse extends BaseResponse2 {
     private String topprizes_wintips_enabled;
     private String quickSearch;
     private String desK;
-    private YesterdayBillDTO yesterday_bill;
+    private String yesterday_bill;
     private String pageinfo;
     private int isget;
     private TotalDTO total;
@@ -164,11 +164,11 @@ public class GameRebateAgrtResponse extends BaseResponse2 {
         this.desK = desK;
     }
 
-    public YesterdayBillDTO getYesterday_bill() {
+    public String getYesterday_bill() {
         return yesterday_bill;
     }
 
-    public void setYesterday_bill(YesterdayBillDTO yesterday_bill) {
+    public void setYesterday_bill(String yesterday_bill) {
         this.yesterday_bill = yesterday_bill;
     }
 
