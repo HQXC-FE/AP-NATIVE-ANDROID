@@ -24,8 +24,6 @@ import com.xtree.bet.bean.ui.BetConfirmOptionFb;
 import com.xtree.bet.bean.ui.BetConfirmOptionPm;
 import com.xtree.bet.bean.ui.BtResult;
 import com.xtree.bet.bean.ui.CgOddLimit;
-import com.xtree.bet.bean.ui.LeagueFb;
-import com.xtree.bet.bean.ui.LeaguePm;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.OptionList;
@@ -33,8 +31,8 @@ import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.databinding.BtLayoutBtResultBinding;
 import com.xtree.bet.ui.adapter.BetResultOptionAdapter;
 import com.xtree.bet.ui.adapter.CgBtResultAdapter;
-import com.xtree.bet.ui.viewmodel.fb.FBBtCarViewModel;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.bet.ui.viewmodel.fb.FBBtCarViewModel;
 import com.xtree.bet.util.MatchDeserializer;
 import com.xtree.bet.util.OptionDeserializer;
 import com.xtree.bet.util.OptionListDeserializer;
@@ -69,7 +67,7 @@ public class BtResultDialogFragment extends BaseDialogFragment<BtLayoutBtResultB
     private BetResultOptionAdapter betResultOptionAdapter;
     private CgBtResultAdapter cgBtResultAdapter;
 
-    public static BtResultDialogFragment getInstance(List<BetConfirmOption> betConfirmOptionList, List<CgOddLimit> cgOddLimitList, List<BtResult> btResultList){
+    public static BtResultDialogFragment getInstance(List<BetConfirmOption> betConfirmOptionList, List<CgOddLimit> cgOddLimitList, List<BtResult> btResultList) {
         BtResultDialogFragment btResultDialogFragment = new BtResultDialogFragment();
         Bundle bundle = new Bundle();
 
@@ -93,7 +91,7 @@ public class BtResultDialogFragment extends BaseDialogFragment<BtLayoutBtResultB
                 .registerTypeAdapter(Option.class, new OptionDeserializer())
                 .registerTypeAdapter(OptionList.class, new OptionListDeserializer())
                 .registerTypeAdapter(Match.class, new MatchDeserializer())
-                .registerTypeAdapter(PlayType.class , new PlayTypeDeserializer())
+                .registerTypeAdapter(PlayType.class, new PlayTypeDeserializer())
                 .create();
         String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
         Type listType = TextUtils.equals(platform, PLATFORM_PM) || TextUtils.equals(platform, PLATFORM_PMXC) ? new TypeToken<List<BetConfirmOptionPm>>() {
@@ -111,15 +109,15 @@ public class BtResultDialogFragment extends BaseDialogFragment<BtLayoutBtResultB
         binding.rvBtCg.setAdapter(cgBtResultAdapter);
 
         boolean isSuccessed = true;
-        for(BtResult btResult : btResultList){
-            if(!btResult.isSuccessed()){
+        for (BtResult btResult : btResultList) {
+            if (!btResult.isSuccessed()) {
                 isSuccessed = false;
                 break;
             }
         }
-        if(!isSuccessed){
+        if (!isSuccessed) {
             binding.tvResult.setText(getString(R.string.bt_bt_tip_failed));
-            binding.ivResult.setBackgroundResource(R.mipmap.bt_icon_bt_failed);
+            binding.ivResult.setBackgroundResource(R.drawable.bt_icon_bt_failed);
         }
     }
 
@@ -147,7 +145,7 @@ public class BtResultDialogFragment extends BaseDialogFragment<BtLayoutBtResultB
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if(id == R.id.tv_close){
+        if (id == R.id.tv_close) {
             dismiss();
         }
     }
