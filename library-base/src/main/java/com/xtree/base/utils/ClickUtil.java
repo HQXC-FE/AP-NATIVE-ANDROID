@@ -6,6 +6,7 @@ public class ClickUtil {
     //上一次点击的时间
     private static long lastClickTime;
     private static long lastClickTime2;
+    private static long doNotRepeatRequests;
 
     /**
      * 限制快速点击
@@ -29,5 +30,18 @@ public class ClickUtil {
         lastClickTime2 = curClickTime;
         return false;
     }
+
+    /**
+     * 5秒内禁止重复请求
+     */
+    public static boolean doNotRepeatRequests() {
+        long curClickTime = System.currentTimeMillis();
+        if (Math.abs((curClickTime - doNotRepeatRequests)) < 5000) {
+            return true;
+        }
+        doNotRepeatRequests = curClickTime;
+        return false;
+    }
+
 
 }

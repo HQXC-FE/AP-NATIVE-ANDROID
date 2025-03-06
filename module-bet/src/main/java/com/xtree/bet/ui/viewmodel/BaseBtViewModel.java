@@ -12,15 +12,16 @@ import androidx.annotation.NonNull;
 
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.NumberUtils;
 import com.xtree.base.utils.SystemUtil;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.BalanceVo;
 import com.xtree.base.vo.FBService;
 import com.xtree.base.vo.PMService;
-import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.bet.data.BetRepository;
 
 import java.util.HashMap;
@@ -43,6 +44,7 @@ public class BaseBtViewModel extends BaseViewModel<BetRepository> {
     public SingleLiveData<String> userBalanceData = new SingleLiveData<>();
     public SingleLiveData<Void> tokenInvalidEvent = new SingleLiveData<>();
     public SingleLiveData<Map> liveDataPlayUrl = new SingleLiveData<>();
+
     public BaseBtViewModel(@NonNull Application application, BetRepository model) {
         super(application, model);
     }
@@ -78,7 +80,10 @@ public class BaseBtViewModel extends BaseViewModel<BetRepository> {
         }
     }
 
-    public void getFBGameTokenApi() {
+    public synchronized void getFBGameTokenApi() {
+        if (ClickUtil.doNotRepeatRequests()) {
+            return;
+        }
         Flowable<BaseResponse<FBService>> flowable;
         String mPlatform = SPUtils.getInstance().getString(KEY_PLATFORM);
         if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {

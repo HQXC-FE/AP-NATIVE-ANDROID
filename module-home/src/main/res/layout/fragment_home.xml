@@ -34,16 +34,14 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    style="?attr/home_top_banner_attr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    style="?attr/home_top_banner_attr"
                     android:visibility="invisible"
                     tools:visibility="visible" />
 
                 <!--<ImageView
                     android:id="@+id/ivw_cs"
-                     android:src="@mipmap/hm_bnr_01"
                     style="@style/style_ic_title_right"
                     android:layout_gravity="end|top"
                     android:layout_marginTop="36dp"
@@ -98,6 +96,7 @@
                     <TextView
                         android:id="@+id/tvw_name"
                         style="?attr/home_top_name_attr"
+                        android:layout_marginTop="5dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Lorraine001" />
@@ -112,32 +111,21 @@
                         app:layout_constraintStart_toEndOf="@id/tvw_name"
                         app:layout_constraintTop_toTopOf="@id/tvw_name" />
 
-                    <ImageView
-                        android:id="@+id/iv_notice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="3dp"
-                        android:src="@mipmap/hm_ic_notice"
-                        android:visibility="visible"
-                        app:layout_constraintStart_toEndOf="@+id/ivw_vip"
-                        app:layout_constraintBottom_toBottomOf="@id/tvw_name"
-                        app:layout_constraintTop_toTopOf="@id/tvw_name" />
-
                     <TextView
                         android:id="@+id/tv_notice_num"
                         android:layout_width="22.1dp"
                         android:layout_height="12.325dp"
+                        android:layout_marginStart="-26dp"
                         android:background="@mipmap/hm_bg_nm"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        tools:text="+99"
-                        android:layout_marginStart="-5dp"
-                        android:visibility="gone"
-                        tools:visibility="visible"
                         android:textColor="@color/white"
                         android:textSize="10sp"
+                        android:visibility="gone"
                         app:layout_constraintStart_toEndOf="@+id/iv_notice"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="+99"
+                        tools:visibility="visible" />
 
                     <TextView
                         android:id="@+id/tvw_balance"
@@ -145,6 +133,20 @@
                         app:layout_constraintStart_toStartOf="@id/tvw_name"
                         app:layout_constraintTop_toBottomOf="@id/tvw_name"
                         tools:text="￥980,000,000,000" />
+
+                    <ImageView
+                        android:id="@+id/iv_notice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="3dp"
+                        android:paddingTop="3dp"
+                        android:paddingEnd="25dp"
+                        android:paddingBottom="5dp"
+                        android:src="@mipmap/hm_ic_notice"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@id/tvw_name"
+                        app:layout_constraintStart_toEndOf="@+id/ivw_vip"
+                        app:layout_constraintTop_toTopOf="@id/tvw_name" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -159,18 +161,19 @@
 
                 <TextView
                     android:id="@+id/tvw_deposit"
-                    android:layout_marginStart="0dp"
                     style="?attr/home_top_deposit_attr"
+                    android:layout_marginStart="0dp"
                     android:text="@string/hm_txt_deposit" />
+
                 <TextView
                     android:id="@+id/tvw_trans"
                     style="?attr/home_top_trans_attr"
                     android:text="@string/hm_txt_trans" />
+
                 <TextView
                     android:id="@+id/tvw_withdraw"
                     style="?attr/home_top_withdraw_attr"
                     android:text="@string/hm_txt_withdraw" />
-
 
 
                 <TextView
@@ -201,6 +204,7 @@
 
                 <com.xtree.base.widget.MarqueeTextView
                     android:id="@+id/tvw_notice"
+                    style="?attr/home_top_notice_attr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -211,9 +215,7 @@
                     android:marqueeRepeatLimit="marquee_forever"
                     android:singleLine="true"
                     android:text=""
-                    tools:text="Demo"
-                    style="?attr/home_top_notice_attr"
-                    />
+                    tools:text="Demo" />
 
                 <ImageView
                     android:id="@+id/ivw_close"
@@ -235,8 +237,7 @@
                 android:src="@mipmap/hm_btn_notice"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/ll_menu"
-                app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
@@ -257,39 +258,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
 
-                    <RadioGroup
-                        android:id="@+id/rgp_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="-4dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="MissingConstraints">
+                <RadioGroup
+                    android:id="@+id/rgp_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-4dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="MissingConstraints">
 
-                        <RadioButton
-                            style="@style/style_hm_game_type"
-                            android:tag="tp_1" />
+                    <RadioButton
+                        style="@style/style_hm_game_type"
+                        android:tag="tp_1" />
 
-                        <RadioButton
-                            style="@style/style_hm_game_type"
-                            android:tag="tp_2" />
+                    <RadioButton
+                        style="@style/style_hm_game_type"
+                        android:tag="tp_2" />
 
-                        <RadioButton
-                            style="@style/style_hm_game_type"
-                            android:tag="tp_3" />
+                    <RadioButton
+                        style="@style/style_hm_game_type"
+                        android:tag="tp_3" />
 
-                        <RadioButton
-                            style="@style/style_hm_game_type"
-                            android:tag="tp_4" />
+                    <RadioButton
+                        style="@style/style_hm_game_type"
+                        android:tag="tp_4" />
 
-                        <RadioButton
-                            style="@style/style_hm_game_type"
-                            android:tag="tp_5" />
+                    <RadioButton
+                        style="@style/style_hm_game_type"
+                        android:tag="tp_5" />
 
-                        <RadioButton
-                            style="@style/style_hm_game_type"
-                            android:tag="tp_6" />
+                    <RadioButton
+                        style="@style/style_hm_game_type"
+                        android:tag="tp_6" />
 
-                    </RadioGroup>
+                </RadioGroup>
             </androidx.core.widget.NestedScrollView>
 
             <androidx.recyclerview.widget.RecyclerView

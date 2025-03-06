@@ -50,7 +50,7 @@
                     android:layout_marginEnd="5dp"
                     tools:text="x1" />
 
-                <EditText
+                <com.xtree.bet.weight.NoCursorMoveEditText
                     android:id="@+id/et_bt_amount_cc"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
@@ -129,7 +129,7 @@
                 android:padding="10dp"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <EditText
+                <com.xtree.bet.weight.NoCursorMoveEditText
                     android:id="@+id/et_bt_amount_dan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

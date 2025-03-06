@@ -127,7 +127,6 @@ public abstract class TemplateBtSettingLeagueModel extends BaseViewModel<BetRepo
             initialLeagueAreaList.add(hotInitialLeagueArea);
         }
         for (Map.Entry<String, InitialLeagueArea> entry : initialLeagueAreaMap.entrySet()) {
-            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
             if (TextUtils.equals("R", entry.getKey())) {
                 for (LeagueArea area : entry.getValue().getLeagueAreaList()) {
                     if (TextUtils.equals("热门联赛", area.getName())) {

@@ -237,7 +237,7 @@ public class MyWalletViewModel extends BaseViewModel<MineRepository> {
             list.add(new GameBalanceVo("obgdj", "DB电竞", 4, " "));
             list.add(new GameBalanceVo("yy", "云游棋牌", 5, " "));
             list.add(new GameBalanceVo("obgqp", "DB棋牌", 6, " "));
-            list.add(new GameBalanceVo("wali", "瓦力棋牌", 7, " "));
+            list.add(new GameBalanceVo("wali", "瓦力真人&棋牌", 7, " "));
         } else {
             list = gson.fromJson(json, new TypeToken<List<GameBalanceVo>>() {
             }.getType());
@@ -275,7 +275,7 @@ public class MyWalletViewModel extends BaseViewModel<MineRepository> {
                 t = new GameBalanceVo(gameAlias, "DB棋牌", 6, balance);
                 break;
             case "wali":
-                t = new GameBalanceVo(gameAlias, "瓦力棋牌", 7, balance);
+                t = new GameBalanceVo(gameAlias, "瓦力真人&棋牌", 7, balance);
                 break;
             default:
                 t = new GameBalanceVo("维护中", "维护中", 0, "--");

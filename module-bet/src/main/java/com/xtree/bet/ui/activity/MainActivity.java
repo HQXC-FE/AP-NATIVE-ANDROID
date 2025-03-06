@@ -111,6 +111,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private boolean mIsShowLoading = true;
     private boolean mIsChange = true;
     private boolean mIsFirstNetworkFinished;
+    private boolean mIsFirstLoadMatch = true;
     private UploadExcetionReq mUploadExcetionReq;
     /**
      * 赛事统计数据
@@ -123,6 +124,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private List<League> settingLeagueList = new ArrayList<>();
     private List<Long> mLeagueIdList = new ArrayList<>();
     private Disposable timerDisposable;
+    private Disposable sportsTimerDisposable;
     private Disposable firstNetworkFinishedDisposable;
     private Disposable firstNetworkExceptionDisposable;
     private int searchDatePos;
@@ -172,28 +174,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             return tabSportAdapter.getItem(sportTypePos == -1 ? 0 : sportTypePos).id;
         }
 
-        //String[] sportIds = tabSportAdapter.getItem(sportTypePos).id;
-        //String sportId = null;
-        //if (sportTypePos < sportIds.length) {
-        //    sportId = sportIds[sportTypePos == -1 ? 0 : sportTypePos];
-        //}
-        //// 以下规则只用于PM体育
-        //if (playMethodPos != 4) { // 刚开始进入PM体育场馆时，会有sportId为空的情况
-        //    if (sportId == null) { // 获取相应玩法中默认的球种
-        //        if (playMethodPos == 2) {
-        //            sportTypePos = 0;
-        //            sportId = sportIds[0];
-        //        } else {
-        //            sportTypePos = 1;
-        //            sportId = sportIds[1];
-        //        }
-        //        mSportName = viewModel.getSportName(playMethodType)[sportTypePos];
-        //    }
-        //}
-        //if (sportId == null) {
-        //    sportId = playMethodPos == 4 ? "0" : PMConstants.SPORT_IDS_DEFAULT[1];
-        //}
-        //return Integer.valueOf(sportId);
     }
 
     @Override
@@ -423,59 +403,58 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
         setChangeDomainVisible();
         //今日\滚球\早盘\串光\冠军切换
-//        binding.tabPlayMethod.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                ((TextView) tab.getCustomView()).setTextSize(16);
-//                CfLog.i("playMethodPos   " + playMethodPos + "  " + tab.getPosition());
-//                if (playMethodPos != tab.getPosition()) {
-//                    hideSearchView();
-//                    mIsChange = true;
-//                    isFirstInto = true;
-//                    mLeagueIdList.clear();
-//                    binding.srlLeague.resetNoMoreData();
-//                    searchDatePos = 0;
-//                    playMethodType = playMethodTypeList.get(tab.getPosition());
-//                    if (playMethodPos == 4) {
-//                        BtCarManager.clearBtCar();
-//                        setCgBtCar();
-//                    }
-//                    showSearchDate();
-//                    //CfLog.i("playMethodPos   " + playMethodPos);
-//                    playMethodPos = tab.getPosition();
-//                    if (tab.getPosition() == 4) {
-//                        binding.srlLeague.setEnableLoadMore(false);
-//                    } else {
-//                        binding.srlLeague.setEnableLoadMore(true);
-//                    }
-//                    BtCarManager.setIsCg(playMethodPos == 3);
-//                    binding.rlCg.setVisibility(!BtCarManager.isCg() ? View.GONE : BtCarManager.isEmpty() ? View.GONE : View.VISIBLE);
-//                    mLeagueGoingOnList.clear();
-//                    mLeagueList.clear();
-//                    //viewModel.setSportIcons(playMethodPos);
-//                    viewModel.setSportItems(playMethodPos, playMethodType);
-//
-//                    if (playMethodPos == 2 || playMethodPos == 3) {
-//                        binding.tabSearchDate.setVisibility(View.VISIBLE);
-//                    } else {
-//                        binding.tabSearchDate.setVisibility(View.GONE);
-//                    }
-//                    if (playMethodPos == 0 || playMethodPos == 3) {
-//                        viewModel.getHotMatchCount(playMethodType, viewModel.hotLeagueList);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//                ((TextView) tab.getCustomView()).setTextSize(14);
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
+        binding.tabPlayMethod.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                ((TextView) tab.getCustomView()).setTextSize(16);
+                CfLog.i("playMethodPos   " + playMethodPos + "  " + tab.getPosition());
+                if (playMethodPos != tab.getPosition()) {
+                    hideSearchView();
+                    mIsChange = true;
+                    isFirstInto = true;
+                    mLeagueIdList.clear();
+                    binding.srlLeague.resetNoMoreData();
+                    searchDatePos = 0;
+                    playMethodType = playMethodTypeList.get(tab.getPosition());
+                    if (playMethodPos == 4) {
+                        BtCarManager.clearBtCar();
+                        setCgBtCar();
+                    }
+                    showSearchDate();
+                    //CfLog.i("playMethodPos   " + playMethodPos);
+                    playMethodPos = tab.getPosition();
+                    if (tab.getPosition() == 4) {
+                        binding.srlLeague.setEnableLoadMore(false);
+                    } else {
+                        binding.srlLeague.setEnableLoadMore(true);
+                    }
+                    BtCarManager.setIsCg(playMethodPos == 3);
+                    binding.rlCg.setVisibility(!BtCarManager.isCg() ? View.GONE : BtCarManager.isEmpty() ? View.GONE : View.VISIBLE);
+                    mLeagueGoingOnList.clear();
+                    mLeagueList.clear();
+                    viewModel.setSportItems(playMethodPos, playMethodType);
+
+                    if (playMethodPos == 2 || playMethodPos == 3) {
+                        binding.tabSearchDate.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.tabSearchDate.setVisibility(View.GONE);
+                    }
+                    if (playMethodPos == 0 || playMethodPos == 3) {
+                        viewModel.getHotMatchCount(playMethodType, viewModel.hotLeagueList);
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                ((TextView) tab.getCustomView()).setTextSize(14);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         tabSportAdapter.setOnItemClickListener((adapter, view, position) -> {
 
             CfLog.i("position   " + position);
@@ -1230,10 +1209,16 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         viewModel.getAnnouncement();
         binding.ivwClose.setOnClickListener(view -> {
             binding.llNotice.setVisibility(View.GONE);
+            binding.tvwNotice.setVisibility(View.GONE);
+            binding.ivNoticeLeft.setVisibility(View.GONE);
+            binding.ivwClose.setVisibility(View.GONE);
             binding.ivwNotice.setVisibility(View.VISIBLE);
         });
         binding.ivwNotice.setOnClickListener(view -> {
             binding.llNotice.setVisibility(View.VISIBLE);
+            binding.tvwNotice.setVisibility(View.VISIBLE);
+            binding.ivNoticeLeft.setVisibility(View.VISIBLE);
+            binding.ivwClose.setVisibility(View.VISIBLE);
             binding.ivwNotice.setVisibility(View.INVISIBLE);
         });
         binding.llNotice.setOnClickListener(view -> {
@@ -1580,6 +1565,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         viewModel.announcementData.observe(this, list -> {
             if (list == null || list.isEmpty()) {
                 binding.llNotice.setVisibility(View.GONE);
+                binding.tvwNotice.setVisibility(View.GONE);
+                binding.ivNoticeLeft.setVisibility(View.GONE);
+                binding.ivwClose.setVisibility(View.GONE);
                 binding.ivwNotice.setVisibility(View.GONE);
             } else {
                 StringBuffer sb = new StringBuffer();
@@ -1590,6 +1578,11 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     sb.append(vo.co + "      ");
                 }
                 binding.llNotice.setVisibility(View.VISIBLE);
+                binding.tvwNotice.setVisibility(View.VISIBLE);
+                binding.ivNoticeLeft.setVisibility(View.VISIBLE);
+                binding.ivwClose.setVisibility(View.VISIBLE);
+                binding.tvwNotice.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
                 binding.tvwNotice.setText(sb.toString());
             }
         });
@@ -1675,6 +1668,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     binding.rvLeague.setEnabled(false);
                 }
             });
+            clearSportCache();
         } else {
             if (!(binding.rvLeague.getExpandableListAdapter() instanceof LeagueAdapter)) {
                 binding.rvLeague.setAdapter(mLeagueAdapter);
@@ -1744,46 +1738,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             return;
         }
         List<SportTypeItem> list = mStatisticalData.get(String.valueOf(playMethodType));
-        //CfLog.i("playMethodType1     " + playMethodType + "   " + new Gson().toJson(mStatisticalData));
-        //CfLog.i("playMethodType1     " + mSportName);
-
-        //List<SportTypeItem> newList = new ArrayList<>();
-        //
-        //int allCount = 0;
-        //HashMap<Integer, SportTypeItem> matchGames = viewModel.getMatchGames();
-        //
-        //for (int i = 0; i < list.size(); i++) {
-        //    Integer count = list.get(i).num;
-        //    if (count != null) {
-        //        if (count == 0 && i != 0) {
-        //            continue;
-        //        }
-        //        SportTypeItem item = list.get(i);
-        //        item.name = matchGames.get(item.id).name;
-        //        if (item.name.equals(mSportName)) {
-        //            item.isSelected = true;
-        //        } else {
-        //            item.isSelected = false;
-        //        }
-        //        item.iconId = Constants.SPORT_ICON[i];
-        //        newList.add(item);
-        //    } else {
-        //        break;
-        //    }
-        //
-        //    if (playMethodPos == 1) {
-        //        if (i == 0) {
-        //            continue;
-        //        }
-        //        CfLog.i("allCount     " + allCount);
-        //        allCount += count;
-        //    }
-        //}
-        //
-        //if (playMethodPos == 1) {
-        //    CfLog.i("allCount     " + allCount);
-        //    newList.get(0).num = allCount;
-        //}
         if (playMethodPos == 0 || playMethodPos == 3) {
             if (list != null && list.get(0) != null) {
                 list.get(0).num = mHotMatchCount;
@@ -1947,5 +1901,17 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         mIsShowLoading = false;
         getMatchData(String.valueOf(getSportId()), mOrderBy, mLeagueIdList, null,
                 playMethodType, searchDatePos, false, false);
+    }
+
+    // 开启缓存接口的情况：首次加载赛事列表调用缓存接口数据，
+    // 后面因为需要更新比赛时间不适合再调用缓存接口数据，
+    // 因调用缓存接口数据是为了解决赛事白屏的问题
+    // 所以需要清理缓存接口调用变成直连三方数据
+    private void clearSportCache() {
+        String json = SPUtils.getInstance().getString(SPKeyGlobal.SPORT_MATCH_CACHE, "");
+        if(!TextUtils.isEmpty(json)){
+            SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, "");
+            mIsFirstLoadMatch = false;
+        }
     }
 }
