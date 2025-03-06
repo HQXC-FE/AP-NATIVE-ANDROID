@@ -124,6 +124,12 @@
         <item name="login_check_backgroup_attr">@style/style_login_check_backgroup</item>
         <item name="home_top_banner_attr">@style/style_home_top_banner</item>
         <item name="main_bottom_image_attr">@style/style_main_bottom_image</item>
+        <item name="main_game_cover_attr">@style/style_main_game_cover</item>
+        <item name="main_game_fast_attr">@style/style_main_game_fast</item>
+        <item name="main_tenance_attr">@style/style_main_tenance</item>
+
+        <item name="hm_img_room_attr">@style/style_hm_img_room</item>
+
     </style>
 
 </resources>

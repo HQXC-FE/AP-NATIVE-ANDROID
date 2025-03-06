@@ -106,6 +106,9 @@
     <attr name="login_check_backgroup_attr" format="reference" />
     <attr name="home_top_banner_attr" format="reference" />
     <attr name="main_bottom_image_attr" format="reference" />
-
+    <attr name="main_game_cover_attr" format="reference" />
+    <attr name="main_game_fast_attr" format="reference" />
+    <attr name="main_tenance_attr" format="reference" />
+    <attr name="hm_img_room_attr" format="reference" />
 
 </resources>

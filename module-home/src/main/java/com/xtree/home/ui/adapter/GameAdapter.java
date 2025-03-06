@@ -70,12 +70,15 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
         binding.ivwImg.setImageLevel(vo.typeId);
 
         if (vo.status == 0) {
+
             String txt = ctx.getString(R.string.hm_txt_maintaining, vo.maintenance_start, vo.maintenance_end);
             binding.tvwMaintenance.setText(txt);
+            binding.llMaintenance.setVisibility(View.VISIBLE);
             binding.tvwMaintenance.setVisibility(View.VISIBLE);
             binding.ivwGreyCover.setVisibility(View.VISIBLE);
         } else if (vo.status == 2) {
             binding.tvwMaintenance.setText("已下架");
+            binding.llMaintenance.setVisibility(View.VISIBLE);
             binding.tvwMaintenance.setVisibility(View.VISIBLE);
             binding.ivwGreyCover.setVisibility(View.VISIBLE);
         } else {

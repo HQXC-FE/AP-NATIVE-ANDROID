@@ -11,26 +11,27 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/hm_img_room"
+        style="?attr/hm_img_room_attr"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@mipmap/hm_gm_ty_01" />
+         />
 
+    <!--android:src="@drawable/hm_img_room" tools:src="@mipmap/hm_gm_ty_01"-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_fc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+       android:layout_marginTop="120dp"
+        android:layout_marginEnd="40dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible">
-
         <ImageView
             android:id="@+id/iv_fc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/hm_bt_fast"
+            style="?attr/main_game_fast_attr"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -54,56 +55,65 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    <ImageView-->
-<!--        android:id="@+id/ivw_split"-->
-<!--        android:layout_width="12dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="1dp"-->
-<!--        android:background="@color/clr_transparent"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/ivw_img"-->
-<!--        app:layout_constraintEnd_toEndOf="@id/ivw_img"-->
-<!--        app:layout_constraintStart_toStartOf="@id/ivw_img"-->
-<!--        app:layout_constraintTop_toTopOf="@id/ivw_img"-->
-<!--        tools:visibility="visible" />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/ivw_cover_left"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="1dp"-->
-<!--        android:background="@color/clr_transparent"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/ivw_img"-->
-<!--        app:layout_constraintEnd_toStartOf="@id/ivw_split"-->
-<!--        app:layout_constraintStart_toStartOf="@id/ivw_img"-->
-<!--        app:layout_constraintTop_toTopOf="@id/ivw_img"-->
-<!--        tools:visibility="visible" />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/ivw_cover_right"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="1dp"-->
-<!--        android:background="@color/clr_transparent"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/ivw_img"-->
-<!--        app:layout_constraintEnd_toEndOf="@id/ivw_img"-->
-<!--        app:layout_constraintStart_toEndOf="@id/ivw_split"-->
-<!--        app:layout_constraintTop_toTopOf="@id/ivw_img"-->
-<!--        tools:visibility="visible" />-->
-
     <ImageView
         android:id="@+id/ivw_grey_cover"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@mipmap/hm_bg_entry"
+        style="?attr/main_game_cover_attr"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="visible" />
+    <LinearLayout
+        android:id="@+id/llMaintenance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/ivw_grey_cover"
+        app:layout_constraintBottom_toBottomOf="@+id/ivw_grey_cover"
+        app:layout_constraintTop_toTopOf="@+id/ivw_grey_cover"
+        app:layout_constraintEnd_toEndOf="@+id/ivw_grey_cover"
+        style="?attr/main_tenance_attr"
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+           >
+            <ImageView
+                android:id="@+id/ivwMidSet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/hm_mid_bg_set"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="40dp"/>
+            <TextView
+                android:id="@+id/tvw_maintenance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:drawablePadding="6dp"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:text="@string/hm_txt_maintaining"
+                android:textColor="@color/moneyGradient1Color"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/ivwMidSet"
+                app:layout_constraintStart_toEndOf="@id/ivwMidSet"
+                app:layout_constraintTop_toTopOf="@id/ivwMidSet"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
+
+
+    </LinearLayout>
+
+   <!-- <TextView
         android:id="@+id/tvw_maintenance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,7 +129,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/ivw_img"
         app:layout_constraintStart_toStartOf="@id/ivw_img"
-        tools:visibility="visible" />
+        tools:visibility="visible" />-->
 
     <RelativeLayout
         android:id="@+id/rl_space"
