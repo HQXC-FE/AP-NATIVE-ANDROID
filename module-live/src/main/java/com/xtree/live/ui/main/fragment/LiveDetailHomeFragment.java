@@ -118,32 +118,11 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
                     case "chat_global"://广场
                         GlobalRoom room = new GlobalRoom(RoomType.PAGE_CHAT_GLOBAL, mVid, "");
                         room.uid = mUid;
-                        Fragment chatFragment = (BaseFragment) ARouter.getInstance().
-                                build(RouterFragmentPath.Live.PAGER_LIVE_CHAT)
-                                .withInt("roomType", RoomType.PAGE_CHAT_GLOBAL)
-                                .withInt("uid", mUid)
-                                .withString("vid", mVid)
-                                .withInt("chatBarMode", ChatBarMode.CHATBAR_MODE_NONE)
-                                .withParcelable("roomInfo", room)
-                                .withString("pm_source_type", "")
-                                .withString("pm_source_type_str", "")
-                                .navigation();
-                        return chatFragment;
+                        return ChatFragment.newInstance(RoomType.PAGE_CHAT_GLOBAL, mUid, mVid, ChatBarMode.CHATBAR_MODE_NONE, room, "", "");
                     case "chat_private"://主播私聊
                         PrivateRoom pRoom = new PrivateRoom(RoomType.PAGE_CHAT_PRIVATE_ANCHOR, pVid(), "", 0);
                         pRoom.isOnline = 0;
-
-                        Fragment chatFragment2 = (BaseFragment) ARouter.getInstance().
-                                build(RouterFragmentPath.Live.PAGER_LIVE_CHAT)
-                                .withInt("roomType", RoomType.PAGE_CHAT_PRIVATE_ANCHOR)
-                                .withInt("uid", mUid)
-                                .withString("vid", pVid)
-                                .withInt("chatBarMode", ChatBarMode.CHATBAR_MODE_NONE)
-                                .withParcelable("roomInfo", pRoom)
-                                .withString("pm_source_type", "1")
-                                .withString("pm_source_type_str", "" + mUid)
-                                .navigation();
-                        return chatFragment2;
+                        return ChatFragment.newInstance(RoomType.PAGE_CHAT_PRIVATE_ANCHOR, mUid, pVid(), ChatBarMode.CHATBAR_MODE_NONE, pRoom, "1", ""+mUid);
 
                     case "chat_list"://聊天 主播助理
                         return ChatRoomContainerFragment.newInstance(ChatBarMode.CHATBAR_MODE_LOW, "2", "" + mUid);

@@ -5,9 +5,11 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.drake.brv.BR;
 import com.xtree.live.R;
+import com.xtree.live.data.factory.AppViewModelFactory;
 import com.xtree.live.databinding.FragmentChatRoomAssistBinding;
 import com.xtree.live.inter.EnterRoomBridge;
 import com.xtree.live.inter.KickUserInterface;
@@ -61,6 +63,12 @@ public class ChatRoomContainerFragment extends BaseFragment<FragmentChatRoomAssi
 
         intoChatList();
 
+    }
+
+    @Override
+    public LiveDetailHomeViewModel initViewModel() {
+        AppViewModelFactory factory = AppViewModelFactory.getInstance(getActivity().getApplication());
+        return new ViewModelProvider(this, factory).get(LiveDetailHomeViewModel.class);
     }
 
     @Override

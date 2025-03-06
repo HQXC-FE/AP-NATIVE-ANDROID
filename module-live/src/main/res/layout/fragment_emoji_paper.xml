@@ -4,57 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:ignore="MissingDefaultResource">
-
-    <com.google.android.material.divider.MaterialDivider
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        app:dividerColor="#F1F1F1" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="MissingDefaultResource">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal" />
-
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        app:dividerColor="#F1F1F1" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            app:tabIndicatorFullWidth="true"
-
+        <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            app:tabPadding="0dp"
-            app:tabPaddingEnd="0dp"
-            app:tabPaddingStart="0dp"
-            android:background="?tabBackground" />
+            android:layout_height="1dp"
+            app:dividerColor="#F1F1F1" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/delete_emojicon"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="12dp"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:paddingHorizontal="5dp"
-            android:src="@drawable/sym_keyboard_delete_holo_dark"
-            android:tint="@color/colorAccent"
-            android:visibility="gone"
-            app:tintMode="multiply"
-            tools:visibility="visible" />
-    </FrameLayout>
-</LinearLayout>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:dividerColor="#F1F1F1" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:tabIndicatorFullWidth="true"
+                app:tabPadding="0dp"
+                app:tabPaddingEnd="0dp"
+                app:tabPaddingStart="0dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/delete_emojicon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="12dp"
+                android:paddingHorizontal="5dp"
+                android:src="@drawable/sym_keyboard_delete_holo_dark"
+                android:tint="@color/colorAccent"
+                android:visibility="gone"
+                app:tintMode="multiply"
+                tools:visibility="visible" />
+        </FrameLayout>
+    </LinearLayout>
 </layout>

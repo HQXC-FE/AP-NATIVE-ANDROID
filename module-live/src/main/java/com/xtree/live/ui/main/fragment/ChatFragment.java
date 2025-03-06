@@ -388,8 +388,6 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
 
         viewModel.setParamas(mUid, mVid, pm_source_type, pm_source_type_str);
 
-        Log.e("chatroom", "roomType = " + roomType + " uid：" + mUid + " vid: " + mVid + " roomInfo: " + roomInfo.toString());
-
         ViewGroup.LayoutParams layoutParams = binding.chatbar.getLayoutParams();
         int visible = View.GONE;
         if (chatBarMode == ChatBarMode.CHATBAR_MODE_HIGH) {
