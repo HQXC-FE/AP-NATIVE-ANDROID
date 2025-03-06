@@ -495,7 +495,7 @@
     </style>
 
     <style name="style_login_bg">
-        <item name="android:background">@mipmap/launch_screen</item>
+        <item name="android:background">@drawable/me_login_bg</item>
     </style>
 
     <style name="style_login_backgroup">
