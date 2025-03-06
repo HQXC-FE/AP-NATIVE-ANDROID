@@ -230,9 +230,6 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
     private RegisterVerificationCodeVo registerVerificationCodeVo;//注册验证码
     private RegisterVerificationCodeVo loginRegCodeVo;//登录验证码
 
-    private String goRegister = getString(R.string.txt_login_to_register);
-    private String goLogin = getString(R.string.txt_login_to_login);
-
     @Override
     public int initContentView(Bundle savedInstanceState) {
         return R.layout.activity_login;
@@ -297,9 +294,6 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
             binding.meLoginArea.setVisibility(View.VISIBLE);
             binding.meRegisterArea.setVisibility(View.GONE);
             binding.btnLogin.setText(getString(R.string.me_login));
-            SpannableString spannableString = new SpannableString(goRegister);
-            //还没有账号？ 前去注册
-
             binding.tvwLogin.setText(Html.fromHtml("<font color='#9597A5'>还没有账号？</font><font color='#5B5768'> 前去注册</font>"));
 
         }
@@ -311,7 +305,6 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
             binding.meLoginArea.setVisibility(View.GONE);
             binding.btnLogin.setText(getString(R.string.me_login_sure_register));
             binding.tvwLogin.setText(Html.fromHtml("<font color='#9597A5'>已有账号？ </font><font color='#5B5768'> 马上登录</font>"));
-
             hideRegister();
 
         }
