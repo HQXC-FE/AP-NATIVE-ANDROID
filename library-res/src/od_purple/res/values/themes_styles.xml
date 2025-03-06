@@ -277,18 +277,13 @@
     </style>
 
     <style name="style_btn_short">
-        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">0dp</item>
-        <item name="android:layout_marginStart">6dp</item>
-        <item name="android:layout_marginEnd">6dp</item>
         <item name="android:background">@drawable/bg_btn_short_selector</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">0dp</item>
         <item name="android:text">@string/txt_confirm</item>
         <item name="android:textColor">@color/clr_text_btn_selector</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:layout_marginLeft">20dp</item>
     </style>
     <!-- 提款-item -->
     <style name="style_withdraw_money_account">
@@ -517,15 +512,19 @@
     <style name="style_main_bottom_image">
         <item name="android:background">@drawable/ic_tab_background</item>
     </style>
+
     <style name="style_main_game_cover">
         <item name="android:background">@drawable/hm_bg_entry</item>
     </style>
+
     <style name="style_main_game_fast">
         <item name="android:background">@drawable/hm_bt_fast</item>
     </style>
+
     <style name="style_main_tenance">
         <item name="android:background">@drawable/hm_mid_bg_entry</item>
     </style>
+
     <style name="style_hm_img_room">
         <item name="android:src">@drawable/hm_img_room</item>
     </style>
