@@ -272,7 +272,6 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
             binding.tvConfig.setOnClickListener(v -> new ConfigSwitchDialog().show(getSupportFragmentManager(), ConfigSwitchDialog.class.getName()));
         }*/
 
-
       /*  mRegisterHandler = new RegisterVerificationHandler((Looper.getMainLooper()));*/
         mainThreadHandler = new Handler();
 
@@ -308,6 +307,28 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
             hideRegister();
 
         }
+        binding.tvwLogin.setOnClickListener(v -> {
+            String text =  binding.tvwLogin.getText().toString().trim();
+            if (text.contains("前去注册")){
+                binding.tvRegisterLoginChange.setText(getText(R.string.me_register));
+                binding.meRegisterArea.setVisibility(View.VISIBLE);
+                binding.meLoginArea.setVisibility(View.GONE);
+                binding.btnLogin.setText(getString(R.string.me_login_sure_register));
+                binding.tvwLogin.setText(Html.fromHtml("<font color='#9597A5'>已有账号？ </font><font color='#5B5768'> 马上登录</font>"));
+                hideRegister();
+
+            } else if (text.contains("马上登录")) {
+                binding.tvRegisterLoginChange.setText(getText(R.string.me_login));
+                binding.meLoginArea.setVisibility(View.VISIBLE);
+                binding.meRegisterArea.setVisibility(View.GONE);
+                binding.btnLogin.setText(getString(R.string.me_login));
+                binding.tvwLogin.setText(Html.fromHtml("<font color='#9597A5'>还没有账号？</font><font color='#5B5768'> 前去注册</font>"));
+
+            }
+
+        });
+
+
 
         boolean isRememberPwd = SPUtil.get(getApplication()).get(Spkey.REMEMBER_PWD, false);
         if (isRememberPwd) {
@@ -335,7 +356,7 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         binding.tvwCs.setOnClickListener(v -> AppUtil.goCustomerService(this));
 */
         binding.btnLogin.setOnClickListener(v -> {
-
+            ToastUtils.showLong(" binding.btnLogin");
             if (!ifAgree()) {
                 ToastUtils.showLong(getResources().getString(R.string.me_agree_hint));
                 showAgreementDialog(binding.ckbAgreement);
@@ -514,127 +535,13 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         });
 
         binding.btnLogin.setOnClickListener(view -> {
+            String text =  binding.tvwLogin.getText().toString().trim();
+            if (text.contains("前去注册")){
+                login();
 
-                    String account = binding.edtAccReg.getText().toString().trim();
-                    String pwd1 = binding.edtPwd1.getText().toString();
-                    String pwd2 = binding.edtPwd2.getText().toString();
-                    String verificationTxt = binding.edtVerification.getText().toString();
-                    if (!binding.ckbAgreement.isChecked()) {
-                        ToastUtils.showLong(getResources().getString(R.string.me_agree_hint));
-                        showAgreementDialog(binding.ckbAgreement);
-                        return;
-                    }
-
-                    if (account.isEmpty()) {
-                        binding.tvwUsernameWarning.setVisibility(View.VISIBLE);
-                        binding.tvwUsernameWarning.setText(R.string.txt_username_empty);
-                        mIsAcc = false;
-                    }
-
-                    if (pwd1.isEmpty()) {
-                        binding.tvwPwdWarning.setVisibility(View.VISIBLE);
-                        binding.tvwPwdWarning.setText(R.string.txt_pwd_cannot_empty);
-                        mIsPwd1 = false;
-                    }
-
-                    if (pwd2.isEmpty()) {
-                        binding.tvwPwdCheckWarning.setVisibility(View.VISIBLE);
-                        binding.tvwPwdCheckWarning.setText(R.string.txt_pwd_is_empty);
-                        mIsPwd2 = false;
-                    }
-                    //注册页面需要判断Seting 状态 1需要判断
-                    if (settingsVo != null &&
-                            settingsVo.register_captcha_switch != null
-                            && TextUtils.equals("1", settingsVo.register_captcha_switch)) {
-                        //验证码不能为空
-                        if (verificationTxt.isEmpty()) {
-                            binding.tvwPwdCheckVerification.setVisibility(View.VISIBLE);
-                            binding.tvwPwdCheckVerification.setText(R.string.txt_otp_can_not_null);
-                            ToastUtils.showError(this.getText(R.string.txt_otp_can_not_null));
-                            // mIsVer = false;
-                            return;
-                        }
-                        //验证码不是数字 验证码长度不是4位
-                        if (verificationTxt.length() != 4) {
-                            binding.tvwPwdCheckVerification.setVisibility(View.VISIBLE);
-                            binding.tvwPwdCheckVerification.setText(R.string.txt_otp_not_four_number);
-                            ToastUtils.showError(this.getText(R.string.txt_otp_not_four_number));
-                            //mIsVer = false;
-                            return;
-                        }
-
-                    }
-
-                    if (!mIsAcc || !mIsPwd1 || !mIsPwd2) {
-                        return;
-                    }
-
-                    final String domian =
-                            SPUtils.getInstance().getString(SPKeyGlobal.PROMOTION_CODE_REG);
-                    String default_promption_code = null;
-                    if (settingsVo !=null && !TextUtils.isEmpty(settingsVo.default_promption_code)){
-                        default_promption_code = settingsVo.default_promption_code;
-                    }
-
-
-                    /**
-                     剪贴板 =4  =  剪贴板
-
-                     promotion 接口 =2 =   系统设置（来源：default/promotioncode接口）
-
-                     promption_code  = 2 = 系统设置（来源：setting接口）
-
-                     default_promption_code = 1 =  系统默认 （来源：setting接口）
-                     */
-
-                    //剪切板不为空 且注册验证码不为空
-                    if (code != null && !TextUtils.isEmpty(code))
-                    {
-                        if (registerVerificationCodeVo !=null
-                                &&!TextUtils.isEmpty(registerVerificationCodeVo.key)){
-                            //inviteCodeSource 4：剪切板
-                            viewModel.register(account, pwd1, code, registerVerificationCodeVo.key, verificationTxt, 4);
-                        }else{
-                            //inviteCodeSource 4：剪切板
-                            viewModel.register(account, pwd1, code, "", "", 4);
-                        }
-                    }
-                    else if (domian != null && !TextUtils.isEmpty(domian))
-                    {
-                        if (domian.equals(default_promption_code) &&
-                                registerVerificationCodeVo !=null
-                                &&!TextUtils.isEmpty(registerVerificationCodeVo.key)){
-                            viewModel.register(account, pwd1, domian, registerVerificationCodeVo.key, verificationTxt, 2);
-                        } else if (domian.equals(default_promption_code)
-                                && (registerVerificationCodeVo ==null ||TextUtils.isEmpty(registerVerificationCodeVo.key))) {
-                            viewModel.register(account, pwd1, domian, "", "", 2);
-                        } else{
-                            if (registerVerificationCodeVo !=null
-                                    &&!TextUtils.isEmpty(registerVerificationCodeVo.key)){
-                                viewModel.register(account, pwd1, domian, registerVerificationCodeVo.key, verificationTxt, 2);
-                            }else{
-                                viewModel.register(account, pwd1, domian, "", "", 2);
-                            }
-                        }
-                    } else if (settingsVo != null) {
-                        if (settingsVo.promption_code !=null && !TextUtils.isEmpty(settingsVo.promption_code)){
-                            if (registerVerificationCodeVo !=null
-                                    &&!TextUtils.isEmpty(registerVerificationCodeVo.key)){
-                                viewModel.register(account, pwd1, settingsVo.promption_code, registerVerificationCodeVo.key, verificationTxt, 2);
-                            }else{
-                                viewModel.register(account, pwd1, settingsVo.promption_code, "", "", 2);
-                            }
-                        } else if (settingsVo.default_promption_code !=null && !TextUtils.isEmpty(settingsVo.default_promption_code)) {
-                            if (registerVerificationCodeVo !=null
-                                    &&!TextUtils.isEmpty(registerVerificationCodeVo.key)){
-                                //inviteCodeSource 5
-                                viewModel.register(account, pwd1, settingsVo.default_promption_code, registerVerificationCodeVo.key, verificationTxt, 1);
-                            }else{
-                                //inviteCodeSource 5
-                                viewModel.register(account, pwd1, settingsVo.default_promption_code, "", "", 1);
-                            }
-                        }
-                    }
+            } else if (text.contains("马上登录")) {
+               register();
+            }
         });
      /*   //点击 注册 验证码图片 手动刷新验证码图片
         binding.ivVerification.setOnClickListener(v -> {
@@ -951,6 +858,175 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
             case EVENT_TOP_SPEED_FAILED:
                 mTopSpeedDomainFloatingWindows.onError();
                 break;
+        }
+    }
+
+    /**
+     * 登录
+     */
+    private void login(){
+        if (!ifAgree()) {
+            ToastUtils.showLong(getResources().getString(R.string.me_agree_hint));
+            showAgreementDialog(binding.ckbAgreement);
+            return;
+        }
+
+        String acc = binding.edtAccount.getText().toString().trim();
+        String pwd = binding.edtPwd.getText().toString();
+        if (TextUtils.isEmpty(acc)) {
+            ToastUtils.showLong(getResources().getString(R.string.me_account_hint));
+            return;
+        }
+
+        if (TextUtils.isEmpty(pwd)) {
+            ToastUtils.showLong(getResources().getString(R.string.me_pwd_hint));
+            return;
+        }
+        if (!loginRegType) {
+            viewModel.login(acc, pwd);
+        } else {
+            String loginVerText = binding.edtLoginVerification.getText().toString();
+            //验证码不能为空
+            if (TextUtils.isEmpty(loginVerText)) {
+                binding.tvwPwdCheckVerification.setVisibility(View.VISIBLE);
+                binding.tvwPwdCheckVerification.setText(R.string.txt_otp_can_not_null);
+                ToastUtils.showError(this.getText(R.string.txt_otp_can_not_null));
+                return;
+            }
+            //验证码不是数字 验证码长度不是4位
+            if (!StringUtils.isNumber(loginVerText) || loginVerText.length() != 4) {
+                binding.tvwPwdCheckVerification.setVisibility(View.VISIBLE);
+                binding.tvwPwdCheckVerification.setText(R.string.txt_otp_not_four_number);
+                ToastUtils.showError(this.getText(R.string.txt_otp_not_four_number));
+                return;
+            }
+            viewModel.loginAndVer(acc, pwd, loginRegCodeVo.key, loginVerText);
+        }
+    }
+
+    /**
+     * 注册
+     */
+    private void  register(){
+        String account = binding.edtAccReg.getText().toString().trim();
+        String pwd1 = binding.edtPwd1.getText().toString();
+        String pwd2 = binding.edtPwd2.getText().toString();
+        String verificationTxt = binding.edtVerification.getText().toString();
+        if (!binding.ckbAgreement.isChecked()) {
+            ToastUtils.showLong(getResources().getString(R.string.me_agree_hint));
+            showAgreementDialog(binding.ckbAgreement);
+            return;
+        }
+
+        if (account.isEmpty()) {
+            binding.tvwUsernameWarning.setVisibility(View.VISIBLE);
+            binding.tvwUsernameWarning.setText(R.string.txt_username_empty);
+            mIsAcc = false;
+        }
+
+        if (pwd1.isEmpty()) {
+            binding.tvwPwdWarning.setVisibility(View.VISIBLE);
+            binding.tvwPwdWarning.setText(R.string.txt_pwd_cannot_empty);
+            mIsPwd1 = false;
+        }
+
+        if (pwd2.isEmpty()) {
+            binding.tvwPwdCheckWarning.setVisibility(View.VISIBLE);
+            binding.tvwPwdCheckWarning.setText(R.string.txt_pwd_is_empty);
+            mIsPwd2 = false;
+        }
+        //注册页面需要判断Seting 状态 1需要判断
+        if (settingsVo != null &&
+                settingsVo.register_captcha_switch != null
+                && TextUtils.equals("1", settingsVo.register_captcha_switch)) {
+            //验证码不能为空
+            if (verificationTxt.isEmpty()) {
+                binding.tvwPwdCheckVerification.setVisibility(View.VISIBLE);
+                binding.tvwPwdCheckVerification.setText(R.string.txt_otp_can_not_null);
+                ToastUtils.showError(this.getText(R.string.txt_otp_can_not_null));
+                // mIsVer = false;
+                return;
+            }
+            //验证码不是数字 验证码长度不是4位
+            if (verificationTxt.length() != 4) {
+                binding.tvwPwdCheckVerification.setVisibility(View.VISIBLE);
+                binding.tvwPwdCheckVerification.setText(R.string.txt_otp_not_four_number);
+                ToastUtils.showError(this.getText(R.string.txt_otp_not_four_number));
+                //mIsVer = false;
+                return;
+            }
+
+        }
+
+        if (!mIsAcc || !mIsPwd1 || !mIsPwd2) {
+            return;
+        }
+
+        final String domian =
+                SPUtils.getInstance().getString(SPKeyGlobal.PROMOTION_CODE_REG);
+        String default_promption_code = null;
+        if (settingsVo !=null && !TextUtils.isEmpty(settingsVo.default_promption_code)){
+            default_promption_code = settingsVo.default_promption_code;
+        }
+
+
+        /**
+         剪贴板 =4  =  剪贴板
+
+         promotion 接口 =2 =   系统设置（来源：default/promotioncode接口）
+
+         promption_code  = 2 = 系统设置（来源：setting接口）
+
+         default_promption_code = 1 =  系统默认 （来源：setting接口）
+         */
+
+        //剪切板不为空 且注册验证码不为空
+        if (code != null && !TextUtils.isEmpty(code))
+        {
+            if (registerVerificationCodeVo !=null
+                    &&!TextUtils.isEmpty(registerVerificationCodeVo.key)){
+                //inviteCodeSource 4：剪切板
+                viewModel.register(account, pwd1, code, registerVerificationCodeVo.key, verificationTxt, 4);
+            }else{
+                //inviteCodeSource 4：剪切板
+                viewModel.register(account, pwd1, code, "", "", 4);
+            }
+        }
+        else if (domian != null && !TextUtils.isEmpty(domian))
+        {
+            if (domian.equals(default_promption_code) &&
+                    registerVerificationCodeVo !=null
+                    &&!TextUtils.isEmpty(registerVerificationCodeVo.key)){
+                viewModel.register(account, pwd1, domian, registerVerificationCodeVo.key, verificationTxt, 2);
+            } else if (domian.equals(default_promption_code)
+                    && (registerVerificationCodeVo ==null ||TextUtils.isEmpty(registerVerificationCodeVo.key))) {
+                viewModel.register(account, pwd1, domian, "", "", 2);
+            } else{
+                if (registerVerificationCodeVo !=null
+                        &&!TextUtils.isEmpty(registerVerificationCodeVo.key)){
+                    viewModel.register(account, pwd1, domian, registerVerificationCodeVo.key, verificationTxt, 2);
+                }else{
+                    viewModel.register(account, pwd1, domian, "", "", 2);
+                }
+            }
+        } else if (settingsVo != null) {
+            if (settingsVo.promption_code !=null && !TextUtils.isEmpty(settingsVo.promption_code)){
+                if (registerVerificationCodeVo !=null
+                        &&!TextUtils.isEmpty(registerVerificationCodeVo.key)){
+                    viewModel.register(account, pwd1, settingsVo.promption_code, registerVerificationCodeVo.key, verificationTxt, 2);
+                }else{
+                    viewModel.register(account, pwd1, settingsVo.promption_code, "", "", 2);
+                }
+            } else if (settingsVo.default_promption_code !=null && !TextUtils.isEmpty(settingsVo.default_promption_code)) {
+                if (registerVerificationCodeVo !=null
+                        &&!TextUtils.isEmpty(registerVerificationCodeVo.key)){
+                    //inviteCodeSource 5
+                    viewModel.register(account, pwd1, settingsVo.default_promption_code, registerVerificationCodeVo.key, verificationTxt, 1);
+                }else{
+                    //inviteCodeSource 5
+                    viewModel.register(account, pwd1, settingsVo.default_promption_code, "", "", 1);
+                }
+            }
         }
     }
 }
