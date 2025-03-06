@@ -39,18 +39,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:background="@mipmap/bt_icon_bt_sucess"
+                    android:background="@drawable/bt_icon_bt_sucess"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_result"
+                    style="?attr/textPrimaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:text="已提交"
-                    style="?attr/textPrimaryAttr"
                     android:textSize="@dimen/bt_text_20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -99,13 +99,12 @@
 
                 <TextView
                     android:id="@+id/tv_close"
+                    style="?attr/transfer_btn_next_attr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_gravity="center"
-                    android:background="@mipmap/cm_bg_btn"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="6dp"
+                    android:gravity="center"
                     android:text="@string/bt_bt_btn_comfirm"
                     android:textColor="@color/bt_color_under_bg_primary_text"
                     android:textSize="@dimen/bt_text_16sp"

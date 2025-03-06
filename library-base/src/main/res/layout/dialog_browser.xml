@@ -96,7 +96,7 @@
         android:background="@color/white"
         android:contentDescription="launch"
         android:scaleType="center"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/logo"
         android:visibility="gone"
         tools:visibility="gone" />
 

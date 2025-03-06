@@ -384,6 +384,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         binding.titleBar.ivBack.setOnClickListener(this);
         binding.titleBar.tvBalance.setOnClickListener(this);
         binding.titleBar.ivSearch.setOnClickListener(this);
+        binding.titleBar.tvTitle.setOnClickListener(this);
         binding.tvwCancel.setOnClickListener(this);
 
         //不让点击事件透传给后面的view

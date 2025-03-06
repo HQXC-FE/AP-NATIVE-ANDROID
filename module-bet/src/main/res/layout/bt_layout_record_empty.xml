@@ -36,14 +36,13 @@
 
     <TextView
         android:id="@+id/tv_bt_now"
+        style="?attr/btn_short_attr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
         android:layout_marginTop="33dp"
-        android:background="@mipmap/cm_bg_btn_2"
-        android:gravity="center_horizontal"
-        android:paddingTop="6dp"
+        android:gravity="center"
         android:text="@string/bt_txt_bt_right_now"
         android:textColor="@color/bt_color_under_bg_primary_text"
         android:textSize="@dimen/bt_text_16sp"
