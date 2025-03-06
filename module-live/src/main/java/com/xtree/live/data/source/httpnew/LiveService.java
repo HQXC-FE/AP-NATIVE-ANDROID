@@ -4,6 +4,9 @@ import com.google.gson.JsonElement;
 import com.xtree.live.SPKey;
 import com.xtree.live.data.AdsBean;
 import com.xtree.live.data.source.response.LiveRoomBean;
+import com.xtree.live.data.source.response.SearchChatRoomInfo;
+import com.xtree.live.message.ChatRoomInfo;
+import com.xtree.live.message.ChatRoomPin;
 import com.xtree.live.message.MessageRecord;
 import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.message.inroom.InRoomData;
@@ -71,6 +74,14 @@ public interface LiveService {
     @POST("api/chat/sendMessage")
     Flowable<BaseResponse<JsonElement>> sendMessage(@Body RequestBody body,@Part MultipartBody.Part file);
 
+    @POST("api/chat/searchAssistant")
+    Flowable<BaseResponse<SearchChatRoomInfo>> searchAssistant(@Body RequestBody body);
+
+    @POST("api/chat/getChatRoomList")
+    Flowable<BaseResponse<List<ChatRoomInfo>>> getChatRoomList(@Body RequestBody body);
+
+    @POST("api/chat_room/pin")
+    Flowable<BaseResponse<ChatRoomPin>> pinChatRoom(@Body RequestBody body);
 
 
 }
