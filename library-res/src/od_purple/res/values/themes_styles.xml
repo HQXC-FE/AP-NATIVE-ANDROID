@@ -517,5 +517,16 @@
     <style name="style_main_bottom_image">
         <item name="android:background">@drawable/ic_tab_background</item>
     </style>
-
+    <style name="style_main_game_cover">
+        <item name="android:background">@drawable/hm_bg_entry</item>
+    </style>
+    <style name="style_main_game_fast">
+        <item name="android:background">@drawable/hm_bt_fast</item>
+    </style>
+    <style name="style_main_tenance">
+        <item name="android:background">@drawable/hm_mid_bg_entry</item>
+    </style>
+    <style name="style_hm_img_room">
+        <item name="android:src">@drawable/hm_img_room</item>
+    </style>
 </resources>
