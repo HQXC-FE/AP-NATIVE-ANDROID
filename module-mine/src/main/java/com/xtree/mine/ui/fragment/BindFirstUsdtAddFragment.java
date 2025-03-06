@@ -386,14 +386,14 @@ public class BindFirstUsdtAddFragment extends BaseFragment<FragmentBindUsdtFirst
             String tvwAr = binding.tvwArbitrum.getText().toString().trim();
             if (TextUtils.equals("Arbitrum",tvwAr) || tvwAr.toLowerCase().contains("Arbitrum")|| tvwAr.toLowerCase().contains("arbitrum") ) {
                 type ="Arbitrum" ;
-                binding.tvwTipAddress.setText(R.string.txt_remind_usdt_arb);
-                binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_arb);
+                binding.tvwTipAddress.setText(R.string.txt_remind_usdt_arbitrum);
+                binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_arbitrum);
 
             }
             else if (TextUtils.equals("Solana",tvwAr) || tvwAr.toLowerCase().contains("Solana") ||tvwAr.toLowerCase().contains("solana")) {
                 type ="Solana" ;
-                binding.tvwTipAddress.setText(R.string.txt_remind_usdt_sol);
-                binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_sol);
+                binding.tvwTipAddress.setText(R.string.txt_remind_usdt_solana);
+                binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_solana);
             }
 
         });
@@ -412,14 +412,14 @@ public class BindFirstUsdtAddFragment extends BaseFragment<FragmentBindUsdtFirst
             String tvwAr = binding.tvwSolana.getText().toString().trim();
             if (TextUtils.equals("Arbitrum",tvwAr) || tvwAr.toLowerCase().contains("Arbitrum")|| tvwAr.toLowerCase().contains("arbitrum") ) {
                 type ="Arbitrum" ;
-                binding.tvwTipAddress.setText(R.string.txt_remind_usdt_arb);
-                binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_arb);
+                binding.tvwTipAddress.setText(R.string.txt_remind_usdt_arbitrum);
+                binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_arbitrum);
 
             }
             else if (TextUtils.equals("Solana",tvwAr) || tvwAr.toLowerCase().contains("Solana") ||tvwAr.toLowerCase().contains("solana")) {
                 type ="Solana" ;
-                binding.tvwTipAddress.setText(R.string.txt_remind_usdt_sol);
-                binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_sol);
+                binding.tvwTipAddress.setText(R.string.txt_remind_usdt_solana);
+                binding.tvwTipAddressTip.setText(R.string.txt_remind_usdt_solana);
             }
 
         });
