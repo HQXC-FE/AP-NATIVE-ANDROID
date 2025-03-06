@@ -402,59 +402,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         initNetFloatWindows();
 
         setChangeDomainVisible();
-        //今日\滚球\早盘\串光\冠军切换
-        binding.tabPlayMethod.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                ((TextView) tab.getCustomView()).setTextSize(16);
-                CfLog.i("playMethodPos   " + playMethodPos + "  " + tab.getPosition());
-                if (playMethodPos != tab.getPosition()) {
-                    hideSearchView();
-                    mIsChange = true;
-                    isFirstInto = true;
-                    mLeagueIdList.clear();
-                    binding.srlLeague.resetNoMoreData();
-                    searchDatePos = 0;
-                    playMethodType = playMethodTypeList.get(tab.getPosition());
-                    if (playMethodPos == 4) {
-                        BtCarManager.clearBtCar();
-                        setCgBtCar();
-                    }
-                    showSearchDate();
-                    //CfLog.i("playMethodPos   " + playMethodPos);
-                    playMethodPos = tab.getPosition();
-                    if (tab.getPosition() == 4) {
-                        binding.srlLeague.setEnableLoadMore(false);
-                    } else {
-                        binding.srlLeague.setEnableLoadMore(true);
-                    }
-                    BtCarManager.setIsCg(playMethodPos == 3);
-                    binding.rlCg.setVisibility(!BtCarManager.isCg() ? View.GONE : BtCarManager.isEmpty() ? View.GONE : View.VISIBLE);
-                    mLeagueGoingOnList.clear();
-                    mLeagueList.clear();
-                    viewModel.setSportItems(playMethodPos, playMethodType);
-
-                    if (playMethodPos == 2 || playMethodPos == 3) {
-                        binding.tabSearchDate.setVisibility(View.VISIBLE);
-                    } else {
-                        binding.tabSearchDate.setVisibility(View.GONE);
-                    }
-                    if (playMethodPos == 0 || playMethodPos == 3) {
-                        viewModel.getHotMatchCount(playMethodType, viewModel.hotLeagueList);
-                    }
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                ((TextView) tab.getCustomView()).setTextSize(14);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
         tabSportAdapter.setOnItemClickListener((adapter, view, position) -> {
 
             CfLog.i("position   " + position);
@@ -1315,7 +1262,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     binding.rlCg.setVisibility(!BtCarManager.isCg() ? View.GONE : BtCarManager.isEmpty() ? View.GONE : View.VISIBLE);
                     mLeagueGoingOnList.clear();
                     mLeagueList.clear();
-                    viewModel.setSportIcons(playMethodPos);
+//                    viewModel.setSportIcons(playMethodPos);
                     viewModel.setSportItems(playMethodPos, playMethodType);
 
                     if (playMethodPos == 2 || playMethodPos == 3) {
