@@ -276,6 +276,14 @@ public class MatchPm implements Match {
         return matchInfo.mms == 2 || matchInfo.mms == 1;
     }
 
+    @Override
+    public String getVideoType() {
+        if (matchInfo != null && matchInfo.vs != null) {
+            return matchInfo.vs.get(0).videoType;
+        }
+        return null;
+    }
+
     /**
      * 是否有动画直播
      *

@@ -30,7 +30,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.gyf.immersionbar.ImmersionBar;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
-import com.shuyu.gsyvideoplayer.cache.CacheFactory;
 import com.shuyu.gsyvideoplayer.player.PlayerFactory;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.xtree.base.utils.CfLog;
@@ -67,7 +66,6 @@ import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 import tv.danmaku.ijk.media.exo2.Exo2PlayerManager;
-import tv.danmaku.ijk.media.exo2.ExoPlayerCacheManager;
 
 public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlayer> implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     private final static String KEY_MATCH = "KEY_MATCH_ID";
@@ -227,7 +225,6 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
     private void initVideoPlayer() {
         //EXOPlayer内核，支持格式更多
         PlayerFactory.setPlayManager(Exo2PlayerManager.class);
-        CacheFactory.setCacheManager(ExoPlayerCacheManager.class);//exo缓存模式，支持m3u8，只支持exo
         //增加title
         binding.tvLive.setOnClickListener(this);
         binding.tvAnimi.setOnClickListener(this);
@@ -310,6 +307,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 .setLockLand(false)
                 .setShowFullAnimation(false)//打开动画
                 .setNeedLockFull(false)
+                .setLooping(true)  // 直播需要循环播放
                 .setSeekRatio(1);
     }
 
@@ -536,13 +534,21 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
             btCarDialogFragment.show(BtDetailActivity.this.getSupportFragmentManager(), "btCarDialogFragment");
         } else if (id == R.id.tv_live) {
-            binding.videoPlayer.setVisibility(View.VISIBLE);
             binding.ctlToolbarLeague.setVisibility(View.GONE);
             binding.rlToolbarTime.setVisibility(View.GONE);
-            if (mMatch.isVideoStart()) {
-                initVideoBuilderMode();
-            } else {
+            if (!mMatch.isVideoStart()) {
                 ToastUtils.showLong(getText(R.string.bt_bt_match_not_runing));
+                return;
+            }
+            if (TextUtils.equals(mMatch.getVideoType(), "p")) {//是PM场馆H5播放页面
+                if (!mMatch.getVideoUrls().isEmpty()) {
+                    setWebView();
+                    binding.wvAmin.setVisibility(View.VISIBLE);
+                    binding.wvAmin.loadUrl(mMatch.getVideoUrls().get(0));
+                }
+            } else {
+                binding.videoPlayer.setVisibility(View.VISIBLE);
+                initVideoBuilderMode();
             }
 
         } else if (id == R.id.tv_animi) {

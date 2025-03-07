@@ -109,6 +109,12 @@ public interface Match extends BaseBean {
     boolean isVideoStart();
 
     /**
+     * PM视频直播是H5播放页面，还是视频播放地址
+     * @return
+     */
+    String getVideoType();
+
+    /**
      * 是否有动画直播
      * @return
      */
