@@ -19,6 +19,7 @@
             <TextView
                 style="@style/style_cm_title"
                 android:text="@string/txt_offer"
+                android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -46,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:src="@mipmap/bg_offer"
+            style="?attr/offer_top_attr"
             app:layout_constraintEnd_toEndOf="@id/cl_title"
             app:layout_constraintStart_toStartOf="@id/cl_title"
             app:layout_constraintTop_toBottomOf="@id/cl_title" />
@@ -386,7 +387,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
-            android:drawableTop="@mipmap/ic_no_data"
+            style="?attr/offer_no_data_attr"
             android:elevation="-1dp"
             android:gravity="center"
             android:text="@string/txt_offer_no_data"

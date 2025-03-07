@@ -362,18 +362,15 @@
 
                     <TextView style="@style/style_wallet_space" />
 
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/tvw_safe"
                         style="?attr/home_me_account_safty_attr"
-                        />
+                        />-->
 
-                    <!--<TextView
+                    <TextView
                         android:id="@+id/tvw_dc_centre"
-                        style="@style/style_menu_white"
-                        android:drawableTop="@drawable/bg_reward_selector"
-                        android:text="@string/me_discount_centre"
-                        android:visibility="visible"
-                        android:visibility="gone"/>-->
+                        style="?attr/home_me_dc_centre_attr"
+                        />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -74,7 +74,8 @@
         <item name="home_me_account_record_attr">@style/style_me_trans_record</item>
         <!--账变记录-->
         <item name="home_me_account_safty_attr">@style/style_me_account_safty</item>
-
+        <!--账变记录-->
+        <item name="home_me_dc_centre_attr">@style/style_me_dc_centre</item>
 
         <!--好友邀请-->
         <item name="home_me_invite_friend_attr">@style/style_me_invite_friend</item>
@@ -129,6 +130,10 @@
         <item name="main_tenance_attr">@style/style_main_tenance</item>
 
         <item name="hm_img_room_attr">@style/style_hm_img_room</item>
+
+        <item name="offer_top_attr">@style/style_offer_top</item>
+        <item name="offer_no_data_attr">@style/style_offer_no_data</item>
+
 
     </style>
 

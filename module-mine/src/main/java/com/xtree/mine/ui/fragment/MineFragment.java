@@ -170,15 +170,15 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             CfLog.i("****** ");
             startContainerFragment(RouterFragmentPath.Mine.PAGER_ACCOUNT_CHANGE); // 账变记录
         });
-        binding.tvwSafe.setOnClickListener(v -> {
+       /* binding.tvwSafe.setOnClickListener(v -> {
             CfLog.i("****** ");
             startContainerFragment(RouterFragmentPath.Mine.PAGER_SECURITY_CENTER); // 安全中心
-        });
-      /*  binding.tvwDcCentre.setOnClickListener(v -> {
+        });*/
+        binding.tvwDcCentre.setOnClickListener(v -> {
             CfLog.i("****** ");
 //            BrowserActivity.start(getContext(), DomainUtil.getH5Domain2() + Constant.URL_DC_CENTER); // 优惠中心
             startContainerFragment(RouterFragmentPath.Mine.PAGER_OFFER); // 优惠中心
-        });*/
+        });
 
         binding.tvwInviteFriend.setOnClickListener(v -> {
             CfLog.i("****** ");
