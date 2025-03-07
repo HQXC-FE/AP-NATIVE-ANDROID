@@ -38,9 +38,15 @@ android {
     afterEvaluate {
         def json = file("${rootProject.projectDir.path}/channel_config/groupAll.json").getText("UTF-8")
         def flavors = new JsonSlurper().parseText(json)
+        def activeVariant = getCurrentBuildVariant()
+        println "当前构建变体: $activeVariant "
         flavors.each { flavor ->
-            def themeRes = "src/${flavor.theme}/res"
-            sourceSets.main.res.srcDirs = [themeRes, "src/main/res"]
+            println "当前渠道: ${flavor.channel_name}"
+            println "当前渠道: "+activeVariant.contains("${flavor.channel_name}")
+            if (activeVariant.contains("${flavor.channel_name}")) {
+                def themeRes = "src/${flavor.theme}/res"
+                sourceSets.main.res.srcDirs = [themeRes, "src/main/res"]
+            }
         }
     }
 
@@ -55,6 +61,18 @@ android {
         viewBinding true
         //dataBinding true
     }
+}
+
+def getCurrentBuildVariant() {
+    def taskRequests = gradle.startParameter.taskNames
+    def variantName = "debug" // 默认变体
+    taskRequests.each { task ->
+        def match = task =~ /assemble(\w+)/
+        if (match) {
+            variantName = match[0][1].uncapitalize()
+        }
+    }
+    return variantName
 }
 
 dependencies {
