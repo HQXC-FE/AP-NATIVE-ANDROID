@@ -74,11 +74,11 @@ public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordB
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (binding.llCheckUsername.edtResetPasswordUsername.getText().toString().length() == 0) {
                     binding.llCheckUsername.twvResetPasswordUsername.setVisibility(View.VISIBLE);
-                    binding.llCheckUsername.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.mipmap.me_reset_password_next_unable));
+                    binding.llCheckUsername.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.drawable.me_reset_password_next_unable));
                     mIsClickable = false;
                 } else {
                     binding.llCheckUsername.twvResetPasswordUsername.setVisibility(View.GONE);
-                    binding.llCheckUsername.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.mipmap.me_reset_password_next_enable));
+                    binding.llCheckUsername.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.drawable.me_reset_password_next_enable));
                     mIsClickable = true;
                 }
             }
@@ -132,16 +132,16 @@ public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordB
                 if (binding.llCheckOtp.edtSetOpt.getText().toString().length() == 0) {
                     binding.llCheckOtp.twvSetOtpError.setVisibility(View.VISIBLE);
                     binding.llCheckOtp.twvSetOtpError.setText(R.string.txt_otp_can_not_null);
-                    binding.llCheckOtp.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.mipmap.me_reset_password_next_unable));
+                    binding.llCheckOtp.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.drawable.me_reset_password_next_unable));
                     mIsClickable = false;
                 } else if (binding.llCheckOtp.edtSetOpt.getText().toString().length() == 6) {
                     binding.llCheckOtp.twvSetOtpError.setVisibility(View.GONE);
-                    binding.llCheckOtp.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.mipmap.me_reset_password_next_enable));
+                    binding.llCheckOtp.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.drawable.me_reset_password_next_enable));
                     mIsClickable = true;
                 } else {
                     binding.llCheckOtp.twvSetOtpError.setVisibility(View.VISIBLE);
                     binding.llCheckOtp.twvSetOtpError.setText(R.string.txt_otp_not_six_number);
-                    binding.llCheckOtp.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.mipmap.me_reset_password_next_unable));
+                    binding.llCheckOtp.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.drawable.me_reset_password_next_unable));
                     mIsClickable = false;
                 }
             }
@@ -182,7 +182,8 @@ public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordB
                     binding.llResetPassword.twvResetPasswordResetPasswordError.setVisibility(View.GONE);
                 }
 
-                if (!binding.llResetPassword.edtResetPasswordResetPassword.getText().toString().equals(binding.llResetPassword.edtResetPasswordResetPasswordRecheck.getText().toString())) {
+                if (!binding.llResetPassword.edtResetPasswordResetPassword.getText().
+                        toString().equals(binding.llResetPassword.edtResetPasswordResetPasswordRecheck.getText().toString())) {
                     binding.llResetPassword.twvResetPasswordResetPasswordRecheckError.setVisibility(View.VISIBLE);
                     binding.llResetPassword.twvResetPasswordResetPasswordRecheckError.setText(R.string.txt_reset_password_not_same_error);
                     mIsClickable = false;
