@@ -113,5 +113,6 @@
     <attr name="hm_img_room_attr" format="reference" />
     <attr name="offer_top_attr" format="reference" />
     <attr name="offer_no_data_attr" format="reference" />
+    <attr name="hm_game_type_attr" format="reference" />
 
 </resources>

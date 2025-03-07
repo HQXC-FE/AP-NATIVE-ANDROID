@@ -133,7 +133,7 @@
 
         <item name="offer_top_attr">@style/style_offer_top</item>
         <item name="offer_no_data_attr">@style/style_offer_no_data</item>
-
+        <item name="hm_game_type_attr">@style/style_hm_game_type_list</item>
 
     </style>
 
