@@ -267,28 +267,29 @@
                     tools:ignore="MissingConstraints">
 
                     <RadioButton
-                        style="@style/style_hm_game_type"
+                        style="?attr/hm_game_type_attr"
+
                         android:tag="tp_1" />
 
                     <RadioButton
-                        style="@style/style_hm_game_type"
+                        style="?attr/hm_game_type_attr"
                         android:tag="tp_2" />
 
                     <RadioButton
-                        style="@style/style_hm_game_type"
+                        style="?attr/hm_game_type_attr"
                         android:tag="tp_3" />
 
                     <RadioButton
-                        style="@style/style_hm_game_type"
+                        style="?attr/hm_game_type_attr"
                         android:tag="tp_4" />
 
                     <RadioButton
-                        style="@style/style_hm_game_type"
+                        style="?attr/hm_game_type_attr"
                         android:tag="tp_5" />
 
-                    <RadioButton
-                        style="@style/style_hm_game_type"
-                        android:tag="tp_6" />
+                   <!-- <RadioButton
+                        style="?attr/hm_game_type_attr"
+                        android:tag="tp_6" />-->
 
                 </RadioGroup>
             </androidx.core.widget.NestedScrollView>

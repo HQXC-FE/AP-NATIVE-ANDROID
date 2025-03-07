@@ -540,4 +540,12 @@
     <style name="style_offer_no_data">
         <item name="android:drawableTop">@drawable/ic_no_data</item>
     </style>
+
+    <!-- 首页-左边的游戏类型 -->
+    <style name="style_hm_game_type_list">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:button">@drawable/hm_game_type_selector</item>
+    </style>
 </resources>
