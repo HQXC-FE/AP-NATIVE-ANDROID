@@ -59,23 +59,18 @@ android {
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
                 // 打包输出路径 发布用
+                //variant.getPackageApplication().outputDirectory = new File("${project.rootDir.absolutePath}/outputs")
                 //variant.getPackageApplicationProvider().get().outputDirectory = new File("${project.rootDir.absolutePath}/outputs")
                 // 打包文件名
-                //def name = variant.flavorName.split("_")[0]
+                def name1 = variant.flavorName.split("_")[0]
+                def name2 = variant.flavorName.split("_")[1]
                 def name = variant.flavorName
-
-                //outputFileName = "${variant.flavorName}_v${variant.versionCode}${tp}_${releaseTime()}.apk"
                 //outputFileName = "${name}_v${variant.versionCode}_${variant.buildType.name}.apk"
-                def tp = "${if (variant.buildType.name == 'debug') '_tt' else ''}"
-                //outputFileName = "${name}_v${variant.versionCode}_${releaseTime()}${tp}.apk"
-                //outputFileName = "${name}_v${variant.versionName.replace(".", "_")}_${releaseTime()}${tp}.apk"
-                outputFileName = "${name}_v${variant.versionCode}a${tp}.apk"
-
-                //var name1 = "${name}".split("_")[0]
-                //var name2 = "${name}".replace("${name1}", "")
-                //outputFileName = "${name1}_v${variant.versionCode}${name2}${tp}.apk"
+                def tp = "${if (variant.buildType.name == 'debug') '_db' else ''}"
+                //outputFileName = "${name}_v${variant.versionCode}.apk" // xxx_v1xx.apk
+                //outputFileName = "${name1}_v${variant.versionCode}_${name2}${tp}.apk" // 自己用
+                outputFileName = "${name1}_v${variant.versionCode}_${name2}_${releaseTime()}${tp}.apk" // 发布用
             }
-
         }
     }
 
