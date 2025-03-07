@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Purple Theme example-->
+
+    <attr name="primaryAttr" format="reference" />
+    <attr name="primaryVariantAttr" format="reference" />
+    <attr name="secondaryAttr" format="reference" />
+    <attr name="tertiaryAttr" format="reference" />
+
+    <attr name="textDescriptionAttr" format="reference" />
+    <attr name="textPrimaryAttr" format="reference" />
+    <attr name="textSecondaryAttr" format="reference" />
+    <attr name="textTertiaryAttr" format="reference" />
+    <attr name="textQuaternaryAttr" format="reference" />
+    <attr name="textQuinaryAttr" format="reference" />
+    <attr name="textSenaryAttr" format="reference" />
+    <attr name="textForgotAttr" format="reference" />
+    <attr name="channelTextSelectAttr" format="reference" />
+
+    <attr name="clr_item_text_attr" format="reference" />
+    <attr name="ivw_bg_attr" format="reference" />
+    <attr name="clr_rc_rate_attr" format="reference" />
+    <attr name="ivw_hot_attr" format="reference" />
+    <attr name="ivw_rcmd_attr" format="reference" />
+    <attr name="ivw_icon_attr" format="reference" />
+
+    <attr name="rc_channel_attr" format="reference" />
+    <attr name="style_cm_title_attr" format="reference" />
+
+    <attr name="recharge_btn_next_attr" format="reference" />
+    <attr name="transfer_btn_next_attr" format="reference" />
+    <attr name="withdrawal_btn_next_attr" format="reference" />
+    <attr name="withdrawal_btn_previous_attr" format="reference" />
+    <attr name="common_btn_attr" format="reference" />
+    <attr name="dialog_order_bank_top_attr" format="reference" />
+    <attr name="dialog_order_bank_info_attr" format="reference" />
+    <attr name="withdrawal_btn_attr" format="reference" />
+    <attr name="btn_get_code_attr" format="reference" />
+    <attr name="info2_grey_50_attr" format="reference" />
+    <attr name="info_grey_50_attr" format="reference" />
+    <attr name="bg_google_auth_attr" format="reference" />
+    <attr name="bg_rc_dialog_attr" format="reference" />
+
+    <attr name="play_method_attr" format="reference" />
+    <attr name="rc_dlg_hourglass_attr" format="reference" />
+    <attr name="rc_dlg_bg_title_attr" format="reference" />
+    <attr name="rc_dlg_bg_top_attr" format="reference" />
+    <attr name="rc_reg_hi_wallet_attr" format="reference" />
+    <attr name="rc_down_hi_wallet_attr" format="reference" />
+    <attr name="btn_short_attr" format="reference" />
+    <attr name="btn_small_attr" format="reference" />
+    <attr name="withdraw_money_account_attr" format="reference" />
+    <attr name="bg_dialog_top_bank_attr" format="reference" />
+    <attr name="withdraw_title_progress_attr" format="reference" />
+    <attr name="bg_floating_attr" format="reference" />
+    <attr name="iv_floating_close_attr" format="reference" />
+    <attr name="ic_floating_attr" format="reference" />
+    <attr name="bg_floating_way_attr" format="reference" />
+    <attr name="img_no_data_attr" format="reference" />
+    <attr name="home_top_notice_attr" format="reference" />
+    <attr name="home_top_deposit_attr" format="reference" />
+    <attr name="home_top_trans_attr" format="reference" />
+    <attr name="home_top_withdraw_attr" format="reference" />
+    <attr name="home_top_cs_attr" format="reference" />
+    <attr name="home_top_balance_attr" format="reference" />
+    <attr name="home_top_name_attr" format="reference" />
+    <attr name="home_top_name_nologin_attr" format="reference" />
+    <attr name="home_me_pocket_attr" format="reference" />
+    <attr name="home_me_transfer_attr" format="reference" />
+    <attr name="home_me_betting_record_attr" format="reference" />
+    <attr name="home_me_account_record_attr" format="reference" />
+    <attr name="home_me_account_safty_attr" format="reference" />
+    <attr name="home_me_dc_centre_attr" format="reference" />
+
+    <attr name="home_me_invite_friend_attr" format="reference" />
+    <attr name="home_me_guanfangheyin_attr" format="reference" />
+    <attr name="home_me_yinkui_baobiao_attr" format="reference" />
+    <attr name="home_me_sanfang_zhuanzhang_attr" format="reference" />
+
+    <attr name="home_me_anquan_zhongxin_attr" format="reference" />
+    <attr name="home_me_zhanghu_shezhi_attr" format="reference" />
+    <attr name="home_me_fanhui_baobiao_attr" format="reference" />
+    <attr name="home_me_vip_zhongxin_attr" format="reference" />
+
+    <attr name="home_me_tiyu_guize_attr" format="reference" />
+    <attr name="home_me_gr_upgrade_attr" format="reference" />
+    <attr name="home_me_usdt_jiaocheng_attr" format="reference" />
+    <attr name="home_me_ic_help_attr" format="reference" />
+    <attr name="home_me_backgroup_attr" format="reference" />
+    <attr name="home_me_backgroup_middle_attr" format="reference" />
+    <attr name="home_me_backgroup_top_attr" format="reference" />
+    <attr name="home_me_backgroup_top_click_attr" format="reference" />
+    <attr name="home_me_backgroup_bottom_attr" format="reference" />
+
+    <attr name="home_me_top_lijin_attr" format="reference" />
+    <attr name="home_me_top_week_attr" format="reference" />
+    <attr name="home_me_top_zhuanshu_attr" format="reference" />
+
+    <attr name="home_me_lottery_info_attr" format="reference" />
+    <attr name="home_me_question_attr" format="reference" />
+    <attr name="home_me_play_intro_attr" format="reference" />
+    <attr name="home_me_tutorial_attr" format="reference" />
+    <attr name="me_msg_backgroup_attr" format="reference" />
+    <attr name="login_activity_attr" format="reference" />
+    <attr name="login_ac_backgroup_attr" format="reference" />
+    <attr name="login_eye_backgroup_attr" format="reference" />
+    <attr name="login_check_backgroup_attr" format="reference" />
+    <attr name="home_top_banner_attr" format="reference" />
+    <attr name="main_bottom_image_attr" format="reference" />
+    <attr name="main_game_cover_attr" format="reference" />
+    <attr name="main_game_fast_attr" format="reference" />
+    <attr name="main_tenance_attr" format="reference" />
+    <attr name="hm_img_room_attr" format="reference" />
+    <attr name="offer_top_attr" format="reference" />
+    <attr name="offer_no_data_attr" format="reference" />
+
+</resources>

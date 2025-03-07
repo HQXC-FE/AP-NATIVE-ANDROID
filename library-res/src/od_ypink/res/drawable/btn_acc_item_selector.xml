@@ -1,0 +1,22 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 阴影 -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/buttonShadowColor"/>
+            <corners android:radius="7dp"/>
+        </shape>
+    </item>
+
+    <!-- 主要内容 -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="0"
+                android:startColor="@color/primaryColor"
+                android:endColor="@color/primaryVariant"
+                android:centerX="0.0215"
+                android:centerY="1.0644"/>
+            <corners android:radius="7dp"/>
+        </shape>
+    </item>
+</layer-list>

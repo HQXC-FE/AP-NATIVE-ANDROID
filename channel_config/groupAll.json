@@ -8,5 +8,15 @@
     "theme": "od_purple",
     "channel_name": "od_purple_ol",
     "json_name": "od_purple_ol"
+  },
+  {
+    "theme": "od_ypink",
+    "channel_name": "od_ypink_pre",
+    "json_name": "od_ypink_pre"
+  },
+  {
+    "theme": "od_ypink",
+    "channel_name": "od_ypink_ol",
+    "json_name": "od_ypink_ol"
   }
 ]
