@@ -242,8 +242,6 @@
                             style="@style/style_cm_edt_account"
                             android:hint="@string/txt_user_name_should_6_12" />
 
-
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -256,7 +254,6 @@
 
                         <EditText
                             android:id="@+id/edt_pwd"
-
                             style="@style/style_cm_edt_pwd"
                             android:hint="@string/txt_pwd_should_6_16_hint" />
 
@@ -264,8 +261,11 @@
                             android:id="@+id/ckb_eye"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="?attr/login_eye_backgroup_attr" />
+                            style="@style/style_cm_ckb_eye"
+
+                            android:background="@null"/>
                     </LinearLayout>
+                        <!-- style="?attr/login_eye_backgroup_attr"-->
                     <LinearLayout
                         android:id="@+id/ll_login_verification"
                         android:layout_marginTop="10dp"
@@ -377,7 +377,7 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
-                       style="?attr/common_btn_attr"
+                        style="?attr/common_btn_attr"
                         android:text="@string/me_login_sure_register"
                         android:textColor="@color/white"
                         app:layout_constraintTop_toBottomOf="@+id/llRegister"/>

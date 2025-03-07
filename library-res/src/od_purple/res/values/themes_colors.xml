@@ -116,4 +116,6 @@
     <color name="mainListAcBackgroupColor">#F3F3F3</color>
     <color name="msgTopTextColorStart">#F9C1DC</color>
     <color name="msgTopTextColorEnd">#B5A9FF</color>
+
+    <color name="meForgetPsWordBgColor">#CCFFFFFF</color>
 </resources>
