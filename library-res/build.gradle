@@ -64,16 +64,39 @@ android {
 }
 
 def getCurrentBuildVariant() {
-    def taskRequests = gradle.startParameter.taskNames
     def variantName = "debug" // 默认变体
+
+    // 1. 先尝试从 Gradle 任务名称获取
+    def taskRequests = gradle.startParameter.taskNames
     taskRequests.each { task ->
         def match = task =~ /assemble(\w+)/
-        if (match) {
+        if (match.find()) {
             variantName = match[0][1].uncapitalize()
         }
     }
+
+    // 2. 在配置阶段，根据模块类型获取正确的变体
+    android {
+        if (plugins.hasPlugin('com.android.application')) {
+            applicationVariants.all { variant ->
+                if (variant.name == variantName) {
+                    println "应用模块 - 当前变体: ${variant.name}"
+                    variantName = variant.name
+                }
+            }
+        } else if (plugins.hasPlugin('com.android.library')) {
+            libraryVariants.all { variant ->
+                if (variant.name == variantName) {
+                    println "库模块 - 当前变体: ${variant.name}"
+                    variantName = variant.name
+                }
+            }
+        }
+    }
+
     return variantName
 }
+
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
