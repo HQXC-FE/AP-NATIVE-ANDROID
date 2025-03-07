@@ -10,7 +10,7 @@ android {
             def channelJson = file("${rootProject.projectDir.path}/channel_config/channels/${flavor.json_name}.json").getText("UTF-8")
             def channelInfo = new JsonSlurper().parseText(channelJson)
             def appName = flavor.channel_name.endsWith("_pre") ?
-                    channelInfo.app_name +"-v"+ channelInfo.versionCode :
+                    channelInfo.app_name + "-v" + channelInfo.versionCode :
                     channelInfo.app_name
             println("渠道 ：" + flavor.channel_name)
             println("应用名称 ：" + appName)
@@ -32,13 +32,13 @@ android {
                 versionName channelInfo.versionName
                 versionCode channelInfo.versionCode
                 resValue "string", "app_name", "\"${appName}\""
-                resValue "string", "channel_name",  "\"${channelInfo.channel_name}\""  // 渠道名称
+                resValue "string", "channel_name", "\"${channelInfo.channel_name}\""  // 渠道名称
                 resValue "string", "build_time", "${buildTime()}"
-                resValue "string", "mixpanel_token",  "\"${channelInfo.mixpanel_token}\""
-                resValue "string", "ms_secret_key",  "\"${channelInfo.ms_secret_key}\""
-                resValue "string", "sentry_dsn",  "\"${channelInfo.sentry_dsn}\""
-                resValue "bool", "is_tag",  "${channelInfo.is_tag}" // 是否开启统计
-                resValue "string", "domain_url",  "\"${channelInfo.domain_url}\""
+                resValue "string", "mixpanel_token", "\"${channelInfo.mixpanel_token}\""
+                resValue "string", "ms_secret_key", "\"${channelInfo.ms_secret_key}\""
+                resValue "string", "sentry_dsn", "\"${channelInfo.sentry_dsn}\""
+                resValue "bool", "is_tag", "${channelInfo.is_tag}" // 是否开启统计
+                resValue "string", "domain_url", "\"${channelInfo.domain_url}\""
                 resValue "string", "domain_url_list", "\"${domainUrlListStr}\""
                 resValue "string", "domain_url_list_third", "\"${domainListThirdStr}\""
                 resValue "string", "domain_api", "\"${channelInfo.domain_api}\""
@@ -62,14 +62,9 @@ android {
                 //variant.getPackageApplication().outputDirectory = new File("${project.rootDir.absolutePath}/outputs")
                 //variant.getPackageApplicationProvider().get().outputDirectory = new File("${project.rootDir.absolutePath}/outputs")
                 // 打包文件名
-                def name1 = variant.flavorName.split("_")[0]
-                def name2 = variant.flavorName.split("_")[1]
-                def name = variant.flavorName
-                //outputFileName = "${name}_v${variant.versionCode}_${variant.buildType.name}.apk"
                 def tp = "${if (variant.buildType.name == 'debug') '_db' else ''}"
-                //outputFileName = "${name}_v${variant.versionCode}.apk" // xxx_v1xx.apk
-                //outputFileName = "${name1}_v${variant.versionCode}_${name2}${tp}.apk" // 自己用
-                outputFileName = "${name1}_v${variant.versionCode}_${name2}_${releaseTime()}${tp}.apk" // 发布用
+                outputFileName = "${variant.flavorName}_v${variant.versionCode}_${releaseTime()}${tp}.apk"
+                // 发布用
             }
         }
     }
