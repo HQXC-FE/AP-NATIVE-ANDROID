@@ -107,6 +107,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private boolean mIsShowLoading = true;
     private boolean mIsChange = true;
     private boolean mIsFirstNetworkFinished;
+    private boolean mIsFirstLoadMatch = true;
     private UploadExcetionReq mUploadExcetionReq;
     /**
      * 赛事统计数据
@@ -124,7 +125,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private List<Long> mLeagueIdList = new ArrayList<>();
 
     private Disposable timerDisposable;
-    //private Disposable matchTimerDisposable;
+    private Disposable sportsTimerDisposable;
     private Disposable firstNetworkFinishedDisposable;
     private Disposable firstNetworkExceptionDisposable;
 
@@ -180,6 +181,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         } else {
             return tabSportAdapter.getItem(sportTypePos == -1 ? 0 : sportTypePos).id;
         }
+
     }
 
     @Override
@@ -433,7 +435,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     binding.rlCg.setVisibility(!BtCarManager.isCg() ? View.GONE : BtCarManager.isEmpty() ? View.GONE : View.VISIBLE);
                     mLeagueGoingOnList.clear();
                     mLeagueList.clear();
-                    //viewModel.setSportIcons(playMethodPos);
                     viewModel.setSportItems(playMethodPos, playMethodType);
 
                     if (playMethodPos == 2 || playMethodPos == 3) {
@@ -483,6 +484,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 getMatchData(sportId, mOrderBy, mLeagueIdList, null,
                         playMethodType, searchDatePos, false, true);
                 if ((sportId == null || TextUtils.equals("1111", sportId)) && (playMethodPos == 0 || playMethodPos == 3)) {
+                    System.out.println("############## tabSportAdapter sportId ##############"+sportId);
                     viewModel.getHotMatchCount(playMethodType, viewModel.hotLeagueList);
                 }
             }
@@ -945,6 +947,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private void getMatchData(String sportId, int orderBy, List<Long> leagueIds, List<Long> matchids, int playMethodType, int searchDatePos, boolean isTimedRefresh, boolean isRefresh) {
+        System.out.println("======== MainActivity getMatchData 方法执行 =========");
         if (playMethodType == 7 || playMethodType == 100) { // 冠军 sportTypePos不需要使用在这里
             viewModel.getChampionList(sportTypePos, sportId, orderBy, leagueIds, matchids,
                     playMethodType, mOddType, isTimedRefresh, isRefresh);
@@ -966,6 +969,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         if (timerDisposable != null) {
             viewModel.removeSubscribe(timerDisposable);
         }
+
         timerDisposable = Observable.interval(5, 5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1155,12 +1159,14 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, DomainUtil.getApiUrl());
                 } else {
+                    System.out.println("########### MainActivity baseUrl 333333 ###########"+DomainUtil.getApiUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, DomainUtil.getApiUrl());
                 }
             } else {
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, BtDomainUtil.getDefaultPmxcDomainUrl());
                 } else {
+                    System.out.println("########### MainActivity baseUrl 44444 ###########"+ BtDomainUtil.getDefaultPmDomainUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, BtDomainUtil.getDefaultPmDomainUrl());
                 }
             }
@@ -1220,10 +1226,16 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         viewModel.getAnnouncement();
         binding.ivwClose.setOnClickListener(view -> {
             binding.llNotice.setVisibility(View.GONE);
+            binding.tvwNotice.setVisibility(View.GONE);
+            //binding.ivNoticeLeft.setVisibility(View.GONE);
+            binding.ivwClose.setVisibility(View.GONE);
             binding.ivwNotice.setVisibility(View.VISIBLE);
         });
         binding.ivwNotice.setOnClickListener(view -> {
             binding.llNotice.setVisibility(View.VISIBLE);
+            binding.tvwNotice.setVisibility(View.VISIBLE);
+            //binding.ivNoticeLeft.setVisibility(View.VISIBLE);
+            binding.ivwClose.setVisibility(View.VISIBLE);
             binding.ivwNotice.setVisibility(View.INVISIBLE);
         });
         binding.llNotice.setOnClickListener(view -> {
@@ -1235,7 +1247,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     protected void onResume() {
         super.onResume();
         initTimer();
-        startStopwatch();
         setCgBtCar();
         if (mLeagueAdapter != null) {
             mLeagueAdapter.notifyDataSetChanged();
@@ -1245,7 +1256,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     @Override
     protected void onStop() {
         super.onStop();
-        stopStopwatch();
         viewModel.removeSubscribe(timerDisposable);
     }
 
@@ -1303,6 +1313,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     textView.setTextSize(14);
                 }
                 binding.tabPlayMethod.addTab(binding.tabPlayMethod.newTab().setCustomView(textView));
+
             }
 
         });
@@ -1529,6 +1540,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         viewModel.announcementData.observe(this, list -> {
             if (list == null || list.isEmpty()) {
                 binding.llNotice.setVisibility(View.GONE);
+                binding.llNotice.setVisibility(View.GONE);
+                binding.tvwNotice.setVisibility(View.GONE);
+               // binding.ivNoticeLeft.setVisibility(View.GONE);
+                binding.ivwClose.setVisibility(View.GONE);
                 binding.ivwNotice.setVisibility(View.GONE);
             } else {
                 StringBuffer sb = new StringBuffer();
@@ -1539,6 +1554,11 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     sb.append(vo.co + "      ");
                 }
                 binding.llNotice.setVisibility(View.VISIBLE);
+                binding.tvwNotice.setVisibility(View.VISIBLE);
+                //binding.ivNoticeLeft.setVisibility(View.VISIBLE);
+                binding.ivwClose.setVisibility(View.VISIBLE);
+                binding.tvwNotice.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
                 binding.tvwNotice.setText(sb.toString());
             }
         });
@@ -1609,32 +1629,48 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             mLeagueAdapter = new LeagueAdapter(this, mLeagueList);
             initLeagueListView();
             binding.rvLeague.setAdapter(mLeagueAdapter);
-            // 异步准备数据，UI 更新在主线程
-            executorService.execute(() -> {
-                //List<League> tempList = new ArrayList<>(mLeagueList); // 数据副本，避免并发修改
-                runOnUiThread(() -> {
-                    setGoingOnAllExpand(true);
-                    setWaitingAllExpand(true);
-                    expandAllGroups();
-                });
+            setGoingOnAllExpand(true);
+            setWaitingAllExpand(true);
+            goingOnExpandOrCollapseGroup();
+            waitingExpandOrCollapseGroup();
+            mLeagueAdapter.setOnScrollListener(new PageHorizontalScrollView.OnScrollListener() {
+                @Override
+                public void onScrolled() {
+                    binding.rvLeague.setEnabled(true);
+                }
+
+                @Override
+                public void onScrolling() {
+                    binding.rvLeague.setEnabled(false);
+                }
             });
+            //clearSportCache();
         } else {
-            // 异步准备数据，UI 更新在主线程
-            executorService.execute(() -> {
-                List<League> tempList = new ArrayList<>(mLeagueList); // 数据副本
-                boolean shouldExpand = mIsChange && !tempList.isEmpty();
-                runOnUiThread(() -> {
-                    mLeagueAdapter.setData(tempList); // 主线程更新适配器数据
-                    if (shouldExpand) {
-                        setGoingOnAllExpand(true);
-                        setWaitingAllExpand(true);
-                        expandAllGroups();
-                        mIsChange = false;
-                    }
-                    updateVisibility();
-                });
-            });
+            if (!(binding.rvLeague.getExpandableListAdapter() instanceof LeagueAdapter)) {
+                binding.rvLeague.setAdapter(mLeagueAdapter);
+            }
+            mLeagueAdapter.setData(mLeagueList);
+            if (mIsChange) {
+                setGoingOnAllExpand(true);
+                setWaitingAllExpand(true);
+                goingOnExpandOrCollapseGroup();
+                waitingExpandOrCollapseGroup();
+                if (!mLeagueList.isEmpty()) {
+                    mIsChange = false;
+                }
+            } else {
+
+            }
         }
+
+        if (mLeagueList.isEmpty()) {
+            binding.nsvLeague.setVisibility(View.GONE);
+            binding.llEmpty.llEmpty.setVisibility(View.VISIBLE);
+        } else {
+            binding.nsvLeague.setVisibility(View.VISIBLE);
+            binding.llEmpty.llEmpty.setVisibility(View.GONE);
+        }
+
         mIsShowLoading = true;
     }
 
@@ -1722,7 +1758,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             return;
         }
         List<SportTypeItem> list = mStatisticalData.get(String.valueOf(playMethodType));
-
         if (playMethodPos == 0 || playMethodPos == 3) {
             if (list != null && list.get(0) != null) {
                 list.get(0).num = mHotMatchCount;
