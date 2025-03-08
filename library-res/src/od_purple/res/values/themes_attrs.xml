@@ -117,4 +117,6 @@
     <attr name="feedback_bottom_btn_attr" format="reference" />
     <attr name="feedback_top_customer_service_attr" format="reference" />
     <attr name="feedback_top_message_attr" format="reference" />
+    <attr name="dialog_agreement_attr" format="reference" />
+    <attr name="dialog_agreement_close_attr" format="reference" />
 </resources>

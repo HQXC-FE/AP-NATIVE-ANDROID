@@ -5,8 +5,8 @@
     android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_dialog_agreement">
-
+    style="?attr/dialog_agreement_attr"
+   >
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -14,11 +14,19 @@
         android:layout_marginTop="20dp"
         android:text="@string/me_agreement"
         android:textColor="@color/textColor"
-        android:textSize="@dimen/bt_text_14sp"
+        android:textSize="@dimen/bt_text_18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?attr/dialog_agreement_close_attr"
+        android:layout_marginRight="20dp"
+        app:layout_constraintTop_toTopOf="@+id/title"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/tvw_agreement"

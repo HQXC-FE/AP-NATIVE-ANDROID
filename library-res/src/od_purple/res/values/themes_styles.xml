@@ -566,4 +566,10 @@
           <item name="android:layout_marginEnd">4dp</item>
           <item name="android:padding">4dp</item>
     </style>
+    <style name="style_dialog_agreement">
+        <item name="android:background">@drawable/me_msg_backgroup</item>
+    </style>
+    <style name="style_dialog_agreement_close_attr">
+        <item name="android:background">@drawable/im_dialog_agreement_close</item>
+    </style>
 </resources>

@@ -138,6 +138,8 @@
         <item name="feedback_bottom_btn_attr">@style/style_feedback_bottom_btn</item>
         <item name="feedback_top_message_attr">@style/style_feedback_top_message</item>
         <item name="feedback_top_customer_service_attr">@style/style_feedback_customer_service</item>
+        <item name="dialog_agreement_attr">@style/style_dialog_agreement</item>
+        <item name="dialog_agreement_close_attr">@style/style_dialog_agreement_close_attr</item>
     </style>
 
 </resources>
