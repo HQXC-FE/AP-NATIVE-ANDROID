@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -81,6 +83,24 @@ android {
         //dataBinding true
     }
 }
+
+tasks.register("dyAssemble") {
+    println "正在执行打包任务..."
+    group = "custom tasks"
+    description = "Assemble the active variant(s) and print their names"
+    def json = file("${rootProject.projectDir.path}/channel_config/groupAll.json").getText("UTF-8")
+    def flavors = new JsonSlurper().parseText(json)
+
+    // 动态拼接 dependsOn 任务
+    dependsOn flavors.collect { flavor ->
+        "assemble${flavor.channel_name.capitalize()}"
+    }
+
+    doLast {
+        println "打包任务完成"
+    }
+}
+
 
 /*kapt {
     generateStubs = true
