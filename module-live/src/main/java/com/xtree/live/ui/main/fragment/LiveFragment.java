@@ -10,14 +10,18 @@ import androidx.lifecycle.ViewModelProvider;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.util.MatchDeserializer;
 import com.xtree.live.BR;
 import com.xtree.live.R;
+import com.xtree.live.chat.RequestUtils;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.factory.AppViewModelFactory;
+import com.xtree.live.data.source.httpnew.LiveRep;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.databinding.FragmentLiveBinding;
@@ -35,7 +39,7 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewModel> {
 
     public LiveFragment() {
-        LiveRepository.getInstance().getLiveToken(new LiveTokenRequest())
+  /*      LiveRepository.getInstance().getLiveToken(new LiveTokenRequest())
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
                 .subscribe(new HttpCallBack<LiveTokenResponse>() {
@@ -50,7 +54,30 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
                     public void onError(Throwable t) {
                         super.onError(t);
                     }
+                });*/
+
+
+        JsonObject json = new JsonObject();
+        json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
+        json.addProperty("device_type", "android");
+        json.addProperty("channel_code", "xc");
+        json.addProperty("user_id", 10);
+
+        LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
+                .subscribe(new HttpCallBack<LiveTokenResponse>() {
+                    @Override
+                    public void onResult(LiveTokenResponse data) {
+                        if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                            LiveRepository.getInstance().setLive(data);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
                 });
+
 
     }
 

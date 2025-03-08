@@ -22,7 +22,7 @@ public class AnchorLivesListModel extends BindModel {
     public class AnchorLiveModel{
         public String id;// 	总数居量
         public String vid;//房间vid
-        public String uid;//用户id
+        public int uid;//用户id
         public int type;//直播分类：0足球 1篮球 2其他 3电竞 4区块链
         public int isLive; //直播状态：-1创建 0未直播 1正常 2取消，只返回返回状态为1的数据
         public int  loadingBar;//是否录播
@@ -51,12 +51,12 @@ public class AnchorLivesListModel extends BindModel {
             this.vid = vid;
         }
 
-        public String getUid() {
+        public int getUid() {
             return uid;
         }
 
-        public void setUid(String uid) {
-            SPUtil.get(BaseApplication.getInstance()).put(SPKey.UID,uid);
+        public void setUid(int uid) {
+            SPUtil.get(BaseApplication.getInstance()).putInt(SPKey.UID,uid);
             this.uid = uid;
         }
 

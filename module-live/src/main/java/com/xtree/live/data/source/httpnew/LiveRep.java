@@ -1,9 +1,11 @@
 package com.xtree.live.data.source.httpnew;
 
 import com.google.gson.JsonElement;
+import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.live.LiveConfig;
 import com.xtree.live.data.AdsBean;
 import com.xtree.live.data.source.response.LiveRoomBean;
+import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.SearchChatRoomInfo;
 import com.xtree.live.message.ChatRoomInfo;
 import com.xtree.live.message.ChatRoomPin;
@@ -34,6 +36,14 @@ public class LiveRep extends BaseRepository implements LiveDataSource {
         return mInstance;
     }
 
+    @Override
+    public Flowable<LiveTokenResponse> getXLiveToken(RequestBody body) {
+
+        return obtainJsonService(LiveService.class)
+                .getXLiveToken(body)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
 
     @Override
     public Flowable<LiveRoomBean> getRoomInfo(int uid, String channelCode) {

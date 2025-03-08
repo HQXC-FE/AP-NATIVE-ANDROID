@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.JsonObject;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
@@ -21,7 +22,9 @@ import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
+import com.xtree.live.chat.RequestUtils;
 import com.xtree.live.data.LiveRepository;
+import com.xtree.live.data.source.httpnew.LiveRep;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
@@ -75,7 +78,7 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
         setActivity(mActivity);
 
         if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
-            model.getLiveToken(new LiveTokenRequest())
+            /*model.getLiveToken(new LiveTokenRequest())
                     .compose(RxUtils.schedulersTransformer())
                     .compose(RxUtils.exceptionTransformer())
                     .subscribe(new HttpCallBack<LiveTokenResponse>() {
@@ -91,7 +94,30 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
                         public void onError(Throwable t) {
                             super.onError(t);
                         }
+                    });*/
+
+            JsonObject json = new JsonObject();
+            json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
+            json.addProperty("device_type", "android");
+            json.addProperty("channel_code", "xc");
+            json.addProperty("user_id", 10);
+
+            LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
+                    .subscribe(new HttpCallBack<LiveTokenResponse>() {
+                        @Override
+                        public void onResult(LiveTokenResponse data) {
+                            if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                                model.setLive(data);
+                                initData();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            super.onError(t);
+                        }
                     });
+
         } else {
             initData();
         }

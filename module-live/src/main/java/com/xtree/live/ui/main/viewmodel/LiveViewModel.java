@@ -14,7 +14,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import com.alibaba.fastjson.JSON;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.JsonObject;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
@@ -26,6 +28,7 @@ import com.xtree.base.vo.FBService;
 import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
 import com.xtree.live.SPKey;
+import com.xtree.live.chat.RequestUtils;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.httpnew.LiveRep;
 import com.xtree.live.data.source.httpnew.LiveService;
@@ -55,6 +58,7 @@ import com.xtree.live.ui.main.model.hot.LiveHotModel;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
@@ -124,8 +128,8 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     public void initData(FragmentActivity mActivity) {
         setActivity(mActivity);
 
-//        if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
-            model.getLiveToken(new LiveTokenRequest())
+        if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
+            /*model.getLiveToken(new LiveTokenRequest())
                     .compose(RxUtils.schedulersTransformer())
                     .compose(RxUtils.exceptionTransformer())
                     .subscribe(new HttpCallBack<LiveTokenResponse>() {
@@ -141,10 +145,32 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         public void onError(Throwable t) {
                             super.onError(t);
                         }
+                    });*/
+
+            JsonObject json = new JsonObject();
+            json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
+            json.addProperty("device_type", "android");
+            json.addProperty("channel_code", "xc");
+            json.addProperty("user_id", 10);
+
+            LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
+                    .subscribe(new HttpCallBack<LiveTokenResponse>() {
+                        @Override
+                        public void onResult(LiveTokenResponse data) {
+                            if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                                model.setLive(data);
+                                initData();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            super.onError(t);
+                        }
                     });
-//        } else {
-//            initData();
-//        }
+        } else {
+            initData();
+        }
     }
 
     public void setActivity(FragmentActivity mActivity) {
@@ -388,7 +414,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         liveRoomInfo.postValue(liveRoomBean);
                         if(liveRoomBean.getInfo()!=null){
                             X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
-                            SPUtil.get(BaseApplication.getInstance()).put(SPKey.UID,uid);
+                            SPUtil.get(BaseApplication.getInstance()).putInt(SPKey.UID,uid);
                         }
                     }
 

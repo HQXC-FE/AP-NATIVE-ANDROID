@@ -12,7 +12,7 @@ public class LiveConfig {
 
     public static String getUserId() {
 
-        return SPUtil.get(BaseApplication.getInstance()).get(SPKey.UID,null);
+        return SPUtil.get(BaseApplication.getInstance()).getInt(SPKey.UID,0)+"";
     }
 
     public static boolean isNotificationBeepOn() {

@@ -1,8 +1,10 @@
 package com.xtree.live.data.source.httpnew;
 
 import com.google.gson.JsonElement;
+import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.live.data.AdsBean;
 import com.xtree.live.data.source.response.LiveRoomBean;
+import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.SearchChatRoomInfo;
 import com.xtree.live.message.ChatRoomInfo;
 import com.xtree.live.message.ChatRoomPin;
@@ -17,6 +19,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public interface LiveDataSource {
+    Flowable<LiveTokenResponse> getXLiveToken(RequestBody body);
+
     Flowable<LiveRoomBean> getRoomInfo(int uid,String channelCode);
 
     Flowable<List<MessageRecord>> getChatHistory(int roomType, String vid, String lastId, int limit);

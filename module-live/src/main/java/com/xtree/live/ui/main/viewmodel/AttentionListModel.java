@@ -6,10 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.JsonObject;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.CfLog;
+import com.xtree.live.chat.RequestUtils;
 import com.xtree.live.data.LiveRepository;
+import com.xtree.live.data.source.httpnew.LiveRep;
 import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.ChatRoomListRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
@@ -53,7 +56,7 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
         setActivity(mActivity);
 
         if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
-            model.getLiveToken(new LiveTokenRequest())
+            /*model.getLiveToken(new LiveTokenRequest())
                     .compose(RxUtils.schedulersTransformer())
                     .compose(RxUtils.exceptionTransformer())
                     .subscribe(new HttpCallBack<LiveTokenResponse>() {
@@ -74,7 +77,34 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
 
                             super.onError(t);
                         }
+                    });*/
+
+            JsonObject json = new JsonObject();
+            json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
+            json.addProperty("device_type", "android");
+            json.addProperty("channel_code", "xc");
+            json.addProperty("user_id", 10);
+
+            LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
+                    .subscribe(new HttpCallBack<LiveTokenResponse>() {
+                        @Override
+                        public void onResult(LiveTokenResponse data) {
+                            if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                                model.setLive(data);
+                                initData();
+                                if (callBack != null){
+                                    CfLog.e("initData ------------->allBack != null");
+                                    callBack.callback();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable t) {
+                            super.onError(t);
+                        }
                     });
+
         } else {
             initData();
         }

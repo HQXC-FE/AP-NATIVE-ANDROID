@@ -1,9 +1,11 @@
 package com.xtree.live.data.source.httpnew;
 
 import com.google.gson.JsonElement;
+import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.live.SPKey;
 import com.xtree.live.data.AdsBean;
 import com.xtree.live.data.source.response.LiveRoomBean;
+import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.SearchChatRoomInfo;
 import com.xtree.live.message.ChatRoomInfo;
 import com.xtree.live.message.ChatRoomPin;
@@ -12,23 +14,22 @@ import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.message.inroom.InRoomData;
 
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 public interface LiveService {
 
+    //获取token
+    @POST("api/third_user/ThirdLogin")
+    Flowable<BaseResponse<LiveTokenResponse>> getXLiveToken(@Body RequestBody body);
     // 获取直播间详情
     @GET("api/li_stre/getRoomInfo")
     Flowable<BaseResponse<LiveRoomBean>> getRoomInfo(@Query("uid") int uid, @Query("channel_code") String code);
@@ -82,6 +83,7 @@ public interface LiveService {
 
     @POST("api/chat_room/pin")
     Flowable<BaseResponse<ChatRoomPin>> pinChatRoom(@Body RequestBody body);
+
 
 
 }

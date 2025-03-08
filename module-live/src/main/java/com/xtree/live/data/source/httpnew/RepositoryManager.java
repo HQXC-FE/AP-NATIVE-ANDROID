@@ -51,7 +51,7 @@ public class RepositoryManager {
     private RepositoryManager(Context context) throws Exception{
         this.mContext = context;
 //        String  baseUrl = DomainUtil.getApiUrl();
-        String baseUrl = "https://zhibo-apps.oxldkm.com";
+        String baseUrl = "https://zhibo-apps.oxldkm.com/";
         //baseurl  最好是加密
         initRequestManager(baseUrl);
         // 检测 切换URL 的逻辑 可以在这里设置新的 URL

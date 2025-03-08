@@ -8,12 +8,16 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.xtree.live.R;
 
+import java.util.List;
+
 public class QuickMessageAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
     private int clickPosition = -1;
+    private List<String> messageList;
 
-    public QuickMessageAdapter() {
+    public QuickMessageAdapter(List<String> messageList) {
         super(R.layout.item_quick_reply);
+        this.messageList = messageList;
     }
 
     public void setClickPosition(int clickPosition) {

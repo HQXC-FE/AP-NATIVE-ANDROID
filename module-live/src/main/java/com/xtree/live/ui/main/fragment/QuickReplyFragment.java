@@ -69,21 +69,21 @@ public class QuickReplyFragment extends BaseFragment<FragmentQuickReplayBinding,
         binding.recycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (msgAdapter == null) {
-            msgAdapter = new QuickMessageAdapter();
+            msgAdapter = new QuickMessageAdapter(messageList);
         }
         binding.recycleView.setAdapter(msgAdapter);
-        msgAdapter.setList(messageList);
+//        msgAdapter.setList(messageList);
 
         msgAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                msgAdapter.setClickPosition(position);
+               /* msgAdapter.setClickPosition(position);
                 //当前选中的快捷回复短语
                 quickMsg = msgAdapter.getData().get(position);
                 OnEmojiGifClickedObserver observer = getEmojiGifClickedObserver(QuickReplyFragment.this);
                 if (observer != null) {
                     observer.onQuickReplyClicked(quickMsg);
-                }
+                }*/
             }
         });
     }

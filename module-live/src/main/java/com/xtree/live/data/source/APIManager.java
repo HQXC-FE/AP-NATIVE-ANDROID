@@ -37,6 +37,7 @@ public class APIManager {
     private static final String X9_API = "/api/x9/";
     //获取直播token
     public static final String X9_TOKEN_URL = X9_API + "getXLiveToken";
+//    public static final String X9_TOKEN_URL = "api/third_user/ThirdLogin";
     //加密配置API
     private static final String SECRET_API = "/api/secret/";
     //获取直播配置文件
