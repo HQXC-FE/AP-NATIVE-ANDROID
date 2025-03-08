@@ -548,4 +548,22 @@
         <item name="android:layout_marginTop">6dp</item>
         <item name="android:button">@drawable/hm_game_type_selector</item>
     </style>
+
+    <style name="style_feedback_bottom_btn">
+        <item name="android:background">@drawable/cm_btn_next</item>
+    </style>
+    <style name="style_feedback_top_message">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:src">@drawable/cm_ic_msg</item>
+    </style>
+    <style name="style_feedback_customer_service">
+        <item name="android:src">@drawable/cm_ic_cs</item>
+          <item name="android:layout_width">wrap_content</item>
+          <item name="android:layout_height">wrap_content</item>
+          <item name="android:layout_marginEnd">4dp</item>
+          <item name="android:padding">4dp</item>
+    </style>
 </resources>
