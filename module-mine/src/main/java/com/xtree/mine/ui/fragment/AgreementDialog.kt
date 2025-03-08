@@ -3,6 +3,7 @@ package com.xtree.mine.ui.fragment
 import android.content.Context
 import android.text.method.ScrollingMovementMethod
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.util.XPopupUtils
@@ -18,6 +19,11 @@ class AgreementDialog(context: Context, private val checkBox: CheckBox) : Bottom
         tvw.movementMethod = ScrollingMovementMethod.getInstance()
         val tvAgree = findViewById<TextView>(R.id.tv_agree)
         val tvNoAgree = findViewById<TextView>(R.id.tv_no_agree)
+        val ivClose = findViewById<ImageView>(R.id.iv_close)
+
+        ivClose.setOnClickListener{
+            dismiss()
+        }
         tvAgree.setOnClickListener {
             checkBox.isChecked = true
             dismiss()

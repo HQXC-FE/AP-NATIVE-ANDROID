@@ -26,6 +26,7 @@
             <TextView
                 style="@style/style_cm_title"
                 android:text="@string/txt_feedback"
+                android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -51,13 +52,11 @@
 
                 <ImageView
                     android:id="@+id/ivw_cs"
-                    style="@style/style_ic_title_right"
-                    android:src="@mipmap/cm_ic_cs" />
+                    style="?attr/feedback_top_customer_service_attr" />
 
                 <ImageView
                     android:id="@+id/ivw_msg"
-                    style="@style/style_ic_title_right"
-                    android:src="@mipmap/cm_ic_msg" />
+                    style="?attr/feedback_top_message_attr" />
 
             </LinearLayout>
 
@@ -203,7 +202,7 @@
 
                         <LinearLayout
                             android:id="@+id/ll"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/tv_selector_left_payment_name">
 
@@ -252,7 +251,7 @@
                             android:text="@string/txt_tip_input_usdt_numb" />
                         <LinearLayout
                             android:id="@+id/ll_collection_name_agreement"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/tv_selector_left_collection_name"
                             >

@@ -72,6 +72,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginEnd">4dp</item>
         <item name="android:padding">4dp</item>
+
     </style>
 
     <!-- 每个页面标题栏的样式-右边小按钮 -->
@@ -423,8 +424,9 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">end</item>
         <item name="android:minEms">7</item>
-        <item name="android:textColor">@color/clr_grey_80</item>
+        <item name="android:textColor">@color/textPrimaryColor</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
     <!--反馈查看详情页面linearlayout风格-->
     <style name="style_ll_row_feedback">
@@ -467,7 +469,7 @@
     <!-- 通用 提示小字 桔红色 -->
     <style name="style_cm_tip_small_orange" parent="style_cm_tip_small_grey">
         <item name="android:text">@string/txt_note_asterisks_cannot_empty</item>
-        <item name="android:textColor">@color/clr_orange_03</item>
+        <item name="android:textColor">@color/warningFeedbackColor</item>
     </style>
     <!-- 通用 提示小字 桔红色 2 -->
     <style name="style_cm_tip_small_orange2" parent="style_cm_tip_small_grey">

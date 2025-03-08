@@ -51,13 +51,11 @@
 
                 <ImageView
                     android:id="@+id/ivw_cs"
-                    style="@style/style_ic_title_right"
-                    android:src="@mipmap/cm_ic_cs" />
+                    style="?attr/feedback_top_customer_service_attr" />
 
                 <ImageView
                     android:id="@+id/ivw_msg"
-                    style="@style/style_ic_title_right"
-                    android:src="@mipmap/cm_ic_msg" />
+                    style="?attr/feedback_top_message_attr" />
 
             </LinearLayout>
 
