@@ -534,15 +534,14 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
             btCarDialogFragment.show(BtDetailActivity.this.getSupportFragmentManager(), "btCarDialogFragment");
         } else if (id == R.id.tv_live) {
-            binding.ctlToolbarLeague.setVisibility(View.GONE);
-            binding.rlToolbarTime.setVisibility(View.GONE);
             if (!mMatch.isVideoStart()) {
                 ToastUtils.showLong(getText(R.string.bt_bt_match_not_runing));
                 return;
             }
+            binding.ctlToolbarLeague.setVisibility(View.GONE);
+            binding.rlToolbarTime.setVisibility(View.GONE);
             if (TextUtils.equals(mMatch.getVideoType(), "p")) {//是PM场馆H5播放页面
                 if (!mMatch.getVideoUrls().isEmpty()) {
-                    setWebView();
                     binding.wvAmin.setVisibility(View.VISIBLE);
                     binding.wvAmin.loadUrl(mMatch.getVideoUrls().get(0));
                 }
@@ -554,7 +553,6 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         } else if (id == R.id.tv_animi) {
             if (mMatch.hasAs() && mMatch.isAnimationStart()) {
                 if (mMatch.getAnmiUrls() != null && !TextUtils.isEmpty(mMatch.getAnmiUrls().get(0))) {
-                    setWebView();
                     binding.wvAmin.setVisibility(View.VISIBLE);
                     binding.ctlToolbarLeague.setVisibility(View.GONE);
                     binding.rlToolbarTime.setVisibility(View.GONE);
@@ -569,7 +567,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 binding.videoPlayer.release();
                 binding.videoPlayer.setVisibility(View.GONE);
             } else if (binding.wvAmin.getVisibility() == View.VISIBLE) {
-                binding.wvAmin.destroy();
+                binding.wvAmin.loadUrl("about:blank");
                 binding.wvAmin.setVisibility(View.GONE);
             } else {
                 finish();
@@ -579,5 +577,11 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 fragment.expand();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding.wvAmin.destroy();
     }
 }
