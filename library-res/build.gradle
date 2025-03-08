@@ -39,10 +39,12 @@ android {
         def json = file("${rootProject.projectDir.path}/channel_config/groupAll.json").getText("UTF-8")
         def flavors = new JsonSlurper().parseText(json)
         def activeVariant = getCurrentBuildVariant()
-        println "当前构建变体: $activeVariant "
+        if (activeVariant.isEmpty()) {
+            def localProps = new Properties()
+            localProps.load(new FileInputStream(rootProject.file("local.properties")))
+            activeVariant = localProps['ACTIVE_VARIANT']
+        }
         flavors.each { flavor ->
-            println "当前渠道: ${flavor.channel_name}"
-            println "当前渠道: "+activeVariant.contains("${flavor.channel_name}")
             if (activeVariant.contains("${flavor.channel_name}")) {
                 def themeRes = "src/${flavor.theme}/res"
                 sourceSets.main.res.srcDirs = [themeRes, "src/main/res"]
@@ -64,7 +66,7 @@ android {
 }
 
 def getCurrentBuildVariant() {
-    def variantName = "debug" // 默认变体
+    def variantName = "" // 默认变体
 
     // 1. 先尝试从 Gradle 任务名称获取
     def taskRequests = gradle.startParameter.taskNames
@@ -74,26 +76,6 @@ def getCurrentBuildVariant() {
             variantName = match[0][1].uncapitalize()
         }
     }
-
-    // 2. 在配置阶段，根据模块类型获取正确的变体
-    android {
-        if (plugins.hasPlugin('com.android.application')) {
-            applicationVariants.all { variant ->
-                if (variant.name == variantName) {
-                    println "应用模块 - 当前变体: ${variant.name}"
-                    variantName = variant.name
-                }
-            }
-        } else if (plugins.hasPlugin('com.android.library')) {
-            libraryVariants.all { variant ->
-                if (variant.name == variantName) {
-                    println "库模块 - 当前变体: ${variant.name}"
-                    variantName = variant.name
-                }
-            }
-        }
-    }
-
     return variantName
 }
 
