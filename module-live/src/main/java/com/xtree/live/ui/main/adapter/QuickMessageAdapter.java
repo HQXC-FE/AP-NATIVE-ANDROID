@@ -13,11 +13,9 @@ import java.util.List;
 public class QuickMessageAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
     private int clickPosition = -1;
-    private List<String> messageList;
 
-    public QuickMessageAdapter(List<String> messageList) {
+    public QuickMessageAdapter() {
         super(R.layout.item_quick_reply);
-        this.messageList = messageList;
     }
 
     public void setClickPosition(int clickPosition) {

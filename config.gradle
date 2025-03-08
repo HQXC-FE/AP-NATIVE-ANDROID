@@ -103,6 +103,7 @@ ext {
             "jsoup"                                : "org.jsoup:jsoup:1.14.3",
             "autodispose"                          : "com.uber.autodispose:autodispose-android-archcomponents:1.4.0",
             "SVGAPlayer"                           : "com.github.yyued:SVGAPlayer-Android:2.6.1",
+            "recyclerview-flexibledivider"         : "com.yqritc:recyclerview-flexibledivider:1.4.0",
 
     ]
 }

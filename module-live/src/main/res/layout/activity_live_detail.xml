@@ -29,7 +29,6 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_margin="10dp"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:src="@mipmap/cm_ic_back"
             android:tint="@color/white"
             android:visibility="visible"

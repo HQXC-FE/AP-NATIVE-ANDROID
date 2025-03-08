@@ -1,5 +1,6 @@
 package com.xtree.live.ui.main.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.xtree.base.utils.UiUtils;
 import com.xtree.live.R;
 import com.xtree.live.data.factory.AppViewModelFactory;
 import com.xtree.live.databinding.FragmentQuickReplayBinding;
@@ -69,21 +71,19 @@ public class QuickReplyFragment extends BaseFragment<FragmentQuickReplayBinding,
         binding.recycleView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (msgAdapter == null) {
-            msgAdapter = new QuickMessageAdapter(messageList);
+            msgAdapter = new QuickMessageAdapter();
         }
+        UiUtils.addRecycleViewHDecoration(requireContext(),binding.recycleView,10, Color.TRANSPARENT);
         binding.recycleView.setAdapter(msgAdapter);
-//        msgAdapter.setList(messageList);
+        msgAdapter.setList(messageList);
 
-        msgAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-               /* msgAdapter.setClickPosition(position);
-                //当前选中的快捷回复短语
-                quickMsg = msgAdapter.getData().get(position);
-                OnEmojiGifClickedObserver observer = getEmojiGifClickedObserver(QuickReplyFragment.this);
-                if (observer != null) {
-                    observer.onQuickReplyClicked(quickMsg);
-                }*/
+        msgAdapter.setOnItemClickListener((adapter, view, position) -> {
+            msgAdapter.setClickPosition(position);
+            //当前选中的快捷回复短语
+            quickMsg = msgAdapter.getData().get(position);
+            OnEmojiGifClickedObserver observer = getEmojiGifClickedObserver(QuickReplyFragment.this);
+            if (observer != null) {
+                observer.onQuickReplyClicked(quickMsg);
             }
         });
     }
