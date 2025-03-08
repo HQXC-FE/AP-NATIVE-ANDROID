@@ -1180,9 +1180,14 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 int type = binding.rvLeague.getPackedPositionType(position);
 
                 if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    Match match = (Match) binding.rvLeague.getItemAtPosition(i);
-                    if (match != null) {
-                        matchIdList.add(match.getId());
+                    System.out.println("============= MainActivity refreshLeague 222 type ===============");
+                    //Match match = (Match) binding.rvLeague.getItemAtPosition(i);
+                    Object item = binding.rvLeague.getItemAtPosition(i); // 假设适配器有 getItem 方法
+                    if (item instanceof Match) {
+                        Match match = (Match) item;
+                        if (match != null) {
+                            matchIdList.add(match.getId());
+                        }
                     }
                 }
             }

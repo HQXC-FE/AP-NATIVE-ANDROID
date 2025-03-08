@@ -579,14 +579,14 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         if (normalTime != timeS) { //已刷新接口,校正时间
             tvMatchTime.setTag(R.id.tag_normal_time, timeS);
             tvMatchTime.setTag(R.id.tag_add_time, 0);
-            System.out.println("============== updateFootballTime 111 ==============="+stage + " " + formatTime(timeS));
+            //System.out.println("============== updateFootballTime 111 ==============="+stage + " " + formatTime(timeS));
             tvMatchTime.setText(stage + " " + formatTime(timeS));
         } else { //未刷新接口，自增秒数
             int seconds = getTagIntValue(tvMatchTime, R.id.tag_add_time) + 1;
             tvMatchTime.setTag(R.id.tag_add_time, seconds);
             int currentTime = timeS + seconds;
             tvMatchTime.setText(stage + " " + formatTime(currentTime));
-            System.out.println("============== updateFootballTime 222 ==============="+stage + " " + formatTime(timeS));
+            //System.out.println("============== updateFootballTime 222 ==============="+stage + " " + formatTime(timeS));
             tvMatchTime.setTag(R.id.tag_last_time, currentTime);
         }
     }
