@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Purple Theme example-->
-    <style name="PurpleAppTheme" parent="AppTheme">
+    <style name="ChannelTheme" parent="AppTheme">
 
         <item name="primaryAttr">@style/primaryAttrStyle</item>
         <item name="primaryVariantAttr">@style/primaryVariantAttrStyle</item>
