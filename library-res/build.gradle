@@ -40,10 +40,17 @@ android {
         def flavors = new JsonSlurper().parseText(json)
         def activeVariant = getCurrentBuildVariant()
         if (activeVariant.isEmpty()) {
+            def localPropsFile = rootProject.file("local.properties")
             def localProps = new Properties()
-            localProps.load(new FileInputStream(rootProject.file("local.properties")))
-            activeVariant = localProps['ACTIVE_VARIANT']
+            if (localPropsFile.exists()) {
+                localProps.load(new FileInputStream(localPropsFile))
+                activeVariant = localProps['ACTIVE_VARIANT'] ?: ""
+            } else {
+                println "⚠️ 未找到 local.properties 文件，跳过 ACTIVE_VARIANT 读取"
+                activeVariant = ""
+            }
         }
+        println("当前变体：${activeVariant}")
         flavors.each { flavor ->
             if (activeVariant.contains("${flavor.channel_name}")) {
                 def themeRes = "src/${flavor.theme}/res"

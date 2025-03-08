@@ -85,21 +85,27 @@ android {
 }
 
 tasks.register("dyAssemble") {
-    println "正在执行打包任务..."
-    group = "custom tasks"
-    description = "Assemble the active variant(s) and print their names"
+    println "执行多打包任务中..."
     def json = file("${rootProject.projectDir.path}/channel_config/groupAll.json").getText("UTF-8")
     def flavors = new JsonSlurper().parseText(json)
 
-    // 动态拼接 dependsOn 任务
-    dependsOn flavors.collect { flavor ->
-        "assemble${flavor.channel_name.capitalize()}"
-    }
-
     doLast {
-        println "打包任务完成"
+        flavors.each { flavor ->
+            println "▶️ 正在执行: ./gradlew :app:assemble${flavor.channel_name.capitalize()}Release"
+            def process = ["./gradlew", ":app:assemble${flavor.channel_name.capitalize()}Release"].execute()
+
+            // 实时输出
+            process.inputStream.eachLine { println it }
+            process.errorStream.eachLine { System.err.println it }
+
+            // 等待子进程完成
+            process.waitFor()
+        }
+
+        println "✅ 打包任务完成"
     }
 }
+
 
 
 /*kapt {
