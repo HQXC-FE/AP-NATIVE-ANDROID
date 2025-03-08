@@ -1,10 +1,5 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
-
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_400467;
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
-
 import android.app.Application;
 
 import androidx.annotation.NonNull;
@@ -40,6 +35,7 @@ import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
  * Created by marquis
@@ -85,16 +81,20 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
             betMatchMarket.setSportId(Integer.valueOf(betConfirmOption.getMatch().getSportId()));
             betMatchMarket.setPlaceNum(betConfirmOption.getPlaceNum());
 
-            //处理ClassCastException: com.xtree.bet.bean.ui.PlayTypeFb cannot be cast to com.xtree.bet.bean.ui.PlayTypePm
             PlayType playType = betConfirmOption.getPlayType();
+            if (!(playType instanceof PlayTypePm)) {
+                ToastUtils.showLong("数据错误，请重新打开投注弹窗");
+                return;
+            }
+
             PlayTypeInfo playTypeInfo = ((PlayTypePm) playType).getPlayTypeInfo();
             String chpid = "";
-            if(playTypeInfo.topKey != null){
+            if (playTypeInfo.topKey != null) {
                 chpid = playTypeInfo.topKey;
-            }else{
+            } else {
                 chpid = betConfirmOption.getPlayType().getId();
             }
-            if(!chpid.isEmpty()){
+            if (!chpid.isEmpty()) {
                 betMatchMarket.setChpid(chpid);
             }
             betMatchMarketList.add(betMatchMarket);
