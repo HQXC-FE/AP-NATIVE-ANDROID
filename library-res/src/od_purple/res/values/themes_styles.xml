@@ -572,4 +572,5 @@
     <style name="style_dialog_agreement_close_attr">
         <item name="android:background">@drawable/im_dialog_agreement_close</item>
     </style>
+
 </resources>

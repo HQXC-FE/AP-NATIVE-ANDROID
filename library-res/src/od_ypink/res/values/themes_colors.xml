@@ -118,4 +118,5 @@
     <color name="msgTopTextColorEnd">#B5A9FF</color>
 
     <color name="meForgetPsWordBgColor">#CCFFFFFF</color>
+    <color name="warningFeedbackColor">#FB6156</color>
 </resources>
