@@ -40,7 +40,7 @@ public class EmojiPagerFragment extends BaseFragment<FragmentEmojiPaperBinding, 
         return new EmojiPagerFragment();
     }
 
-    private final String[] mTabList = {"快捷语", "表情"};
+    private final String[] mTabList = {"快捷回复", "表情"};
     private final int[] tabIcons = {R.drawable.tab_quicktext_selector, R.drawable.tab_emoji_selector};
 
     @Override

@@ -3,19 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <TextView
         android:id="@+id/tv_msg"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-
+        android:background="@drawable/item_quick_reply_unselect"
         tools:text="财运亨通一路发发发发发发发发😂😂"
         android:gravity="center"
         android:paddingVertical="5dp"
         android:paddingHorizontal="10dp"
         android:textSize="12sp"
         android:textColor="@color/selector_quick_reply"/>
-
-<!--    android:background="@drawable/item_quick_reply_unselect"-->
 
 </LinearLayout>
