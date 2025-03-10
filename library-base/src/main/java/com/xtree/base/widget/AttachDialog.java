@@ -120,7 +120,7 @@ public class AttachDialog extends AttachPopupView {
         if (!TextUtils.isEmpty(txtLeft)) {
             binding.tvwLeft.setText(txtLeft);
             if (!txtLeft.equals(getContext().getString(R.string.txt_cancel))) {
-                binding.tvwLeft.setBackground(getContext().getDrawable(R.drawable.bg_btn_selector));
+                binding.tvwLeft.setBackground(getContext().getDrawable(R.drawable.bg_btn_right_selector));
                 binding.tvwLeft.setTextColor(getResources().getColor(R.color.clr_text_code_selector));
             }
         }

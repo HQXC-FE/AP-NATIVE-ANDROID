@@ -94,7 +94,7 @@
         android:text="@string/txt_i_know"
         android:textColor="@color/clr_text_code_selector"
         android:textSize="14sp"
-        android:background="@drawable/bg_btn_selector"
+        android:background="@drawable/bg_btn_right_selector"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/ivw_bg"

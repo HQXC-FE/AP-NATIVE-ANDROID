@@ -145,6 +145,8 @@
 
         <item name="login_cm_ckb_normal_attr">@style/style_cm_ckb_normal</item>
         <item name="login_eye_right_backgroup_attr">@style/style_cm_ckb_eye</item>
+        <item name="btn_short_right_attr">@style/style_btn_short_right</item>
+        <item name="btn_short_left_attr">@style/style_btn_short_left</item>
     </style>
 
 </resources>
