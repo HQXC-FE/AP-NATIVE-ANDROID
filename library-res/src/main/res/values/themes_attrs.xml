@@ -122,4 +122,8 @@
 
     <attr name="login_cm_ckb_normal_attr" format="reference" />
     <attr name="login_eye_right_backgroup_attr" format="reference" />
+    <attr name="btn_short_right_attr" format="reference" />
+    <attr name="btn_short_left_attr" format="reference" />
+
+
 </resources>
