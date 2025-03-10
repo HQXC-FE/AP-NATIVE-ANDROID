@@ -88,7 +88,8 @@ public interface ApiService {
     /**
      * 获取 充值列表(分大小类)
      */
-    @GET("/api/deposit/paymentsclassify?getinfo=true")
+//    @GET("/api/deposit/paymentsclassify?getinfo=true")
+    @GET("/api/deposit/list?getinfo=true")
     Flowable<BaseResponse<PaymentDataVo>> getPaymentsTypeList();
 
     /**
