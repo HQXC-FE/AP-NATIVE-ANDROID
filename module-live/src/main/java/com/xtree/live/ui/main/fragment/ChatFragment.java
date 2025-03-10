@@ -150,8 +150,6 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     private boolean mCanDisplayBanner = true;
 
     private final Handler mHandler = new Handler();
-    private final LinkedList<ConversationMessage> mCacheSystemChat = new LinkedList<>();
-    private Disposable mCacheDisposable;
 
     private MergeChatRoomToolbarBinding mChatbarBinding;
     /**
@@ -1133,6 +1131,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     @Override
     public void onQuickReplyClicked(String msg) {
         // 快捷短语回复
+        viewModel.sendText(roomType, mUid, mVid, msg);
     }
 
     @Override

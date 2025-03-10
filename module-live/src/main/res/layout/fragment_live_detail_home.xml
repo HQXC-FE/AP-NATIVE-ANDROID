@@ -8,24 +8,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@drawable/bg_chat_gradient"
         tools:ignore="ContentDescription, HardcodedText">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="26dp"
-            android:layout_marginLeft="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:padding="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:tabBackground="@color/white"
             app:tabGravity="center"
+            android:background="@color/clr_transparent"
             app:tabIndicator="@drawable/shape_tabindicator_live"
             app:tabMode="scrollable"
             app:tabPadding="2dp"
-            app:tabSelectedTextColor="@color/black"
-            app:tabTextColor="@color/red">
+            >
 
         </com.google.android.material.tabs.TabLayout>
 

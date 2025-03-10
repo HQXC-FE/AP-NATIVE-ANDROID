@@ -1,14 +1,18 @@
 package com.xtree.live.ui.main.fragment;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -49,9 +53,8 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
 
     private int mUid, matchType, matchId;
     private String mVid, pVid;
-    private int mCurrentPosition;
-
-    private FragmentManager childFragmentManager;
+    private final String[] mTabList = {"广场", "投注","主播私聊","主播助理"};
+    private final int[] tabIcons = {R.drawable.tab_chat_home_selector, R.drawable.tab_chat_home_selector};
 
     public static LiveDetailHomeFragment newInstance(int anchorId, String vId, String privateVid, int matchType, int matchId) {
         LiveDetailHomeFragment fragment = new LiveDetailHomeFragment();
@@ -166,27 +169,27 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
             }
         });
 
+//        if (binding.tabLayout.getSelectedTabPosition() != -1) {
+//            binding.tabLayout.getTabAt(binding.tabLayout.getSelectedTabPosition()).getText().toString();
+//        }
         TabLayoutMediator mediator = new TabLayoutMediator(binding.tabLayout, binding.viewpager, false, false, (tab, position) -> {
-            String fragmentType = fragmentTypes.get(position);
-//
-            String title = "";
-            switch (fragmentType) {
-                case "chat_global":
-                    title = WordUtil.getString(R.string.chat_global);
-                    break;
-                case "chat_private":
-                    title = WordUtil.getString(R.string.chat_private_with_host);
-                    break;
-                case "chat_list":
-                    title = WordUtil.getString(R.string.live_chat);
-                    break;
-                case "bet_fragment":
-                    title = "投注";
-                    break;
 
+            // 为每个Tab创建自定义视图
+            View customTabView = LayoutInflater.from(requireContext()).inflate(R.layout.tab_item_chat_title, null);
+            ImageView tabIcon = customTabView.findViewById(R.id.tab_icon);
+            TextView tabText = customTabView.findViewById(R.id.tab_text);
+            tabText.setText(mTabList[position]);
 
+            // 设置文本颜色选择器
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                tabText.setTextColor(getResources().getColorStateList(R.color.tab_text_color_selector, null));
+            } else {
+                tabText.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.tab_text_color_selector));
             }
-            tab.setText(title);
+
+            // 设置自定义视图到Tab
+            tab.setCustomView(customTabView);
+
         });
         mediator.attach();
 
