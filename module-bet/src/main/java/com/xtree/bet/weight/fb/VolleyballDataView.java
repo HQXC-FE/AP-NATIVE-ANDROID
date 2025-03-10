@@ -12,6 +12,8 @@ import com.xtree.bet.weight.BaseDetailDataView;
 
 /**
  * 排球相关数据view(第一盘，第二盘比分等)
+ * 需要展示附加详情的球种有：网球，排球，沙滩排球，
+ * 羽毛球，乒乓球，斯诺克（不区分列表和详情）。
  */
 public class VolleyballDataView extends BaseDetailDataView {
 
@@ -22,9 +24,9 @@ public class VolleyballDataView extends BaseDetailDataView {
         periods = new String[]{"13002", "13003", "13004", "13005", "13006", "13007", "13008", "13009"};
         scoreType = new String[]{String.valueOf(FBConstants.SCORE_TYPE_PF)};
         setMatch(match, isMatchList);
-        if(isMatchList) {
+        //if(isMatchList) {
             addMatchListAdditional(match.getFormat() + " 总分");
-        }
+        //}
     }
 
     

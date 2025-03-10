@@ -17,6 +17,8 @@ import me.xtree.mvvmhabit.utils.ConvertUtils;
 
 /**
  * 网球相关数据view(第一盘，第二盘比分等)
+ * 需要展示例如“三局二胜”和“总分”这种附加详情的球种有：网球，排球，沙滩排球，
+ * 羽毛球，乒乓球，斯诺克（不区分列表和详情）。
  */
 public class NetBallDataView extends BaseDetailDataView {
 
@@ -27,9 +29,9 @@ public class NetBallDataView extends BaseDetailDataView {
         periods = new String[]{"5002", "5003", "5004", "5005", "5006"};
         scoreType = new String[]{String.valueOf(FBConstants.SCORE_TYPE_PF)};
         setMatch(match, isMatchList);
-        if(isMatchList) {
-            addMatchListAdditional(match.getFormat() + " 总局数");
-        }
+        //if(isMatchList) {
+        addMatchListAdditional(match.getFormat() + " 总局数");
+        //}
     }
 
 }
