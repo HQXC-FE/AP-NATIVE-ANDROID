@@ -68,7 +68,7 @@
             style="@style/style_cm_tip_small_orange"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="40dp"
-            android:drawableLeft="@mipmap/cm_ic_hint_purple"
+            android:drawableLeft="@drawable/cm_ic_hint"
             android:text="@string/txt_precautions"
             android:gravity="center"
             android:textColor="@color/clr_sec_verify_normal"/>

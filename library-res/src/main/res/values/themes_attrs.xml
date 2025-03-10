@@ -39,6 +39,7 @@
     <attr name="info2_grey_50_attr" format="reference" />
     <attr name="info_grey_50_attr" format="reference" />
     <attr name="bg_rc_dialog_attr" format="reference" />
+    <attr name="cm_ic_hint_attr" format="reference" />
 
     <attr name="play_method_attr" format="reference" />
     <attr name="rc_dlg_hourglass_attr" format="reference" />
@@ -48,6 +49,8 @@
     <attr name="rc_down_hi_wallet_attr" format="reference" />
     <attr name="btn_short_attr" format="reference" />
     <attr name="btn_small_attr" format="reference" />
+    <attr name="rc_ic_feedback_attr" format="reference" />
+    <attr name="cm_ic_tutorial_attr" format="reference" />
     <attr name="withdraw_money_account_attr" format="reference" />
     <attr name="bg_dialog_top_bank_attr" format="reference" />
     <attr name="withdraw_title_progress_attr" format="reference" />
@@ -55,6 +58,7 @@
     <attr name="iv_floating_close_attr" format="reference" />
     <attr name="ic_floating_attr" format="reference" />
     <attr name="bg_floating_way_attr" format="reference" />
+    <attr name="bg_dialog_top_attr" format="reference" />
     <attr name="img_no_data_attr" format="reference" />
     <attr name="home_top_notice_attr" format="reference" />
     <attr name="home_top_deposit_attr" format="reference" />

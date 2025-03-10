@@ -127,13 +127,13 @@
                     tools:text="PAY00123456789" />
 
                 <TextView
-                         style="?attr/tertiaryAttr"
+                    style="?attr/tertiaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
                     android:gravity="end"
-                    android:textSize="14sp"
-                    android:text="@string/txt_copy" />
+                    android:paddingStart="12dp"
+                    android:text="@string/txt_copy"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -150,13 +150,13 @@
 
                 <TextView
                     android:id="@+id/tvw_copy_bank_name"
-                         style="?attr/tertiaryAttr"
+                    style="?attr/tertiaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
                     android:gravity="end"
-                    android:textSize="14sp"
-                    android:text="@string/txt_copy" />
+                    android:paddingStart="12dp"
+                    android:text="@string/txt_copy"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout style="@style/style_rc_dlg_ll">
@@ -172,13 +172,13 @@
 
                 <TextView
                     android:id="@+id/tvw_copy_branch"
-                         style="?attr/tertiaryAttr"
+                    style="?attr/tertiaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
                     android:gravity="end"
-                    android:textSize="14sp"
-                    android:text="@string/txt_copy" />
+                    android:paddingStart="12dp"
+                    android:text="@string/txt_copy"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout style="@style/style_rc_dlg_ll">
@@ -194,13 +194,13 @@
 
                 <TextView
                     android:id="@+id/tvw_copy_acc_name"
-                         style="?attr/tertiaryAttr"
+                    style="?attr/tertiaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
                     android:gravity="end"
-                    android:textSize="14sp"
-                    android:text="@string/txt_copy" />
+                    android:paddingStart="12dp"
+                    android:text="@string/txt_copy"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout style="@style/style_rc_dlg_ll">
@@ -216,13 +216,13 @@
 
                 <TextView
                     android:id="@+id/tvw_copy_acc_num"
-                         style="?attr/tertiaryAttr"
+                    style="?attr/tertiaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
                     android:gravity="end"
-                    android:textSize="14sp"
-                    android:text="@string/txt_copy" />
+                    android:paddingStart="12dp"
+                    android:text="@string/txt_copy"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout style="@style/style_rc_dlg_ll">
@@ -238,13 +238,13 @@
 
                 <TextView
                     android:id="@+id/tvw_copy_money2"
-                         style="?attr/tertiaryAttr"
+                    style="?attr/tertiaryAttr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
                     android:gravity="end"
-                    android:textSize="14sp"
-                    android:text="@string/txt_copy" />
+                    android:paddingStart="12dp"
+                    android:text="@string/txt_copy"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <TextView
@@ -455,13 +455,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            style="@style/style_cm_tip_small_grey"
+            style="?attr/cm_ic_hint_attr"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
-            android:drawableStart="@mipmap/cm_ic_hint_purple"
             android:drawablePadding="4dp"
             android:gravity="center"
             android:text="请转账成功后务必及时确认！否则可能造成延迟上分"
+            android:textColor="@color/clr_grey_40"
             android:textSize="12sp" />
     </LinearLayout>
 </layout>

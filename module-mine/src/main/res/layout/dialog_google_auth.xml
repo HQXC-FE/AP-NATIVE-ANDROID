@@ -83,7 +83,7 @@
 
             <TextView
                 style="@style/style_cm_tip_small_grey"
-                android:drawableLeft="@mipmap/cm_ic_hint_purple"
+                android:drawableLeft="@drawable/cm_ic_hint"
                 android:text="@string/txt_check_pin_enter" />
 
             <TextView

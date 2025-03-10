@@ -104,7 +104,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/tvw_unreceived_orders"
                             android:layout_alignLeft="@id/tvw_unreceived_orders"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
                             android:visibility="invisible"
                             />
                         <TextView
@@ -152,7 +152,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/tvw_payment_method"
                             android:layout_alignLeft="@id/tvw_payment_method"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
                             />
                         <TextView
                             android:id="@+id/tv_payment_method_info"
@@ -219,7 +219,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/et_payment_account"
                             android:layout_alignLeft="@id/et_payment_account"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
 
                             />
                         <TextView
@@ -265,7 +265,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/et_payment_address"
                             android:layout_alignLeft="@id/et_payment_address"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
 
                             />
                         <TextView
@@ -317,7 +317,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/ll_payment_name_info"
                             android:layout_alignLeft="@id/ll_payment_name_info"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
                             />
                         <TextView
                             android:id="@+id/tv_payment_name_info"
@@ -368,7 +368,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/ll_collection_name_info"
                             android:layout_alignLeft="@id/ll_collection_name_info"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
                             />
                         <TextView
                             android:id="@+id/tvt_collection_name"
@@ -428,7 +428,7 @@
                             android:layout_below="@id/ll_protocol_info"
                             android:layout_alignLeft="@id/ll_protocol_info"
                             android:layout_marginTop="10dp"
-                            android:background="@mipmap/cm_ic_hint_purple" />
+                            android:background="@drawable/cm_ic_hint" />
                         <TextView
                             android:id="@+id/tv_selector_tip_collection_name"
                             style="@style/style_fb_tip_title"
@@ -469,7 +469,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/et_deposit_amount"
                             android:layout_alignLeft="@id/et_deposit_amount"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
                             />
                         <TextView
                             android:id="@+id/tv_deposit_amount_info"
@@ -511,7 +511,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/et_virtual_amount"
                             android:layout_alignLeft="@id/et_virtual_amount"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
                             />
                         <TextView
                             android:id="@+id/tv_virtual_amount_info"
@@ -555,7 +555,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/tv_deposit_time"
                             android:layout_alignLeft="@id/tv_deposit_time"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
                             android:visibility="invisible"
                             />
                         <TextView
@@ -597,7 +597,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/ed_third_order_number"
                             android:layout_alignLeft="@id/ed_third_order_number"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
                             android:visibility="invisible"
                             />
                         <TextView
@@ -641,7 +641,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/tvw_payment_channel"
                             android:layout_alignLeft="@id/tvw_payment_channel"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
                             android:visibility="invisible"
                             />
                         <TextView
@@ -687,7 +687,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/et_collection_wallet_address"
                             android:layout_alignLeft="@id/et_collection_wallet_address"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
                             android:visibility="invisible"
                             />
                         <TextView
@@ -763,7 +763,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_below="@id/ll_remittance_screenshot"
                             android:layout_alignLeft="@id/ll_remittance_screenshot"
-                            android:background="@mipmap/cm_ic_hint_purple"
+                            android:background="@drawable/cm_ic_hint"
 
                             />
                         <TextView

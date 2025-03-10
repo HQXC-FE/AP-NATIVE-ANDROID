@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="file://D:/AndroidSDK/sources/android-34/audio_policy_configuration_V7_0.xsd">
     <!--    注意，这里不能直接用在view里面，请使用themes_attrs里面的自定义属性-->
     <!-- Purple Theme example-->
     <style name="primaryAttrStyle">
@@ -60,6 +60,10 @@
 
     <style name="bg_rc_dialog_style">
         <item name="android:background">@drawable/bg_rc_dialog</item>
+    </style>
+
+    <style name="cm_ic_hint_style">
+        <item name="android:drawableStart">@drawable/bg_rc_dialog</item>
     </style>
 
     <style name="clr_rc_rate_style">
@@ -542,6 +546,14 @@
         <item name="android:background">@drawable/cm_btn_next</item>
     </style>
 
+    <style name="style_rc_ic_feedback">
+        <item name="android:background">@drawable/rc_ic_feedback</item>
+    </style>
+
+    <style name="style_cm_ic_tutorial">
+        <item name="android:drawableStart">@drawable/cm_ic_tutorial</item>
+    </style>
+
     <style name="style_feedback_top_message">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -566,7 +578,6 @@
         <item name="android:background">@drawable/im_dialog_agreement_close</item>
     </style>
 
-
     <!-- 登录页 账号输入框 -->
     <style name="style_cm_edt_account">
         <item name="android:layout_width">wrap_content</item>
@@ -585,6 +596,7 @@
         <item name="android:textColor">@color/clr_awards_txt_black</item>
         <item name="android:textColorHint">@color/clr_grey_2</item>
     </style>
+
     <!-- 登录页 复选框 -->
     <style name="style_cm_ckb_normal">
         <item name="android:layout_width">wrap_content</item>
@@ -605,6 +617,4 @@
         <item name="android:button">@drawable/ic_eye_selector</item>
         <item name="android:padding">6dp</item>
     </style>
-
-
 </resources>

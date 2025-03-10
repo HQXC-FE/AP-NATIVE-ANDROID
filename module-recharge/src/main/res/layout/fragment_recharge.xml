@@ -91,13 +91,13 @@
 
         <ImageView
             android:id="@+id/ivw_feedback_tip"
+            style="?attr/rc_ic_feedback_attr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="-16dp"
             android:layout_marginEnd="6dp"
             android:elevation="3dp"
-            android:src="@mipmap/rc_ic_feedback"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll_top" />
 
@@ -158,14 +158,15 @@
                         android:drawablePadding="4dp"
                         android:text="@string/txt_rc_anti_fraud"
                         android:textColor="@color/clr_txt_black_01"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tvw_tutorial"
+                        style="?attr/cm_ic_tutorial_attr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/layout_margin"
-                        android:drawableStart="@mipmap/cm_ic_tutorial"
                         android:drawablePadding="4dp"
                         android:text="@string/txt_recharge_tutorial"
                         android:textColor="@color/clr_txt_black_01"
@@ -549,11 +550,13 @@
 
                     <TextView
                         android:id="@+id/tvw_tip_same_amount"
-                        style="@style/style_rc_tip_small_grey"
+                        style="?attr/cm_ic_hint_attr"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_marginTop="24dp"
-                        android:drawableStart="@mipmap/cm_ic_hint_purple"
                         android:drawablePadding="2dp"
-                        android:text="@string/txt_amount_filled_should_same_as_remittance_amount" />
+                        android:text="@string/txt_amount_filled_should_same_as_remittance_amount"
+                        android:textColor="@color/clr_grey_40" />
 
                     <LinearLayout
                         android:id="@+id/ll_step"
@@ -572,10 +575,10 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                style="?attr/cm_ic_hint_attr"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:drawableStart="@mipmap/cm_ic_hint_purple"
                                 android:drawablePadding="4dp"
                                 android:text="@string/txt_rc_step"
                                 android:textColor="@color/clr_txt_black_01"
@@ -583,9 +586,9 @@
 
                             <TextView
                                 android:id="@+id/tvw_step_tutorial"
+                                style="?attr/cm_ic_tutorial_attr"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:drawableStart="@mipmap/cm_ic_tutorial"
                                 android:drawablePadding="4dp"
                                 android:text="@string/txt_rc_cnyt_tutorial"
                                 android:textColor="@color/clr_txt_black_01"

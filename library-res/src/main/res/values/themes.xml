@@ -20,6 +20,7 @@
         <item name="channelTextSelectAttr">@style/channelTextSelectStyle</item>
 
         <item name="bg_rc_dialog_attr">@style/bg_rc_dialog_style</item>
+        <item name="cm_ic_hint_attr">@style/cm_ic_hint_style</item>
         <item name="clr_item_text_attr">@style/clr_item_text_style</item>
         <item name="clr_rc_rate_attr">@style/clr_rc_rate_style</item>
         <item name="ivw_hot_attr">@style/ivw_hot_style</item>
@@ -45,6 +46,8 @@
         <item name="rc_down_hi_wallet_attr">@style/style_rc_down_hi_wallet</item>
         <item name="btn_short_attr">@style/style_btn_short</item>
         <item name="btn_small_attr">@style/style_btn_small</item>
+        <item name="rc_ic_feedback_attr">@style/style_rc_ic_feedback</item>
+        <item name="cm_ic_tutorial_attr">@style/style_cm_ic_tutorial</item>
         <item name="img_no_data_attr">@style/img_no_data_style</item>
         <item name="withdraw_money_account_attr">@style/style_withdraw_money_account</item>
         <item name="bg_dialog_top_bank_attr">@style/style_bg_dialog_top_bank</item>
@@ -135,7 +138,8 @@
 
         <item name="feedback_bottom_btn_attr">@style/style_feedback_bottom_btn</item>
         <item name="feedback_top_message_attr">@style/style_feedback_top_message</item>
-        <item name="feedback_top_customer_service_attr">@style/style_feedback_customer_service</item>
+        <item name="feedback_top_customer_service_attr">@style/style_feedback_customer_service
+        </item>
         <item name="dialog_agreement_attr">@style/style_dialog_agreement</item>
         <item name="dialog_agreement_close_attr">@style/style_dialog_agreement_close_attr</item>
 

@@ -21,24 +21,24 @@
 
     <TextView
         android:id="@+id/tvw_title"
+        style="?attr/channelTextSelectAttr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:text="@string/txt_kind_tips"
-        style="?attr/channelTextSelectAttr"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvw_msg"
+        style="?attr/textPrimaryAttr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="0dp"
         android:gravity="center"
-       style="?attr/textPrimaryAttr"
         android:textSize="14sp"
         tools:text="当前渠道【 】充值到账成功率较低，为了保证快速到账，请使用以下渠道进行充值或联系客服进行处理！" />
 
@@ -95,9 +95,9 @@
 
         <TextView
             android:id="@+id/tvw_tutorial"
+            style="?attr/cm_ic_tutorial_attr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableStart="@mipmap/cm_ic_tutorial"
             android:drawablePadding="3dp"
             android:text="@string/txt_recharge_tutorial"
             android:textColor="@color/clr_grey_00" />

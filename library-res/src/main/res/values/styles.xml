@@ -510,7 +510,7 @@
     </style>
 
     <style name="style_cm_tip_small_title_warn" parent="style_cm_tip_small_title">
-        <item name="android:drawableStart">@mipmap/cm_ic_hint_purple</item>
+        <item name="android:drawableStart">@drawable/cm_ic_hint</item>
     </style>
 
     <!-- 通用 下一步按钮 -->

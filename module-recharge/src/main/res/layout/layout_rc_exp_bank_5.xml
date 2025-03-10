@@ -26,12 +26,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:gravity="center"
             android:layout_margin="20dp"
             android:background="@color/clr_main_33"
+            android:gravity="center"
+            android:text="订单状态：失败"
             android:textColor="@color/clr_red_19"
-            android:textSize="12dp"
-            android:text="订单状态：失败" />
+            android:textSize="12dp" />
 
         <LinearLayout style="@style/style_rc_dlg_ll">
 
@@ -41,8 +41,8 @@
 
             <TextView
                 style="@style/style_rc_dlg_value"
-                android:textColor="@color/clr_black"
                 android:text="@{model.payOrderData.createTime}"
+                android:textColor="@color/clr_black"
                 tools:text="2024-01-23  11:00:07" />
         </LinearLayout>
 
@@ -54,8 +54,8 @@
 
             <TextView
                 style="@style/style_rc_dlg_value"
-                android:textColor="@color/clr_black"
                 android:text="@{model.payOrderData.merchantOrder}"
+                android:textColor="@color/clr_black"
 
                 tools:text="PAY00123456789" />
         </LinearLayout>
@@ -77,15 +77,15 @@
         <TextView
             android:id="@+id/tvw_ok"
             style="@style/style_btn_long"
-            android:text="关闭"
-            android:onClick="@{() -> model.finish()}"/>
+            android:onClick="@{() -> model.finish()}"
+            android:text="关闭" />
 
         <TextView
-            style="@style/style_cm_tip_small_grey"
+            style="?attr/cm_ic_hint_attr"
             android:layout_width="match_parent"
-            android:drawableStart="@mipmap/cm_ic_hint_purple"
             android:drawablePadding="4dp"
             android:text="若有任何订单问题，请立即联系客服，并提供区间流水明细，以利确认到账情况及处理您的保证金返还"
+            android:textColor="@color/clr_grey_40"
             android:textSize="12sp" />
 
     </LinearLayout>

@@ -11,9 +11,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_title"
+        style="?attr/bg_floating_way_attr"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/bg_dialog_top_purple"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
