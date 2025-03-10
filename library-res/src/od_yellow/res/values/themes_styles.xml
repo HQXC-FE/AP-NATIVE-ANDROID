@@ -595,4 +595,14 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/textMainUnSelectorColor</item>
     </style>
+
+    <!-- 登录页 眼睛 睁开/关闭 -->
+    <style name="style_cm_ckb_eye">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:button">@drawable/ic_eye_selector</item>
+        <item name="android:padding">6dp</item>
+    </style>
 </resources>
