@@ -38,7 +38,6 @@
     <attr name="btn_get_code_attr" format="reference" />
     <attr name="info2_grey_50_attr" format="reference" />
     <attr name="info_grey_50_attr" format="reference" />
-    <attr name="bg_google_auth_attr" format="reference" />
     <attr name="bg_rc_dialog_attr" format="reference" />
 
     <attr name="play_method_attr" format="reference" />

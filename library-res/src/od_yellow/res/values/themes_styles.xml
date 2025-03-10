@@ -58,10 +58,6 @@
         <item name="android:textColor">@color/clr_item_text_selector</item>
     </style>
 
-    <style name="bg_google_auth_style">
-        <item name="android:src">@drawable/bg_google_auth</item>
-    </style>
-
     <style name="bg_rc_dialog_style">
         <item name="android:background">@drawable/bg_rc_dialog</item>
     </style>
@@ -177,14 +173,6 @@
 
     <style name="style_rc_dlg_hourglass">
         <item name="android:src">@drawable/cm_ic_hourglass</item>
-    </style>
-
-    <style name="style_rc_dlg_bg_title">
-        <item name="android:src">@drawable/bg_dlg_top</item>
-    </style>
-
-    <style name="style_rc_dlg_bg_top">
-        <item name="android:src">@drawable/bg_dlg_top</item>
     </style>
 
     <style name="style_rc_reg_hi_wallet">
@@ -533,6 +521,7 @@
     <style name="style_hm_img_room">
         <item name="android:src">@drawable/hm_img_room</item>
     </style>
+
     <style name="style_offer_top">
         <item name="android:src">@drawable/bg_offer</item>
     </style>
@@ -552,6 +541,7 @@
     <style name="style_feedback_bottom_btn">
         <item name="android:background">@drawable/cm_btn_next</item>
     </style>
+
     <style name="style_feedback_top_message">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -559,6 +549,7 @@
         <item name="android:padding">4dp</item>
         <item name="android:src">@drawable/cm_ic_msg</item>
     </style>
+
     <style name="style_feedback_customer_service">
         <item name="android:src">@drawable/cm_ic_cs</item>
         <item name="android:layout_width">wrap_content</item>
@@ -566,9 +557,11 @@
         <item name="android:layout_marginEnd">4dp</item>
         <item name="android:padding">4dp</item>
     </style>
+
     <style name="style_dialog_agreement">
         <item name="android:background">@drawable/me_msg_backgroup</item>
     </style>
+
     <style name="style_dialog_agreement_close_attr">
         <item name="android:background">@drawable/im_dialog_agreement_close</item>
     </style>
