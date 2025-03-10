@@ -117,6 +117,7 @@
         <item name="me_msg_backgroup_attr">@style/style_me_msg_bg</item>
         <item name="login_activity_attr">@style/style_login_bg</item>
         <item name="login_ac_backgroup_attr">@style/style_login_backgroup</item>
+        <item name="login_cm_edt_account_attr">@style/style_cm_edt_account</item>
         <item name="login_eye_backgroup_attr">@style/style_login_eye_backgroup</item>
 
         <item name="login_check_backgroup_attr">@style/style_login_check_backgroup</item>
@@ -137,6 +138,9 @@
         <item name="feedback_top_customer_service_attr">@style/style_feedback_customer_service</item>
         <item name="dialog_agreement_attr">@style/style_dialog_agreement</item>
         <item name="dialog_agreement_close_attr">@style/style_dialog_agreement_close_attr</item>
+
+        <item name="login_cm_ckb_normal_attr">@style/style_cm_ckb_normal</item>
+        <item name="login_eye_right_backgroup_attr">@style/style_cm_ckb_eye</item>
     </style>
 
 </resources>

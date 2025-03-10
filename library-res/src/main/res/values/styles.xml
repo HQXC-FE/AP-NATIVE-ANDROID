@@ -868,7 +868,7 @@
         <item name="android:src">@mipmap/cm_dividing_line</item>
     </style>
 
-    <!-- 登录页 账号输入框 -->
+   <!-- &lt;!&ndash; 登录页 账号输入框 &ndash;&gt;
     <style name="style_cm_edt_account">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
@@ -885,7 +885,7 @@
         <item name="android:lines">1</item>
         <item name="android:textColor">@color/clr_awards_txt_black</item>
         <item name="android:textColorHint">@color/clr_grey_2</item>
-    </style>
+    </style>-->
     <!-- 登录页 密码输入框 -->
     <style name="style_cm_edt_pwd" parent="style_cm_edt_account">
         <item name="android:drawableStart">@drawable/cm_ic_login_pwd</item>
@@ -918,7 +918,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:scaleType">fitXY</item>
     </style>
-    <!-- 登录页 眼睛 睁开/关闭 -->
+   <!-- &lt;!&ndash; 登录页 眼睛 睁开/关闭 &ndash;&gt;
     <style name="style_cm_ckb_eye">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -926,7 +926,7 @@
         <item name="android:layout_marginRight">16dp</item>
         <item name="android:button">@drawable/ic_eye_selector</item>
         <item name="android:padding">6dp</item>
-    </style>
+    </style>-->
 
 
 
@@ -1484,7 +1484,7 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <!-- 登录页 复选框 -->
+   <!-- &lt;!&ndash; 登录页 复选框 &ndash;&gt;
     <style name="style_cm_ckb_normal">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -1493,5 +1493,5 @@
         <item name="android:button">@drawable/checkbox_bg_selector</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/textMainUnSelectorColor</item>
-    </style>
+    </style>-->
 </resources>

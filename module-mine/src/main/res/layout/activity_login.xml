@@ -48,7 +48,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login_header"
                 android:visibility="invisible"/>
-            <!--注册页面-->
+            <!--注册/登录页面-->
             <LinearLayout
                 android:id="@+id/ll_content"
                 android:layout_width="match_parent"
@@ -197,7 +197,7 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!--登錄-->
+                <!--登录页面-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/me_login_area"
                     android:layout_width="0dp"
@@ -239,7 +239,7 @@
 
                         <EditText
                             android:id="@+id/edt_account"
-                            style="@style/style_cm_edt_account"
+                            style="?attr/login_cm_edt_account_attr"
                             android:hint="@string/txt_user_name_should_6_12" />
 
                     </LinearLayout>
@@ -261,11 +261,10 @@
                             android:id="@+id/ckb_eye"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/style_cm_ckb_eye"
-
+                            style="?attr/login_eye_right_backgroup_attr"
                             android:background="@null"/>
+                        <!--  style="@style/style_cm_ckb_eye"-->
                     </LinearLayout>
-                        <!-- style="?attr/login_eye_backgroup_attr"-->
                     <LinearLayout
                         android:id="@+id/ll_login_verification"
                         android:layout_marginTop="10dp"
@@ -306,7 +305,7 @@
 
                                 <CheckBox
                                     android:id="@+id/ckb_remember_pwd"
-                                    style="@style/style_cm_ckb_normal"
+                                    style="?attr/login_cm_ckb_normal_attr"
                                      android:text="@string/me_pwd_rember" />
 
                                  <View

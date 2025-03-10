@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="file://D:/AndroidSDK/sources/android-34/audio_policy_configuration_V7_0.xsd">
     <!--    注意，这里不能直接用在view里面，请使用themes_attrs里面的自定义属性-->
     <!-- Purple Theme example-->
     <style name="primaryAttrStyle">
@@ -566,4 +566,33 @@
         <item name="android:background">@drawable/im_dialog_agreement_close</item>
     </style>
 
+    <!-- 登录页 账号输入框 -->
+    <style name="style_cm_edt_account">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:drawableStart">@drawable/cm_ic_login_user</item>
+        <item name="android:inputType">text</item>
+        <item name="android:maxLength">32</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:hint">@string/txt_enter_login_name</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:lines">1</item>
+        <item name="android:textColor">@color/clr_awards_txt_black</item>
+        <item name="android:textColorHint">@color/clr_grey_2</item>
+    </style>
+
+    <!-- 登录页 复选框 -->
+    <style name="style_cm_ckb_normal">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingHorizontal" tools:targetApi="o">6dp</item>
+        <item name="android:button">@drawable/checkbox_bg_selector</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/textMainUnSelectorColor</item>
+    </style>
 </resources>

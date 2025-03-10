@@ -102,6 +102,7 @@
     <attr name="me_msg_backgroup_attr" format="reference" />
     <attr name="login_activity_attr" format="reference" />
     <attr name="login_ac_backgroup_attr" format="reference" />
+    <attr name="login_cm_edt_account_attr" format="reference" />
     <attr name="login_eye_backgroup_attr" format="reference" />
     <attr name="login_check_backgroup_attr" format="reference" />
     <attr name="home_top_banner_attr" format="reference" />
@@ -118,4 +119,7 @@
     <attr name="feedback_top_message_attr" format="reference" />
     <attr name="dialog_agreement_attr" format="reference" />
     <attr name="dialog_agreement_close_attr" format="reference" />
+
+    <attr name="login_cm_ckb_normal_attr" format="reference" />
+    <attr name="login_eye_right_backgroup_attr" format="reference" />
 </resources>

@@ -102,8 +102,8 @@
     <color name="channelTextSelectColor">#775493</color>
     <color name="channelTextColor">#C4B2FF</color>
     <!--    其他-->
-    <color name="textForgetPwdColor">#7272FF</color>
-    <color name="textAgreementColor">#6246CF</color>
+    <color name="textForgetPwdColor">#2199DC</color>
+    <color name="textAgreementColor">#518FD8</color>
     <color name="textErrorMessageColor">#E66AA6</color>
     <color name="textHomeTextColor">#393152</color>
     <!--其他  测速远点颜色-->
