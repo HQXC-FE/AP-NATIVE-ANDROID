@@ -34,7 +34,7 @@
 
     <TextView
         android:id="@+id/tv_no_agree"
-        style="@style/style_btn_back"
+        style="?attr/btn_short_left_attr"
         android:layout_width="120dp"
         android:layout_marginBottom="18dp"
         android:text="@string/text_no_agree"
@@ -44,7 +44,7 @@
 
     <TextView
         android:id="@+id/tv_agree"
-        style="@style/style_btn"
+        style="?attr/btn_short_right_attr"
         android:layout_width="120dp"
         android:text="@string/txt_agree"
         app:layout_constraintEnd_toEndOf="@+id/tvw_agreement"
