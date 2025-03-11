@@ -54,7 +54,6 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
     private int mUid, matchType, matchId;
     private String mVid, pVid;
     private final String[] mTabList = {"广场", "投注","主播私聊","主播助理"};
-    private final int[] tabIcons = {R.drawable.tab_chat_home_selector, R.drawable.tab_chat_home_selector};
 
     public static LiveDetailHomeFragment newInstance(int anchorId, String vId, String privateVid, int matchType, int matchId) {
         LiveDetailHomeFragment fragment = new LiveDetailHomeFragment();

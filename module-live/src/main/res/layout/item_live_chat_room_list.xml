@@ -6,7 +6,7 @@
     android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?colorPrimary"
+    android:background="@color/clr_transparent"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:paddingHorizontal="10dp"
@@ -26,7 +26,6 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_badge"
-
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:layout_marginTop="-3dp"
@@ -164,7 +163,7 @@
         android:id="@id/line"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="#F1F1F1"
+        android:background="#EFEAFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tv_time"
         app:layout_constraintStart_toStartOf="@+id/iv_user"

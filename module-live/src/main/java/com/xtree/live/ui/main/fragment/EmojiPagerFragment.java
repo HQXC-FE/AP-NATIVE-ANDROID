@@ -105,7 +105,7 @@ public class EmojiPagerFragment extends BaseFragment<FragmentEmojiPaperBinding, 
 
         new TabLayoutMediator(binding.tabLayout, binding.viewpager, (tab, position) -> {
             // 为每个Tab创建自定义视图
-            View customTabView = LayoutInflater.from(requireContext()).inflate(com.xtree.live.R.layout.tab_item_layout, null);
+            View customTabView = LayoutInflater.from(requireContext()).inflate(R.layout.tab_item_layout, null);
             ImageView tabIcon = customTabView.findViewById(R.id.tab_icon);
             TextView tabText = customTabView.findViewById(R.id.tab_text);
 

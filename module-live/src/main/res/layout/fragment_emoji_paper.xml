@@ -29,13 +29,17 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/clr_transparent">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                app:tabIndicatorHeight="0dp"
                 app:tabIndicatorFullWidth="true"
+                android:background="@color/clr_transparent"
+                android:layout_gravity="center"
                 app:tabPadding="0dp"
                 app:tabPaddingEnd="0dp"
                 app:tabPaddingStart="0dp" />
