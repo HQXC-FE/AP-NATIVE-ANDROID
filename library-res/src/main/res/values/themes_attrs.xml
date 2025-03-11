@@ -137,6 +137,9 @@
     <attr name="cm_dialog_update_bg_attr" format="reference" />
     <attr name="dialog_update_confirm_right_attr" format="reference" />
     <attr name="dialog_update_cancel_left_attr" format="reference" />
-
+    <attr name="security_center_pwd_attr" format="reference" />
+    <attr name="security_center_google_attr" format="reference" />
+    <attr name="security_center_phone_attr" format="reference" />
+    <attr name="security_center_email_attr" format="reference" />
 
 </resources>

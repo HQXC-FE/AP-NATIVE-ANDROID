@@ -664,5 +664,27 @@
     <style name="style_me_logout">
         <item name="android:background">@drawable/bg_btn_long_selector</item>
     </style>
+    <style name="style_me_level_progressbar">
+        <item name="android:background">@drawable/me_level_progressbar_100</item>
+    </style>
+
+    <style name="style_cm_dialog_update_bell">
+        <item name="android:src">@drawable/cm_dialog_update_bell</item>
+    </style>
+    <style name="style_cm_dialog_update_bg">
+        <item name="android:background">@drawable/cm_dialog_update_bg</item>
+    </style>
+    <style name="style_security_center_pwd">
+        <item name="android:drawableStart">@drawable/me_sc_pwd</item>
+    </style>
+    <style name="style_security_center_google">
+        <item name="android:drawableStart">@drawable/me_sc_google</item>
+    </style>
+    <style name="style_security_center_phone">
+        <item name="android:drawableStart">@drawable/me_sc_phone</item>
+    </style>
+    <style name="style_security_center_email">
+        <item name="android:drawableStart">@drawable/me_sc_email</item>
+    </style>
 
 </resources>

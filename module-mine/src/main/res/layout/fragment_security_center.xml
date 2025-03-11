@@ -73,7 +73,6 @@
             app:layout_constraintTop_toTopOf="@id/ivw_top"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="60dp"/>
-<!-- android:background="@drawable/bg_white"-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -95,7 +94,7 @@
                 android:id="@+id/tvw_reset_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@mipmap/me_sc_pwd"
+                style="?attr/security_center_pwd_attr"
                 android:drawableEnd="@mipmap/cm_ic_to_right"
                 android:drawablePadding="6dp"
                 android:gravity="center_vertical"
@@ -113,7 +112,7 @@
                 android:id="@+id/tvw_google"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@mipmap/me_sc_google"
+                style="?attr/security_center_google_attr"
                 android:drawableEnd="@mipmap/cm_ic_to_right"
                 android:gravity="center_vertical"
                 android:drawablePadding="6dp"
@@ -131,7 +130,7 @@
                 android:id="@+id/tvw_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@mipmap/me_sc_phone"
+                style="?attr/security_center_phone_attr"
                 android:drawableEnd="@mipmap/cm_ic_to_right"
                 android:gravity="center_vertical"
                 android:drawablePadding="6dp"
@@ -149,7 +148,7 @@
                 android:id="@+id/tvw_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@mipmap/me_sc_email"
+                style="?attr/security_center_email_attr"
                 android:drawableEnd="@mipmap/cm_ic_to_right"
                 android:gravity="center_vertical"
                 android:drawablePadding="6dp"
