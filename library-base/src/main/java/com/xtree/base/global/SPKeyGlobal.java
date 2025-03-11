@@ -41,6 +41,7 @@ public class SPKeyGlobal {
     public static final String WLT_GAME_ROOM_BLC = "wlt_game_room_blc";
     public static final String PM_FAST_COMMON = "pm_fast_common";//熊猫体育是极速版or普通版
     public static final String FB_FAST_COMMON = "fb_fast_common";//FB体育是极速版or普通版
+    public static final String IM_FAST_COMMON = "im_fast_common";//IM体育是极速版or普通版
     public static final String KEY_USE_AGENT = "key_use_agent";
     public static final String KEY_GAME_SWITCH = "key_game_switch"; //
     /**

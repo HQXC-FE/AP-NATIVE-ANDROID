@@ -39,6 +39,7 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
     public final static String PLATFORM_FB = "fb";
     public final static String PLATFORM_PM = "obg";
     public final static String PLATFORM_PMXC = "obgzy";
+    public final static String PLATFORM_IM = "imone";
     private BasePopupView basePopupView;
 
     public interface ICallBack {
@@ -149,9 +150,13 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
         } else if (vo.cid == 26) {
             //FB体育
             key = SPKeyGlobal.FB_FAST_COMMON;
+        } else if (vo.cid == 30) {
+            //IM体育
+            key = SPKeyGlobal.IM_FAST_COMMON;
         } else {
             key = "";
         }
+
         boolean isFast = SPUtils.getInstance().getBoolean(key, true);
         if (isFast) {
             //如果是极速版
@@ -201,8 +206,8 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
             mCallBack.onClick(vo);
             return;
         }
-        if (vo.cid == 42 || vo.cid == 5 || vo.cid == 41 || vo.cid == 26) {
-            if (mCallBack.getIsFrozen()) {//杏彩体育 熊猫体育 杏彩体育旗舰 FB体育账户无法操作
+        if (vo.cid == 42 || vo.cid == 5 || vo.cid == 41 || vo.cid == 26 || vo.cid == 30) {
+            if (mCallBack.getIsFrozen()) {//杏彩体育 熊猫体育 杏彩体育旗舰 FB体育 IM体育账户无法操作
                 return;
             }
         }
