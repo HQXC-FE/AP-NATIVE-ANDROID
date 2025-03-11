@@ -153,7 +153,10 @@
         <item name="me_logout_bt_attr">@style/style_me_logout</item>
 
         <item name="me_level_progressbar_attr">@style/style_me_level_progressbar</item>
-
+        <item name="cm_dialog_update_bell_attr">@style/style_cm_dialog_update_bell</item>
+        <item name="cm_dialog_update_bg_attr">@style/style_cm_dialog_update_bg</item>
+        <item name="dialog_update_confirm_right_attr">@style/style_btn_short</item>
+        <item name="dialog_update_cancel_left_attr">@style/style_btn_short_cancel</item>
     </style>
 
 </resources>

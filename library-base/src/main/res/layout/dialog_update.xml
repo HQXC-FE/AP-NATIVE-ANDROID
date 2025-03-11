@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
-            android:background="@drawable/cm_dialog_update_bg"
+            style="?attr/cm_dialog_update_bg_attr"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-20dp"
-            android:src="@drawable/cm_dialog_update_bell"
+            style="?attr/cm_dialog_update_bell_attr"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
@@ -153,14 +153,14 @@
 
             <TextView
                 android:id="@+id/dialog_update_cancel"
-                style="@style/style_btn_back"
+                style="?attr/dialog_update_cancel_left_attr"
                 android:text="@string/txt_cancel"
                 android:textColor="@color/clr_txt_grey_04"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/dialog_update_confirm"
-                style="@style/style_btn"
+                style="?attr/dialog_update_confirm_right_attr"
                 android:text="@string/txt_confirm"
                 android:textSize="14sp" />
         </LinearLayout>

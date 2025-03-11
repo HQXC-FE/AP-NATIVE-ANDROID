@@ -99,7 +99,7 @@
     <color name="strokeDialogColor">#DFDFDF</color>
     <color name="parlayLabelColor">#95845A</color>
     <color name="parlayBackgroundColor">#33C8A54E</color>
-    <color name="channelTextSelectColor">#775493</color>
+    <color name="channelTextSelectColor">#F96C54</color>
     <color name="channelTextColor">#C4B2FF</color>
     <!--    其他-->
     <color name="textForgetPwdColor">#2199DC</color>

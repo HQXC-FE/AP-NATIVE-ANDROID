@@ -133,6 +133,10 @@
     <attr name="me_vip_leve_attr" format="reference" />
     <attr name="me_logout_bt_attr" format="reference" />
     <attr name="me_level_progressbar_attr" format="reference" />
+    <attr name="cm_dialog_update_bell_attr" format="reference"/>
+    <attr name="cm_dialog_update_bg_attr" format="reference" />
+    <attr name="dialog_update_confirm_right_attr" format="reference" />
+    <attr name="dialog_update_cancel_left_attr" format="reference" />
 
 
 </resources>
