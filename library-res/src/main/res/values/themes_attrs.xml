@@ -128,6 +128,11 @@
     <attr name="login_eye_right_backgroup_attr" format="reference" />
     <attr name="btn_short_right_attr" format="reference" />
     <attr name="btn_short_left_attr" format="reference" />
+    <attr name="me_icon_name_attr" format="reference" />
+    <attr name="me_icon_vip_attr" format="reference" />
+    <attr name="me_vip_leve_attr" format="reference" />
+    <attr name="me_logout_bt_attr" format="reference" />
+    <attr name="me_level_progressbar_attr" format="reference" />
 
 
 </resources>

@@ -10,6 +10,6 @@
     <item android:drawable="@drawable/me_vip_level_07" android:maxLevel="7" />
     <item android:drawable="@drawable/me_vip_level_08" android:maxLevel="8" />
     <item android:drawable="@drawable/me_vip_level_09" android:maxLevel="9" />
-    <item android:drawable="@drawable/me_vip_level_09" android:maxLevel="10" />
-    <item android:drawable="@drawable/me_vip_level_09" android:maxLevel="100" />
+    <item android:drawable="@drawable/me_vip_level_10" android:maxLevel="10" />
+    <item android:drawable="@drawable/me_vip_level_10" android:maxLevel="100" />
 </level-list>

@@ -147,6 +147,13 @@
         <item name="login_eye_right_backgroup_attr">@style/style_cm_ckb_eye</item>
         <item name="btn_short_right_attr">@style/style_btn_short_right</item>
         <item name="btn_short_left_attr">@style/style_btn_short_left</item>
+        <item name="me_icon_name_attr">@style/style_me_icon_name</item>
+        <item name="me_icon_vip_attr">@style/style_me_icon_vip</item>
+        <item name="me_vip_leve_attr">@style/style_me_vip_leve</item>
+        <item name="me_logout_bt_attr">@style/style_me_logout</item>
+
+        <item name="me_level_progressbar_attr">@style/style_me_level_progressbar</item>
+
     </style>
 
 </resources>

@@ -37,7 +37,7 @@
                         android:id="@+id/icon_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/me_icon_name" />
+                        style="?attr/me_icon_name_attr" />
 
                     <TextView
                         android:id="@+id/tvw_name"
@@ -52,7 +52,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:src="@drawable/cm_ic_vip_level" />
+                        style="?attr/me_icon_vip_attr"
+                        />
 
                     <View
                         android:layout_width="wrap_content"
@@ -255,12 +256,11 @@
                                 app:layout_constraintEnd_toStartOf="@id/ivwLevel"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/tvw_level_hint" />
-
                             <ImageView
                                 android:id="@+id/ivwLevel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/me_vip_level"
+                                style="?attr/me_vip_leve_attr"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -503,7 +503,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
                 <Button
                     android:id="@+id/btn_logout"
                     android:layout_width="match_parent"
@@ -512,7 +511,7 @@
                     android:layout_marginTop="48dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="24dp"
-                    android:background="@mipmap/me_logout_login_bg"
+                    style="?attr/me_logout_bt_attr"
                     android:text="@string/me_logout_login"
                     app:layout_constraintLeft_toLeftOf="@+id/more_service_hint"
                     app:layout_constraintRight_toRightOf="@+id/more_service_area"

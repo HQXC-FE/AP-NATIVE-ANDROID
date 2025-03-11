@@ -652,4 +652,7 @@
         <item name="android:textColor">@color/clr_text_code_selector</item>
         <item name="android:textSize">16sp</item>
     </style>
+    <style name="style_me_logout">
+        <item name="android:background">@drawable/bg_btn_long_selector</item>
+    </style>
 </resources>
