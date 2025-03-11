@@ -61,7 +61,7 @@
     <color name="textQuaternaryColor">#DFDBDA</color>
     <color name="textQuinaryColor">#FCF3F0</color>
     <color name="textSenaryColor">#FBFBFB</color>
-    <color name="textForgotColor">#FEFCFB</color>
+    <color name="textForgotColor">#518FD8</color>
     <!--    文字-->
 
     <!--    渐变-->
@@ -82,7 +82,7 @@
 
     <color name="moneyGradient1Color">#FFFFFF</color>
     <color name="moneyGradient2Color">#FFC3B2</color>
-    <color name="moneyGradient3Color">#F2EFFF00</color>
+    <color name="moneyGradient3Color">#00F2EFFF</color>
 
     <color name="moneyDefaultGradient1Color">#FFF5EB</color>
     <color name="moneyDefaultGradient2Color">#FFF0F0</color>
