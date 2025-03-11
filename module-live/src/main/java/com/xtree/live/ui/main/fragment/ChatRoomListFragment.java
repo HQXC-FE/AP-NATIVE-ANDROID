@@ -547,6 +547,7 @@ public class ChatRoomListFragment extends BaseFragment<FragmentChatRoomListBindi
 
     }
 
+    @Override
     public boolean onBackPressed() {
         if (!KeyboardUtils.isSoftInputVisible(requireActivity())) return true;
         KeyboardUtils.hideSoftInput(requireActivity());

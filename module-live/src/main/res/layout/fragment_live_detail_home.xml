@@ -21,7 +21,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tabGravity="center"
             android:background="@color/clr_transparent"
-            app:tabIndicator="@drawable/shape_tabindicator_live"
             app:tabMode="scrollable"
             app:tabPadding="2dp"
             >

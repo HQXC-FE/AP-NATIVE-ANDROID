@@ -70,7 +70,7 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requireActivity().setTheme(R.style.Theme_MaterialComponents_DayNight_NoActionBar);
+//        requireActivity().setTheme(R.style.Theme_MaterialComponents_DayNight_NoActionBar);
     }
 
     @Override

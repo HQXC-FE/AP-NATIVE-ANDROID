@@ -23,6 +23,7 @@ import com.trello.rxlifecycle4.components.support.RxFragment;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 import me.xtree.mvvmhabit.R;
@@ -35,7 +36,7 @@ import me.xtree.mvvmhabit.utils.MaterialDialogUtils;
 /**
  * Created by goldze on 2017/6/15.
  */
-public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseViewModel> extends RxFragment implements IBaseView {
+public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseViewModel> extends RxFragment implements IBaseView,BackPressed {
     protected V binding;
     protected VM viewModel;
     private int viewModelId;
@@ -346,6 +347,21 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
                 imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if (!isAdded()) return true;
+        List<Fragment> fragments = getChildFragmentManager().getFragments();
+        for (Fragment f : fragments) {
+            if (f.isVisible() && f.isResumed()) {
+                if (f instanceof BackPressed) {
+                    return ((BackPressed) f).onBackPressed();
+                }
+                return true;
+            }
+        }
+        return true;
     }
 
     /**

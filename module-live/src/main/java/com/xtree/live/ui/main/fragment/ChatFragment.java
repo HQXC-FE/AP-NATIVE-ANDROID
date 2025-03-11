@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -41,6 +43,7 @@ import com.xtree.live.BR;
 import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
 import com.xtree.live.chat.Counter;
+import com.xtree.live.chat.InOutRoomHelper;
 import com.xtree.live.data.AdsBean;
 import com.xtree.live.data.factory.AppViewModelFactory;
 import com.xtree.live.databinding.FragmentChatBinding;
@@ -48,9 +51,11 @@ import com.xtree.live.databinding.MergeChatRoomToolbarBinding;
 import com.xtree.live.inter.ChatView;
 import com.xtree.live.inter.EnterRoomBridge;
 import com.xtree.live.inter.GiftViewMarginBottomListener;
+import com.xtree.live.inter.IPanelView;
 import com.xtree.live.inter.KickUserInterface;
 import com.xtree.live.inter.MessageConstant;
 import com.xtree.live.inter.OnEmojiGifClickedObserver;
+import com.xtree.live.inter.OnPanelChangeListener;
 import com.xtree.live.inter.PVid;
 import com.xtree.live.message.ChatBarMode;
 import com.xtree.live.message.ChatPageInfo;
@@ -88,6 +93,7 @@ import com.xtree.live.uitl.MessageUtils;
 import com.xtree.live.uitl.PanelSwitchHelper;
 import com.xtree.live.uitl.WordUtil;
 import com.xtree.live.widge.ChatLoadMoreView;
+import com.xtree.live.widge.PanelView;
 import com.xtree.live.widge.SmoothScrollingLinearLayoutManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -148,6 +154,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     private SmoothScrollingLinearLayoutManager mLayoutManager;
     private final ChatPageInfo mPageInfo = new ChatPageInfo();
     private boolean mCanDisplayBanner = true;
+    private int mPanelHeight;
 
     private final Handler mHandler = new Handler();
 
@@ -649,6 +656,84 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
 
         viewModel.conversationMessageMutableLiveData.observe(this, this::onProcessReceiveMessage);
 
+    }
+
+    private void initInputPanel() {
+        if (mPanelSwitchHelper == null) {
+            mPanelSwitchHelper = new PanelSwitchHelper.Builder(this)
+                    .addEditTextFocusChangeListener((view, hasFocus) -> {
+
+//                        if (hasFocus) {
+//                            scrollToBottom();
+//                        }
+                    })
+                    //可选
+                    .addViewClickListener(view -> {
+//                        if(view == null)return;
+//                        if(view.getId() == R.id.edit_text || view.getId() == R.id.emotion_btn){
+//                            scrollToBottom();
+//                        }
+
+                    })
+                    .addKeyboardStateListener((visible, height) -> {
+                        if(visible){
+                            involveSvgaViewMargin(binding.llSendText.getHeight() + height);
+                        }
+                    })
+                    //可选
+                    .addPanelChangeListener(new OnPanelChangeListener() {
+
+                        @Override
+                        public void onKeyboard() {
+
+                            binding.emotionBtn.setSelected(false);
+                            mIsInputPanelExpand = true;
+                            hideLiveInfo();
+                        }
+
+                        @Override
+                        public void onNone() {
+
+                            binding.emotionBtn.setSelected(false);
+                            binding.emotionBtn.postDelayed(() -> {
+                                mIsInputPanelExpand = false;
+                            }, 500);
+                            showLiveInfo();
+                            involveSvgaViewMargin(binding.llSendText.getHeight());
+                        }
+
+                        @Override
+                        public void onPanel(IPanelView view) {
+                            if (view instanceof PanelView) {
+                                binding.emotionBtn.setSelected(((PanelView) view).getId() == R.id.panel_emotion);
+                                mIsInputPanelExpand = true;
+                                hideLiveInfo();
+                                involveSvgaViewMargin(mPanelHeight + binding.llSendText.getHeight());
+                            }
+                        }
+
+                        @Override
+                        public void onPanelSizeChange(IPanelView panelView, boolean portrait, int oldWidth, int oldHeight, int width, int height) {
+                            if (panelView instanceof PanelView) {
+                                if (((PanelView) panelView).getId() == R.id.panel_emotion) {
+                                    View pagerView = binding.getRoot().findViewById(R.id.fl_emoji_icons);
+                                    int viewPagerSize = (int) (height);
+                                    ViewGroup.LayoutParams layoutParams = pagerView.getLayoutParams();
+                                    layoutParams.width = width;
+                                    layoutParams.height = viewPagerSize;
+                                    pagerView.setLayoutParams(layoutParams);
+                                }
+                                WindowInsetsCompat insets = ViewCompat.getRootWindowInsets(requireActivity().getWindow().getDecorView());
+                                int navigationBarH = insets == null ? 0 : insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.navigationBars()).bottom;
+
+                                mPanelHeight = navigationBarH + height;
+                            }
+                        }
+                    })
+                    .logTrack(false)             //output log
+                    .build();
+            binding.chatList.setPanelSwitchHelper(mPanelSwitchHelper);
+        }
     }
 
     public void setCharBar() {
@@ -1258,16 +1343,15 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
         super.setUserVisibleHint(isVisibleToUser);
     }
 
-
-    public boolean onBackPressed() {
-        if (mPanelSwitchHelper != null && mPanelSwitchHelper.hookSystemBackByPanelSwitcher()) {
-            return false;
+    @Override
+    public void onPause() {
+        super.onPause();
+        ChatWebSocketManager.getInstance().setInRoom("", RoomType.PAGE_CHAT_UNKNOW);
+        if(isGlobal()){
+            InOutRoomHelper.leaveRoom(getRoomVid());
         }
-        if (mIsInputPanelExpand) return false;
-        EnterRoomBridge bridge = ActionGetter.getEnterRoomBridge(this);
-        if (bridge == null) return true;
-        bridge.intoChatList();
-        return false;
+        binding.panelSwitchLayout.recycle();
+        mPanelSwitchHelper = null;
     }
 
     private Single<List<ConversationMessage>> filterMessageList(boolean isRefresh, List<MessageRecord> histories) {
@@ -1320,5 +1404,16 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
                 .toSortedList((o1, o2) -> (int) (o2.getDateTimeSent() - o1.getDateTimeSent()));
     }
 
+    @Override
+    public boolean onBackPressed() {
+        if (mPanelSwitchHelper != null && mPanelSwitchHelper.hookSystemBackByPanelSwitcher()) {
+            return false;
+        }
+        if (mIsInputPanelExpand) return false;
+        EnterRoomBridge bridge = ActionGetter.getEnterRoomBridge(this);
+        if (bridge == null) return true;
+        bridge.intoChatList();
+        return false;
+    }
 
 }
