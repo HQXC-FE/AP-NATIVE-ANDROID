@@ -1159,14 +1159,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, DomainUtil.getApiUrl());
                 } else {
-                    System.out.println("########### MainActivity baseUrl 333333 ###########"+DomainUtil.getApiUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, DomainUtil.getApiUrl());
                 }
             } else {
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, BtDomainUtil.getDefaultPmxcDomainUrl());
                 } else {
-                    System.out.println("########### MainActivity baseUrl 44444 ###########"+ BtDomainUtil.getDefaultPmDomainUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, BtDomainUtil.getDefaultPmDomainUrl());
                 }
             }
@@ -1186,7 +1184,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 int type = binding.rvLeague.getPackedPositionType(position);
 
                 if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    System.out.println("============= MainActivity refreshLeague 222 type ===============");
                     //Match match = (Match) binding.rvLeague.getItemAtPosition(i);
                     Object item = binding.rvLeague.getItemAtPosition(i); // 假设适配器有 getItem 方法
                     if (item instanceof Match) {
@@ -1247,6 +1244,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     protected void onResume() {
         super.onResume();
         initTimer();
+        startStopwatch();
         setCgBtCar();
         if (mLeagueAdapter != null) {
             mLeagueAdapter.notifyDataSetChanged();
