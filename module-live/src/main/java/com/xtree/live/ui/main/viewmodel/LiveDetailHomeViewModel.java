@@ -454,10 +454,10 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 //        String timestamp = "" + ApiClient.getTimestamp();
 //        String key = Helper.productSign(timestamp, sendMessageApiPathList(roomType));
 //        String sign = RequestUtils.getApiFrontSign(map, key);
-//        for (Map.Entry<String, Object> entry : map.entrySet()) {
-//            Object value = entry.getValue();
-//            if(value != null)bodyMap.put(entry.getKey(), RequestBody.create(value.toString(), MediaType.parse("text/plain")));
-//        }
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            Object value = entry.getValue();
+            if(value != null)bodyMap.put(entry.getKey(), RequestBody.create(value.toString(), MediaType.parse("text/plain")));
+        }
 
 
         HttpCallBack<JsonElement> callBack = new HttpCallBack<JsonElement>() {
@@ -492,14 +492,11 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
         };
 
         if (roomType == RoomType.PAGE_CHAT_PRIVATE_ANCHOR) {
-//            addSubscription(getApiStores().sendToAnchor(timestamp, sign, filePart, bodyMap), observer);
-            LiveRep.getInstance().sendToAnchor(RequestUtils.getRequestBody(map),filePart).subscribe(callBack);
+            LiveRep.getInstance().sendToAnchor(bodyMap,filePart).subscribe(callBack);
         } else if (roomType == RoomType.PAGE_CHAT_PRIVATE) {
-//            addSubscription(getApiStores().sendToAssistant(timestamp, sign, filePart, bodyMap), observer);
-            LiveRep.getInstance().sendToAssistant(RequestUtils.getRequestBody(map),filePart).subscribe(callBack);
+            LiveRep.getInstance().sendToAssistant(bodyMap,filePart).subscribe(callBack);
         } else {
-//            addSubscription(getApiStores().sendMessage(timestamp, sign, filePart, bodyMap), observer);
-            LiveRep.getInstance().sendMessage(RequestUtils.getRequestBody(map),filePart).subscribe(callBack);
+            LiveRep.getInstance().sendMessage(bodyMap,filePart).subscribe(callBack);
         }
     }
 

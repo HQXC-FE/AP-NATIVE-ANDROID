@@ -14,6 +14,7 @@ import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.message.inroom.InRoomData;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
@@ -119,10 +120,10 @@ public class LiveRep extends BaseRepository implements LiveDataSource {
     }
 
     @Override
-    public Flowable<JsonElement> sendToAnchor(RequestBody body,MultipartBody.Part file) {
+    public Flowable<JsonElement> sendToAnchor(Map<String, RequestBody> map, MultipartBody.Part file) {
 
         return obtainJsonService(LiveService.class)
-                .sendToAnchor(body,file)
+                .sendToAnchor(map,file)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer());
     }
@@ -136,10 +137,10 @@ public class LiveRep extends BaseRepository implements LiveDataSource {
                 .compose(RxUtils.exceptionTransformer());
     }
     @Override
-    public Flowable<JsonElement> sendToAssistant(RequestBody body,MultipartBody.Part file) {
+    public Flowable<JsonElement> sendToAssistant(Map<String, RequestBody> map,MultipartBody.Part file) {
 
         return obtainJsonService(LiveService.class)
-                .sendToAssistant(body,file)
+                .sendToAssistant(map,file)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer());
     }
@@ -153,10 +154,10 @@ public class LiveRep extends BaseRepository implements LiveDataSource {
                 .compose(RxUtils.exceptionTransformer());
     }
     @Override
-    public Flowable<JsonElement> sendMessage(RequestBody body,MultipartBody.Part file) {
+    public Flowable<JsonElement> sendMessage(Map<String, RequestBody> map,MultipartBody.Part file) {
 
         return obtainJsonService(LiveService.class)
-                .sendMessage(body,file)
+                .sendMessage(map,file)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer());
     }

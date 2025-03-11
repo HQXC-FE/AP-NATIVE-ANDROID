@@ -13,6 +13,7 @@ import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.message.inroom.InRoomData;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Flowable;
 import okhttp3.MultipartBody;
@@ -36,13 +37,13 @@ public interface LiveDataSource {
     Flowable<List<AdsBean>> getAdList();
 
     Flowable<JsonElement> sendToAnchor(RequestBody body);
-    Flowable<JsonElement> sendToAnchor(RequestBody body, MultipartBody.Part file);
+    Flowable<JsonElement> sendToAnchor(Map<String, RequestBody> body, MultipartBody.Part file);
 
     Flowable<JsonElement> sendToAssistant(RequestBody body);
-    Flowable<JsonElement> sendToAssistant(RequestBody body,MultipartBody.Part file);
+    Flowable<JsonElement> sendToAssistant(Map<String, RequestBody> body, MultipartBody.Part file);
 
     Flowable<JsonElement> sendMessage(RequestBody body);
-    Flowable<JsonElement> sendMessage(RequestBody body,MultipartBody.Part file);
+    Flowable<JsonElement> sendMessage(Map<String, RequestBody> body, MultipartBody.Part file);
 
     Flowable<SearchChatRoomInfo> searchAssistant(RequestBody body);
 

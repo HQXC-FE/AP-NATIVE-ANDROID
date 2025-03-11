@@ -14,6 +14,7 @@ import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.message.inroom.InRoomData;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.http.BaseResponse;
@@ -21,8 +22,10 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 public interface LiveService {
@@ -61,19 +64,22 @@ public interface LiveService {
     @POST("api/chat/sendToAnchor")
     Flowable<BaseResponse<JsonElement>> sendToAnchor(@Body RequestBody body);
     // 主播私聊带图片
+    @Multipart
     @POST("api/chat/sendToAnchor")
-    Flowable<BaseResponse<JsonElement>> sendToAnchor(@Body RequestBody body,@Part MultipartBody.Part file);
+    Flowable<BaseResponse<JsonElement>> sendToAnchor(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part file);
     // 助手私聊
     @POST("api/chat/sendToAssistant")
     Flowable<BaseResponse<JsonElement>> sendToAssistant(@Body RequestBody body);
+    @Multipart
     @POST("api/chat/sendToAssistant")
-    Flowable<BaseResponse<JsonElement>> sendToAssistant(@Body RequestBody body,@Part MultipartBody.Part file);
+    Flowable<BaseResponse<JsonElement>> sendToAssistant(@PartMap Map<String, RequestBody> map,@Part MultipartBody.Part file);
     //聊天室发言
     @POST("api/chat/sendMessage")
     Flowable<BaseResponse<JsonElement>> sendMessage(@Body RequestBody body);
     //聊天室发言
+    @Multipart
     @POST("api/chat/sendMessage")
-    Flowable<BaseResponse<JsonElement>> sendMessage(@Body RequestBody body,@Part MultipartBody.Part file);
+    Flowable<BaseResponse<JsonElement>> sendMessage(@PartMap Map<String, RequestBody> map,@Part MultipartBody.Part file);
 
     @POST("api/chat/searchAssistant")
     Flowable<BaseResponse<SearchChatRoomInfo>> searchAssistant(@Body RequestBody body);

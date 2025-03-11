@@ -523,11 +523,14 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
             scrollToPosition(0);
         });
         muteRoom(isMute());
-        if (isGlobal()) {
-            binding.addBtn.setVisibility(View.GONE);
-        } else {
-            binding.addBtn.setVisibility(View.VISIBLE);
-        }
+
+        //设计稿以及主流都不容许发图片，这里也不容许。防止图片广告
+//        if (isGlobal()) {
+//            binding.addBtn.setVisibility(View.GONE);
+//        } else {
+//            binding.addBtn.setVisibility(View.VISIBLE);
+//        }
+
         if (isGlobal() && mCanDisplayBanner) {
             mCanDisplayBanner = false;
             viewModel.getAdList();
