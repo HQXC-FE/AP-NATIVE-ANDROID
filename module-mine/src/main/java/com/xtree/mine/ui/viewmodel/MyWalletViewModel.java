@@ -11,10 +11,10 @@ import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.vo.BalanceVo;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.mine.data.MineRepository;
 import com.xtree.mine.vo.AwardsRecordVo;
-import com.xtree.base.vo.BalanceVo;
 import com.xtree.mine.vo.GameBalanceVo;
 import com.xtree.mine.vo.GameMenusVo;
 
@@ -238,6 +238,7 @@ public class MyWalletViewModel extends BaseViewModel<MineRepository> {
             list.add(new GameBalanceVo("yy", "云游棋牌", 5, " "));
             list.add(new GameBalanceVo("obgqp", "DB棋牌", 6, " "));
             list.add(new GameBalanceVo("wali", "瓦力真人&棋牌", 7, " "));
+            list.add(new GameBalanceVo("ad", "奥丁棋牌", 8, " "));
         } else {
             list = gson.fromJson(json, new TypeToken<List<GameBalanceVo>>() {
             }.getType());
@@ -276,6 +277,9 @@ public class MyWalletViewModel extends BaseViewModel<MineRepository> {
                 break;
             case "wali":
                 t = new GameBalanceVo(gameAlias, "瓦力真人&棋牌", 7, balance);
+                break;
+            case "ad":
+                t = new GameBalanceVo(gameAlias, "奥丁棋牌", 8, balance);
                 break;
             default:
                 t = new GameBalanceVo("维护中", "维护中", 0, "--");
