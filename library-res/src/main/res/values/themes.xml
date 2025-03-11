@@ -162,6 +162,13 @@
         <item name="security_center_google_attr">@style/style_security_center_google</item>
         <item name="security_center_phone_attr">@style/style_security_center_phone</item>
         <item name="security_center_email_attr">@style/style_security_center_email</item>
+
+        <item name="center_wallet_top_attr">@style/style_center_wallet_top</item>
+        <item name="cm_ic_switch_selector_transfer_attr">@style/style_cm_ic_switch_selector_transfer</item>
+        <item name="cm_ic_transfer_attr">@style/style_cm_ic_transfer</item>
+        <item name="center_wallet_bg_attr">@style/style_center_wallet_bg</item>
+
+
     </style>
 
 </resources>

@@ -141,5 +141,8 @@
     <attr name="security_center_google_attr" format="reference" />
     <attr name="security_center_phone_attr" format="reference" />
     <attr name="security_center_email_attr" format="reference" />
-
+    <attr name="center_wallet_top_attr" format="reference" />
+    <attr name="cm_ic_switch_selector_transfer_attr" format="reference" />
+    <attr name="cm_ic_transfer_attr" format="reference" />
+    <attr name="center_wallet_bg_attr" format="reference"/>
 </resources>

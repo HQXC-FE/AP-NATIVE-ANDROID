@@ -702,4 +702,16 @@
     <style name="style_security_center_email">
         <item name="android:drawableStart">@drawable/me_sc_email</item>
     </style>
+    <style name="style_center_wallet_top">
+        <item name="android:background">@drawable/cm_bg_center</item>
+    </style>
+    <style name="style_cm_ic_switch_selector_transfer">
+        <item name="android:drawableStart">@drawable/cm_ic_switch_selector_transfer</item>
+    </style>
+    <style name="style_cm_ic_transfer">
+        <item name="android:src">"@drawable/cm_ic_transfer"</item>
+    </style>
+    <style name="style_center_wallet_bg">
+        <item name="android:background">"@drawable/center_wallet_bg"</item>
+    </style>
 </resources>

@@ -14,7 +14,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/clr_white"
+        style="?attr/center_wallet_bg_attr"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/layout_margin"
                 android:button="@null"
-                android:drawableStart="@drawable/cm_ic_switch_selector_transfer"
+                style="?attr/cm_ic_switch_selector_transfer_attr"
                 android:drawablePadding="6dp"
                 android:text="@string/txt_hide_no_blc_game"
                 android:textColor="@color/clr_txt_grey_08"
@@ -234,7 +234,7 @@
                         android:id="@+id/ivw_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/cm_ic_transfer" />
+                        style="?attr/cm_ic_transfer_attr" />
                 </LinearLayout>
 
                 <TextView
