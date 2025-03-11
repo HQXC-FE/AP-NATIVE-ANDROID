@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ll_root"
@@ -68,8 +69,8 @@
 
             <EditText
                 android:id="@+id/et_transfer_google_auth"
-                style="@style/style_cm_edt"
-                android:layout_width="wrap_content"
+                style="@style/style_withdraw_password_eno_edit"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/layout_margin"
                 android:drawableStart="@mipmap/mine_bonus"
@@ -79,7 +80,8 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/tvw_warning"
                 app:layout_constraintStart_toStartOf="@id/tvw_warning"
-                app:layout_constraintTop_toBottomOf="@id/tvw_warning" />
+                app:layout_constraintTop_toBottomOf="@id/tvw_warning"
+                tools:visibility="visible"/>
 
             <Button
                 android:id="@+id/btn_cancel"
