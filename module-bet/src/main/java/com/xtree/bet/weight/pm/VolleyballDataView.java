@@ -25,10 +25,8 @@ public class VolleyballDataView extends BaseDetailDataView {
         periods = new String[]{"S120", "S121", "S122", "S123", "S124"};
         scoreType = periods;
         setMatch(match, isMatchList);
-        //if(isMatchList) {
-        addMatchListAdditional(match.getFormat() + " 总分");
-        //}
+        if(match != null && match.isGoingon()){
+            addMatchListAdditional(match.getFormat() + " 总分");
+        }
     }
-
-    
 }

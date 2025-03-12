@@ -24,9 +24,9 @@ public class StVolleyballDataView extends BaseDetailDataView {
         periods = new String[]{"51002", "51003", "51004", "51005", "51006"};
         scoreType = new String[]{String.valueOf(FBConstants.SCORE_TYPE_PF)};
         setMatch(match, isMatchList);
-        //if(isMatchList) {
-        addMatchListAdditional(match.getFormat() + " 总分");
-        //}
+        if(match != null && match.isGoingon()){
+            addMatchListAdditional(match.getFormat() + " 总分");
+        }
     }
 
     

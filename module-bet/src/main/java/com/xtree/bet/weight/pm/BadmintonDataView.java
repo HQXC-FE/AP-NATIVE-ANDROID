@@ -24,7 +24,7 @@ public class BadmintonDataView extends BaseDetailDataView {
         periods = new String[]{"S120", "S121", "S122"};
         scoreType = periods;
         setMatch(match, isMatchList);
-        if(isMatchList) {
+        if(match != null && match.isGoingon()){
             addMatchListAdditional(match.getFormat() + " 总分");
         }
     }

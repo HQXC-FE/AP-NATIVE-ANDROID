@@ -24,7 +24,9 @@ public class SnkDataView extends BaseDetailDataView {
         periods = new String[]{"13002", "13003", "13004", "13005", "13006", "13007", "13008", "13009"};
         scoreType = new String[]{String.valueOf(FBConstants.SCORE_TYPE_SNK_JF)};
         setMatch(match, isMatchList);
-        addMatchListAdditional(match.getFormat() + " 总分");
+        if(match != null && match.isGoingon()){
+            addMatchListAdditional(match.getFormat() + " 总分");
+        }
     }
 
     

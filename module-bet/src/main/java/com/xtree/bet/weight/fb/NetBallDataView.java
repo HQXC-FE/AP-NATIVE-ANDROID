@@ -29,9 +29,9 @@ public class NetBallDataView extends BaseDetailDataView {
         periods = new String[]{"5002", "5003", "5004", "5005", "5006"};
         scoreType = new String[]{String.valueOf(FBConstants.SCORE_TYPE_PF)};
         setMatch(match, isMatchList);
-        //if(isMatchList) {
-        addMatchListAdditional(match.getFormat() + " 总局数");
-        //}
+        if(match != null && match.isGoingon()){
+            addMatchListAdditional(match.getFormat() + " 总分");
+        }
     }
 
 }

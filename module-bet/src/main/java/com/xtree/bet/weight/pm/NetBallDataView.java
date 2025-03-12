@@ -24,9 +24,9 @@ public class NetBallDataView extends BaseDetailDataView {
         periods = new String[]{"S23", "S39", "S55", "S71", "S87"};
         scoreType = periods;
         setMatch(match, isMatchList);
-        //if(isMatchList) {
-        addMatchListAdditional(match.getFormat() + " 总局数");
-       //}
+        if(match != null && match.isGoingon()){
+            addMatchListAdditional(match.getFormat() + " 总分");
+        }
     }
 
     

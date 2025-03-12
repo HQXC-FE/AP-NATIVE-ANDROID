@@ -24,8 +24,8 @@ public class BadmintonDataView extends BaseDetailDataView {
         periods = new String[]{"47002", "47003", "47004"/*, "47005", "47006"*/};
         scoreType = new String[]{String.valueOf(FBConstants.SCORE_TYPE_JF)};
         setMatch(match, isMatchList);
-        //if(isMatchList) {
-        addMatchListAdditional(match.getFormat() + " 总分");
-        //}
+        if(match != null && match.isGoingon()){
+            addMatchListAdditional(match.getFormat() + " 总分");
+        }
     }
 }

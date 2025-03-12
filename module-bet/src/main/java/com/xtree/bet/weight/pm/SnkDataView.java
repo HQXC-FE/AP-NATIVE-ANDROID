@@ -23,7 +23,9 @@ public class SnkDataView extends BaseDetailDataView {
         periods = new String[]{"47002", "47002", "47002", "47002", "47002"};
         scoreType = periods;
         setMatch(match, isMatchList);
-        addMatchListAdditional(match.getFormat() + " 总分");
+        if(match != null && match.isGoingon()){
+            addMatchListAdditional(match.getFormat() + " 总分");
+        }
     }
 
     

@@ -24,9 +24,9 @@ public class TableTennisDataView extends BaseDetailDataView {
         periods = new String[]{"15002", "15003", "15004", "15005", "15006", "15007", "15008"};
         scoreType = new String[]{String.valueOf(FBConstants.SCORE_TYPE_JF)};
         setMatch(match, isMatchList);
-        //if(isMatchList) {
-        addMatchListAdditional(match.getFormat() + " 总分");
-        //}
+        if(match != null && match.isGoingon()){
+            addMatchListAdditional(match.getFormat() + " 总分");
+        }
     }
 
     
