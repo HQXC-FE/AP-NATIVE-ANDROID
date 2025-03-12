@@ -167,7 +167,7 @@
         <item name="cm_ic_switch_selector_transfer_attr">@style/style_cm_ic_switch_selector_transfer</item>
         <item name="cm_ic_transfer_attr">@style/style_cm_ic_transfer</item>
         <item name="center_wallet_bg_attr">@style/style_center_wallet_bg</item>
-
+        <item name="btn_short_cancel_attr">@style/style_btn_short_cancel</item>
 
     </style>
 

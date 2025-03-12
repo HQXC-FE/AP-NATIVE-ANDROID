@@ -138,7 +138,7 @@
 
             <TextView
                 android:id="@+id/tvw_reset"
-                style="@style/style_btn_short_cancel"
+                style="?attr/btn_short_cancel_attr"
                 android:text="@string/txt_reset" />
 
             <TextView
