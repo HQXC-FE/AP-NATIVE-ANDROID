@@ -49,6 +49,7 @@ import com.xtree.live.data.factory.AppViewModelFactory;
 import com.xtree.live.databinding.FragmentChatBinding;
 import com.xtree.live.databinding.MergeChatRoomToolbarBinding;
 import com.xtree.live.inter.ChatView;
+import com.xtree.live.inter.EmojiEditTextFocusListener;
 import com.xtree.live.inter.EnterRoomBridge;
 import com.xtree.live.inter.GiftViewMarginBottomListener;
 import com.xtree.live.inter.IPanelView;
@@ -57,6 +58,7 @@ import com.xtree.live.inter.MessageConstant;
 import com.xtree.live.inter.OnEmojiGifClickedObserver;
 import com.xtree.live.inter.OnPanelChangeListener;
 import com.xtree.live.inter.PVid;
+import com.xtree.live.inter.UnreadChanged;
 import com.xtree.live.message.ChatBarMode;
 import com.xtree.live.message.ChatPageInfo;
 import com.xtree.live.message.ConversationMessage;
@@ -91,6 +93,7 @@ import com.xtree.live.uitl.ActionGetter;
 import com.xtree.live.uitl.CommonUtil;
 import com.xtree.live.uitl.MessageUtils;
 import com.xtree.live.uitl.PanelSwitchHelper;
+import com.xtree.live.uitl.UnreadUtils;
 import com.xtree.live.uitl.WordUtil;
 import com.xtree.live.widge.ChatLoadMoreView;
 import com.xtree.live.widge.PanelView;
@@ -123,7 +126,7 @@ import me.xtree.mvvmhabit.utils.Utils;
 
 @Route(path = RouterFragmentPath.Live.PAGER_LIVE_CHAT)
 public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHomeViewModel> implements ChatView, OnEmojiconClickedListener,
-        OnEmojiconBackspaceListener, OnEmojiGifClickedObserver, ExpandLiveInfo {
+        OnEmojiconBackspaceListener, OnEmojiGifClickedObserver, EmojiEditTextFocusListener, ExpandLiveInfo {
 
 
     int roomType;
@@ -218,9 +221,6 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
             //发送pending消息
             viewModel.postPendingMessages(() -> {
                         viewModel.enterRoom(roomType, mUid, mVid, wholeChatList());
-//                if (isVisible() && isResumed()) {
-//                    viewModel.enterRoom(roomType, mUid, mVid, wholeChatList());
-//                }
                     }
                     , mUid, mVid);
         }
@@ -244,7 +244,6 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
         @Override
         public void onReceiveMessageClearHistory(MessageClearHistory message) {
             if (roomType == message.getRoomType() && getRoomVid().equals(message.getVid())) {
-//                viewModel.processChatHistoryData(false, true, new ArrayList<>());
                 onProcessChatHistories(false, true, new ArrayList<>());
 
             }
@@ -658,21 +657,58 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initInputPanel();
+        String vid = getRoomVid();
+        if (!TextUtils.isEmpty(vid)) {
+            //设置当前vid  vid有可能未空
+            ChatWebSocketManager.getInstance().setInRoom(vid, roomType);
+
+            UnreadUtils.clearUnread(vid);
+            //获取上层的unread容器 调用unreadChanged
+            UnreadChanged unreadChanged = ActionGetter.getUnreadChanged(this);
+            if (unreadChanged != null) unreadChanged.unreadChanged();
+        }
+        viewModel.enterRoom(roomType, mUid, mVid, wholeChatList());
+        readMessageIDLE();
+        mHandler.removeCallbacks(runnable);
+        mHandler.post(runnable);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ChatWebSocketManager.getInstance().setInRoom("", RoomType.PAGE_CHAT_UNKNOW);
+    }
+
+    @Override
+    public void onDestroyView() {
+        ChatWebSocketManager.getInstance().unregisterMessageListener(messageListener);
+        mHandler.removeCallbacksAndMessages(null);
+        binding.chatList.clearOnScrollListeners();
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mCounter.exitCount();
+        if(!isGlobal()){
+            InOutRoomHelper.leaveRoom(getRoomVid());
+        }
+        EventBus.getDefault().unregister(this);
+    }
+
     private void initInputPanel() {
         if (mPanelSwitchHelper == null) {
             mPanelSwitchHelper = new PanelSwitchHelper.Builder(this)
                     .addEditTextFocusChangeListener((view, hasFocus) -> {
 
-//                        if (hasFocus) {
-//                            scrollToBottom();
-//                        }
                     })
                     //可选
                     .addViewClickListener(view -> {
-//                        if(view == null)return;
-//                        if(view.getId() == R.id.edit_text || view.getId() == R.id.emotion_btn){
-//                            scrollToBottom();
-//                        }
 
                     })
                     .addKeyboardStateListener((visible, height) -> {
@@ -929,13 +965,6 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-
-    }
-
-    @Override
     public void onEmojiconBackspaceClicked(View v) {
         if (isMute()) return;
         EmojiconsFragment.backspace(binding.editText);
@@ -944,6 +973,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     @Override
     public void onEmojiconClicked(Emojicon emojicon) {
         if (isMute()) return;
+        // 输入 emoji时 出现在输入框中
         EmojiconsFragment.input(binding.editText, emojicon);
     }
 
@@ -1219,6 +1249,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     @Override
     public void onQuickReplyClicked(String msg) {
         // 快捷短语回复
+        binding.editText.setText(msg);
         viewModel.sendText(roomType, mUid, mVid, msg);
     }
 
@@ -1410,10 +1441,15 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
             return false;
         }
         if (mIsInputPanelExpand) return false;
-        EnterRoomBridge bridge = ActionGetter.getEnterRoomBridge(this);
-        if (bridge == null) return true;
-        bridge.intoChatList();
-        return false;
+//        EnterRoomBridge bridge = ActionGetter.getEnterRoomBridge(this);
+//        if (bridge == null) return true;
+//        bridge.intoChatList();
+        return true;
+    }
+
+    @Override
+    public void GetEmojiEditTextFocus() {
+        binding.editText.setText(null);
     }
 
 }

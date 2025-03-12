@@ -113,4 +113,10 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

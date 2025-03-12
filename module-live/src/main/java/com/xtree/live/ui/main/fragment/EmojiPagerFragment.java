@@ -1,5 +1,6 @@
 package com.xtree.live.ui.main.fragment;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,6 +27,7 @@ import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.data.factory.AppViewModelFactory;
 import com.xtree.live.databinding.FragmentEmojiPaperBinding;
+import com.xtree.live.inter.EmojiEditTextFocusListener;
 import com.xtree.live.inter.OnEmojiGifClickedObserver;
 import com.xtree.live.ui.main.viewmodel.LiveDetailHomeViewModel;
 import com.xtree.live.uitl.WordUtil;
@@ -42,6 +44,7 @@ public class EmojiPagerFragment extends BaseFragment<FragmentEmojiPaperBinding, 
 
     private final String[] mTabList = {"快捷回复", "表情"};
     private final int[] tabIcons = {R.drawable.tab_quicktext_selector, R.drawable.tab_emoji_selector};
+    private EmojiEditTextFocusListener emojiEditTextFocusListener;
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -131,6 +134,10 @@ public class EmojiPagerFragment extends BaseFragment<FragmentEmojiPaperBinding, 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 updateTabAppearance(tab, true);
+                // 这里切换需要清除输入框里面的内容
+                if(emojiEditTextFocusListener!=null){
+                    emojiEditTextFocusListener.GetEmojiEditTextFocus();
+                }
             }
 
             @Override
@@ -147,6 +154,18 @@ public class EmojiPagerFragment extends BaseFragment<FragmentEmojiPaperBinding, 
         // 默认选择第一个Tab
         updateTabAppearance(binding.tabLayout.getTabAt(0), true);
 
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (getActivity() instanceof OnEmojiconBackspaceListener) {
+            emojiEditTextFocusListener = (EmojiEditTextFocusListener) getActivity();
+        } else if (getParentFragment() instanceof OnEmojiconBackspaceListener) {
+            emojiEditTextFocusListener = (EmojiEditTextFocusListener) getParentFragment();
+        } else {
+            throw new IllegalArgumentException(context + " must implement interface " + EmojiEditTextFocusListener.class.getSimpleName());
+        }
     }
 
     private void updateTabAppearance(TabLayout.Tab tab, boolean isSelected) {

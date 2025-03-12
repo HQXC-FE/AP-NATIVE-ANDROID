@@ -7,23 +7,25 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:background="@drawable/bg_chat_gradient"
+        android:orientation="vertical"
         tools:ignore="ContentDescription, HardcodedText">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
+            style="@style/Theme.MaterialComponents.Light.Bridge"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
             android:layout_marginStart="12dp"
             android:padding="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tabGravity="center"
-            android:background="@color/clr_transparent"
+            app:tabIndicator="@drawable/shape_tabindicator_live"
             app:tabMode="scrollable"
             app:tabPadding="2dp"
-            >
+            app:tabSelectedTextColor="#302E36"
+            app:tabTextColor="#9A96A4">
 
         </com.google.android.material.tabs.TabLayout>
 
@@ -36,15 +38,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tab_layout" />
-
-<!--        <androidx.fragment.app.FragmentContainerView-->
-<!--            android:id="@+id/home_content"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/tab_layout" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.DeviceUtils;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -70,7 +72,6 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requireActivity().setTheme(R.style.Theme_MaterialComponents_DayNight_NoActionBar);
     }
 
     @Override
@@ -111,6 +112,11 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
         fragmentTypes.add("bet_fragment");//投注
         fragmentTypes.add("chat_private");//主播私聊
         fragmentTypes.add("chat_list");//聊天 主播助理
+        if(DeviceUtils.isTablet()){
+            binding.tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        }else {
+            binding.tabLayout.setTabGravity(TabLayout.GRAVITY_START);
+        }
         binding.viewpager.setOffscreenPageLimit(fragmentTypes.size());
         binding.viewpager.setAdapter(new FragmentStateAdapter(this) {
             @NonNull
@@ -145,15 +151,15 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
                 recyclerView.setItemViewCacheSize(fragmentTypes.size());
             }
         });
-
+/*
         binding.viewpager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
             }
-        });
+        });*/
 
-        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        /*binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
             }
@@ -166,38 +172,38 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });
+        });*/
 
-//        if (binding.tabLayout.getSelectedTabPosition() != -1) {
-//            binding.tabLayout.getTabAt(binding.tabLayout.getSelectedTabPosition()).getText().toString();
-//        }
-        TabLayoutMediator mediator = new TabLayoutMediator(binding.tabLayout, binding.viewpager, false, false, (tab, position) -> {
+        new TabLayoutMediator(binding.tabLayout, binding.viewpager, (tab, position) -> {
+            tab.setText(mTabList[position]);
+        }).attach();
 
-            // 为每个Tab创建自定义视图
-            View customTabView = LayoutInflater.from(requireContext()).inflate(R.layout.tab_item_chat_title, null);
-            ImageView tabIcon = customTabView.findViewById(R.id.tab_icon);
-            TextView tabText = customTabView.findViewById(R.id.tab_text);
-            tabText.setText(mTabList[position]);
-
-            // 设置文本颜色选择器
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                tabText.setTextColor(getResources().getColorStateList(R.color.tab_text_color_selector, null));
-            } else {
-                tabText.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.tab_text_color_selector));
-            }
-
-            // 设置自定义视图到Tab
-            tab.setCustomView(customTabView);
-
-        });
-        mediator.attach();
+//        TabLayoutMediator mediator = new TabLayoutMediator(binding.tabLayout, binding.viewpager, false, false, (tab, position) -> {
+//
+//            // 为每个Tab创建自定义视图
+//            View customTabView = LayoutInflater.from(requireContext()).inflate(R.layout.tab_item_chat_title, null);
+////            ImageView tabIcon = customTabView.findViewById(R.id.tab_icon);
+//            TextView tabText = customTabView.findViewById(R.id.tab_text);
+//            tabText.setText(mTabList[position]);
+//
+//            // 设置文本颜色选择器
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                tabText.setTextColor(getResources().getColorStateList(R.color.tab_text_color_selector, null));
+//            } else {
+//                tabText.setTextColor(ContextCompat.getColorStateList(requireContext(), R.color.tab_text_color_selector));
+//            }
+//
+//            // 设置自定义视图到Tab
+//            tab.setCustomView(customTabView);
+//
+//        });
+//        mediator.attach();
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        unreadChanged();
         ChatWebSocketManager.getInstance().start();
     }
 
@@ -273,4 +279,14 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        ChatWebSocketManager.getInstance().unregisterMessageListener(messageListener);
+        super.onDestroyView();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return super.onBackPressed();
+    }
 }

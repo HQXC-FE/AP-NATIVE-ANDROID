@@ -26,6 +26,7 @@ import com.xtree.live.ui.main.listener.FetchListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.xtree.mvvmhabit.base.BackPressed;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
@@ -33,7 +34,7 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
  * Created by KAKA on 2024/9/9.
  * Describe: 直播TAB数据模型
  */
-public class LiveAnchorModel extends BindModel {
+public class LiveAnchorModel extends BindModel implements BackPressed {
 
     private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
     }};
@@ -144,4 +145,8 @@ public class LiveAnchorModel extends BindModel {
         ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_LOGIN_REGISTER).navigation();
     }
 
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
 }
