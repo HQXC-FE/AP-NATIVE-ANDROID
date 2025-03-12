@@ -345,6 +345,7 @@
     <string name="txt_bind_tip">您还未绑定%1$s,是否前往绑定?</string>
     <string name="txt_bind_bank_tip">银行卡</string>
     <string name="txt_bind_usdt_tip">USDT提款</string>
+    <string name="txt_bind_usdc_tip">USDC提款</string>
     <string name="txt_bind_other_type_tip">您还未绑定%1$s地址,是否前往绑定?</string>
     <string name="txt_withdrawal">提款</string>
     <string name="txt_no_withdrawals_available_tip">您今天已没有可用提款次数</string>

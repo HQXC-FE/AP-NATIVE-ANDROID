@@ -398,7 +398,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
             errorMessage = String.format(format, getContext().getResources().getString(R.string.txt_bind_bank_tip));
             bindType = getContext().getString(R.string.txt_bind_card_type);
 
-        } else if (TextUtils.equals("2", selectorVo.type)) {
+        } else if (TextUtils.equals("2", selectorVo.type)||TextUtils.equals("17", selectorVo.type)) {
             //USDT提款
             errorMessage = String.format(format, getContext().getResources().getString(R.string.txt_bind_usdt_tip));
             bindType = getContext().getString(R.string.txt_bind_usdt_type);
@@ -444,6 +444,10 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
             //极速支付宝提款17",
             errorMessage = String.format(formatOtherType, selectorVo.title);
             bindType = getContext().getString(R.string.txt_bind_zfb_type);
+        } else if (TextUtils.equals("17", selectorVo.type)) {
+            //USDT提款
+            errorMessage = String.format(format, getContext().getResources().getString(R.string.txt_bind_usdc_tip));
+            bindType = getContext().getString(R.string.txt_bind_usdt_type);
         }
         String finalBindType = bindType;
         String finalBindType1 = bindType;
