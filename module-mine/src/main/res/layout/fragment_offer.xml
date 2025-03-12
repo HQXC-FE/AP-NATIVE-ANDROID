@@ -367,7 +367,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:background="@mipmap/btn_offer_ok"
+                android:background="@drawable/btn_offer_ok"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/bt_reset"
                 app:layout_constraintTop_toTopOf="@id/line" />
