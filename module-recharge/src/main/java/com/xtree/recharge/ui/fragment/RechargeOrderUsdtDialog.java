@@ -61,11 +61,20 @@ public class RechargeOrderUsdtDialog extends BottomPopupView {
 
         String key1 = getContext().getString(R.string.txt_rc_fee_amount);
         String key2 = getContext().getString(R.string.txt_rc_received_amount);
+        String amountTitle = getContext().getString(R.string.txt_rc_recharge_amount_tips, "USDT");
         String msg = getContext().getString(R.string.txt_rc_usdt_tip);
+       int ivTransExampleRes=R.mipmap.rc_trans_usdt;
+        if (mRechargePayVo.paycode.toLowerCase().contains("usdc")) {
+            msg = getContext().getString(R.string.txt_rc_usdc_tip);
+            amountTitle = getContext().getString(R.string.txt_rc_recharge_amount_tips, "USDC");
+            ivTransExampleRes=R.mipmap.rc_trans_usdc;
+        }
         String txt1 = "<font color=#FF5050> " + key1 + " </font>";
         String txt2 = "<font color=#FF5050> " + key2 + " </font>";
         msg = msg.replace(key1, txt1).replace(key2, txt2);
         binding.tvw03.setText(HtmlCompat.fromHtml(msg, HtmlCompat.FROM_HTML_MODE_LEGACY));
+        binding.tvAmmountTitle.setText(amountTitle);
+        binding.ivTransExample.setImageResource(ivTransExampleRes);
 
         if (mRechargePayVo.isqrcode) {
             binding.ivwQrcode.setImageBitmap(QrcodeUtil.getQrcode(mRechargePayVo.qrcodeurl)); // 设置二维码图片
