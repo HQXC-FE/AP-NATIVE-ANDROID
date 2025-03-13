@@ -854,17 +854,17 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             return;
         } else if (vo.paycode.equals("hiwallet")) {
             type = "CNYT";
-        } else if (vo.paycode.equals("hqppaytopay")) {
+        } else if (vo.paycode.toLowerCase().contains("topay")) {
             type = "TOG";
-        } else if (vo.paycode.equals("ebpay")) {
+        } else if (vo.paycode.toLowerCase().contains("ebpay")) {
             type = "EB";
         } else if (vo.paycode.toLowerCase().contains("edpay")) {
             type = "ED";
-        } else if (vo.paycode.equals("hqppaygobao")) {
+        } else if (vo.paycode.toLowerCase().contains("gobao")) {
             type = "GB";
-        } else if (vo.paycode.equals("hqppayokpay")) {
+        } else if (vo.paycode.toLowerCase().contains("okpay")) {
             type = "OKG";
-        } else if (vo.paycode.equals("hqppaygopay")) {
+        } else if (vo.paycode.toLowerCase().contains("gopay")) {
             type = "GOP";
         } else {
             binding.tvwPrePay.setVisibility(View.GONE);
