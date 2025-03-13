@@ -732,4 +732,8 @@
     <style name="style_bg_btn_long">
         <item name="android:background">@drawable/bg_btn_long2_selector</item>
     </style>
+
+    <style name="style_bg_tip_dialog">
+        <item name="android:background">@drawable/bg_tip_dialog</item>
+    </style>
 </resources>
