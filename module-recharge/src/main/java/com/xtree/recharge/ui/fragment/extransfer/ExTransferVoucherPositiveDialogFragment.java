@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +59,20 @@ public class ExTransferVoucherPositiveDialogFragment extends BaseDialogFragment<
 
         binding.tvInfoTips.setText(Html.fromHtml("<font>为加速处理请按下面指示上传存款凭证与填写信息，并记得点击下方<font color='#A17DF5'>【确认提交】</font>按钮才算完成！</font>"));
         binding.tvRequestTips.setText(Html.fromHtml("<font>上传转账电子凭证<font color='#A17DF5'>（必传项）</font></font>"));
+        binding.etReceiptIdOfPayment.setFilters(new InputFilter[]{new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                StringBuilder filtered = new StringBuilder();
+                for (int i = start; i < end; i++) {
+                    char c = source.charAt(i);
+                    // 只允许输入英文字母或数字
+                    if (String.valueOf(c).matches("[a-zA-Z0-9]")) {
+                        filtered.append(c);
+                    }
+                }
+                return filtered.length() == 0 ? "" : filtered.toString();
+            }
+        },new InputFilter.LengthFilter(40)});
     }
 
     @Override
