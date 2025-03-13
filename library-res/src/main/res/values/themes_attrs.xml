@@ -152,4 +152,5 @@
     <attr name="msg_info_check_box_attr" format="reference" />
     <attr name="msg_info_delete_all_attr" format="reference" />
     <attr name="me_msg_close_icon_attr" format="reference" />
+    <attr name="btn_long_selector_attr" format="reference" />
 </resources>

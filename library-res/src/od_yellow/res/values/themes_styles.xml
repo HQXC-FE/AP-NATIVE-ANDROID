@@ -729,4 +729,8 @@
     <style name="style_me_msg_close_icon">
         <item name="android:src">@drawable/me_msg_close_icon</item>
     </style>
+
+    <style name="style_bg_btn_long">
+        <item name="android:background">@drawable/bg_btn_long2_selector</item>
+    </style>
 </resources>

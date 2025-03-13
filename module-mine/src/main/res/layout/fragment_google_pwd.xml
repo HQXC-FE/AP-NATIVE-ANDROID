@@ -42,7 +42,7 @@
             android:id="@+id/cl_google_psw_top_view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/min_google_top_color"
+            android:background="@color/activityTopDivideLineColor"
             app:layout_constraintTop_toBottomOf="@id/cl_title" />
         <!---->
         <LinearLayout
@@ -131,12 +131,14 @@
 
             <TextView
                 android:id="@+id/btn_bind"
-                style="@style/style_btn_long2"
+                style="?attr/btn_long_selector_attr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/txt_google_bind"
-                android:textSize="15sp" />
+                android:gravity="center"
+                android:textSize="15sp"
+                android:textColor="@color/moneyGradient1Color"/>
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

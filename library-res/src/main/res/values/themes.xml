@@ -173,7 +173,7 @@
         <item name="msg_info_check_box_attr">@style/PwdCheckboxStyle</item>
         <item name="msg_info_delete_all_attr">@style/style_msg_info_delete_all</item>
         <item name="me_msg_close_icon_attr">@style/style_me_msg_close_icon</item>
-
+        <item name="btn_long_selector_attr">@style/style_bg_btn_long</item>
 
     </style>
 
