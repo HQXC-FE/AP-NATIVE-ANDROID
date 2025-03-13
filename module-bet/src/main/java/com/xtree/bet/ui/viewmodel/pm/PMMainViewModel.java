@@ -393,9 +393,9 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             mCurrentPage++;
         }
 
-        if (mCurrentPage == 1 && !isTimerRefresh && !isStepSecond) {
-            showCache(sportId, mPlayMethodType, searchDatePos);
-        }
+        //if (mCurrentPage == 1 && !isTimerRefresh && !isStepSecond) {
+            //showCache(sportId, mPlayMethodType, searchDatePos);
+        //}
 
         PMListReq pmListReq = new PMListReq();
         pmListReq.setCuid();

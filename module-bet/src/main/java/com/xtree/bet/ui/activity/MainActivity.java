@@ -484,7 +484,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 getMatchData(sportId, mOrderBy, mLeagueIdList, null,
                         playMethodType, searchDatePos, false, true);
                 if ((sportId == null || TextUtils.equals("1111", sportId)) && (playMethodPos == 0 || playMethodPos == 3)) {
-                    System.out.println("############## tabSportAdapter sportId ##############"+sportId);
                     viewModel.getHotMatchCount(playMethodType, viewModel.hotLeagueList);
                 }
             }
@@ -947,7 +946,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private void getMatchData(String sportId, int orderBy, List<Long> leagueIds, List<Long> matchids, int playMethodType, int searchDatePos, boolean isTimedRefresh, boolean isRefresh) {
-        System.out.println("======== MainActivity getMatchData 方法执行 =========");
         if (playMethodType == 7 || playMethodType == 100) { // 冠军 sportTypePos不需要使用在这里
             viewModel.getChampionList(sportTypePos, sportId, orderBy, leagueIds, matchids,
                     playMethodType, mOddType, isTimedRefresh, isRefresh);
@@ -1642,7 +1640,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     binding.rvLeague.setEnabled(false);
                 }
             });
-            //clearSportCache();
         } else {
             if (!(binding.rvLeague.getExpandableListAdapter() instanceof LeagueAdapter)) {
                 binding.rvLeague.setAdapter(mLeagueAdapter);
@@ -1676,34 +1673,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         boolean isEmpty = (playMethodPos == 4 ? mChampionMatchList : mLeagueList).isEmpty();
         binding.nsvLeague.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
         binding.llEmpty.llEmpty.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
-    }
-
-    private void expandAllGroups() {
-        if (mLeagueList.isEmpty()) return;
-
-        String[] liveRange = mLeagueAdapter.expandRangeLive().split("/");
-        String[] noLiveRange = mLeagueAdapter.expandRangeNoLive().split("/");
-        int liveStart = Integer.parseInt(liveRange[0]);
-        int liveEnd = Integer.parseInt(liveRange[1]);
-        int noLiveStart = Integer.parseInt(noLiveRange[0]);
-        int noLiveEnd = Integer.parseInt(noLiveRange[1]);
-
-        // 分批处理，避免一次性大量操作
-        final int batchSize = 10;
-        executorService.execute(() -> {
-            for (int i = liveStart; i < liveEnd; i += batchSize) {
-                int end = Math.min(i + batchSize, liveEnd);
-                int finalI = i;
-                runOnUiThread(() -> expandCollapseRange(finalI, end, isGoingOnAllExpand()));
-                try { Thread.sleep(50); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
-            }
-            for (int i = noLiveStart; i < noLiveEnd; i += batchSize) {
-                int end = Math.min(i + batchSize, noLiveEnd);
-                int finalI = i;
-                runOnUiThread(() -> expandCollapseRange(finalI, end, isWaitingAllExpand()));
-                try { Thread.sleep(50); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
-            }
-        });
     }
 
     private void expandCollapseRange(int start, int end, boolean expand) {
