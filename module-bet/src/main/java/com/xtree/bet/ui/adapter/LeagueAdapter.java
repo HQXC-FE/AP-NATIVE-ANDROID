@@ -535,29 +535,38 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         return true;
     }
 
+    //足球和篮球比赛时间按秒计时代码
     public void updateVisibleItems(ExpandableListView listView) {
-        isUpdateFootBallOrBasketBallState = true;
-        listView.post(() -> {
-            int first = listView.getFirstVisiblePosition();
-            int last = listView.getLastVisiblePosition();
-            for (int i = first; i <= last; i++) {
+            isUpdateFootBallOrBasketBallState = true;
+
+            int firstVisible = listView.getFirstVisiblePosition();
+            int lastVisible = listView.getLastVisiblePosition();
+
+            for (int i = firstVisible; i <= lastVisible; i++) {
                 long packedPosition = listView.getExpandableListPosition(i);
                 int groupPosition = ExpandableListView.getPackedPositionGroup(packedPosition);
                 int childPosition = ExpandableListView.getPackedPositionChild(packedPosition);
-                if (groupPosition < getGroupCount() && childPosition != ExpandableListView.INVALID_POSITION) {
-                    View view = listView.getChildAt(i - first);
-                    if (view != null) {
-                        TextView tvMatchTime = view.findViewById(R.id.tv_match_time);
-                        if (tvMatchTime != null) {
-                            Match match = (Match) getChild(groupPosition, childPosition);
-                            if (match != null) updateMatchTimeDisplay(tvMatchTime, match);
-                        }
+
+                // 只处理 ChildItem，跳过 GroupHeader
+                if (childPosition == ExpandableListView.INVALID_POSITION) continue;
+                if (groupPosition >= getGroupCount()) continue;
+
+                // 获取实际的 ChildView
+                View childView = listView.getChildAt(i - firstVisible);
+                if (childView == null) continue;
+
+                TextView tvMatchTime = childView.findViewById(R.id.tv_match_time);
+                if (tvMatchTime != null) {
+                    Match match = (Match) getChild(groupPosition, childPosition);
+                    if (match != null) {
+                        updateMatchTimeDisplay(tvMatchTime, match);
                     }
                 }
             }
-        });
+
     }
 
+    //比赛时间更新只针对足球和篮球
     private void updateMatchTimeDisplay(TextView tvMatchTime, Match match) {
         String stage = match.getStage();
         String sportId = match.getSportId();
@@ -568,21 +577,24 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         }
 
         int normalTime = getTagIntValue(tvMatchTime, R.id.tag_normal_time);
-        if ("1".equals(sportId)) {
+        if (sportId.equals("1")) {
             updateFootballTime(tvMatchTime, match, normalTime, stage);
-        } else if (("2".equals(sportId) || "3".equals(sportId)) && "篮球".equals(match.getSportName())) {
+        } else if ((sportId.equals("2") || sportId.equals("3")) && match.getSportName().equals("篮球")) {//FB跟PM的篮球赛种代号不一致，加上赛种名称判断
             updateBasketballTime(tvMatchTime, match, normalTime, stage);
         }
     }
 
+    //vs开头的足球比赛时间不准，已对比之前没加走秒前代码进行过对比，不是按照5秒刷新的
     private void updateFootballTime(TextView tvMatchTime, Match match, int normalTime, String stage) {
         int timeS = match.getTimeS();
         if (normalTime != timeS) { //已刷新接口,校正时间
+            //CfLog.d("============ updateFootballTime 自动校正时间 三方的时间==========="+formatTime(timeS));
             tvMatchTime.setTag(R.id.tag_normal_time, timeS);
             tvMatchTime.setTag(R.id.tag_add_time, 0);
             tvMatchTime.setText(stage + " " + formatTime(timeS));
         } else { //未刷新接口，自增秒数
             int seconds = getTagIntValue(tvMatchTime, R.id.tag_add_time) + 1;
+            //CfLog.d("============ updateFootballTime 当前自增时间 ==========="+seconds);
             tvMatchTime.setTag(R.id.tag_add_time, seconds);
             int currentTime = timeS + seconds;
             tvMatchTime.setText(stage + " " + formatTime(currentTime));
