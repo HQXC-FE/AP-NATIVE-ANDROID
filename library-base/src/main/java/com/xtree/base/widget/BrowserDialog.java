@@ -230,7 +230,7 @@ public class BrowserDialog extends BottomPopupView {
         ivwLaunch = findViewById(R.id.ivw_launch);
 
         mWebView.setFitsSystemWindows(true);
-        LoadingDialog.show2(mContext);
+        LoadingDialog.show(mContext);
     }
 
     private void initAgentWeb(String url, Map<String, String> header) throws UnknownHostException {

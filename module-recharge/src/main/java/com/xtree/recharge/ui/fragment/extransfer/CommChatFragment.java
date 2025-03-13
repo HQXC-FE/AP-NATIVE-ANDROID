@@ -66,7 +66,7 @@ public class CommChatFragment extends BaseFragment<FragmentCommChatBinding, ExTr
             ActivityCompat.requestPermissions(getActivity(), new String[]{"android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.CAMERA"}, 1);
         }
 
-        LoadingDialog.show2(getContext());
+        LoadingDialog.show(getContext());
 
         mChatWindow.setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {

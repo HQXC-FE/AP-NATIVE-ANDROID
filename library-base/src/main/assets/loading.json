@@ -12,24 +12,21 @@
       "id": "image_0",
       "w": 12,
       "h": 12,
-      "u": "images_w/",
-      "p": "img_0.png",
+      "p": "loading01.png",
       "e": 0
     },
     {
       "id": "image_1",
       "w": 260,
       "h": 85,
-      "u": "images_w/",
-      "p": "img_1.png",
+      "p": "loading02.png",
       "e": 0
     },
     {
       "id": "image_2",
-      "w": 270,
-      "h": 271,
-      "u": "images_w/",
-      "p": "img_2.png",
+      "w": 256,
+      "h": 256,
+      "p": "loading03.png",
       "e": 0
     },
     {
