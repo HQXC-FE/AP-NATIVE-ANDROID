@@ -234,6 +234,9 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
             if (mProfileVo.liveStatus == 0) {
                 layoutReal.visibility = View.GONE
             } else {
+                if (mProfileVo.maxLivePoint > 0.9) {
+                    mProfileVo.maxLivePoint = 0.9
+                }
                 typeReal.text = mProfileVo.maxLivePoint.toString().plus("%")
                 tvRealRebate.text = getString(R.string.txt_reg_rebate).plus("0.0%")
                 typeReal.setOnClickListener {
@@ -258,6 +261,9 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
             if (mProfileVo.sportStatus == 0) {
                 layoutSports.visibility = View.GONE
             } else {
+                if (mProfileVo.maxSportPoint > 0.9) {
+                    mProfileVo.maxSportPoint = 0.9
+                }
                 typeSports.text = mProfileVo.maxSportPoint.toString().plus("%")
                 tvSportsRebate.text = getString(R.string.txt_reg_rebate).plus("0.0%")
                 typeSports.setOnClickListener {
@@ -284,6 +290,9 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
             if (mProfileVo.pokerStatus == 0) {
                 layoutChess.visibility = View.GONE
             } else {
+                if (mProfileVo.maxPokerPoint > 0.9) {
+                    mProfileVo.maxPokerPoint = 0.9
+                }
                 typeChess.text = mProfileVo.maxPokerPoint.toString().plus("%")
                 tvChessRebate.text = getString(R.string.txt_reg_rebate).plus("0.0%")
                 typeChess.setOnClickListener {
@@ -310,6 +319,9 @@ class RegAccountFragment : BaseFragment<FragmentRegAccountBinding, MineViewModel
             if (mProfileVo.esportsStatus == 0) {
                 layoutGame.visibility = View.GONE
             } else {
+                if (mProfileVo.maxEsportsPoint > 0.9) {
+                    mProfileVo.maxEsportsPoint = 0.9
+                }
                 typeGame.text = mProfileVo.maxEsportsPoint.toString().plus("%")
                 tvGameRebate.text = getString(R.string.txt_reg_rebate).plus("0.0%")
                 typeGame.setOnClickListener {
