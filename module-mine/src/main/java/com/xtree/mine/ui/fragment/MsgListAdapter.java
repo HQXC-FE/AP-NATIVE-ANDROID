@@ -46,9 +46,9 @@ public class MsgListAdapter extends CachedAutoRefreshAdapter<MsgVo> {
         binding.tvwMsgDate.setText(vo.created_at);
 
         if (vo.is_read) {
-            binding.ivwMsgIcon.setImageResource(R.mipmap.ic_round);
+            binding.ivwMsgIcon.setImageResource(R.drawable.ic_round);
         } else {
-            binding.ivwMsgIcon.setImageResource(R.mipmap.ic_round_dot);
+            binding.ivwMsgIcon.setImageResource(R.drawable.ic_round);
         }
 
         binding.clItem.setOnClickListener(v ->

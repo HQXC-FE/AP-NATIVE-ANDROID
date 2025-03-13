@@ -36,11 +36,11 @@
 
         <ImageView
             android:id="@+id/ivw_close"
+            style="?attr/me_msg_close_icon_attr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="close"
             android:padding="4dp"
-            android:src="@drawable/me_msg_close_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

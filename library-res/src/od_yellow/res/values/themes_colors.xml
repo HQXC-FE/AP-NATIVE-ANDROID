@@ -114,8 +114,8 @@
     <color name="textMainUnSelectorColor">#9A96A4</color>
     <color name="mainActivityBackgroupColor">#F2F2F2</color>
     <color name="mainListAcBackgroupColor">#F3F3F3</color>
-    <color name="msgTopTextColorStart">#F9C1DC</color>
-    <color name="msgTopTextColorEnd">#B5A9FF</color>
+    <color name="msgTopTextColorStart">#FFBC6E</color>
+    <color name="msgTopTextColorEnd">#FF6B7E</color>
 
     <color name="meForgetPsWordBgColor">#CCFFFFFF</color>
     <color name="warningFeedbackColor">#FB6156</color>

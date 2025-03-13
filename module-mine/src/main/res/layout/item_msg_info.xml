@@ -11,10 +11,10 @@
         android:layout_height="80dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/bg_msg_info">
+        style="?attr/msg_info_bg_attr">
         <CheckBox
             android:id="@+id/ckb_msg_check"
-            style="@style/PwdCheckboxStyle"
+            style="?attr/msg_info_check_box_attr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:src="@drawable/ic_round"
+            style="?attr/message_ic_round_attr"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/ckb_msg_check"
             app:layout_constraintTop_toTopOf="parent" />

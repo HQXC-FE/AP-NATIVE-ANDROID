@@ -701,9 +701,6 @@
     </style>
 
 
-
-
-
     <style name="style_security_center_pwd">
         <item name="android:drawableStart">@drawable/me_sc_pwd</item>
     </style>
@@ -715,5 +712,21 @@
     </style>
     <style name="style_security_center_email">
         <item name="android:drawableStart">@drawable/me_sc_email</item>
+    </style>
+
+    <style name="style_message_ic_round">
+        <item name="android:src">@drawable/ic_round</item>
+    </style>
+
+    <style name="style_msg_info_bg">
+        <item name="android:background">@drawable/bg_msg_info</item>
+    </style>
+
+    <style name="style_msg_info_delete_all">
+        <item name="android:background">"@drawable/bt_msg_delete_all"</item>
+    </style>
+
+    <style name="style_me_msg_close_icon">
+        <item name="android:src">@drawable/me_msg_close_icon</item>
     </style>
 </resources>

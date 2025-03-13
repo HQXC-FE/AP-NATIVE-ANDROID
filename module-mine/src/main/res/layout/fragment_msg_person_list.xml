@@ -25,7 +25,7 @@
 
             <CheckBox
                 android:id="@+id/chb_select_all"
-                style="@style/PwdCheckboxStyle"
+                style="?attr/msg_info_check_box_attr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -59,7 +59,7 @@
                 android:layout_width="80dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/bt_msg_delete_all"
+                style="?attr/msg_info_delete_all_attr"
                 android:text="@string/txt_delete_all"
                 android:textColor="@color/textPrimaryColor"
                 android:textSize="14sp"
@@ -72,7 +72,7 @@
                 android:layout_width="100dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/bt_msg_delete_all"
+                style="?attr/msg_info_delete_all_attr"
                 android:text="@string/txt_delete_selected"
                 android:textColor="@color/textPrimaryColor"
                 android:textSize="14sp"

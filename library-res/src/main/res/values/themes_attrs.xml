@@ -146,4 +146,10 @@
     <attr name="cm_ic_switch_selector_transfer_attr" format="reference" />
     <attr name="cm_ic_transfer_attr" format="reference" />
     <attr name="center_wallet_bg_attr" format="reference"/>
+    <attr name="message_ic_round_attr" format="reference" />
+    <attr name="msg_info_bg_attr" format="reference" />
+
+    <attr name="msg_info_check_box_attr" format="reference" />
+    <attr name="msg_info_delete_all_attr" format="reference" />
+    <attr name="me_msg_close_icon_attr" format="reference" />
 </resources>

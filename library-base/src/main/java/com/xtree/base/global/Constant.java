@@ -53,7 +53,7 @@ public class Constant {
     public static final String URL_QA = "/webapp/#/my/qa"; // 常见问题
     public static final String URL_TUTORIAL = "/static/vir-tutorial/cnyt.html"; // 充值教程
     public static final String URL_ANTI_FRAUD = "/static/vir-tutorial/antiScam_m.html"; // 防骗教程
-    public static final String URL_HELP = "/webapp/#/my/help"; // 帮助中心
+    public static final String URL_HELP =  "/webapp/?isNative=1#/my/help"; // 帮助中心
     public static final String URL_BET_RECORD = "/webapp/#/report/bet-record"; // 投注记录
     public static final String URL_ACCOUNT_CHANGE = "/webapp/#/report/account-change"; // 账变记录
     public static final String URL_DW_RECORD = "/webapp/#/report/dw-record"; // 充提记录
