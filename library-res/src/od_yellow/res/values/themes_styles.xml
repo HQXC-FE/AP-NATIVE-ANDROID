@@ -736,4 +736,24 @@
     <style name="style_bg_tip_dialog">
         <item name="android:background">@drawable/bg_tip_dialog</item>
     </style>
+    <style name="style_me_reset_password_title">
+        <item name="android:src">@drawable/me_reset_password_title</item>
+    </style>
+    <style name="style_me_reset_password_step_first">
+        <item name="android:src">@drawable/me_reset_password_step_first</item>
+    </style>
+
+    <style name="style_me_reset_password_step_second">
+        <item name="android:src">@drawable/me_reset_password_step_second</item>
+    </style>
+    <style name="style_me_reset_password_step_third">
+        <item name="android:src">@drawable/me_reset_password_step_third</item>
+    </style>
+
+    <style name="style_me_reset_password_success">
+        <item name="android:background">@drawable/me_reset_password_success</item>
+    </style>
+    <style name="style_me_reset_password_login">
+        <item name="android:background">@drawable/me_reset_password_login</item>
+    </style>
 </resources>

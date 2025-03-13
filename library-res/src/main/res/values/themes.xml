@@ -175,7 +175,12 @@
         <item name="me_msg_close_icon_attr">@style/style_me_msg_close_icon</item>
         <item name="btn_long_selector_attr">@style/style_bg_btn_long</item>
         <item name="bg_tip_dialog_attr">@style/style_bg_tip_dialog</item>
-
+        <item name="me_reset_password_title_attr">@style/style_me_reset_password_title</item>
+        <item name="me_reset_password_step_first_attr">@style/style_me_reset_password_step_first</item>
+        <item name="me_reset_password_step_second_attr">@style/style_me_reset_password_step_second</item>
+        <item name="me_reset_password_step_third_attr">@style/style_me_reset_password_step_third</item>
+        <item name="me_reset_password_success_attr">@style/style_me_reset_password_success</item>
+        <item name="me_reset_password_login_attr">@style/style_me_reset_password_login</item>
 
     </style>
 

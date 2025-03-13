@@ -154,4 +154,11 @@
     <attr name="me_msg_close_icon_attr" format="reference" />
     <attr name="btn_long_selector_attr" format="reference" />
     <attr name="bg_tip_dialog_attr" format="reference" />
+    <attr name="me_reset_password_title_attr" format="reference" />
+    <attr name="me_reset_password_step_first_attr" format="reference" />
+    <attr name="me_reset_password_step_second_attr" format="reference" />
+    <attr name="me_reset_password_step_third_attr" format="reference" />
+    <attr name="me_reset_password_success_attr" format="reference" />
+    <attr name="me_reset_password_login_attr" format="reference" />
+
 </resources>
