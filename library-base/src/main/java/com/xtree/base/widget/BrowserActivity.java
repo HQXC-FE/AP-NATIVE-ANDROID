@@ -789,10 +789,10 @@ public class BrowserActivity extends AppCompatActivity {
             UploadExcetionReq req = new UploadExcetionReq();
             if (isThirdDomain) {
                 req.setLogTag("thirdgame_domain_block");
-                req.setLogType("三方域名：三方游戏打开失败/初始 URL错误处理");
+                req.setLogType("三方域名：" + title + "打开失败");
             } else {
                 req.setLogTag("thirdgame_domain_exception");
-                req.setLogType("公司域名：三方游戏打开失败/初始 URL错误处理");
+                req.setLogType("公司域名：" + title + "打开失败");
             }
 
             req.setApiUrl(url);
