@@ -1379,8 +1379,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
             if (view == null) {
                 view = LayoutInflater.from(context).inflate(R.layout.dialog_bank_withdrawal_btn, parent, false);
                 holderView = new HolderView();
-                holderView.textView = (TextView) view.findViewById(R.id.tv_withdrawal_amount);
-                holderView.linear = (ConstraintLayout) view.findViewById(R.id.cl_bank_status);
+                holderView.textView = (TextView) view.findViewById(R.id.tvw_title);
                 view.setTag(holderView);
             } else {
                 holderView = (HolderView) view.getTag();
@@ -1392,7 +1391,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
                     callback.callbackWithAmount(arrayList.get(position));
                 }
             });
-            holderView.linear.setOnClickListener(v -> {
+            holderView.textView.setOnClickListener(v -> {
                 if (callback != null) {
                     callback.callbackWithAmount(arrayList.get(position));
                 }
@@ -1403,7 +1402,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         private class HolderView {
             private String showAmount;
             private TextView textView;
-            private ConstraintLayout linear;
 
             public String getShowAmount() {
                 return showAmount;

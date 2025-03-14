@@ -1,39 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_root"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@color/clr_transparent"
-    android:orientation="vertical"
-    tools:ignore="MissingDefaultResource">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_bank_status"
-        android:layout_width="75dp"
-        android:layout_height="26dp"
-        android:background="@drawable/bg_dialog_amount_btn_selector"
+
+    <TextView
+        android:id="@+id/tvw_title"
+        style="?attr/rc_channel_attr"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text=""
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="100" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tv_withdrawal_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:gravity="center"
-                android:text="30000"
-                android:textColor="@color/cl_amount_txt"
-                android:textSize="12sp" />
-        </RelativeLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
