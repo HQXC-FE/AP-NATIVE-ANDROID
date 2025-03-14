@@ -30,6 +30,10 @@ public class DividendAgrtCheckModel extends BindModel {
     private String people = "";
     //连续亏损周期
     private String loseStreak = "0";
+    /**
+     * 分红比例范围
+     */
+    private String ratio_range = "";
 
     public void setSelectRatioCallBack(Consumer<DividendAgrtCheckModel> selectRatioCallBack) {
         this.selectRatioCallBack = selectRatioCallBack;
@@ -55,6 +59,15 @@ public class DividendAgrtCheckModel extends BindModel {
     public void setRatio(String ratio) {
         this.ratio = ratio;
         this.ratioData.set(ratio + "%");
+    }
+
+    public String getRatio_range() {
+        return ratio_range;
+    }
+
+    public void setRatio_range(String ratio_range) {
+        this.ratio_range = ratio_range;
+        this.ratioData.set(ratio_range + "%");
     }
 
     public String getProfit() {

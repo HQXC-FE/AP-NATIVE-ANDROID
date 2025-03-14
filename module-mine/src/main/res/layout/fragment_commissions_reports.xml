@@ -101,7 +101,7 @@
                             android:drawableBottom="@drawable/divider_horizontal"
                             android:gravity="bottom|start"
                             android:text="@{model.dateData}"
-                            android:textColor="@color/clr_txt_mouse5"
+                            android:textColor="@color/clr_txt_02"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="@id/item_time"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -238,7 +238,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.actual}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
 
@@ -260,7 +260,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.sent_at}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
 
@@ -282,7 +282,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.income}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
 
@@ -304,7 +304,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.last_remain}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
 
@@ -326,7 +326,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.ratio}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -362,7 +362,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.status_name}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
 
@@ -384,7 +384,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.activity_people}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
 
@@ -406,7 +406,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.adjust_income}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
 
@@ -428,7 +428,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.remain}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -569,7 +569,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.actual_incentives}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
 
@@ -591,7 +591,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.team_losses}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -626,7 +626,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.active_agents}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
 
@@ -648,7 +648,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@{model.infoData.incentive_ratio}"
-                                    android:textColor="@color/clr_txt_title"
+                                    android:textColor="@color/clr_txt_02"
                                     android:textSize="14sp" />
                             </LinearLayout>
                         </LinearLayout>
