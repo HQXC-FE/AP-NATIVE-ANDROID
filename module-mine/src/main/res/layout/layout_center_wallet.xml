@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/center_wallet_top_attr"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="?attr/center_wallet_top_attr"
     android:orientation="vertical"
     android:paddingStart="@dimen/layout_margin">
 
@@ -12,13 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="20dp">
+
         <LinearLayout
             android:id="@+id/llCenterWallet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="16dp"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -47,8 +46,7 @@
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="12dp"
-                android:layout_weight="1"
-                />
+                android:layout_weight="1" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
@@ -89,48 +87,51 @@
             android:id="@+id/tvw_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="0.0000"
             android:textColor="@color/clr_white"
             android:textSize="24sp"
-            tools:text="9,999.0000"
-            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/llCenterWallet"
-            app:layout_constraintTop_toBottomOf="@+id/llCenterWallet"/>
+            app:layout_constraintTop_toBottomOf="@+id/llCenterWallet"
+            tools:text="9,999.0000" />
 
         <ImageView
             android:id="@+id/ivCenterWallet"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@drawable/center_wallet_top_line"
             android:layout_marginLeft="4dp"
-            android:layout_marginRight="16dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/center_wallet_top_line"
             app:layout_constraintStart_toStartOf="@+id/tvw_balance"
-            app:layout_constraintTop_toBottomOf="@+id/tvw_balance"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/tvw_balance" />
+
         <TextView
             android:id="@+id/tvCenterWallet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/txt_lock_wallet"
             android:textColor="@color/clr_white"
             android:textSize="12sp"
-            android:layout_marginLeft="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/ivCenterWallet"
-            app:layout_constraintTop_toBottomOf="@+id/ivCenterWallet"/>
+            app:layout_constraintTop_toBottomOf="@+id/ivCenterWallet" />
 
         <TextView
             android:id="@+id/tvw_lock_balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="8dp"
             android:text="0.0000"
             android:textColor="@color/clr_white"
             android:textSize="16sp"
-            tools:text="999.0000"
-            android:layout_marginLeft="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tvCenterWallet"
-            app:layout_constraintTop_toTopOf="@+id/tvCenterWallet"/>
+            app:layout_constraintTop_toTopOf="@+id/tvCenterWallet"
+            tools:text="999.0000" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

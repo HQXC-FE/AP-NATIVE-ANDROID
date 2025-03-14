@@ -12,9 +12,9 @@
     </data>
 
     <LinearLayout
+        style="?attr/center_wallet_bg_attr"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="?attr/center_wallet_bg_attr"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -82,11 +82,11 @@
 
             <CheckBox
                 android:id="@+id/ckb_Hide"
+                style="?attr/cm_ic_switch_selector_transfer_attr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/layout_margin"
                 android:button="@null"
-                style="?attr/cm_ic_switch_selector_transfer_attr"
                 android:drawablePadding="6dp"
                 android:text="@string/txt_hide_no_blc_game"
                 android:textColor="@color/clr_txt_grey_08"
@@ -179,13 +179,13 @@
 
                             <TextView
                                 android:id="@+id/tvw_from"
+                                style="?attr/textPrimaryAttr"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="12dp"
                                 android:padding="14dp"
                                 android:tag="lottery"
                                 android:text="@string/txt_central_wallet"
-                                android:textColor="@color/clr_grey_80"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -213,13 +213,13 @@
 
                             <TextView
                                 android:id="@+id/tvw_to"
+                                style="?attr/textPrimaryAttr"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="12dp"
                                 android:padding="14dp"
                                 android:tag="pt"
                                 android:text="@string/me_wallet_ptgame"
-                                android:textColor="@color/clr_grey_80"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
@@ -232,9 +232,9 @@
 
                     <ImageView
                         android:id="@+id/ivw_switch"
+                        style="?attr/cm_ic_transfer_attr"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="?attr/cm_ic_transfer_attr" />
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <TextView
@@ -327,10 +327,10 @@
                     style="?attr/transfer_btn_next_attr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="10dp"
+                    android:gravity="center"
                     android:text="@string/ok" />
 
             </LinearLayout>

@@ -56,32 +56,33 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 
 @Route(path = RouterFragmentPath.Wallet.PAGER_TRANSFER)
 public class TransferFragment extends BaseFragment<FragmentTransferBinding, MyWalletViewModel> {
+    private final static int MSG_GAME_BALANCE_NO_ZERO = 1001;
+    private final static int MSG_GAME_BALANCE = 1002;
+    private final static int MSG_UPDATE_RCV = 1003;
+    HashMap<String, GameBalanceVo> map = new HashMap<>();
+    ArrayList<GameBalanceVo> listGameBalance = new ArrayList<>();
+    BalanceVo mBalanceVo = new BalanceVo("0"); // 中心钱包
+    BasePopupView ppw = null; // 底部弹窗
+    TransferBalanceAdapter mTransferBalanceAdapter;
     private List<GameBalanceVo> transGameBalanceList = new ArrayList<>();
     private List<GameBalanceVo> transGameBalanceWithOwnList = new ArrayList<>();
     private List<GameMenusVo> transGameList = new ArrayList<>();
     private List<GameBalanceVo> hasMoneyGame = new ArrayList<>();
     private List<GameBalanceVo> transGameBalanceOnlyCentral = new ArrayList<>(); // 只有中心钱包
     private List<GameBalanceVo> transGameBalanceNoCentral = new ArrayList<>(); // 没有中心钱包
-    private final static int MSG_GAME_BALANCE_NO_ZERO = 1001;
-    private final static int MSG_GAME_BALANCE = 1002;
-    private final static int MSG_UPDATE_RCV = 1003;
     private int count = 0;
     private boolean filterNoMoney = false;
     private boolean isAutoTransfer = false; // 调用接口前标记/接口返回后使用
     private AwardsRecordVo awardsRecordVo;//礼物流水
     private boolean isNetworkAwards = false;//礼物流水网络请求是否已刷新标志位
-
-    HashMap<String, GameBalanceVo> map = new HashMap<>();
-    ArrayList<GameBalanceVo> listGameBalance = new ArrayList<>();
-    BalanceVo mBalanceVo = new BalanceVo("0"); // 中心钱包
-    BasePopupView ppw = null; // 底部弹窗
-    TransferBalanceAdapter mTransferBalanceAdapter;
     private AmountViewViewAdapter amountViewViewAdapter;
     private ArrayList<AmountVo> amountVoArrayList = new ArrayList<>();
-    private boolean isMax = false ;
-    private String maxInput ;
+    private boolean isMax = false;
+    private String maxInput;
 
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+    public TransferFragment() {
+
+    }    private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
@@ -107,10 +108,6 @@ public class TransferFragment extends BaseFragment<FragmentTransferBinding, MyWa
             }
         }
     };
-
-    public TransferFragment() {
-
-    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -227,7 +224,7 @@ public class TransferFragment extends BaseFragment<FragmentTransferBinding, MyWa
                         }
                     }
                 } else {
-                    isMax = false ;
+                    isMax = false;
                     binding.edtAmount.setText(txt);
                 }
             }
@@ -248,21 +245,21 @@ public class TransferFragment extends BaseFragment<FragmentTransferBinding, MyWa
                 if (input.length() > 0) {
                     // 设置光标位置
                     binding.edtAmount.setSelection(input.length());
-                    if (TextUtils.equals(input, "100")){
+                    if (TextUtils.equals(input, "100")) {
                         amountVoArrayList.get(0).flag = true;
-                        referAmountArray(amountVoArrayList.get(0) ,amountVoArrayList);
+                        referAmountArray(amountVoArrayList.get(0), amountVoArrayList);
                         amountViewViewAdapter.notifyDataSetChanged();
-                    } else if (TextUtils.equals(input ,"1000")) {
+                    } else if (TextUtils.equals(input, "1000")) {
                         amountVoArrayList.get(1).flag = true;
-                        referAmountArray(amountVoArrayList.get(1) ,amountVoArrayList);
+                        referAmountArray(amountVoArrayList.get(1), amountVoArrayList);
                         amountViewViewAdapter.notifyDataSetChanged();
-                    } else if (TextUtils.equals( input, "10000")) {
+                    } else if (TextUtils.equals(input, "10000")) {
                         amountVoArrayList.get(2).flag = true;
-                        referAmountArray(amountVoArrayList.get(2) ,amountVoArrayList);
+                        referAmountArray(amountVoArrayList.get(2), amountVoArrayList);
                         amountViewViewAdapter.notifyDataSetChanged();
-                    } else if (TextUtils.equals(input ,maxInput)) {
+                    } else if (TextUtils.equals(input, maxInput)) {
                         amountVoArrayList.get(3).flag = true;
-                        referAmountArray(amountVoArrayList.get(3) ,amountVoArrayList);
+                        referAmountArray(amountVoArrayList.get(3), amountVoArrayList);
                         amountViewViewAdapter.notifyDataSetChanged();
                     } else {
                         referArray(amountVoArrayList);
@@ -589,9 +586,44 @@ public class TransferFragment extends BaseFragment<FragmentTransferBinding, MyWa
         mHandler.sendEmptyMessage(MSG_UPDATE_RCV);
     }
 
-    private class AmountVo {
-        public String amount;
-        public boolean flag;
+    private void referArray(ArrayList<AmountVo> arrayList) {
+        for (int i = 0; i < arrayList.size(); i++) {
+            arrayList.get(i).flag = false;
+        }
+    }
+
+    private void referAmountArray(AmountVo vo, ArrayList<AmountVo> arrayList) {
+        for (int i = 0; i < arrayList.size(); i++) {
+
+            if (arrayList.get(i).amount.equals(vo.amount)) {
+                arrayList.get(i).flag = true;
+            } else {
+                arrayList.get(i).flag = false;
+            }
+        }
+    }
+
+    private void initAmountList() {
+        AmountVo vo1 = new AmountVo();
+        vo1.amount = 100 + "";
+        vo1.flag = false;
+
+        AmountVo vo2 = new AmountVo();
+        vo2.amount = 1000 + "";
+        vo2.flag = false;
+
+        AmountVo vo3 = new AmountVo();
+        vo3.amount = 10000 + "";
+        vo3.flag = false;
+
+        AmountVo vo4 = new AmountVo();
+        vo4.amount = "MAX";
+        vo4.flag = false;
+
+        amountVoArrayList.add(vo1);
+        amountVoArrayList.add(vo2);
+        amountVoArrayList.add(vo3);
+        amountVoArrayList.add(vo4);
     }
 
     /**
@@ -599,8 +631,8 @@ public class TransferFragment extends BaseFragment<FragmentTransferBinding, MyWa
      */
     private static class AmountViewViewAdapter extends BaseAdapter {
         public IAmountCallback callback;
-        private Context context;
         public ArrayList<AmountVo> arrayList;
+        private Context context;
 
         public AmountViewViewAdapter(Context context, ArrayList<AmountVo> list, IAmountCallback callback) {
             super();
@@ -635,11 +667,7 @@ public class TransferFragment extends BaseFragment<FragmentTransferBinding, MyWa
             } else {
                 holderView = (HolderView) view.getTag();
             }
-            if (arrayList.get(position).flag) {
-                holderView.textView.setBackgroundResource(R.mipmap.cm_ic_bg_selected);
-            } else {
-                holderView.textView.setBackgroundResource(R.mipmap.ic_bg_blc);
-            }
+            holderView.textView.setSelected(arrayList.get(position).flag);
             holderView.textView.setText(arrayList.get(position).amount);
             holderView.getTextView().setOnClickListener(v -> {
 
@@ -665,64 +693,32 @@ public class TransferFragment extends BaseFragment<FragmentTransferBinding, MyWa
 
         private class HolderView {
             private String showAmount;
+            private TextView textView;
+            private LinearLayout linear;
+
+            public String getShowAmount() {
+                return showAmount;
+            }
 
             public void setShowAmount(String showAmount) {
                 this.showAmount = showAmount;
                 this.textView.setText(showAmount);
             }
 
-            public String getShowAmount() {
-                return showAmount;
+            public TextView getTextView() {
+                return textView;
             }
-
-            private TextView textView;
-            private LinearLayout linear;
 
             public void setTextView(TextView textView) {
                 this.textView = textView;
             }
-
-            public TextView getTextView() {
-                return textView;
-            }
         }
     }
 
-    private void referArray(ArrayList<AmountVo> arrayList) {
-        for (int i = 0; i < arrayList.size(); i++) {
-            arrayList.get(i).flag = false;
-        }
+    private class AmountVo {
+        public String amount;
+        public boolean flag;
     }
-    private void  referAmountArray(AmountVo vo ,ArrayList<AmountVo> arrayList){
-        for (int i = 0; i < arrayList.size(); i++) {
 
-            if (arrayList.get(i).amount.equals(vo.amount)) {
-                arrayList.get(i).flag = true;
-            } else {
-                arrayList.get(i).flag = false;
-            }
-        }
-    }
-    private void initAmountList() {
-        AmountVo vo1 = new AmountVo();
-        vo1.amount = 100 + "";
-        vo1.flag = false;
 
-        AmountVo vo2 = new AmountVo();
-        vo2.amount = 1000 + "";
-        vo2.flag = false;
-
-        AmountVo vo3 = new AmountVo();
-        vo3.amount = 10000 + "";
-        vo3.flag = false;
-
-        AmountVo vo4 = new AmountVo();
-        vo4.amount = "MAX";
-        vo4.flag = false;
-
-        amountVoArrayList.add(vo1);
-        amountVoArrayList.add(vo2);
-        amountVoArrayList.add(vo3);
-        amountVoArrayList.add(vo4);
-    }
 }

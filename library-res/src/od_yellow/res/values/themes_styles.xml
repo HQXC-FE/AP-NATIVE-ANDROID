@@ -694,7 +694,7 @@
         <item name="android:drawableStart">@drawable/cm_ic_switch_selector_transfer</item>
     </style>
     <style name="style_cm_ic_transfer">
-        <item name="android:src">"@drawable/cm_ic_transfer"</item>
+        <item name="android:src">@drawable/cm_ic_transfer</item>
     </style>
     <style name="style_center_wallet_bg">
         <item name="android:background">"@drawable/center_wallet_bg"</item>
