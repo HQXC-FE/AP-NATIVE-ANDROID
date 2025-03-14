@@ -129,11 +129,16 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
                             return;
                         }
 
-                        int position = bindingViewHolder.getModelPosition();
+//                        int position = bindingViewHolder.getModelPosition();
+                        int modelCount = bindingViewHolder.getAdapter().getModelCount();
+                        //点击删除最后一条规则
+                        int position = modelCount - 1;
+
                         //加上头数据数量
-                        bindModels.remove(position + 3);
+                        bindModels.remove(modelCount - 1 + 3);
                         bindingViewHolder.getAdapter().getMutable().remove(position);
                         bindingViewHolder.getAdapter().notifyItemRemoved(position + 2);
+
                         formatItem();
                     }
                 });
