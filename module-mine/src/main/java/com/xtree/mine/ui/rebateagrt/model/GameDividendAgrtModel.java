@@ -1,5 +1,7 @@
 package com.xtree.mine.ui.rebateagrt.model;
 
+import android.text.TextUtils;
+
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.mine.R;
@@ -103,7 +105,7 @@ public class GameDividendAgrtModel extends BindModel {
 
     public void setContractStatus(String contractStatus) {
         this.contractStatus = contractStatus;
-        if (contractStatus.equals("0") || contractStatus.equals("4") || contractStatus.isEmpty()) {
+        if (contractStatus.equals("0") || contractStatus.equals("4") || TextUtils.isEmpty(contractStatus)) {
             checkName = BaseApplication.getInstance().getString(R.string.txt_create_deed);
         } else {
             checkName = BaseApplication.getInstance().getString(R.string.txt_view_deed);
