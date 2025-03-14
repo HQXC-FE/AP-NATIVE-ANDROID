@@ -176,7 +176,7 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
                 }
             }
 
-            FilterView.showDialog(mActivity.get(), "分红比例", ratioList, new FilterView.ICallBack() {
+            FilterView.showDialog(mActivity.get(), "分红比例(%)", ratioList, new FilterView.ICallBack() {
                 @Override
                 public void onTypeChanged(FilterView.IBaseVo vo) {
                     dividendAgrtCheckModel.setRatio_range(vo.getShowId());
