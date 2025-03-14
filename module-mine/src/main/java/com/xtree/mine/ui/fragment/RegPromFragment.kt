@@ -268,12 +268,21 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
             if (mProfileVo.liveStatus == 0) {
                 layoutReal.visibility = View.GONE
             } else {
-                typeReal.text = vo.livePoint.plus("%")
-                if (mProfileVo.maxLivePoint > 0.9) {
-                    mProfileVo.maxLivePoint = 0.9
+                val realPoint: Double = if (vo.links.isEmpty() || vo.domainList.isEmpty()) {
+                    //场景1：没有生成推广链接
+                    //默认取值取Profile.maxPoint，maxPoint大于0.9则显示0.9
+                    if (mProfileVo.maxLivePoint > 0.9) {
+                        0.9
+                    } else {
+                        mProfileVo.maxLivePoint
+                    }
+                } else {
+                    vo.livePoint.toDouble()
                 }
+                typeReal.text = realPoint.toString().plus("%")
                 tvRealRebate.text = getString(R.string.txt_reg_rebate)
-                    .plus(NumberUtils.sub(mProfileVo.maxLivePoint, vo.livePoint.toDouble()).toString() + "%")
+                    .plus(NumberUtils.sub(mProfileVo.maxLivePoint, realPoint).toString() + "%")
+
                 typeReal.setOnClickListener {
                     if (type == 0) {
                         //未初始化，创建ppw
@@ -296,12 +305,21 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
             if (mProfileVo.sportStatus == 0) {
                 layoutSports.visibility = View.GONE
             } else {
-                typeSports.text = vo.sportPoint.plus("%")
-                if (mProfileVo.maxSportPoint > 0.9) {
-                    mProfileVo.maxSportPoint = 0.9
+                val sportPoint: Double = if (vo.links.isEmpty() || vo.domainList.isEmpty()) {
+                    //场景1：没有生成推广链接
+                    //默认取值取Profile.maxPoint，maxPoint大于0.9则显示0.9
+                    if (mProfileVo.maxSportPoint > 0.9) {
+                        0.9
+                    } else {
+                        mProfileVo.maxSportPoint
+                    }
+                } else {
+                    vo.sportPoint.toDouble()
                 }
+                typeSports.text = sportPoint.toString().plus("%")
                 tvSportsRebate.text = getString(R.string.txt_reg_rebate)
-                    .plus(NumberUtils.sub(mProfileVo.maxSportPoint, vo.sportPoint.toDouble()).toString() + "%")
+                    .plus(NumberUtils.sub(mProfileVo.maxSportPoint, sportPoint).toString() + "%")
+
                 typeSports.setOnClickListener {
                     if (type == 0) {
                         //未初始化，创建ppw
@@ -326,12 +344,21 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
             if (mProfileVo.pokerStatus == 0) {
                 layoutChess.visibility = View.GONE
             } else {
-                typeChess.text = vo.chessPoint.plus("%")
-                if (mProfileVo.maxPokerPoint > 0.9) {
-                    mProfileVo.maxPokerPoint = 0.9
+                val chessPoint: Double = if (vo.links.isEmpty() || vo.domainList.isEmpty()) {
+                    //场景1：没有生成推广链接
+                    //默认取值取Profile.maxPoint，maxPoint大于0.9则显示0.9
+                    if (mProfileVo.maxPokerPoint > 0.9) {
+                        0.9
+                    } else {
+                        mProfileVo.maxPokerPoint
+                    }
+                } else {
+                    vo.chessPoint.toDouble()
                 }
+                typeChess.text = chessPoint.toString().plus("%")
                 tvChessRebate.text = getString(R.string.txt_reg_rebate)
-                    .plus(NumberUtils.sub(mProfileVo.maxPokerPoint, vo.chessPoint.toDouble()).toString() + "%")
+                    .plus(NumberUtils.sub(mProfileVo.maxPokerPoint, chessPoint).toString() + "%")
+
                 typeChess.setOnClickListener {
                     if (type == 0) {
                         //未初始化，创建ppw
@@ -356,12 +383,21 @@ class RegPromFragment : BaseFragment<FragmentPromLinksBinding, MineViewModel>(),
             if (mProfileVo.esportsStatus == 0) {
                 layoutGame.visibility = View.GONE
             } else {
-                typeGame.text = vo.esportsPoint.plus("%")
-                if (mProfileVo.maxEsportsPoint > 0.9) {
-                    mProfileVo.maxEsportsPoint = 0.9
+                val esportsPoint: Double = if (vo.links.isEmpty() || vo.domainList.isEmpty()) {
+                    //场景1：没有生成推广链接
+                    //默认取值取Profile.maxPoint，maxPoint大于0.9则显示0.9
+                    if (mProfileVo.maxEsportsPoint > 0.9) {
+                        0.9
+                    } else {
+                        mProfileVo.maxEsportsPoint
+                    }
+                } else {
+                    vo.esportsPoint.toDouble()
                 }
+                typeGame.text = esportsPoint.toString().plus("%")
                 tvGameRebate.text = getString(R.string.txt_reg_rebate)
-                    .plus(NumberUtils.sub(mProfileVo.maxEsportsPoint, vo.esportsPoint.toDouble()).toString() + "%")
+                    .plus(NumberUtils.sub(mProfileVo.maxEsportsPoint, esportsPoint).toString() + "%")
+
                 typeGame.setOnClickListener {
                     if (type == 0) {
                         //未初始化，创建ppw
