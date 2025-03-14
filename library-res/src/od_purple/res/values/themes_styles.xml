@@ -284,6 +284,7 @@
         <item name="android:textColor">@color/clr_text_btn_selector</item>
         <item name="android:textSize">14sp</item>
     </style>
+
     <style name="style_btn_short_cancel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -633,6 +634,7 @@
         <item name="android:button">@drawable/ic_eye_selector</item>
         <item name="android:padding">6dp</item>
     </style>
+
     <style name="style_btn_short_right">
         <item name="android:background">@drawable/bg_btn_right_selector</item>
         <item name="android:layout_width">wrap_content</item>
@@ -661,6 +663,7 @@
         <item name="android:textColor">@color/clr_text_code_selector</item>
         <item name="android:textSize">16sp</item>
     </style>
+
     <style name="style_me_icon_name">
         <item name="android:src">@drawable/me_icon_name</item>
     </style>
@@ -684,36 +687,45 @@
     <style name="style_cm_dialog_update_bell">
         <item name="android:src">@drawable/cm_dialog_update_bell</item>
     </style>
+
     <style name="style_cm_dialog_update_bg">
         <item name="android:background">@drawable/cm_dialog_update_bg</item>
     </style>
 
 
-
     <style name="style_security_center_pwd">
         <item name="android:drawableStart">@drawable/me_sc_pwd</item>
     </style>
+
     <style name="style_security_center_google">
         <item name="android:drawableStart">@drawable/me_sc_google</item>
     </style>
+
     <style name="style_security_center_phone">
         <item name="android:drawableStart">@drawable/me_sc_phone</item>
     </style>
+
     <style name="style_security_center_email">
         <item name="android:drawableStart">@drawable/me_sc_email</item>
     </style>
+
     <style name="style_center_wallet_top">
+        <item name="android:paddingEnd">16dp</item>
         <item name="android:background">@drawable/cm_bg_center</item>
     </style>
+
     <style name="style_cm_ic_switch_selector_transfer">
         <item name="android:drawableStart">@drawable/cm_ic_switch_selector_transfer</item>
     </style>
+
     <style name="style_cm_ic_transfer">
         <item name="android:src">@drawable/cm_ic_transfer</item>
     </style>
+
     <style name="style_center_wallet_bg">
         <item name="android:background">@drawable/center_wallet_bg</item>
     </style>
+
     <style name="style_message_ic_round">
         <item name="android:src">@drawable/ic_round</item>
     </style>
@@ -721,6 +733,7 @@
     <style name="style_msg_info_bg">
         <item name="android:background">@drawable/bg_msg_info</item>
     </style>
+
     <style name="style_msg_info_delete_all">
         <item name="android:background">@drawable/bt_msg_delete_all</item>
     </style>
@@ -736,9 +749,11 @@
     <style name="style_bg_tip_dialog">
         <item name="android:background">@drawable/bg_tip_dialog</item>
     </style>
+
     <style name="style_me_reset_password_title">
         <item name="android:src">@drawable/me_reset_password_title</item>
     </style>
+
     <style name="style_me_reset_password_step_first">
         <item name="android:src">@drawable/me_reset_password_step_first</item>
     </style>
@@ -746,6 +761,7 @@
     <style name="style_me_reset_password_step_second">
         <item name="android:src">@drawable/me_reset_password_step_second</item>
     </style>
+
     <style name="style_me_reset_password_step_third">
         <item name="android:src">@drawable/me_reset_password_step_third</item>
     </style>
@@ -753,6 +769,7 @@
     <style name="style_me_reset_password_success">
         <item name="android:background">@drawable/me_reset_password_success</item>
     </style>
+
     <style name="style_me_reset_password_login">
         <item name="android:background">@drawable/me_reset_password_login</item>
     </style>

@@ -688,6 +688,7 @@
         <item name="android:background">@drawable/cm_dialog_update_bg</item>
     </style>
     <style name="style_center_wallet_top">
+        <item name="paddingEnd">0dp</item>
         <item name="android:background">@drawable/cm_bg_center</item>
     </style>
     <style name="style_cm_ic_switch_selector_transfer">
