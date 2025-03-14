@@ -38,6 +38,11 @@ public class DividendAgrtCreateRequest {
     @SerializedName("ratio")
     private List<String> ratio;
     /**
+     * ratio_range 分红比例范围
+     */
+    @SerializedName("ratio_range")
+    private List<String> ratio_range;
+    /**
      * dayPeople
      */
     @SerializedName("day_people")
@@ -69,6 +74,14 @@ public class DividendAgrtCreateRequest {
      */
     @SerializedName("nonce")
     private String nonce;
+
+    public List<String> getRatio_range() {
+        return ratio_range;
+    }
+
+    public void setRatio_range(List<String> ratio_range) {
+        this.ratio_range = ratio_range;
+    }
 
     public Object getUserid() {
         return userid;
