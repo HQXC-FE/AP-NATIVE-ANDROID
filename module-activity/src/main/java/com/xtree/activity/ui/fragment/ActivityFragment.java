@@ -138,8 +138,8 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
         list2.clear();
         map.clear();
 
-        list2.add(new CategoryVo(0, getString(R.string.txt_all_discount)));
-        map.put("0", list);
+        list2.add(new CategoryVo(getString(R.string.txt_all_discount)));
+        map.put(getString(R.string.txt_all_discount), list);
 
         ArrayList<NewVo> tmpList;
         for (NewVo vo : list) {
@@ -148,9 +148,9 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
                 CfLog.d("****** default: " + vo);
                 continue;
             }
-            String key = String.valueOf(vo.category_order);
+            String key = String.valueOf(vo.category);
             if (!map.containsKey(key)) {
-                list2.add(new CategoryVo(vo.category_order, vo.category));
+                list2.add(new CategoryVo(vo.category));
                 tmpList = new ArrayList<>();
             } else {
                 tmpList = map.get(key);
@@ -169,7 +169,7 @@ public class ActivityFragment extends BaseFragment<FragmentActivityBinding, Acti
         }
 
         for (CategoryVo t2 : list2) {
-            fragmentList.add(NewsFragment.newInstance(t2.category_order, t2.category, map.get(String.valueOf(t2.category_order))));
+            fragmentList.add(NewsFragment.newInstance(t2.category_order, t2.category, map.get(String.valueOf(t2.category))));
         }
 
         mAdapter.notifyDataSetChanged();

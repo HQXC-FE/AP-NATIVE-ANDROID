@@ -8,6 +8,10 @@ public class CategoryVo implements Comparable<CategoryVo> {
     public CategoryVo() {
     }
 
+    public CategoryVo(String category) {
+        this.category = category;
+    }
+
     public CategoryVo(int category_order, String category) {
         this.category_order = category_order;
         this.category = category;
