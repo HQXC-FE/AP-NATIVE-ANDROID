@@ -319,6 +319,20 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
         return null;
     }
 
+    private List<String> getRuleByRatio(String ratio) {
+        if (ruleMaps != null) {
+            for (Map<String, List<String>> ruleMap : ruleMaps) {
+                if (ruleMap.get(ratio) != null) {
+                    List<String> value = ruleMap.get(ratio);
+                    if (value.size() > 2) {
+                        return value;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     private String getRatioByLoseStreak(String loseStreak) {
         if (ruleMaps != null) {
             for (Map<String, List<String>> ruleMap : ruleMaps) {
@@ -388,6 +402,12 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
             model.setLoseStreak(String.valueOf(ruleCount + 1));
         } else {
             model.setLoseStreak(loseStreakByRatio);
+        }
+
+        List<String> ruleByRatio = getRuleByRatio(model.getRatio());
+        if (ruleByRatio != null) {
+            model.setProfit(ruleByRatio.get(1));
+            model.setPeople(ruleByRatio.get(2));
         }
 
         bindModels.add(model);
