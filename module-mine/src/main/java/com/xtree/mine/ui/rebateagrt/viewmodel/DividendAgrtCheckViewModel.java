@@ -406,6 +406,9 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
                             }
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
+                            if (vo.getShowId().equals(m.getRatio())) {
+                                iterator.remove();
+                            }
                         }
                     }
                 }
