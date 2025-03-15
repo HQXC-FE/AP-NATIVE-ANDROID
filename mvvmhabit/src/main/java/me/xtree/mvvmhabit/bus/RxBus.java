@@ -3,6 +3,8 @@ package me.xtree.mvvmhabit.bus;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import io.reactivex.BackpressureStrategy;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -47,6 +49,11 @@ public class RxBus {
      */
     public <T> Observable<T> toObservable(Class<T> eventType) {
         return mBus.ofType(eventType);
+    }
+
+    public <T> Flowable<T> toFlowable(Class<T> eventType) {
+        return mBus.toFlowable(BackpressureStrategy.BUFFER) // 使用缓冲背压策略
+                .ofType(eventType);  // 根据类型过滤事件
     }
 
     /**

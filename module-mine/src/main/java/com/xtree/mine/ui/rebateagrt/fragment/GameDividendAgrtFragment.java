@@ -16,8 +16,10 @@ import com.xtree.mine.ui.rebateagrt.model.RebateAreegmentModel;
 import com.xtree.mine.ui.rebateagrt.viewmodel.GameDividendAgrtViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.RxBus;
@@ -56,6 +58,7 @@ public class GameDividendAgrtFragment extends BaseFragment<FragmentGameDividenda
         if (rebateAreegmentModel != null) {
             viewModel.initData(rebateAreegmentModel.type);
         }
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -78,27 +81,49 @@ public class GameDividendAgrtFragment extends BaseFragment<FragmentGameDividenda
             }
         });
 
-        //监听创建契约完成消息
-        RxBus.getDefault().toObservable(String.class).subscribe(new Observer<String>() {
-            @Override
-            public void onSubscribe(Disposable d) {}
-            @Override
-            public void onNext(String s) {
-                if (s.equals(DividendAgrtCheckDialogFragment.CREATED)) {
-                    viewModel.onResume();
-                }
-                if (s.equals(DividendAgrtSendDialogFragment.SENT)) {
-                    viewModel.onResume();
-                }
-            }
-            @Override
-            public void onError(Throwable e) {
-                e.getMessage();
+//        //监听创建契约完成消息
+//        RxBus.getDefault().toFlowable(String.class).subscribe(new Subscriber<String>() {
+//            @Override
+//            public void onSubscribe(Subscription s) {
+//            }
+//
+//            @Override
+//            public void onNext(String s) {
+//                if (s.equals(DividendAgrtCheckDialogFragment.CREATED)) {
+//                    viewModel.onResume();
+//                }
+//                if (s.equals(DividendAgrtSendDialogFragment.SENT)) {
+//                    viewModel.onResume();
+//                }
+//                RxBus.getDefault().removeAllStickyEvents();
+//            }
+//
+//            @Override
+//            public void onError(Throwable t) {
+//                t.toString();
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                Log.e("TAG", "onComplete: " );
+//            }
+//        });
+    }
 
-            }
-            @Override
-            public void onComplete() {
-            }
-        });
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(String event) {
+        if (event.equals(DividendAgrtCheckDialogFragment.CREATED)) {
+            viewModel.onResume();
+        }
+        if (event.equals(DividendAgrtSendDialogFragment.SENT)) {
+            viewModel.onResume();
+        }
+        EventBus.getDefault().removeStickyEvent(event);
     }
 }
