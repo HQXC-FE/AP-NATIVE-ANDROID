@@ -595,6 +595,11 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
             users.add(map.getKey());
         }
 
+        if (users.size() == 0) {
+            ToastUtils.show(getApplication().getString(R.string.txt_rebateagrt_tip1), ToastUtils.ShowType.Default);
+            return;
+        }
+
         if (viewMode.get() == CHECK_MODO) {
             request.setUserid(users.get(0));
         } else {
