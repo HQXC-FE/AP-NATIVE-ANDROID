@@ -687,7 +687,7 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
 //                                        RxBus.getDefault().post(DividendAgrtCheckDialogFragment.CREATED);
                                         EventBus.getDefault().post(DividendAgrtCheckDialogFragment.CREATED);                                    }
 
-                                }, 500);
+                                }, 700);
                             }
                         }
                     }
