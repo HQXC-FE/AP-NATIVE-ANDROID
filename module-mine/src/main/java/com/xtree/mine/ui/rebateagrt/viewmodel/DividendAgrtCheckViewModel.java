@@ -37,6 +37,7 @@ import com.xtree.mine.vo.request.DividendAgrtCreateRequest;
 import com.xtree.mine.vo.response.DividendAgrtCheckResponse;
 import com.xtree.mine.vo.response.DividendAgrtCreateResponse;
 
+import org.greenrobot.eventbus.EventBus;
 import org.reactivestreams.Subscription;
 
 import java.lang.ref.WeakReference;
@@ -49,7 +50,6 @@ import java.util.Map;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -638,7 +638,8 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
                                 ToastUtils.show(response.getSMsg(), ToastUtils.ShowType.Success);
                                 finish();
                                 //发送完成消息
-                                RxBus.getDefault().post(DividendAgrtCheckDialogFragment.CREATED);
+//                                RxBus.getDefault().post(DividendAgrtCheckDialogFragment.CREATED);
+                                EventBus.getDefault().post(DividendAgrtCheckDialogFragment.CREATED);
                             }
                         }
                     }
