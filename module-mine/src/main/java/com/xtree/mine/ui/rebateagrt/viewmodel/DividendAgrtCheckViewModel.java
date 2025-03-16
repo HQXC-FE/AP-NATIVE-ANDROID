@@ -1,6 +1,7 @@
 package com.xtree.mine.ui.rebateagrt.viewmodel;
 
 import android.app.Application;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -636,10 +637,17 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
                             } else {
                                 //创建成功
                                 ToastUtils.show(response.getSMsg(), ToastUtils.ShowType.Success);
-                                finish();
-                                //发送完成消息
-//                                RxBus.getDefault().post(DividendAgrtCheckDialogFragment.CREATED);
-                                EventBus.getDefault().post(DividendAgrtCheckDialogFragment.CREATED);
+
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        finish();
+                                        //发送完成消息
+//                                        RxBus.getDefault().post(DividendAgrtCheckDialogFragment.CREATED);
+                                        EventBus.getDefault().post(DividendAgrtCheckDialogFragment.CREATED);                                    }
+
+                                }, 500);
                             }
                         }
                     }
