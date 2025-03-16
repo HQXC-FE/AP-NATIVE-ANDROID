@@ -274,7 +274,9 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
                 } else {
                     //直属创建契约默认显示第一条规则
                     if (type == 1 && level == 3) {
-                        bindModels.add(checkModels.get(0));
+                        DividendAgrtCheckModel firstModel = checkModels.get(0);
+                        firstModel.setRatio_range(getRatioRangeByRatio(firstModel.getRatio()));
+                        bindModels.add(firstModel);
                     } else {
                         bindModels.addAll(checkModels);
                     }
@@ -344,6 +346,35 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
             }
         }
         return null;
+    }
+
+    private String getRatioRangeByRatio(String ratio) {
+        ArrayList<FilterView.IBaseVo> ratioList = new ArrayList<>(ratios);
+
+        if (ratio != null && ratio.contains("-")) {
+            String[] split = ratio.split("-");
+            if (split.length > 1) {
+                try {
+                    ratioList.clear();
+
+                    float start = Float.parseFloat(split[0]);
+                    float end = Float.parseFloat(split[1]);
+                    float min = Math.min(start, end);
+                    float max = Math.max(start, end);
+
+                    for (float i = min; i < max + 1; i++) {
+                        ratioList.add(new StatusVo(String.valueOf(i), String.valueOf(i)));
+                    }
+
+                } catch (NumberFormatException e) {
+                    // 出现异常时，返回一个默认值或进行错误处理
+                    e.printStackTrace();
+                    ratioList = ratios;
+                }
+            }
+        }
+
+        return ratioList.get(0).getShowId();
     }
 
     private String getRatioByLoseStreak(String loseStreak) {
@@ -420,6 +451,10 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
             model.setRatio(ratioList.get(0).getShowId());
         } else {
             model.setRatio(ratios.get(0).getShowId());
+        }
+
+        if (type == 1 && level == 3) {
+            model.setRatio_range(getRatioRangeByRatio(model.getRatio()));
         }
 
         //直属添加规则不能超过规则数据集上限
