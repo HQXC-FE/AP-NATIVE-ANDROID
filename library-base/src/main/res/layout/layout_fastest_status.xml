@@ -8,9 +8,9 @@
 
     <ImageView
         android:id="@+id/fastest_status_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/icon_fastest_status_bg"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/line_fastest_status_bg"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,22 +18,24 @@
 
     <ImageView
         android:id="@+id/fastest_status_bottombg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="12dp"
         android:layout_marginBottom="3dp"
-        android:background="@mipmap/icon_fastest_status_bottombg"
+        android:background="@drawable/line_fastest_speed_bg"
         app:layout_constraintVertical_bias="1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageView
         android:id="@+id/fastest_status_img"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:background="@mipmap/icon_fastest_status_low"
+        tools:background="@mipmap/icon_fastest_status_low"
         android:layout_marginBottom="2dp"
+        android:layout_marginTop="-5dp"
         app:layout_constraintVertical_bias="1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/fastest_status_bottombg"
@@ -50,6 +52,8 @@
         android:textColor="@color/clr_txt_fastest_low"
         app:layout_constrainedWidth="true"
         app:layout_constrainedHeight="true"
+        android:background="@drawable/line_fastest_speed_bg"
+        android:paddingHorizontal="5dp"
         app:autoSizeTextType="uniform"
         app:autoSizeMinTextSize="5sp"
         app:autoSizeMaxTextSize="10sp"

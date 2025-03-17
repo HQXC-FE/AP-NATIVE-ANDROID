@@ -12,7 +12,7 @@
         android:id="@+id/cl_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@mipmap/main_bg_speed"
+        android:background="@drawable/main_bg_speed"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
