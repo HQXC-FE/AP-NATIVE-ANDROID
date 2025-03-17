@@ -22,12 +22,12 @@
             android:id="@+id/cl_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/clr_white"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/clr_white">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tvw_title"
@@ -47,15 +47,16 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/clr_div_line"
-            />
+            android:background="@color/clr_div_line" />
+
         <TextView
             style="@style/style_cm_tip_small_orange"
             android:text="@string/txt_note_asterisks_cannot_empty"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             style="@style/style_bind_title"
@@ -69,9 +70,9 @@
             android:text="" />
 
         <TextView
-            android:visibility="gone"
             style="@style/style_cm_tip_small_grey"
-            android:text="@string/txt_enter_the_last_acc_name" />
+            android:text="@string/txt_enter_the_last_acc_name"
+            android:visibility="gone" />
 
         <TextView
             style="@style/style_bind_title"
@@ -87,34 +88,38 @@
             android:text="" />
 
         <TextView
-            android:visibility="gone"
             style="@style/style_cm_tip_small_grey"
-            android:text="@string/txt_enter_last_bank_card_num" />
+            android:text="@string/txt_enter_last_bank_card_num"
+            android:visibility="gone" />
 
 
         <LinearLayout style="@style/style_cm_btn_ll">
+
             <TextView
                 android:id="@+id/tvw_back"
-                style="@style/style_btn_short_cancel"
-                android:text="@string/txt_back"/>
+                style="?attr/btn_short_cancel_attr"
+                android:layout_marginEnd="20dp"
+                android:text="@string/txt_back" />
 
             <TextView
                 android:id="@+id/tvw_submit"
                 style="?attr/btn_short_attr"
-                android:text="@string/txt_next"/>
+                android:text="@string/txt_next" />
         </LinearLayout>
+
         <TextView
             style="@style/style_cm_tip_small_orange"
             android:layout_marginTop="10dp"
             android:drawableLeft="@drawable/cm_ic_hint"
-            android:text="@string/txt_precautions"
             android:gravity="center"
-            android:textColor="@color/clr_sec_verify_normal"/>
+            android:text="@string/txt_precautions"
+            android:textColor="@color/clr_sec_verify_normal" />
+
         <TextView
             style="@style/style_cm_tip_small_orange"
             android:layout_marginLeft="20dp"
             android:text="@string/txt_note_cs_cannot_unlock_bank_card"
-            android:textColor="@color/bt_text_color_primary_3"/>
+            android:textColor="@color/bt_text_color_primary_3" />
 
     </LinearLayout>
 </layout>

@@ -22,12 +22,12 @@
             android:id="@+id/cl_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/clr_white"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/clr_white">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tvw_title"
@@ -47,11 +47,12 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/clr_div_line"
-            />
+            android:background="@color/clr_div_line" />
+
         <LinearLayout
             android:id="@+id/ll_old"
             android:layout_width="match_parent"
@@ -72,14 +73,15 @@
 
                 <TextView
                     android:id="@+id/tvw_back_old"
-                    style="@style/style_btn_short_cancel"
-                    android:text="@string/txt_back"/>
+                    style="?attr/btn_short_cancel_attr"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/txt_back" />
 
                 <TextView
                     android:id="@+id/tvw_submit_old"
                     style="?attr/btn_short_attr"
                     android:enabled="false"
-                    android:text="@string/txt_next"/>
+                    android:text="@string/txt_next" />
             </LinearLayout>
         </LinearLayout>
 
@@ -90,6 +92,7 @@
             android:orientation="vertical"
             android:visibility="gone"
             tools:visibility="visible">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,8 +103,8 @@
                     style="@style/style_cm_tip_small_orange"
                     android:layout_marginTop="2dp"
                     android:drawableLeft="@drawable/cm_ic_hint"
-                    android:text="@string/txt_note_asterisks_cannot_empty"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:text="@string/txt_note_asterisks_cannot_empty" />
             </LinearLayout>
 
             <TextView
@@ -152,7 +155,8 @@
 
                 <TextView
                     android:id="@+id/tvw_bind_back"
-                    style="@style/style_btn_short_cancel"
+                    style="?attr/btn_short_cancel_attr"
+                    android:layout_marginEnd="20dp"
                     android:text="@string/txt_back" />
 
                 <TextView
@@ -172,89 +176,99 @@
 
             <TextView
                 style="@style/style_bind_title"
+                android:layout_marginLeft="30dp"
                 android:drawableLeft="@mipmap/mine_iv_info_review"
                 android:drawablePadding="5dp"
-                android:layout_marginLeft="30dp"
                 android:text="@string/txt_info_review"
                 android:textColor="@color/clr_sec_verify_normal"
-                android:textSize="@dimen/bt_text_16sp"/>
+                android:textSize="@dimen/bt_text_16sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bg_bind_card_add"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bg_bind_card_add"
+                android:orientation="vertical">
 
-                <LinearLayout style="@style/style_bind_confirm_ll"
+                <LinearLayout
+                    style="@style/style_bind_confirm_ll"
                     android:orientation="vertical">
+
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="10dp"
-                        />
+                        android:layout_height="10dp" />
+
                     <LinearLayout style="@style/style_bind_confirm_ll">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
+
                             <TextView
                                 style="@style/style_bind_confirm_bank_left_txt"
                                 android:text="@string/txt_type_c"
 
                                 />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
+
                             <TextView
                                 android:id="@+id/tvw_type"
                                 style="@style/style_bind_confirm_value"
-                                tools:text="XX"
-                                />
+                                tools:text="XX" />
                         </LinearLayout>
 
                     </LinearLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/clr_grey_07"
-                        android:layout_marginTop="10dp"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"/>
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@color/clr_grey_07" />
                 </LinearLayout>
 
-                <LinearLayout style="@style/style_bind_confirm_ll"
+                <LinearLayout
+                    style="@style/style_bind_confirm_ll"
                     android:orientation="vertical">
 
                     <LinearLayout style="@style/style_bind_confirm_ll">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
+
                             <TextView
-                                android:text="@string/txt_address_c"
-                                style="@style/style_bind_confirm_bank_left_txt"/>
+                                style="@style/style_bind_confirm_bank_left_txt"
+                                android:text="@string/txt_address_c" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
+
                             <TextView
                                 android:id="@+id/tvw_acc"
                                 style="@style/style_bind_confirm_value"
-                                tools:text="X12321333333333333333333333333X"
-                                />
+                                tools:text="X12321333333333333333333333333X" />
                         </LinearLayout>
-
 
 
                     </LinearLayout>
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    />
+                    android:layout_height="10dp" />
 
             </LinearLayout>
 
@@ -262,13 +276,14 @@
 
                 <TextView
                     android:id="@+id/tvw_back"
-                    style="@style/style_btn_short_cancel"
+                    style="?attr/btn_short_cancel_attr"
+                    android:layout_marginEnd="20dp"
                     android:text="@string/txt_back" />
 
                 <TextView
                     android:id="@+id/tvw_submit"
                     style="?attr/btn_short_attr"
-                    android:text="@string/txt_next"/>
+                    android:text="@string/txt_next" />
             </LinearLayout>
 
         </LinearLayout>
