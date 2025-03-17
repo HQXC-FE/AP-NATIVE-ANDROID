@@ -10,13 +10,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingStart="12dp"
-        android:paddingEnd="12dp">
+        android:paddingEnd="12dp"
+        android:paddingBottom="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{m.tip}"
             android:textColor="@color/clr_txt_rebateagrt_mark"
-            android:textSize="10sp"/>
+            android:textSize="10sp"
+            android:layout_gravity="top"/>
     </FrameLayout>
 </layout>
