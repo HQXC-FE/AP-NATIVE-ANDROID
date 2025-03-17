@@ -790,4 +790,9 @@
         <item name="android:textColor">@color/clr_text_code_selector</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+
+    <style name="style_hm_mid_bg_set">
+        <item name="android:background">@drawable/hm_mid_bg_set</item>
+    </style>
 </resources>

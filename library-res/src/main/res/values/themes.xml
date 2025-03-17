@@ -183,6 +183,9 @@
         <item name="me_reset_password_login_attr">@style/style_me_reset_password_login</item>
         <item name="hm_ic_vip_level_attr">@style/style_hm_ic_vip_level</item>
         <item name="forget_psword_get_code_attr">@style/style_get_code</item>
+        <item name="hm_mid_bg_set_attr">@style/style_hm_mid_bg_set</item>
+
+
 
     </style>
 
