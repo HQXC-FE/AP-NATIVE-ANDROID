@@ -31,7 +31,7 @@ import retrofit2.http.Query;
 public interface LiveService {
 
     //获取token
-    @POST("api/third_user/ThirdLogin")
+    @POST("api/ThirdUser/ThirdLogin")
     Flowable<BaseResponse<LiveTokenResponse>> getXLiveToken(@Body RequestBody body);
     // 获取直播间详情
     @GET("api/li_stre/getRoomInfo")
