@@ -551,8 +551,8 @@
                     <TextView
                         android:id="@+id/tvw_tip_same_amount"
                         style="?attr/cm_ic_hint_attr"
-                        android:layout_height="wrap_content"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
                         android:drawablePadding="2dp"
                         android:text="@string/txt_amount_filled_should_same_as_remittance_amount"
@@ -637,6 +637,7 @@
                     android:id="@+id/ll_hi_wallet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="100dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="@dimen/layout_margin"
