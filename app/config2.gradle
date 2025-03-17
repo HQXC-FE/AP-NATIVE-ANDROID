@@ -5,8 +5,8 @@ android {
         // 测试环境 测试用
         hx6_pre {
             applicationId "com.${name.toLowerCase()}.app"
-            versionName "1.0.1"
-            versionCode 101
+            versionName "1.0.2"
+            versionCode 102
             resValue "string", "app_name", "恒行6T${versionCode}"
             resValue "string", "domain_api", "https://hxing6pre.hxing5vip.com"
             resValue "string", "domain_url", "https://hxing6pre.hxing5vip.com"
@@ -26,8 +26,8 @@ android {
         // 生产环境 发布用
         hx6_OL {
             applicationId "com.hengxing6.app"
-            versionName "1.0.1"
-            versionCode 101
+            versionName "1.0.2"
+            versionCode 102
             resValue "string", "app_name", "恒行6"
             resValue "string", "domain_api", "https://app1.d3q1wi.vip"
             resValue "string", "domain_url", "https://h51.l5t5uk.vip"
