@@ -106,7 +106,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:src="@drawable/hm_ic_vip_level"
+                        style="?attr/hm_ic_vip_level_attr"
                         app:layout_constraintBottom_toBottomOf="@id/tvw_name"
                         app:layout_constraintStart_toEndOf="@id/tvw_name"
                         app:layout_constraintTop_toTopOf="@id/tvw_name" />
@@ -268,7 +268,6 @@
 
                     <RadioButton
                         style="?attr/hm_game_type_attr"
-
                         android:tag="tp_1" />
 
                     <RadioButton
