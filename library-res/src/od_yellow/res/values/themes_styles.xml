@@ -757,4 +757,26 @@
     <style name="style_me_reset_password_login">
         <item name="android:background">@drawable/me_reset_password_login</item>
     </style>
+
+    <style name="style_hm_ic_vip_level">
+        <item name="android:src">@drawable/hm_ic_vip_level</item>
+    </style>
+    <!-- 我的-安全中心-验证 获取验证码 -->
+    <style name="style_get_code">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">6dp</item>
+        <item name="android:background">@drawable/bg_get_code_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minEms">6</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:text">获取验证码</item>
+        <item name="android:textColor">@color/clr_text_code_selector</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="style_hm_mid_bg_set">
+        <item name="android:background">@drawable/hm_mid_bg_set</item>
+    </style>
+
+
 </resources>
