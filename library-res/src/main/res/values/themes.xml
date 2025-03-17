@@ -157,6 +157,7 @@
         <item name="cm_dialog_update_bg_attr">@style/style_cm_dialog_update_bg</item>
         <item name="dialog_update_confirm_right_attr">@style/style_btn_short</item>
         <item name="dialog_update_cancel_left_attr">@style/style_btn_short_cancel</item>
+        <item name="choose_account_attr">@style/style_choose_account</item>
 
         <item name="security_center_pwd_attr">@style/style_security_center_pwd</item>
         <item name="security_center_google_attr">@style/style_security_center_google</item>
@@ -164,7 +165,9 @@
         <item name="security_center_email_attr">@style/style_security_center_email</item>
 
         <item name="center_wallet_top_attr">@style/style_center_wallet_top</item>
-        <item name="cm_ic_switch_selector_transfer_attr">@style/style_cm_ic_switch_selector_transfer</item>
+        <item name="cm_ic_switch_selector_transfer_attr">
+            @style/style_cm_ic_switch_selector_transfer
+        </item>
         <item name="cm_ic_transfer_attr">@style/style_cm_ic_transfer</item>
         <item name="center_wallet_bg_attr">@style/style_center_wallet_bg</item>
         <item name="btn_short_cancel_attr">@style/style_btn_short_cancel</item>
@@ -176,15 +179,17 @@
         <item name="btn_long_selector_attr">@style/style_bg_btn_long</item>
         <item name="bg_tip_dialog_attr">@style/style_bg_tip_dialog</item>
         <item name="me_reset_password_title_attr">@style/style_me_reset_password_title</item>
-        <item name="me_reset_password_step_first_attr">@style/style_me_reset_password_step_first</item>
-        <item name="me_reset_password_step_second_attr">@style/style_me_reset_password_step_second</item>
-        <item name="me_reset_password_step_third_attr">@style/style_me_reset_password_step_third</item>
+        <item name="me_reset_password_step_first_attr">@style/style_me_reset_password_step_first
+        </item>
+        <item name="me_reset_password_step_second_attr">@style/style_me_reset_password_step_second
+        </item>
+        <item name="me_reset_password_step_third_attr">@style/style_me_reset_password_step_third
+        </item>
         <item name="me_reset_password_success_attr">@style/style_me_reset_password_success</item>
         <item name="me_reset_password_login_attr">@style/style_me_reset_password_login</item>
         <item name="hm_ic_vip_level_attr">@style/style_hm_ic_vip_level</item>
         <item name="forget_psword_get_code_attr">@style/style_get_code</item>
         <item name="hm_mid_bg_set_attr">@style/style_hm_mid_bg_set</item>
-
 
 
     </style>

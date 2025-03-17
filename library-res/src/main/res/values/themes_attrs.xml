@@ -124,6 +124,7 @@
     <attr name="feedback_top_message_attr" format="reference" />
     <attr name="dialog_agreement_attr" format="reference" />
     <attr name="dialog_agreement_close_attr" format="reference" />
+    <attr name="choose_account_attr" format="reference" />
 
     <attr name="login_cm_ckb_normal_attr" format="reference" />
     <attr name="login_eye_right_backgroup_attr" format="reference" />

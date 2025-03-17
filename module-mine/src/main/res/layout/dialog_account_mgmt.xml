@@ -2,46 +2,31 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cl_root"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    style="@style/style_rc_dlg_root">
 
-    <RelativeLayout
-        android:id="@+id/bg_top"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/ivw_bg_top"
+        style="?attr/dialog_order_bank_top_attr"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@mipmap/cm_bg_dialog"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="-1dp"
-        android:background="@color/clr_white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bg_top" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_title"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:padding="8dp"
+        android:layout_height="58dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tvw_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            style="@style/style_rc_dlg_title"
             android:text="@string/me_wallet_account"
-            android:textColor="@color/clr_white"
-            android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,87 +34,94 @@
 
         <ImageView
             android:id="@+id/ivw_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="close"
-            android:padding="4dp"
-            android:src="@mipmap/ic_pop_close"
+            style="@style/style_rc_dlg_close"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <FrameLayout
+        style="?attr/bg_rc_dialog_attr"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_title">
 
-        <LinearLayout
-            android:id="@+id/ll_menu"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/layout_margin"
-            android:paddingBottom="36dp">
+            app:layout_constraintTop_toBottomOf="@id/cl_title">
 
-            <TextView
-                style="@style/style_choose_account"
-                android:tag="bindcard"
-                android:text="@string/txt_bind_card" />
+            <LinearLayout
+                android:id="@+id/ll_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/layout_margin"
+                android:paddingBottom="36dp">
 
-            <TextView
-                style="@style/style_choose_account"
-                android:tag="bindusdt"
-                android:text="@string/txt_bind_usdt" />
+                <TextView
+                    style="?attr/choose_account_attr"
+                    android:tag="bindcard"
+                    android:text="@string/txt_bind_card" />
 
-            <TextView
-                style="@style/style_choose_account"
-                android:tag="bindebpay"
-                android:text="@string/txt_bind_ebpay" />
+                <TextView
+                    style="?attr/choose_account_attr"
+                    android:tag="bindusdt"
+                    android:text="@string/txt_bind_usdt" />
 
-            <TextView
-                style="@style/style_choose_account"
-                android:tag="bindtopay"
-                android:text="@string/txt_bind_topay" />
+                <TextView
+                    style="?attr/choose_account_attr"
+                    android:tag="bindebpay"
+                    android:text="@string/txt_bind_ebpay" />
 
-            <TextView
-                style="@style/style_choose_account"
-                android:tag="bindhiwallet"
-                android:text="@string/txt_bind_gcnyt" />
+                <TextView
+                    style="?attr/choose_account_attr"
+                    android:tag="bindtopay"
+                    android:text="@string/txt_bind_topay" />
 
-            <TextView
-                style="@style/style_choose_account"
-                android:tag="bindmpay"
-                android:text="@string/txt_bind_mpay" />
+                <TextView
+                    style="?attr/choose_account_attr"
+                    android:tag="bindhiwallet"
+                    android:text="@string/txt_bind_gcnyt" />
 
-            <TextView
-                style="@style/style_choose_account"
-                android:tag="bindgobao"
-                android:text="@string/txt_bind_gobao" />
+                <TextView
+                    style="?attr/choose_account_attr"
+                    android:tag="bindmpay"
+                    android:text="@string/txt_bind_mpay" />
 
-            <TextView
-                style="@style/style_choose_account"
-                android:tag="bindgopay"
-                android:text="@string/txt_bind_gopay" />
+                <TextView
+                    style="?attr/choose_account_attr"
+                    android:tag="bindgobao"
+                    android:text="@string/txt_bind_gobao" />
 
-            <TextView
-                style="@style/style_choose_account"
-                android:tag="bindokpay"
-                android:text="@string/txt_bind_okpay" />
+                <TextView
+                    style="?attr/choose_account_attr"
+                    android:tag="bindgopay"
+                    android:text="@string/txt_bind_gopay" />
 
-            <TextView
-                android:id="@+id/tv_zfb"
-                style="@style/style_choose_account"
-                android:tag="bindcardzfb"
-                android:text="@string/txt_bind_alipay" />
+                <TextView
+                    style="?attr/choose_account_attr"
+                    android:tag="bindokpay"
+                    android:text="@string/txt_bind_okpay" />
 
-            <TextView
-                android:id="@+id/tv_wx"
-                style="@style/style_choose_account"
-                android:tag="bindcardwx"
-                android:text="@string/txt_bind_wechat" />
+                <TextView
+                    android:id="@+id/tv_zfb"
+                    style="?attr/choose_account_attr"
+                    android:tag="bindcardzfb"
+                    android:text="@string/txt_bind_alipay" />
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                <TextView
+                    android:id="@+id/tv_wx"
+                    style="?attr/choose_account_attr"
+                    android:tag="bindcardwx"
+                    android:text="@string/txt_bind_wechat" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
