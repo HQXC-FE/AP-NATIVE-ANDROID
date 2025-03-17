@@ -1,6 +1,7 @@
 package com.xtree.mine.ui.rebateagrt.viewmodel;
 
 import android.app.Application;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -37,18 +38,19 @@ import com.xtree.mine.vo.request.DividendAgrtCreateRequest;
 import com.xtree.mine.vo.response.DividendAgrtCheckResponse;
 import com.xtree.mine.vo.response.DividendAgrtCreateResponse;
 
+import org.greenrobot.eventbus.EventBus;
 import org.reactivestreams.Subscription;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -61,6 +63,9 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
 
     public static final int CHECK_MODO = 0;
     public static final int CREATE_MODO = 1;
+
+    private int level;
+    private int type;
 
     public final MutableLiveData<ArrayList<BindModel>> datas = new MutableLiveData<>(new ArrayList<>());
     public final MutableLiveData<ArrayList<Integer>> itemType = new MutableLiveData<>(
@@ -105,6 +110,7 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
     }};
     //可选分红比例
     private ArrayList<FilterView.IBaseVo> ratios = new ArrayList<>();
+    private List<Map<String, List<String>>> ruleMaps = null;
 
     public final BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
 
@@ -127,11 +133,16 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
                             return;
                         }
 
-                        int position = bindingViewHolder.getModelPosition();
+//                        int position = bindingViewHolder.getModelPosition();
+                        int modelCount = bindingViewHolder.getAdapter().getModelCount();
+                        //点击删除最后一条规则
+                        int position = modelCount - 1;
+
                         //加上头数据数量
-                        bindModels.remove(position + 3);
+                        bindModels.remove(modelCount - 1 + 3);
                         bindingViewHolder.getAdapter().getMutable().remove(position);
                         bindingViewHolder.getAdapter().notifyItemRemoved(position + 2);
+
                         formatItem();
                     }
                 });
@@ -148,14 +159,45 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
     private final Consumer<DividendAgrtCheckModel> selectRatioConsumer = new Consumer<DividendAgrtCheckModel>() {
         @Override
         public void accept(DividendAgrtCheckModel dividendAgrtCheckModel) throws Exception {
-            FilterView.showDialog(mActivity.get(), "分红比例", ratios, new FilterView.ICallBack() {
+            String ratio = dividendAgrtCheckModel.getRatio();
+            ArrayList<FilterView.IBaseVo> ratioList = new ArrayList<>(ratios);
+
+            if (ratio != null && ratio.contains("-")) {
+                String[] split = ratio.split("-");
+                if (split.length > 1) {
+                    try {
+                        ratioList.clear();
+
+                        float start = Float.parseFloat(split[0]);
+                        float end = Float.parseFloat(split[1]);
+                        float min = Math.min(start, end);
+                        float max = Math.max(start, end);
+
+                        for (float i = min; i < max + 1; i++) {
+                            ratioList.add(new StatusVo(String.valueOf(i), String.valueOf(i)));
+                        }
+
+                    } catch (NumberFormatException e) {
+                        // 出现异常时，返回一个默认值或进行错误处理
+                        e.printStackTrace();
+                        ratioList = ratios;
+                    }
+                }
+            }
+
+            FilterView.showDialog(mActivity.get(), "分红比例(%)", ratioList, new FilterView.ICallBack() {
                 @Override
                 public void onTypeChanged(FilterView.IBaseVo vo) {
-                    dividendAgrtCheckModel.setRatio(vo.getShowId());
+                    if (type == 1 && level == 3) {
+                        dividendAgrtCheckModel.setRatio_range(vo.getShowId());
+                    } else {
+                        dividendAgrtCheckModel.setRatio(vo.getShowId());
+                    }
                 }
             });
         }
     };
+
     public DividendAgrtCheckViewModel(@NonNull Application application) {
         super(application);
     }
@@ -167,13 +209,14 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
     public void initData(DividendAgrtCheckEvent event) {
         //init data
         this.event = event;
+        level = SPUtils.getInstance().getInt(SPKeyGlobal.USER_LEVEL);
+        type = SPUtils.getInstance().getInt(SPKeyGlobal.USER_TYPE);
         initMode();
         datas.setValue(bindModels);
+
     }
 
     private void initMode() {
-
-        int level = SPUtils.getInstance().getInt(SPKeyGlobal.USER_LEVEL);
 
         if (event.getMode() == 1) {
 
@@ -197,12 +240,12 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
             //设置契约条目
             if (event.getRules() != null) {
                 ratios.clear();
-                TypeReference<List<Map<String, List<String>>>> type = new TypeReference<List<Map<String, List<String>>>>() {
+                TypeReference<List<Map<String, List<String>>>> jsonType = new TypeReference<List<Map<String, List<String>>>>() {
                 };
-                List<Map<String, List<String>>> maps = JSON.parseObject(event.getRules(), type);
+                ruleMaps = JSON.parseObject(event.getRules(), jsonType);
 
                 ArrayList<DividendAgrtCheckModel> checkModels = new ArrayList<>();
-                for (Map<String, List<String>> map : maps) {
+                for (Map<String, List<String>> map : ruleMaps) {
                     for (Map.Entry<String, List<String>> entry : map.entrySet()) {
                         DividendAgrtCheckModel model = new DividendAgrtCheckModel();
                         model.editMode.set(true);
@@ -229,7 +272,14 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
                     dividendAgrtCheckModel.setLoseStreak("1");
                     bindModels.add(dividendAgrtCheckModel);
                 } else {
-                    bindModels.addAll(checkModels);
+                    //直属创建契约默认显示第一条规则
+                    if (type == 1 && level == 3) {
+                        DividendAgrtCheckModel firstModel = checkModels.get(0);
+                        firstModel.setRatio_range(getRatioRangeByRatio(firstModel.getRatio()));
+                        bindModels.add(firstModel);
+                    } else {
+                        bindModels.addAll(checkModels);
+                    }
                 }
 
                 formatItem();
@@ -251,10 +301,10 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
             //设置可选分红比例
             if (event.getRules() != null) {
                 ratios.clear();
-                TypeReference<List<Map<String, List<String>>>> type = new TypeReference<List<Map<String, List<String>>>>() {
+                TypeReference<List<Map<String, List<String>>>> jsonType = new TypeReference<List<Map<String, List<String>>>>() {
                 };
-                List<Map<String, List<String>>> maps = JSON.parseObject(event.getRules(), type);
-                for (Map<String, List<String>> map : maps) {
+                ruleMaps = JSON.parseObject(event.getRules(), jsonType);
+                for (Map<String, List<String>> map : ruleMaps) {
                     for (Map.Entry<String, List<String>> entry : map.entrySet()) {
                         //加入分红比例集
                         ratios.add(new StatusVo(entry.getKey(), entry.getKey()));
@@ -270,6 +320,79 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
         }
     }
 
+    private String getLoseStreakByRatio(String ratio) {
+        if (ruleMaps != null) {
+            for (Map<String, List<String>> ruleMap : ruleMaps) {
+                if (ruleMap.get(ratio) != null) {
+                    List<String> value = ruleMap.get(ratio);
+                    if (value.size() > 2) {
+                        return value.get(0);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private List<String> getRuleByRatio(String ratio) {
+        if (ruleMaps != null) {
+            for (Map<String, List<String>> ruleMap : ruleMaps) {
+                if (ruleMap.get(ratio) != null) {
+                    List<String> value = ruleMap.get(ratio);
+                    if (value.size() > 2) {
+                        return value;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private String getRatioRangeByRatio(String ratio) {
+        ArrayList<FilterView.IBaseVo> ratioList = new ArrayList<>(ratios);
+
+        if (ratio != null && ratio.contains("-")) {
+            String[] split = ratio.split("-");
+            if (split.length > 1) {
+                try {
+                    ratioList.clear();
+
+                    float start = Float.parseFloat(split[0]);
+                    float end = Float.parseFloat(split[1]);
+                    float min = Math.min(start, end);
+                    float max = Math.max(start, end);
+
+                    for (float i = min; i < max + 1; i++) {
+                        ratioList.add(new StatusVo(String.valueOf(i), String.valueOf(i)));
+                    }
+
+                } catch (NumberFormatException e) {
+                    // 出现异常时，返回一个默认值或进行错误处理
+                    e.printStackTrace();
+                    ratioList = ratios;
+                }
+            }
+        }
+
+        return ratioList.get(0).getShowId();
+    }
+
+    private String getRatioByLoseStreak(String loseStreak) {
+        if (ruleMaps != null) {
+            for (Map<String, List<String>> ruleMap : ruleMaps) {
+                for (Map.Entry<String, List<String>> entry : ruleMap.entrySet()) {
+                    List<String> value = entry.getValue();
+                    if (value.size() > 2) {
+                        if (value.get(0).equals(loseStreak)) {
+                            return entry.getKey();
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * 添加一条规则
      */
@@ -278,7 +401,12 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
             return;
         }
 
-        int level = SPUtils.getInstance().getInt(SPKeyGlobal.USER_LEVEL);
+        int ruleCount = bindModels.size() - 3;
+
+        if (ruleCount >= ratios.size()) {
+            ToastUtils.showError("规则数量已达上限");
+            return;
+        }
 
         DividendAgrtCheckModel model = new DividendAgrtCheckModel();
         model.editMode.set(true);
@@ -287,9 +415,67 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
             model.filter2EditMode.set(false);
         }
         model.setSelectRatioCallBack(selectRatioConsumer);
-        model.setRatio(ratios.get(0).getShowId());
+
+        String loseStreakByRatio = getLoseStreakByRatio(model.getRatio());
+        ArrayList<FilterView.IBaseVo> ratioList = new ArrayList<>(ratios);
+        Iterator<FilterView.IBaseVo> iterator = ratioList.iterator();
+        while (iterator.hasNext()) {
+            FilterView.IBaseVo vo = iterator.next();
+            if (vo != null && !TextUtils.isEmpty(vo.getShowId())) {
+                for (BindModel bindModel : bindModels) {
+                    if (bindModel instanceof DividendAgrtCheckModel) {
+                        DividendAgrtCheckModel m = (DividendAgrtCheckModel) bindModel;
+
+                        if (TextUtils.isEmpty(m.getRatio())) {
+                            break;
+                        }
+                        try {
+                            float v = Float.parseFloat(vo.getShowId());
+                            float r = Float.parseFloat(m.getRatio());
+
+                            if (Float.compare(v, r) == 0) {
+                                iterator.remove();
+                            }
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            if (vo.getShowId().equals(m.getRatio())) {
+                                iterator.remove();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (ratioList.size() > 0 && !TextUtils.isEmpty(ratioList.get(0).getShowId())) {
+            model.setRatio(ratioList.get(0).getShowId());
+        } else {
+            model.setRatio(ratios.get(0).getShowId());
+        }
+
+        if (type == 1 && level == 3) {
+            model.setRatio_range(getRatioRangeByRatio(model.getRatio()));
+        }
+
+        //直属添加规则不能超过规则数据集上限
+        if (type == 1 && level == 3) {
+
+            if (TextUtils.isEmpty(loseStreakByRatio)) {
+                model.setLoseStreak(String.valueOf(ruleCount + 1));
+            } else {
+                model.setLoseStreak(loseStreakByRatio);
+            }
+        } else {
+            model.setLoseStreak(String.valueOf(ruleCount + 1));
+        }
+
+        List<String> ruleByRatio = getRuleByRatio(model.getRatio());
+        if (ruleByRatio != null) {
+            model.setProfit(ruleByRatio.get(1));
+            model.setPeople(ruleByRatio.get(2));
+        }
+
         bindModels.add(model);
-        model.setLoseStreak(String.valueOf(bindModels.size() - 3));
         formatItem();
         datas.setValue(bindModels);
     }
@@ -348,7 +534,13 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
                         if (response != null && data != null) {
                             for (DividendAgrtCheckResponse.DataDTO.RuleDTO ruleDTO : data.getRule()) {
                                 DividendAgrtCheckModel dividendAgrtCheckModel = new DividendAgrtCheckModel();
-                                dividendAgrtCheckModel.setRatio(ruleDTO.getRatio());
+                                //直属创建契约
+                                if (type == 1 && level == 3) {
+                                    dividendAgrtCheckModel.setRatio(getRatioByLoseStreak(ruleDTO.getLose_streak()));
+                                    dividendAgrtCheckModel.setRatio_range(ruleDTO.getRatio());
+                                } else {
+                                    dividendAgrtCheckModel.setRatio(ruleDTO.getRatio());
+                                }
                                 dividendAgrtCheckModel.setNetProfit(ruleDTO.getNet_profit());
                                 dividendAgrtCheckModel.setProfit(ruleDTO.getProfit());
                                 dividendAgrtCheckModel.setPeople(ruleDTO.getPeople());
@@ -403,6 +595,11 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
             users.add(map.getKey());
         }
 
+        if (users.size() == 0) {
+            ToastUtils.show(getApplication().getString(R.string.txt_rebateagrt_tip1), ToastUtils.ShowType.Default);
+            return;
+        }
+
         if (viewMode.get() == CHECK_MODO) {
             request.setUserid(users.get(0));
         } else {
@@ -411,6 +608,7 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
 
         if (datas.getValue() != null) {
             ArrayList<String> ratioList = new ArrayList<>();
+            ArrayList<String> ratioRangeList = new ArrayList<>();
             ArrayList<String> profitList = new ArrayList<>();
             ArrayList<String> peopleList = new ArrayList<>();
             ArrayList<String> netProfitList = new ArrayList<>();
@@ -425,7 +623,17 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
                         ToastUtils.show(getApplication().getString(R.string.txt_rebateagrt_tip2), ToastUtils.ShowType.Default);
                         return;
                     }
-                    ratioList.add(model.getRatio());
+                    //直属逻辑
+                    if (type == 1 && level == 3) {
+                        if (model.getRatio_range().isEmpty()) {
+                            ToastUtils.showError(model.numText.get() + "未选择分红比例");
+                            return;
+                        }
+                        ratioList.add(model.getRatio_range());
+                        ratioRangeList.add(model.getRatio());
+                    } else {
+                        ratioList.add(model.getRatio());
+                    }
                     profitList.add(model.getProfit());
                     peopleList.add(model.getPeople());
                     netProfitList.add(model.getNetProfit());
@@ -435,6 +643,7 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
                 }
             }
             request.setRatio(ratioList);
+            request.setRatio_range(ratioRangeList);
             request.setProfit(profitList);
             request.setPeople(peopleList);
             request.setNet_profit(netProfitList);
@@ -468,9 +677,17 @@ public class DividendAgrtCheckViewModel extends BaseViewModel<MineRepository> im
                             } else {
                                 //创建成功
                                 ToastUtils.show(response.getSMsg(), ToastUtils.ShowType.Success);
-                                finish();
-                                //发送完成消息
-                                RxBus.getDefault().post(DividendAgrtCheckDialogFragment.CREATED);
+
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        finish();
+                                        //发送完成消息
+//                                        RxBus.getDefault().post(DividendAgrtCheckDialogFragment.CREATED);
+                                        EventBus.getDefault().post(DividendAgrtCheckDialogFragment.CREATED);                                    }
+
+                                }, 700);
                             }
                         }
                     }

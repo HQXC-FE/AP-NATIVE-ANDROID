@@ -32,6 +32,7 @@ import com.xtree.mine.vo.request.GameDividendAgrtRequest;
 import com.xtree.mine.vo.response.DividendAgrtSendReeponse;
 import com.xtree.mine.vo.response.GameDividendAgrtResponse;
 
+import org.greenrobot.eventbus.EventBus;
 import org.reactivestreams.Subscription;
 
 import java.lang.ref.WeakReference;
@@ -44,7 +45,6 @@ import java.util.Map;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.http.BaseResponse2;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -235,7 +235,8 @@ public class DividendAgrtSendViewModel extends BaseViewModel<MineRepository> imp
                     public void onResult(DividendAgrtSendReeponse reeponse) {
                         if (reeponse.getStatus() == 1) {
                             //发送完成消息
-                            RxBus.getDefault().post(DividendAgrtSendDialogFragment.SENT);
+//                            RxBus.getDefault().post(DividendAgrtSendDialogFragment.SENT);
+                            EventBus.getDefault().post(DividendAgrtSendDialogFragment.SENT);
 
                             total.setValue("0.00");
                             //重新加载列表数据
