@@ -158,7 +158,6 @@
     <attr name="me_reset_password_step_second_attr" format="reference" />
     <attr name="me_reset_password_step_third_attr" format="reference" />
     <attr name="me_reset_password_success_attr" format="reference" />
-    <attr name="me_reset_password_login_attr" format="reference" />
     <attr name="hm_ic_vip_level_attr" format="reference" />
     <attr name="forget_psword_get_code_attr" format="reference" />
     <attr name="hm_mid_bg_set_attr" format="reference" />

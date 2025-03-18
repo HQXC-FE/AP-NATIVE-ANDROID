@@ -770,9 +770,7 @@
         <item name="android:background">@drawable/me_reset_password_success</item>
     </style>
 
-    <style name="style_me_reset_password_login">
-        <item name="android:background">@drawable/me_reset_password_login</item>
-    </style>
+
 
     <style name="style_hm_ic_vip_level">
         <item name="android:src">@drawable/hm_ic_vip_level</item>

@@ -44,10 +44,10 @@
 
         <ImageView
             android:id="@+id/iv_bg_offer"
+            style="?attr/offer_top_attr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            style="?attr/offer_top_attr"
             app:layout_constraintEnd_toEndOf="@id/cl_title"
             app:layout_constraintStart_toStartOf="@id/cl_title"
             app:layout_constraintTop_toBottomOf="@id/cl_title" />
@@ -67,8 +67,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
             android:layout_marginTop="40dp"
+            android:layout_marginRight="24dp"
             android:text="@string/txt_offer_wait_money"
             android:textColor="@color/clr_txt_grey_11"
             android:textSize="14sp"
@@ -147,7 +147,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_status">
+            app:layout_constraintTop_toBottomOf="@id/tv_status"
+            tools:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/ll_menu"
@@ -369,7 +370,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:background="@drawable/btn_offer_ok"
+                android:background="@drawable/cm_btn_long_press2"
+                android:text="@string/ok"
+                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/bt_reset"
                 app:layout_constraintTop_toTopOf="@id/line" />
@@ -386,10 +389,10 @@
 
         <TextView
             android:id="@+id/tv_no_data"
+            style="?attr/offer_no_data_attr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
-            style="?attr/offer_no_data_attr"
             android:elevation="-1dp"
             android:gravity="center"
             android:text="@string/txt_offer_no_data"

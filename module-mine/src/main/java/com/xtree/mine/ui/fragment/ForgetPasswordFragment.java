@@ -74,11 +74,11 @@ public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordB
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (binding.llCheckUsername.edtResetPasswordUsername.getText().toString().length() == 0) {
                     binding.llCheckUsername.twvResetPasswordUsername.setVisibility(View.VISIBLE);
-                    binding.llCheckUsername.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.drawable.me_reset_password_next_unable));
+                    binding.llCheckUsername.ivwResetPasswordNext.setBackgroundResource(R.drawable.cm_btn_long_disable2);
                     mIsClickable = false;
                 } else {
                     binding.llCheckUsername.twvResetPasswordUsername.setVisibility(View.GONE);
-                    binding.llCheckUsername.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.drawable.me_reset_password_next_enable));
+                    binding.llCheckUsername.ivwResetPasswordNext.setBackgroundResource(R.drawable.cm_btn_long_press2);
                     mIsClickable = true;
                 }
             }
@@ -93,10 +93,10 @@ public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordB
             if (mIsClickable) {
                 CfLog.d("getForgetUserInfo");
                 mUsername = binding.llCheckUsername.edtResetPasswordUsername.getText().toString();
-                if (mUsername !=null && !TextUtils.isEmpty(mUsername) && mUsername.length() >2){
+                if (mUsername != null && !TextUtils.isEmpty(mUsername) && mUsername.length() > 2) {
                     viewModel.getForgetUserInfo(mUsername);
                     mIsClickable = false;
-                }else{
+                } else {
                     CfLog.e("*******************mUsername is NULL *******************");
                 }
             }
@@ -132,16 +132,16 @@ public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordB
                 if (binding.llCheckOtp.edtSetOpt.getText().toString().length() == 0) {
                     binding.llCheckOtp.twvSetOtpError.setVisibility(View.VISIBLE);
                     binding.llCheckOtp.twvSetOtpError.setText(R.string.txt_otp_can_not_null);
-                    binding.llCheckOtp.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.drawable.me_reset_password_next_unable));
+                    binding.llCheckOtp.ivwResetPasswordNext.setBackgroundResource(R.drawable.cm_btn_long_disable2);
                     mIsClickable = false;
                 } else if (binding.llCheckOtp.edtSetOpt.getText().toString().length() == 6) {
                     binding.llCheckOtp.twvSetOtpError.setVisibility(View.GONE);
-                    binding.llCheckOtp.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.drawable.me_reset_password_next_enable));
+                    binding.llCheckOtp.ivwResetPasswordNext.setBackgroundResource(R.drawable.cm_btn_long_press2);
                     mIsClickable = true;
                 } else {
                     binding.llCheckOtp.twvSetOtpError.setVisibility(View.VISIBLE);
                     binding.llCheckOtp.twvSetOtpError.setText(R.string.txt_otp_not_six_number);
-                    binding.llCheckOtp.ivwResetPasswordNext.setImageDrawable(getResources().getDrawable(R.drawable.me_reset_password_next_unable));
+                    binding.llCheckOtp.ivwResetPasswordNext.setBackgroundResource(R.drawable.cm_btn_long_disable2);
                     mIsClickable = false;
                 }
             }
