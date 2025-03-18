@@ -536,7 +536,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                             CfLog.e("data is null");
                             return;
                         }
-                     //   liveDataUpdate.setValue(vo);
+                        liveDataUpdate.setValue(vo);
                     }
 
                     @Override
