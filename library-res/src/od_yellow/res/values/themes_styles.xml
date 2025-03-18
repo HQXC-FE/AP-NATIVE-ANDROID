@@ -807,5 +807,15 @@
         <item name="android:background">@drawable/hm_mid_bg_set</item>
     </style>
 
+    <style name="style_customer_service_bg">
+        <item name="android:background">@drawable/customer_service_bg</item>
+    </style>
+
+    <style name="style_customer_service_line1">
+        <item name="android:background">@drawable/custom_line_1</item>
+    </style>
+    <style name="style_customer_service_line2">
+        <item name="android:background">@drawable/custom_line_2</item>
+    </style>
 
 </resources>

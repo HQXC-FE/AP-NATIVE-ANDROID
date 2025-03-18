@@ -4,9 +4,9 @@
 
     <gradient
         android:angle="0"
-        android:endColor="@color/bt_page_bg"
-        android:centerColor="@color/bt_page_bg"
-        android:startColor="@color/bt_page_bg" />
+        android:endColor="@color/customQAColor"
+        android:centerColor="@color/customQAColor"
+        android:startColor="@color/customQAColor" />
     <stroke android:width="2dp"
         android:color="@color/bt_page_bg" />
     <corners

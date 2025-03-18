@@ -29,6 +29,7 @@
                 style="@style/style_cm_title"
                 android:layout_marginTop="0dp"
                 android:text="热门活动"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
