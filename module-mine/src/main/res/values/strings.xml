@@ -1,11 +1,9 @@
 <resources>
-    <string name="mine_name">module-mine</string>
     <string name="me_user_name_hint">用户昵称</string>
     <string name="me_login_hint">登录</string>
     <string name="me_register_hint">注册</string>
     <string name="me_visit_hint">您好游客，请点击登录按钮</string>
     <string name="me_money_total">总资产(元)</string>
-    <string name="me_get_all_money">一键汇总</string>
     <string name="me_level_hint">亲！您还差6000点就可以升级为VIP1，更多福利等着您！</string>
     <string name="txt_level_hint_00">亲！您还差%1$d点就可以升级为VIP%2$d，更多福利等着您！</string>
     <string name="txt_level_hint_10">恭喜您达到尊贵的VIP%1$d，请尽享本平台游戏及福利!</string>
@@ -25,7 +23,6 @@
     <string name="me_vip_zhongxin">VIP中心</string>
     <string name="me_fanhui_baobiao">返水报表</string>
     <string name="me_tiyu_guize">体育规则</string>
-    <string name="me_changjian_wenti">常见问题</string>
     <string name="me_bangzhu_zhongxin">帮助中心</string>
     <string name="me_usdt_jiaocheng">教程</string>
     <string name="txt_upgrade">检查更新</string>
@@ -50,15 +47,10 @@
         \n\n 7. 请使用者注意网络环境安全，注意防护个人信息泄露，本网站不会以致电、短信、三方平台添加好友等形式与您做私密沟通。
         \n\n 8. 请勿将个人账户、密码泄露他人，还请防范陌生人假借提供的代充、代传方式，实际以实施诈骗行为。
         \n\n 9. 贵使用者新绑定银行卡，为了账户资金安全，需等待6小时后才可提现。</string>
-    <string name="me_go_round">先去逛逛</string>
-    <string name="me_online_service">在线客服</string>
     <string name="me_agree_hint">请授权同意</string>
     <string name="me_register">注册</string>
-    <string name="me_register_reinput">请再次输入密码</string>
-    <string name="me_choose_account">请选择账号类型</string>
     <string name="me_my_wallet">我的钱包</string>
     <string name="me_wallet_title">平台中心余额 (元)</string>
-    <string name="me_wallet_deposit">去存款</string>
     <string name="me_wallet_amount">0.0000</string>
     <string name="me_wallet_save">充值</string>
     <string name="me_wallet_transfer">转账</string>
@@ -68,11 +60,6 @@
     <string name="me_wallet_details">钱包明细</string>
     <string name="me_wallet_ptgame">PT娱乐</string>
     <string name="me_wallet_bbingame">BBIN娱乐</string>
-    <string name="me_wallet_aggame">AG街机捕鱼</string>
-    <string name="me_wallet_pmgame">DB电竞</string>
-    <string name="me_wallet_yunyouqipai">云游棋牌</string>
-    <string name="me_wallet_pmqp">DB棋牌</string>
-    <string name="me_wallet_dbgame">DB电竞</string>
     <string name="me_wallet_dbqp">DB棋牌</string>
     <string name="txt_user_name">用户名</string>
     <string name="txt_user_name_input">请输入用户名</string>
@@ -103,7 +90,6 @@
     <string name="txt_recycle_succ">回收成功</string>
     <string name="txt_recycle_fail">回收失败</string>
 
-    <string name="txt_security_center">安全中心</string>
     <string name="txt_login_pwd">登录密码</string>
     <string name="txt_google_code">Google动态口令</string>
     <!--谷歌提示语1-->
@@ -116,7 +102,6 @@
     <!--谷歌提示语-->
     <string name="txt_google_hit_prompt">(请在动态口令中查看当前口令，并填入上方输入框)</string>
     <string name="edit_google_hit">请输入谷歌验证码</string>
-    <string name="btn_bind_text">绑 定</string>
 
     <string name="txt_bind_phone">绑定手机号码</string>
     <string name="txt_bind_email">绑定邮箱地址</string>
@@ -134,7 +119,6 @@
     <string name="txt_change_phone_num">"更新手机号 "</string>
     <string name="txt_change_email">"更新邮箱地址 "</string>
     <string name="txt_pwd_cannot_empty">密码不能为空</string>
-    <string name="txt_pwd_not_same">两次密码不一致</string>
     <string name="txt_change_succ">修改成功</string>
     <string name="txt_get_code">获取验证码</string>
     <string name="txt_already_send_code">已发送验证码</string>
@@ -145,7 +129,6 @@
     <string name="txt_enter_phone_num">请输入11位的手机号码</string>
     <string name="txt_enter_valid_phone_num">请输入正确的手机号</string>
     <string name="txt_enter_valid_email_num">邮箱格式不正确</string>
-    <string name="txt_enter_code_error">验证码错误</string>
     <string name="txt_enter_code_cannot_empty">验证码不能为空</string>
     <string name="txt_enter_code_6">请输入6位数字的验证码</string>
     <string name="txt_enter_email_pls">请输入邮箱地址</string>
@@ -157,7 +140,6 @@
     <string name="txt_tip_cs_02">人工客服</string>
     <string name="txt_tip_cs_03">解决</string>
 
-    <string name="txt_change_pwd">修改密码</string>
     <string name="txt_reset_pwd">重置登录密码</string>
     <string name="txt_enter_new_pwd">请输入新的登录密码</string>
     <string name="txt_username_empty">用户名不能为空</string>
@@ -193,16 +175,12 @@
 
     <string name="txt_lock_card">锁定银行卡</string>
     <string name="txt_add_bind">增加绑定</string>
-    <string name="txt_card_locked">卡已锁定</string>
     <string name="txt_bind_most_cards">一个账户最多只能绑定%1$s张银行卡</string>
     <string name="txt_lock_cards">银行卡锁定可以增强账户安全,推荐锁定(如：账户被他人盗用后，由于锁定的限制，您账户的资金不会被他人提款 )</string>
     <string name="txt_u_cannot_unlock_cards">银行卡锁定后，不能增加新银行卡绑定，自身不能解绑和解锁银行卡，联系您的上级申请解锁</string>
 
     <string name="txt_bind_most_usdt">一个账户最多只能绑定%1$s个%2$s地址</string>
     <string name="txt_bind_most_aw">每个账户最多可以绑定%1$s个%2$s收款码</string>
-    <string name="txt_rebind">重新绑定</string>
-    <string name="txt_open_acc_bank">开户行：</string>
-    <string name="txt_card_num">卡号：</string>
     <string name="txt_open_area">*开户地区</string>
     <string name="txt_info_review">信息核对</string>
     <string name="txt_nickname_c">昵称：</string>
@@ -217,9 +195,7 @@
     <string name="txt_note_cs_cannot_unlock_bank_card">在线客服不提供账户银行卡解锁业务，若要解锁请向上级代理申请</string>
     <string name="txt_type_c">货币类型：</string>
     <string name="txt_address_c">提现钱包地址：</string>
-    <string name="txt_wallet_address_c">钱包地址：</string>
     <string name="txt_address_should_same">两次输入的地址不一致</string>
-    <string name="txt_bind_time_c">绑定时间：</string>
 
     <string name="txt_acc_change_type">账变类型</string>
     <string name="txt_acc_change_status">账变状态</string>
@@ -285,7 +261,6 @@
     <string name="txt_prizes_s">奖金：</string>
     <string name="txt_multiple_s">倍数：</string>
     <string name="txt_modes_s">模式：</string>
-    <string name="txt_bt_content_s">投注内容：</string>
     <string name="txt_delete_cp">撤单</string>
     <string name="txt_delete_cp_msg">确定要撤销订单吗</string>
 
@@ -314,12 +289,8 @@
     <string name="txt_forget_password_finish">恭喜您，您的登入密码已修改完成</string>
     <!--提款流程文字提示-->
 
-    <string name="txt_withdrawal_payment_number">收款账号:</string>
-    <string name="txt_withdrawal_number_accounts">账户数量</string>
     <string name="txt_withdrawal_user_name">用户名:</string>
     <string name="txt_choose_withdrawal_method">请选择提款方式</string>
-    <string name="txt_choose_withdrawal_usdt">USDT介绍及提款教程</string>
-    <string name="txt_bank_card_withdrawal">银行卡提款</string>
     <string name="txt_set_bank_card">1.设置提款请求</string>
     <string name="txt_msg_message">公告</string>
     <string name="txt_msg_message_person">站内信</string>
@@ -343,15 +314,11 @@
     <string name="txt_vip_back_need_three_month">保级流水3个月</string>
     <string name="txt_withdrawal_type">提款类型：</string>
     <string name="txt_withdrawal_confirm_amount">提款金额:</string>
-    <string name="txt_withdrawal_enm">提款方式：</string>
     <string name="txt_withdrawal_method">可提款金额：</string>
     <string name="txt_withdrawal_money_tip">实际提款金额：</string>
     <string name="txt_withdrawal_method_tip">提款金额</string>
     <string name="txt_confirm_withdrawal_amount">可提款金额：</string>
-    <string name="txt_virtual_type">虚拟币类型：</string>
-    <string name="txt_virtual_money_type">提款类型：</string>
     <string name="txt_virtual_money_numb">提款金额：</string>
-    <string name="txt_confirm_amount">提款金额方式：</string>
     <string name="txt_withdrawal_min">单笔最低提现金额:</string>
     <string name="txt_input_money">请输入提款金额</string>
     <string name="txt_actual_withdrawal_amount">实际提款金额</string>
@@ -365,7 +332,6 @@
     <string name="txt_account_suc_message">账户提款申请成功提款进度请关注站内信通知</string>
     <string name="txt_rate_tip">汇率:</string>
     <string name="txt_actual_number">实际到账个数:</string>
-    <string name="txt_withdrawal_usdt_account">收款USDT账号：</string>
     <string name="txt_receive_usdt_account">收到USDT账户</string>
     <string name="txt_select_virtual_address">请选择虚拟币收款地址</string>
     <string name="txt_ust_trc20_usdt">【嗨钱包USDT】仅可使用TRC20_USDT类型进行提款</string>
@@ -378,9 +344,7 @@
     <string name="txt_select_withdrawal_address">请选择提币地址</string>
 
     <string name="txt_vip_title">VIP特权</string>
-    <string name="txt_tip_unfinished_activity">提款流水</string>
     <string name="txt_tip_activity_withdraw">活动提款流水</string>
-    <string name="txt_tip_wallet">钱包</string>
     <string name="txt_tip_report">*所有平台查询不包括彩票,查询彩票请下拉筛选单独查询</string>
     <string name="txt_tip_number">笔数</string>
     <string name="txt_tip_effective">有效投注额</string>
@@ -413,7 +377,6 @@
     <string name="txt_wechat_code">微信收款码：</string>
     <string name="txt_alipay_phone">支付宝账号：</string>
     <string name="txt_wechat_phone">微信账号：</string>
-    <string name="txt_bind_phone_number">绑定的手机号码</string>
     <string name="txt_input_nickname">输入您的%s昵称</string>
     <string name="txt_upload_payment_code">点击上传%s收款二维码截图</string>
     <string name="txt_get_payment_code">查看如何获取%s个人收款码</string>
@@ -421,8 +384,6 @@
     <string name="txt_tip_account">请输入正确格式的账号</string>
     <string name="txt_tip_nickname">请输入昵称</string>
     <string name="txt_tip_code">请添加%s收款码</string>
-    <string name="txt_title_code">如何获取%s个人收款码</string>
-    <string name="txt_no_data_tip">暂无数据</string>
     <string name="txt_check_detail">查看详情</string>
     <string name="txt_register_bottom_login">已有账户？马上登录</string>
 </resources>

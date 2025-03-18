@@ -1,8 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
     <string name="app_name">module-recharge</string>
-    <string name="txt_not_support">暂不支持</string>
-    <string name="pls_choose_recharge_type">请选择充值类型</string>
-    <string name="txt_recharge_range">充值金额区间 %1$s~%2$s </string>
     <string name="txt_deposit_fee">加送%1$s%%</string>
     <string name="txt_deposit_fee_most">最高加送%1$s%%</string>
     <string name="format_change_range">预计支付：%1$s%2$s</string>
@@ -17,7 +14,6 @@
     <string name="txt_feedback">反馈信息</string>
     <string name="txt_next">下一步</string>
     <string name="txt_choose_recharge_channel">请选择充值方式：</string>
-    <string name="txt_is_to_open_hiwallet_wallet">是否打开HiWallet钱包</string>
     <string name="txt_is_to_open_hiwallet_title">即将进入嗨钱包页面</string>
     <string name="txt_is_to_open_hiwallet_content">尚未注册，请注册后进行登录\n已经有嗨钱包账号，点击返回按钮后，进行登录\n登录后，即可体验嗨钱包的功能</string>
     <string name="txt_pls_select_payment_card">请选择付款银行卡</string>
@@ -74,23 +70,18 @@
     <string name="txt_tip_input_usdt_payment_agreement">请选择协议</string>
     <string name="txt_tip_input_usdt_numb">* 虚拟币数量：</string>
     <string name="txt_tip_input_usdt_numb_error">*虚拟币数量不能为空</string>
-    <string name="txt_tip_input_usdt_numb_error_tip">*请输入正确的数量</string>
     <string name="txt_tip_input_usdt_add">* 收款钱包地址：</string>
     <string name="txt_tip_input_usdt_add_hint">请输入收款钱包地址</string>
     <!--反馈录入页面录入异常提示语言 微信支付宝-->
     <string name="txt_tip_input_wechat_pay_err">付款账户不能为空</string>
     <string name="txt_tip_input_pay_wechat_name_err">付款人姓名不能为空</string>
-    <string name="txt_tip_input_pay_wechat_name_err_tip">请输入正确的付款人姓名 , 例如:张三</string>
     <string name="txt_tip_input_collection_wechat_name_err">收款人姓名不能为空</string>
-    <string name="txt_tip_input_collection_wechat_name_err_tip">请输入正确的收款人姓名 , 例如:李四</string>
     <string name="txt_tip_input_wechat_save_number_err">存款金额不能为空</string>
-    <string name="txt_tip_input_wechat_save_number_err_tip">请输入正确的存款金额 , 例如：5000.00</string>
     <string name="txt_tip_input_wechat_other_order_err">第三方订单号不能为空</string>
     <!--反馈录入页面录入异常提示语言 虚拟币-->
     <string name="txt_tip_input_usdt_pay_err">付款钱包地址不能为空</string>
     <string name="txt_tip_input_usdt_save_number_time_err">存款时间不能为空</string>
     <string name="txt_tip_input_usdt_collection_name_err">收款钱包地址不能为空</string>
-    <string name="txt_tip_input_usdt_add_err">收款钱包地址不能为空</string>
 
     <string name="txt_rc_question">遇到问题</string>
     <string name="txt_rc_succ">充值成功</string>
@@ -104,7 +95,6 @@
     <string name="txt_rc_wait_long_or_orders_not_processed_contact_cs">高峰期若充值订单处理时间过长或多个订单未处理，请联系客服为您手动处理充值订单。</string>
     <string name="txt_rc_is_succ">是否充值成功？若充值未成功，请点击遇到问题，重新选择渠道进行充值！</string>
 
-    <string name="txt_rc_1k_copy_card">一键复制银行卡所有信息</string>
     <string name="txt_rc_only_bank_card">仅支持银行卡转账，其它充值方式将无法到账。</string>
     <string name="txt_rc_only_x_card">仅支持%1$s转账，其它充值方式将无法到账。</string>
     <string name="txt_rc_kw_recharge">充值</string>

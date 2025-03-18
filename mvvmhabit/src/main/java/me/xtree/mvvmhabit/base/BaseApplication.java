@@ -27,7 +27,7 @@ public class BaseApplication extends Application {
     }
 
     private void initBRV() {
-        BRV.INSTANCE.setModelId(BR.m);
+        BRV.INSTANCE.setModelId(BR._all);
     }
 
     /**

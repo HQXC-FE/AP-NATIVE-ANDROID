@@ -24,7 +24,6 @@ import com.xtree.mine.BR
 import com.xtree.mine.R
 import com.xtree.mine.databinding.FragmentBindAwBinding
 import com.xtree.mine.databinding.ItemBindAlipayBinding
-import com.xtree.mine.databinding.ItemBindAwBinding
 import com.xtree.mine.ui.viewmodel.BindCardViewModel
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory
 import com.xtree.mine.vo.AWVo
@@ -54,12 +53,15 @@ class BindAlipayWechatFragment : BaseFragment<FragmentBindAwBinding, BindCardVie
             ivwBack.setOnClickListener { v: View? -> requireActivity().finish() }
             mAdapter = object : CachedAutoRefreshAdapter<AWVo>() {
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CacheViewHolder {
-                   /* return CacheViewHolder(LayoutInflater.from(context).inflate(R.layout.item_bind_aw, parent, false))*/
-                     return CacheViewHolder(LayoutInflater.from(context).inflate(R.layout.item_bind_alipay, parent, false))
+                    /* return CacheViewHolder(LayoutInflater.from(context).inflate(R.layout.item_bind_aw, parent, false))*/
+                    return CacheViewHolder(
+                        LayoutInflater.from(context)
+                            .inflate(R.layout.item_bind_alipay, parent, false)
+                    )
                 }
 
                 override fun onBindViewHolder(holder: CacheViewHolder, position: Int) {
-                   // val binding2 = ItemBindAwBinding.bind(holder.itemView)
+                    // val binding2 = ItemBindAwBinding.bind(holder.itemView)
                     val binding2 = ItemBindAlipayBinding.bind(holder.itemView)
                     val vo = get(position)
                     when (mark) {
@@ -78,7 +80,7 @@ class BindAlipayWechatFragment : BaseFragment<FragmentBindAwBinding, BindCardVie
 
                         getString(R.string.txt_bind_wechat_type) -> {
                             //binding2.tvwUserName.text = getString(R.string.txt_wechat_phone).plus(vo.wxzfb_id)
-                            binding2.tvwUserName.text =vo.user_id
+                            binding2.tvwUserName.text = vo.user_id
                             binding2.tvDefaultAlipayPayCode.setText(R.string.txt_wechat_code)
                             binding2.tvDefaultAlipayName.setText(R.string.txt_wechat_name_1)
                             binding2.ivBankIcon.setImageResource(R.mipmap.mine_default_wechat)
@@ -97,7 +99,13 @@ class BindAlipayWechatFragment : BaseFragment<FragmentBindAwBinding, BindCardVie
                     }*/
                     binding2.ivCode.setOnClickListener {
                         XPopup.Builder(context)
-                            .asCustom(ImageDialog(requireContext(), DomainUtil.getH5Domain2() + vo.qrcode_url,needToken = true))
+                            .asCustom(
+                                ImageDialog(
+                                    requireContext(),
+                                    DomainUtil.getH5Domain2() + vo.qrcode_url,
+                                    needToken = true
+                                )
+                            )
                             .show()
                     }
                 }
@@ -150,7 +158,11 @@ class BindAlipayWechatFragment : BaseFragment<FragmentBindAwBinding, BindCardVie
         }
     }
 
-    override fun initContentView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): Int {
+    override fun initContentView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): Int {
         return R.layout.fragment_bind_aw
     }
 
@@ -193,7 +205,8 @@ class BindAlipayWechatFragment : BaseFragment<FragmentBindAwBinding, BindCardVie
                         txt = getString(R.string.txt_wechat)
                     }
                 }
-                binding.tvwTip.text = String.format(getString(R.string.txt_bind_most_aw), vo.num, txt)
+                binding.tvwTip.text =
+                    String.format(getString(R.string.txt_bind_most_aw), vo.num, txt)
                 val max = vo.num.toInt()
                 val count = vo.binded.toInt()
                 if (count < max) {

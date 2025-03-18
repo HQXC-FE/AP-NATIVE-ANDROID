@@ -99,15 +99,6 @@
     </style>
 
     <!-- 每个页面标题栏的样式-右边小按钮 -->
-    <style name="cm_title_style">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">@dimen/layout_margin</item>
-        <item name="android:layout_marginEnd">@dimen/layout_margin</item>
-        <item name="android:layout_marginTop">@dimen/layout_margin</item>
-        <item name="android:textColor">@color/clr_txt_black_01</item>
-        <item name="android:textSize">17sp</item>
-    </style>
 
     <style name="recharge_btn_next_style">
         <item name="android:background">@drawable/bg_btn_long_selector</item>
@@ -362,11 +353,6 @@
     </style>
 
     <style name="style_me_betting_record" parent="style_menu_white">
-        <item name="android:drawableTop">@drawable/me_betting_record</item>
-        <item name="android:text">@string/me_betting_record</item>
-    </style>
-
-    <style name="style_me_account_record" parent="style_menu_white">
         <item name="android:drawableTop">@drawable/me_betting_record</item>
         <item name="android:text">@string/me_betting_record</item>
     </style>

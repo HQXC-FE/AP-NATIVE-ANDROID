@@ -1,11 +1,7 @@
 <resources>
-    <string name="bet_name">投注组件</string>
     <string name="bt_all_league">全部联赛</string>
     <string name="bt_game_going_on">进行中</string>
     <string name="bt_game_waiting">未开赛</string>
-    <string name="bt_play_type_dy">全场独赢</string>
-    <string name="bt_play_type_yf">全场让分</string>
-    <string name="bt_play_type_dx">全场大小</string>
     <string name="bt_car_add_match">增加赛事</string>
     <string name="bt_bt_confirm_option">投注</string>
     <string name="bt_bt_win">预计可赢：%1$s</string>
@@ -34,7 +30,6 @@
     <string name="bt_bt_result_win">最高可赢</string>
     <string name="bt_bt_result_win_1">最高可赢：%1$s元</string>
     <string name="bt_bt_result_win_2">输赢：%1$s元</string>
-    <string name="bt_bt_result_record">流水：%1$s元</string>
     <string name="bt_bt_result_record_cg">%1$s(%2$s)-%3$s</string>
     <string name="bt_bt_result_record_match_time">比赛时间：%1$s</string>
     <string name="bt_bt_result_id">注单号</string>

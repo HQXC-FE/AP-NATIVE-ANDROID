@@ -7,11 +7,7 @@
     <string name="domain_url_list_third">http;http</string>
     <string name="domain_api">http</string>
     <string name="domain_api_list">http;http</string>
-    <string name="domain_url_pre">http</string>
-    <string name="domain_url_list_pre">http;http</string>
-    <string name="domain_url_list_third_pre">http;http</string>
     <string name="domain_api_pre">http</string>
-    <string name="domain_api_list_pre">http;http</string>
     <string name="channel_name">xingcai</string>
     <string name="build_time">20240112</string>
     <string name="mixpanel_token">abc123</string>
@@ -21,12 +17,9 @@
 
 
     <string name="txt_vip_center">VIP中心</string>
-    <string name="txt_withdraw">提款</string>
     <string name="txt_feedback">反馈信息</string>
-    <string name="txt_custom_center">客服中心</string>
     <string name="txt_contact_custom">联系客服</string>
     <string name="txt_recharge_tutorial">充值教程</string>
-    <string name="txt_transfer_tutorial">回执单示例</string>
     <string name="txt_transfer_receipt">回单验证教程</string>
     <string name="txt_msg_center">消息中心</string>
     <string name="txt_customer_service">我的客服</string>
@@ -53,7 +46,6 @@
     <string name="txt_bind_usdt">管理USDT</string>
     <string name="txt_bind_usdt_top">绑定USDT</string>
     <string name="txt_bind_ebpay">管理EBPAY</string>
-    <string name="txt_bind_ebpay_top">绑定EBPAY</string>
     <string name="txt_bind_topay">管理TOPAY</string>
     <string name="txt_bind_gcnyt">管理CNYT</string>
     <string name="txt_bind_mpay">管理MPAY</string>
@@ -63,7 +55,6 @@
     <string name="txt_bind_alipay">管理支付宝</string>
     <string name="txt_bind_alipay1">绑定支付宝</string>
     <string name="txt_bind_wechat">管理微信支付</string>
-    <string name="txt_bind_wechat1">绑定信支付</string>
     <string name="txt_manage_alipay">管理支付宝</string>
     <string name="txt_manage_wechat">管理微信支付</string>
     <string name="txt_alipay">支付宝</string>
@@ -102,7 +93,6 @@
     <string name="txt_all">所有</string>
     <string name="txt_succ">成功</string>
     <string name="txt_fail">失败</string>
-    <string name="txt_processed">已处理</string>
     <string name="txt_match">已配对</string>
     <string name="txt_man">人工</string>
     <string name="txt_process">处理中</string>
@@ -184,7 +174,6 @@
     <string name="txt_tip">提示</string>
     <string name="txt_google_auth_fail">绑定谷歌验证码失败</string>
     <string name="txt_submitted_suc">提交成功</string>
-    <string name="txt_usdt">提款账户</string>
 
     <string name="txt_copy">复制</string>
     <string name="txt_copied">已复制</string>
@@ -249,14 +238,12 @@
     <string name="txt_update_down_fail_tip">下载失败，请稍候重试</string>
     <string name="txt_network_error">网络异常，请稍后重试</string>
     <string name="txt_update_version">已经是最新版本</string>
-    <string name="txt_withdrawal_network_error">网络链接超时，请检查您的网络后重试</string>
     <string name="txt_no_withdrawals_available_tip">您今天已没有可用提款次数</string>
     <string name="txt_withdrawal_not_supported_tip">暂不支持该渠道提款，请联系您的上级或客服！</string>
     <!--提款-->
     <string name="txt_withdrawal_bank">银行卡提款</string>
     <string name="txt_withdraw_flow">提款流水</string>
     <string name="txt_withdrawal">提款</string>
-    <string name="txt_withdraw_bank_top_tip">注意：每天限制提款 %1$s 次，您已提款 %2$s 次，提款时间为 %3$s  至 %4$s  您今日剩余提款额度为 %5$s 元</string>
     <string name="txt_withdraw_flow_close_single">适用： %1$s </string>
     <string name="txt_withdraw_flow_close_tip">适用： %1$s 等 %2$s</string>
     <string name="txt_withdraw_flow_open_tip">适用： %1$s %2$s</string>
@@ -275,8 +262,6 @@
     <string name="txt_chang_psw_input_format_error">密码格式不正确,请重新你输入</string>
 
     <string name="txt_insufficient_balance">" 余额不足"</string>
-    <string name="txt_no_withdrawal_address_for_this_withdrawal_type">暂时没有该提款类型的提款地址</string>
-    <string name="txt_no_withdrawal_address_for_trc20_type">暂时没有该提款类型的提款地址</string>
 
     <string name="txt_sport_official">杏彩体育</string>
     <string name="txt_sport_inter">杏彩体育旗舰版</string>
@@ -294,7 +279,6 @@
     <string name="txt_withdraw_address_tip">请选择提款地址</string>
     <string name="txt_withdraw_submit_tip">账户提款申请成功</string>
     <string name="txt_withdrawal_usdt_title">USDT提款</string>
-    <string name="txt_update_bottom_tip">打开浏览器下载安装</string>
     <string name="txt_update_bottom_error_tip">如更新失败，点击此处下载安装</string>
 
     <!--  全局验证页 -->
@@ -313,8 +297,6 @@
     <string name="txt_recharge_name">充值姓名需要和您绑定提款银行卡 \n时的姓名一致</string>
     <string name="txt_recharge_money">请输入充值金额，建议使用下方快捷金额按钮</string>
     <string name="txt_recharge_nex">点击【下一步】进行充值订单匹配</string>
-    <string name="txt_recharge_view_jump">跳过</string>
-    <string name="txt_recharge_view_next">下一步</string>
     <string name="txt_recharge_view_pro">上一步</string>
     <string name="txt_guide_ex_tran_commit">匹配成功后自动会自动进入下一步</string>
     <string name="txt_guide_ex_tran_confirm">已匹配到我们的收款银行卡信息，请通过 \n您的银行卡进行转账汇款</string>
@@ -325,7 +307,6 @@
     <string name="txt_guide_ex_pay_sure1">上传完回执单后，系统会根据您提供的\N回执单，识别出来付款银行和卡号。若无法识别您也可以自行填写</string>
     <string name="txt_guide_ex_confirm1">充值已完成，请耐心等候上分。</string>
     <string name="txt_guide_ex_confirm2">若有疑问可联系客服。</string>
-    <string name="txt_guide_ex_pay_upload_time">注意剩余时间，请在规定时间内完成回执单上传 \n若超时未完成上传，请联系客服</string>
     <string name="txt_guide_ex_pay_upload_time1">请点击【上传图片】将汇款回执单进行上传\n您也可以点击【回执单示例】产看回执单的示例</string>
     <string name="txt_mine_bind_bank_number">银行卡号</string>
     <string name="txt_mine_rebind_usdt">重新绑定</string>
@@ -348,7 +329,6 @@
     <string name="txt_offer_30_day">近30天</string>
     <string name="txt_offer_setting">自定义</string>
     <string name="txt_offer_reset">重置</string>
-    <string name="txt_offer_ok">确定</string>
     <string name="txt_offer_receiving">立即领取</string>
     <string name="txt_offer_no_data">暂无优惠</string>
 
@@ -403,7 +383,6 @@
     <string name="me_vip_zhongxin">VIP中心</string>
     <string name="me_fanhui_baobiao">返水报表</string>
     <string name="me_tiyu_guize">体育规则</string>
-    <string name="me_changjian_wenti">常见问题</string>
     <string name="me_bangzhu_zhongxin">帮助中心</string>
     <string name="me_usdt_jiaocheng">教程</string>
     <string name="txt_upgrade">检查更新</string>
@@ -414,6 +393,4 @@
     <string name="me_pwd_rember">记住密码</string>
 
     <string name="txt_google_bind">绑 定</string>
-    <string name="txt_login_to_register">还没有账号？ 前去注册</string>
-    <string name="txt_login_to_login">已有账号？ 马上登录</string>
 </resources>

@@ -42,15 +42,6 @@
     <!--    主题色-->
 
     <!--   状态-->
-    <color name="successColor">#54AF62</color>
-    <color name="errorColor">#EE5A5A</color>
-    <color name="warningColor">#FBB516</color>
-    <color name="winColor">#F34E6C</color>
-    <color name="loseColor">#4AC6A1</color>
-    <color name="drawColor">#E9AF3E</color>
-    <color name="unsettleColor">#C8C8C8</color>
-    <color name="invalidColor">#BEBED0</color>
-    <color name="infoColor">#E66AA6</color>
     <!--   状态-->
 
     <!--    文字-->
@@ -65,20 +56,9 @@
     <!--    文字-->
 
     <!--    渐变-->
-    <color name="closeGradient1Color">#DB98C4</color>
-    <color name="closeGradient2Color">#EFE5FF</color>
-
-    <color name="titleGradient1Color">#E7DAFF</color>
-    <color name="titleGradient2Color">#CFEFE5FF</color>
 
     <color name="betGradient1Color">#FFF8FC</color>
     <color name="betGradient2Color">#F4EFFF</color>
-
-    <color name="lotteryLabelGradient1Color">#E7DAFF</color>
-    <color name="lotteryLabelGradient2Color">#00EFE5FF</color>
-
-    <color name="lotteryTitleGradient1Color">#F8ECFF</color>
-    <color name="lotteryTitleGradient2Color">#00F8ECFF</color>
 
     <color name="moneyGradient1Color">#FFFFFF</color>
     <color name="moneyGradient2Color">#52BBACFD</color>
@@ -90,24 +70,18 @@
     <!--    渐变-->
 
     <!--    其他-->
-    <color name="dividerColor">#EEEDF0</color>
     <color name="dividerColor2">#38D9D9D9</color>
     <color name="buttonText">#FFFFFF</color>
     <color name="buttonShadowColor">#1A8869E6</color>
-    <color name="dialogBackgroundShadowColor">#0D724E7F</color>
     <color name="strokeColor">#9179E7</color>
     <color name="strokeDialogColor">#DFDFDF</color>
-    <color name="parlayLabelColor">#95845A</color>
-    <color name="parlayBackgroundColor">#33C8A54E</color>
     <color name="channelTextSelectColor">#775493</color>
     <color name="channelTextColor">#C4B2FF</color>
     <!--    其他-->
     <color name="textForgetPwdColor">#7272FF</color>
     <color name="textAgreementColor">#6246CF</color>
-    <color name="textErrorMessageColor">#E66AA6</color>
     <color name="textHomeTextColor">#393152</color>
     <!--其他  测速远点颜色-->
-    <color name="textSpeedTestColor">#F5BF56</color>
     <!--底部Bar文字选中-->
     <color name="textMainSelectorColor">#A354D0</color>
     <!--底部Bar文字未选中-->
@@ -123,7 +97,5 @@
     <color name="meLevelProgressbarEnd">#9384F1</color>
     <color name="activityTopDivideLineColor">#DFDBDA</color>
     <color name="customeAgreColor">#CE86CE</color>
-
-
-
+    <color name="customQAColor">#99FFFFFF</color>
 </resources>
