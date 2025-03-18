@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-
+        style="?attr/customer_service_bg_attr"
         tools:context="com.xtree.mine.ui.activity.CustomerServiceActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
-            android:background="@color/white">
+           >
 
             <TextView
                 style="@style/style_cm_title"
@@ -49,7 +49,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#F2F3F7">
+           >
             <LinearLayout
                 android:id="@+id/custom_choose_line"
                 android:layout_width="match_parent"
@@ -62,11 +62,12 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/custom_app_cl"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="160dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/bg_customer_liner_item"
+                    android:visibility="invisible"
                     >
                     <ImageView
                         android:id="@+id/custom_app_icon"
@@ -99,7 +100,7 @@
                         app:layout_constraintStart_toEndOf="@id/custom_app_icon"
                         app:layout_constraintTop_toBottomOf="@id/tvUserName"/>
                     <ImageView
-                        android:id="@+id/custom_line_1"
+                        android:id="@+id/custom_line_1s"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="20dp"
@@ -112,31 +113,31 @@
 
                         />
                     <ImageView
-                        android:id="@+id/custom_line_2"
+                        android:id="@+id/custom_line_2s"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="20dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="20dp"
                         android:background="@mipmap/custom_line_1"
-                        app:layout_constraintStart_toStartOf="@id/custom_line_1"
+                        app:layout_constraintStart_toStartOf="@id/custom_line_1s"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/custom_line_1"
+                        app:layout_constraintTop_toBottomOf="@id/custom_line_1s"
                         />
                     <LinearLayout
-                        android:id="@+id/custom_ll"
+                        android:id="@+id/custom_lls"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:layout_marginStart="10dp"
                         android:orientation="horizontal"
-                        app:layout_constraintStart_toStartOf="@id/custom_line_2"
+                        app:layout_constraintStart_toStartOf="@id/custom_line_2s"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/custom_line_2"
+                        app:layout_constraintTop_toBottomOf="@id/custom_line_2s"
                         >
 
                         <CheckBox
-                            android:id="@+id/ckbAgreement"
+                            android:id="@+id/ckbAgreements"
                             style="@style/PwdCheckboxStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -154,7 +155,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tvw_agreement_register"
+                            android:id="@+id/tvw_agreement_registers"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -165,9 +166,9 @@
 
                     </LinearLayout>
                     <View
-                        app:layout_constraintStart_toStartOf="@id/custom_ll"
+                        app:layout_constraintStart_toStartOf="@id/custom_lls"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/custom_ll"
+                        app:layout_constraintTop_toBottomOf="@id/custom_lls"
                         android:layout_width="match_parent"
                         android:layout_height="20dp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -188,16 +189,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         >
-                        <ImageView
-                            android:id="@+id/custom_app_icon_qa"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:background="@mipmap/online_qa"
-                            app:layout_constraintStart_toStartOf="@id/custom_app_qa"
-                            app:layout_constraintTop_toTopOf="@id/custom_app_qa"
 
-                            />
                         <TextView
                             android:id="@+id/tvQA"
                             android:layout_width="wrap_content"
@@ -206,15 +198,15 @@
                             android:textColor="#585859"
                             android:textSize="@dimen/bt_text_14sp"
                             android:textStyle="bold"
-                            android:layout_marginStart="20dp"
-                            app:layout_constraintStart_toEndOf="@id/custom_app_icon_qa"
-                            app:layout_constraintTop_toTopOf="@id/custom_app_icon_qa"/>
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/llQAdigitalTeaching"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginTop="4dp"
-                            app:layout_constraintStart_toStartOf="@id/custom_app_icon_qa"
+                            app:layout_constraintStart_toStartOf="@id/tvQA"
                             app:layout_constraintTop_toBottomOf="@id/tvQA">
                             <TextView
                                 android:id="@+id/tvQAdigitalTeaching"
@@ -242,6 +234,7 @@
                                 android:background="#E8E8E8"
                                 app:layout_constraintStart_toStartOf="@id/tvQAdigitalTeaching"
                                 app:layout_constraintBottom_toBottomOf="@id/llQAdigitalTeaching"
+                                android:visibility="invisible"
                                 />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -277,6 +270,7 @@
                                 android:background="#E8E8E8"
                                 app:layout_constraintStart_toStartOf="@id/llQABindCard"
                                 app:layout_constraintBottom_toBottomOf="@id/llQABindCard"
+                                android:visibility="invisible"
                                 />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -312,6 +306,7 @@
                                 android:background="#E8E8E8"
                                 app:layout_constraintStart_toStartOf="@id/llQAForgetLoginPassword"
                                 app:layout_constraintBottom_toBottomOf="@id/llQAForgetLoginPassword"
+                                android:visibility="invisible"
                                 />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -347,6 +342,7 @@
                                 android:background="#E8E8E8"
                                 app:layout_constraintStart_toStartOf="@id/llQADownApp"
                                 app:layout_constraintBottom_toBottomOf="@id/llQADownApp"
+                                android:visibility="invisible"
                                 />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -382,6 +378,7 @@
                                 android:background="#E8E8E8"
                                 app:layout_constraintStart_toStartOf="@id/llQALoginPassword"
                                 app:layout_constraintBottom_toBottomOf="@id/llQALoginPassword"
+                                android:visibility="invisible"
                                 />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -418,6 +415,7 @@
                                 android:background="#E8E8E8"
                                 app:layout_constraintStart_toStartOf="@id/llQAAddUSDT"
                                 app:layout_constraintBottom_toBottomOf="@id/llQAAddUSDT"
+                                android:visibility="invisible"
                                 />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -430,6 +428,78 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp">
+                    <ImageView
+                        android:id="@+id/custom_line_1"
+                        android:layout_width="120dp"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="20dp"
+                        style="?attr/customer_service_line1_attr"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+
+                        />
+                    <ImageView
+                        android:id="@+id/custom_line_2"
+                        android:layout_width="120dp"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="20dp"
+                        style="?attr/customer_service_line1_attr"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/custom_ll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="10dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="@id/custom_line_2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/custom_line_2"
+                        >
+
+                        <CheckBox
+                            android:id="@+id/ckbAgreement"
+                            style="@style/PwdCheckboxStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="2dp"
+                            android:checked="true" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="2dp"
+                            android:text="@string/me_agreement_hint"
+                            android:textSize="@dimen/me_text_size_sp12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvw_agreement_register"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/me_agreement_content"
+                            android:textColor="@color/customeAgreColor"
+                            android:textSize="@dimen/me_text_size_sp12sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
 

@@ -123,4 +123,6 @@
     <color name="meLevelProgressbarStart">#FFA3CF</color>
     <color name="meLevelProgressbarEnd">#9384F1</color>
     <color name="activityTopDivideLineColor">#DFDBDA</color>
+    <color name="customQAColor">#99FFFFFF</color>
+    <color name="customeAgreColor">#FF8979</color>
 </resources>

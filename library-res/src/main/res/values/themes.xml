@@ -187,6 +187,9 @@
         <item name="forget_psword_get_code_attr">@style/style_get_code</item>
         <item name="hm_mid_bg_set_attr">@style/style_hm_mid_bg_set</item>
 
+        <item name="customer_service_bg_attr">@style/style_customer_service_bg</item>
+        <item name="customer_service_line1_attr">@style/style_customer_service_line1</item>
+        <item name="customer_service_line2_attr">@style/style_customer_service_line2</item>
 
     </style>
 
