@@ -169,14 +169,17 @@
                 android:textSize="12sp"
                 tools:text="@string/txt_get_payment_code" />
 
-            <ImageView
+            <TextView
                 android:id="@+id/ivw_next"
+                style="?attr/withdrawal_btn_next_attr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:background="@mipmap/cm_btn_next"
-                android:visibility="gone" />
+                android:gravity="center"
+                android:text="@string/txt_next"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <LinearLayout
                 android:id="@+id/layout_tvw"

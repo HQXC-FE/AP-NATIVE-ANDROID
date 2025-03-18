@@ -46,12 +46,11 @@
 
                 <ImageView
                     android:id="@+id/ivw_cs"
-                    style="?attr/feedback_top_customer_service_attr"
-                    />
+                    style="?attr/feedback_top_customer_service_attr" />
 
                 <ImageView
                     android:id="@+id/ivw_msg"
-                    style="?attr/feedback_top_message_attr"/>
+                    style="?attr/feedback_top_message_attr" />
 
             </LinearLayout>
 
@@ -723,13 +722,15 @@
 
                 </LinearLayout>
 
-                <ImageView
+                <TextView
                     android:id="@+id/ivw_next"
+                    style="?attr/withdrawal_btn_next_attr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="24dp"
-                    style="?attr/feedback_bottom_btn_attr" />
+                    android:gravity="center"
+                    android:text="@string/txt_submit" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

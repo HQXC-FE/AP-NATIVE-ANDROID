@@ -562,9 +562,6 @@
         <item name="android:button">@drawable/hm_game_type_selector</item>
     </style>
 
-    <style name="style_feedback_bottom_btn">
-        <item name="android:background">@drawable/cm_btn_next</item>
-    </style>
 
     <style name="style_rc_ic_feedback">
         <item name="android:background">@drawable/rc_ic_feedback</item>

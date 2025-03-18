@@ -436,12 +436,14 @@
                 android:textColor="@color/clr_blue_03" />
         </LinearLayout>
 
-        <ImageView
+        <TextView
             android:id="@+id/ivw_next"
+            style="?attr/withdrawal_btn_next_attr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@mipmap/cm_btn_next" />
+            android:gravity="center"
+            android:text="@string/txt_submit" />
 
     </LinearLayout>
 
