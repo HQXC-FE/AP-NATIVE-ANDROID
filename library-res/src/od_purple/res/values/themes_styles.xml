@@ -300,7 +300,7 @@
     <style name="style_btn_short_cancel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/bg_btn_short_cancel_selector</item>
+        <item name="android:background">@drawable/cm_btn_short_disable</item>
         <item name="android:gravity">center</item>
         <item name="android:text">@string/txt_cancel</item>
         <item name="android:textColor">@color/clr_text_btn_selector</item>

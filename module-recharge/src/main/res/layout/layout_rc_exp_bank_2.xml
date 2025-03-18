@@ -321,7 +321,6 @@
                 android:id="@+id/tvw_left"
                 style="?attr/btn_short_cancel_attr"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/bg_btn_rc_exp_short_cancel_selector"
                 android:enabled="@{model.cancleOrderStatus}"
                 android:onClick="@{() -> model.cancleOrder()}"
                 android:text="@string/txt_cancel"

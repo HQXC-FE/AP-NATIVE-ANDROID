@@ -539,7 +539,7 @@
     </style>
 
     <style name="style_btn_short_cancel" parent="style_btn_short">
-        <item name="android:background">@drawable/bg_btn_short_cancel_selector</item>
+        <item name="android:background">@drawable/cm_btn_short_disable</item>
         <item name="android:text">@string/txt_cancel</item>
         <item name="android:textColor">@color/clr_grey_13</item>
         <item name="android:layout_marginRight">20dp</item>

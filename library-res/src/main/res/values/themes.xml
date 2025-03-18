@@ -155,8 +155,6 @@
         <item name="me_level_progressbar_attr">@style/style_me_level_progressbar</item>
         <item name="cm_dialog_update_bell_attr">@style/style_cm_dialog_update_bell</item>
         <item name="cm_dialog_update_bg_attr">@style/style_cm_dialog_update_bg</item>
-        <item name="dialog_update_confirm_right_attr">@style/style_btn_short</item>
-        <item name="dialog_update_cancel_left_attr">@style/style_btn_short_cancel</item>
         <item name="choose_account_attr">@style/style_choose_account</item>
 
         <item name="security_center_pwd_attr">@style/style_security_center_pwd</item>
