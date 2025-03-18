@@ -19,7 +19,6 @@
             android:layout_width="88dp"
             android:layout_height="33dp"
             android:gravity="center"
-            android:text="@{m.label}"
             tools:text="今日" />
 
     </FrameLayout>

@@ -48,6 +48,7 @@ public class PlayMethodModel extends BindModel {
             TextView tvLabel = bindingViewHolder.findView(R.id.tvLabel);
             PlayMethodItemModel playMethodItemModel = (PlayMethodItemModel) bindModels.get(bindingViewHolder.getModelPosition());
             tvLabel.setSelected(playMethodItemModel.getIsSelect().get());
+            tvLabel.setText(playMethodItemModel.getLabel().get());
         }
     };
 
