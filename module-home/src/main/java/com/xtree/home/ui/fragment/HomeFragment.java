@@ -597,7 +597,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     curPId = vo.pId;
                     RadioButton rbtn = binding.rgpType.findViewWithTag("tp_" + curPId);
                     gameGroup = curPId - 1;
-                    rbtn.setChecked(true);
+                    if (rbtn !=null){
+                        rbtn.setChecked(true);
+                    }
                 }
             }
         });
