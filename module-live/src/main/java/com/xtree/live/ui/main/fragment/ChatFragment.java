@@ -383,11 +383,8 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
         pm_source_type_str = getSavedArguments().getString("pm_source_type_str", "0");
 
         mChatbarBinding = MergeChatRoomToolbarBinding.bind(binding.getRoot());
-        binding.addBtn.setOnClickListener(view -> {
-            if (isAnchor() || (!TextUtils.isEmpty(mVid) && !isGlobal())) {
-                ToastUtils.showShort("暂未开通上传图片功能");
-//                photoPicker.showPicker(requireActivity());
-            }
+        binding.addZhudan.setOnClickListener(view -> {
+            //TODO 注单dialog 可以参考 注单页面
         });
 
         viewModel.setParamas(mUid, mVid, pm_source_type, pm_source_type_str);
@@ -531,11 +528,11 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
         muteRoom(isMute());
 
         //设计稿以及主流都不容许发图片，这里也不容许。防止图片广告
-//        if (isGlobal()) {
-//            binding.addBtn.setVisibility(View.GONE);
-//        } else {
-//            binding.addBtn.setVisibility(View.VISIBLE);
-//        }
+        if (isGlobal()) {
+            binding.addZhudan.setVisibility(View.VISIBLE);
+        } else {
+            binding.addZhudan.setVisibility(View.GONE);
+        }
 
         if (isGlobal() && mCanDisplayBanner) {
             mCanDisplayBanner = false;
@@ -722,7 +719,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
                         @Override
                         public void onKeyboard() {
 
-                            binding.emotionBtn.setSelected(false);
+//                            binding.ivEmojiQuickly.setSelected(false);
                             mIsInputPanelExpand = true;
                             hideLiveInfo();
                         }
@@ -730,8 +727,8 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
                         @Override
                         public void onNone() {
 
-                            binding.emotionBtn.setSelected(false);
-                            binding.emotionBtn.postDelayed(() -> {
+//                            binding.ivEmojiQuickly.setSelected(false);
+                            binding.ivEmojiQuickly.postDelayed(() -> {
                                 mIsInputPanelExpand = false;
                             }, 500);
                             showLiveInfo();
@@ -741,7 +738,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
                         @Override
                         public void onPanel(IPanelView view) {
                             if (view instanceof PanelView) {
-                                binding.emotionBtn.setSelected(((PanelView) view).getId() == R.id.panel_emotion);
+//                                binding.ivEmojiQuickly.setSelected(((PanelView) view).getId() == R.id.panel_emotion);
                                 mIsInputPanelExpand = true;
                                 hideLiveInfo();
                                 involveSvgaViewMargin(mPanelHeight + binding.llSendText.getHeight());
@@ -863,8 +860,8 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     }
 
     public void muteRoom(boolean isMute) {
-        binding.addBtn.setEnabled(!isMute);
-        binding.emotionBtn.setEnabled(!isMute);
+
+        binding.ivEmojiQuickly.setEnabled(!isMute);
         binding.editText.setEnabled(!isMute);
         binding.send.setEnabled(!isMute);
         if (isMute) {
