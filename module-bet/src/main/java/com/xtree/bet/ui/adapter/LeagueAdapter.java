@@ -49,8 +49,6 @@ import com.xtree.bet.weight.PageHorizontalScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import me.xtree.mvvmhabit.base.BaseActivity;
 import me.xtree.mvvmhabit.bus.RxBus;
@@ -66,11 +64,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     private int noLiveHeaderPosition;
     private boolean isUpdateFootBallOrBasketBallState;
     private PageHorizontalScrollView.OnScrollListener mOnScrollListener;
-    //private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
-    //private final RequestOptions glideOptions = new RequestOptions()
-            //.diskCacheStrategy(DiskCacheStrategy.ALL)
-           // .dontAnimate();
 
     public LeagueAdapter(Context context, List<League> datas) {
         this.mContext = context;
@@ -98,14 +92,15 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     }
 
     public void setData(List<League> leagueList) {
-        //executorService.execute(() -> {
-            List<League> newData = leagueList != null ? new ArrayList<>(leagueList) : new ArrayList<>();
-            mainHandler.post(() -> {
-                this.mDatas = newData;
-                init();
-                notifyDataSetChanged();
-            });
-       // });
+        //List<League> newData = leagueList != null ? new ArrayList<>(leagueList) : new ArrayList<>();
+        this.mDatas = leagueList;
+        init();
+        notifyDataSetChanged();
+        CfLog.d("============= setData mDatas.size ==============" + mDatas.size());
+        for (League league : mDatas) {
+            CfLog.d("League: " + league.toString());
+        }
+        CfLog.d("============= setData finish ==============");
     }
 
     private void init() {
@@ -269,7 +264,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                     LayoutInflater.from(mContext).inflate(R.layout.bt_fb_match_list, parent, false);
         }
 
-        ChildHolder holder;
+        ChildHolder holder = null;
         if (convertView == null) {
             BtFbMatchListBinding binding = BtFbMatchListBinding.inflate(
                     LayoutInflater.from(mContext), parent, false);
@@ -277,10 +272,15 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             convertView = binding.getRoot();
             convertView.setTag(holder);
         } else {
-            holder = (ChildHolder) convertView.getTag();
+            if(convertView.getTag() instanceof ChildHolder){
+                holder = (ChildHolder) convertView.getTag();
+            }
         }
 
-        configureMatchView(holder.binding, match, parent, isLastChild);
+        if(holder != null && holder.binding != null){
+            configureMatchView(holder.binding, match, parent, isLastChild);
+        }
+
         return convertView;
     }
 
