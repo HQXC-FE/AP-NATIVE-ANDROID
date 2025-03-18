@@ -181,27 +181,32 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             return convertView != null ? convertView : LayoutInflater.from(mContext).inflate(R.layout.bt_fb_league_group, parent, false);
         }
 
-        GroupHolder holder;
+        GroupHolder holder = null;
         if (convertView == null) {
             BtFbLeagueGroupBinding binding = BtFbLeagueGroupBinding.inflate(LayoutInflater.from(mContext), parent, false);
             holder = new GroupHolder(binding);
             convertView = binding.getRoot();
             convertView.setTag(holder);
         } else {
-            holder = (GroupHolder) convertView.getTag();
+            if(convertView.getTag() instanceof GroupHolder){
+                holder = (GroupHolder) convertView.getTag();
+            }
         }
 
-        League league = mDatas.get(groupPosition);
-        BtFbLeagueGroupBinding binding = holder.binding;
-        boolean isHead = league.isHead();
-        binding.llHeader.setVisibility(isHead ? View.VISIBLE : View.GONE);
-        binding.rlLeague.setVisibility(isHead ? View.GONE : View.VISIBLE);
+        if(holder != null && holder.binding != null){
+            League league = mDatas.get(groupPosition);
+            BtFbLeagueGroupBinding binding = holder.binding;
+            boolean isHead = league.isHead();
+            binding.llHeader.setVisibility(isHead ? View.VISIBLE : View.GONE);
+            binding.rlLeague.setVisibility(isHead ? View.GONE : View.VISIBLE);
 
-        if (!isHead) {
-            configureLeagueView(binding, league, isExpanded);
-        } else {
-            configureHeader(binding, league, groupPosition);
+            if (!isHead) {
+                configureLeagueView(binding, league, isExpanded);
+            } else {
+                configureHeader(binding, league, groupPosition);
+            }
         }
+
         return convertView;
     }
 
