@@ -602,7 +602,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
             //"OKPAY提款12",
             errorMessage = String.format(formatOtherType, selectorVo.title);
             bindType = getContext().getString(R.string.txt_bind_okpay_type);
-        } else if (TextUtils.equals("13", selectorVo.type)) {
+        } else if (TextUtils.equals("9", selectorVo.type)) {
             //BOBI提款,
             errorMessage = String.format(formatOtherType, selectorVo.title);
             //不存在BOBI 绑定模式
