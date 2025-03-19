@@ -817,7 +817,7 @@ public class FeedbackEditFragment extends BaseFragment<FragmentFeedbackEditBindi
         CfLog.e("cookie: " + cookie);
 
         GlideUrl glideUrl = new GlideUrl(imageDownUrls, new LazyHeaders.Builder().addHeader("Content-Type", "application/vnd.sc-api.v1.json").addHeader("Authorization", "bearer " + SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN)).addHeader("Cookie", cookie).addHeader("UUID", TagUtils.getDeviceId(getContext())).build());
-        Glide.with(getContext()).load(glideUrl).placeholder(R.mipmap.ic_loading).error(R.mipmap.me_icon_name).into(binding.ivSelectorTipImage);
+        Glide.with(getContext()).load(glideUrl).placeholder(R.mipmap.ic_loading).error(R.drawable.me_icon_name).into(binding.ivSelectorTipImage);
 
     }
 }

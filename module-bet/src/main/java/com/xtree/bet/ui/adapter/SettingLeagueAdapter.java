@@ -3,51 +3,32 @@ package com.xtree.bet.ui.adapter;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.LeagueArea;
-import com.xtree.bet.bean.ui.Match;
-import com.xtree.bet.bean.ui.Option;
-import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.contract.BetContract;
-import com.xtree.bet.databinding.BtDialogLeagueBinding;
 import com.xtree.bet.databinding.BtDialogLeagueGroupBinding;
 import com.xtree.bet.databinding.BtFbLeagueChildBinding;
-import com.xtree.bet.databinding.BtFbMatchGroupBinding;
-import com.xtree.bet.databinding.BtFbPlaytypeListBinding;
 import com.xtree.bet.weight.AnimatedExpandableListViewMax;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.utils.ConvertUtils;
 
 public class SettingLeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpandableListAdapter {
     private List<LeagueArea> mDatas;
     private Context mContext;
-
-    public void setData(List<LeagueArea> leagueAreaList) {
-        this.mDatas = leagueAreaList;
-        notifyDataSetChanged();
-    }
 
     public SettingLeagueAdapter(Context context, List<LeagueArea> datas) {
         this.mDatas = datas;
         this.mContext = context;
     }
 
-    private static class ChildHolder {
-        View itemView;
-
-        public ChildHolder(View view) {
-            itemView = view;
-        }
+    public void setData(List<LeagueArea> leagueAreaList) {
+        this.mDatas = leagueAreaList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -117,13 +98,13 @@ public class SettingLeagueAdapter extends AnimatedExpandableListViewMax.Animated
         }
         BtDialogLeagueGroupBinding binding = BtDialogLeagueGroupBinding.bind(holder.itemView);
         binding.tvLeagueName.setText(leagueArea.getName());
-        binding.groupIndicator.setImageResource(isExpanded ? R.mipmap.bt_icon_expand : R.mipmap.bt_icon_unexpand);
+        binding.groupIndicator.setImageResource(isExpanded ? R.mipmap.bt_icon_expand : R.drawable.bt_icon_unexpand);
 
         binding.cbChoise.setOnClickListener(v -> {
             leagueArea.setSelected(!leagueArea.isSelected());
             int childrenCount = getRealChildrenCount(groupPosition);
             for (int i = 0; i < childrenCount; i++) {
-                League league = (League)getChild(groupPosition, i);
+                League league = (League) getChild(groupPosition, i);
                 league.setSelected(leagueArea.isSelected());
             }
             notifyDataSetChanged();
@@ -163,15 +144,15 @@ public class SettingLeagueAdapter extends AnimatedExpandableListViewMax.Animated
         binding.cbChoise.setOnClickListener(v -> {
             league.setSelected(!league.isSelected());
             boolean isAllChecked = true;
-            for (int i = 0; i < getRealChildrenCount(groupPosition); i ++){
+            for (int i = 0; i < getRealChildrenCount(groupPosition); i++) {
                 League child = (League) getChild(groupPosition, i);
-                if(!child.isSelected()){
+                if (!child.isSelected()) {
                     isAllChecked = false;
                     break;
                 }
             }
             LeagueArea leagueArea = (LeagueArea) getGroup(groupPosition);
-            if(isAllChecked != leagueArea.isSelected()) {
+            if (isAllChecked != leagueArea.isSelected()) {
                 leagueArea.setSelected(isAllChecked);
             }
 
@@ -188,12 +169,20 @@ public class SettingLeagueAdapter extends AnimatedExpandableListViewMax.Animated
         return true;
     }
 
+    private static class ChildHolder {
+        View itemView;
+
+        public ChildHolder(View view) {
+            itemView = view;
+        }
+    }
+
     private static class GroupHolder {
+        View itemView;
+
         public GroupHolder(View view) {
             itemView = view;
         }
-
-        View itemView;
     }
 
 }

@@ -823,7 +823,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 .load(league.getIcon())
                 //.apply(new RequestOptions().placeholder(placeholderRes))
                 .into((ImageView) mHeader.findViewById(R.id.iv_icon));
-        ((ImageView) mHeader.findViewById(R.id.group_indicator)).setImageResource(league.isExpand() ? R.mipmap.bt_icon_expand : R.mipmap.bt_icon_unexpand);
+        ((ImageView) mHeader.findViewById(R.id.group_indicator)).setImageResource(league.isExpand() ? R.mipmap.bt_icon_expand : R.drawable.bt_icon_unexpand);
     }
 
     private void initBottomTab() {
@@ -1812,7 +1812,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             } else {
                 playMethodRoot.setVisibility(View.VISIBLE);
             }
-        }else if (id == R.id.ivBack) {
+        } else if (id == R.id.ivBack) {
             finish();
         } else if (id == R.id.tvBalance) {
             Bundle bundle = new Bundle();
@@ -1857,7 +1857,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     // 所以需要清理缓存接口调用变成直连三方数据
     private void clearSportCache() {
         String json = SPUtils.getInstance().getString(SPKeyGlobal.SPORT_MATCH_CACHE, "");
-        if(!TextUtils.isEmpty(json)){
+        if (!TextUtils.isEmpty(json)) {
             SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, "");
             mIsFirstLoadMatch = false;
         }

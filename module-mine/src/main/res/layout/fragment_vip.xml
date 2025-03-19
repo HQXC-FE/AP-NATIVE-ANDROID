@@ -49,7 +49,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="30dp"
-            android:background="@mipmap/me_icon_name"
+            android:background="@drawable/me_icon_name"
             app:layout_constraintBottom_toBottomOf="@id/ivw_vip_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/ivw_vip_icon" />

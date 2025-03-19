@@ -52,12 +52,12 @@
                 <ImageView
                     android:id="@+id/ivw_cs"
                     style="@style/style_ic_title_right"
-                    android:src="@mipmap/cm_ic_cs" />
+                    android:src="@drawable/cm_ic_cs" />
 
                 <ImageView
                     android:id="@+id/ivw_msg"
                     style="@style/style_ic_title_right"
-                    android:src="@mipmap/cm_ic_msg" />
+                    android:src="@drawable/cm_ic_msg" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -9,10 +9,9 @@
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             style="?attr/home_me_backgroup_attr"
-           >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/head_area"
@@ -35,9 +34,9 @@
 
                     <ImageView
                         android:id="@+id/icon_name"
+                        style="?attr/me_icon_name_attr"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="?attr/me_icon_name_attr" />
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/tvw_name"
@@ -49,11 +48,10 @@
 
                     <ImageView
                         android:id="@+id/ivwVip"
+                        style="?attr/me_icon_vip_attr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        style="?attr/me_icon_vip_attr"
-                        />
+                        android:layout_marginStart="4dp" />
 
                     <View
                         android:layout_width="wrap_content"
@@ -80,16 +78,16 @@
 
                 <RelativeLayout
                     android:id="@+id/middle_area"
+                    style="?attr/home_me_backgroup_top_attr"
                     android:layout_width="match_parent"
                     android:layout_height="160dp"
-                    android:paddingStart="0dp"
-                    android:layout_marginTop="8dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginRight="10dp"
+                    android:paddingStart="0dp"
                     app:layout_constraintLeft_toLeftOf="@+id/topArea"
                     app:layout_constraintRight_toRightOf="@+id/topArea"
-                    app:layout_constraintTop_toBottomOf="@+id/topArea"
-                    style="?attr/home_me_backgroup_top_attr">
+                    app:layout_constraintTop_toBottomOf="@+id/topArea">
 
                     <LinearLayout
                         android:id="@+id/ll_login"
@@ -170,13 +168,13 @@
                             style="?attr/home_me_backgroup_top_click_attr"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
                             android:paddingLeft="15dp"
                             android:paddingTop="5dp"
                             android:paddingRight="15dp"
                             android:paddingBottom="5dp"
                             android:textColor="@color/clr_txt_black02"
                             android:textSize="12sp"
-                            android:layout_marginTop="20dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -256,11 +254,12 @@
                                 app:layout_constraintEnd_toStartOf="@id/ivwLevel"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/tvw_level_hint" />
+
                             <ImageView
                                 android:id="@+id/ivwLevel"
+                                style="?attr/me_vip_leve_attr"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                style="?attr/me_vip_leve_attr"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -268,16 +267,24 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
                             android:layout_marginStart="12dp"
+                            android:layout_marginTop="8dp"
                             android:orientation="horizontal"
                             app:layout_constraintLeft_toLeftOf="@+id/level_area"
                             app:layout_constraintTop_toBottomOf="@+id/level_area">
 
                             <ImageView
+                                style="?attr/home_me_top_lijin_attr"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <!--<TextView style="@style/style_wallet_space" />-->
+
+                            <ImageView
+                                style="?attr/home_me_top_week_attr"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                style="?attr/home_me_top_lijin_attr"/>
+                                android:layout_marginStart="@dimen/layout_margin" />
 
                             <!--<TextView style="@style/style_wallet_space" />-->
 
@@ -285,15 +292,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/layout_margin"
-                               style="?attr/home_me_top_week_attr" />
-
-                            <!--<TextView style="@style/style_wallet_space" />-->
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/layout_margin"
-                                android:src="@mipmap/me_shengri_lijin"
+                                android:src="@drawable/me_shengri_lijin"
                                 android:visibility="gone" />
 
                             <TextView
@@ -301,10 +300,10 @@
                                 android:visibility="gone" />
 
                             <ImageView
+                                style="?attr/home_me_top_zhuanshu_attr"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/layout_margin"
-                                style="?attr/home_me_top_zhuanshu_attr"  />
+                                android:layout_marginStart="@dimen/layout_margin" />
                         </LinearLayout>
 
                         <ImageView
@@ -344,15 +343,13 @@
                     <TextView
                         android:id="@+id/tvw_trans"
                         style="?attr/home_me_transfer_attr"
-                        android:layout_height="match_parent"
-                        />
+                        android:layout_height="match_parent" />
 
                     <TextView style="@style/style_wallet_space" />
 
                     <TextView
                         android:id="@+id/tvw_bet"
-                        style="?attr/home_me_betting_record_attr"
-                        />
+                        style="?attr/home_me_betting_record_attr" />
 
                     <TextView style="@style/style_wallet_space" />
 
@@ -369,16 +366,15 @@
 
                     <TextView
                         android:id="@+id/tvw_dc_centre"
-                        style="?attr/home_me_dc_centre_attr"
-                        />
+                        style="?attr/home_me_dc_centre_attr" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
+                style="?attr/home_me_backgroup_middle_attr"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                style="?attr/home_me_backgroup_middle_attr"
                 android:scaleType="fitXY"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="@id/ll_menu2" />
@@ -392,8 +388,7 @@
                 android:paddingBottom="20dp"
                 app:layout_constraintEnd_toEndOf="@+id/head_area"
                 app:layout_constraintStart_toStartOf="@+id/head_area"
-                app:layout_constraintTop_toBottomOf="@+id/head_area"
-              >
+                app:layout_constraintTop_toBottomOf="@+id/head_area">
 
                 <TextView
                     android:id="@+id/more_service_hint"
@@ -426,8 +421,7 @@
 
                         <TextView
                             android:id="@+id/tvw_invite_friend"
-                            style="?attr/home_me_invite_friend_attr"
-                           />
+                            style="?attr/home_me_invite_friend_attr" />
 
                         <TextView style="@style/style_wallet_space" />
 
@@ -498,20 +492,21 @@
 
                         <TextView
                             android:id="@+id/tvw_bangzhu_zhongxin"
-                            style="?attr/home_me_ic_help_attr"  />
+                            style="?attr/home_me_ic_help_attr" />
 
                     </LinearLayout>
 
                 </LinearLayout>
+
                 <Button
                     android:id="@+id/btn_logout"
+                    style="?attr/me_logout_bt_attr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="48dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="24dp"
-                    style="?attr/me_logout_bt_attr"
                     android:text="@string/me_logout_login"
                     app:layout_constraintLeft_toLeftOf="@+id/more_service_hint"
                     app:layout_constraintRight_toRightOf="@+id/more_service_area"

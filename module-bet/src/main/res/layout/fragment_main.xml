@@ -171,7 +171,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:src="@mipmap/hm_notice"
+                            android:src="@drawable/hm_notice"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="@+id/ll_notice"
                             app:layout_constraintStart_toStartOf="parent"

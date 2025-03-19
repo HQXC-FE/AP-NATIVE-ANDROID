@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.stx.xhb.androidx.XBanner;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.OptionList;
@@ -23,10 +22,10 @@ import com.xtree.bet.weight.PageHorizontalScrollView;
 import java.util.List;
 
 public class MatchDetailAdapter extends AnimatedExpandableListViewMax.AnimatedExpandableListAdapter {
+    private final boolean isResult;
     private List<PlayType> mDatas;
     private Match match;
     private Context mContext;
-    private final boolean isResult;
 
     public MatchDetailAdapter(Context context, Match match, List<PlayType> datas, boolean isResult) {
         this.mDatas = datas;
@@ -38,37 +37,6 @@ public class MatchDetailAdapter extends AnimatedExpandableListViewMax.AnimatedEx
     public void setData(List<PlayType> mLeagueList) {
         this.mDatas = mLeagueList;
         notifyDataSetChanged();
-    }
-
-    private static class ChildHolder {
-        TextView tvTeamNameMain;
-        TextView tvTeamNameVisitor;
-        TextView tvScoreMain;
-        TextView tvScoreVisitor;
-        TextView tvMatchTime;
-        TextView tvPlayTypeCount;
-        ImageView ivCourt;
-        ImageView ivLive;
-        LinearLayout llRoot;
-        PageHorizontalScrollView hsvPlayTypeGroup;
-        LinearLayout llPointer;
-
-        NestedScrollView itemView;
-
-        public ChildHolder(View view) {
-            tvTeamNameMain = view.findViewById(R.id.tv_team_name_main);
-            tvTeamNameVisitor = view.findViewById(R.id.tv_team_name_visitor);
-            tvScoreMain = view.findViewById(R.id.tv_score_main);
-            tvScoreVisitor = view.findViewById(R.id.tv_score_visitor);
-            tvMatchTime = view.findViewById(R.id.tv_match_time);
-            tvPlayTypeCount = view.findViewById(R.id.tv_playtype_count);
-            ivCourt = view.findViewById(R.id.iv_court);
-            ivLive = view.findViewById(R.id.iv_live);
-            llRoot = view.findViewById(R.id.ll_root);
-            hsvPlayTypeGroup = view.findViewById(R.id.hsv_play_type_group);
-            llPointer = view.findViewById(R.id.ll_pointer);
-            itemView = view.findViewById(R.id.cl_root);
-        }
     }
 
     @Override
@@ -135,7 +103,7 @@ public class MatchDetailAdapter extends AnimatedExpandableListViewMax.AnimatedEx
         BtFbDetailItemPlayTypeGroupBinding binding = BtFbDetailItemPlayTypeGroupBinding.bind(holder.itemView);
 
         binding.tvPlaytypeName.setText(playType.getPlayTypeName());
-        binding.groupIndicator.setImageResource(isExpanded ? R.mipmap.bt_icon_expand : R.mipmap.bt_icon_unexpand);
+        binding.groupIndicator.setImageResource(isExpanded ? R.mipmap.bt_icon_expand : R.drawable.bt_icon_unexpand);
         binding.rlPlayMethod.setBackgroundResource(isExpanded ? R.drawable.bt_bg_expand_group : R.drawable.bt_bg_expand_group_collapse);
 
         return convertView;
@@ -174,12 +142,43 @@ public class MatchDetailAdapter extends AnimatedExpandableListViewMax.AnimatedEx
         return true;
     }
 
+    private static class ChildHolder {
+        TextView tvTeamNameMain;
+        TextView tvTeamNameVisitor;
+        TextView tvScoreMain;
+        TextView tvScoreVisitor;
+        TextView tvMatchTime;
+        TextView tvPlayTypeCount;
+        ImageView ivCourt;
+        ImageView ivLive;
+        LinearLayout llRoot;
+        PageHorizontalScrollView hsvPlayTypeGroup;
+        LinearLayout llPointer;
+
+        NestedScrollView itemView;
+
+        public ChildHolder(View view) {
+            tvTeamNameMain = view.findViewById(R.id.tv_team_name_main);
+            tvTeamNameVisitor = view.findViewById(R.id.tv_team_name_visitor);
+            tvScoreMain = view.findViewById(R.id.tv_score_main);
+            tvScoreVisitor = view.findViewById(R.id.tv_score_visitor);
+            tvMatchTime = view.findViewById(R.id.tv_match_time);
+            tvPlayTypeCount = view.findViewById(R.id.tv_playtype_count);
+            ivCourt = view.findViewById(R.id.iv_court);
+            ivLive = view.findViewById(R.id.iv_live);
+            llRoot = view.findViewById(R.id.ll_root);
+            hsvPlayTypeGroup = view.findViewById(R.id.hsv_play_type_group);
+            llPointer = view.findViewById(R.id.ll_pointer);
+            itemView = view.findViewById(R.id.cl_root);
+        }
+    }
+
     private static class GroupHolder {
+        View itemView;
+
         public GroupHolder(View view) {
             itemView = view.findViewById(R.id.cl_root);
         }
-
-        View itemView;
 
     }
 

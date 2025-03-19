@@ -47,7 +47,7 @@
                 android:id="@+id/ivw_cs"
                 style="@style/style_ic_title_right"
                 android:layout_gravity="center"
-                android:src="@mipmap/cm_ic_cs"
+                android:src="@drawable/cm_ic_cs"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"/>
         </RelativeLayout>

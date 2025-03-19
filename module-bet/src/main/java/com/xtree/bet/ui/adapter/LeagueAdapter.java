@@ -56,6 +56,12 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
     private PageHorizontalScrollView.OnScrollListener mOnScrollListener;
 
+    public LeagueAdapter(Context context, List<League> datas) {
+        this.mDatas = datas;
+        this.mContext = context;
+        init();
+    }
+
     public void setOnScrollListener(PageHorizontalScrollView.OnScrollListener onScrollListener) {
         this.mOnScrollListener = onScrollListener;
     }
@@ -78,12 +84,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         this.mDatas = mLeagueList;
         init();
         notifyDataSetChanged();
-    }
-
-    public LeagueAdapter(Context context, List<League> datas) {
-        this.mDatas = datas;
-        this.mContext = context;
-        init();
     }
 
     public void init() {
@@ -229,7 +229,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                     //.apply(new RequestOptions().placeholder(placeholderRes))
                     .into(binding.ivIcon);
             binding.vSpace.setVisibility(isExpanded ? View.GONE : View.VISIBLE);
-            binding.groupIndicator.setImageResource(isExpanded ? R.mipmap.bt_icon_expand : R.mipmap.bt_icon_unexpand);
+            binding.groupIndicator.setImageResource(isExpanded ? R.mipmap.bt_icon_expand : R.drawable.bt_icon_unexpand);
             binding.rlLeague.setBackgroundResource(isExpanded ? R.drawable.bt_bg_league_top : R.drawable.bt_bg_league_top_collapse);
             league.setExpand(isExpanded);
         } else {
@@ -563,11 +563,11 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     }*/
 
     private static class GroupHolder {
+        View itemView;
+
         public GroupHolder(View view) {
             itemView = view;
         }
-
-        View itemView;
     }
 
     private static class ChildHolder {

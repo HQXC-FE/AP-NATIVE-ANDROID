@@ -43,7 +43,7 @@
                 android:id="@+id/ivw_cs"
                 style="@style/style_ic_title_right"
                 android:layout_marginEnd="@dimen/layout_margin"
-                android:src="@mipmap/cm_ic_cs"
+                android:src="@drawable/cm_ic_cs"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

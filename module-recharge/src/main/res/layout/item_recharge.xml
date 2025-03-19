@@ -8,6 +8,7 @@
 
     <TextView
         android:id="@+id/tvw_title"
+        style="?attr/clr_item_text_attr"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="2dp"
@@ -15,7 +16,6 @@
         android:background="@drawable/rc_bg_pmt_selector"
         android:drawableTop="@drawable/rc_ic_pmt_selector"
         android:gravity="center"
-        style="?attr/clr_item_text_attr"
         android:minEms="8"
         android:paddingTop="10dp"
         android:paddingBottom="8dp"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
-        android:src="@mipmap/rc_ic_hot"
+        android:src="@drawable/rc_ic_hot"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -56,7 +56,7 @@
         android:id="@+id/ivw_rcmd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/rc_ic_recommend"
+        android:src="@drawable/rc_ic_recommend"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

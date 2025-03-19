@@ -9,35 +9,25 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.bumptech.glide.Glide;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.Match;
-import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.databinding.BtFbMatchGroupBinding;
 import com.xtree.bet.databinding.BtFbPlaytypeListBinding;
 import com.xtree.bet.weight.AnimatedExpandableListViewMax;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ChampionMatchAdapter extends AnimatedExpandableListViewMax.AnimatedExpandableListAdapter {
     private List<Match> mDatas;
     private Context mContext;
 
-    public void setData(List<Match> mLeagueList) {
-        this.mDatas = mLeagueList;
-        notifyDataSetChanged();
-    }
-
     public ChampionMatchAdapter(Context context, List<Match> datas) {
         this.mDatas = datas;
         this.mContext = context;
     }
 
-    private static class ChildHolder {
-        View itemView;
-
-        public ChildHolder(View view) {
-            itemView = view;
-        }
+    public void setData(List<Match> mLeagueList) {
+        this.mDatas = mLeagueList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -114,7 +104,7 @@ public class ChampionMatchAdapter extends AnimatedExpandableListViewMax.Animated
                     .load(match.getLeague().getIcon())
                     //.apply(new RequestOptions().placeholder(placeholderRes))
                     .into(binding.ivIcon);
-            binding.groupIndicator.setImageResource(isExpanded ? R.mipmap.bt_icon_expand : R.mipmap.bt_icon_unexpand);
+            binding.groupIndicator.setImageResource(isExpanded ? R.mipmap.bt_icon_expand : R.drawable.bt_icon_unexpand);
             match.setExpand(isExpanded);
             binding.vSpace.setVisibility(isExpanded ? View.GONE : View.VISIBLE);
             binding.rlLeague.setBackgroundResource(isExpanded ? R.drawable.bt_bg_league_top : R.drawable.bt_bg_league_top_collapse);
@@ -158,12 +148,20 @@ public class ChampionMatchAdapter extends AnimatedExpandableListViewMax.Animated
         return true;
     }
 
+    private static class ChildHolder {
+        View itemView;
+
+        public ChildHolder(View view) {
+            itemView = view;
+        }
+    }
+
     private static class GroupHolder {
+        View itemView;
+
         public GroupHolder(View view) {
             itemView = view;
         }
-
-        View itemView;
     }
 
 }

@@ -50,7 +50,7 @@ public class MsgPersonListAdapter extends CachedAutoRefreshAdapter<MsgPersonVo> 
         if (vo.is_unread) {
             binding.ivwMsgIcon.setImageResource(R.mipmap.ic_round_dot);
         } else {
-            binding.ivwMsgIcon.setImageResource(R.mipmap.ic_round);
+            binding.ivwMsgIcon.setImageResource(R.drawable.ic_round);
         }
 
         binding.clItem.setOnClickListener(v -> { // 限制多次点击

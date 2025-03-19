@@ -54,6 +54,12 @@ public class LeagueResultAdapter extends AnimatedExpandableListViewMax.AnimatedE
     private PageHorizontalScrollView.OnScrollListener mOnScrollListener;
     private BasePopupView noDataDialog;
 
+    public LeagueResultAdapter(Context context, List<League> datas) {
+        this.mDatas = datas;
+        this.mContext = context;
+        init();
+    }
+
     public void setOnScrollListener(PageHorizontalScrollView.OnScrollListener onScrollListener) {
         this.mOnScrollListener = onScrollListener;
     }
@@ -72,20 +78,14 @@ public class LeagueResultAdapter extends AnimatedExpandableListViewMax.AnimatedE
         return noLiveHeaderPosition;
     }
 
-    public void setData(List<League> mLeagueList) {
-        this.mDatas = mLeagueList;
-        init();
-        notifyDataSetChanged();
-    }
-
     public List<League> getData() {
         return mDatas;
     }
 
-    public LeagueResultAdapter(Context context, List<League> datas) {
-        this.mDatas = datas;
-        this.mContext = context;
+    public void setData(List<League> mLeagueList) {
+        this.mDatas = mLeagueList;
         init();
+        notifyDataSetChanged();
     }
 
     public void init() {
@@ -230,7 +230,7 @@ public class LeagueResultAdapter extends AnimatedExpandableListViewMax.AnimatedE
                 //.apply(new RequestOptions().placeholder(placeholderRes))
                 .into(binding.ivIcon);
         binding.vSpace.setVisibility(isExpanded ? View.GONE : View.VISIBLE);
-        binding.groupIndicator.setImageResource(isExpanded ? R.mipmap.bt_icon_expand : R.mipmap.bt_icon_unexpand);
+        binding.groupIndicator.setImageResource(isExpanded ? R.mipmap.bt_icon_expand : R.drawable.bt_icon_unexpand);
         binding.rlLeague.setBackgroundResource(isExpanded ? R.drawable.bt_bg_league_top : R.drawable.bt_bg_league_top_collapse);
         league.setExpand(isExpanded);
 
@@ -414,11 +414,11 @@ public class LeagueResultAdapter extends AnimatedExpandableListViewMax.AnimatedE
     }*/
 
     private static class GroupHolder {
+        View itemView;
+
         public GroupHolder(View view) {
             itemView = view;
         }
-
-        View itemView;
     }
 
     private static class ChildHolder {

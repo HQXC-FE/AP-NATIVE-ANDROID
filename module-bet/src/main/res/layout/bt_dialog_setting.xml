@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:drawableRight="@mipmap/bt_icon_unexpand"
+                android:drawableRight="@drawable/bt_icon_unexpand"
                 android:text="更多"
                 android:textSize="12sp" />
         </RelativeLayout>

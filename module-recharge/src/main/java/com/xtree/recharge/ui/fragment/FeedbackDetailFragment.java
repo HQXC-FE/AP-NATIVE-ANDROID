@@ -148,6 +148,6 @@ public class FeedbackDetailFragment extends BaseFragment<FragmentFeedbackDetailB
                 .addHeader("Cookie", cookie)
                 .addHeader("UUID", TagUtils.getDeviceId(getContext()))
                 .build());
-        Glide.with(getContext()).load(glideUrl).placeholder(R.mipmap.ic_loading).error(R.mipmap.me_icon_name).into(binding.ivSelectorTipImage);
+        Glide.with(getContext()).load(glideUrl).placeholder(R.mipmap.ic_loading).error(R.drawable.me_icon_name).into(binding.ivSelectorTipImage);
     }
 }

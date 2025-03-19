@@ -64,7 +64,7 @@
             android:layout_marginStart="@dimen/layout_margin"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="@dimen/layout_margin"
-            android:background="@mipmap/cm_bg_input_wht">
+            android:background="@drawable/cm_bg_input_wht">
 
             <EditText
                 android:id="@+id/edt_pwd"
@@ -93,7 +93,7 @@
             android:layout_marginStart="@dimen/layout_margin"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="@dimen/layout_margin"
-            android:background="@mipmap/cm_bg_input_wht">
+            android:background="@drawable/cm_bg_input_wht">
 
             <EditText
                 android:id="@+id/edt_pwd2"
