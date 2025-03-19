@@ -64,7 +64,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     private int noLiveHeaderPosition;
     private boolean isUpdateFootBallOrBasketBallState;
     private PageHorizontalScrollView.OnScrollListener mOnScrollListener;
-    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     public LeagueAdapter(Context context, List<League> datas) {
         this.mContext = context;
@@ -92,15 +91,9 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     }
 
     public void setData(List<League> leagueList) {
-        //List<League> newData = leagueList != null ? new ArrayList<>(leagueList) : new ArrayList<>();
         this.mDatas = leagueList;
         init();
         notifyDataSetChanged();
-        CfLog.d("============= setData mDatas.size ==============" + mDatas.size());
-        for (League league : mDatas) {
-            CfLog.d("League: " + league.toString());
-        }
-        CfLog.d("============= setData finish ==============");
     }
 
     private void init() {
