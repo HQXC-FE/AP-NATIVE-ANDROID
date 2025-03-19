@@ -18,5 +18,15 @@
     "theme": "od_yellow",
     "channel_name": "od_yellow_ol",
     "json_name": "od_yellow_ol"
+  },
+  {
+    "theme": "od_green",
+    "channel_name": "od_green_pre",
+    "json_name": "od_green_pre"
+  },
+  {
+    "theme": "od_green",
+    "channel_name": "od_green_ol",
+    "json_name": "od_green_ol"
   }
 ]

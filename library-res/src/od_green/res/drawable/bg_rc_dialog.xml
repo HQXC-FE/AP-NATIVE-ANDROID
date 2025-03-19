@@ -1,0 +1,25 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 背景层：白色 -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+            <corners
+                android:topLeftRadius="20dp"
+                android:topRightRadius="20dp" /> <!-- 设置圆角 -->
+        </shape>
+    </item>
+
+    <!-- 渐变层（在顶部） -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:centerY="0.3"
+                android:endColor="#00FFFFFF"
+                android:startColor="#2D000000" />
+            <corners android:radius="20dp" /> <!-- 让渐变层的圆角匹配背景层 -->
+        </shape>
+    </item>
+
+</layer-list>
