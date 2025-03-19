@@ -81,18 +81,24 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
+                <TextView
                     android:id="@+id/iv_no_data"
+                    style="?attr/offer_no_data_attr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:background="@mipmap/bg_no_data_tip" />
+                    android:layout_marginTop="36dp"
+                    android:elevation="-1dp"
+                    android:gravity="center"
+                    android:text="暂无数据" />
+
 
             </RelativeLayout>
 

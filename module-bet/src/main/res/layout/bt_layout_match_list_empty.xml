@@ -7,15 +7,13 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/bt_bg_matchlist_empty" />
-
     <TextView
         android:id="@+id/tv_to_record"
+        style="?attr/offer_no_data_attr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="-1dp"
+        android:gravity="center"
         android:text="@string/bt_txt_match_empty"
         android:textColor="@color/bt_text_color_primary_3"
         android:textSize="@dimen/bt_text_12sp" />
