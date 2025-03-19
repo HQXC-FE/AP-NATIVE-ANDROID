@@ -32,6 +32,7 @@
             <TextView
                 android:id="@+id/tvw_title"
                 style="@style/style_cm_title"
+                android:textStyle="bold"
                 android:text="@string/txt_bind_usdt_top"
                 app:layout_constraintBaseline_toBaselineOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -804,4 +804,9 @@
         <item name="android:background">@drawable/custom_line_2</item>
     </style>
 
+
+    <style name="style_mine_bind_item_bg">
+        <item name="android:background">@drawable/mine_bind_item_bg</item>
+    </style>
+
 </resources>

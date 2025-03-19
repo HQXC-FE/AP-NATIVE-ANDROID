@@ -165,6 +165,7 @@
     <attr name="customer_service_line1_attr" format="reference" />
     <attr name="customer_service_line2_attr" format="reference" />
 
+    <attr name="mine_bind_item_bg_attr" format="reference" />
 
 
 </resources>
