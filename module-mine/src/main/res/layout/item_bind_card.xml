@@ -16,7 +16,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@mipmap/mine_bind_item_bg"
+        style="?attr/mine_bind_item_bg_attr"
         android:orientation="vertical"
         android:padding="5dp"
         android:paddingTop="10dp">
@@ -109,7 +109,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="14dp"
-            android:textColor="@color/clr_edt_focused2"
+            android:textColor="@color/reBindTextColor"
             />
     </LinearLayout>
 </LinearLayout>

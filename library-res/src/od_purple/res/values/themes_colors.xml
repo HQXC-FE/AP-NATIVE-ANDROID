@@ -98,4 +98,5 @@
     <color name="activityTopDivideLineColor">#DFDBDA</color>
     <color name="customeAgreColor">#CE86CE</color>
     <color name="customQAColor">#99FFFFFF</color>
+    <color name="reBindTextColor">#FFFFFF</color>
 </resources>
