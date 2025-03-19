@@ -154,6 +154,9 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
      */
     public static BaseDetailDataView getInstance(Context context, Match match, boolean isMatchList){
         String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
+        if(platform == null || match == null || match.getSportId() == null){
+            return null;
+        }
         String sport = match.getSportId();
         if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {
             if (sport.equals(FBConstants.SPORT_ID_FB)) {
