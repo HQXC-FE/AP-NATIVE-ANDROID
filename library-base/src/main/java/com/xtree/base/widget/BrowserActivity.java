@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -438,6 +440,14 @@ public class BrowserActivity extends AppCompatActivity {
      * 图片选择
      */
     private void gotoSelectMedia() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                Intent getpermission = new Intent();
+                getpermission.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivity(getpermission);
+                return;
+            }
+        }
         PictureSelector.create(this)
                 .openGallery(SelectMimeType.ofImage())
                 .setMaxSelectNum(1)
