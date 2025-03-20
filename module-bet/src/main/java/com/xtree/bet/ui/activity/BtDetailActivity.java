@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -31,6 +30,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.gyf.immersionbar.ImmersionBar;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
+import com.shuyu.gsyvideoplayer.player.PlayerFactory;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
@@ -39,7 +39,6 @@ import com.xtree.bet.BR;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.Match;
-import com.xtree.bet.bean.ui.MatchFb;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.constant.Constants;
 import com.xtree.bet.contract.BetContract;
@@ -67,6 +66,7 @@ import io.reactivex.schedulers.Schedulers;
 import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
+import tv.danmaku.ijk.media.exo2.Exo2PlayerManager;
 
 public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlayer> implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     private final static String KEY_MATCH = "KEY_MATCH_ID";
@@ -243,6 +243,8 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
      * 初始化播放器相关控件
      */
     private void initVideoPlayer() {
+        //EXOPlayer内核，支持格式更多
+        PlayerFactory.setPlayManager(Exo2PlayerManager.class);
         //增加title
         binding.tvLive.setOnClickListener(this);
         binding.tvAnimi.setOnClickListener(this);
@@ -325,6 +327,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 .setLockLand(false)
                 .setShowFullAnimation(false)//打开动画
                 .setNeedLockFull(false)
+                .setLooping(true)  // 直播需要循环播放
                 .setSeekRatio(1);
     }
 
@@ -534,20 +537,26 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
             btCarDialogFragment.show(BtDetailActivity.this.getSupportFragmentManager(), "btCarDialogFragment");
         } else if (id == R.id.tv_live) {
-            binding.videoPlayer.setVisibility(View.VISIBLE);
+            if (!mMatch.isVideoStart()) {
+                ToastUtils.showLong(getText(R.string.bt_bt_match_not_runing));
+                return;
+            }
             binding.ctlToolbarLeague.setVisibility(View.GONE);
             binding.rlToolbarTime.setVisibility(View.GONE);
             binding.llData.setVisibility(View.GONE);
-            if (mMatch.isVideoStart()) {
-                initVideoBuilderMode();
+            if (TextUtils.equals(mMatch.getVideoType(), "p")) {//是PM场馆H5播放页面
+                if (!mMatch.getVideoUrls().isEmpty()) {
+                    binding.wvAmin.setVisibility(View.VISIBLE);
+                    binding.wvAmin.loadUrl(mMatch.getVideoUrls().get(0));
+                }
             } else {
-                ToastUtils.showLong(getText(R.string.bt_bt_match_not_runing));
+                binding.videoPlayer.setVisibility(View.VISIBLE);
+                initVideoBuilderMode();
             }
 
         } else if (id == R.id.tv_animi) {
             if (mMatch.hasAs() && mMatch.isAnimationStart()) {
                 if (mMatch.getAnmiUrls() != null && !TextUtils.isEmpty(mMatch.getAnmiUrls().get(0))) {
-                    setWebView();
                     binding.wvAmin.setVisibility(View.VISIBLE);
                     binding.ctlToolbarLeague.setVisibility(View.GONE);
                     binding.rlToolbarTime.setVisibility(View.GONE);
@@ -563,7 +572,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 binding.videoPlayer.release();
                 binding.videoPlayer.setVisibility(View.GONE);
             } else if (binding.wvAmin.getVisibility() == View.VISIBLE) {
-                binding.wvAmin.destroy();
+                binding.wvAmin.loadUrl("about:blank");
                 binding.wvAmin.setVisibility(View.GONE);
             } else {
                 finish();
@@ -608,5 +617,11 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
         return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding.wvAmin.destroy();
     }
 }

@@ -1,7 +1,5 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
@@ -17,6 +15,7 @@ import com.xtree.base.vo.PMService;
 import com.xtree.bet.bean.response.pm.MatchInfo;
 import com.xtree.bet.bean.response.pm.PlayTypeInfo;
 import com.xtree.bet.bean.response.pm.VideoAnimationInfo;
+import com.xtree.bet.bean.response.pm.VideoInfo;
 import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.CategoryPm;
 import com.xtree.bet.bean.ui.Match;
@@ -33,6 +32,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
@@ -51,10 +53,12 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
     private Map<String, Category> mTmpCategoryMap = new HashMap<>();
     private boolean isFirst = true;
     private List<PlayType> mPlayTypeList;
-    private MatchInfo mMatchInfo;
     private MatchInfo mMatchResultInfo;
     private long mMatchId;
     private String mSportId;
+    private List<VideoInfo> mVideoUrlVOList;
+    private String mReferUrl;
+    private String mAnimationUrl;
 
     public PmBtDetailViewModel(@NonNull Application application, BetRepository repository) {
         super(application, repository);
@@ -74,10 +78,17 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
                         if (matchInfo == null) {
                             return;
                         }
-                        mMatchInfo = matchInfo;
-                        if (mMatchInfo.mid != null) {
-                            videoAnimationUrlPB(Long.valueOf(mMatchInfo.mid), "Video");
+                        //第一次赋值
+                        if (mMatch == null && matchInfo.mid != null) {
+                            videoAnimationUrlPB(Long.valueOf(matchInfo.mid), "Video");
+                            videoAnimationUrlPB(Long.valueOf(matchInfo.mid), "Animation");
+                            ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+                            scheduler.schedule(() -> {
+                                setMatch(matchInfo);
+                            }, 1, TimeUnit.SECONDS);  // 延迟 1 秒
+                            scheduler.shutdown();  // 关闭调度器
                         }
+                        setMatch(matchInfo);
                     }
 
                     @Override
@@ -92,6 +103,22 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
                 });
         addSubscribe(disposable);
 
+    }
+
+    private void setMatch(MatchInfo matchInfo) {
+        // 执行延时后的操作
+        if (mVideoUrlVOList != null) {
+            matchInfo.vs = mVideoUrlVOList;
+        }
+
+        if (!TextUtils.isEmpty(mAnimationUrl)) {
+            matchInfo.as.clear();
+            matchInfo.as.add(mAnimationUrl);
+        }
+        Match match = new MatchPm(matchInfo);
+        mMatch = match;
+        mMatch.setReferUrl(mReferUrl);
+        matchData.postValue(match);
     }
 
     public void getMatchDetailResult(long matchId) {
@@ -143,35 +170,26 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
                 .subscribeWith(new HttpCallBack<VideoAnimationInfo>() {
                     @Override
                     public void onResult(VideoAnimationInfo videoAnimationInfo) {
-                        if (mMatchInfo != null && mMatchInfo.mid != null) {
-                            if (TextUtils.equals(type, "Video")) {
-                                if (videoAnimationInfo.videoUrlVOList != null) {
-                                    mMatchInfo.vs = videoAnimationInfo.videoUrlVOList;
-                                }
-                                videoAnimationUrlPB(Long.valueOf(mMatchInfo.mid), "Animation");
+
+                        if (TextUtils.equals(type, "Video")) {
+                            if (videoAnimationInfo.videoUrlVOList != null) {
+                                mVideoUrlVOList = videoAnimationInfo.videoUrlVOList;
                             }
-                            if (TextUtils.equals(type, "Animation")) {
-                                if (!TextUtils.isEmpty(videoAnimationInfo.animationUrl)) {
-                                    mMatchInfo.as.clear();
-                                    mMatchInfo.as.add(videoAnimationInfo.animationUrl);
-                                }
-                                Match match = new MatchPm(mMatchInfo);
-                                mMatch = match;
-                                mMatch.setReferUrl(videoAnimationInfo.referUrl);
-                                matchData.postValue(match);
+                            mReferUrl = videoAnimationInfo.referUrl;
+                        } else if (TextUtils.equals(type, "Animation")) {
+                            if (!TextUtils.isEmpty(videoAnimationInfo.animationUrl)) {
+                                mAnimationUrl = videoAnimationInfo.animationUrl;
                             }
+
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        if (mMatchInfo != null) {
-                            Match match = new MatchPm(mMatchInfo);
-                            mMatch = match;
-                            matchData.postValue(match);
-                        }
+
                     }
                 });
+
         addSubscribe(disposable);
 
     }
