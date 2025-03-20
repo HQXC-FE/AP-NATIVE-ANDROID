@@ -33,7 +33,7 @@ android {
             versionName "1.0.5"
             versionCode 105
             resValue "string", "app_name", "意昂体育3"
-            resValue "string", "domain_api", "http://139.186.201.117:46820"
+            resValue "string", "domain_api", "http://114.117.252.9:46820"
             resValue "string", "domain_url", "https://h51.d4c1tc.vip"
             resValue "string", "channel_name", "eon3"  // 渠道名称
             resValue "string", "platform_set", "40"  // 平台代号,升级用 35-意昂, 38-意昂2 40-意昂3
@@ -42,14 +42,11 @@ android {
             resValue "string", "ms_secret_key", "b4636d50-41d2-49f4-b843-07572a8d282f"
             resValue "string", "sentry_dsn", "https://0cefc03e1c8e991010eb93fb0722e362@o4507447554539520.ingest.us.sentry.io/4507604245217280"
             resValue "bool", "is_tag", "true" // 是否开启统计
-            resValue "string", "domain_api_list", "http://119.45.14.75:46820;" +
-                    "http://119.45.63.172:46820;" +
-                    "http://146.56.229.55:46820;" +
-                    "http://43.143.77.164:46820;" +
-                    "http://101.43.108.235:46820;" +
-                    "http://139.186.137.79:46820;" +
-                    "http://124.221.214.240:46820;" +
-                    "http://139.186.201.117:46820;" +
+            resValue "string", "domain_api_list", "http://129.226.60.5:46820;" +
+                    "http://129.28.157.161:46820;" +
+                    "http://119.45.5.103:46820;" +
+                    "http://175.27.143.79:46820;" +
+                    "http://114.117.252.9:46820;" +
                     "https://app1.h8g5lk.vip;" +
                     "https://app1.z6r9qr.vip;" +
                     "https://app1.i8c3rn.vip;" +
