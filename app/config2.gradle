@@ -30,25 +30,15 @@ android {
             versionName "1.0.9"
             versionCode 109
             resValue "string", "app_name", "恒行5"
-            resValue "string", "domain_api", "http://43.154.74.20:16811"
-            resValue "string", "domain_url", "https://www.hxing5vip3.com"
+            resValue "string", "domain_api", "http://129.226.60.5:16811"
+            resValue "string", "domain_url", "https://h51.v3t8zx.click"
             resValue "string", "channel_name", "hengxing5"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
             resValue "bool", "is_tag", "true" // 是否开启统计
             resValue "string", "mixpanel_token", "6a1ec9cae116d7a920a4697a46599ca9"
             resValue "string", "ms_secret_key", "139dbbd0-5ab4-4be6-b197-e3af17a95279"
             resValue "string", "sentry_dsn", "https://37abb5e9cfc1ee3efe43f0f96abd9b33@o4507447554539520.ingest.us.sentry.io/4508771117105152"
-            resValue "string", "domain_api_list", "http://150.109.117.29:16811;" +
-                    "http://43.154.74.20:16811;" +
-                    "http://119.45.14.75:16811;" +
-                    "http://119.45.63.172:16811;" +
-                    "http://146.56.229.55:16811;" +
-                    "http://43.143.77.164:16811;" +
-                    "http://101.43.108.235:16811;" +
-                    "http://139.186.137.79:16811;" +
-                    "http://124.221.214.240:16811;" +
-                    "http://139.186.201.117:16811;"
-                    "https://app1.d6d7vh.click;" +
+            resValue "string", "domain_api_list", "https://app1.d6d7vh.click;" +
                     "https://app1.c3u3sf.vip;" +
                     "https://app1.q1i7ff.vip;" +
                     "https://app1.p2e2vs.click;" +
@@ -61,7 +51,12 @@ android {
                     "https://app3.j3e7ms.click;" +
                     "https://app3.x1e9fu.click;" +
                     "https://app4.z3p9tu.click;" +
-                    "https://app5.t4v1su.click;"
+                    "https://app5.t4v1su.click;" +
+                    "http://129.226.60.5:16811;" +
+                    "http://129.28.157.161:16811;" +
+                    "http://119.45.5.103:16811;" +
+                    "http://175.27.143.79:16811;" +
+                    "http://114.117.252.9:16811"
             resValue "string", "domain_url_list", "https://h51.x9f4ke.click;" +
                     "https://h51.v3t8zx.click;" +
                     "https://h51.k1w7rs.click;" +
@@ -73,7 +68,6 @@ android {
                     "https://h53.bavxj.vip;" +
                     "https://h54.jutqu.vip;" +
                     "https://h55.vvhoq.vip;"
-
             resValue "string", "domain_url_list_third", "https://hx5aliapp.k4z6vh.vip/hx5/app_config_heng5.json" +
                     ";https://hx5aliapp.y4q4nq.vip/hx5/app_config_heng5.json" +
                     ";https://hx5cn2app.h3c6jx.vip/hx5/app_config_heng5.json" +
