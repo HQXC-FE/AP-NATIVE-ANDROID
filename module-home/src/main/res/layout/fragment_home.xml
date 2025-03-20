@@ -142,7 +142,7 @@
                         android:paddingTop="3dp"
                         android:paddingEnd="25dp"
                         android:paddingBottom="5dp"
-                        android:src="@mipmap/hm_ic_notice"
+                        style="?attr/hm_ic_notice_attr"
                         android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@id/tvw_name"
                         app:layout_constraintStart_toEndOf="@+id/ivw_vip"
