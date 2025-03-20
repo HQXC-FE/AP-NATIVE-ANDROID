@@ -51,7 +51,7 @@ public class Constant {
     public static final String URL_SPORT_RULES_OFFICIAL = "/static/activity/sportRules-xm/index.html"; // 体育规则
     public static final String URL_SPORT_RULES_INTER = "/static/activity/sportRules/index.html"; // 体育规则
     public static final String URL_QA = "/webapp/#/my/qa"; // 常见问题
-    public static final String URL_TUTORIAL = "/static/vir-tutorial/cnyt.html"; // 充值教程
+    public static final String URL_TUTORIAL = "/webapp/?isNative=1#/depositGuide/Detail"; // 充值教程
     public static final String URL_ANTI_FRAUD = "/static/vir-tutorial/antiScam_m.html"; // 防骗教程
     public static final String URL_HELP = "/webapp/#/my/help"; // 帮助中心
     public static final String URL_BET_RECORD = "/webapp/#/report/bet-record"; // 投注记录
@@ -65,8 +65,8 @@ public class Constant {
     public static final String URL_PLAY_INTRO = "/static/activity/xc/rulesInfo.html"; // 玩法介绍
 
     public static final String URL_RC_TRANSFER_TUTORIAL = "/static/transfer-tutorial/index.html"; // 回单教程访问路径
-    public static final String URL_RC_CNYT_TUTORIAL = "/activity/activity_48/index.html?type=cnyt"; // cnyt充值教程
-    public static final String URL_RC_USDT_TUTORIAL = "/activity/activity_48/index.html?type=usdt"; // usdt充值教程
+    public static final String URL_RC_CNYT_TUTORIAL = "/webapp/?isNative=1#/depositGuide"; // cnyt充值教程
+    public static final String URL_RC_USDT_TUTORIAL = "/webapp/?isNative=1#/depositGuide/usdt"; // usdt充值教程
     public static final String URL_DOWNLOAD_HI_WALLET = "https://www.hiwalletapp.com/download"; // 下载嗨钱包
     public static final String URL_PAGE_403 = "/error/ap/403.html"; // 403页面 "抱歉，当前国家或地区不支持服务"; "请求被拒绝";
     public static final String URL_PAGE_GLOBE_VERIFY_ALI = "/app_waf_captcha.html"; // 阿里巴巴全局验证

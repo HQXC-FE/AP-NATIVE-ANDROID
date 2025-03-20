@@ -2110,7 +2110,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
     private void showWebDialog(String title, String path) {
         String url = path.startsWith("/") ? DomainUtil.getH5Domain2() + path : path;
-        new XPopup.Builder(getContext()).asCustom(new BrowserDialog(getContext(), title, url)).show();
+        new XPopup.Builder(getContext()).asCustom(BrowserDialog.newInstance(getContext(), url)).show();
     }
 
     private List<String> getFastMoney(String loadMin, String loadMax) {

@@ -274,7 +274,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
     private void goWebView(View v, String path, boolean isContainTitle) {
         String title = ((TextView) v).getText().toString();
         String url = DomainUtil.getH5Domain2() + path;
-        BrowserActivity.start(getContext(), title, url, isContainTitle);
+        BrowserActivity.start(getContext(), url);
     }
 
     @Override
