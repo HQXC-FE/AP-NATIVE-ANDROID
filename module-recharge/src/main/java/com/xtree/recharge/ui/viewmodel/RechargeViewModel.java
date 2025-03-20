@@ -34,7 +34,6 @@ import com.xtree.recharge.vo.RechargeOrderDetailVo;
 import com.xtree.recharge.vo.RechargePayVo;
 import com.xtree.recharge.vo.RechargeVo;
 
-import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 
 import java.text.ParseException;
@@ -50,7 +49,6 @@ import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
 import me.xtree.mvvmhabit.http.BaseResponse;
@@ -87,7 +85,7 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
     public SingleLiveData<ProfileVo> liveDataProfile = new SingleLiveData<>();
     public SingleLiveData<ExRechargeOrderCheckResponse> liveDataCurOrder = new SingleLiveData<>(); // 极速充值 未完成的订单(跳到订单页)
     public SingleLiveData<Boolean> liveDataExpNoOrder = new SingleLiveData<>(); // 极速充值 没有未完成的订单 (显示银行/姓名/金额/下一步)
-    public SingleLiveData<String> liveDataExpTitle = new SingleLiveData<>(); // 极速充值流程渠道标题
+    //    public SingleLiveData<String> liveDataExpTitle = new SingleLiveData<>(); // 极速充值流程渠道标题
     public SingleLiveData<Object> liveSkipGuideData = new SingleLiveData<>();//跳过引导接口
 
     public RechargeViewModel(@NonNull Application application) {
@@ -355,6 +353,13 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
                                 case "03": //失败
                                     liveDataExpNoOrder.setValue(true);
                                     break;
+                                case "14": // 回单审核中
+                                    if (rechargeVoAtomicReference.get() != null) {
+                                        curRechargeLiveData.setValue(rechargeVoAtomicReference.get());
+                                    }
+                                    liveDataCurOrder.setValue(vo);
+                                    liveDataExpNoOrder.setValue(false);
+                                    break;
                                 default:
                                     long differenceInSeconds = 0;
                                     try {
@@ -503,6 +508,13 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
                                 case "03": //失败
                                     liveDataExpNoOrder.setValue(true);
                                     break;
+                                case "14": // 回单审核中
+                                    if (rechargeVoAtomicReference.get() != null) {
+                                        curRechargeLiveData.setValue(rechargeVoAtomicReference.get());
+                                    }
+                                    liveDataCurOrder.setValue(vo);
+                                    liveDataExpNoOrder.setValue(false);
+                                    break;
                                 default:
                                     long differenceInSeconds = 0;
                                     try {
@@ -599,24 +611,47 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
      * @param bid
      */
     public void checkOrder(String bid) {
-
+        AtomicReference<RechargeVo> rechargeVoAtomicReference = new AtomicReference<>();
         //先检查极速充值渠道是否有正在进行的订单
         Disposable disposable = (Disposable) model.getApiService().getPaymentsTypeList()
-                .flatMap(new Function<BaseResponse<PaymentDataVo>, Publisher<?>>() {
-                    @Override
-                    public Publisher<?> apply(BaseResponse<PaymentDataVo> paymentDataVoBaseResponse) throws Exception {
+                .<Pair<BaseResponse<RechargeVo>, ExRechargeOrderCheckResponse>>flatMap(paymentDataVoBaseResponse -> {
+                    ExRechargeOrderCheckRequest request = new ExRechargeOrderCheckRequest(bid);
+                    boolean hasPendingOnepayfixBid = true;
 
-                        ExRechargeOrderCheckRequest request = new ExRechargeOrderCheckRequest(bid);
+                    if (paymentDataVoBaseResponse.getData() != null) {
+                        //如果存在充值中的订单，则使用订单的渠道查询订单
+                        if (paymentDataVoBaseResponse.getData().pendingOnepayfixBid > 0) {
+                            request.setPid(String.valueOf(paymentDataVoBaseResponse.getData().pendingOnepayfixBid));
+                            hasPendingOnepayfixBid = true;
+                        }
+                    }
+                    // 如果不相等，说明有正在进行中的订单
+                    if (hasPendingOnepayfixBid) {
+                        return model.getApiService().getPayment(request.getPid()).map(response -> new Pair<>(response, null));
+                    } else {
+                        return model.rechargeOrderCheck(request).map(response -> new Pair<>(null, response));
+                    }
+                })
+                .flatMap(pair -> {
+                    BaseResponse<RechargeVo> rechargeVoBaseResponse = pair.first;
+                    ExRechargeOrderCheckResponse exRechargeOrderCheck = pair.second;
 
-                        if (paymentDataVoBaseResponse.getData() != null) {
-                            //如果存在充值中的订单，则使用订单的渠道查询订单
-                            if (paymentDataVoBaseResponse.getData().pendingOnepayfixBid > 0) {
-                                request.setPid(String.valueOf(paymentDataVoBaseResponse.getData().pendingOnepayfixBid));
+                    if (rechargeVoBaseResponse != null) {
+                        // 处理 BaseResponse<RechargeVo>
+                        if (rechargeVoBaseResponse.getData() != null) {
+                            if (isOnePayFix(rechargeVoBaseResponse.getData())) {
+                                rechargeVoAtomicReference.set(rechargeVoBaseResponse.getData());
+                                //如果是原生极速充值
+                                ExRechargeOrderCheckRequest request = new ExRechargeOrderCheckRequest(rechargeVoBaseResponse.getData().bid);
+                                return model.rechargeOrderCheck(request);
                             }
                         }
-
-                        return model.rechargeOrderCheck(request);
+                    } else if (exRechargeOrderCheck != null) {//没有订单，直接返回上一次的查单结果
+                        // 处理 ExRechargeOrderCheckResponse
+                        return Flowable.just(exRechargeOrderCheck); // 直接返回处理后的结果
                     }
+                    // 如果都为空，返回空的 Flowable
+                    return Flowable.empty();
                 })
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
@@ -634,6 +669,13 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
                                 case "03": //失败
                                     liveDataExpNoOrder.setValue(true);
                                     break;
+                                case "14": // 回单审核中
+                                    if (rechargeVoAtomicReference.get() != null) {
+                                        curRechargeLiveData.setValue(rechargeVoAtomicReference.get());
+                                    }
+                                    liveDataCurOrder.setValue(vo);
+                                    liveDataExpNoOrder.setValue(false);
+                                    break;
                                 default:
                                     long differenceInSeconds = 0;
                                     try {
@@ -647,6 +689,9 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
                                     }
                                     CfLog.i("sec: " + differenceInSeconds);
                                     if (differenceInSeconds < 0) {
+                                        if (rechargeVoAtomicReference.get() != null) {
+                                            curRechargeLiveData.setValue(rechargeVoAtomicReference.get());
+                                        }
                                         liveDataCurOrder.setValue(vo);
                                         liveDataExpNoOrder.setValue(false);
                                     } else {
