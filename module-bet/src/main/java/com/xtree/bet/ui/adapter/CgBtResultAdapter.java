@@ -29,8 +29,8 @@ public class CgBtResultAdapter extends BaseAdapter<BtResult> {
     @Override
     protected void convert(ViewHolder holder, BtResult btResult, int position) {
         BtLayoutCarCgResultItemBinding binding = BtLayoutCarCgResultItemBinding.bind(holder.itemView);
-        if (cgOddLimitList.isEmpty()) {
-            //cgOddLimitList有可能无数据
+        if (cgOddLimitList.isEmpty() || position >= cgOddLimitList.size()) {
+            //cgOddLimitList有可能无数据,或者cgOddLimitList.size>datas.size
             return;
         }
         CgOddLimit cgOddLimit = cgOddLimitList.get(position);

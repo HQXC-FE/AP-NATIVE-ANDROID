@@ -85,6 +85,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import io.sentry.Sentry;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
@@ -269,7 +270,17 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             } else {
                 if (!isFloating) {
                     CfLog.i("bettingNetFloatingWindows.show");
-                    mBettingNetFloatingWindows.show();
+                    runOnUiThread(() -> {//处理BadTokenException: Unable to add window -- token android.os.BinderProxy@3c447b2 is not valid; is your activity running
+                        try {
+                            if (!isFinishing() && !isDestroyed() && !isChangingConfigurations()) {//防止activity销毁了页面，还需启动
+                                mBettingNetFloatingWindows.show();
+                            }
+                        } catch (Exception e) {
+                            CfLog.e("Bet MainActivity Failed to show FloatingWindows: " + e.getMessage());
+                            e.printStackTrace();
+                            Sentry.captureException(e);
+                        }
+                    });
                     isFloating = true;
                 }
 
@@ -278,8 +289,14 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             if (!isFloating) {
                 CfLog.i("bettingNetFloatingWindows.show");
                 runOnUiThread(() -> {//处理BadTokenException: Unable to add window -- token android.os.BinderProxy@3c447b2 is not valid; is your activity running
-                    if (!isFinishing() && !isDestroyed()) {//防止activity销毁了页面，还需启动
-                        mBettingNetFloatingWindows.show();
+                    try {
+                        if (!isFinishing() && !isDestroyed() && !isChangingConfigurations()) {//防止activity销毁了页面，还需启动
+                            mBettingNetFloatingWindows.show();
+                        }
+                    } catch (Exception e) {
+                        CfLog.e("Bet MainActivity Failed to show FloatingWindows: " + e.getMessage());
+                        e.printStackTrace();
+                        Sentry.captureException(e);
                     }
                 });
                 isFloating = true;
@@ -935,7 +952,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         viewModel.setPlaySearchDateData();
     }
 
-    private void getMatchData(String sportId, int orderBy, List<Long> leagueIds, List<Long> matchids, int playMethodType, int searchDatePos, boolean isTimedRefresh, boolean isRefresh) {
+    private void getMatchData(String sportId, int orderBy, List<
+            Long> leagueIds, List<Long> matchids, int playMethodType, int searchDatePos,
+                              boolean isTimedRefresh, boolean isRefresh) {
         if (playMethodType == 7 || playMethodType == 100) { // 冠军 sportTypePos不需要使用在这里
             viewModel.getChampionList(sportTypePos, sportId, orderBy, leagueIds, matchids,
                     playMethodType, mOddType, isTimedRefresh, isRefresh);
@@ -1147,14 +1166,14 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, DomainUtil.getApiUrl());
                 } else {
-                    System.out.println("########### MainActivity baseUrl 333333 ###########"+DomainUtil.getApiUrl());
+                    System.out.println("########### MainActivity baseUrl 333333 ###########" + DomainUtil.getApiUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, DomainUtil.getApiUrl());
                 }
             } else {
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, BtDomainUtil.getDefaultPmxcDomainUrl());
                 } else {
-                    System.out.println("########### MainActivity baseUrl 44444 ###########"+ BtDomainUtil.getDefaultPmDomainUrl());
+                    System.out.println("########### MainActivity baseUrl 44444 ###########" + BtDomainUtil.getDefaultPmDomainUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, BtDomainUtil.getDefaultPmDomainUrl());
                 }
             }

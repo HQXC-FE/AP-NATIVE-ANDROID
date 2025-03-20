@@ -23,11 +23,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,17 +35,10 @@ import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.view.NestedScrollingChild;
 import androidx.core.view.NestedScrollingChildHelper;
-
-import com.bumptech.glide.Glide;
-import com.xtree.base.utils.TimeUtils;
-import com.xtree.bet.R;
-import com.xtree.bet.bean.ui.League;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,11 +150,11 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
         setNestedScrollingEnabled(true);
     }
 
-    public static class OnScrollListenerImpl extends AbstractOnScrollListener{
+    public static class OnScrollListenerImpl extends AbstractOnScrollListener {
         private View haeder;
         private ExpandableListView expandableListView;
 
-        public OnScrollListenerImpl(View header, ExpandableListView expandableListView){
+        public OnScrollListenerImpl(View header, ExpandableListView expandableListView) {
             this.haeder = header;
             this.expandableListView = expandableListView;
         }
@@ -198,7 +188,7 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
         }
     }
 
-    public abstract static class AbstractOnScrollListener implements OnScrollListener{
+    public abstract static class AbstractOnScrollListener implements OnScrollListener {
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
 
@@ -350,7 +340,7 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
         adapter.startCollapseAnimation(groupPos, firstChildPos);
 
         // Force the listview to refresh it's views
-        adapter.notifyDataSetChanged();
+        adapter.safeNotifyDataSetChanged();
         return isGroupExpanded(groupPos);
     }
 
@@ -435,6 +425,14 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
         private void stopAnimation(int groupPosition) {
             GroupInfo info = getGroupInfo(groupPosition);
             info.animating = false;
+        }
+
+        private void safeNotifyDataSetChanged() {
+            if (Looper.myLooper() == Looper.getMainLooper()) {
+                notifyDataSetChanged();
+            } else {
+                new Handler(Looper.getMainLooper()).post(this::notifyDataSetChanged);
+            }
         }
 
         /**
@@ -572,8 +570,10 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
                         @Override
                         public void onAnimationEnd(Animation animation) {
                             stopAnimation(groupPosition);
-                            notifyDataSetChanged();
-                            dummyView.setTag(STATE_IDLE);
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                safeNotifyDataSetChanged();
+                                dummyView.setTag(STATE_IDLE);
+                            });
                         }
 
                         @Override
@@ -599,10 +599,12 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
                         @Override
                         public void onAnimationEnd(Animation animation) {
                             stopAnimation(groupPosition);
-                            listView.collapseGroup(groupPosition);
-                            notifyDataSetChanged();
-                            info.dummyHeight = -1;
-                            dummyView.setTag(STATE_IDLE);
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                listView.collapseGroup(groupPosition);
+                                safeNotifyDataSetChanged();
+                                info.dummyHeight = -1;
+                                dummyView.setTag(STATE_IDLE);
+                            });
                         }
 
                         @Override
@@ -758,7 +760,7 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
         postInvalidate();
     }
 
-    public void removeHeader(){
+    public void removeHeader() {
         if (mHeader != null) {
             mHeader.setVisibility(GONE);
         }
@@ -797,7 +799,7 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
         switch (ev.getAction()) {
             case MotionEvent.ACTION_UP:
                 if (mHeader != null && y > mHeader.getTop() && y < mHeader.getBottom()) {
-                    if(mOnHeaderClick != null){
+                    if (mOnHeaderClick != null) {
                         mOnHeaderClick.onHeaderClick();
                     } else {
                         /*int packedPositionGroup = getPackedPositionGroup(getExpandableListPosition(pointToPosition(x, y)));
@@ -807,20 +809,15 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
                             expandGroup(packedPositionGroup);
                         }*/
                         // 例如，通过 Handler 或 runOnUiThread 来更新数据并通知适配器
-//                        new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                // 执行数据修改和通知适配器更新
-//                                int packedPositionGroup = getPackedPositionGroup(getExpandableListPosition(pointToPosition(x, y)));
-//                                if (isGroupExpanded(packedPositionGroup)) {
-//                                    collapseGroup(packedPositionGroup);
-//                                } else {
-//                                    expandGroup(packedPositionGroup);
-//                                }
-//                                // 如果需要修改适配器数据，确保通知它
-//                                adapter.notifyDataSetChanged();
-//                            }
-//                        });
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            // 执行数据修改和通知适配器更新
+                            int packedPositionGroup = getPackedPositionGroup(getExpandableListPosition(pointToPosition(x, y)));
+                            if (isGroupExpanded(packedPositionGroup)) {
+                                collapseGroupWithAnimation(packedPositionGroup);
+                            } else {
+                                expandGroupWithAnimation(packedPositionGroup);
+                            }
+                        });
                     }
                     return true;
                 }
@@ -831,11 +828,11 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
 
     private OnHeaderClick mOnHeaderClick;
 
-    public void setOnHeaderClick(OnHeaderClick onHeaderClick){
+    public void setOnHeaderClick(OnHeaderClick onHeaderClick) {
         this.mOnHeaderClick = onHeaderClick;
     }
 
-    public interface OnHeaderClick{
+    public interface OnHeaderClick {
         void onHeaderClick();
     }
 }

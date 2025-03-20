@@ -147,6 +147,9 @@ public class AdsFragment extends BaseFragment<FragmentAdsBinding, HomeViewModel>
 
     private void tipSsl(WebView view, SslErrorHandler handler) {
         Activity activity = (Activity) view.getContext();
+        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
+            return; // 避免 BadTokenException
+        }
         activity.runOnUiThread(() -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             builder.setMessage(com.xtree.base.R.string.ssl_failed_will_u_continue); // SSL认证失败，是否继续访问？

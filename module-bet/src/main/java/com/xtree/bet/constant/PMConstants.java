@@ -177,7 +177,13 @@ public class PMConstants {
             mapBgMatchDetailTop.put(SPORT_ID_STPQ, R.mipmap.bt_detail_bg_pq_top);
             mapBgMatchDetailTop.put(SPORT_ID_SQ, R.mipmap.bt_detail_bg_mszq_default_top);
         }
-        return mapBgMatchDetailTop.get(sportId);
+        // 直接访问 map，无需判断为空
+        Integer result = mapBgMatchDetailTop.get(sportId);
+        if (result == null) {
+            // 如果没有找到对应的 sportId，可以根据需求返回默认值或处理异常
+            return R.mipmap.bt_detail_bg_mszq_default_top;
+        }
+        return result;
     }
 
     private static List<HotLeague> hotFootBallLeagueTopList = new ArrayList<>();
