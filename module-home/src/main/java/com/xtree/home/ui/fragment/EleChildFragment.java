@@ -145,7 +145,7 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
             String name = Objects.requireNonNull(map.get("name")).toString();
             // 跳转到游戏H5
             CfLog.i("URL: " + url);
-            BrowserActivity.start(getContext(), name, url, false, true);
+            BrowserActivity.startThirdDomain(getContext(), name, url);
         });
     }
 
