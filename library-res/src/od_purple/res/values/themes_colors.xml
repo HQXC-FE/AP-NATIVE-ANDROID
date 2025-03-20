@@ -99,4 +99,5 @@
     <color name="customeAgreColor">#CE86CE</color>
     <color name="customQAColor">#99FFFFFF</color>
     <color name="reBindTextColor">#FFFFFF</color>
+    <color name="updateTitleTextColor">#775493</color>
 </resources>
