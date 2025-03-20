@@ -22,6 +22,7 @@
     <string name="txt_bind_gobao_type">bindgobao</string>
     <string name="txt_bind_gopay_type">bindgopay</string>
     <string name="txt_bind_okpay_type">bindokpay</string>
+    <string name="txt_bind_bobi_type">bindbobi</string>
     <!--HQAP2-2769增加绑定微信支付宝-->
     <string name="txt_bind_wechat_type">bindcardwx</string>
     <string name="txt_bind_zfb_type">bindcardzfb</string>
@@ -40,6 +41,7 @@
     <string name="txt_bind_gobao">管理GOBAO</string>
     <string name="txt_bind_gopay">管理GOPAY</string>
     <string name="txt_bind_okpay">管理OKPAY</string>
+    <string name="txt_bind_bobi">管理波币</string>
     <string name="txt_bind_alipay">管理支付宝</string>
     <string name="txt_bind_alipay1">绑定支付宝</string>
     <string name="txt_bind_wechat">管理微信支付</string>
@@ -61,6 +63,7 @@
     <string name="txt_remind_gopay">地址以16位字母数字组成</string>
     <string name="txt_remind_okpay">地址以16位字母数字组成</string>
     <string name="txt_remind_solana">Solana地址以44位字母数字组成</string>
+    <string name="txt_remind_bobi">地址以B开头的33位英文或数字组成</string>
 
     <string name="txt_enter_login_name">请输入账号</string>
     <string name="txt_enter_login_pwd">请输入密码</string>
