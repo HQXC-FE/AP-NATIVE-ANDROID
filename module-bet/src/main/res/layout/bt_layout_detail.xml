@@ -121,7 +121,7 @@
                         <LinearLayout
                             android:id="@+id/ll_live"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="25dp"
                             android:layout_below="@+id/ll_main"
                             android:layout_marginTop="15dp"
                             android:gravity="center_horizontal"

@@ -147,7 +147,7 @@ public interface PMApiService {
     Flowable<BaseResponse<List<LeagueAreaInfo>>> getOnSaleLeagues(@QueryMap Map<String, String> map);
 
     /**
-     * 获取联赛列表
+     * 获取赛事动画和视频播放链接
      * @return
      */
     @POST("/yewu11/v1/w/videoAnimationUrlPB")
