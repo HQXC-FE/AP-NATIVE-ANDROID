@@ -1218,14 +1218,14 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         binding.ivwClose.setOnClickListener(view -> {
             binding.llNotice.setVisibility(View.GONE);
             binding.tvwNotice.setVisibility(View.GONE);
-            binding.ivNoticeLeft.setVisibility(View.GONE);
+            //binding.ivNoticeLeft.setVisibility(View.GONE);
             binding.ivwClose.setVisibility(View.GONE);
             binding.ivwNotice.setVisibility(View.VISIBLE);
         });
         binding.ivwNotice.setOnClickListener(view -> {
             binding.llNotice.setVisibility(View.VISIBLE);
             binding.tvwNotice.setVisibility(View.VISIBLE);
-            binding.ivNoticeLeft.setVisibility(View.VISIBLE);
+            //binding.ivNoticeLeft.setVisibility(View.VISIBLE);
             binding.ivwClose.setVisibility(View.VISIBLE);
             binding.ivwNotice.setVisibility(View.INVISIBLE);
         });
@@ -1530,7 +1530,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 binding.llNotice.setVisibility(View.GONE);
                 binding.llNotice.setVisibility(View.GONE);
                 binding.tvwNotice.setVisibility(View.GONE);
-                binding.ivNoticeLeft.setVisibility(View.GONE);
+                //binding.ivNoticeLeft.setVisibility(View.GONE);
                 binding.ivwClose.setVisibility(View.GONE);
                 binding.ivwNotice.setVisibility(View.GONE);
             } else {
@@ -1543,7 +1543,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 }
                 binding.llNotice.setVisibility(View.VISIBLE);
                 binding.tvwNotice.setVisibility(View.VISIBLE);
-                binding.ivNoticeLeft.setVisibility(View.VISIBLE);
+                //binding.ivNoticeLeft.setVisibility(View.VISIBLE);
                 binding.ivwClose.setVisibility(View.VISIBLE);
                 binding.tvwNotice.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
