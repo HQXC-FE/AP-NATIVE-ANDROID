@@ -11,6 +11,7 @@ import android.animation.ObjectAnimator;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -123,7 +124,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private List<Long> mLeagueIdList = new ArrayList<>();
 
     private Disposable timerDisposable;
-    private Disposable sportsTimerDisposable;
     private Disposable firstNetworkFinishedDisposable;
     private Disposable firstNetworkExceptionDisposable;
 
@@ -496,7 +496,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 getMatchData(sportId, mOrderBy, mLeagueIdList, null,
                         playMethodType, searchDatePos, false, true);
                 if ((sportId == null || TextUtils.equals("1111", sportId)) && (playMethodPos == 0 || playMethodPos == 3)) {
-                    System.out.println("############## tabSportAdapter sportId ##############"+sportId);
                     viewModel.getHotMatchCount(playMethodType, viewModel.hotLeagueList);
                 }
             }
@@ -1166,14 +1165,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, DomainUtil.getApiUrl());
                 } else {
-                    System.out.println("########### MainActivity baseUrl 333333 ###########" + DomainUtil.getApiUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, DomainUtil.getApiUrl());
                 }
             } else {
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, BtDomainUtil.getDefaultPmxcDomainUrl());
                 } else {
-                    System.out.println("########### MainActivity baseUrl 44444 ###########" + BtDomainUtil.getDefaultPmDomainUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, BtDomainUtil.getDefaultPmDomainUrl());
                 }
             }
@@ -1193,9 +1190,13 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 int type = binding.rvLeague.getPackedPositionType(position);
 
                 if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    Match match = (Match) binding.rvLeague.getItemAtPosition(i);
-                    if (match != null) {
-                        matchIdList.add(match.getId());
+                    //Match match = (Match) binding.rvLeague.getItemAtPosition(i);
+                    Object item = binding.rvLeague.getItemAtPosition(i); // 假设适配器有 getItem 方法
+                    if (item instanceof Match) {
+                        Match match = (Match) item;
+                        if (match != null) {
+                            matchIdList.add(match.getId());
+                        }
                     }
                 }
             }
@@ -1249,6 +1250,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     protected void onResume() {
         super.onResume();
         initTimer();
+        startStopwatch();
         setCgBtCar();
         if (mLeagueAdapter != null) {
             mLeagueAdapter.notifyDataSetChanged();
@@ -1265,6 +1267,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     protected void onDestroy() {
         super.onDestroy();
         BtCarManager.destroy();
+        stopStopwatch();
         SPUtils.getInstance(BET_EXPAND).clear();
         mBettingNetFloatingWindows.removeView();
         mBettingNetFloatingWindows.clearInstance();
@@ -1879,5 +1882,30 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, "");
             mIsFirstLoadMatch = false;
         }
+    };
+
+    private Handler handler = new Handler(Looper.getMainLooper());
+    int elapsedTime;
+    //比赛记录时间
+    private Runnable stopwatchRunnable = new Runnable() {
+        @Override
+        public void run() {
+            elapsedTime++;
+            if(mLeagueAdapter != null){
+                mLeagueAdapter.updateVisibleItems(binding.rvLeague);
+            }
+            handler.postDelayed(this, 1000); // 每秒更新一次
+        }
+    };
+
+    // 启动记时
+    private void startStopwatch() {
+        handler.removeCallbacks(stopwatchRunnable); // 移除已存在的任务
+        handler.post(stopwatchRunnable); // 只执行一次
+    }
+
+    // 停止记时（防止内存泄漏）
+    private void stopStopwatch() {
+        handler.removeCallbacks(stopwatchRunnable);
     }
 }
