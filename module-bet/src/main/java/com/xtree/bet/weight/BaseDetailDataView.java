@@ -27,6 +27,7 @@ import com.xtree.bet.weight.fb.BasketDataView;
 import com.xtree.bet.weight.fb.FbDataView;
 import com.xtree.bet.weight.fb.IceBallDataView;
 import com.xtree.bet.weight.fb.NetBallDataView;
+import com.xtree.bet.weight.fb.SnkDataView;
 import com.xtree.bet.weight.fb.StVolleyballDataView;
 import com.xtree.bet.weight.fb.TableTennisDataView;
 import com.xtree.bet.weight.fb.VolleyballDataView;
@@ -49,6 +50,10 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
      */
     protected String[] scoreType;
     protected List<Score> scores;
+    /**
+     * 区分比赛列表还是比赛详情
+     */
+    private boolean isDisplayMatchList;
     public BaseDetailDataView(@NonNull Context context) {
         super(context);
     }
@@ -62,6 +67,7 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
     }
 
     public void setMatch(Match match, boolean isMatchList){
+        isDisplayMatchList = isMatchList;
         List<Score> scoreList = match.getScoreList(scoreType);
         //CfLog.i("scoreType    "+(new Gson()).toJson(scoreType));
         scores = new ArrayList<>();
@@ -122,7 +128,7 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.leftMargin = ConvertUtils.dp2px(5);
         textView.setLayoutParams(params);
-        int color = R.color.bt_text_color_primary;
+        int color = isDisplayMatchList ? R.color.bt_text_color_primary : R.color.bt_color_under_bg_primary_text;
         textView.setTextColor(getResources().getColor(color));
         textView.setTextSize(10);
         textView.setText(info);
@@ -148,6 +154,9 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
      */
     public static BaseDetailDataView getInstance(Context context, Match match, boolean isMatchList){
         String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
+        if(platform == null || match == null || match.getSportId() == null){
+            return null;
+        }
         String sport = match.getSportId();
         if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {
             if (sport.equals(FBConstants.SPORT_ID_FB)) {
@@ -166,9 +175,9 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
                 return new TableTennisDataView(context, match, isMatchList);
             } else if (sport.equals(FBConstants.SPORT_ID_BQ)) {
                 return new IceBallDataView(context, match, isMatchList);
-            }/* else if (sport.equals(FBConstants.SPORT_ID_SNK)) {
-            return new SnkDataView(context, match);
-            }*/
+            } else if (sport.equals(FBConstants.SPORT_ID_SNK)) {
+                return new SnkDataView(context, match, isMatchList);
+            }
         }else{
             if (sport.equals(PMConstants.SPORT_ID_FB)) {
                 return new com.xtree.bet.weight.pm.FbDataView(context, match, isMatchList);
@@ -186,6 +195,8 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
                 return new com.xtree.bet.weight.pm.TableTennisDataView(context, match, isMatchList);
             } else if (sport.equals(PMConstants.SPORT_ID_BQ)) {
                 return new com.xtree.bet.weight.pm.IceBallDataView(context, match, isMatchList);
+            } else if (sport.equals(PMConstants.SPORT_ID_SNK)) {
+                return new com.xtree.bet.weight.pm.SnkDataView(context, match, isMatchList);
             }
         }
         return null;

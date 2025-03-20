@@ -144,11 +144,12 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 binding.rlToolbarTime.setVisibility(View.GONE);
                 if (binding.videoPlayer.getVisibility() != View.VISIBLE && binding.wvAmin.getVisibility() != View.VISIBLE) {
                     binding.ctlToolbarLeague.setVisibility(View.VISIBLE);
+                    binding.llData.setVisibility(View.VISIBLE);
                 } else {
                     binding.ctlToolbarLeague.setVisibility(View.GONE);
+                    binding.llData.setVisibility(View.GONE);
                 }
                 binding.llLive.setVisibility(View.VISIBLE);
-                binding.llData.setVisibility(View.VISIBLE);
                 binding.toolbar.setBackgroundResource(android.R.color.transparent);
             } else {
                 binding.llLive.setVisibility(View.VISIBLE);
@@ -536,6 +537,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             binding.videoPlayer.setVisibility(View.VISIBLE);
             binding.ctlToolbarLeague.setVisibility(View.GONE);
             binding.rlToolbarTime.setVisibility(View.GONE);
+            binding.llData.setVisibility(View.GONE);
             if (mMatch.isVideoStart()) {
                 initVideoBuilderMode();
             } else {
@@ -550,6 +552,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                     binding.ctlToolbarLeague.setVisibility(View.GONE);
                     binding.rlToolbarTime.setVisibility(View.GONE);
                     binding.wvAmin.loadUrl(mMatch.getAnmiUrls().get(0));
+                    binding.llData.setVisibility(View.GONE);
                 } else {
                     ToastUtils.showLong(getText(R.string.bt_bt_match_not_runing));
                 }

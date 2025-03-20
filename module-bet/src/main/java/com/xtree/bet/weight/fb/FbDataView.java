@@ -41,6 +41,10 @@ public class FbDataView extends BaseDetailDataView implements View.OnClickListen
         String cornorCard = hasScore(scoreCornor) ? getResources().getString(R.string.bt_detail_cornor, scoreCornor.get(0), scoreCornor.get(1))  : getResources().getString(R.string.bt_detail_cornor_empty, " -");
         ((TextView)findViewById(R.id.tv_cornor)).setText(cornorCard);
         findViewById(R.id.iv_cornor).setSelected(match.hasCornor());
+
+        if(match.hasVideo()){
+
+        }
     }
 
     @Override

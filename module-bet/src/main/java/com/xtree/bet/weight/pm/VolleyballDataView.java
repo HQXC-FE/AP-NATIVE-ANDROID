@@ -13,6 +13,8 @@ import com.xtree.bet.weight.BaseDetailDataView;
 
 /**
  * 排球相关数据view(第一盘，第二盘比分等)
+ * 需要展示例如“三局二胜”和“总分”这种附加详情的球种有：网球，排球，沙滩排球，
+ * 羽毛球，乒乓球，斯诺克（不区分列表和详情）。
  */
 public class VolleyballDataView extends BaseDetailDataView {
 
@@ -23,10 +25,8 @@ public class VolleyballDataView extends BaseDetailDataView {
         periods = new String[]{"S120", "S121", "S122", "S123", "S124"};
         scoreType = periods;
         setMatch(match, isMatchList);
-        if(isMatchList) {
+        if(match != null && match.isGoingon()){
             addMatchListAdditional(match.getFormat() + " 总分");
         }
     }
-
-    
 }
