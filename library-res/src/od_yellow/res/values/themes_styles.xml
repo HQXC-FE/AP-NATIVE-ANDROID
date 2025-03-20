@@ -142,7 +142,7 @@
     </style>
 
     <style name="img_no_data_style">
-        <item name="android:drawableTop">@drawable/img_no_data</item>
+        <item name="android:drawableTop">@drawable/ic_no_data</item>
     </style>
     <!-- 我的-安全中心-验证 获取验证码 -->
     <style name="btn_get_code_style">
