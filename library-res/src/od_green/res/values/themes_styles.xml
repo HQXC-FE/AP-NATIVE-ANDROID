@@ -317,7 +317,7 @@
     </style>
 
     <style name="style_bg_floating">
-        <item name="android:src">@drawable/bg_dialog_order_bank_top</item>
+        <item name="android:src">@drawable/bg_floating</item>
     </style>
 
     <style name="style_iv_floating_close">
