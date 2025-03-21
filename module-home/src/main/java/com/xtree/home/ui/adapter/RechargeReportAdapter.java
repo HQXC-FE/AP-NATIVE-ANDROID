@@ -27,10 +27,6 @@ public class RechargeReportAdapter extends CachedAutoRefreshAdapter<RechargeOrde
         this.callBack = callBack;
     }
 
-    public interface ICallBack {
-        void onCallBack(RechargeOrderVo vo);
-    }
-
     @NonNull
     @Override
     public CacheViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -98,5 +94,9 @@ public class RechargeReportAdapter extends CachedAutoRefreshAdapter<RechargeOrde
         itemWay.setOnClickListener(v -> {
             callBack.onCallBack(vo);
         });
+    }
+
+    public interface ICallBack {
+        void onCallBack(RechargeOrderVo vo);
     }
 }

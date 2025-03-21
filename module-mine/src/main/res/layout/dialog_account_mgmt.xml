@@ -108,6 +108,11 @@
                     android:text="@string/txt_bind_okpay" />
 
                 <TextView
+                    style="@style/style_choose_account"
+                    android:tag="bindbobi"
+                    android:text="@string/txt_bind_bobi" />
+
+                <TextView
                     android:id="@+id/tv_zfb"
                     style="?attr/choose_account_attr"
                     android:tag="bindcardzfb"

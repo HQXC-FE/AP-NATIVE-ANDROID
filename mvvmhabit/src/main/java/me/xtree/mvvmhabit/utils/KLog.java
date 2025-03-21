@@ -110,7 +110,7 @@ public class KLog {
     }
 
 
-    private static void printLog(int type, String tagStr, Object objectMsg) {
+    private static synchronized void printLog(int type, String tagStr, Object objectMsg) {
         String msg;
         if (!IS_SHOW_LOG) {
             return;
@@ -126,8 +126,8 @@ public class KLog {
         String tag = TAG; // (tagStr == null ? className : tagStr);
         methodName = methodName.substring(0, 1).toUpperCase() + methodName.substring(1);
 
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("[(").append(className).append(":").append(lineNumber).append(")#").append(methodName).append("] --- ");
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("[(").append(className).append(":").append(lineNumber).append(")#").append(methodName).append("] --- ");
 
         if (objectMsg == null) {
             msg = "Log with null Object";
@@ -135,10 +135,10 @@ public class KLog {
             msg = objectMsg.toString();
         }
         if (msg != null && type != JSON) {
-            stringBuilder.append(msg);
+            stringBuffer.append(msg);
         }
 
-        String logStr = stringBuilder.toString();
+        String logStr = stringBuffer.toString();
 
         switch (type) {
             case V:

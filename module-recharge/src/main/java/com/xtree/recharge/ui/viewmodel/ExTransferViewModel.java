@@ -92,6 +92,8 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
  * Describe: 极速转账viewModel
  */
 public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
+
+    private final int THRESHOLD = 3;
     //倒计时 剩余时间
     public MutableLiveData<String> leftTimeData = new MutableLiveData<>();
     //截止時間
@@ -117,7 +119,6 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     public MutableLiveData<String> bankCodeOfPayment = new MutableLiveData<>();
     public MutableLiveData<String> bankNameOfPayment = new MutableLiveData<>();
     public MutableLiveData<String> typeOfPayment = new MutableLiveData<>();
-
     //付款卡号
     public MutableLiveData<String> bankNumberOfPayment = new MutableLiveData<>();
     //回单验证码
@@ -134,7 +135,10 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     private WeakReference<FragmentActivity> mActivity = null;
     private BasePopupView loadingDialog = null;
     private BasePopupView positiveConfirmDialog = null;
-
+    //计数器
+    private int calSuccess = 0;
+    private int calFail = 0;
+    //计数器
     @SuppressLint("StaticFieldLeak")
     private Comm100ChatWindows serviceChatFlow = null;
 
@@ -170,19 +174,13 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             if (loadingDialog != null) {
                 loadingDialog.dismiss();
             }
-            loadingDialog = new XPopup.Builder(mActivity.get())
-                    .dismissOnTouchOutside(false)
-                    .dismissOnBackPressed(true)
-                    .asCustom(new LoadingDialog(mActivity.get()))
-                    .show();
+            loadingDialog = new XPopup.Builder(mActivity.get()).dismissOnTouchOutside(false).dismissOnBackPressed(true).asCustom(new LoadingDialog(mActivity.get())).show();
             loadingDialog.show();
         }
 
         ExRechargeOrderCheckRequest request = new ExRechargeOrderCheckRequest(cOrderData.getPid());
-        Disposable disposable = (Disposable) model.rechargeOrderCheck(request)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<ExRechargeOrderCheckResponse>() {
+        Disposable disposable = (Disposable) model.rechargeOrderCheck(request).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<ExRechargeOrderCheckResponse>() {
                     @Override
                     public void onResult(ExRechargeOrderCheckResponse vo) {
                         CfLog.d(vo.toString());
@@ -274,22 +272,14 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         if (tip1.getValue() == null) {
             String payName = pValue.getPayName();
             String payBankName = pValue.getPayBankName();
-            String tip1String = "请使用" +
-                    payName +
-                    "的" +
-                    payBankName +
-                    "卡充值，确保后续可成功提现";
+            String tip1String = "请使用" + payName + "的" + payBankName + "卡充值，确保后续可成功提现";
             int color = mActivity.get().getResources().getColor(R.color.clr_red_24);
             ForegroundColorSpan colorSpan1 = new ForegroundColorSpan(color);
             ForegroundColorSpan colorSpan2 = new ForegroundColorSpan(color);
 
             SpannableString tip1Sp = new SpannableString(tip1String);
-            tip1Sp.setSpan(colorSpan1, tip1String.indexOf(payName),
-                    tip1String.indexOf(payName) + payName.length(),
-                    Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            tip1Sp.setSpan(colorSpan2, tip1String.indexOf(payBankName),
-                    tip1String.indexOf(payBankName) + payBankName.length(),
-                    Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            tip1Sp.setSpan(colorSpan1, tip1String.indexOf(payName), tip1String.indexOf(payName) + payName.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            tip1Sp.setSpan(colorSpan2, tip1String.indexOf(payBankName), tip1String.indexOf(payBankName) + payBankName.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             tip1.setValue(tip1Sp);
         }
 
@@ -299,8 +289,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             ForegroundColorSpan colorSpan4 = new ForegroundColorSpan(color);
             SpannableString tip2Sp = new SpannableString("请转账成功后务必及时确认！否则可能造成延迟上分");
             tip2Sp.setSpan(colorSpan3, 3, 5, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            tip2Sp.setSpan(colorSpan4, tip2Sp.length() - 4, tip2Sp.length(),
-                    Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            tip2Sp.setSpan(colorSpan4, tip2Sp.length() - 4, tip2Sp.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             tip2.setValue(tip2Sp);
         }
     }
@@ -312,41 +301,37 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         ExRechargeOrderCheckResponse.DataDTO value = payOrderData.getValue();
         String expireTime = value.getExpireTime();
         long cancleOrderDifference = getDifferenceTimeByNow(expireTime);
-        if (cancleOrderDifference <= 0) {
-            if (!canonicalName.equals(ExTransferConfirmFragment.class.getCanonicalName())) {
-                toFail();
+//        if (cancleOrderDifference <= 0) {
+//            if (!canonicalName.equals(ExTransferConfirmFragment.class.getCanonicalName())) {
+//                toFail();
+//            }
+//            return;
+//        }
+
+        Disposable disposable = (Disposable) Flowable.intervalRange(0, 60 * 60 * 3, 0, 1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).doOnNext(aLong -> {
+            long l = Math.max(0, cancleOrderDifference - aLong);
+            String formatTime = formatSeconds(l);
+            leftTimeData.setValue("剩余上传时间：" + formatTime);
+
+            String str1 = "等待匹配中，于";
+            String str2 = "后自动取消";
+            SpannableString spannableString = new SpannableString(str1 + formatTime + str2);
+            ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getApplication().getResources().getColor(R.color.clr_purple_02));
+            spannableString.setSpan(foregroundColorSpan, str1.length(), str1.length() + formatTime.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            pairedTimeData.setValue(spannableString);
+
+            //轮训三秒间隔
+            if (aLong % 3 == 0) {
+                checkOrder();
             }
-            return;
-        }
-
-        Disposable disposable = (Disposable) Flowable.intervalRange(0, cancleOrderDifference, 0, 1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(aLong -> {
-                    long l = cancleOrderDifference - aLong;
-                    String formatTime = formatSeconds(l);
-                    leftTimeData.setValue("剩余上传时间：" + formatTime);
-
-                    String str1 = "等待匹配中，于";
-                    String str2 = "后自动取消";
-                    SpannableString spannableString = new SpannableString(str1 + formatTime + str2);
-                    ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(getApplication().getResources().getColor(R.color.clr_purple_02));
-                    spannableString.setSpan(foregroundColorSpan, str1.length(), str1.length() + formatTime.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    pairedTimeData.setValue(spannableString);
-
-                    //轮训三秒间隔
-                    if (aLong % 3 == 0) {
-                        checkOrder();
-                    }
-                })
-                .doOnComplete(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        if (!canonicalName.equals(ExTransferConfirmFragment.class.getCanonicalName())) {
-                            toFail();
-                        }
-                    }
-                })
-                .subscribe();
+        }).doOnComplete(new Action() {
+            @Override
+            public void run() throws Exception {
+//                if (!canonicalName.equals(ExTransferConfirmFragment.class.getCanonicalName())) {
+//                    toFail();
+//                }
+            }
+        }).subscribe();
         addSubscribe(disposable);
     }
 
@@ -363,20 +348,16 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                 return;
             }
 
-            Disposable disposable = (Disposable) Flowable.intervalRange(0, cancelWaitDifference, 0, 1, TimeUnit.SECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnNext(aLong -> {
-                        long l = cancelWaitDifference - aLong;
-                        waitTime.setValue(formatSeconds(l));
-                    })
-                    .doOnComplete(new Action() {
-                        @Override
-                        public void run() throws Exception {
-                            waitTime.setValue("");
-                            cancleOrderWaitStatus.setValue(false);
-                        }
-                    })
-                    .subscribe();
+            Disposable disposable = (Disposable) Flowable.intervalRange(0, cancelWaitDifference, 0, 1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).doOnNext(aLong -> {
+                long l = cancelWaitDifference - aLong;
+                waitTime.setValue(formatSeconds(l));
+            }).doOnComplete(new Action() {
+                @Override
+                public void run() throws Exception {
+                    waitTime.setValue("");
+                    cancleOrderWaitStatus.setValue(false);
+                }
+            }).subscribe();
             addSubscribe(disposable);
         }
     }
@@ -385,17 +366,14 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
      * 设置客服提示计时器
      */
     public void serviceChatTimeKeeping() {
-        Flowable.intervalRange(0, 30, 0, 1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        if (serviceChatFlow != null) {
-                            serviceChatFlow.showTip();
-                        }
-                    }
-                })
-                .subscribe();
+        Flowable.intervalRange(0, 30, 0, 1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).doOnComplete(new Action() {
+            @Override
+            public void run() throws Exception {
+                if (serviceChatFlow != null) {
+                    serviceChatFlow.showTip();
+                }
+            }
+        }).subscribe();
     }
 
     /**
@@ -410,10 +388,8 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         }
 
         ExRechargeOrderCheckRequest request = new ExRechargeOrderCheckRequest(cOrderData.getPid());
-        Disposable disposable = (Disposable) model.rechargeOrderCheck(request)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<ExRechargeOrderCheckResponse>() {
+        Disposable disposable = (Disposable) model.rechargeOrderCheck(request).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<ExRechargeOrderCheckResponse>() {
                     @Override
                     public void onResult(ExRechargeOrderCheckResponse vo) {
                         CfLog.d(vo.toString());
@@ -468,6 +444,8 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                         toPayee();
                     }
                 }
+                calSuccess = 0;
+                calFail = 0;
                 break;
             case "14": // 回单审核中
                 if (bankInfoData.getValue() == null) {
@@ -484,15 +462,30 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                     bankInfo.setExpireTime(data.getExpireTime());
 
                     bankInfoData.setValue(bankInfo);
+                    toConfirm();
                 }
+                calSuccess = 0;
+                calFail = 0;
                 break;
             case "03": //失败
-                toFail();
+                calSuccess = 0;
+                if (calFail >= THRESHOLD) {
+                    toFail();
+                } else {
+                    calFail++;
+                }
                 break;
             case "00": //成功
-                toSuccess();
+                calFail = 0;
+                if (calSuccess >= THRESHOLD) {
+                    toSuccess();
+                } else {
+                    calSuccess++;
+                }
                 break;
             case "13": //配对中
+                calSuccess = 0;
+                calFail = 0;
                 break;
         }
     }
@@ -546,26 +539,19 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             if (loadingDialog != null) {
                 loadingDialog.dismiss();
             }
-            loadingDialog = new XPopup.Builder(mActivity.get())
-                    .dismissOnTouchOutside(false)
-                    .dismissOnBackPressed(true)
-                    .asCustom(new LoadingDialog(mActivity.get()))
-                    .show();
+            loadingDialog = new XPopup.Builder(mActivity.get()).dismissOnTouchOutside(false).dismissOnBackPressed(true).asCustom(new LoadingDialog(mActivity.get())).show();
             loadingDialog.show();
         }
 
         ExOrderCancelRequest request = new ExOrderCancelRequest(cOrderData.getPid(), pOrderData.getPlatformOrder());
 
-        Disposable disposable = (Disposable) model.cancelOrderProcess(request)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<BaseResponse>() {
+        Disposable disposable = (Disposable) model.cancelOrderProcess(request).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<BaseResponse>() {
                     @Override
                     public void onResult(BaseResponse response) {
                         if (loadingDialog != null) {
                             loadingDialog.dismiss();
                         }
-
                         toFail();
                     }
 
@@ -603,20 +589,14 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             if (loadingDialog != null) {
                 loadingDialog.dismiss();
             }
-            loadingDialog = new XPopup.Builder(mActivity.get())
-                    .dismissOnTouchOutside(false)
-                    .dismissOnBackPressed(true)
-                    .asCustom(new LoadingDialog(mActivity.get()))
-                    .show();
+            loadingDialog = new XPopup.Builder(mActivity.get()).dismissOnTouchOutside(false).dismissOnBackPressed(true).asCustom(new LoadingDialog(mActivity.get())).show();
             loadingDialog.show();
         }
 
         ExOrderCancelRequest request = new ExOrderCancelRequest(cOrderData.getPid(), pOrderData.getPlatformOrder());
 
-        Disposable disposable = (Disposable) model.cancelOrderWait(request)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<BaseResponse>() {
+        Disposable disposable = (Disposable) model.cancelOrderWait(request).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<BaseResponse>() {
                     @Override
                     public void onResult(BaseResponse response) {
                         if (loadingDialog != null) {
@@ -669,13 +649,12 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             if (positiveConfirmDialog != null && positiveConfirmDialog.isShow()) {
                 positiveConfirmDialog.dismiss();
             }
-            positiveConfirmDialog = new XPopup.Builder(mActivity.get()).dismissOnTouchOutside(false)
-                    .dismissOnBackPressed(false).asCustom(new RcExpPositiveConfirmDialog(mActivity.get(), new RcExpPositiveConfirmDialog.ICallBack() {
-                        @Override
-                        public void onClickConfirm() {
-                            toVoucherPositive();
-                        }
-                    }));
+            positiveConfirmDialog = new XPopup.Builder(mActivity.get()).dismissOnTouchOutside(false).dismissOnBackPressed(false).asCustom(new RcExpPositiveConfirmDialog(mActivity.get(), new RcExpPositiveConfirmDialog.ICallBack() {
+                @Override
+                public void onClickConfirm() {
+                    toVoucherPositive();
+                }
+            }));
             positiveConfirmDialog.show();
             return;
         }
@@ -694,11 +673,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             if (loadingDialog != null) {
                 loadingDialog.dismiss();
             }
-            loadingDialog = new XPopup.Builder(mActivity.get())
-                    .dismissOnTouchOutside(false)
-                    .dismissOnBackPressed(true)
-                    .asCustom(new LoadingDialog(mActivity.get()))
-                    .show();
+            loadingDialog = new XPopup.Builder(mActivity.get()).dismissOnTouchOutside(false).dismissOnBackPressed(true).asCustom(new LoadingDialog(mActivity.get())).show();
             loadingDialog.show();
         }
 
@@ -711,10 +686,8 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         request.setReceiptId(receiptIdOfPayment.getValue());
         request.setPayName(cOrderData.getPayName());
 
-        Disposable disposable = (Disposable) model.rechargeReceiptUpload(request)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<ExReceiptUploadResponse>() {
+        Disposable disposable = (Disposable) model.rechargeReceiptUpload(request).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<ExReceiptUploadResponse>() {
                     @Override
                     public void onResult(ExReceiptUploadResponse response) {
                         if (loadingDialog != null) {
@@ -779,11 +752,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             if (loadingDialog != null) {
                 loadingDialog.dismiss();
             }
-            loadingDialog = new XPopup.Builder(mActivity.get())
-                    .dismissOnTouchOutside(false)
-                    .dismissOnBackPressed(true)
-                    .asCustom(new LoadingDialog(mActivity.get()))
-                    .show();
+            loadingDialog = new XPopup.Builder(mActivity.get()).dismissOnTouchOutside(false).dismissOnBackPressed(true).asCustom(new LoadingDialog(mActivity.get())).show();
             loadingDialog.show();
         }
 
@@ -796,10 +765,8 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         request.setReceiptId(receiptIdOfPayment.getValue());
         request.setPayName(cOrderData.getPayName());
 
-        Disposable disposable = (Disposable) model.rechargeReceiptUpload(request)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<ExReceiptUploadResponse>() {
+        Disposable disposable = (Disposable) model.rechargeReceiptUpload(request).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<ExReceiptUploadResponse>() {
                     @Override
                     public void onResult(ExReceiptUploadResponse response) {
                         if (loadingDialog != null) {
@@ -850,11 +817,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             if (loadingDialog != null) {
                 loadingDialog.dismiss();
             }
-            loadingDialog = new XPopup.Builder(mActivity.get())
-                    .dismissOnTouchOutside(false)
-                    .dismissOnBackPressed(true)
-                    .asCustom(new LoadingDialog(mActivity.get()))
-                    .show();
+            loadingDialog = new XPopup.Builder(mActivity.get()).dismissOnTouchOutside(false).dismissOnBackPressed(true).asCustom(new LoadingDialog(mActivity.get())).show();
             loadingDialog.show();
         }
 
@@ -863,10 +826,8 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         request.setReceipt(imageBase64);
         request.setPlatformOrder(pOrderData.getPlatformOrder());
 
-        Disposable disposable = (Disposable) model.rechargeReceiptOCR(request)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<ExReceiptocrResponse>() {
+        Disposable disposable = (Disposable) model.rechargeReceiptOCR(request).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<ExReceiptocrResponse>() {
                     @Override
                     public void onResult(ExReceiptocrResponse response) {
                         if (loadingDialog != null) {
@@ -1014,9 +975,8 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         HashMap<String, String> map = null;
         if (pvalue.getUserBankInfo() != null) {
             String jsonString = JSON.toJSONString(pvalue.getUserBankInfo());
-            map = JSON.parseObject(jsonString,
-                    new TypeReference<HashMap<String, String>>() {
-                    });
+            map = JSON.parseObject(jsonString, new TypeReference<HashMap<String, String>>() {
+            });
         }
 
         ExRechargeOrderCheckResponse.DataDTO.OpBankListDTO opBankList = pvalue.getOpBankList();
@@ -1035,19 +995,18 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         bankSearchData.setUsed(opBankList.getUsed());
         bankSearchData.setmBind(bankInfoDTOS);
 
-        BankPickDialogFragment.show(mActivity.get(), bankSearchData)
-                .setOnPickListner(new BankPickDialogFragment.onPickListner() {
-                    @Override
-                    public void onPick(BankPickModel model) {
-                        if (TextUtils.isEmpty(model.getBankCode())) {
-                            bankCodeOfPayment.setValue(model.getBankId());
-                        } else {
-                            bankCodeOfPayment.setValue(model.getBankCode());
-                        }
-                        bankNameOfPayment.setValue(model.getBankName());
-                        typeOfPayment.setValue(model.getType());
-                    }
-                });
+        BankPickDialogFragment.show(mActivity.get(), bankSearchData).setOnPickListner(new BankPickDialogFragment.onPickListner() {
+            @Override
+            public void onPick(BankPickModel model) {
+                if (TextUtils.isEmpty(model.getBankCode())) {
+                    bankCodeOfPayment.setValue(model.getBankId());
+                } else {
+                    bankCodeOfPayment.setValue(model.getBankCode());
+                }
+                bankNameOfPayment.setValue(model.getBankName());
+                typeOfPayment.setValue(model.getType());
+            }
+        });
     }
 
     /**
@@ -1110,11 +1069,15 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     }
 
     public void toPayee() {
-        startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_PAYEE);
+        if (!canonicalName.equals(ExTransferPayeeFragment.class.getCanonicalName())) {
+            startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_PAYEE);
+        }
     }
 
     public void toConfirm() {
-        startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_CONFIRM);
+        if (!canonicalName.equals(ExTransferConfirmFragment.class.getCanonicalName())) {
+            startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_CONFIRM);
+        }
     }
 
     public void toVoucher() {
@@ -1133,14 +1096,18 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     }
 
     public void toFail() {
-        startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_FAIL);
-        close();
+        if (!canonicalName.equals(ExTransferFailFragment.class.getCanonicalName())) {
+            startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_FAIL);
+            close();
+        }
     }
 
 
     public void toSuccess() {
-        startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_SUCCESS);
-        close();
+        if (!canonicalName.equals(ExTransferSuccessFragment.class.getCanonicalName())) {
+            startContainerActivity(RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_SUCCESS);
+            close();
+        }
     }
 
     /**
@@ -1188,38 +1155,32 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                 return;
             }
         }
-        PictureSelector.create(mActivity.get())
-                .openGallery(SelectMimeType.ofImage())
-                .isDisplayCamera(false)
-                .setMaxSelectNum(1)
-                .setImageEngine(GlideEngine.createGlideEngine())
-                .setCompressEngine(ImageFileCompressEngine.create())
-                .forResult(new OnResultCallbackListener<LocalMedia>() {
-                    @Override
-                    public void onResult(ArrayList<LocalMedia> result) {
-                        if (result != null) {
-                            for (int i = 0; i < result.size(); i++) {
-                                String imageRealPathString = result.get(i).getCompressPath();
-                                if (TextUtils.isEmpty(imageRealPathString)) {
-                                    imageRealPathString = result.get(i).getRealPath();
-                                }
-
-                                if (PictureMimeType.isContent(imageRealPathString)) {
-                                    voucher.setValue(Uri.parse(imageRealPathString));
-                                } else {
-                                    voucher.setValue(Uri.fromFile(new File(imageRealPathString)));
-                                }
-                                CfLog.i("获取图片地址是 uri ====== " + voucher.getValue());
-                            }
-                            ocr();
+        PictureSelector.create(mActivity.get()).openGallery(SelectMimeType.ofImage()).isDisplayCamera(false).setMaxSelectNum(1).setImageEngine(GlideEngine.createGlideEngine()).setCompressEngine(ImageFileCompressEngine.create()).forResult(new OnResultCallbackListener<LocalMedia>() {
+            @Override
+            public void onResult(ArrayList<LocalMedia> result) {
+                if (result != null) {
+                    for (int i = 0; i < result.size(); i++) {
+                        String imageRealPathString = result.get(i).getCompressPath();
+                        if (TextUtils.isEmpty(imageRealPathString)) {
+                            imageRealPathString = result.get(i).getRealPath();
                         }
-                    }
 
-                    @Override
-                    public void onCancel() {
-
+                        if (PictureMimeType.isContent(imageRealPathString)) {
+                            voucher.setValue(Uri.parse(imageRealPathString));
+                        } else {
+                            voucher.setValue(Uri.fromFile(new File(imageRealPathString)));
+                        }
+                        CfLog.i("获取图片地址是 uri ====== " + voucher.getValue());
                     }
-                });
+                    ocr();
+                }
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
     }
 
     private Boolean isActivityNull() {
@@ -1246,12 +1207,12 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         rechargeLiveData.setValue(rechargeViewModel);
 
         //外部传入的极速渠道名称
-        String expTitleValue = rechargeViewModel.liveDataExpTitle.getValue();
-        if (!TextUtils.isEmpty(expTitleValue)) {
-            titleLiveData.setValue(expTitleValue);
-            rechargeViewModel.liveDataExpTitle.setValue(null);
-            return;
-        }
+//        String expTitleValue = rechargeViewModel.liveDataExpTitle.getValue();
+//        if (!TextUtils.isEmpty(expTitleValue)) {
+//            titleLiveData.setValue(expTitleValue);
+//            rechargeViewModel.liveDataExpTitle.setValue(null);
+//            return;
+//        }
 
         //充值页当前选择的渠道
         RechargeVo rechargeVo = rechargeViewModel.curRechargeLiveData.getValue();
@@ -1311,6 +1272,8 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
         leftTimeData.setValue(null);
         tip1.setValue(null);
         tip2.setValue(null);
+        calSuccess = 0;
+        calFail = 0;
     }
 
     /**
@@ -1363,10 +1326,8 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
      * 跳过极速引导引导
      */
     public void skipGuide() {
-        Disposable disposable = (Disposable) model.skipGuide()
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<ExRechargeOrderCheckResponse>() {
+        Disposable disposable = (Disposable) model.skipGuide().compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<ExRechargeOrderCheckResponse>() {
                     @Override
                     public void onResult(ExRechargeOrderCheckResponse vo) {
                         CfLog.d(vo.toString());

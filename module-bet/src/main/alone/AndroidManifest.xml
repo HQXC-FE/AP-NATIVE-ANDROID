@@ -19,7 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.xtree.bet.ui.activity.BtDetailActivity"></activity>
-        <activity android:name="com.xtree.bet.ui.activity.ExpandActivity"></activity>
+
     </application>
 </manifest>

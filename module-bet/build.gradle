@@ -20,9 +20,11 @@ dependencies {
     //组件依赖基础库
     api project(':library-base')
     api project(':library-res')
-    //implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.5.0-release-jitpack'
-    implementation project(":gsyVideoPlayer")
-    //implementation project(":gsyVideoPlayer-aliplay")
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyvideoplayer-java:v10.0.0'
+
+    //是否需要ExoPlayer模式
+    implementation 'com.github.CarGuo.GSYVideoPlayer:gsyvideoplayer-exo2:v10.0.0'
+
     //组件中依赖阿里路由编译框架
     kapt rootProject.ext.dependencies["arouter-compiler"]
 }

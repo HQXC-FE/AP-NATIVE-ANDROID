@@ -10,6 +10,7 @@
     <string name="txt_rate_gobao_cny">参考汇率 1GB = 1.00元</string>
     <string name="txt_rate_okpay_cny">参考汇率 1OKG = 1.00元</string>
     <string name="txt_rate_gopay_cny">参考汇率 1GOP = 1.00元</string>
+    <string name="txt_rate_bobi_cny">参考汇率 1波币 = 1.00元</string>
     <string name="txt_recharge">充值</string>
     <string name="txt_feedback">反馈信息</string>
     <string name="txt_next">下一步</string>

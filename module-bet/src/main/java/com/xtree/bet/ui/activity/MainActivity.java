@@ -11,6 +11,7 @@ import android.animation.ObjectAnimator;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -86,6 +87,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import io.sentry.Sentry;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
@@ -124,7 +126,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private List<League> settingLeagueList = new ArrayList<>();
     private List<Long> mLeagueIdList = new ArrayList<>();
     private Disposable timerDisposable;
-    private Disposable sportsTimerDisposable;
     private Disposable firstNetworkFinishedDisposable;
     private Disposable firstNetworkExceptionDisposable;
     private int searchDatePos;
@@ -266,7 +267,17 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             } else {
                 if (!isFloating) {
                     CfLog.i("bettingNetFloatingWindows.show");
-                    mBettingNetFloatingWindows.show();
+                    runOnUiThread(() -> {//处理BadTokenException: Unable to add window -- token android.os.BinderProxy@3c447b2 is not valid; is your activity running
+                        try {
+                            if (!isFinishing() && !isDestroyed() && !isChangingConfigurations()) {//防止activity销毁了页面，还需启动
+                                mBettingNetFloatingWindows.show();
+                            }
+                        } catch (Exception e) {
+                            CfLog.e("Bet MainActivity Failed to show FloatingWindows: " + e.getMessage());
+                            e.printStackTrace();
+                            Sentry.captureException(e);
+                        }
+                    });
                     isFloating = true;
                 }
 
@@ -275,8 +286,14 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             if (!isFloating) {
                 CfLog.i("bettingNetFloatingWindows.show");
                 runOnUiThread(() -> {//处理BadTokenException: Unable to add window -- token android.os.BinderProxy@3c447b2 is not valid; is your activity running
-                    if (!isFinishing() && !isDestroyed()) {//防止activity销毁了页面，还需启动
-                        mBettingNetFloatingWindows.show();
+                    try {
+                        if (!isFinishing() && !isDestroyed() && !isChangingConfigurations()) {//防止activity销毁了页面，还需启动
+                            mBettingNetFloatingWindows.show();
+                        }
+                    } catch (Exception e) {
+                        CfLog.e("Bet MainActivity Failed to show FloatingWindows: " + e.getMessage());
+                        e.printStackTrace();
+                        Sentry.captureException(e);
                     }
                 });
                 isFloating = true;
@@ -884,7 +901,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         viewModel.setPlaySearchDateData();
     }
 
-    private void getMatchData(String sportId, int orderBy, List<Long> leagueIds, List<Long> matchids, int playMethodType, int searchDatePos, boolean isTimedRefresh, boolean isRefresh) {
+    private void getMatchData(String sportId, int orderBy, List<
+            Long> leagueIds, List<Long> matchids, int playMethodType, int searchDatePos,
+                              boolean isTimedRefresh, boolean isRefresh) {
         if (playMethodType == 7 || playMethodType == 100) { // 冠军 sportTypePos不需要使用在这里
             viewModel.getChampionList(sportTypePos, sportId, orderBy, leagueIds, matchids,
                     playMethodType, mOddType, isTimedRefresh, isRefresh);
@@ -1122,9 +1141,13 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 int type = ExpandableListView.getPackedPositionType(position);
 
                 if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                    Match match = (Match) binding.rvLeague.getItemAtPosition(i);
-                    if (match != null) {
-                        matchIdList.add(match.getId());
+                    //Match match = (Match) binding.rvLeague.getItemAtPosition(i);
+                    Object item = binding.rvLeague.getItemAtPosition(i); // 假设适配器有 getItem 方法
+                    if (item instanceof Match) {
+                        Match match = (Match) item;
+                        if (match != null) {
+                            matchIdList.add(match.getId());
+                        }
                     }
                 }
             }
@@ -1178,6 +1201,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     protected void onResume() {
         super.onResume();
         initTimer();
+        startStopwatch();
         setCgBtCar();
         if (mLeagueAdapter != null) {
             mLeagueAdapter.notifyDataSetChanged();
@@ -1194,6 +1218,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     protected void onDestroy() {
         super.onDestroy();
         BtCarManager.destroy();
+        stopStopwatch();
         SPUtils.getInstance(BET_EXPAND).clear();
         mBettingNetFloatingWindows.removeView();
         mBettingNetFloatingWindows.clearInstance();
@@ -1861,5 +1886,30 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, "");
             mIsFirstLoadMatch = false;
         }
+    };
+
+    private Handler handler = new Handler(Looper.getMainLooper());
+    int elapsedTime;
+    //比赛记录时间
+    private Runnable stopwatchRunnable = new Runnable() {
+        @Override
+        public void run() {
+            elapsedTime++;
+            if(mLeagueAdapter != null){
+                mLeagueAdapter.updateVisibleItems(binding.rvLeague);
+            }
+            handler.postDelayed(this, 1000); // 每秒更新一次
+        }
+    };
+
+    // 启动记时
+    private void startStopwatch() {
+        handler.removeCallbacks(stopwatchRunnable); // 移除已存在的任务
+        handler.post(stopwatchRunnable); // 只执行一次
+    }
+
+    // 停止记时（防止内存泄漏）
+    private void stopStopwatch() {
+        handler.removeCallbacks(stopwatchRunnable);
     }
 }

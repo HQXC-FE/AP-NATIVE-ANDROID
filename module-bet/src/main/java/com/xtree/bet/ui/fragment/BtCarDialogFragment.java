@@ -206,6 +206,10 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
         if (BtCarManager.isCg()) {
             betConfirmOptionList = BtCarManager.getBtCarList();
         } else {
+            if (getArguments() == null) {
+                dismissAllowingStateLoss();
+                return;
+            }
             BetConfirmOption betConfirmOption = getArguments().getParcelable(KEY_BT_OPTION);
             betConfirmOptionList.add(betConfirmOption);
         }

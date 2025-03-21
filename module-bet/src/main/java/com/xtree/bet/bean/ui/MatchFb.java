@@ -251,6 +251,11 @@ public class MatchFb implements Match{
         return isGoingon();
     }
 
+    @Override
+    public String getVideoType() {
+        return null;
+    }
+
     /**
      * 是否有动画直播
      * @return

@@ -85,8 +85,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.utils.ConvertUtils;
@@ -705,7 +703,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                     }
                     url = DomainUtil.getApiUrl() + separator + url;
                 }
-                showWebPayDialog(vo.title, url);
+                showWebPayDialog(vo.title, url, curRechargeVo != null && Arrays.asList(arrayBrowser).contains(curRechargeVo.paycode));
             } else if (vo.paycode.contains(viewModel.ONE_PAY_FIX)) {
                 // 极速充值
                 CfLog.i(vo.bid + " , " + vo.title + " , " + vo.paycode);
@@ -1357,10 +1355,10 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                     CfLog.i("RechargeOrderVo, bankId: " + vo.bankId);
                     LoadingDialog.show(getContext());
                     viewModel.checkOrder(vo.bankId); // 根据充值渠道ID 查询订单详情 (极速充值)
-                    viewModel.liveDataExpTitle.setValue(vo.payport_nickname);
+//                    viewModel.liveDataExpTitle.setValue(vo.payport_nickname);
                 } else {
                     //goPay(vo);
-                    new XPopup.Builder(getContext()).asCustom(new BrowserDialog(getContext(), "", vo.orderurl)).show();
+                    showWebPayDialog(vo.payport_nickname, vo.orderurl, true);
                 }
             } else {
                 viewModel.getOrderDetail(id); // 普通充值
@@ -1388,6 +1386,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             binding.tvwFxRate.setText(R.string.txt_rate_okpay_cny);
         } else if (vo.paycode.equals("hqppaygopay")) {
             binding.tvwFxRate.setText(R.string.txt_rate_gopay_cny);
+        } else if (vo.paycode.equals("hqppaybobi")) {
+            binding.tvwFxRate.setText(R.string.txt_rate_bobi_cny);
         } else {
             binding.tvwFxRate.setText("");
             binding.llRate.setVisibility(View.GONE);
@@ -1420,6 +1420,8 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             type = "OKG";
         } else if (vo.paycode.equals("hqppaygopay")) {
             type = "GOP";
+        } else if (vo.paycode.equals("hqppaybobi")) {
+            type = "波币";
         } else {
             binding.tvwPrePay.setVisibility(View.GONE);
         }
@@ -1725,7 +1727,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                 url = DomainUtil.getApiUrl() + separator + url;
             }
             CfLog.d(vo.title + ", jump: " + url);
-            showWebPayDialog(vo.title, url);
+            showWebPayDialog(vo.title, url, curRechargeVo != null && Arrays.asList(arrayBrowser).contains(curRechargeVo.paycode));
         });
 
         viewModel.liveDataRechargePay.observe(getViewLifecycleOwner(), vo -> {
@@ -1737,7 +1739,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         viewModel.liveDataExpOrderData.observe(getViewLifecycleOwner(), vo -> {
             CfLog.i(vo.toString());
 
-            viewModel.liveDataExpTitle.setValue(null);
+//            viewModel.liveDataExpTitle.setValue(null);
 
             isNeedReset = true; // 取消选中,如果用户再点击,又要查未完成订单和详情
             String realName = binding.edtName.getText().toString().trim();
@@ -1781,10 +1783,10 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             request.setPayBankName(vo.getData().getPayBankName()); // binding.tvwBankCard.getText().toString()
 
             //根据bid设置标题
-            RechargeVo rechargeVo = viewModel.getChargeInfoById(request.getPid());
-            if (rechargeVo != null) {
-                viewModel.liveDataExpTitle.setValue(rechargeVo.title);
-            }
+//            RechargeVo rechargeVo = viewModel.getChargeInfoById(request.getPid());
+//            if (rechargeVo != null) {
+//                viewModel.liveDataExpTitle.setValue(rechargeVo.title);
+//            }
 
             RxBus.getDefault().postSticky(request);
             String status = vo.getData().getStatus();
@@ -1813,12 +1815,12 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         });
 
         // 无极速订单, 显示点击渠道后需要显示的 选择银行卡/姓名/金额等
-        viewModel.liveDataExpNoOrder.observe(this, isNoOrder -> {
-            CfLog.i("*****");
-            if (isNoOrder) {
-                viewModel.liveDataExpTitle.setValue(null);
-            }
-        });
+//        viewModel.liveDataExpNoOrder.observe(this, isNoOrder -> {
+//            CfLog.i("*****");
+//            if (isNoOrder) {
+//                viewModel.liveDataExpTitle.setValue(null);
+//            }
+//        });
 
         viewModel.liveDataRcBanners.observe(this, list -> {
             CfLog.i("*****");
@@ -1860,8 +1862,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
      * 显示网页版的充值界面 <br/>
      * 某些网页版的充值方式 需要加个外跳的按钮, 解决内部加载白屏的问题
      */
-    private void showWebPayDialog(String title, String url) {
-        boolean isShowBank = curRechargeVo != null && Arrays.asList(arrayBrowser).contains(curRechargeVo.paycode);
+    private void showWebPayDialog(String title, String url, boolean isShowBank) {
         BrowserDialog dialog = new RechargeBrowserDialog(getContext(), title, url).setShowBank(isShowBank).set3rdLink(true);
 
         new XPopup.Builder(getContext()).asCustom(dialog).show();
@@ -2110,7 +2111,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
     private void showWebDialog(String title, String path) {
         String url = path.startsWith("/") ? DomainUtil.getH5Domain2() + path : path;
-        new XPopup.Builder(getContext()).asCustom(new BrowserDialog(getContext(), title, url)).show();
+        new XPopup.Builder(getContext()).asCustom(BrowserDialog.newInstance(getContext(), url)).show();
     }
 
     private List<String> getFastMoney(String loadMin, String loadMax) {
