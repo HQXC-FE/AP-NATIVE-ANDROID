@@ -678,6 +678,7 @@
 
     <style name="style_me_logout">
         <item name="android:background">@drawable/bg_btn_long_selector</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="style_me_level_progressbar">
