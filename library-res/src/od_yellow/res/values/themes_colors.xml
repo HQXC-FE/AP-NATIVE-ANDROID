@@ -128,4 +128,9 @@
     <color name="reBindTextColor">#F96C54</color>
     <color name="updateTitleTextColor">#F96C54</color>
     <color name="itemWalletTextColor">#A49A98</color>
+
+    <color name="me_progress_bar_bg">#FFBC6E</color>
+    <color name="meProgressBarStart">#FF6B7E</color>
+    <color name="meProgressBarEnd">#FF6B7E</color>
+    <color name="meProgressTipTextColor">#A49A98</color>
 </resources>
