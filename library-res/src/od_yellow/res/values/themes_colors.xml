@@ -127,4 +127,5 @@
     <color name="customeAgreColor">#FF8979</color>
     <color name="reBindTextColor">#F96C54</color>
     <color name="updateTitleTextColor">#F96C54</color>
+    <color name="itemWalletTextColor">#A49A98</color>
 </resources>

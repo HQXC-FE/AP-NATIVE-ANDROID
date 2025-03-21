@@ -77,7 +77,6 @@
                     android:id="@+id/tvw_balance_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@mipmap/me_wallet_left_icon"
                     android:drawablePadding="3dp"
                     android:text="@string/me_wallet_title"
                     android:textSize="@dimen/bt_text_12sp"
@@ -202,7 +201,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:drawableStart="@mipmap/me_wallet_left_icon"
                 android:drawablePadding="3dp"
                 android:text="@string/me_wallet_details"
                 android:textColor="@color/clr_black" />

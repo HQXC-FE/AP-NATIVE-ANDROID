@@ -100,4 +100,5 @@
     <color name="customQAColor">#99FFFFFF</color>
     <color name="reBindTextColor">#FFFFFF</color>
     <color name="updateTitleTextColor">#775493</color>
+    <color name="itemWalletTextColor">#302E36</color>
 </resources>
