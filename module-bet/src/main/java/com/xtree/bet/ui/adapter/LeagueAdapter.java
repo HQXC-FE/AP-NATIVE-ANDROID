@@ -211,7 +211,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                 .into(binding.ivIcon);
         binding.vSpace.setVisibility(isExpanded ? View.GONE : View.VISIBLE);
         binding.groupIndicator.setImageResource(
-                isExpanded ? R.mipmap.bt_icon_expand : R.mipmap.bt_icon_unexpand);
+                isExpanded ? R.mipmap.bt_icon_expand : R.drawable.bt_icon_unexpand);
         binding.rlLeague.setBackgroundResource(
                 isExpanded ? R.drawable.bt_bg_league_top : R.drawable.bt_bg_league_top_collapse);
         league.setExpand(isExpanded);
