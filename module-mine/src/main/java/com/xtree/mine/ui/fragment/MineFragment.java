@@ -305,7 +305,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             CfLog.i("****** not login");
             binding.llLogin.setVisibility(View.VISIBLE);
             binding.clAlreadyLogin.setVisibility(View.INVISIBLE);
-
+            binding.iconName.setBackground(getContext().getResources().getDrawable(R.drawable.me_icon_name));
             // 未登录状态下,直接跳到登录页,并关闭当前页
             //ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_LOGIN_REGISTER).navigation();
             //getActivity().finish();
@@ -313,6 +313,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             CfLog.i("****** already login");
             binding.llLogin.setVisibility(View.GONE);
             binding.clAlreadyLogin.setVisibility(View.VISIBLE);
+            binding.iconName.setBackground(getContext().getResources().getDrawable(R.drawable.me_icon_name_login));
             resetView();
         }
     }
@@ -365,6 +366,9 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
      * 清除本地WebView缓存
      */
     private void clearWebView() {
+
+        binding.iconName.setBackground(getContext().getResources().getDrawable(R.drawable.me_icon_name));
+
         CfLog.i();
         getContext().deleteDatabase("webview.db");
         getContext().deleteDatabase("webviewCache.db");
