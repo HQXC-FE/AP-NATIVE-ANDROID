@@ -174,7 +174,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="20dp"
-            android:background="@mipmap/cm_btn_long2"
+            android:background="@drawable/cm_btn_long_press"
             android:gravity="center"
             android:onClick="@{() -> model.uploadVoucher()}"
             android:text="确认提交"

@@ -114,7 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:background="@mipmap/cm_btn_long2"
+                        android:background="@drawable/cm_btn_long_press"
                         android:gravity="center"
                         android:text="我同意"
                         android:textColor="@color/white"
