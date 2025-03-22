@@ -133,4 +133,8 @@
     <color name="meProgressBarStart">#FF6B7E</color>
     <color name="meProgressBarEnd">#FF6B7E</color>
     <color name="meProgressTipTextColor">#A49A98</color>
+
+    <color name="offerLineColor">#FFD7C8</color>
+    <color name="offerGradientColor">#FFF5F2</color>
+    <color name="offerSelectTextColor">#f96C54</color>
 </resources>

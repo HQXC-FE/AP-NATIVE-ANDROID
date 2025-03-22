@@ -2,6 +2,7 @@ package com.xtree.mine.ui.fragment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -48,8 +49,10 @@ public class MsgPersonListAdapter extends CachedAutoRefreshAdapter<MsgPersonVo> 
         binding.tvwMsgDate.setText(vo.sent_at);
 
         if (vo.is_unread) {
-            binding.ivwMsgIcon.setImageResource(R.mipmap.ic_round_dot);
+            binding.meWalletRightRoundDot.setVisibility(View.VISIBLE);
+            binding.meWalletRightRoundDot.setImageResource(R.drawable.ic_round_dot);
         } else {
+            binding.meWalletRightRoundDot.setVisibility(View.INVISIBLE);
             binding.ivwMsgIcon.setImageResource(R.drawable.ic_round);
         }
 

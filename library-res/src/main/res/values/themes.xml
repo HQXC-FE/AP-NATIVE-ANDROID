@@ -192,9 +192,8 @@
         <item name="customer_service_line2_attr">@style/style_customer_service_line2</item>
         <item name="mine_bind_item_bg_attr">@style/style_mine_bind_item_bg</item>
         <item name="hm_ic_notice_attr">@style/style_hm_ic_notice</item>
-
-
-
+        <item name="bg_btn_offer_clear_attr">@style/style_bg_btn_offer_clear</item>
+        <item name="bg_btn_offer_click_attr">@style/style_bg_btn_offer_click</item>
     </style>
 
 </resources>

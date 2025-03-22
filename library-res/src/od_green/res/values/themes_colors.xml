@@ -54,7 +54,7 @@
     <!--   状态-->
 
     <!--    文字-->
-    <color name="textDescriptionColor">#5E9672</color>
+    <color name="textDescriptionColor">#97A89E</color>
     <color name="textPrimaryColor">#2D332F</color>
     <color name="textSecondaryColor">#57645C</color>
     <color name="textTertiaryColor">#97A89E</color>
@@ -114,8 +114,8 @@
     <color name="textMainUnSelectorColor">#97A89E</color>
     <color name="mainActivityBackgroupColor">#F2F2F2</color>
     <color name="mainListAcBackgroupColor">#F3F3F3</color>
-    <color name="msgTopTextColorStart">#FFBC6E</color>
-    <color name="msgTopTextColorEnd">#FF6B7E</color>
+    <color name="msgTopTextColorStart">#84CDA0</color>
+    <color name="msgTopTextColorEnd">#67AC7F</color>
 
     <color name="meForgetPsWordBgColor">#CCFFFFFF</color>
     <color name="warningFeedbackColor">#FB6156</color>
@@ -124,7 +124,7 @@
     <color name="meLevelProgressbarEnd">#9384F1</color>
     <color name="activityTopDivideLineColor">#DFDBDA</color>
     <color name="customQAColor">#99FFFFFF</color>
-    <color name="customeAgreColor">#FF8979</color>
+    <color name="customeAgreColor">#E7A018</color>
     <color name="reBindTextColor">#F96C54</color>
     <color name="updateTitleTextColor">#57A574</color>
     <color name="itemWalletTextColor">#97A89E</color>
@@ -132,4 +132,7 @@
     <color name="meProgressBarStart">#67AC7F</color>
     <color name="meProgressBarEnd">#67AC7F</color>
     <color name="meProgressTipTextColor">#97A89E</color>
+    <color name="offerLineColor">#67AC7F</color>
+    <color name="offerGradientColor">#F0FFF5</color>
+    <color name="offerSelectTextColor">#57A574</color>
 </resources>

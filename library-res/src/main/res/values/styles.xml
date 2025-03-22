@@ -69,7 +69,7 @@
         <item name="android:layout_marginStart">@dimen/layout_margin</item>
         <item name="android:layout_marginEnd">@dimen/layout_margin</item>
         <item name="android:layout_marginTop">@dimen/layout_margin</item>
-        <item name="android:textColor">@color/textSecondaryColor</item>
+        <item name="android:textColor">@color/textPrimaryColor</item>
         <item name="android:textSize">17sp</item>
     </style>
 

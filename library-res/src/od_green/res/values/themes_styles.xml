@@ -736,7 +736,7 @@
     </style>
 
     <style name="style_msg_info_delete_all">
-        <item name="android:background">"@drawable/bt_msg_delete_all"</item>
+        <item name="android:background">@drawable/bt_msg_delete_all</item>
     </style>
 
     <style name="style_me_msg_close_icon">
@@ -813,4 +813,10 @@
         <item name="android:src">@drawable/hm_ic_notice</item>
     </style>
 
+    <style name="style_bg_btn_offer_clear">
+        <item name="android:background">@drawable/bg_btn_offer_clear</item>
+    </style>
+    <style name="style_bg_btn_offer_click">
+        <item name="android:background">@drawable/bg_btn_offer_click</item>
+    </style>
 </resources>
