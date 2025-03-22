@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
         android:angle="0"
-        android:endColor="@color/msgTopTextColorEnd"
-        android:startColor="@color/msgTopTextColorStart" />
+        android:endColor="@color/primaryVariant"
+        android:startColor="@color/primaryColor" />
     <corners android:radius="16dp" />
 </shape>
