@@ -139,8 +139,6 @@ public class WidgetExoPlayer extends ConstraintLayout {
     private int mErrorRetryTime;
     private int mPlayErrorCount;
 
-
-
     private int mQualityType;
 
     private ViewGroup mBrightnessVolumeLayout;

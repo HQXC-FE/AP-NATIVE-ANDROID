@@ -49,6 +49,7 @@ import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.fb.Match;
 import com.xtree.live.data.source.response.fb.MatchFb;
 import com.xtree.live.data.source.response.fb.MatchInfo;
+import com.xtree.live.model.GiftBean;
 import com.xtree.live.ui.main.model.anchor.LiveAnchorModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerItemModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerModel;
@@ -115,6 +116,8 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     public MutableLiveData<ArrayList<Integer>> itemType = new MutableLiveData<>();
 
     public MutableLiveData<LiveRoomBean> liveRoomInfo = new MutableLiveData<>();
+    public MutableLiveData<LiveRoomBean> liveRoomInfoRefresh = new MutableLiveData<>();
+    public MutableLiveData<List<GiftBean>> giftList = new MutableLiveData<>();
 
     public LiveViewModel(@NonNull Application application) {
         super(application);
@@ -425,8 +428,40 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
                 });
 
+    }
+    public void refreshRoomInfo(int uid){
+        String channelCode = X9LiveInfo.INSTANCE.getChannel();
+        LiveRep.getInstance().getRoomInfo(uid,channelCode)
+                .subscribe(new HttpCallBack<LiveRoomBean>() {
+                    @Override
+                    public void onResult(LiveRoomBean liveRoomBean) {
+                        liveRoomInfoRefresh.postValue(liveRoomBean);
+                        if(liveRoomBean.getInfo()!=null){
+                            X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
+                            SPUtil.get(BaseApplication.getInstance()).putInt(SPKey.UID,uid);
+                        }
+                    }
 
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
 
+                });
+
+    }
+
+    /**
+     * 获取gift列表
+     */
+    public void getGiftList() {
+        LiveRep.getInstance().getGiftList()
+                .subscribe(new HttpCallBack<List<GiftBean>>() {
+                    @Override
+                    public void onResult(List<GiftBean> data) {
+                        giftList.postValue(data);
+                    }
+                });
     }
 
     public void getAnchorSort() {

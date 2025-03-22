@@ -145,6 +145,8 @@
     <string name="live_quality_smooth">流畅</string>
     <string name="playback_error_default">播放失败</string>
     <string name="playback_error_unable_to_query_device_decoders">Unable to query device decoders</string>
+    <string name="diamond_expense">%d钻石</string>
+    <string name="diamond_account">我的钻石：%s</string>
 
 
 </resources>

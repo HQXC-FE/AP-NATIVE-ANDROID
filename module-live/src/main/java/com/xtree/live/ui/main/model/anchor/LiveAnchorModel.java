@@ -20,6 +20,7 @@ import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.live.R;
 import com.xtree.live.data.source.response.FrontLivesResponse;
+import com.xtree.live.ui.main.activity.LiveDetailActivity;
 import com.xtree.live.ui.main.bet.LiveMatchDetailActivity;
 import com.xtree.live.ui.main.listener.FetchListener;
 
@@ -62,11 +63,12 @@ public class LiveAnchorModel extends BindModel implements BackPressed {
                 int uid = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getUid();
                 String vid = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getVid();
 //                LiveMatchDetailActivity.start(context, matchID,uid,vid);
-                ARouter.getInstance().build(RouterFragmentPath.Live.LIVE_DETAIL)
+                LiveDetailActivity.forward(context, uid,vid,matchID);
+               /* ARouter.getInstance().build(RouterFragmentPath.Live.LIVE_DETAIL)
                         .withString("matchID",matchID)
                         .withString("vid",vid)
                         .withInt("uid",uid)
-                        .navigation();
+                        .navigation();*/
             }else{
                 goLogin();
             }

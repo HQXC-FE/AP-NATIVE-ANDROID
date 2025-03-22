@@ -13,4 +13,5 @@ public class SPKey {
     public static final String TOKEN = "live_token";
     public static final String CHANNEL_CODE = "channel_code";
     public static final String REFERER = "referer";
+    public static final String BLOCK_LIVE_GIFT_SHOWN = "block_live_gift_shown";
 }

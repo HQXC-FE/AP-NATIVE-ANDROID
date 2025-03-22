@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_gift_icon"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="2dp"
+    tools:ignore="ContentDescription, SpUsage, HardcodedText, TextFields, Autofill"
+    tools:viewBindingIgnore="true">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/giftIcon"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:padding="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@mipmap/icon_gift" />
+
+    <TextView
+        android:id="@+id/giftName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:lines="1"
+        android:maxEms="6"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:textColor="#333333"
+        tools:text="3D龙年机车" />
+
+    <TextView
+        android:id="@+id/giftPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:lines="1"
+        android:maxEms="5"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+        android:textColor="@color/colorAccent"
+        tools:text="9999钻石" />
+
+</LinearLayout>

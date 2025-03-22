@@ -12,6 +12,7 @@ import com.xtree.live.message.ChatRoomPin;
 import com.xtree.live.message.MessageRecord;
 import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.message.inroom.InRoomData;
+import com.xtree.live.model.GiftBean;
 
 import java.util.List;
 import java.util.Map;
@@ -184,6 +185,15 @@ public class LiveRep extends BaseRepository implements LiveDataSource {
 
         return obtainJsonService(LiveService.class)
                 .pinChatRoom(body)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
+
+    @Override
+    public Flowable<List<GiftBean>> getGiftList() {
+        String channelCode = LiveConfig.getChannelCode();
+        return obtainJsonService(LiveService.class)
+                .getGiftList(channelCode)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer());
     }

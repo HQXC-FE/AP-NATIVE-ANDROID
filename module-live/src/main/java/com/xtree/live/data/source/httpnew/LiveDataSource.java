@@ -11,6 +11,7 @@ import com.xtree.live.message.ChatRoomPin;
 import com.xtree.live.message.MessageRecord;
 import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.message.inroom.InRoomData;
+import com.xtree.live.model.GiftBean;
 
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,6 @@ public interface LiveDataSource {
     Flowable<List<ChatRoomInfo>> getChatRoomList(RequestBody body);
 
     Flowable<ChatRoomPin> pinChatRoom(RequestBody body);
-
+    Flowable<List<GiftBean>> getGiftList();
 
 }

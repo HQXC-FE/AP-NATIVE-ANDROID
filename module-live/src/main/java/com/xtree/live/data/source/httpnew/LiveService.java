@@ -12,11 +12,13 @@ import com.xtree.live.message.ChatRoomPin;
 import com.xtree.live.message.MessageRecord;
 import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.message.inroom.InRoomData;
+import com.xtree.live.model.GiftBean;
 
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -89,6 +91,10 @@ public interface LiveService {
 
     @POST("api/chat_room/pin")
     Flowable<BaseResponse<ChatRoomPin>> pinChatRoom(@Body RequestBody body);
+
+    // 获取礼物列表
+    @GET("api/gift/getList")
+    Flowable<BaseResponse<List<GiftBean>>> getGiftList(@Query(SPKey.CHANNEL_CODE) String code);
 
 
 
