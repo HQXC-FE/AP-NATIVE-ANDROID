@@ -167,5 +167,6 @@
 
     <attr name="mine_bind_item_bg_attr" format="reference" />
     <attr name="hm_ic_notice_attr" format="reference" />
+    <attr name="message_round_dot_attr" format="reference" />
 
 </resources>

@@ -193,8 +193,6 @@
         <item name="mine_bind_item_bg_attr">@style/style_mine_bind_item_bg</item>
         <item name="hm_ic_notice_attr">@style/style_hm_ic_notice</item>
 
-
-
     </style>
 
 </resources>
