@@ -16,13 +16,72 @@
         android:layout_height="match_parent"
         tools:ignore="ContentDescription, HardcodedText">
 
-        <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
-            android:id="@+id/video_player"
+        <com.xtree.live.player.WidgetExoPlayer
+            android:id="@+id/widgetExoPlayer"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_height="300dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/remote_player_controller"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/black"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/remote_player_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/exo_styled_controls_pause"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/exitMirrorMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <include
+                layout="@layout/merge_live_detail_after_live_recommend"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                layout="@layout/include_timer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone" />
+
+
+        </com.xtree.live.player.WidgetExoPlayer>
+
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/buttonBack"
@@ -31,10 +90,11 @@
             android:layout_margin="10dp"
             android:src="@mipmap/cm_ic_back"
             android:tint="@color/white"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="@+id/video_player"
-            app:layout_constraintTop_toTopOf="@+id/video_player"
-            />
+            android:tintMode="src_atop"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/widgetExoPlayer"
+            app:layout_constraintTop_toTopOf="@+id/widgetExoPlayer"
+            tools:visibility="visible" />
 
 <!--        公告-->
         <LinearLayout
@@ -45,7 +105,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/video_player">
+            app:layout_constraintTop_toBottomOf="@+id/widgetExoPlayer">
 
             <TextView
                 android:id="@+id/platformAdsTitle"

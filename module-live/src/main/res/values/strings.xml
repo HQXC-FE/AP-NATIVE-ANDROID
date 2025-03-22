@@ -136,6 +136,15 @@
     <string name="search_assistant_message_fail">查无此助理、或添加失败</string>
     <string name="represent_pic">图片</string>
     <string name="empty_common">暂无数据</string>
+    <string name="recommend_message">主播目前关播，可前往其他直播间观看。</string>
+    <string name="live_quality_high">高清</string>
+    <string name="live_quality_uhd">1080p</string>
+    <string name="live_quality_4k">4k</string>
+    <string name="live_quality_login">(注册登入)</string>
+    <string name="please_login">请登录</string>
+    <string name="live_quality_smooth">流畅</string>
+    <string name="playback_error_default">播放失败</string>
+    <string name="playback_error_unable_to_query_device_decoders">Unable to query device decoders</string>
 
 
 </resources>

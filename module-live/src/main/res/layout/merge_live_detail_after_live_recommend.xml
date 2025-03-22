@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recommend_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#CC181714"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_height="match_parent"
+        tools:layout_width="match_parent"
+        tools:visibility="gone">
+
+        <TextView
+            android:id="@+id/recommend_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/recommend_message"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/barrier"
+            app:layout_constraintEnd_toStartOf="@+id/recommend_progress"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.dinuscxj.progressbar.CircleProgressBar
+            android:id="@+id/recommend_progress"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="4dp"
+            app:drawBackgroundOutsideProgress="true"
+            app:layout_constraintBottom_toBottomOf="@+id/recommend_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/recommend_message"
+            app:layout_constraintTop_toTopOf="@+id/recommend_message"
+            app:progress_background_color="#444444"
+            app:progress_end_color="#C41D48"
+            app:progress_shader="sweep"
+            app:progress_start_color="#CCC41D48"
+            app:progress_start_degree="-90"
+            app:progress_stroke_cap="round"
+            app:progress_stroke_width="2dp"
+            app:progress_style="solid_line"
+            app:progress_text_color="@color/white"
+            app:progress_text_size="8dp" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:barrierDirection="top"
+            app:constraint_referenced_ids="recommend_cover_1,recommend_cover_2, recommend_cover_3" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/recommend_cover_1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="14dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="3:2"
+            app:layout_constraintEnd_toStartOf="@+id/recommend_cover_2"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginEnd="14dp"
+            app:riv_corner_radius="6dp"
+            tools:visibility="visible" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/recommend_cover_2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="14dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="3:2"
+            app:layout_constraintEnd_toStartOf="@+id/recommend_cover_3"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/recommend_cover_1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginEnd="14dp"
+            app:riv_corner_radius="6dp"
+            tools:visibility="visible" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/recommend_cover_3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="3:2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/recommend_cover_2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="6dp"
+            tools:visibility="visible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

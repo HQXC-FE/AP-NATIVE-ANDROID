@@ -8,4 +8,10 @@
         <item>主播助理</item>
     </string-array>
 
+    <array name="live_video_loading_progress_color">
+        <item>#00abf0</item>
+        <item>#FC3838</item>
+        <item>#FFCC22</item>
+    </array>
+
 </resources>

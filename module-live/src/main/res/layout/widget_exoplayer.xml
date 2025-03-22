@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+    tools:viewBindingIgnore="true">
+
+    <com.xtree.live.player.ExoPlayerView
+        android:id="@+id/exoplayer_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:player_layout_id="@layout/widget_exoplayer_view"
+        app:controller_layout_id="@layout/widget_exoplayer_control"
+        app:hide_on_touch="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:resize_mode="fill"
+        app:show_timeout="1000"
+        app:shutter_background_color="@color/black"
+        app:use_controller="false" >
+
+    </com.xtree.live.player.ExoPlayerView>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginBottom="10dp"
+        android:background="@mipmap/icon_player_logo"
+        app:layout_constraintBottom_toBottomOf="@+id/exoplayer_view"
+        app:layout_constraintStart_toStartOf="@+id/exoplayer_view" />
+
+
+    <LinearLayout
+        android:id="@+id/brightnessVolumeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_new_player_brightness_volume_adjust"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/brightnessVolumeIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
+            android:layout_marginStart="12dp"
+            android:src="@mipmap/ic_player_brightness" />
+
+        <ProgressBar
+            android:id="@+id/brightnessVolumeProgress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:progressDrawable="@drawable/progress_horizontal_player_brightness_volume"
+            android:layout_width="187dp"
+            android:layout_marginEnd="12dp"
+            android:max="100"
+            android:layout_height="6dp"
+            android:layout_marginStart="10dp" />
+    </LinearLayout>
+</merge>

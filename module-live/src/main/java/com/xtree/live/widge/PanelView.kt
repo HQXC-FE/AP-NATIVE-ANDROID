@@ -45,9 +45,7 @@ class PanelView : FrameLayout, IPanelView {
             throw RuntimeException("PanelView -- you can't have any child!")
         }
         //默认实现 FrameLayout 恒为false，这里只是强调申明而已，可以不写。
-        if (this !is View) {
-            throw RuntimeException("PanelView -- should be a view!")
-        }
+
         LayoutInflater.from(context).inflate(panelLayoutId, this, true)
     }
 
