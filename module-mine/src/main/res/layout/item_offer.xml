@@ -97,7 +97,7 @@
         android:layout_width="80dp"
         android:layout_height="32dp"
         android:layout_marginEnd="6dp"
-        android:background="@drawable/bt_bg_main_c8"
+        style="?attr/bt_item_offer_now_attr"
         android:gravity="center"
         android:text="@string/txt_offer_receiving"
         android:textColor="@color/clr_white"

@@ -110,4 +110,10 @@
     <color name="offerLineColor">#6D61E2</color>
     <color name="offerGradientColor">#E4E5FF</color>
     <color name="offerSelectTextColor">#9887D2</color>
+
+    <color name="offerGetNowStart">#f3A3CA</color>
+    <color name="offerGetNowEnd">#8877ED</color>
+
+    <color name="offerGetExpiredStart">#FFFFFF</color>
+    <color name="offerGetExpiredEnd">#ECFFFFFF</color>
 </resources>

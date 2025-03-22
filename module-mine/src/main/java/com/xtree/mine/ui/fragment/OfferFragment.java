@@ -86,7 +86,7 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
                     if (vo.operation_status.equals("1")) {
                         binding2.btGet.setText(R.string.txt_offer_receiving);
                         binding2.btGet.setTextColor(getContext().getColor(R.color.clr_white));
-                        binding2.btGet.setBackground(getContext().getDrawable(R.drawable.bt_bg_main_c8));
+                        binding2.btGet.setBackground(getContext().getDrawable(R.drawable.bt_item_offer_get_now));
 
                         binding2.btGet.setOnClickListener(v -> {
                             getOffer(vo.id);

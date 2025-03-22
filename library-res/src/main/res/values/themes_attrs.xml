@@ -170,4 +170,7 @@
     <attr name="message_round_dot_attr" format="reference" />
     <attr name="bg_btn_offer_clear_attr" format="reference" />
     <attr name="bg_btn_offer_click_attr" format="reference" />
+
+    <attr name="bt_item_offer_now_attr" format="reference" />
+    <attr name="bt_item_offer_expired_attr" format="reference" />
 </resources>

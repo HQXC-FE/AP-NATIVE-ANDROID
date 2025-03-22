@@ -194,6 +194,10 @@
         <item name="hm_ic_notice_attr">@style/style_hm_ic_notice</item>
         <item name="bg_btn_offer_clear_attr">@style/style_bg_btn_offer_clear</item>
         <item name="bg_btn_offer_click_attr">@style/style_bg_btn_offer_click</item>
+
+        <item name="bt_item_offer_now_attr">@style/style_bt_item_offer_now</item>
+        <item name="bt_item_offer_expired_attr">@style/style_bt_item_offer_expired</item>
+
     </style>
 
 </resources>
