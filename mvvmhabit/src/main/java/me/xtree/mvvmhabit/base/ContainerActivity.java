@@ -16,22 +16,26 @@ import com.trello.rxlifecycle4.components.support.RxAppCompatActivity;
 import java.lang.ref.WeakReference;
 
 import me.xtree.mvvmhabit.R;
+import me.xtree.mvvmhabit.utils.KLog;
+import me.xtree.mvvmhabit.utils.ScreenUtil;
 
 /**
  * 盛装Fragment的一个容器(代理)Activity
  * 普通界面只需要编写Fragment,使用此Activity盛装,这样就不需要每个界面都在AndroidManifest中注册一遍
  */
 public class ContainerActivity extends RxAppCompatActivity {
-    private static final String FRAGMENT_TAG = "content_fragment_tag";
     public static final String FRAGMENT = "fragment";
     public static final String BUNDLE = "bundle";
     public static final String ROUTER_PATH = "routerPath";
+    private static final String FRAGMENT_TAG = "content_fragment_tag";
     protected WeakReference<Fragment> mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         super.onCreate(savedInstanceState);
+        // 设置自定义的 density
+        ScreenUtil.setCustomDensity(getResources());
         setContentView(R.layout.activity_container);
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = null;
@@ -119,4 +123,14 @@ public class ContainerActivity extends RxAppCompatActivity {
             containerFragment.getActivityResult(requestCode, resultCode, data);
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 确保在每次 Activity 恢复时应用自定义的 density
+        ScreenUtil.setCustomDensity(getResources());
+        KLog.i("****** " + getClass().getSimpleName());
+    }
+
+
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.Nullable;
@@ -42,10 +43,29 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     private int viewModelId;
     private MaterialDialog dialog;
 
+    /**
+     * 检查方向
+     *
+     * @param chooseActivity
+     */
+    protected static void fixOrientation(BaseActivity chooseActivity) {
+        try {
+            Class activityClass = BaseActivity.class;
+            Field mActivityInfoField = activityClass.getDeclaredField("mActivityInfo");
+            mActivityInfoField.setAccessible(true);
+            ActivityInfo activityInfo = (ActivityInfo) mActivityInfoField.get(chooseActivity);
+            //设置屏幕不固定
+            activityInfo.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+        } catch (Exception e) {
+            KLog.e("********* fixOrientation e=" + e.toString());
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 设置自定义的 density
+        setCustomDensity();
         KLog.i("****** " + getClass().getSimpleName());
         //页面接受的参数方法
         initParam();
@@ -67,7 +87,33 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     @Override
     protected void onResume() {
         super.onResume();
+        // 确保在每次 Activity 恢复时应用自定义的 density
+        setCustomDensity();
         KLog.i("****** " + getClass().getSimpleName());
+    }
+
+    private void setCustomDensity() {
+        // 获取当前屏幕的 DisplayMetrics
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+        // 设计稿的宽度和高度 (例如 812dp 宽, 375dp 高)
+//        float designWidthDp = 812f;
+        float designWidthDp = 375f;
+
+        // 计算 density，使用屏幕的宽度
+//        float heightRatio = metrics.heightPixels / designHeightDp;
+        float widthRatio = metrics.widthPixels / designWidthDp;
+        // 取宽高比例中较小的值进行适配
+//        float targetDensity = (widthRatio < heightRatio) ? widthRatio : heightRatio;
+        float targetDensity = widthRatio;
+
+        // 计算 scaledDensity
+        float calculatedScaledDensity = targetDensity * (metrics.scaledDensity / metrics.density);
+
+        // 应用新的 density 和 scaledDensity
+        metrics.density = targetDensity;
+        metrics.scaledDensity = calculatedScaledDensity;
+        metrics.densityDpi = (int) (targetDensity * 160); // 通常使用 160 作为基准 dpi
     }
 
     @Override
@@ -332,24 +378,6 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
      */
     public <T extends ViewModel> T createViewModel(FragmentActivity activity, Class<T> cls) {
         return new ViewModelProvider(activity).get(cls);
-    }
-
-    /**
-     * 检查方向
-     *
-     * @param chooseActivity
-     */
-    protected static void fixOrientation(BaseActivity chooseActivity) {
-        try {
-            Class activityClass = BaseActivity.class;
-            Field mActivityInfoField = activityClass.getDeclaredField("mActivityInfo");
-            mActivityInfoField.setAccessible(true);
-            ActivityInfo activityInfo = (ActivityInfo) mActivityInfoField.get(chooseActivity);
-            //设置屏幕不固定
-            activityInfo.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
-        } catch (Exception e) {
-            KLog.e("********* fixOrientation e=" + e.toString());
-        }
     }
 
     /**
