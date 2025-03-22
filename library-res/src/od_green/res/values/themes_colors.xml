@@ -54,7 +54,7 @@
     <!--   状态-->
 
     <!--    文字-->
-    <color name="textDescriptionColor">#5E9672</color>
+    <color name="textDescriptionColor">#97A89E</color>
     <color name="textPrimaryColor">#2D332F</color>
     <color name="textSecondaryColor">#57645C</color>
     <color name="textTertiaryColor">#97A89E</color>
