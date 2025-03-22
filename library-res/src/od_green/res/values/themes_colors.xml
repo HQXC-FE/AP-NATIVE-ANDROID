@@ -114,8 +114,6 @@
     <color name="textMainUnSelectorColor">#97A89E</color>
     <color name="mainActivityBackgroupColor">#F2F2F2</color>
     <color name="mainListAcBackgroupColor">#F3F3F3</color>
-    <color name="msgTopTextColorStart">#84CDA0</color>
-    <color name="msgTopTextColorEnd">#67AC7F</color>
 
     <color name="meForgetPsWordBgColor">#CCFFFFFF</color>
     <color name="warningFeedbackColor">#FB6156</color>
@@ -136,8 +134,6 @@
     <color name="offerGradientColor">#F0FFF5</color>
     <color name="offerSelectTextColor">#57A574</color>
 
-    <color name="offerGetNowStart">#84CDA0</color>
-    <color name="offerGetNowEnd">#67AC7F</color>
 
     <color name="offerGetExpiredStart">#FFFFFF</color>
     <color name="offerGetExpiredEnd">#ECFFFFFF</color>

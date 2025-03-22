@@ -138,8 +138,7 @@
     <color name="offerGradientColor">#FFF5F2</color>
     <color name="offerSelectTextColor">#f96C54</color>
 
-    <color name="offerGetNowStart">#FFBC6E</color>
-    <color name="offerGetNowEnd">#FF6B7E</color>
+
 
     <color name="offerGetExpiredStart">#FFFFFF</color>
     <color name="offerGetExpiredEnd">#ECFFFFFF</color>
