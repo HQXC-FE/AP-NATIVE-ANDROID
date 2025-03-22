@@ -815,4 +815,13 @@
     <style name="style_bg_btn_offer_clear">
         <item name="android:background">@drawable/bg_btn_offer_clear</item>
     </style>
+    <style name="style_bg_btn_offer_click">
+        <item name="android:background">@drawable/bg_btn_offer_click</item>
+    </style>
+    <style name="style_bt_item_offer_now">
+        <item name="android:background">@drawable/bt_item_offer_get_now</item>
+    </style>
+    <style name="style_bt_item_offer_expired">
+        <item name="android:background">@drawable/bt_item_offer_get_now</item>
+    </style>
 </resources>
