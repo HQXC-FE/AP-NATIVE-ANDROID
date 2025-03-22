@@ -813,4 +813,10 @@
         <item name="android:src">@drawable/hm_ic_notice</item>
     </style>
 
+    <style name="style_bg_btn_offer_clear">
+        <item name="android:background">@drawable/bg_btn_offer_clear</item>
+    </style>
+    <style name="style_bg_btn_offer_click">
+        <item name="android:background">@drawable/bg_btn_offer_click</item>
+    </style>
 </resources>
