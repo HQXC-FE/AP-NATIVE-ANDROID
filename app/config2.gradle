@@ -32,7 +32,7 @@ android {
             versionName "1.1.1"
             versionCode 111
             resValue "string", "app_name", "意昂体育2"
-            resValue "string", "domain_api", "http://114.117.252.9:46803"
+            resValue "string", "domain_api", "http://146.56.241.223:46803"
             resValue "string", "domain_url", "https://h52.l7a9fp.vip"
             resValue "string", "channel_name", "eon2"  // 渠道名称
             resValue "string", "platform_set", "38"  // 平台代号,升级用 35-意昂, 38-意昂2
@@ -41,12 +41,7 @@ android {
             resValue "string", "ms_secret_key", "0ad1d127-3d6e-47f0-8904-1fd9eff9d97b"
             resValue "string", "sentry_dsn", "https://0cefc03e1c8e991010eb93fb0722e362@o4507447554539520.ingest.us.sentry.io/4507604245217280"
             resValue "bool", "is_tag", "true" // 是否开启统计
-            resValue "string", "domain_api_list", "http://129.226.60.5:46803;" +
-                    "http://129.28.157.161:46803;" +
-                    "http://119.45.5.103:46803;" +
-                    "http://175.27.143.79:46803;" +
-                    "http://114.117.252.9:46803;" +
-                    "https://app1.y9w4di.vip;" +
+            resValue "string", "domain_api_list", "https://app1.y9w4di.vip;" +
                     "https://app1.w6b7la.vip;" +
                     "https://app1.r5e9ds.vip;" +
                     "https://app1.k7k3lw.vip;" +
@@ -58,7 +53,11 @@ android {
                     "https://app3.i4o1br.vip;" +
                     "https://app3.g1u6oc.vip;" +
                     "https://app3.j4h7lk.vip;" +
-                    "https://app4.g2c8ne.vip;"
+                    "https://app4.g2c8ne.vip;" +
+                    "http://146.56.241.223:46803;" +
+                    "http://81.69.185.170:46803;" +
+                    "http://129.211.11.119:46803;" +
+                    "http://139.186.39.133:46803;"
             resValue "string", "domain_url_list", "https://h51.g1d3nf.vip;" +
                     "https://h51.w1y2jh.vip;" +
                     "https://h51.d2z4dv.vip;" +
