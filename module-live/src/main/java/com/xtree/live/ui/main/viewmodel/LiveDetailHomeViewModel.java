@@ -32,6 +32,7 @@ import com.xtree.live.data.AdsBean;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.httpnew.LiveRep;
 import com.xtree.live.data.source.response.LiveRoomBean;
+import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.message.ConversationMessage;
 import com.xtree.live.message.ConversationScrollButtonState;
 import com.xtree.live.message.DeliverStatus;
@@ -39,6 +40,7 @@ import com.xtree.live.message.MessageRecord;
 import com.xtree.live.message.RoomType;
 import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.message.inroom.InRoomData;
+import com.xtree.live.model.AccumulatedRechargeRes;
 import com.xtree.live.uitl.JsonUtil;
 import com.xtree.live.uitl.RxStore;
 import com.xtree.live.uitl.WordUtil;
@@ -56,6 +58,7 @@ import io.reactivex.schedulers.Schedulers;
 import me.xtree.mvvmhabit.base.BaseApplication;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.http.BusinessException;
+import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -81,6 +84,7 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
     public MutableLiveData<InRoomData> inRoomDataMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<List<AdsBean>> listAdBeanMutable = new MutableLiveData<>();
     public MutableLiveData<ConversationMessage> conversationMessageMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<AccumulatedRechargeRes> accumulatedRechargeResMutableLiveData = new MutableLiveData<>();
 
 
     @Override
@@ -720,6 +724,25 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
         this.vid = mVid;
         this.pmSourceType = pmSourceType;
         this.pmSourceTypeStr = pmSourceTypeStr;
+    }
+
+    public void getAmount() {
+        LiveRepository.getInstance().getAmount()
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<AccumulatedRechargeRes>() {
+                    @Override
+                    public void onResult(AccumulatedRechargeRes data) {
+                        if (data != null) {
+                            accumulatedRechargeResMutableLiveData.postValue(data);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
+                });
     }
 
 }

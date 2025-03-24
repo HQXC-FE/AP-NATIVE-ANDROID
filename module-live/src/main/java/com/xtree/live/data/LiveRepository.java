@@ -30,6 +30,7 @@ import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.SearchAssistantResponse;
 import com.xtree.live.data.source.response.SendToAssistantResponse;
 import com.xtree.live.data.source.response.fb.MatchInfo;
+import com.xtree.live.model.AccumulatedRechargeRes;
 
 import java.util.List;
 
@@ -179,5 +180,10 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     @Override
     public Flowable<BaseResponse<ReviseHotResponse>> getReviseHot() {
         return mHttpDataSource.getReviseHot();
+    }
+
+    @Override
+    public Flowable<BaseResponse<AccumulatedRechargeRes>> getAmount() {
+        return mHttpDataSource.getAmount();
     }
 }

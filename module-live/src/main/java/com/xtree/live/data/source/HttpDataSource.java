@@ -20,6 +20,7 @@ import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.SearchAssistantResponse;
 import com.xtree.live.data.source.response.SendToAssistantResponse;
 import com.xtree.live.data.source.response.fb.MatchInfo;
+import com.xtree.live.model.AccumulatedRechargeRes;
 
 import java.util.List;
 
@@ -117,4 +118,10 @@ public interface HttpDataSource {
      * @return
      */
     Flowable<Object> getWebsocket(SubscriptionRequest request);
+
+    /**
+     * 获取当前用户累计充值额
+     * @return
+     */
+    Flowable<BaseResponse<AccumulatedRechargeRes>> getAmount();
 }

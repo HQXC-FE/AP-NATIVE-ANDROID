@@ -35,6 +35,7 @@ import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.SearchAssistantResponse;
 import com.xtree.live.data.source.response.SendToAssistantResponse;
 import com.xtree.live.data.source.response.fb.MatchInfo;
+import com.xtree.live.model.AccumulatedRechargeRes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -295,6 +296,19 @@ public class HttpDataSourceImpl implements HttpDataSource {
         return apiService.get(APIManager.LIVE_CHAT, map).map(responseBody -> JSON.parseObject(responseBody.string(),
                 new TypeReference<BaseResponse<MatchInfo>>() {
                 }));
+    }
+
+    @Override
+    public Flowable<BaseResponse<AccumulatedRechargeRes>> getAmount() {
+
+        return apiService.get(APIManager.accumulated_recharge)
+                .map(new Function<ResponseBody, BaseResponse<AccumulatedRechargeRes>>() {
+                         @Override
+                         public BaseResponse<AccumulatedRechargeRes> apply(ResponseBody responseBody) throws Exception {
+                             return null;
+                         }
+                     }
+                );
     }
 
 

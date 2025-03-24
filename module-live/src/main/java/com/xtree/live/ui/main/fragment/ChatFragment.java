@@ -645,12 +645,18 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
             observable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from((LifecycleOwner) this)))
+                    .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                     .subscribe(this::onProcessAdsData, Throwable::printStackTrace);
 
         });
 
         viewModel.conversationMessageMutableLiveData.observe(this, this::onProcessReceiveMessage);
+
+        viewModel.accumulatedRechargeResMutableLiveData.observe(this,data->{
+            if(data!=null && data.getAmount()<5000.0f) {
+                binding.editText.setHint("充值5000即可发言");
+            }
+        });
 
     }
 
