@@ -13,14 +13,12 @@ import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.contract.BetContract;
-import com.xtree.bet.ui.adapter.MatchDetailAdapter;
 import com.xtree.bet.ui.viewmodel.BtDetailOptionViewModel;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.bet.weight.BaseDetailDataView;
 import com.xtree.live.R;
 import com.xtree.live.databinding.LiveBtLayoutDetailOptionBinding;
 import com.xtree.live.ui.main.adapter.LiveMatchDetailAdapter;
-import com.xtree.live.ui.main.bet.LiveMatchDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +129,7 @@ public class LiveBtDetailOptionFragment extends BaseFragment<LiveBtLayoutDetailO
         viewModel.betContractListData.observe(this, betContract -> {
             if (betContract.action == BetContract.ACTION_OPTION_CHANGE) {
                 playTypeList = (List<PlayType>) betContract.getData();
-                match = ((LiveMatchDetailActivity) getContext()).getmMatch();
+                //match = ((LiveMatchDetailActivity) getContext()).getmMatch();
                 updateOptionData();
             }
         });
