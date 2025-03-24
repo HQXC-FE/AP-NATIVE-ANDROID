@@ -145,13 +145,13 @@ public class ThirdTransferFragment extends BaseFragment<FragmentReportBinding, R
 
         listType.add(new OrderTypeVo("all", getString(R.string.txt_venue_all)));
         listType.add(new OrderTypeVo("cp", getString(R.string.txt_venue_cp)));
-        listType.add(new OrderTypeVo("pt", getString(R.string.txt_venue_pt)));
-        listType.add(new OrderTypeVo("bbin", getString(R.string.txt_venue_bbin)));
+//        listType.add(new OrderTypeVo("pt", getString(R.string.txt_venue_pt)));
+//        listType.add(new OrderTypeVo("bbin", getString(R.string.txt_venue_bbin)));
         listType.add(new OrderTypeVo("ag", getString(R.string.txt_venue_ag)));
-        listType.add(new OrderTypeVo("obgqp", getString(R.string.txt_venue_obgqp)));
-        listType.add(new OrderTypeVo("wali", getString(R.string.txt_venue_wali)));
-        listType.add(new OrderTypeVo("obgdj", getString(R.string.txt_venue_obgdj)));
-        listType.add(new OrderTypeVo("yy", getString(R.string.txt_venue_yy)));
+//        listType.add(new OrderTypeVo("obgqp", getString(R.string.txt_venue_obgqp)));
+//        listType.add(new OrderTypeVo("wali", getString(R.string.txt_venue_wali)));
+//        listType.add(new OrderTypeVo("obgdj", getString(R.string.txt_venue_obgdj)));
+//        listType.add(new OrderTypeVo("yy", getString(R.string.txt_venue_yy)));
 
         listType2.addAll(listType);
 
