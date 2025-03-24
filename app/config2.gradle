@@ -30,7 +30,7 @@ android {
             versionCode 103
             resValue "string", "app_name", "恒行6"
             resValue "string", "domain_api", "http://129.28.157.161:16812"
-            resValue "string", "domain_url", "https://h51.l5t5uk.vip"
+            resValue "string", "domain_url", "https://h51.v1g2pk.vip"
             resValue "string", "channel_name", "hengxing6"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
             resValue "bool", "is_tag", "true" // 是否开启统计
@@ -48,12 +48,12 @@ android {
                     "https://app3.l7n4pv.vip;" +
                     "https://app4.x2v2ez.vip;" +
                     "http://129.28.157.161:16812;" +
-                    "http://119.45.5.103:16812;" +
-                    "http://114.117.252.9:16812;" +
-                    "http://129.226.60.5:16812;" +
-                    "http://175.27.143.79:16812;"
-            resValue "string", "domain_url_list",
-                    "https://h51.d8a6br.vip;" +
+                    "http://146.56.241.223:16812;" +
+                    "http://81.69.185.170:16812;" +
+                    "http://129.211.11.119:16812;" +
+                    "http://129.226.69.66:16812;" +
+                    "http://129.226.129.111:16812;"
+            resValue "string", "domain_url_list", "https://h51.d8a6br.vip;" +
                     "https://h51.v1g2pk.vip;" +
                     "https://h52.d9n5be.vip;" +
                     "https://h52.m4e6rj.vip;" +
