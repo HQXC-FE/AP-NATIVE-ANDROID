@@ -117,7 +117,7 @@
 
     <color name="meForgetPsWordBgColor">#CCFFFFFF</color>
     <color name="warningFeedbackColor">#FB6156</color>
-
+    <color name="msgTopTextColorStart">#FFBC6E</color>
     <color name="meLevelProgressbarStart">#FFA3CF</color>
     <color name="meLevelProgressbarEnd">#9384F1</color>
     <color name="activityTopDivideLineColor">#DFDBDA</color>
