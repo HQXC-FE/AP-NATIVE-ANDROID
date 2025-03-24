@@ -27,19 +27,14 @@ android {
             versionName "1.0.1"
             versionCode 101
             resValue "string", "app_name", "摩域体育"
-            resValue "string", "domain_api", "http://129.28.157.161:26803"
+            resValue "string", "domain_api", "http://129.226.69.66:26803"
             resValue "string", "domain_url", "https://www.alltm1s.com"
             resValue "string", "channel_name", "moYu"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
             resValue "string", "mixpanel_token", "8c0e04f787df7fa37fdd8ed81c4c219a"
             resValue "bool", "is_tag", "true" // 是否开启统计
             resValue "string", "ms_secret_key", "b8597911-c169-4fcb-b548-51a575e698d1"
-            resValue "string", "domain_api_list", "http://129.226.60.5:26803;" +
-                    "http://129.28.157.161:26803;" +
-                    "http://119.45.5.103:26803;" +
-                    "http://175.27.143.79:26803;" +
-                    "http://114.117.252.9:26803;" +
-                    "https://app1.y8j5h4.com;" +
+            resValue "string", "domain_api_list", "https://app1.y8j5h4.com;" +
                     "https://app1.s5k4w3.com;" +
                     "https://app1.q2o6v5.com;" +
                     "https://app1.h8g4k6.com;" +
@@ -51,7 +46,13 @@ android {
                     "https://app3.s3f8l7.com;" +
                     "https://app3.w3b1m3.com;" +
                     "https://app3.u5i5i7.com;" +
-                    "https://app4.c6h7s9.com"
+                    "https://app4.c6h7s9.com;" +
+                    "http://129.226.69.66:26803;" +
+                    "http://129.226.129.111:26803;" +
+                    "http://146.56.241.223:26803;" +
+                    "http://81.69.185.170:26803;" +
+                    "http://129.211.11.119:26803;" +
+                    "http://139.186.39.133:26803"
             resValue "string", "domain_url_list", "https://www.alltm1s.com;" +
                     "https://www.ykusti.com;" +
                     "https://www.covgra.com;" +
