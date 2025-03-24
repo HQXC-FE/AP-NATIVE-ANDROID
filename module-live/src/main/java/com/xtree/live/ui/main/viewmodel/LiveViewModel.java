@@ -153,7 +153,6 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
             JsonObject json = new JsonObject();
             json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
             json.addProperty("device_type", "android");
-            json.addProperty("channel_code", "xc");
             json.addProperty("user_id", 10);
 
             LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
@@ -417,7 +416,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         liveRoomInfo.postValue(liveRoomBean);
                         if(liveRoomBean.getInfo()!=null){
                             X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
-                            SPUtil.get(BaseApplication.getInstance()).putInt(SPKey.UID,uid);
+                            SPUtils.getInstance().put(SPKey.UID,uid);
                         }
                     }
 
@@ -438,7 +437,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         liveRoomInfoRefresh.postValue(liveRoomBean);
                         if(liveRoomBean.getInfo()!=null){
                             X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
-                            SPUtil.get(BaseApplication.getInstance()).putInt(SPKey.UID,uid);
+                            SPUtils.getInstance().put(SPKey.UID,uid);
                         }
                     }
 

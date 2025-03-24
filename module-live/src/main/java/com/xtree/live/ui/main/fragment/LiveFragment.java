@@ -60,8 +60,7 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
         JsonObject json = new JsonObject();
         json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
         json.addProperty("device_type", "android");
-        json.addProperty("channel_code", "xc");
-        json.addProperty("user_id", 10);
+        json.addProperty("user_id", 48);
 
         LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
                 .subscribe(new HttpCallBack<LiveTokenResponse>() {

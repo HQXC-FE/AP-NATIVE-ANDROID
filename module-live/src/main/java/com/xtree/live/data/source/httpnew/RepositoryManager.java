@@ -8,6 +8,7 @@ import androidx.media3.common.C;
 import com.xtree.base.BuildConfig;
 import com.xtree.base.net.live.LiveHeaderInterceptor;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.live.LiveConfig;
 import com.xtree.live.data.source.http.TokenAuthenticator;
 
 import java.util.concurrent.TimeUnit;
@@ -52,6 +53,7 @@ public class RepositoryManager {
         this.mContext = context;
 //        String  baseUrl = DomainUtil.getApiUrl();
         String baseUrl = "https://zhibo-apps.oxldkm.com/";
+        LiveConfig.setReferer("https://zhibo-apps.oxldkm.com/");
         //baseurl  最好是加密
         initRequestManager(baseUrl);
         // 检测 切换URL 的逻辑 可以在这里设置新的 URL

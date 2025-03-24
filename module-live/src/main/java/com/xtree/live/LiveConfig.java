@@ -12,23 +12,23 @@ public class LiveConfig {
 
     public static String getUserId() {
 
-        return com.xtree.base.utils.SPUtil.get(BaseApplication.getInstance()).getInt(SPKey.UID, 0) + "";
+        return SPUtils.getInstance().getInt(SPKey.UID, 0) + "";
     }
 
     public static boolean isNotificationBeepOn() {
-        return com.xtree.base.utils.SPUtil.get(BaseApplication.getInstance()).get(SPKey.MMKV_KEY_BEEP, true);
+        return SPUtils.getInstance().getBoolean(SPKey.MMKV_KEY_BEEP, true);
     }
 
     public static void setNotificationBeepOn(boolean isChecked) {
-        com.xtree.base.utils.SPUtil.get(BaseApplication.getInstance()).put(SPKey.MMKV_KEY_BEEP, isChecked);
+        SPUtils.getInstance().put(SPKey.MMKV_KEY_BEEP, isChecked);
     }
 
     public static String getLiveToken() {
-        return com.xtree.base.utils.SPUtil.get(BaseApplication.getInstance()).get(SPKey.TOKEN, null);
+        return SPUtils.getInstance().getString(SPKey.TOKEN);
     }
 
     public static void setLiveToken(String token) {
-        com.xtree.base.utils.SPUtil.get(BaseApplication.getInstance()).put(SPKey.TOKEN, token);
+        SPUtils.getInstance().put(SPKey.TOKEN, token);
     }
 
     public static boolean isLogin() {
@@ -37,23 +37,33 @@ public class LiveConfig {
     }
 
     public static String getChannelCode() {
-        return com.xtree.base.utils.SPUtil.get(BaseApplication.getInstance()).get(SPKey.CHANNEL_CODE, null);
+        return SPUtils.getInstance().getString(SPKey.CHANNEL_CODE, "xc");
     }
 
     public static void setChannelCode(String token) {
-        com.xtree.base.utils.SPUtil.get(BaseApplication.getInstance()).put(SPKey.CHANNEL_CODE, token);
+        SPUtils.getInstance().put(SPKey.CHANNEL_CODE, token);
     }
 
     public static void blockGiftShown(boolean block) {
-        com.xtree.base.utils.SPUtil.get(BaseApplication.getInstance()).put(SPKey.BLOCK_LIVE_GIFT_SHOWN, block);
+        SPUtils.getInstance().put(SPKey.BLOCK_LIVE_GIFT_SHOWN, block);
     }
 
     public static boolean isBlockGiftShown() {
-        return com.xtree.base.utils.SPUtil.get(BaseApplication.getInstance()).get(SPKey.BLOCK_LIVE_GIFT_SHOWN, false);
+        return SPUtils.getInstance().getBoolean(SPKey.BLOCK_LIVE_GIFT_SHOWN, false);
     }
 
     public static Boolean isVisitor() {
-        return 0 == SPUtil.get(BaseApplication.getInstance()).get(SPKey.UID, 0);
+        return 0 == SPUtils.getInstance().getInt(SPKey.UID, 0);
+    }
+
+    public static void setReferer(String url) {
+        if (TextUtils.isEmpty(url)) url = "https://zhibo.oxldkm.com/";
+
+        SPUtils.getInstance().put(SPKey.REFERER, url);
+    }
+
+    public static String getReferer() {
+        return SPUtils.getInstance().getString(SPKey.REFERER);
     }
 
 }

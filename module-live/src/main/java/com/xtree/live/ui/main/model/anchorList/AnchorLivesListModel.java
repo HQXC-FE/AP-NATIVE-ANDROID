@@ -7,6 +7,7 @@ import com.xtree.live.SPKey;
 import java.util.ArrayList;
 
 import me.xtree.mvvmhabit.base.BaseApplication;
+import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
  * 获取正在直播的列表   来源 /api/front/lives
@@ -56,7 +57,7 @@ public class AnchorLivesListModel extends BindModel {
         }
 
         public void setUid(int uid) {
-            SPUtil.get(BaseApplication.getInstance()).putInt(SPKey.UID,uid);
+            SPUtils.getInstance().put(SPKey.UID,uid);
             this.uid = uid;
         }
 

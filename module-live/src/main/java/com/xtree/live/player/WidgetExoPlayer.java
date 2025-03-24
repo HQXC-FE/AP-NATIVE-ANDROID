@@ -325,6 +325,7 @@ public class WidgetExoPlayer extends ConstraintLayout {
             mQuality.setText(getContext().getString(R.string.live_quality_smooth));
             mediaSourcePath = mQualityList.get(0);
         }
+//        mediaSourcePath = "https://stream01aa.shdihgs.cn/live/5_1742788360.m3u8?txSecret=9446dcea6d65b5af2bcb9070b0cb215b&txTime=67e12885";
 //        mPlayerSeekBar.setVisibility(mIsLiveStream ? GONE : VISIBLE);
         mQuality.setOnClickListener(v -> showQuality(v, sourceType));
 
@@ -709,7 +710,7 @@ public class WidgetExoPlayer extends ConstraintLayout {
                 DataSource.Factory dataSourceFactory = () -> {
                     HttpDataSource dataSource = new DefaultHttpDataSource.Factory().createDataSource();
                     // Set a custom authentication request header.
-                    dataSource.setRequestProperty("Referer", sPreferences.getString(SPKey.REFERER));
+                    dataSource.setRequestProperty("Referer", LiveConfig.getReferer());
                     return dataSource;
                 };
 
@@ -718,7 +719,7 @@ public class WidgetExoPlayer extends ConstraintLayout {
                 DataSource.Factory factory = () -> {
                     HttpDataSource dataSource = new DefaultHttpDataSource.Factory().createDataSource();
                     // Set a custom authentication request header.
-                    dataSource.setRequestProperty("Referer", sPreferences.getString(SPKey.REFERER));
+                    dataSource.setRequestProperty("Referer", LiveConfig.getReferer());
                     return dataSource;
                 };
 
