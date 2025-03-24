@@ -210,7 +210,7 @@
                                 android:layout_marginStart="12dp"
                                 android:padding="14dp"
                                 android:tag="ag"
-                                android:text="@string/me_wallet_ptgame"
+                                android:text="@string/me_wallet_aggame"
                                 android:textColor="@color/clr_txt_hit"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
