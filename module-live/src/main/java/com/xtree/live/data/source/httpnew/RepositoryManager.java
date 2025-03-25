@@ -53,7 +53,7 @@ public class RepositoryManager {
         this.mContext = context;
 //        String  baseUrl = DomainUtil.getApiUrl();
         String baseUrl = LiveConfig.getAppApi();
-        LiveConfig.setReferer("https://zhibo-apps.oxldkm.com/");
+        LiveConfig.setReferer(baseUrl);
         //baseurl  最好是加密
         initRequestManager(baseUrl);
         // 检测 切换URL 的逻辑 可以在这里设置新的 URL
