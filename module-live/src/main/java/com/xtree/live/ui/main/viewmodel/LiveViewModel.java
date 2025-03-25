@@ -132,7 +132,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         setActivity(mActivity);
 
         if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
-            /*model.getLiveToken(new LiveTokenRequest())
+            model.getLiveToken(new LiveTokenRequest())
                     .compose(RxUtils.schedulersTransformer())
                     .compose(RxUtils.exceptionTransformer())
                     .subscribe(new HttpCallBack<LiveTokenResponse>() {
@@ -148,9 +148,9 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         public void onError(Throwable t) {
                             super.onError(t);
                         }
-                    });*/
+                    });
 
-            JsonObject json = new JsonObject();
+            /*JsonObject json = new JsonObject();
             json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
             json.addProperty("device_type", "android");
             json.addProperty("user_id", 10);
@@ -169,7 +169,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         public void onError(Throwable t) {
                             super.onError(t);
                         }
-                    });
+                    });*/
         } else {
             initData();
         }

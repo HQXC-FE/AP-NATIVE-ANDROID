@@ -52,7 +52,7 @@ public class RepositoryManager {
     private RepositoryManager(Context context) throws Exception{
         this.mContext = context;
 //        String  baseUrl = DomainUtil.getApiUrl();
-        String baseUrl = "https://zhibo-apps.oxldkm.com/";
+        String baseUrl = LiveConfig.getAppApi();
         LiveConfig.setReferer("https://zhibo-apps.oxldkm.com/");
         //baseurl  最好是加密
         initRequestManager(baseUrl);

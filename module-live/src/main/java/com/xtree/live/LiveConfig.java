@@ -63,7 +63,17 @@ public class LiveConfig {
     }
 
     public static String getReferer() {
-        return SPUtils.getInstance().getString(SPKey.REFERER);
+        return SPUtils.getInstance().getString(SPKey.REFERER, "https://zhibo.oxldkm.com/");
     }
 
+    public static void setVisitorId(String visitorId) {
+        SPUtils.getInstance().put(SPKey.VISITOR_ID, visitorId);
+    }
+
+    public static void setAppApi(String url) {
+        SPUtils.getInstance().put(SPKey.APP_API, url);
+    }
+    public static String getAppApi() {
+        return SPUtils.getInstance().getString(SPKey.APP_API, "https://zhibo-apps.oxldkm.com");
+    }
 }

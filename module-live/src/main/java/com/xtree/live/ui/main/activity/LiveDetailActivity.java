@@ -389,9 +389,14 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
         } else {
             mUid = getIntent().getIntExtra("uid", 0);
         }
-        SVGACache.INSTANCE.onCreate(this, SVGACache.Type.FILE);
-        mSvgaParser = new SVGAParser(this);
-        SVGALogger.INSTANCE.setLogEnabled(ARouter.debuggable());
+        try {
+            SVGACache.INSTANCE.onCreate(this, SVGACache.Type.FILE);
+            mSvgaParser = new SVGAParser(this);
+            SVGALogger.INSTANCE.setLogEnabled(ARouter.debuggable());
+        } catch (Exception e) {
+
+        }
+
         super.onCreate(savedInstanceState);
     }
 
@@ -637,16 +642,16 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
             }
         });
 
-        /*mLiveActionBinding.llBtnShare.setOnClickListener(view -> {
-            if (mLiveRoomInfo == null) return;
-            showShareLiveDialog();
-        });
-        mLiveActionBinding.llBtnSign.setOnClickListener(view -> {
-            if (mLiveRoomInfo == null) return;
-            MyTaskActivity.forward(this);
-        });
+//        mLiveActionBinding.llBtnShare.setOnClickListener(view -> {
+//            if (mLiveRoomInfo == null) return;
+//            showShareLiveDialog();
+//        });
+//        mLiveActionBinding.llBtnSign.setOnClickListener(view -> {
+//            if (mLiveRoomInfo == null) return;
+//            MyTaskActivity.forward(this);
+//        });
 
-        mLiveActionBinding.llBtnEnvelope.setOnClickListener(view -> {
+       /* mLiveActionBinding.llBtnEnvelope.setOnClickListener(view -> {
             if (mLiveRoomInfo == null) return;
             showTaskPage();
         });
@@ -893,7 +898,7 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
         timer.start();//倒计时开始
     }
 
-    private Dialog mEnvelopDialog = null;
+//    private Dialog mEnvelopDialog = null;
 
     private void initAudioManager() {
         // 管理音频
@@ -1142,6 +1147,8 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
             ) {
                 enterPipMode();
             }
+        }else {
+            ToastUtils.showShort("当前系统版本不支持画中画模式");
         }
     }
 
@@ -1239,7 +1246,7 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
         if (mGiftDialog != null && mGiftDialog.isShowing()) mGiftDialog.dismiss();
         if (mShareDialog != null && mShareDialog.isShowing()) mShareDialog.dismiss();
 //        if (mReportDialog != null && mReportDialog.isShowing()) mReportDialog.dismiss();
-        if (mEnvelopDialog != null && mEnvelopDialog.isShowing()) mEnvelopDialog.dismiss();
+//        if (mEnvelopDialog != null && mEnvelopDialog.isShowing()) mEnvelopDialog.dismiss();
     }
 
     @Override
