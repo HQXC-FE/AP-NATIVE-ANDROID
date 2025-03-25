@@ -240,7 +240,7 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
             mCategories = categories;
             if(binding.tabCategoryType.getTabCount() == 0) {
                 for (int i = 0; i < categories.size(); i++) {
-                    View view = LayoutInflater.from(getContext()).inflate(com.xtree.bet.R.layout.bt_layout_bet_catory_tab_item, null);
+                    View view = LayoutInflater.from(getContext()).inflate(com.xtree.bet.R.layout.live_layout_bet_catory_tab_item, null);
                     TextView tvName = view.findViewById(com.xtree.bet.R.id.tab_item_name);
                     String name = categories.get(i) == null ? "" : categories.get(i).getName();
 
