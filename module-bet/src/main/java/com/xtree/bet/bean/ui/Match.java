@@ -221,4 +221,7 @@ public interface Match extends BaseBean {
      * @return
      */
     boolean needCheckHomeSide();
+
+
+    int getMess();
 }

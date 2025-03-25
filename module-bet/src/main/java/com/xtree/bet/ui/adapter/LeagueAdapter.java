@@ -601,6 +601,10 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     }
 
     private void updateBasketballTime(TextView tvMatchTime, Match match, int normalTime, String stage) {
+        CfLog.d("================== updateBasketballTime getMess ====================="+match.getMess());
+        if(match.getMess() == 0){ //比赛暂停
+            return;
+        }
         int timeS = match.getTimeS();
         if (normalTime != timeS) {
             tvMatchTime.setTag(R.id.tag_normal_time, timeS);
