@@ -81,7 +81,7 @@
             android:textColor="#7FFFFFFF"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/exo_progress"
-            app:layout_constraintEnd_toStartOf="@+id/exo_quality"
+            app:layout_constraintEnd_toStartOf="@+id/exo_change_line"
             app:layout_constraintTop_toTopOf="@+id/exo_progress"
             tools:text="1:06:06" />
 
@@ -94,21 +94,49 @@
 
         <TextView
             android:id="@+id/exo_quality"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="36dp"
+            android:layout_height="30dp"
             android:padding="4dp"
-            android:textColor="#80FFFFFF"
+            android:textColor="#5B5768"
+            android:background="@drawable/shape_ffffff_r2"
             android:textSize="12sp"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="@id/iv_logo"
             app:layout_constraintEnd_toStartOf="@id/exo_fullscreen"
             app:layout_constraintTop_toTopOf="@id/iv_logo"
             tools:text="流暢" />
 
+        <TextView
+            android:id="@+id/exo_anchor"
+            android:layout_width="36dp"
+            android:layout_height="30dp"
+            android:padding="4dp"
+            android:layout_marginEnd="5dp"
+            android:textColor="#5B5768"
+            android:gravity="center"
+            android:background="@drawable/shape_ffffff_r2"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_logo"
+            app:layout_constraintEnd_toStartOf="@id/exo_quality"
+            app:layout_constraintTop_toTopOf="@id/iv_logo"
+            android:text="主播" />
+
+        <ImageView
+            android:id="@+id/exo_change_line"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="4dp"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_logo"
+            app:layout_constraintEnd_toStartOf="@id/exo_anchor"
+            app:layout_constraintTop_toTopOf="@id/iv_logo"
+             />
+
         <ImageView
             android:id="@+id/exo_fullscreen"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:padding="5dp"
+            android:padding="2dp"
             android:src="@drawable/exo_icon_fullscreen_enter"
             app:layout_constraintBottom_toBottomOf="@id/iv_logo"
             app:layout_constraintEnd_toEndOf="parent"
@@ -138,22 +166,20 @@
             android:layout_marginHorizontal="10dp"
             android:src="@drawable/ic_pip"
             android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@id/btnSettings"
+            app:layout_constraintEnd_toStartOf="@id/btnShare"
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
 
-<!--        <org.cybergarage.ui.MediaRouterButton-->
-<!--            android:id="@+id/btnMirror"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginHorizontal="10dp"-->
-<!--            android:padding="3dp"-->
-<!--            android:visibility="gone"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/btnSettings"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:routeButtonTint="@color/white"-->
-<!--            tools:background="@drawable/ic_dlna_button_grey"-->
-<!--            tools:visibility="visible" />-->
+        <ImageView
+            android:id="@+id/btnShare"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="10dp"
+            android:src="@drawable/ic_live_share"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="@id/btnSettings"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <ImageView
             android:id="@+id/btnSettings"

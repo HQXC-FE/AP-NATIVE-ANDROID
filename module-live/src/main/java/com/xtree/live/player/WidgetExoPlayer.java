@@ -77,6 +77,7 @@ import androidx.media3.ui.PlayerControlView;
 import androidx.media3.ui.PlayerView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.bumptech.glide.Glide;
 import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
 import com.xtree.live.SPKey;
@@ -111,11 +112,11 @@ public class WidgetExoPlayer extends ConstraintLayout {
         initialize();
     }
 
-    private static final SPUtils sPreferences = SPUtils.getInstance();
     private ExoPlayer mExoPlayer;
     private ExoPlayerView mPlayerView;
     private ImageView mFullscreen, mPlayPause;
-    private TextView mQuality;
+    private TextView mQuality,mAnchor;
+    private ImageView mChangeLine;
     private VideoControllerListener mListener;
     private List<String> mQualityList;
     private PopupWindow mPopupWindow;
@@ -173,7 +174,7 @@ public class WidgetExoPlayer extends ConstraintLayout {
     private TextView mLiveAdOverlayCountDown;
     private ImageView mLiveAdOverlayImage;
 
-    private ImageView mPipButton;
+    private ImageView mPipButton, mShareButton;
     private ImageView mReportButton;
     private ImageView mSettingButton;
 
@@ -268,6 +269,7 @@ public class WidgetExoPlayer extends ConstraintLayout {
                 R.layout.widget_exoplayer, this, true);
 
         mPipButton = findViewById(R.id.btnPip);
+        mShareButton = findViewById(R.id.btnShare);
         mSettingButton = findViewById(R.id.btnSettings);
         mReportButton = findViewById(R.id.btnReport);
 
@@ -284,6 +286,11 @@ public class WidgetExoPlayer extends ConstraintLayout {
 //        mFullscreen.setImageResource(R.drawable.exo_icon_fullscreen_enter);
         mPlayPause = findViewById(R.id.exo_play_pause);
         mQuality = mPlayerView.findViewById(R.id.exo_quality);
+        mAnchor = mPlayerView.findViewById(R.id.exo_anchor);
+        mChangeLine = mPlayerView.findViewById(R.id.exo_change_line);
+
+        Glide.with(this).asGif().load(R.drawable.live_change_line).into(mChangeLine);
+
         mBrightnessVolumeLayout = findViewById(R.id.brightnessVolumeLayout);
         mBrightnessVolumeLayout.setVisibility(View.GONE);
         mBrightnessVolumeIcon = findViewById(R.id.brightnessVolumeIcon);
@@ -796,6 +803,10 @@ public class WidgetExoPlayer extends ConstraintLayout {
 
     public View getPipButton() {
         return mPipButton;
+    }
+
+    public View getShareButton() {
+        return mShareButton;
     }
 
     public View getSettingButton() {

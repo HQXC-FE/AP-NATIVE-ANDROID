@@ -204,6 +204,7 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
      * 初始化沉浸式
      * Init immersion bar.
      */
+    @Override
     protected void initImmersionBar() {
         //设置共同沉浸式样式
         ImmersionBar.with(this)
@@ -331,7 +332,8 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
             if (startTime > serverTime) {
                 mTimerBinding.countdownView.setVisibility(View.VISIBLE);
                 binding.buttonBack.setVisibility(View.VISIBLE);
-                getCountDownTime(Math.abs(startTime - serverTime) * 1000L, mLiveRoomInfo);
+                //TODO 展示即将开始的比赛的 主队 - 客队 以及开赛时间
+
             } else {
                 mTimerBinding.countdownView.setVisibility(View.GONE);
                 binding.buttonBack.setVisibility(View.VISIBLE);
@@ -642,10 +644,11 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
             }
         });
 
-//        mLiveActionBinding.llBtnShare.setOnClickListener(view -> {
-//            if (mLiveRoomInfo == null) return;
-//            showShareLiveDialog();
-//        });
+        binding.widgetExoPlayer.getShareButton().setOnClickListener(view -> {
+            if (mLiveRoomInfo == null) return;
+            showShareLiveDialog();
+        });
+
 //        mLiveActionBinding.llBtnSign.setOnClickListener(view -> {
 //            if (mLiveRoomInfo == null) return;
 //            MyTaskActivity.forward(this);
@@ -851,54 +854,6 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
 //        mvpPresenter.recordEnterTime(mUid);
     }
 
-
-    //倒计时
-    private void getCountDownTime(long timeStem, LiveRoomInfoBean bean) {
-        timer = new CountDownTimer(timeStem, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                int currentDays = TimeUtil.getCurrentDays(millisUntilFinished);//天
-                int currentHour = TimeUtil.getCurrentHour(millisUntilFinished);//小时
-                int currentMinute = TimeUtil.getCurrentMinute(millisUntilFinished);//分钟
-                int currentMills = TimeUtil.getCurrentMills(millisUntilFinished);
-                if (currentDays < 10) {
-                    mTimerBinding.tvTimerDay.setText("0" + currentDays);
-                } else {
-                    mTimerBinding.tvTimerDay.setText(String.valueOf(currentDays));
-
-                }
-                if (currentHour < 10) {
-                    mTimerBinding.tvTimerHour.setText("0" + currentHour);
-                } else {
-                    mTimerBinding.tvTimerHour.setText(String.valueOf(currentHour));
-
-                }
-                if (currentMinute < 10) {
-                    mTimerBinding.tvTimerMinute.setText("0" + currentMinute);
-                } else {
-                    mTimerBinding.tvTimerMinute.setText(String.valueOf(currentMinute));
-
-                }
-                if (currentMills < 10) {
-                    mTimerBinding.tvTimerSecond.setText("0" + currentMills);
-                } else {
-                    mTimerBinding.tvTimerSecond.setText(String.valueOf(currentMills));
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                //倒计时结束后
-                mTimerBinding.countdownView.setVisibility(View.GONE);
-                //倒计时结束后刷新 直播间信息 获取新的直播地址
-                viewModel.getRoomInfo(mUid);
-
-            }
-        };
-        timer.start();//倒计时开始
-    }
-
-//    private Dialog mEnvelopDialog = null;
 
     private void initAudioManager() {
         // 管理音频

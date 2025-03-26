@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="325dp"
-    android:layout_height="120dp"
+    android:layout_height="wrap_content"
     app:cardCornerRadius="10dp"
     app:cardElevation="0dp"
     tools:viewBindingIgnore="true"
@@ -19,8 +19,9 @@
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="分享直播间"
-            android:textSize="20sp"
+            android:text="分享链接"
+            android:textSize="16sp"
+            android:textColor="#302E36"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_close"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,41 +35,33 @@
             app:layout_constraintStart_toEndOf="@id/tv_title"
             app:layout_constraintTop_toTopOf="@id/tv_title"
             app:layout_constraintBottom_toBottomOf="@id/tv_title"
-            tools:ignore="contentDescription"/>
+            tools:ignore="contentDescription"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
-        <LinearLayout
-            android:id="@+id/ll_link"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:background="@drawable/shape_999999_6dp_stroke_rec"
-            android:padding="5dp"
-            android:gravity="center_vertical"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
+        <TextView
+            android:id="@+id/tv_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="#13A1DE"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_copy"
-            app:layout_constraintTop_toBottomOf="@id/tv_title">
-
-            <TextView
-                android:id="@+id/tv_link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                tools:text="https://aaa.bbb.com/wefwwwwwww?dffddd" />
-
-        </LinearLayout>
+            android:layout_marginTop="10dp"
+            tools:text="https://aaa.bbb.com/wefwwwwwww?dffddd" />
 
         <TextView
             android:id="@+id/btn_copy"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/shape_live_chat_send_btn"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_f3a3ca_8877ed_r8"
             android:text="复制链接"
             android:gravity="center"
             android:textColor="@color/white"
-            app:layout_constraintTop_toTopOf="@id/ll_link"
+            app:layout_constraintTop_toBottomOf="@+id/tv_link"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

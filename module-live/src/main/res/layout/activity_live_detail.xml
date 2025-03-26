@@ -30,7 +30,7 @@
                 android:id="@+id/remote_player_controller"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@color/black"
+                android:background="@mipmap/ic_live_bg_football"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:visibility="gone"
@@ -52,19 +52,20 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             <include
                 layout="@layout/merge_live_detail_after_live_recommend"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
 
             <include
                 layout="@layout/include_timer"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:background="@color/clr_transparent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -77,8 +78,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/buttonBack"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:layout_margin="10dp"
             android:src="@mipmap/cm_ic_back"
             android:tint="@color/white"
@@ -88,15 +89,15 @@
             app:layout_constraintTop_toTopOf="@+id/widgetExoPlayer"
             tools:visibility="visible" />
 
-<!--        公告-->
+        <!--        公告-->
         <LinearLayout
             android:id="@+id/platformAdsLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/widgetExoPlayer">
 
             <TextView
@@ -126,9 +127,9 @@
 
         <FrameLayout
             android:id="@+id/main_page"
+            style="@style/Theme.MaterialComponents.DayNight.NoActionBar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            style="@style/Theme.MaterialComponents.DayNight.NoActionBar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

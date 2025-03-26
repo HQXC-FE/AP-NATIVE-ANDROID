@@ -34,7 +34,9 @@
                 android:padding="5dp"
                 android:text="@string/live_quality_login"
                 android:textColor="#CCC91A49"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
         </LinearLayout>
 

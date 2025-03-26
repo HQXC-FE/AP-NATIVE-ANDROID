@@ -57,27 +57,6 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
                 });
 
 
-        /*JsonObject json = new JsonObject();
-        json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
-        json.addProperty("device_type", "android");
-        json.addProperty("user_id", 48);
-
-        LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
-                .subscribe(new HttpCallBack<LiveTokenResponse>() {
-                    @Override
-                    public void onResult(LiveTokenResponse data) {
-                        if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
-                            LiveRepository.getInstance().setLive(data);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
-                });*/
-
-
     }
 
 
