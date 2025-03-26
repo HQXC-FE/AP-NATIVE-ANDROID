@@ -409,6 +409,21 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 }
             }
 
+            // 比赛未开始
+            if (!match.isGoingon()) {
+                binding.tvTimeTop.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_HH_MM));
+                binding.tvTime.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_1));
+                binding.tvScore.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_HH_MM));
+            } else {
+                if (TextUtils.equals(Constants.getFbSportId(), match.getSportId()) || TextUtils.equals(Constants.getBsbSportId(), match.getSportId())) { // 足球和篮球
+                    binding.tvTime.setText(match.getStage() + " " + match.getTime());
+                    binding.tvTimeTop.setText(match.getStage() + " " + match.getTime());
+                } else {
+                    binding.tvTime.setText(match.getStage());
+                    binding.tvTimeTop.setText(match.getStage());
+                }
+            }
+
             if (binding.llData.getChildCount() == 0) {
                 mScoreDataView = BaseDetailDataView.getInstance(this, match, false);
                 if (mScoreDataView != null) {
@@ -488,6 +503,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             }
         });
     }
+
 
     /**
      * 设置串关数量与显示与否
