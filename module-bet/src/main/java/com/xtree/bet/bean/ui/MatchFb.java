@@ -438,6 +438,11 @@ public class MatchFb implements Match{
     }
 
     @Override
+    public String getMct() {
+        return "";
+    }
+
+    @Override
     public boolean equals(@Nullable Object obj) {
         if(this == obj){
             return true;

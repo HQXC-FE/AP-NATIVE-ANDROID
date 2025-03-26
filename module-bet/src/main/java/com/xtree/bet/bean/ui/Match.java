@@ -221,4 +221,8 @@ public interface Match extends BaseBean {
      * @return
      */
     boolean needCheckHomeSide();
+    /**
+     * 当前是第几盘或者第几局
+     */
+    String getMct();
 }

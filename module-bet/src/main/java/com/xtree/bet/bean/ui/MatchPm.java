@@ -511,6 +511,11 @@ public class MatchPm implements Match {
                 || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_MSZQ);
     }
 
+    @Override
+    public String getMct() {
+        return matchInfo.mct;
+    }
+
     /**
      * 是否篮球上下半场赛节配置
      *
