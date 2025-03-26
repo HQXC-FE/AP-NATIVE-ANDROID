@@ -15,9 +15,9 @@
         android:layout_height="match_parent"
         android:background="@drawable/shape_page_bg">
 
+<!--        imageUrl="@{model.bannerModel.bannerBg}"-->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
-            imageUrl="@{model.bannerModel.bannerBg}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:elevation="0dp">

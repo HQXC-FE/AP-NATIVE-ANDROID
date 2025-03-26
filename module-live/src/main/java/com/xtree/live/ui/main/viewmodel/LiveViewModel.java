@@ -50,6 +50,7 @@ import com.xtree.live.data.source.response.fb.Match;
 import com.xtree.live.data.source.response.fb.MatchFb;
 import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.model.GiftBean;
+import com.xtree.live.ui.main.listener.FetchListener;
 import com.xtree.live.ui.main.model.anchor.LiveAnchorModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerItemModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerModel;
@@ -78,6 +79,7 @@ import me.xtree.mvvmhabit.utils.SPUtils;
  * Describe: 直播门户viewModel
  */
 public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabLayout.OnTabSelectedListener {
+
     private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
         LiveAnchorModel liveAnchorModel = new LiveAnchorModel(FrontLivesType.ALL.getLabel());
         liveAnchorModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.ALL.getValue(), page, limit, success, error);
@@ -103,6 +105,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         add(liveBasketBallModel);
         add(liveOtherModel);
     }};
+
     private final ArrayList<Integer> typeList = new ArrayList() {
         {
             add(R.layout.layout_live_anchor);

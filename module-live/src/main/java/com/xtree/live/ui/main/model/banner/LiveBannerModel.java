@@ -62,10 +62,10 @@ public class LiveBannerModel implements OnBannerViewListener {
 
     @Override
     public void onPageSelected(int position) {
-        BindModel data = datas.getValue().get(position);
+      /*  BindModel data = datas.getValue().get(position);
         if (data instanceof LiveBannerItemModel) {
             bannerBg.set(((LiveBannerItemModel) data).backImg.get());
-        }
+        }*/
     }
 
     @Override

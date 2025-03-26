@@ -725,7 +725,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
                         @Override
                         public void onKeyboard() {
 
-//                            binding.ivEmojiQuickly.setSelected(false);
+                            binding.emotionBtn.setSelected(false);
                             mIsInputPanelExpand = true;
                             hideLiveInfo();
                         }
@@ -733,8 +733,8 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
                         @Override
                         public void onNone() {
 
-//                            binding.ivEmojiQuickly.setSelected(false);
-                            binding.ivEmojiQuickly.postDelayed(() -> {
+                            binding.emotionBtn.setSelected(false);
+                            binding.emotionBtn.postDelayed(() -> {
                                 mIsInputPanelExpand = false;
                             }, 500);
                             showLiveInfo();
@@ -744,7 +744,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
                         @Override
                         public void onPanel(IPanelView view) {
                             if (view instanceof PanelView) {
-//                                binding.ivEmojiQuickly.setSelected(((PanelView) view).getId() == R.id.panel_emotion);
+                                binding.emotionBtn.setSelected(((PanelView) view).getId() == R.id.panel_emotion);
                                 mIsInputPanelExpand = true;
                                 hideLiveInfo();
                                 involveSvgaViewMargin(mPanelHeight + binding.llSendText.getHeight());
@@ -867,7 +867,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
 
     public void muteRoom(boolean isMute) {
 
-        binding.ivEmojiQuickly.setEnabled(!isMute);
+        binding.emotionBtn.setEnabled(!isMute);
         binding.editText.setEnabled(!isMute);
         binding.send.setEnabled(!isMute);
         if (isMute) {
