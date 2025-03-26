@@ -305,7 +305,6 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
             binding.tvUserNameShow.setText(name);
         }
 
-        binding.tvWithdrawalTypeShow.setText(infoVo.user_bank_info.get(0).usdt_type);//提款类型
         String rate = infoVo.rate;//汇率
         //tv_info_exchange_rate
         binding.tvInfoExchangeRateShow.setText(rate);
@@ -409,6 +408,10 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
 
         //实际提款金额
         binding.tvWithdrawalActualArrivalShow.setText(verifyVo.money_real);
+
+        //手续费
+        binding.tvWithdrawalHandlingFeeShow.setText(verifyVo.fee);
+
         //汇率
         binding.tvWithdrawalExchangeRateShow.setText(infoVo.rate);
         //提币地址
