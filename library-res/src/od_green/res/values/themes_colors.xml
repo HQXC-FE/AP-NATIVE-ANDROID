@@ -5,6 +5,7 @@
     <!--    primaryVariant：#787ED（蓝色调）-->
     <!--    强调色 (Accent Color)-->
     <!--    secondaryColor：#9887D2（主色）-->
+    <!--    tertiaryColor：#518FD8（忘记密码）-->
     <!--    文本颜色 (Text Colors)-->
     <!--    textPrimary：#302E36（一级文字）-->
     <!--    textSecondary：#5B5768（二级文字）-->
@@ -33,6 +34,8 @@
     <!--    textQuinary：#F8F8F8-->
     <!--    六级文字 (Senary Text)-->
     <!--    textSenary：#FBFBFB-->
+    <!--    提示文字-->
+    <!--    infoColor：#E7A018-->
 
     <!--    主题色-->
     <color name="primaryColor">#84CDA0</color>
