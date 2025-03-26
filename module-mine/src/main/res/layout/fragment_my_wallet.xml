@@ -93,7 +93,7 @@
                     android:drawableStart="@drawable/me_wallet_yuan_icon"
                     android:drawablePadding="4dp"
                     android:text="@string/me_wallet_amount"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textPrimaryColor"
                     android:textSize="@dimen/bt_text_16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -132,7 +132,7 @@
                 android:drawablePadding="4dp"
                 android:gravity="center"
                 android:text="@string/me_wallet_amount"
-                android:textColor="@color/black"
+                android:textColor="@color/textPrimaryColor"
                 android:textSize="@dimen/bt_text_20sp"
                 android:textStyle="bold" />
 

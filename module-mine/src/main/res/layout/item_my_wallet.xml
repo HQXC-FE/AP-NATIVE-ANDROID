@@ -14,12 +14,13 @@
             android:id="@+id/tvw_third_game_name"
             style="@style/style_trans_name"
             android:text="@string/me_wallet_bbingame"
+            android:textColor="@color/textPrimaryColor"
             android:textSize="@dimen/bt_text_12sp" />
 
         <TextView
             android:id="@+id/tvw_third_game_balance"
             style="@style/style_trans_value"
-            android:textColor="@color/itemWalletTextColor"
+            android:textColor="@color/textTertiaryColor"
             android:tag="obgqp"
             android:textSize="@dimen/bt_text_12sp"
             tools:text="0.0000" />
