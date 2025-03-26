@@ -458,7 +458,7 @@
                             style="@style/style_virtual_text"
                             android:layout_below="@id/tv_info_actual_number"
                             android:layout_marginTop="4dp"
-                            android:text="@string/txt_receive_usdt_account" />
+                            android:text="收款地址" />
 
                         <TextView
                             android:id="@+id/tv_info_actual_usdt_show"
