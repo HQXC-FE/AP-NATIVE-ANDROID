@@ -510,6 +510,14 @@ public class MatchPm implements Match {
                 || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_BQ)
                 || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_MSZQ);
     }
+    /**
+     * 开始结束状态 1：start，0：stop（此字段只适用于特定事件编码），篮球暂停事件编码：time_start
+     */
+    @Override
+    public int getMess() {
+        return matchInfo.mess;
+    }
+
 
     /**
      * 是否篮球上下半场赛节配置

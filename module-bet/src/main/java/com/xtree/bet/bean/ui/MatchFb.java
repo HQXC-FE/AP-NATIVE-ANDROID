@@ -438,6 +438,15 @@ public class MatchFb implements Match{
     }
 
     @Override
+    public int getMess() {
+        if(matchInfo.mc.r){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+    @Override
     public boolean equals(@Nullable Object obj) {
         if(this == obj){
             return true;
