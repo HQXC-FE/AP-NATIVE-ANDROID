@@ -45,6 +45,7 @@ import com.xtree.mine.vo.WithdrawVo.WithdrawalQuotaVo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.TreeSet;
 
 import me.xtree.mvvmhabit.base.ContainerActivity;
@@ -109,20 +110,28 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
         return dialog;
     }
 
-    private static ArrayList<WithdrawalListVo.WithdrawalItemVo> removeDupliByType(ArrayList<WithdrawalListVo.WithdrawalItemVo> list) {
+    private static void removeDupliByType(ArrayList<WithdrawalListVo.WithdrawalItemVo> list) {
         ArrayList<WithdrawalListVo.WithdrawalItemVo> wdList = new ArrayList<>();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            list.stream().forEach(
-                    p -> {
-                        if (!wdList.contains(p)) {
-                            wdList.add(p);
-                        }
-                    }
-            );
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            list.stream().forEach(
+//                    p -> {
+//                        if (!wdList.contains(p)) {
+//                            wdList.add(p);
+//                        }
+//                    }
+//            );
+//        }
+        HashSet<String> seenTypes = new HashSet<>(); // 用于存储已见过的类型
+        for (WithdrawalListVo.WithdrawalItemVo p : list) {
+            if (!seenTypes.contains(p.type)) { // 根据 type 字段去重
+                wdList.add(p);
+                seenTypes.add(p.type); // 将该类型标记为已见
+            }
         }
-        TreeSet<WithdrawalListVo.WithdrawalItemVo> treeSet = new TreeSet<WithdrawalListVo.WithdrawalItemVo>(list);
-        ArrayList<WithdrawalListVo.WithdrawalItemVo> newList = new ArrayList<>(treeSet);
-        return newList;
+//        LinkedHashSet<WithdrawalListVo> treeSet = new LinkedHashSet<>(list);
+//        ArrayList<WithdrawalListVo> newList = new ArrayList<>(treeSet);
+        list.clear();
+        list.addAll(wdList);
     }
 
     @Override
