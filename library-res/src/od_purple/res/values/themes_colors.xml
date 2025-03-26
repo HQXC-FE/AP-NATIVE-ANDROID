@@ -108,9 +108,6 @@
     <color name="meProgressTipTextColor">#9A96A4</color>
 
     <color name="offerLineColor">#6D61E2</color>
-    <color name="offerGradientColor">#E4E5FF</color>
-    <color name="offerSelectTextColor">#9887D2</color>
-
 
     <color name="offerGetExpiredStart">#FFFFFF</color>
     <color name="offerGetExpiredEnd">#ECFFFFFF</color>

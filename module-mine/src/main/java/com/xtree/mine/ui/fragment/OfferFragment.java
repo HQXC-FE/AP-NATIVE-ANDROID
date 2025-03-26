@@ -249,7 +249,7 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
             for (TextView view : statusViews) {
                 if (view == tv) {
                     view.setTextColor(getContext().getColor(R.color.clr_purple_20));
-                    view.setBackground(getContext().getDrawable(R.drawable.bg_btn_offer_click));
+                    //view.setBackground(getContext().getDrawable(R.drawable.bg_btn_offer_click));
                     continue;
                 }
                 view.setTextColor(getContext().getColor(R.color.clr_txt_grey_11));
@@ -268,7 +268,7 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
                         binding.tvEndTime.setVisibility(View.VISIBLE);
                     }
                     view.setTextColor(getContext().getColor(R.color.clr_purple_20));
-                    view.setBackground(getContext().getDrawable(R.drawable.bg_btn_offer_click));
+                    //view.setBackground(getContext().getDrawable(R.drawable.bg_btn_offer_click));
                     continue;
                 }
                 view.setTextColor(getContext().getColor(R.color.clr_txt_grey_11));
