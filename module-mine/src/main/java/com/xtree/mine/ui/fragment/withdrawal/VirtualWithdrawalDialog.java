@@ -58,7 +58,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
     private LifecycleOwner owner;
     private String wtype;
     private WithdrawalInfoVo.UserBankInfo selectorBankInfo;//选中的支付地址
-    private ArrayList<WithdrawalInfoVo.UserBankInfo> bankInfoList;//提款地址
     private WithdrawalListVo.WithdrawalItemVo listVo;
     private WithdrawalInfoVo infoVo;
     private WithdrawalVerifyVo verifyVo;
@@ -81,17 +80,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         dialog.infoVo = infoVo;
         dialog.checkCode = checkCode;
         dialog.usdtType = usdtType;
-        dialog.bankInfoList = new ArrayList<>();
-        if (!TextUtils.isEmpty(infoVo.chain)) {
-            for (int i = 0; i < dialog.infoVo.user_bank_info.size(); i++) {
-                WithdrawalInfoVo.UserBankInfo bankInfo = dialog.infoVo.user_bank_info.get(i);
-                if (!TextUtils.isEmpty(infoVo.chain) && infoVo.chain.toUpperCase().contains(bankInfo.usdt_type.toUpperCase())) {
-                    dialog.bankInfoList.add(bankInfo);
-                }
-            }
-        } else {
-            dialog.bankInfoList.addAll(dialog.infoVo.user_bank_info);
-        }
 
         return dialog;
     }
@@ -134,25 +122,16 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         hideKeyBoard();
 
         //用户名
-        if (!bankInfoList.isEmpty()) {
-            String userName = bankInfoList.get(0).user_name;
-            String nickName = bankInfoList.get(0).nickname;
+        String userName = infoVo.user_bank_info.get(0).user_name;
+        String nickName = infoVo.user_bank_info.get(0).nickname;
 
-            if (!TextUtils.isEmpty(userName)) {
-                binding.tvUserNameShow.setText(StringUtils.splitWithdrawUserName(userName));
-            } else if (!TextUtils.isEmpty(nickName)) {
-                binding.tvUserNameShow.setText(StringUtils.splitWithdrawUserName(nickName));
-            }
-            //提款类型
-            binding.tvWithdrawalTypeShow.setText(bankInfoList.get(0).usdt_type);
-
-            //收款地址
-            String showAddress = bankInfoList.get(0).usdt_type + "--" + bankInfoList.get(0).account;
-            binding.tvBindAddress.setText(showAddress);
-            //设置默认提款地址
-            selectorBankInfo = bankInfoList.get(0);
+        if (!TextUtils.isEmpty(userName)) {
+            binding.tvUserNameShow.setText(StringUtils.splitWithdrawUserName(userName));
+        } else if (!TextUtils.isEmpty(nickName)) {
+            binding.tvUserNameShow.setText(StringUtils.splitWithdrawUserName(nickName));
         }
-
+        //提款类型
+        binding.tvWithdrawalTypeShow.setText(infoVo.user_bank_info.get(0).usdt_type);
         //可提款金额
         binding.tvWithdrawalAmountShow.setText(infoVo.quota);
         //实际提款金额
@@ -174,6 +153,15 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         moneyMax = "<font color=#F35A4E>" + infoVo.max_money + "</font>";
         String singleSource = String.format(single, moneyMin, moneyMax);
         binding.tvWithdrawalSingleShow.setText(HtmlCompat.fromHtml(singleSource, HtmlCompat.FROM_HTML_MODE_LEGACY));
+        //收款地址
+        if (infoVo.user_bank_info != null && !infoVo.user_bank_info.isEmpty()) {
+            String showAddress = infoVo.user_bank_info.get(0).usdt_type + "--" + infoVo.user_bank_info.get(0).account;
+            binding.tvBindAddress.setText(showAddress);
+            //设置默认提款地址
+            selectorBankInfo = infoVo.user_bank_info.get(0);
+        } else {
+            CfLog.e("****************** infoVo.user_bank_info is  null *********** ");
+        }
 
         initListener();
 
@@ -417,7 +405,7 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         });
         //点击USDT收款地址
         binding.llCollectionUsdtInput.setOnClickListener(v -> {
-            showCollectionDialog(infoVo, bankInfoList);
+            showCollectionDialog(infoVo, infoVo.user_bank_info);
         });
         //点击下一步
         binding.ivNext.setOnClickListener(v -> {
@@ -501,22 +489,27 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
      * 验证当前渠道信息
      */
     private void checkVerify() {
+        if (infoVo == null || infoVo.user_bank_info == null || infoVo.user_bank_info.isEmpty()) {
+            ToastUtils.showError(getContext().getString(R.string.txt_network_error));
 
-        String money = binding.etInputMoney.getText().toString().trim();
-        if (TextUtils.isEmpty(money)) {
-            ToastUtils.showError(getContext().getString(R.string.txt_withdraw_input_error_tip));
-            return;
-        } else if (Double.valueOf(money) < Double.valueOf(infoVo.min_money)) {
-            ToastUtils.showError(getContext().getString(R.string.txt_withdraw_input_mix_tip));
-            return;
-        } else if (Double.valueOf(money) > Double.valueOf(infoVo.max_money)) {
-            ToastUtils.showError(getContext().getString(R.string.txt_withdraw_input_max_tip));
-            return;
-        } else if (selectorBankInfo == null) {
-            ToastUtils.showError(getContext().getString(R.string.txt_withdraw_address_tip));
             return;
         } else {
-            requestVerify(money, selectorBankInfo);
+            String money = binding.etInputMoney.getText().toString().trim();
+            if (TextUtils.isEmpty(money)) {
+                ToastUtils.showError(getContext().getString(R.string.txt_withdraw_input_error_tip));
+                return;
+            } else if (Double.valueOf(money) < Double.valueOf(infoVo.min_money)) {
+                ToastUtils.showError(getContext().getString(R.string.txt_withdraw_input_mix_tip));
+                return;
+            } else if (Double.valueOf(money) > Double.valueOf(infoVo.max_money)) {
+                ToastUtils.showError(getContext().getString(R.string.txt_withdraw_input_max_tip));
+                return;
+            } else if (selectorBankInfo == null) {
+                ToastUtils.showError(getContext().getString(R.string.txt_withdraw_address_tip));
+                return;
+            } else {
+                requestVerify(money, selectorBankInfo);
+            }
         }
     }
 
