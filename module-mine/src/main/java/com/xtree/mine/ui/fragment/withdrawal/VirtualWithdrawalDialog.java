@@ -51,28 +51,29 @@ import project.tqyb.com.library_res.databinding.ItemTextBinding;
  * 虚拟币提款
  */
 public class VirtualWithdrawalDialog extends BottomPopupView {
-    ChooseWithdrawViewModel viewModel;
-    @NonNull
-    DialogBankWithdrawalVirtualBinding binding;
-    ItemTextBinding binding2;
-    BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
     private String checkCode;
     private String usdtType;
     private Context context;
     private LifecycleOwner owner;
+    ChooseWithdrawViewModel viewModel;
     private String wtype;
     private WithdrawalInfoVo.UserBankInfo selectorBankInfo;//选中的支付地址
-    private ArrayList<WithdrawalInfoVo.UserBankInfo> bankInfoList;//提款地址
     private WithdrawalListVo.WithdrawalItemVo listVo;
     private WithdrawalInfoVo infoVo;
+
     private WithdrawalVerifyVo verifyVo;
     private WithdrawalSubmitVo submitVo;
+
     private VirtualCashVo.UsdtInfo selectUsdtInfo;//选中的支付
     private VirtualCashVo virtualCashVo;
+
     private VirtualSecurityVo virtualSecurityVo;
     private VirtualConfirmVo virtualConfirmVo;
+    @NonNull
+    DialogBankWithdrawalVirtualBinding binding;
     private BankWithdrawalDialog.BankWithdrawalClose bankWithdrawalClose;
     private BasePopupView errorPopView;
+
     private String userid;
     private BasePopupView ppwError;//显示异常弹窗
 
@@ -94,17 +95,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         dialog.infoVo = infoVo;
         dialog.checkCode = checkCode;
         dialog.usdtType = usdtType;
-        dialog.bankInfoList = new ArrayList<>();
-        if (!TextUtils.isEmpty(infoVo.chain)) {
-            for (int i = 0; i < dialog.infoVo.user_bank_info.size(); i++) {
-                WithdrawalInfoVo.UserBankInfo bankInfo = dialog.infoVo.user_bank_info.get(i);
-                if (!TextUtils.isEmpty(infoVo.chain) && infoVo.chain.toUpperCase().contains(bankInfo.usdt_type.toUpperCase())) {
-                    dialog.bankInfoList.add(bankInfo);
-                }
-            }
-        } else {
-            dialog.bankInfoList.addAll(dialog.infoVo.user_bank_info);
-        }
 
         return dialog;
     }
@@ -136,7 +126,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         refreshUI(infoVo);
 
     }
-
     /**
      * 刷新渠道页面
      *
@@ -146,25 +135,16 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         hideKeyBoard();
 
         //用户名
-        if (!bankInfoList.isEmpty()) {
-            String userName = bankInfoList.get(0).user_name;
-            String nickName = bankInfoList.get(0).nickname;
+        String userName = infoVo.user_bank_info.get(0).user_name;
+        String nickName = infoVo.user_bank_info.get(0).nickname;
 
-            if (!TextUtils.isEmpty(userName)) {
-                binding.tvUserNameShow.setText(StringUtils.splitWithdrawUserName(userName));
-            } else if (!TextUtils.isEmpty(nickName)) {
-                binding.tvUserNameShow.setText(StringUtils.splitWithdrawUserName(nickName));
-            }
-            //提款类型
-            binding.tvWithdrawalTypeShow.setText(bankInfoList.get(0).usdt_type);
-
-            //收款地址
-            String showAddress = bankInfoList.get(0).usdt_type + "--" + bankInfoList.get(0).account;
-            binding.tvBindAddress.setText(showAddress);
-            //设置默认提款地址
-            selectorBankInfo = bankInfoList.get(0);
+        if (!TextUtils.isEmpty(userName)) {
+            binding.tvUserNameShow.setText(StringUtils.splitWithdrawUserName(userName));
+        } else if (!TextUtils.isEmpty(nickName)) {
+            binding.tvUserNameShow.setText(StringUtils.splitWithdrawUserName(nickName));
         }
-
+        //提款类型
+        binding.tvWithdrawalTypeShow.setText(infoVo.user_bank_info.get(0).usdt_type);
         //可提款金额
         binding.tvWithdrawalAmountShow.setText(infoVo.quota);
         //实际提款金额
@@ -186,6 +166,15 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         moneyMax = "<font color=#F35A4E>" + infoVo.max_money + "</font>";
         String singleSource = String.format(single, moneyMin, moneyMax);
         binding.tvWithdrawalSingleShow.setText(HtmlCompat.fromHtml(singleSource, HtmlCompat.FROM_HTML_MODE_LEGACY));
+        //收款地址
+        if (infoVo.user_bank_info != null && !infoVo.user_bank_info.isEmpty()) {
+            String showAddress = infoVo.user_bank_info.get(0).usdt_type + "--" + infoVo.user_bank_info.get(0).account;
+            binding.tvBindAddress.setText(showAddress);
+            //设置默认提款地址
+            selectorBankInfo = infoVo.user_bank_info.get(0);
+        } else {
+            CfLog.e("****************** infoVo.user_bank_info is  null *********** ");
+        }
 
         initListener();
 
@@ -277,7 +266,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         });
 
     }
-
     /**
      * 刷新提款结果页
      *
@@ -349,11 +337,97 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         }
 
     }
-
     private void requestData() {
 
         LoadingDialog.show(getContext());
         viewModel.getChooseWithdrawVirtualMoYu(checkCode, usdtType);
+    }
+
+    /**
+     * 刷新初始UI
+     */
+//    private void refreshSetUI() {
+//        binding.llSetRequestView.setVisibility(View.VISIBLE);
+//        final String notice = "<font color=#99A0B1>注意:</font>";
+//        String times, count, startTime, endTime, rest;
+//        times = "<font color=#99A0B1>" + String.valueOf(virtualCashVo.times) + "</font>";
+//        count = "<font color=#99A0B1>" + virtualCashVo.count + "</font>";
+//        startTime = "<font color=#99A0B1>" + virtualCashVo.wraptime.starttime + "</font>";
+//        endTime = "<font color=#99A0B1>" + virtualCashVo.wraptime.endtime + "</font>";
+//        rest = StringUtils.formatToSeparate(Float.valueOf(virtualCashVo.rest));
+//        String testTxt = "<font color=#FF6C6C>" + rest + "</font>";
+//        String format = getContext().getResources().getString(R.string.txt_withdraw_bank_top_tip);
+//        String textSource = String.format(format, notice, times, count, startTime, endTime, testTxt);
+//
+//        binding.tvNotice.setText(HtmlCompat.fromHtml(textSource, HtmlCompat.FROM_HTML_MODE_LEGACY));
+//
+//        binding.tvUserNameShow.setText(virtualCashVo.user.username);
+//        binding.tvWithdrawalTypeShow.setText(channelInfo.title);
+//        String quota = virtualCashVo.availablebalance;
+//
+//        binding.tvWithdrawalAmountShow.setText(quota);//虚拟币 提款金额
+//        String temp = virtualCashVo.usdtinfo.get(0).min_money + "元,最高" + virtualCashVo.usdtinfo.get(0).max_money + "元";
+//        binding.tvWithdrawalTypeShow1.setText(temp);
+//        binding.tvInfoExchangeRateShow.setText(virtualCashVo.exchangerate);
+//        binding.tvCollectionUsdt.setText(virtualCashVo.usdtinfo.get(0).usdt_type + " " + virtualCashVo.usdtinfo.get(0).usdt_card);
+//
+//        userid = virtualCashVo.usdtinfo.get(0).id;
+//
+//        //注册监听
+//        initListener();
+//
+//    }
+
+    private void initListener() {
+        hideKeyBoard();
+        //提款金额输入框与提款金额显示View
+        binding.etInputMoney.clearFocus();
+        binding.etInputMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                binding.tvInfoWithdrawalAmountShow.setText(s.toString());
+                //换算到账个数 tv_info_actual_number_show
+                String temp = s.toString();
+                if (temp != null && !TextUtils.isEmpty(temp) && infoVo.fee != null && TextUtils.equals("0", infoVo.fee)) {
+                    float f1 = Float.parseFloat(temp);
+                    float f2 = Float.parseFloat(infoVo.fee);
+
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    df.format(f1 / f2);
+                    binding.tvInfoActualNumberShow.setText(df.format(f1 / f2));
+                } else if (TextUtils.isEmpty(temp)) {
+                    binding.tvInfoActualNumberShow.setText("0");
+                } else {
+                    binding.tvInfoActualNumberShow.setText(temp);
+                }
+            }
+        });
+        //点击USDT收款地址
+        binding.llCollectionUsdtInput.setOnClickListener(v -> {
+            showCollectionDialog(infoVo, infoVo.user_bank_info);
+        });
+        //点击下一步
+        binding.ivNext.setOnClickListener(v -> {
+            checkVerify();
+        });
+    }
+
+    /**
+     * 关闭键盘
+     */
+    public void hideKeyBoard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive()) {
+            imm.hideSoftInputFromWindow(this.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     /**
@@ -397,92 +471,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
 //    }
 
     /**
-     * 刷新初始UI
-     */
-//    private void refreshSetUI() {
-//        binding.llSetRequestView.setVisibility(View.VISIBLE);
-//        final String notice = "<font color=#99A0B1>注意:</font>";
-//        String times, count, startTime, endTime, rest;
-//        times = "<font color=#99A0B1>" + String.valueOf(virtualCashVo.times) + "</font>";
-//        count = "<font color=#99A0B1>" + virtualCashVo.count + "</font>";
-//        startTime = "<font color=#99A0B1>" + virtualCashVo.wraptime.starttime + "</font>";
-//        endTime = "<font color=#99A0B1>" + virtualCashVo.wraptime.endtime + "</font>";
-//        rest = StringUtils.formatToSeparate(Float.valueOf(virtualCashVo.rest));
-//        String testTxt = "<font color=#FF6C6C>" + rest + "</font>";
-//        String format = getContext().getResources().getString(R.string.txt_withdraw_bank_top_tip);
-//        String textSource = String.format(format, notice, times, count, startTime, endTime, testTxt);
-//
-//        binding.tvNotice.setText(HtmlCompat.fromHtml(textSource, HtmlCompat.FROM_HTML_MODE_LEGACY));
-//
-//        binding.tvUserNameShow.setText(virtualCashVo.user.username);
-//        binding.tvWithdrawalTypeShow.setText(channelInfo.title);
-//        String quota = virtualCashVo.availablebalance;
-//
-//        binding.tvWithdrawalAmountShow.setText(quota);//虚拟币 提款金额
-//        String temp = virtualCashVo.usdtinfo.get(0).min_money + "元,最高" + virtualCashVo.usdtinfo.get(0).max_money + "元";
-//        binding.tvWithdrawalTypeShow1.setText(temp);
-//        binding.tvInfoExchangeRateShow.setText(virtualCashVo.exchangerate);
-//        binding.tvCollectionUsdt.setText(virtualCashVo.usdtinfo.get(0).usdt_type + " " + virtualCashVo.usdtinfo.get(0).usdt_card);
-//
-//        userid = virtualCashVo.usdtinfo.get(0).id;
-//
-//        //注册监听
-//        initListener();
-//
-//    }
-    private void initListener() {
-        hideKeyBoard();
-        //提款金额输入框与提款金额显示View
-        binding.etInputMoney.clearFocus();
-        binding.etInputMoney.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                binding.tvInfoWithdrawalAmountShow.setText(s.toString());
-                //换算到账个数 tv_info_actual_number_show
-                String temp = s.toString();
-                if (temp != null && !TextUtils.isEmpty(temp) && infoVo.fee != null && TextUtils.equals("0", infoVo.fee)) {
-                    float f1 = Float.parseFloat(temp);
-                    float f2 = Float.parseFloat(infoVo.fee);
-
-                    DecimalFormat df = new DecimalFormat("0.00");
-                    df.format(f1 / f2);
-                    binding.tvInfoActualNumberShow.setText(df.format(f1 / f2));
-                } else if (TextUtils.isEmpty(temp)) {
-                    binding.tvInfoActualNumberShow.setText("0");
-                } else {
-                    binding.tvInfoActualNumberShow.setText(temp);
-                }
-            }
-        });
-        //点击USDT收款地址
-        binding.llCollectionUsdtInput.setOnClickListener(v -> {
-            showCollectionDialog(infoVo, bankInfoList);
-        });
-        //点击下一步
-        binding.ivNext.setOnClickListener(v -> {
-            checkVerify();
-        });
-    }
-
-    /**
-     * 关闭键盘
-     */
-    public void hideKeyBoard() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive()) {
-            imm.hideSoftInputFromWindow(this.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
-
-    /**
      * 刷新完成申请UI
      */
     private void refreshConfirmUI() {
@@ -515,6 +503,9 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
             dismiss();
         });
     }
+
+    ItemTextBinding binding2;
+    BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
 
     /**
      * 显示USDT收款地址
@@ -582,22 +573,27 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
      * 验证当前渠道信息
      */
     private void checkVerify() {
+        if (infoVo == null || infoVo.user_bank_info == null || infoVo.user_bank_info.isEmpty()) {
+            ToastUtils.showError(getContext().getString(R.string.txt_network_error));
 
-        String money = binding.etInputMoney.getText().toString().trim();
-        if (TextUtils.isEmpty(money)) {
-            ToastUtils.showError(getContext().getString(R.string.txt_withdraw_input_error_tip));
-            return;
-        } else if (Double.valueOf(money) < Double.valueOf(infoVo.min_money)) {
-            ToastUtils.showError(getContext().getString(R.string.txt_withdraw_input_mix_tip));
-            return;
-        } else if (Double.valueOf(money) > Double.valueOf(infoVo.max_money)) {
-            ToastUtils.showError(getContext().getString(R.string.txt_withdraw_input_max_tip));
-            return;
-        } else if (selectorBankInfo == null) {
-            ToastUtils.showError(getContext().getString(R.string.txt_withdraw_address_tip));
             return;
         } else {
-            requestVerify(money, selectorBankInfo);
+            String money = binding.etInputMoney.getText().toString().trim();
+            if (TextUtils.isEmpty(money)) {
+                ToastUtils.showError(getContext().getString(R.string.txt_withdraw_input_error_tip));
+                return;
+            } else if (Double.valueOf(money) < Double.valueOf(infoVo.min_money)) {
+                ToastUtils.showError(getContext().getString(R.string.txt_withdraw_input_mix_tip));
+                return;
+            } else if (Double.valueOf(money) > Double.valueOf(infoVo.max_money)) {
+                ToastUtils.showError(getContext().getString(R.string.txt_withdraw_input_max_tip));
+                return;
+            } else if (selectorBankInfo == null) {
+                ToastUtils.showError(getContext().getString(R.string.txt_withdraw_address_tip));
+                return;
+            } else {
+                requestVerify(money, selectorBankInfo);
+            }
         }
     }
 
@@ -650,7 +646,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
             }
         });
     }
-
     /**
      * 设置提款 完成申请
      */
@@ -683,7 +678,6 @@ public class VirtualWithdrawalDialog extends BottomPopupView {
         CfLog.e("requestVerify -->" + map);
         viewModel.postWithdrawalVerify(map);
     }
-
     /**
      * 设置提款 完成申请
      */
