@@ -3,8 +3,6 @@ package com.xtree.lottery.ui.view;
 import static com.xtree.lottery.rule.betting.Matchers.k3Alias;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -70,8 +68,7 @@ public class LotteryDrawView extends LinearLayout {
                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ConvertUtils.dp2px(30), ConvertUtils.dp2px(35));
                             params.rightMargin = ConvertUtils.dp2px(6);
                             view.setLayoutParams(params);
-                            Bitmap diceSource = BitmapFactory.decodeResource(binding.getRoot().getResources(), R.raw.lottery_dice);
-                            ((ImageView) view).setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(numb), 1));
+                            ((ImageView) view).setImageBitmap(DiceCutter.diceResult(binding.getRoot().getResources(), Integer.parseInt(numb)));
                         } else {
                             view = LayoutInflater.from(getContext()).inflate(R.layout.view_lottery_draw_ball, null);
                             ((TextView) view).setText(numb);
