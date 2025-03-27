@@ -1,0 +1,827 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="file://D:/AndroidSDK/sources/android-34/audio_policy_configuration_V7_0.xsd">
+    <!--    注意，这里不能直接用在view里面，请使用themes_attrs里面的自定义属性-->
+    <!-- Purple Theme example-->
+    <style name="primaryAttrStyle">
+        <item name="android:textColor">@color/primaryColor</item>
+    </style>
+
+    <style name="primaryVariantAttrStyle">
+        <item name="android:textColor">@color/primaryVariant</item>
+    </style>
+
+    <style name="secondaryAttrStyle">
+        <item name="android:textColor">@color/secondaryColor</item>
+    </style>
+
+    <style name="tertiaryAttrStyle">
+        <item name="android:textColor">@color/tertiaryColor</item>
+    </style>
+
+    <style name="textDescriptionAttrStyle">
+        <item name="android:textColor">@color/textDescriptionColor</item>
+    </style>
+
+    <style name="textPrimaryAttrStyle">
+        <item name="android:textColor">@color/textPrimaryColor</item>
+    </style>
+
+    <style name="textSecondaryAttrStyle">
+        <item name="android:textColor">@color/textSecondaryColor</item>
+    </style>
+
+    <style name="channelTextSelectStyle">
+        <item name="android:textColor">@color/channelTextSelectColor</item>
+    </style>
+
+    <style name="textTertiaryAttrStyle">
+        <item name="android:textColor">@color/textTertiaryColor</item>
+    </style>
+
+    <style name="textQuaternaryAttrStyle">
+        <item name="android:textColor">@color/textQuaternaryColor</item>
+    </style>
+
+    <style name="textQuinaryAttrStyle">
+        <item name="android:textColor">@color/textQuinaryColor</item>
+    </style>
+
+    <style name="textSenaryAttrStyle">
+        <item name="android:textColor">@color/textSenaryColor</item>
+    </style>
+
+    <style name="textForgotAttrStyle">
+        <item name="android:textColor">@color/textForgotColor</item>
+    </style>
+
+    <style name="clr_item_text_style">
+        <item name="android:textColor">@color/clr_item_text_selector</item>
+    </style>
+
+    <style name="bg_rc_dialog_style">
+        <item name="android:background">@drawable/bg_rc_dialog</item>
+    </style>
+
+    <style name="cm_ic_hint_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawableStart">@drawable/cm_ic_hint</item>
+        <item name="android:layout_marginStart">@dimen/layout_margin</item>
+        <item name="android:layout_marginEnd">@dimen/layout_margin</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textColor">@color/clr_grey_13</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="clr_rc_rate_style">
+        <item name="android:textColor">@color/clr_rc_rate_selector</item>
+    </style>
+
+    <style name="ivw_bg_style">
+        <item name="android:src">@drawable/bg_item_rc_type_selector</item>
+    </style>
+
+    <style name="ivw_hot_style">
+        <item name="android:src">@drawable/rc_ic_hot</item>
+    </style>
+
+    <style name="iivw_rcmd_style">
+        <item name="android:src">@drawable/rc_ic_recommend</item>
+    </style>
+
+    <style name="ivw_icon_style">
+        <item name="android:src">@drawable/rc_ic_type_cs</item>
+    </style>
+
+    <style name="rc_channel_style">
+        <item name="android:background">@drawable/bg_channel_selector</item>
+        <item name="android:textColor">@drawable/bg_channel_text_selector</item>
+    </style>
+
+    <!-- 每个页面标题栏的样式-右边小按钮 -->
+    <style name="cm_title_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/layout_margin</item>
+        <item name="android:layout_marginEnd">@dimen/layout_margin</item>
+        <item name="android:layout_marginTop">@dimen/layout_margin</item>
+        <item name="android:textColor">@color/clr_txt_black_01</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="recharge_btn_next_style">
+        <item name="android:background">@drawable/bg_btn_long_selector</item>
+        <item name="android:textColor">@drawable/recharge_btn_next_text_selector</item>
+    </style>
+
+    <style name="transfer_btn_next_style">
+        <item name="android:background">@drawable/bg_btn_long2_selector</item>
+        <item name="android:textColor">@drawable/recharge_btn_next_text_selector</item>
+    </style>
+
+    <style name="withdrawal_btn_next_style">
+        <item name="android:background">@drawable/cm_btn_long_press</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="withdrawal_btn_previous_style">
+        <item name="android:background">@drawable/cm_btn_long_disable</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="dialog_order_bank_top_style">
+        <item name="android:src">@drawable/bg_dialog_order_bank_top</item>
+    </style>
+
+    <style name="dialog_order_bank_info_style">
+        <item name="android:background">@drawable/bg_dialog_order_bank_info</item>
+    </style>
+
+    <style name="withdrawal_btn_style">
+        <item name="android:background">@drawable/bg_btn_withdrawal</item>
+    </style>
+
+    <style name="img_no_data_style">
+        <item name="android:drawableTop">@drawable/ic_no_data</item>
+    </style>
+    <!-- 我的-安全中心-验证 获取验证码 -->
+    <style name="btn_get_code_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">6dp</item>
+        <item name="android:background">@drawable/bg_btn_get_code_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minEms">6</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:text">获取验证码</item>
+        <item name="android:textColor">@drawable/text_get_code_selector</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="info2_grey_50_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textColor">@color/textTertiaryColor</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="info_grey_50_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginStart">@dimen/layout_margin</item>
+        <item name="android:layout_marginEnd">@dimen/layout_margin</item>
+        <item name="android:textColor">@color/textQuaternaryColor</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="play_method_style">
+        <item name="android:background">@drawable/bg_play_method_selector</item>
+        <item name="android:textColor">@drawable/play_method_text_selector</item>
+    </style>
+
+    <style name="style_rc_dlg_hourglass">
+        <item name="android:src">@drawable/cm_ic_hourglass</item>
+    </style>
+
+    <style name="style_rc_reg_hi_wallet">
+        <item name="android:drawableStart">@drawable/rc_reg_hi_wallet</item>
+        <item name="android:textColor">@color/textPrimaryColor</item>
+    </style>
+
+    <style name="style_rc_down_hi_wallet">
+        <item name="android:drawableStart">@drawable/rc_reg_hi_wallet</item>
+        <item name="android:textColor">@color/textPrimaryColor</item>
+    </style>
+
+    <style name="style_home_top_notice">
+        <item name="android:textColor">@color/textSecondaryColor</item>
+        <item name="android:drawableStart">@drawable/hm_notice</item>
+    </style>
+
+    <style name="style_home_top_deposit">
+        <item name="android:drawableTop">@drawable/hm_ic_deposit</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:drawablePadding">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textColor">@color/textHomeTextColor</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="style_home_top_trans">
+        <item name="android:drawableTop">@drawable/hm_ic_trans</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:drawablePadding">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textColor">@color/textHomeTextColor</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="style_home_top_withdraw">
+        <item name="android:drawableTop">@drawable/hm_ic_withdraw</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:drawablePadding">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textColor">@color/textHomeTextColor</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="style_home_top_cs">
+        <item name="android:drawableTop">@drawable/hm_ic_cs</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:drawablePadding">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:textColor">@color/textHomeTextColor</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="style_home_top_balance">
+        <item name="android:textColor">@color/textPrimaryColor</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">XXX</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="style_home_top_name">
+        <item name="android:textColor">@color/textMainUnSelectorColor</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">XXX</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="style_hm_txt_normal_12">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">XXX</item>
+        <item name="android:textColor">@color/textMainUnSelectorColor</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="style_btn_short">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_btn_short_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:text">@string/txt_confirm</item>
+        <item name="android:textColor">@color/clr_text_btn_selector</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- 我的-账户管理-item -->
+    <style name="style_choose_account">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/btn_acc_item_selector</item>
+        <item name="android:textColor">@color/clr_white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- 提款-item -->
+    <style name="style_withdraw_money_account">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/btn_acc_item_selector</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="style_bg_dialog_top_bank">
+        <item name="android:background">@drawable/bg_dialog_top_bank_selector</item>
+        <item name="android:textColor">@drawable/bg_dialog_top_bank_text_selector</item>
+    </style>
+
+    <style name="style_withdraw_title_progress">
+        <item name="android:textColor">@drawable/text_withdrawal_title_progress_selector</item>
+    </style>
+
+    <style name="style_bg_floating">
+        <item name="android:src">@drawable/bg_floating</item>
+    </style>
+
+    <style name="style_iv_floating_close">
+        <item name="android:src">@drawable/iv_floating_close</item>
+    </style>
+
+    <style name="style_ic_floating">
+        <item name="android:src">@drawable/ic_floating</item>
+    </style>
+
+    <style name="style_bg_floating_way">
+        <item name="android:background">@drawable/bg_floating_way</item>
+    </style>
+
+    <!-- 我的-5个菜单 白色字 -->
+    <style name="style_menu_white">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:textColor">@color/textPrimaryColor</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="style_my_pocket" parent="style_menu_white">
+        <item name="android:drawableTop">@drawable/me_my_pocket</item>
+        <item name="android:text">@string/me_my_pocket</item>
+    </style>
+
+    <style name="style_me_transfer" parent="style_menu_white">
+        <item name="android:drawableTop">@drawable/me_transfer</item>
+        <item name="android:text">@string/me_transfer</item>
+    </style>
+
+    <style name="style_me_betting_record" parent="style_menu_white">
+        <item name="android:drawableTop">@drawable/me_betting_record</item>
+        <item name="android:text">@string/me_betting_record</item>
+    </style>
+
+    <style name="style_me_account_record" parent="style_menu_white">
+        <item name="android:drawableTop">@drawable/me_betting_record</item>
+        <item name="android:text">@string/me_betting_record</item>
+    </style>
+
+    <style name="style_me_trans_record" parent="style_menu_white">
+        <item name="android:drawableTop">@drawable/me_account_record</item>
+        <item name="android:text">@string/me_account_record</item>
+    </style>
+
+    <style name="style_me_account_safty" parent="style_menu_white">
+        <item name="android:drawableTop">@drawable/me_account_safty</item>
+        <item name="android:text">@string/me_account_safety</item>
+    </style>
+
+    <style name="style_me_dc_centre" parent="style_menu_white">
+        <item name="android:drawableTop">@drawable/bg_reward_selecto</item>
+        <item name="android:text">@string/me_discount_centre</item>
+    </style>
+
+    <!-- 我的-12个菜单 黑色字 -->
+    <style name="style_menu_black" parent="style_menu_white">
+        <item name="android:minEms">4</item>
+        <item name="android:textColor">@color/clr_black</item>
+    </style>
+    <!--好友邀请-->
+    <style name="style_me_invite_friend" parent="style_menu_black">
+        <item name="android:drawableTop">@drawable/me_invite_friend</item>
+        <item name="android:text">@string/me_invite_friend</item>
+    </style>
+
+    <style name="style_me_guanfangheyin" parent="style_menu_black">
+        <item name="android:drawableTop">@drawable/me_guanfangheyin</item>
+        <item name="android:text">@string/me_guanfang_heyin</item>
+    </style>
+
+    <style name="style_me_yinkui_baobiao" parent="style_menu_black">
+        <item name="android:drawableTop">@drawable/me_yinkui_baobiao</item>
+        <item name="android:text">@string/me_yinkui_baobiao</item>
+    </style>
+
+    <style name="style_me_sanfang_zhuanzhang" parent="style_menu_black">
+        <item name="android:drawableTop">@drawable/me_sanfang_zhuanzhang</item>
+        <item name="android:text">@string/me_sanfang_zhuanzhang</item>
+    </style>
+
+    <style name="style_me_anquan_zhongxin" parent="style_menu_black">
+        <item name="android:drawableTop">@drawable/me_anquan_zhongxin</item>
+        <item name="android:text">@string/me_anquan_zhongxin</item>
+    </style>
+
+    <style name="style_me_zhanghu_shezhi" parent="style_menu_black">
+        <item name="android:drawableTop">@drawable/me_zhanghu_shezhi</item>
+        <item name="android:text">@string/me_zhanghu_shezhi</item>
+    </style>
+
+    <style name="style_me_fanhui_baobiao" parent="style_menu_black">
+        <item name="android:drawableTop">@drawable/me_ic_rebate</item>
+        <item name="android:text">@string/me_fanhui_baobiao</item>
+    </style>
+
+    <style name="style_me_vip_zhongxin" parent="style_menu_black">
+        <item name="android:drawableTop">@drawable/me_vip_zhongxin</item>
+        <item name="android:text">@string/me_vip_zhongxin</item>
+    </style>
+
+    <style name="style_me_tiyu_guize" parent="style_menu_black">
+        <item name="android:drawableTop">@drawable/me_tiyu_guize</item>
+        <item name="android:text">@string/me_tiyu_guize</item>
+    </style>
+
+    <style name="style_me_gr_upgrade" parent="style_menu_black">
+        <item name="android:drawableTop">@drawable/me_gr_upgrade</item>
+        <item name="android:text">@string/txt_upgrade</item>
+    </style>
+
+    <style name="style_me_usdt_jiaocheng" parent="style_menu_black">
+        <item name="android:drawableTop">@drawable/me_usdt_jiaocheng</item>
+        <item name="android:text">@string/me_usdt_jiaocheng</item>
+    </style>
+
+
+    <style name="style_me_ic_help" parent="style_menu_black">
+        <item name="android:drawableTop">@drawable/me_ic_help</item>
+        <item name="android:text">@string/me_bangzhu_zhongxin</item>
+    </style>
+
+    <style name="style_me_background">
+        <item name="android:background">@drawable/cm_bg_dark</item>
+    </style>
+
+    <style name="style_me_middle_background">
+        <item name="android:background">@drawable/me_second_bg</item>
+    </style>
+
+    <style name="style_me_background_top">
+        <item name="android:background">@drawable/me_bg_top_00</item>
+    </style>
+
+    <style name="style_me_top_click">
+        <item name="android:background">@drawable/ic_one_click</item>
+    </style>
+
+    <style name="style_me_top_lijin_attr">
+        <item name="android:background">@drawable/me_jinji_lijin</item>
+    </style>
+
+    <style name="style_me_top_week_attr">
+        <item name="android:background">@drawable/me_ic_week_red_pkg</item>
+    </style>
+
+    <style name="style_me_top_shengr_attr">
+        <item name="android:background">@drawable/me_shengri_lijin</item>
+    </style>
+    <!--彩种信息-->
+    <style name="style_me_lottery_info">
+        <item name="android:src">@drawable/me_lottery_info</item>
+    </style>
+
+    <style name="style_me_question">
+        <item name="android:src">@drawable/me_question</item>
+    </style>
+
+    <style name="style_me_play_intro">
+        <item name="android:src">@drawable/me_play_intro</item>
+    </style>
+
+    <style name="style_me_tutorial">
+        <item name="android:src">@drawable/me_tutorial</item>
+    </style>
+
+    <!-- 重置登录密码 眼睛 睁开/关闭 -->
+    <style name="style_me_cpd_eye">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:button">@drawable/ic_eye_cpd_selector</item>
+        <item name="android:padding">6dp</item>
+    </style>
+
+    <style name="PwdCheckboxStyle">
+        <item name="android:button">@drawable/checkbox_bg_selector</item>
+    </style>
+
+    <style name="style_me_msg_bg">
+        <item name="android:background">@drawable/me_msg_backgroup</item>
+    </style>
+
+    <style name="style_login_bg">
+        <item name="android:background">@drawable/me_login_bg</item>
+    </style>
+
+    <style name="style_login_backgroup">
+        <item name="android:background">@drawable/bg_login_backgroup</item>
+    </style>
+
+    <style name="style_login_eye_backgroup">
+        <item name="android:background">@drawable/ic_eye_login_selector</item>
+    </style>
+
+    <style name="style_login_check_backgroup">
+        <item name="android:background">@drawable/checkbox_bg_selector</item>
+    </style>
+
+    <style name="style_home_top_banner">
+        <item name="android:src">@drawable/hm_bnr_01</item>
+    </style>
+
+    <style name="style_main_bottom_image">
+        <item name="android:background">@drawable/ic_tab_background</item>
+    </style>
+
+    <style name="style_main_game_cover">
+        <item name="android:background">@drawable/hm_bg_entry</item>
+    </style>
+
+    <style name="style_main_game_fast">
+        <item name="android:background">@drawable/hm_bt_fast</item>
+    </style>
+
+    <style name="style_main_tenance">
+        <item name="android:background">@drawable/hm_mid_bg_entry</item>
+    </style>
+
+    <style name="style_hm_img_room">
+        <item name="android:src">@drawable/hm_img_room</item>
+    </style>
+
+    <style name="style_offer_top">
+        <item name="android:src">@drawable/bg_offer</item>
+    </style>
+
+    <style name="style_offer_no_data">
+        <item name="android:drawableTop">@drawable/ic_no_data</item>
+    </style>
+
+    <!-- 首页-左边的游戏类型 -->
+    <style name="style_hm_game_type_list">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:button">@drawable/hm_game_type_selector</item>
+    </style>
+
+
+    <style name="style_rc_ic_feedback">
+        <item name="android:background">@drawable/rc_ic_feedback</item>
+    </style>
+
+    <style name="style_cm_ic_tutorial">
+        <item name="android:drawableStart">@drawable/cm_ic_tutorial</item>
+    </style>
+
+    <style name="style_feedback_top_message">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:src">@drawable/cm_ic_msg</item>
+    </style>
+
+    <style name="style_feedback_customer_service">
+        <item name="android:src">@drawable/cm_ic_cs</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="style_dialog_agreement">
+        <item name="android:background">@drawable/me_msg_backgroup</item>
+    </style>
+
+    <style name="style_dialog_agreement_close_attr">
+        <item name="android:background">@drawable/im_dialog_agreement_close</item>
+    </style>
+
+    <!-- 登录页 账号输入框 -->
+    <style name="style_cm_edt_account">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:drawableStart">@drawable/cm_ic_login_user</item>
+        <item name="android:inputType">text</item>
+        <item name="android:maxLength">32</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:hint">@string/txt_enter_login_name</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:lines">1</item>
+        <item name="android:textColor">@color/clr_awards_txt_black</item>
+        <item name="android:textColorHint">@color/clr_grey_2</item>
+    </style>
+
+    <!-- 登录页 复选框 -->
+    <style name="style_cm_ckb_normal">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingHorizontal" tools:targetApi="o">6dp</item>
+        <item name="android:button">@drawable/checkbox_bg_selector</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/textMainUnSelectorColor</item>
+    </style>
+
+    <!-- 登录页 眼睛 睁开/关闭 -->
+    <style name="style_cm_ckb_eye">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:button">@drawable/ic_eye_selector</item>
+        <item name="android:padding">6dp</item>
+    </style>
+
+    <style name="style_btn_short_right">
+        <item name="android:background">@drawable/bg_btn_right_selector</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minEms">5</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:text">@string/txt_submit</item>
+        <item name="android:textColor">@color/clr_text_code_selector</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+    <style name="style_btn_short_left">
+        <item name="android:background">@drawable/bg_btn_left_selector</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minEms">5</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:text">@string/txt_submit</item>
+        <item name="android:textColor">@color/clr_text_code_selector</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="style_me_icon_name">
+        <item name="android:src">@drawable/me_icon_name</item>
+    </style>
+
+    <style name="style_me_icon_vip">
+        <item name="android:src">@drawable/cm_ic_vip_level</item>
+    </style>
+
+    <style name="style_me_vip_leve">
+        <item name="android:src">@drawable/me_vip_level</item>
+    </style>
+
+    <style name="style_me_logout">
+        <item name="android:background">@drawable/bg_btn_long_selector</item>
+    </style>
+
+    <style name="style_me_level_progressbar">
+        <item name="android:background">@drawable/me_level_progressbar_100</item>
+    </style>
+
+    <style name="style_cm_dialog_update_bell">
+        <item name="android:src">@drawable/cm_dialog_update_bell</item>
+    </style>
+
+    <style name="style_cm_dialog_update_bg">
+        <item name="android:background">@drawable/cm_dialog_update_bg</item>
+    </style>
+
+    <style name="style_center_wallet_top">
+        <item name="paddingEnd">0dp</item>
+        <item name="android:background">@drawable/cm_bg_center</item>
+    </style>
+
+    <style name="style_cm_ic_switch_selector_transfer">
+        <item name="android:drawableStart">@drawable/cm_ic_switch_selector_transfer</item>
+    </style>
+
+    <style name="style_cm_ic_transfer">
+        <item name="android:src">@drawable/cm_ic_transfer</item>
+    </style>
+
+    <style name="style_center_wallet_bg">
+        <item name="android:background">"@drawable/center_wallet_bg"</item>
+    </style>
+
+
+    <style name="style_security_center_pwd">
+        <item name="android:drawableStart">@drawable/me_sc_pwd</item>
+    </style>
+
+    <style name="style_security_center_google">
+        <item name="android:drawableStart">@drawable/me_sc_google</item>
+    </style>
+
+    <style name="style_security_center_phone">
+        <item name="android:drawableStart">@drawable/me_sc_phone</item>
+    </style>
+
+    <style name="style_security_center_email">
+        <item name="android:drawableStart">@drawable/me_sc_email</item>
+    </style>
+
+    <style name="style_message_ic_round">
+        <item name="android:src">@drawable/ic_round</item>
+    </style>
+
+    <style name="style_msg_info_bg">
+        <item name="android:background">@drawable/bg_msg_info</item>
+    </style>
+
+    <style name="style_msg_info_delete_all">
+        <item name="android:background">"@drawable/bt_msg_delete_all"</item>
+    </style>
+
+    <style name="style_me_msg_close_icon">
+        <item name="android:src">@drawable/me_msg_close_icon</item>
+    </style>
+
+    <style name="style_bg_btn_long">
+        <item name="android:background">@drawable/bg_btn_long2_selector</item>
+    </style>
+
+    <style name="style_bg_tip_dialog">
+        <item name="android:background">@drawable/bg_tip_dialog</item>
+    </style>
+
+    <style name="style_me_reset_password_title">
+        <item name="android:src">@drawable/me_reset_password_title</item>
+    </style>
+
+    <style name="style_me_reset_password_step_first">
+        <item name="android:src">@drawable/me_reset_password_step_first</item>
+    </style>
+
+    <style name="style_me_reset_password_step_second">
+        <item name="android:src">@drawable/me_reset_password_step_second</item>
+    </style>
+
+    <style name="style_me_reset_password_step_third">
+        <item name="android:src">@drawable/me_reset_password_step_third</item>
+    </style>
+
+    <style name="style_me_reset_password_success">
+        <item name="android:background">@drawable/me_reset_password_success</item>
+    </style>
+
+
+
+    <style name="style_hm_ic_vip_level">
+        <item name="android:src">@drawable/hm_ic_vip_level</item>
+    </style>
+    <!-- 我的-安全中心-验证 获取验证码 -->
+    <style name="style_get_code">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">6dp</item>
+        <item name="android:background">@drawable/bg_get_code_selector</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minEms">6</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:text">获取验证码</item>
+        <item name="android:textColor">@color/clr_text_code_selector</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="style_hm_mid_bg_set">
+        <item name="android:background">@drawable/hm_mid_bg_set</item>
+    </style>
+
+    <style name="style_customer_service_bg">
+        <item name="android:background">@drawable/customer_service_bg</item>
+    </style>
+
+    <style name="style_customer_service_line1">
+        <item name="android:background">@drawable/custom_line_1</item>
+    </style>
+    <style name="style_customer_service_line2">
+        <item name="android:background">@drawable/custom_line_2</item>
+    </style>
+
+
+    <style name="style_mine_bind_item_bg">
+        <item name="android:background">@drawable/mine_bind_item_bg</item>
+    </style>
+    <style name="style_hm_ic_notice">
+        <item name="android:src">@drawable/hm_ic_notice</item>
+    </style>
+
+    <style name="style_bg_btn_offer_clear">
+        <item name="android:background">@drawable/bg_btn_offer_clear</item>
+    </style>
+    <style name="style_bg_btn_offer_click">
+        <item name="android:background">@drawable/bg_btn_offer_click</item>
+    </style>
+    <style name="style_bt_item_offer_now">
+        <item name="android:background">@drawable/bt_item_offer_get_now</item>
+    </style>
+    <style name="style_bt_item_offer_expired">
+        <item name="android:background">@drawable/bt_item_offer_get_now</item>
+    </style>
+</resources>
