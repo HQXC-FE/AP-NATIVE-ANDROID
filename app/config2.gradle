@@ -42,12 +42,12 @@ android {
             resValue "string", "ms_secret_key", "b4636d50-41d2-49f4-b843-07572a8d282f"
             resValue "string", "sentry_dsn", "https://0cefc03e1c8e991010eb93fb0722e362@o4507447554539520.ingest.us.sentry.io/4507604245217280"
             resValue "bool", "is_tag", "true" // 是否开启统计
-            resValue "string", "domain_api_list", "http://129.226.69.66:46820;" +
+            resValue "string", "domain_api_list", "http://101.32.73.228:46820;" +
                     "http://129.226.129.111:46820;" +
                     "http://146.56.241.223:46820;" +
-                    "http://81.69.185.170:46820;" +
-                    "http://129.211.11.119:46820;" +
-                    "http://139.186.39.133:46820;" +
+                    "http://1.95.166.113:46820;" +
+                    "http://113.44.59.111:46820;" +
+                    "http://121.36.226.177:46820;" +
                     "https://app1.h8g5lk.vip;" +
                     "https://app1.z6r9qr.vip;" +
                     "https://app1.i8c3rn.vip;" +
