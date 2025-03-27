@@ -7,7 +7,7 @@
     <corners android:radius="20dp" />
 
     <gradient
-        android:endColor="@color/offerGradientColor"
-        android:startColor="@color/offerGradientColor" />
+        android:endColor="@color/primaryVariant"
+        android:startColor="@color/primaryVariant" />
     <corners android:radius="10dp"  />
 </shape>
