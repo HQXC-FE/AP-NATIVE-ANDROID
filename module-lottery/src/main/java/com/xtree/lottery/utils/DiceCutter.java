@@ -10,7 +10,7 @@ public class DiceCutter {
         // 计算每个骰子的宽度和高度
         int totalWidth = sourceBitmap.getWidth();  // 总宽度
         int totalHeight = sourceBitmap.getHeight(); // 总高度
-        float horizontalSpacing = sourceBitmap.getWidth() * 2 / 363; // 左右间距
+        float horizontalSpacing = sourceBitmap.getWidth() * 1 / 363; // 左右间距
         float verticalSpacing = horizontalSpacing; // 上下间距
 
         int diceCountPerRow = 7; // 每行骰子数量

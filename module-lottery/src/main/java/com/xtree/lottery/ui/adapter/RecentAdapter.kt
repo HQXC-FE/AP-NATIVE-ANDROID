@@ -52,7 +52,7 @@ class RecentChildAdapter(list: ArrayList<Map<String, String>>, val alias: String
     override fun convert(holder: BaseViewHolder, item: Map<String, String>) {
         val tvCode = holder.getView<TextView>(R.id.tv_code)
         if (!TextUtils.isEmpty(alias) && Matchers.k3Alias.includes(alias)) {
-            val diceSource = BitmapFactory.decodeResource(holder.itemView.resources, R.mipmap.lottery_dice)
+            val diceSource = BitmapFactory.decodeResource(holder.itemView.resources, R.raw.lottery_dice)
             val bitmapDrawable = BitmapDrawable(holder.itemView.resources, DiceCutter.cutDiceImage(diceSource, item["codes"]!!.toInt(), 1))
             val params = LinearLayout.LayoutParams(ConvertUtils.dp2px(30f), ConvertUtils.dp2px(30f))
             params.rightMargin = ConvertUtils.dp2px(6f)
