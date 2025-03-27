@@ -2,6 +2,7 @@ package com.xtree.base.vo;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -138,6 +139,9 @@ public class UserMethodsResponse {
         }
 
         public List<PrizeGroupDTO> getPrizeGroup() {
+            if (prizeGroup != null) {
+                prizeGroup.sort(Comparator.comparingInt(PrizeGroupDTO::getValue).reversed());
+            }
             return prizeGroup;
         }
 
