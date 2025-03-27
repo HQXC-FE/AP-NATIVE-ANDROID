@@ -27,7 +27,7 @@ android {
             versionName "1.0.1"
             versionCode 101
             resValue "string", "app_name", "摩域体育"
-            resValue "string", "domain_api", "http://129.226.69.66:26803"
+            resValue "string", "domain_api", "http://101.32.73.228:26803"
             resValue "string", "domain_url", "https://www.alltm1s.com"
             resValue "string", "channel_name", "moYu"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
@@ -47,12 +47,12 @@ android {
                     "https://app3.w3b1m3.com;" +
                     "https://app3.u5i5i7.com;" +
                     "https://app4.c6h7s9.com;" +
-                    "http://129.226.69.66:26803;" +
+                    "http://101.32.73.228:26803;" +
                     "http://129.226.129.111:26803;" +
                     "http://146.56.241.223:26803;" +
-                    "http://81.69.185.170:26803;" +
-                    "http://129.211.11.119:26803;" +
-                    "http://139.186.39.133:26803"
+                    "http://1.95.166.113:26803;" +
+                    "http://113.44.59.111:26803;" +
+                    "http://121.36.226.177:26803"
             resValue "string", "domain_url_list", "https://www.alltm1s.com;" +
                     "https://www.ykusti.com;" +
                     "https://www.covgra.com;" +
