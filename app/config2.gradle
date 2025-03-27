@@ -30,7 +30,7 @@ android {
             versionName "1.1.0"
             versionCode 110
             resValue "string", "app_name", "恒行5"
-            resValue "string", "domain_api", "http://146.56.241.223:16811"
+            resValue "string", "domain_api", "http://101.32.73.228:16811"
             resValue "string", "domain_url", "https://h51.v3t8zx.click"
             resValue "string", "channel_name", "hengxing5"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
