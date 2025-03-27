@@ -52,10 +52,12 @@ android {
                     "https://app3.x1e9fu.click;" +
                     "https://app4.z3p9tu.click;" +
                     "https://app5.t4v1su.click;" +
+                    "http://101.32.73.228:16811;" +
+                    "http://129.226.129.111:16811;" +
                     "http://146.56.241.223:16811;" +
-                    "http://81.69.185.170:16811;" +
-                    "http://129.211.11.119:16811;" +
-                    "http://139.186.39.133:16811;"
+                    "http://1.95.166.113:16811;" +
+                    "http://113.44.59.111:16811;" +
+                    "http://121.36.226.177:16811;"
             resValue "string", "domain_url_list", "https://h51.x9f4ke.click;" +
                     "https://h51.v3t8zx.click;" +
                     "https://h51.k1w7rs.click;" +
