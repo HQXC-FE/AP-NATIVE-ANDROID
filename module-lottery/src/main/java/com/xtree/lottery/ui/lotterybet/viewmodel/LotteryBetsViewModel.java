@@ -470,6 +470,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
                 LotteryMoneyData money = moneyLiveData.getValue();
                 orderData.setOmodel(prize.getValue());
+                orderData.setMoneyName(money.getMoneyModel().getName());
                 if (lotteryLiveData.getValue() != null && "lhc".equals(lotteryLiveData.getValue().getLinkType())) {
                     orderData.setMode(5);
                 } else {

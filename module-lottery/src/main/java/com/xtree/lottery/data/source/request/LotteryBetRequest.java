@@ -175,6 +175,21 @@ public class LotteryBetRequest {
          */
         @SerializedName("solo")
         private boolean solo;
+
+        /**
+         * moneyName
+         */
+        @SerializedName("solo")
+        private String moneyName = "";
+
+        public String getMoneyName() {
+            return moneyName;
+        }
+
+        public void setMoneyName(String moneyName) {
+            this.moneyName = moneyName;
+        }
+
         /**
          * desc
          */

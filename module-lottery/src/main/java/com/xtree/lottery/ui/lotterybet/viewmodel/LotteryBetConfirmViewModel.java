@@ -129,7 +129,6 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
             nums += data.getNums();
             betOrders.add(data);
         }
-
         lotteryBetRequest.setLt_project(betOrders);
         lotteryBetRequest.setLotteryid(betsViewModel.lotteryLiveData.getValue().getId());
         lotteryBetRequest.setCurmid(betsViewModel.lotteryLiveData.getValue().getCurmid());
