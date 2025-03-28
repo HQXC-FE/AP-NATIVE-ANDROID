@@ -444,11 +444,12 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 orderData.setOmodel(prize.getValue());
                 if (lotteryLiveData.getValue() != null && "lhc".equals(lotteryLiveData.getValue().getLinkType())) {
                     orderData.setMode(5);//六合彩写死mode
+                    orderData.setTimes((int) orderData.getMoney());
                 } else {
                     orderData.setMode(money.getMoneyModel().getModelId());
+                    orderData.setTimes(money.getFactor());
                 }
 
-                orderData.setTimes(money.getFactor());
                 lotteryOrderModel.setBetOrderData(orderData);
                 lotteryOrderModel.setPrizeLabel(prize.getLabel());
                 lotteryOrderModel.setMoneyData(money);

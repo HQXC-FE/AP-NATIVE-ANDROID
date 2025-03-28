@@ -18,6 +18,7 @@ import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.LotteryRepository;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.ui.lotterybet.LotteryBetConfirmDialogFragment;
 import com.xtree.lottery.ui.lotterybet.model.LotteryOrderModel;
@@ -44,11 +45,12 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
             });
     public final ArrayList<BindModel> bindModels = new ArrayList<>();
     //中奖通知
-    public MutableLiveData<Boolean> winNotifi = new MutableLiveData<>(false);
+    public MutableLiveData<Boolean> winNotifi = new MutableLiveData<>(true);
     //选中的订单数
     public MutableLiveData<String> orderNums = new MutableLiveData<>();
     //共几注
     public MutableLiveData<String> betNums = new MutableLiveData<>();
+    public LotteryBetsViewModel betsViewModel;
     //总金额
     public MutableLiveData<String> moneyNums = new MutableLiveData<>();
     private final Observer<List<LotteryOrderModel>> orderObserver = lotteryOrderModels -> {
@@ -60,20 +62,30 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
         }
 
         bindModels.clear();
+        Lottery lottery = betsViewModel.lotteryLiveData.getValue();
+        boolean isLhc="lhc".equals(lottery.getLinkType());
         for (LotteryOrderModel orderData : lotteryOrderModels) {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder
-                    .append(orderData.getBetOrderData().getNums()).append("注 x ")
-                    .append(orderData.getBetOrderData().getTimes()).append("倍 x ")
-                    .append(orderData.getMoneyData().getMoneyModel().getName()).append(" = ")
-                    .append(BigDecimal.valueOf(orderData.getBetOrderData().getMoney()).toPlainString()).append("元");
+            if (isLhc){
+                stringBuilder
+                        .append(orderData.getBetOrderData().getNums()).append("注 x ")
+                        .append(orderData.getBetOrderData().getTimes()).append("倍 x ")
+                        .append("元").append(" = ")
+                        .append(BigDecimal.valueOf(orderData.getBetOrderData().getMoney()).toPlainString()).append("元");
+            }else{
+                stringBuilder
+                        .append(orderData.getBetOrderData().getNums()).append("注 x ")
+                        .append(orderData.getBetOrderData().getTimes()).append("倍 x ")
+                        .append(orderData.getMoneyData().getMoneyModel().getName()).append(" = ")
+                        .append(BigDecimal.valueOf(orderData.getBetOrderData().getMoney()).toPlainString()).append("元");
+            }
+
             orderData.betMoney.set(stringBuilder.toString());
         }
         bindModels.addAll(lotteryOrderModels);
         datas.setValue(bindModels);
         checkOrder();
     };
-    public LotteryBetsViewModel betsViewModel;
     private WeakReference<FragmentActivity> mActivity = null;
     private BasePopupView pop;
     public BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
