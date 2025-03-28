@@ -244,7 +244,6 @@
                         android:layout_width="0dp"
                         android:layout_height="42dp"
                         android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
                         android:layout_weight="1"
                         android:background="@drawable/lt_shape_solid_clrmain13_c8"
                         android:gravity="center"
@@ -258,20 +257,25 @@
                     <com.lihang.ShadowLayout
                         android:layout_width="0dp"
                         android:layout_height="42dp"
+                        android:layout_marginStart="4dp"
                         android:layout_weight="1"
                         android:onClick="@{() -> model.bet()}"
                         app:hl_cornerRadius="42dp"
                         app:hl_layoutBackground="@drawable/lt_shape_gradient_clrmain03_clrmain11"
                         app:hl_shadowColor="@color/lt_color_shadows1"
-                        app:hl_shadowLimit="2dp">
+                        app:hl_shadowLimit="2dp"
+                        app:hl_shapeMode="pressed"
+                        app:hl_textColor="@color/clr_white">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center"
+                            android:gravity="center"
                             android:text="立即投注"
                             android:textColor="@color/clr_white"
                             android:textSize="14sp" />
+
                     </com.lihang.ShadowLayout>
 
                 </LinearLayout>
