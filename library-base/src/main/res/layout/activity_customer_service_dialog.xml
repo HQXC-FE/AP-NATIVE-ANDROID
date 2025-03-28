@@ -394,7 +394,7 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="20dp"
-                        style="?attr/customer_service_line1_attr"
+                        style="?attr/customer_service_line2_attr"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         />
