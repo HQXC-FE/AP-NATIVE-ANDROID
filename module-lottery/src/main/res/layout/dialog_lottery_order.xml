@@ -10,6 +10,7 @@
             type="com.xtree.lottery.ui.lotterybet.viewmodel.LotteryOrderViewModel" />
 
         <import type="android.view.View" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -260,8 +261,10 @@
                         android:layout_marginStart="4dp"
                         android:layout_weight="1"
                         android:onClick="@{() -> model.bet()}"
+                        app:clickable="@{model.datas!=null&amp;&amp;model.datas.size()>0}"
                         app:hl_cornerRadius="42dp"
                         app:hl_layoutBackground="@drawable/lt_shape_gradient_clrmain03_clrmain11"
+                        app:hl_layoutBackground_clickFalse="@drawable/lt_shape_solide_white"
                         app:hl_shadowColor="@color/lt_color_shadows1"
                         app:hl_shadowLimit="2dp"
                         app:hl_shapeMode="pressed"
@@ -273,7 +276,7 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:text="立即投注"
-                            android:textColor="@color/clr_white"
+                            android:textColor="@{model.datas!=null&amp;&amp;model.datas.size()>0?@color/clr_white:@color/lt_color_text11}"
                             android:textSize="14sp" />
 
                     </com.lihang.ShadowLayout>
