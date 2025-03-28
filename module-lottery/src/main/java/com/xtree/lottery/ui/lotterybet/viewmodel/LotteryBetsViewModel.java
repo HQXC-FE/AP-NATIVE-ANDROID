@@ -45,6 +45,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -451,13 +452,31 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 }
 
                 lotteryOrderModel.setBetOrderData(orderData);
-                lotteryOrderModel.setPrizeLabel(prize.getLabel());
+                if (!TextUtils.isEmpty(prize.getLabel())) {
+                    lotteryOrderModel.setPrizeLabel(processPrize(prize.getLabel()));
+                }
                 lotteryOrderModel.setMoneyData(money);
                 orderModels.add(lotteryOrderModel);
             }
 
             betCartOrdersLiveData.setValue(orderModels);
             betLiveData.setValue(null);
+        }
+    }
+
+    private String processPrize(String targetLabel) {
+        // 奖金为范围区间的时候
+        if (targetLabel.contains("~")) {
+            String[] parts = targetLabel.split(" ");
+            String result = parts.length > 1 ? String.join(" ", Arrays.copyOfRange(parts, 1, parts.length)) : "";
+            return "模式:" + result;
+        }
+        // 奖金不是范围区间的时候
+        else {
+            String[] firstSplit = targetLabel.split("-"); // 先按 "-" 分割，取第一部分
+            String[] spaceSplit = firstSplit[0].split(" "); // 再按空格分割
+            String result = spaceSplit.length > 1 ? spaceSplit[1] : ""; // 取第二个单词
+            return "模式:" + result;
         }
     }
 
