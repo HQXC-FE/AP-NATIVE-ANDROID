@@ -46,6 +46,8 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
     public final ArrayList<BindModel> bindModels = new ArrayList<>();
     //中奖通知
     public MutableLiveData<Boolean> winNotifi = new MutableLiveData<>(true);
+    //是否是六合彩
+    public MutableLiveData<Boolean> isLhc = new MutableLiveData<>(false);
     //选中的订单数
     public MutableLiveData<String> orderNums = new MutableLiveData<>();
     //共几注
@@ -54,6 +56,8 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
     //总金额
     public MutableLiveData<String> moneyNums = new MutableLiveData<>();
     private final Observer<List<LotteryOrderModel>> orderObserver = lotteryOrderModels -> {
+        Lottery lottery = betsViewModel.lotteryLiveData.getValue();
+        isLhc.setValue("lhc".equals(lottery.getLinkType()));
         if (lotteryOrderModels == null) {
             bindModels.clear();
             datas.setValue(bindModels);
@@ -62,17 +66,15 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
         }
 
         bindModels.clear();
-        Lottery lottery = betsViewModel.lotteryLiveData.getValue();
-        boolean isLhc="lhc".equals(lottery.getLinkType());
         for (LotteryOrderModel orderData : lotteryOrderModels) {
             StringBuilder stringBuilder = new StringBuilder();
-            if (isLhc){
+            if (isLhc.getValue()) {
                 stringBuilder
                         .append(orderData.getBetOrderData().getNums()).append("注 x ")
                         .append(orderData.getBetOrderData().getTimes()).append("倍 x ")
                         .append("元").append(" = ")
                         .append(BigDecimal.valueOf(orderData.getBetOrderData().getMoney()).toPlainString()).append("元");
-            }else{
+            } else {
                 stringBuilder
                         .append(orderData.getBetOrderData().getNums()).append("注 x ")
                         .append(orderData.getBetOrderData().getTimes()).append("倍 x ")
@@ -133,7 +135,6 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
 
     public void initData(FragmentActivity mActivity) {
         setActivity(mActivity);
-
         betsViewModel.betCartOrdersLiveData.observeForever(orderObserver);
     }
 
