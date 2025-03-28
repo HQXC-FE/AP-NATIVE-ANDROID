@@ -116,7 +116,7 @@ public class BetDigitalViewModel {
                 if (!TextUtils.isEmpty(showStr) && showStr.split(",").length > i && "$".equals(showStr.split(",")[i])) {
                     continue;
                 }
-                picks.add(new LotteryPickModel(i, split[i]));
+                picks.add(new LotteryPickModel(i+1, split[i]));
             }
             bindModels.add(new BetDigitalModel(layoutDTO.getTitle(), picks));
         }
@@ -215,7 +215,7 @@ public class BetDigitalViewModel {
                 ArrayList<String> validNumbers = new ArrayList<>();
                 //获取有效号码
                 for (LotteryPickModel pickData : digitalModel.getPickDatas()) {
-                    validNumbers.add(String.valueOf(pickData.number));
+                    validNumbers.add(String.valueOf(pickData.table));
                 }
                 String tag = digitalModel.getTag();
                 ArrayList<String> splitNumbs = new ArrayList<>();
@@ -254,7 +254,7 @@ public class BetDigitalViewModel {
 
                 //设置遗漏数据
                 for (LotteryPickModel pickData : digitalModel.getPickDatas()) {
-                    Integer missValue = missingValue.get(String.valueOf(pickData.number));
+                    Integer missValue = missingValue.get(String.valueOf(pickData.table));
                     if (missValue != null) {
                         pickData.tag.set(String.valueOf(missValue));
                         if (missValue.equals(maxValue)) {
@@ -285,7 +285,7 @@ public class BetDigitalViewModel {
                     ArrayList<String> validNumbers = new ArrayList<>();
                     //获取有效号码
                     for (LotteryPickModel pickData : digitalModel.getPickDatas()) {
-                        validNumbers.add(String.valueOf(pickData.number));
+                        validNumbers.add(String.valueOf(pickData.table));
                     }
                     //分割位数
                     String tag = digitalModel.getTag();
@@ -321,7 +321,7 @@ public class BetDigitalViewModel {
 
                     //设置冷热数据
                     for (LotteryPickModel pickData : digitalModel.getPickDatas()) {
-                        Integer hotValue = hotValues.get(String.valueOf(pickData.number));
+                        Integer hotValue = hotValues.get(String.valueOf(pickData.table));
                         if (hotValue != null) {
                             pickData.tag.set(String.valueOf(hotValue));
                             if (hotValue.equals(maxValue)) {

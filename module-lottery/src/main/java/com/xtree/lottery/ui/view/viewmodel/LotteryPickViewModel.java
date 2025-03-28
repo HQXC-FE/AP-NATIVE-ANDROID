@@ -35,11 +35,10 @@ public class LotteryPickViewModel {
                     add(R.layout.item_lottery_pick);
                 }
             });
-
-    public ObservableField<RecyclerView.LayoutManager> layoutManager = new ObservableField<>();
-
     private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>();
-
+    public ObservableField<RecyclerView.LayoutManager> layoutManager = new ObservableField<>();
+    public LotteryPickView.onPickListener pickListener = null;
+    private int mode = MULTI_MODE;
     public BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
         @Override
         public void onBind(@NonNull BindingAdapter.BindingViewHolder bindingViewHolder, @NonNull View view, int itemViewType) {
@@ -53,7 +52,7 @@ public class LotteryPickViewModel {
                         if (mode == SINGLE_MODE) {
                             for (BindModel bindModel : bindModels) {
                                 LotteryPickModel m = (LotteryPickModel) bindModel;
-                                m.checked.set(model.number == m.number);
+                                m.checked.set(model.table.equals(m.table));
                             }
                         } else {
                             model.checked.set(Boolean.FALSE.equals(model.checked.get()));
@@ -72,10 +71,6 @@ public class LotteryPickViewModel {
         }
     };
 
-    public LotteryPickView.onPickListener pickListener = null;
-
-    private int mode = MULTI_MODE;
-
     public void initData(List<LotteryPickModel> list) {
 
         bindModels.clear();
@@ -84,19 +79,19 @@ public class LotteryPickViewModel {
             bindModels.addAll(list);
         } else {
             for (int i = 0; i < 10; i++) {
-                LotteryPickModel model = new LotteryPickModel(i, String.valueOf(i));
+                LotteryPickModel model = new LotteryPickModel(i + 1, String.valueOf(i));
                 bindModels.add(model);
             }
         }
         datas.set(bindModels);
     }
 
-    public void setMode(int mode) {
-        this.mode = mode;
-    }
-
     public int getMode() {
         return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 
     public List<String> getPick() {
@@ -128,10 +123,10 @@ public class LotteryPickViewModel {
         for (BindModel bindModel : bindModels) {
             if (bindModel instanceof LotteryPickModel) {
                 LotteryPickModel model = (LotteryPickModel) bindModel;
-                if (model.number > 4) {
-                    model.checked.set(true);
-                } else {
+                if (model.number <= datas.get().size() / 2) {
                     model.checked.set(false);
+                } else {
+                    model.checked.set(true);
                 }
             }
         }
@@ -144,7 +139,7 @@ public class LotteryPickViewModel {
         for (BindModel bindModel : bindModels) {
             if (bindModel instanceof LotteryPickModel) {
                 LotteryPickModel model = (LotteryPickModel) bindModel;
-                if (model.number <= 4) {
+                if (model.number <= datas.get().size() / 2) {
                     model.checked.set(true);
                 } else {
                     model.checked.set(false);
@@ -160,7 +155,7 @@ public class LotteryPickViewModel {
         for (BindModel bindModel : bindModels) {
             if (bindModel instanceof LotteryPickModel) {
                 LotteryPickModel model = (LotteryPickModel) bindModel;
-                if (model.number % 2 == 1) {
+                if (Integer.parseInt(model.table) % 2 == 1) {
                     model.checked.set(true);
                 } else {
                     model.checked.set(false);
@@ -176,7 +171,7 @@ public class LotteryPickViewModel {
         for (BindModel bindModel : bindModels) {
             if (bindModel instanceof LotteryPickModel) {
                 LotteryPickModel model = (LotteryPickModel) bindModel;
-                if (model.number % 2 == 0) {
+                if (Integer.parseInt(model.table) % 2 == 0) {
                     model.checked.set(true);
                 } else {
                     model.checked.set(false);

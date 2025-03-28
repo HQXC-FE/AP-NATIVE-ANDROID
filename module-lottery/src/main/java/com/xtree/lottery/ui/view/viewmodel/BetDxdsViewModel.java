@@ -37,7 +37,8 @@ public class BetDxdsViewModel {
                 }
             });
     private final ArrayList<BindModel> bindModels = new ArrayList<>();
-
+    //选中号码
+    public ObservableField<String> codesData = new ObservableField<>("");
     public final BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
         @Override
         public void onBind(@NonNull BindingAdapter.BindingViewHolder bindingViewHolder, @NonNull View view, int itemViewType) {
@@ -65,9 +66,6 @@ public class BetDxdsViewModel {
         }
     };
 
-    //选中号码
-    public ObservableField<String> codesData = new ObservableField<>("");
-
     public void initData(LotteryBetsModel model) {
 
         bindModels.clear();
@@ -77,7 +75,7 @@ public class BetDxdsViewModel {
             ArrayList<LotteryPickModel> picks = new ArrayList<>();
 
             for (int i = 0; i < split.length; i++) {
-                picks.add(new LotteryPickModel(i, split[i]));
+                picks.add(new LotteryPickModel(i+1, split[i]));
             }
             bindModels.add(new BetDxdsModel(layoutDTO.getTitle(), picks));
         }
