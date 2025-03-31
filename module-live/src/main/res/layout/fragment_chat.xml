@@ -85,7 +85,7 @@
                         android:id="@+id/add_zhudan"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="15dp"
+                        android:layout_marginEnd="10dp"
                         android:visibility="visible"
                         app:srcCompat="@mipmap/ic_chat_zhu_dan"
                         />
@@ -117,23 +117,22 @@
                             android:textColorHint="#999999"
                             android:textSize="14sp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/emotion_btn"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:ignore="Autofill, TextFields"
                             tools:text="【创作者】任务，" />
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/emotion_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/select_chat_send_emoji"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/edit_text"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/emotion_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/select_chat_send_emoji"
+                        />
 
                     <TextView
                         android:id="@+id/send"

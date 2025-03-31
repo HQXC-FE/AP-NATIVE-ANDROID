@@ -46,7 +46,7 @@
     <color name="designation7_text_color">@color/white</color>
     <color name="designation8_text_color">@color/white</color>
     <color name="designation9_text_color">@color/white</color>
-    <color name="designation_anchor_text_color">@color/white</color>
+    <color name="designation_anchor_text_color">#5E64DF</color>
 
     <color name="level0_bg_color">#2637C48E</color>
     <color name="level1_bg_color">#2637C48E</color>
@@ -71,5 +71,7 @@
     <color name="level8_text_color">#FFA51D</color>
     <color name="level9_text_color">#E6446B</color>
     <color name="level10_text_color">#491021</color>
+
+    <color name="message_text_color">#5B5768</color>
 
 </resources>

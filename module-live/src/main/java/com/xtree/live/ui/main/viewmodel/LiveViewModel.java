@@ -83,6 +83,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     private final ArrayList<BindModel> bindModels = new ArrayList<BindModel>() {{
         LiveAnchorModel liveAnchorModel = new LiveAnchorModel(FrontLivesType.ALL.getLabel());
         liveAnchorModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.ALL.getValue(), page, limit, success, error);
+        liveAnchorModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
         liveAnchorModel.setItemType(0);
 
         LiveHotModel liveFootBallModel = new LiveHotModel(FrontLivesType.FOOTBALL.getLabel());
@@ -153,26 +154,6 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         }
                     });
 
-            /*JsonObject json = new JsonObject();
-            json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
-            json.addProperty("device_type", "android");
-            json.addProperty("user_id", 10);
-
-            LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
-                    .subscribe(new HttpCallBack<LiveTokenResponse>() {
-                        @Override
-                        public void onResult(LiveTokenResponse data) {
-                            if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
-                                model.setLive(data);
-                                initData();
-                            }
-                        }
-
-                        @Override
-                        public void onError(Throwable t) {
-                            super.onError(t);
-                        }
-                    });*/
         } else {
             initData();
         }

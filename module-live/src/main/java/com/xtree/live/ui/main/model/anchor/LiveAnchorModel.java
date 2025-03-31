@@ -20,11 +20,15 @@ import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.live.R;
 import com.xtree.live.data.source.response.FrontLivesResponse;
+import com.xtree.live.data.source.response.fb.Constants;
+import com.xtree.live.data.source.response.fb.Match;
 import com.xtree.live.ui.main.activity.LiveDetailActivity;
 import com.xtree.live.ui.main.bet.LiveMatchDetailActivity;
 import com.xtree.live.ui.main.listener.FetchListener;
+import com.xtree.live.ui.main.model.hot.LiveHotItemModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.xtree.mvvmhabit.base.BackPressed;
@@ -48,6 +52,9 @@ public class LiveAnchorModel extends BindModel implements BackPressed {
                     add(R.layout.item_live_anchor);
                 }
             });
+
+    public FetchListener<Match> matchInfoResponseFetchListener;
+
     public BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
 
         @Override
@@ -138,9 +145,70 @@ public class LiveAnchorModel extends BindModel implements BackPressed {
             itemModel.setUid(response.getUid());
             itemModel.setVid(response.getVid());
             bindModels.add(itemModel);
+
+            if (matchInfoResponseFetchListener != null) {
+
+                if (response.getMatchId() > 0) {
+                    matchInfoResponseFetchListener.fetch(-1, -1, new HashMap() {{
+                        put("matchId", response.getMatchId());
+                    }}, match -> {
+                        _fetchMatchInfo(itemModel, match);
+                    }, error -> {
+                    });
+                }
+            }
+
         }
         datas.set(bindModels);
         notifyChange();
+    }
+
+    private void _fetchMatchInfo(LiveAnchorItemModel itemModel, Match match) {
+        List<Integer> scoreList = match.getScore(Constants.getScoreType());
+        if (scoreList != null && scoreList.size() > 1) {
+            String scoreMain = String.valueOf(scoreList.get(0));
+            String scoreVisitor = String.valueOf(scoreList.get(1));
+            itemModel.mainScore.set(scoreMain);
+            itemModel.visitorScore.set(scoreVisitor);
+        }
+
+        String teamMain = match.getTeamMain();
+        String teamTeamVistor = match.getTeamVistor();
+        if (!TextUtils.isEmpty(teamMain)) {
+            itemModel.mainTeamName.set(teamMain);
+        }
+        if (!TextUtils.isEmpty(teamTeamVistor)) {
+            itemModel.visitorTeamName.set(teamTeamVistor);
+        }
+
+        String leagueName = match.getLeague().getLeagueName();
+        if (!TextUtils.isEmpty(leagueName)) {
+            itemModel.leagueName.set(leagueName);
+        }
+
+        String iconMain = match.getIconMain();
+        String iconVisitor = match.getIconVisitor();
+
+        if (!TextUtils.isEmpty(iconMain)) {
+            itemModel.mainTeamIcon.set(iconMain);
+        }
+
+        if (!TextUtils.isEmpty(iconVisitor)) {
+            itemModel.visitorTeamIcon.set(iconVisitor);
+        }
+
+        itemModel.isGoingOn.set(match.isGoingon() ? 1 : 0);
+
+        // 比赛未开始
+        if (!match.isGoingon()) {
+            itemModel.stage.set("");
+        } else {
+            if (TextUtils.equals(Constants.getFbSportId(), match.getSportId()) || TextUtils.equals(Constants.getBsbSportId(), match.getSportId())) { // 足球和篮球
+                itemModel.stage.set(match.getStage() + " " + match.getTime());
+            } else {
+                itemModel.stage.set(match.getStage());
+            }
+        }
     }
 
     private void goLogin() {

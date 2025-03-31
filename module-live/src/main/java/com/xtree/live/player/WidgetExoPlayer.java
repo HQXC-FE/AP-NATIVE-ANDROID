@@ -651,7 +651,7 @@ public class WidgetExoPlayer extends ConstraintLayout {
         popUpView.findViewById(R.id.quality_high).setOnClickListener(view1 -> {
             mPopupWindow.dismiss();
 //            if (LiveConfig.isVisitor()) {
-//                ToastUtil.show(getContext().getString(R.string.please_login));
+//                ToastUtils.showShort(getContext().getString(R.string.please_login));
 //                return;
 //            }
             if (!LiveConfig.isLogin()) {
