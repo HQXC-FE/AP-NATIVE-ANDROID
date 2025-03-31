@@ -229,6 +229,9 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
                         if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
                             SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, fbService.getToken());
                             SPUtils.getInstance().put(SPKeyGlobal.FBXC_DISABLED, fbService.isDisabled);
+                            if (fbService.getForward().getApiServerAddress() == null || fbService.getForward().getApiServerAddress().isEmpty()) {
+                                return;
+                            }
                             SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
                             BtDomainUtil.setDefaultFbxcDomainUrl(fbService.getForward().getApiServerAddress());
                             BtDomainUtil.addFbxcDomainUrl(fbService.getForward().getApiServerAddress());
@@ -236,6 +239,9 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
                         } else {
                             SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, fbService.getToken());
                             SPUtils.getInstance().put(SPKeyGlobal.FB_DISABLED, fbService.isDisabled);
+                            if (fbService.getForward().getApiServerAddress() == null || fbService.getForward().getApiServerAddress().isEmpty()) {
+                                return;
+                            }
                             SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
                             BtDomainUtil.setDefaultFbDomainUrl(fbService.getForward().getApiServerAddress());
                             BtDomainUtil.addFbDomainUrl(fbService.getForward().getApiServerAddress());
