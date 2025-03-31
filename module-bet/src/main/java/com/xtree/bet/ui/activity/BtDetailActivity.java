@@ -52,6 +52,7 @@ import com.xtree.bet.ui.viewmodel.fb.FbBtDetailViewModel;
 import com.xtree.bet.ui.viewmodel.pm.PmBtDetailViewModel;
 import com.xtree.bet.util.MatchDeserializer;
 import com.xtree.bet.weight.BaseDetailDataView;
+import com.xtree.bet.weight.pm.SnkDataView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -415,7 +416,13 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                     binding.llData.addView(mScoreDataView);
                 }
             } else {
-                mScoreDataView.setMatch(match, false);
+                if(mScoreDataView instanceof SnkDataView || mScoreDataView instanceof com.xtree.bet.weight.fb.SnkDataView){
+                    mScoreDataView.setSnkMatch(match, false);
+                    mScoreDataView.addMatchListAdditional(match.getFormat() + " 总分");
+                }else{
+                    mScoreDataView.setMatch(match, false);
+                }
+
             }
 
         });
