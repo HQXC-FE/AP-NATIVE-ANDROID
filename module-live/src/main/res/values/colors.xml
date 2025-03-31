@@ -8,8 +8,8 @@
     <color name="bt_color_odd_down">#4AC6A1</color>
     <color name="chatTextLinkColor">#127BD1</color>
 
-    <color name="onLineColor">#46C94F</color>
-    <color name="offLineColor">#999999</color>
+    <color name="onLineColor">#3C98D8</color>
+    <color name="offLineColor">#C7C4D0</color>
 
 
     <color name="designation0_border_color">#B1A791</color>
