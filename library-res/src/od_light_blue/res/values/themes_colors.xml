@@ -35,8 +35,8 @@
     <!--    textSenary：#FBFBFB-->
 
     <!--    主题色-->
-    <color name="primaryColor">#FFBC6E</color>
-    <color name="primaryVariant">#FF6B7E</color>
+    <color name="primaryColor">#5046CC</color>
+    <color name="primaryVariant">#5F55D9</color>
     <color name="secondaryColor">#F96C54</color>
     <color name="tertiaryColor">#518FD8</color>
     <!--    主题色-->

@@ -735,7 +735,7 @@
     </style>
 
     <style name="style_msg_info_delete_all">
-        <item name="android:background">"@drawable/bt_msg_delete_all"</item>
+        <item name="android:background">@drawable/bt_msg_delete_all</item>
     </style>
 
     <style name="style_me_msg_close_icon">
