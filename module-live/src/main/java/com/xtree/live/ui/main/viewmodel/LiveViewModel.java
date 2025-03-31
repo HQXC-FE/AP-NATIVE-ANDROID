@@ -123,6 +123,8 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     public MutableLiveData<LiveRoomBean> liveRoomInfoRefresh = new MutableLiveData<>();
     public MutableLiveData<List<GiftBean>> giftList = new MutableLiveData<>();
 
+    public SingleLiveData<com.xtree.bet.bean.ui.Match> matchData = new SingleLiveData<>();
+
     public LiveViewModel(@NonNull Application application) {
         super(application);
     }
@@ -305,7 +307,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         addSubscribe(disposable);
     }
 
-    private void getMatchDetail(String matchId, Observer<Match> success, Observer<Object> error) {
+    public void getMatchDetail(String matchId, Observer<Match> success, Observer<Object> error) {
         MatchDetailRequest request = new MatchDetailRequest();
         request.setMatchId(matchId);
         Disposable disposable = (Disposable) model.getMatchDetail(request)

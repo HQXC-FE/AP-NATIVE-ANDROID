@@ -23,6 +23,7 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Rational;
 import android.view.KeyEvent;
 import android.view.View;
@@ -38,6 +39,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -47,6 +50,7 @@ import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ScreenUtils;
 import com.google.android.material.color.MaterialColors;
+import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.opensource.svgaplayer.SVGACache;
 import com.opensource.svgaplayer.SVGACallback;
@@ -57,10 +61,17 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.bet.BR;
+import com.xtree.bet.bean.ui.Match;
+import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
+import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
+import com.xtree.bet.ui.viewmodel.fb.FbBtDetailViewModel;
+import com.xtree.bet.ui.viewmodel.pm.PmBtDetailViewModel;
 import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
+import com.xtree.live.data.factory.AppViewModelFactory;
 import com.xtree.live.data.source.response.LiveRoomInfoBean;
 import com.xtree.live.data.source.response.LiveUserBean;
 import com.xtree.live.data.source.response.QualityBean;
@@ -108,12 +119,14 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 @Route(path = RouterFragmentPath.Live.LIVE_DETAIL)
 public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, LiveViewModel> implements OnRefreshLoadMoreListener, View.OnClickListener, SVGAParser.ParseCompletion , SVGAParser.PlayCallback, GiftViewMarginBottomListener {
 
+    public final static String KEY_MATCH = "KEY_MATCH_ID";
     LiveDetailHomeFragment mLiveDetailPage;
     private SVGAParser mSvgaParser;
 
     private String mVid;
     private int mType = -1;//比赛类型
     private int mMatchId;//赛事ID
+    private String mLiveMatchId;
     private int mUid;
     private boolean isClose = false;
 
@@ -149,6 +162,7 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
     private boolean mShowReportButton;
     private PictureInPictureParams.Builder mPictureInPictureParamsBuilder;
     private ValueAnimator valueAnimator;
+    private Match mMatch;
 
     private final Rect mPipTransformRect = new Rect();
 
@@ -216,6 +230,8 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
 
     @Override
     public void initView() {
+        mLiveMatchId = getIntent().getStringExtra("matchID");
+        CfLog.d("=============== LiveDetailActivity initView mMatchId ==============="+mLiveMatchId);
         mTimerBinding = IncludeTimerBinding.bind(binding.getRoot());
         mRecommendBinding = MergeLiveDetailAfterLiveRecommendBinding.bind(binding.getRoot());
 //        mLiveActionBinding = MergeLiveRoomActionBinding.bind(binding.getRoot());
@@ -360,8 +376,46 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
             mGiftBeans = giftBeans;
             mGiftDialog.setNewData(giftBeans);
         });
+
+        viewModel.matchData.observe(this, match -> {
+            this.mMatch = match;
+            CfLog.d("LiveDetailActivity initViewObservable mMatch:" + mMatch);
+            if (match == null) {
+                return;
+            }
+        });
+
+        // 创建成功的 Observer
+        Observer<com.xtree.live.data.source.response.fb.Match> successObserver = new Observer<com.xtree.live.data.source.response.fb.Match>() {
+            @Override
+            public void onChanged(com.xtree.live.data.source.response.fb.Match match) {
+                Log.d("getMatchDetail", "获取比赛详情成功：" + match.toString());
+                me.xtree.mvvmhabit.utils.SPUtils.getInstance().put(KEY_MATCH, new Gson().toJson(match));
+            }
+        };
+
+        // 创建失败的 Observer
+        Observer<Object> errorObserver = new Observer<Object>() {
+            @Override
+            public void onChanged(Object error) {
+                if (error instanceof Throwable) {
+                    Log.e("GameTokenAPI", "发生错误：" + ((Throwable) error).getMessage());
+                } else {
+                    Log.e("GameTokenAPI", "未知错误：" + error.toString());
+                }
+            }
+        };
+
+
+        Log.d("LiveDetailActivity", "mLiveMatchId：" + mLiveMatchId);
+        viewModel.getMatchDetail(mLiveMatchId,successObserver,errorObserver);
     }
 
+    @Override
+    public LiveViewModel initViewModel() {
+        com.xtree.live.data.factory.AppViewModelFactory factory = AppViewModelFactory.getInstance(this.getApplication());
+        return new ViewModelProvider(this, factory).get(LiveViewModel.class);
+    }
 
     @Override
     public void onClick(View view) {

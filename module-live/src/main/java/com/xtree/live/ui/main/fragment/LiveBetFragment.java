@@ -3,6 +3,7 @@ package com.xtree.live.ui.main.fragment;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
+import static com.xtree.live.ui.main.activity.LiveDetailActivity.KEY_MATCH;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ import com.xtree.bet.util.MatchDeserializer;
 import com.xtree.live.BR;
 import com.xtree.live.R;
 import com.xtree.live.databinding.FragmentBetBinding;
+import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +59,7 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 @Route(path = RouterFragmentPath.Live.PAGER_LIVE_BET)
 
 public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBtDetailViewModel> implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener{
-    private final static String KEY_MATCH = "KEY_MATCH_ID";
+
     private List<Category> mCategories = new ArrayList<>();
     private Match mMatch;
     private LiveBtDetailOptionFragment fragment;
@@ -66,6 +68,7 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
 
     @Override
     public void initView() {
+        CfLog.d("initView mMatch:"+mMatch);
         initImmersionBar();
         Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
         mMatch = gson.fromJson(SPUtils.getInstance().getString(KEY_MATCH), Match.class);
@@ -95,6 +98,7 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
             }
         });
         binding.rlCg.setOnClickListener(this);
+        binding.ivExpand.setOnClickListener(this);
     }
 
     @Override
@@ -102,12 +106,14 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
         //mMatch = getIntent().getParcelableExtra(KEY_MATCH);
         Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
         mMatch = gson.fromJson(SPUtils.getInstance().getString(KEY_MATCH), Match.class);
+        CfLog.d("initData mMatch:"+mMatch);
         if(mMatch != null){
             viewModel.getMatchDetail(mMatch.getId());
             viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
             viewModel.addSubscription();
             setCgBtCar();
         }
+
     }
 
     @Override
@@ -122,18 +128,7 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
                 })
         );
     }
-//    /**
-//     * 初始化沉浸式
-//     * Init immersion bar.
-//     */
-//    protected void initImmersionBar() {
-//        //设置共同沉浸式样式
-//        ImmersionBar.with(this)
-//                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
-//                .fitsSystemWindows(false)
-//                .statusBarDarkFont(false)
-//                .init();
-//    }
+
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -185,6 +180,7 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
     @Override
     public void onClick(View view) {
         int id = view.getId();
+
         if (id == com.xtree.bet.R.id.rl_cg) {
             if (BtCarManager.size() <= 1) {
                 ToastUtils.showLong(getText(com.xtree.bet.R.string.bt_bt_must_have_two_match));
@@ -195,6 +191,9 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
             }
             BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
             btCarDialogFragment.show(getActivity().getSupportFragmentManager(), "btCarDialogFragment");
+        }else if(id == com.xtree.bet.R.id.iv_expand){
+            CfLog.d("======== LiveBetFragment onClick expand =========");
+            fragment.expand();
         }
     }
 
@@ -206,6 +205,7 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
     public void initViewObservable() {
         viewModel.matchData.observe(this, match -> {
             this.mMatch = match;
+            CfLog.d("initViewObservable mMatch:"+mMatch);
             if (match == null) {
                 return;
             }
@@ -299,4 +299,5 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
         binding.tvCgCount.setText(String.valueOf(BtCarManager.size()));
         binding.rlCg.setVisibility(!BtCarManager.isCg() ? View.GONE : BtCarManager.isEmpty() ? View.GONE : View.VISIBLE);
     }
+
 }
