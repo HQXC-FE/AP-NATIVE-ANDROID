@@ -19,7 +19,7 @@ public interface MessageConstant {
     int TEXT_COLOR_PRIMARY = WordUtil.getColor(R.color.textColor);
     @ColorInt int TEXT_COLOR_SECONDARY = Color.parseColor("#666666");
     @ColorInt int TEXT_COLOR_CHAT_LINK = Color.parseColor("#127BD1");
-    @ColorInt int TEXT_COLOR_TERTIARY = WordUtil.getColor(R.color.textColorHint);
+    @ColorInt int TEXT_COLOR_TERTIARY = WordUtil.getColor(R.color.message_text_color);
     @ColorInt int TEXT_COLOR_PRIMARY_ONDARK = WordUtil.getColor(R.color.white);
 
     @ColorInt int CHAT_USER_COLOR = Color.parseColor("#025BE8");

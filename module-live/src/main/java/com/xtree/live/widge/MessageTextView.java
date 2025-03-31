@@ -278,20 +278,18 @@ public class MessageTextView extends androidx.appcompat.widget.AppCompatTextView
 
         if (message.isFromAnchor()) {
             tag.iconRes = R.mipmap.ic_level_anchor;
-//            tag.textColor = DESIGNATION_ANCHOR_TEXT_COLOR;
-            tag.textColor = WordUtil.getColor(R.color.message_text_color);
-//            tag.borderColor = DESIGNATION_ANCHOR_BORDER_COLOR;
-              tag.borderColor = WordUtil.getColor(R.color.clr_transparent);
-//            tag.bgColor = DESIGNATION_ANCHOR_BG_COLOR;
-            tag.bgColor = WordUtil.getColor(R.color.white);
+            tag.textColor = DESIGNATION_ANCHOR_TEXT_COLOR;
+            tag.borderColor = DESIGNATION_ANCHOR_BORDER_COLOR;
+            tag.bgColor = DESIGNATION_ANCHOR_BG_COLOR;
             String text = ConversationMessage.LIVE_ANCHOR;
             SpannableString spannableString = new SpannableString(text);
             spannableString.setSpan(tag, 0, text.length(), SpannableString.SPAN_INCLUSIVE_EXCLUSIVE);
             return spannableString;
         } else if (!TextUtils.isEmpty(message.getFromRecipient().getDesignation())) {
-            tag.iconRes = mDesignationDrawables[Math.min(Math.max(0, message.getFromRecipient().getDesignationColor()), mDesignationDrawables.length - 1)];
+//            tag.iconRes = mDesignationDrawables[Math.min(Math.max(0, message.getFromRecipient().getDesignationColor()), mDesignationDrawables.length - 1)];
+            tag.iconRes = R.mipmap.ic_assist_logo;
 //            tag.textColor = mDesignationTextColors[Math.min(Math.max(0, message.getFromRecipient().getDesignationColor()), mDesignationTextColors.length - 1)];
-            tag.textColor = WordUtil.getColor(R.color.message_text_color);
+            tag.textColor = DESIGNATION_ANCHOR_TEXT_COLOR;
 //            tag.borderColor = mDesignationBorderColors[Math.min(Math.max(0, message.getFromRecipient().getDesignationColor()), mDesignationBorderColors.length - 1)];
             tag.borderColor = WordUtil.getColor(R.color.clr_transparent);
 //            tag.bgColor = mDesignationColors[Math.min(Math.max(0, message.getFromRecipient().getDesignationColor()), mDesignationColors.length - 1)];
@@ -303,15 +301,16 @@ public class MessageTextView extends androidx.appcompat.widget.AppCompatTextView
         } else {
             int levelInt = message.getFromRecipient().getLevel();
             if (levelInt == 0) levelInt = 1;
-            String text = "Lv." + levelInt;
+//            String text = "Lv." + levelInt;
+            String text = "";
             tag.iconRes = mLevelDrawables[Math.min(Math.max(0, levelInt), mLevelDrawables.length - 1)];
 //            tag.textColor = mLevelTextColors[Math.min(Math.max(0, levelInt), mLevelTextColors.length - 1)];
-            tag.textColor = WordUtil.getColor(R.color.message_text_color);
+            tag.textColor = DESIGNATION_ANCHOR_TEXT_COLOR;
 //            tag.bgColor = mLevelBgColors[Math.min(Math.max(0, levelInt), mLevelBgColors.length - 1)];
-            tag.bgColor = WordUtil.getColor(R.color.white);
-            SpannableString spannableString = new SpannableString(text);
-            spannableString.setSpan(tag, 0, text.length(), SpannableString.SPAN_INCLUSIVE_EXCLUSIVE);
-            return spannableString;
+            tag.bgColor = mDesignationTextColors[Math.min(Math.max(0, levelInt), mDesignationTextColors.length - 1)];
+//            SpannableString spannableString = new SpannableString(text);
+//            spannableString.setSpan(tag, 0, text.length(), SpannableString.SPAN_INCLUSIVE_EXCLUSIVE);
+            return new SpannableString(" ");
         }
     }
 

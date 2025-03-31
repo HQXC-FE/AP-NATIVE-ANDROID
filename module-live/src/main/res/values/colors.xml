@@ -22,7 +22,7 @@
     <color name="designation7_border_color">#F57B48</color>
     <color name="designation8_border_color">#9ABDFF</color>
     <color name="designation9_border_color">#E5A7AC</color>
-    <color name="designation_anchor_border_color">#A191B1</color>
+    <color name="designation_anchor_border_color">#00000000</color>
 
     <color name="designation0_bg_color">#1D130D</color>
     <color name="designation1_bg_color">#2D0D4C</color>
@@ -34,7 +34,7 @@
     <color name="designation7_bg_color">#262550</color>
     <color name="designation8_bg_color">#F2851B</color>
     <color name="designation9_bg_color">#560A27</color>
-    <color name="designation_anchor_bg_color">#2D0D4C</color>
+    <color name="designation_anchor_bg_color">#80D9DBFF</color>
 
     <color name="designation0_text_color">@color/white</color>
     <color name="designation1_text_color">@color/white</color>
