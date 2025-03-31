@@ -35,7 +35,8 @@ import org.greenrobot.eventbus.EventBus
 /**
  * 彩票详情
  */
-class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>(), ParentChildCommunication {
+class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>(),
+    ParentChildCommunication {
     private var isTab0Enabled = false
     private var currentIssue: IssueVo? = null
     private lateinit var lotteryBetsFragment: LotteryBetsFragment
@@ -152,6 +153,9 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
 
     //倒计时的方式
     private fun countDownTimer(index: Int) {
+        if (index >= LotteryDetailManager.mIssues.size) {
+            return
+        }
         LotteryDetailManager.mIndex = index
         LotteryDetailManager.mIssues[index].apply {
 
