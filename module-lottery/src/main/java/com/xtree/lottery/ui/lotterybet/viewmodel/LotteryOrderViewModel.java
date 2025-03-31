@@ -197,7 +197,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
                     .append(BigDecimal.valueOf(model.getBetOrderData().getMoney()).toPlainString()).append("元");
             model.betMoney.set(stringBuilder.toString());
         }
-        for (LotteryOrderModel lotteryOrderModel : betsViewModel.betOrdersLiveData.getValue()) {
+        for (LotteryOrderModel lotteryOrderModel : betsViewModel.betCartOrdersLiveData.getValue()) {
             lotteryOrderModel.getBetOrderData().setTimes(1);
         }
         datas.setValue(bindModels);
