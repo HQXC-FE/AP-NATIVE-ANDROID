@@ -35,9 +35,9 @@
     <!--    textSenary：#FBFBFB-->
 
     <!--    主题色-->
-    <color name="primaryColor">#FFBC6E</color>
-    <color name="primaryVariant">#FF6B7E</color>
-    <color name="secondaryColor">#F96C54</color>
+    <color name="primaryColor">#C2BDFF</color>
+    <color name="primaryVariant">#5F55D9</color>
+    <color name="secondaryColor">#5046CC</color>
     <color name="tertiaryColor">#518FD8</color>
     <!--    主题色-->
 
@@ -45,43 +45,43 @@
     <color name="successColor">#70FF75</color>
     <color name="errorColor">#EE5A5A</color>
     <color name="warningColor">#FBB516</color>
-    <color name="winColor">#F35A4E</color>
-    <color name="loseColor">#FF70B3</color>
+    <color name="winColor">#F34E6C</color>
+    <color name="loseColor">#4AC6A1</color>
     <color name="drawColor">#E9AF3E</color>
     <color name="unsettleColor">#C8C8C8</color>
     <color name="invalidColor">#BEBED0</color>
-    <color name="infoColor">#FF8979</color>
+    <color name="infoColor">#FC9860</color>
     <!--   状态-->
 
     <!--    文字-->
-    <color name="textDescriptionColor">#9A96A4</color>
-    <color name="textPrimaryColor">#3A3230</color>
-    <color name="textSecondaryColor">#5A4F4D</color>
-    <color name="textTertiaryColor">#A49A98</color>
-    <color name="textQuaternaryColor">#DFDBDA</color>
-    <color name="textQuinaryColor">#FCF3F0</color>
-    <color name="textSenaryColor">#FBFBFB</color>
+    <color name="textDescriptionColor">#9A93F0</color>
+    <color name="textPrimaryColor">#3B3A48</color>
+    <color name="textSecondaryColor">#63626F</color>
+    <color name="textTertiaryColor">#92909F</color>
+    <color name="textQuaternaryColor">#D7D6DC</color>
+    <color name="textQuinaryColor">#F3F3F6</color>
+    <color name="textSenaryColor">#FCFCFC</color>
     <color name="textForgotColor">#518FD8</color>
     <!--    文字-->
 
     <!--    渐变-->
-    <color name="closeGradient1Color">#FF7E7B</color>
-    <color name="closeGradient2Color">#FFB470</color>
+    <color name="closeGradient1Color">#CAADF0</color>
+    <color name="closeGradient2Color">#8374DC</color>
 
-    <color name="titleGradient1Color">#FF6A7D</color>
-    <color name="titleGradient2Color">#FFD4A1</color>
+    <color name="titleGradient1Color">#9790ED</color>
+    <color name="titleGradient2Color">#CDC9FA</color>
 
-    <color name="betGradient1Color">#FFF5EB</color>
-    <color name="betGradient2Color">#FFF0F0</color>
+    <color name="betGradient1Color">#FBFBFF</color>
+    <color name="betGradient2Color">#F5F4FF</color>
 
-    <color name="lotteryLabelGradient1Color">#FFF4F3</color>
-    <color name="lotteryLabelGradient2Color">#FFDFE0</color>
+    <color name="lotteryLabelGradient1Color">#F1F1FF</color>
+    <color name="lotteryLabelGradient2Color">#D3D0FF</color>
 
-    <color name="lotteryTitleGradient1Color">#FFEDE5</color>
+    <color name="lotteryTitleGradient1Color">#F0EFFF</color>
     <color name="lotteryTitleGradient2Color">#FFFFFF</color>
 
     <color name="moneyGradient1Color">#FFFFFF</color>
-    <color name="moneyGradient2Color">#FFC3B2</color>
+    <color name="moneyGradient2Color">#BFBAF9</color>
     <color name="moneyGradient3Color">#00F2EFFF</color>
 
     <color name="moneyDefaultGradient1Color">#FFF5EB</color>
