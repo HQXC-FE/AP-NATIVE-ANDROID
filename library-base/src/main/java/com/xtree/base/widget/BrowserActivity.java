@@ -92,6 +92,7 @@ public class BrowserActivity extends AppCompatActivity {
     public static final String ARG_IS_THIRD = "isThirdDomain";
     public static final String ARG_IS_LOTTERY = "isLottery";
     public static final String ARG_IS_HIDE_TITLE = "isHideTitle";
+    public static final String ARG_IS_FB = "isFB";
     public static final String ARG_SEARCH_DNS_URL = "https://dns.alidns.com/dns-query";
 
     View vTitle;
@@ -116,6 +117,7 @@ public class BrowserActivity extends AppCompatActivity {
     boolean isContainTitle = false; // 网页自身是否包含标题(少数情况下会包含)
     boolean isGame = false; // 三方游戏, 不需要header和token
     boolean isThirdDomain = false; // 是否是三方域名的三方游戏
+    boolean isFB = false; // 是否是FB普通版
     boolean isFirstOpenBrowser = true; // 是否第一次打开webView组件(解决第一次打开webView时传递header/cookie/token失效)
     String token; // token
 
@@ -141,6 +143,7 @@ public class BrowserActivity extends AppCompatActivity {
         isHideTitle = getIntent().getBooleanExtra(ARG_IS_HIDE_TITLE, false);
         token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
         isFirstOpenBrowser = SPUtils.getInstance().getBoolean(SPKeyGlobal.IS_FIRST_OPEN_BROWSER, true);
+        isFB = getIntent().getBooleanExtra(ARG_IS_FB, false);
 
         if (isHideTitle) {
             clTitle.setVisibility(View.GONE);
@@ -335,7 +338,9 @@ public class BrowserActivity extends AppCompatActivity {
 
         WebView webView = agentWeb.getWebCreator().getWebView();
         WebSettings webSettings = webView.getSettings();
-        webSettings.setUserAgentString(WebSettings.getDefaultUserAgent(this) + " Chrome/100.0.4896.127 Mobile Safari/537.36");
+        if (!isFB) {
+            webSettings.setUserAgentString(WebSettings.getDefaultUserAgent(this) + " Chrome/100.0.4896.127 Mobile Safari/537.36");
+        }
     }
 
     /**
@@ -606,6 +611,17 @@ public class BrowserActivity extends AppCompatActivity {
         it.putExtra(ARG_URL, playUrl);
         it.putExtra(ARG_TITLE, title);
         it.putExtra(ARG_IS_THIRD, true);
+        it.putExtra(BrowserActivity.ARG_IS_GAME, true);
+        ctx.startActivity(it);
+    }
+
+    public static void startThirdDomain(Context ctx, String title, String playUrl, boolean isFB) {
+        CfLog.i("URL: " + playUrl);
+        Intent it = new Intent(ctx, BrowserActivity.class);
+        it.putExtra(ARG_URL, playUrl);
+        it.putExtra(ARG_TITLE, title);
+        it.putExtra(ARG_IS_THIRD, true);
+        it.putExtra(ARG_IS_FB, isFB);
         it.putExtra(BrowserActivity.ARG_IS_GAME, true);
         ctx.startActivity(it);
     }
