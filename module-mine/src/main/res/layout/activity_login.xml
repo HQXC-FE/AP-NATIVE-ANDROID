@@ -37,6 +37,8 @@
                 android:paddingLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
+                android:clickable="false"
+                android:focusable="false"
                 />
 
             <ImageView
@@ -205,7 +207,8 @@
                     android:layout_weight="11"
                     style="?attr/login_ac_backgroup_attr"
                     android:visibility="gone"
-                    tools:visibility="visible">
+                    tools:visibility="visible"
+                    android:clickable="false">
 
                     <TextView
                         android:id="@+id/me_login_title"

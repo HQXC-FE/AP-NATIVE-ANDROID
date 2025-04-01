@@ -325,8 +325,8 @@
                     android:id="@+id/ll_menu"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="20dp"
-
                     android:layout_marginRight="20dp"
                     android:orientation="horizontal"
                     app:layout_constraintLeft_toLeftOf="@+id/middle_area"
@@ -339,11 +339,12 @@
                         />
 
                     <TextView style="@style/style_wallet_space" />
-
+                    <!-- android:layout_height="match_parent"-->
                     <TextView
                         android:id="@+id/tvw_trans"
                         style="?attr/home_me_transfer_attr"
-                        android:layout_height="match_parent" />
+
+                        />
 
                     <TextView style="@style/style_wallet_space" />
 
