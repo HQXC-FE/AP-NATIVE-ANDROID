@@ -33,7 +33,7 @@ public class SnkDataView extends BaseDetailDataView {
                 ,"16115", "16116", "16117", "16118", "16119", "16120", "16121", "16122"
                 ,"16123", "16124", "16125"};
         scoreType = new String[]{String.valueOf(FBConstants.SCORE_TYPE_SNK_JF)};
-        setMatch(match, isMatchList);
+        setSnkMatch(match, isMatchList);
         if(match != null && match.isGoingon()){
             addMatchListAdditional(match.getFormat() + " 总分");
         }

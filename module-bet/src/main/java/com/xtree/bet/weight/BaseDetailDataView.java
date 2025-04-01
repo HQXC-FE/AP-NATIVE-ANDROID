@@ -99,8 +99,7 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
             int color = (i == size - 1) ? R.color.bt_color_car_dialog_hight_line2
                     : (isMatchList ? R.color.bt_text_color_primary : R.color.bt_color_under_bg_primary_text);
             textView.setTextColor(getResources().getColor(color));
-            textView.setTextSize(10);
-
+            textView.setTextSize(getAutoScoreTextSize());
             // 处理比分显示逻辑,斯诺克只展示最近5局比分比和第1局比分
             if (i == 1 && i < size - 5) {
                 textView.setText("......"); // 第二个位置显示省略号
@@ -182,7 +181,7 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
         textView.setLayoutParams(params);
         int color = isDisplayMatchList ? R.color.bt_text_color_primary : R.color.bt_color_under_bg_primary_text;
         textView.setTextColor(getResources().getColor(color));
-        textView.setTextSize(10);
+        textView.setTextSize(getAutoScoreTextSize());
         textView.setText(info);
         root.addView(textView);
 
@@ -192,9 +191,20 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
         scoreTotalTextView.setLayoutParams(scoreTotalParams);
         color = R.color.bt_color_car_dialog_hight_line2;
         scoreTotalTextView.setTextColor(getResources().getColor(color));
-        scoreTotalTextView.setTextSize(10);
+        scoreTotalTextView.setTextSize(getAutoScoreTextSize());
         scoreTotalTextView.setText(getTotalScore());
         root.addView(scoreTotalTextView);
+    }
+
+    private static final int SMALL_TEXT_SIZE = 8;
+    private static final int DEFAULT_TEXT_SIZE = 10;
+    /**
+     * 适配斯诺克比赛列表中显示文字比分大小,
+     * 如果比分显示超过6局调整字体大小
+     */
+    private int getAutoScoreTextSize(){
+        boolean shouldUseSmallText = isDisplayMatchList && scores.size() > 6;
+        return shouldUseSmallText ? SMALL_TEXT_SIZE : DEFAULT_TEXT_SIZE;
     }
 
     /**

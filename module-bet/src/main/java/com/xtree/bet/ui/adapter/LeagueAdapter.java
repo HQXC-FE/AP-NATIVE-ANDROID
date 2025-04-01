@@ -46,6 +46,7 @@ import com.xtree.bet.weight.AnimatedExpandableListViewMax;
 import com.xtree.bet.weight.BaseDetailDataView;
 import com.xtree.bet.weight.DiscolourTextView;
 import com.xtree.bet.weight.PageHorizontalScrollView;
+import com.xtree.bet.weight.pm.SnkDataView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -383,6 +384,10 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             if (match.isGoingon()) {
                 binding.llScoreData.setVisibility(View.VISIBLE);
                 BaseDetailDataView scoreDataView = BaseDetailDataView.getInstance(mContext, match, true);
+                if (scoreDataView instanceof SnkDataView || scoreDataView instanceof com.xtree.bet.weight.fb.SnkDataView) {
+                    scoreDataView.setSnkMatch(match, true);
+                    scoreDataView.addMatchListAdditional(match.getFormat() + " 总分");
+                }
                 if (scoreDataView != null) binding.llScoreData.addView(scoreDataView);
             }
         }
