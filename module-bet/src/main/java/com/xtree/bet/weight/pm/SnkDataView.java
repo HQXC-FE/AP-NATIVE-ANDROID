@@ -27,12 +27,9 @@ public class SnkDataView extends BaseDetailDataView {
                 ,"S141", "S142", "S143", "S144", "S145", "S146", "S147", "S148"
                 ,"S149", "S150", "S151", "S152", "S153", "S154"};
         scoreType = periods;
-        //setMatch(match, isMatchList);
         setSnkMatch(match, isMatchList);
         if(match != null && match.isGoingon()){
             addMatchListAdditional(match.getFormat() + " 总分");
         }
     }
-
-    
 }
