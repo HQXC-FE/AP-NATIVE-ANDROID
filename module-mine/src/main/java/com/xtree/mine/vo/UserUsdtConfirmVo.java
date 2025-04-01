@@ -3,7 +3,7 @@ package com.xtree.mine.vo;
 public class UserUsdtConfirmVo extends UserBindBaseVo {
 
     public String usdt_card; // 0xERC666dflSLK6K2374klks66fk32497j929hr983
-    public String usdt_type; // ERC20_USDT
+    public Object usdt_type; // ERC20_USDT
     public String flag; // confirm
 
     //public String ur_here; // "重新绑定检查", 接口-1

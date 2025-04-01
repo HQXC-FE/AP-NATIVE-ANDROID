@@ -426,23 +426,11 @@ public class VerifyViewModel extends BaseViewModel<MineRepository> {
                 startNextPage(ctx, RouterFragmentPath.Mine.PAGER_BIND_CARD, vo);
                 return;
             case Constant.BIND_USDT:
-                String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
-                ProfileVo mProfileVo = new Gson().fromJson(json, ProfileVo.class);
-                if (!mProfileVo.is_binding_usdt &&  !mProfileVo.is_binding_card)
-                {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("check",vo.tokenSign);
-                    Intent intent = new Intent(ctx, ContainerActivity.class);
-                    intent.putExtra(ContainerActivity.ROUTER_PATH, RouterFragmentPath.Mine.PAGER_BIND_USDT_ADD_FIRST);
-                    intent.putExtra(ContainerActivity.BUNDLE, bundle);
-                    ctx.startActivity(intent);
-                }else{
-                    title = ctx.getString(R.string.txt_bind_usdt); //"绑定USDT";
-                    remind = ctx.getString(R.string.txt_remind_usdt_trc20) + ";\n" + ctx.getString(R.string.txt_remind_usdt_erc20);
-                    //url = DomainUtil.getDomain2() + "/user/userusdtinfo?check=" + vo.tokenSign + "&mark=" + vo.mark;
-                    //startNextPage(ctx, RouterFragmentPath.Mine.PAGER_BIND_USDT, vo);
-                    startUsdt(ctx, title, remind, vo, true);
-                }
+                title = ctx.getString(R.string.txt_bind_usdt); //"绑定USDT";
+                remind = ctx.getString(R.string.txt_remind_usdt_trc20) + ";\n" + ctx.getString(R.string.txt_remind_usdt_erc20);
+                //url = DomainUtil.getDomain2() + "/user/userusdtinfo?check=" + vo.tokenSign + "&mark=" + vo.mark;
+                //startNextPage(ctx, RouterFragmentPath.Mine.PAGER_BIND_USDT, vo);
+                startUsdt(ctx, title, remind, vo, true);
                 return;
             case Constant.BIND_EBPAY:
                 title = ctx.getString(R.string.txt_bind_ebpay); //"绑定EBPAY";
