@@ -332,7 +332,14 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             return;
         }
         String stage = match.getStage();
-        if (stage == null) return;
+        CfLog.d("============== configureMatchTime stage ============"+stage);
+        if (stage == null){
+            if(match.getSportName().equals("斯诺克")){
+                CfLog.d("============== configureMatchTime match.getMct() ============"+match.getMct());
+                binding.tvMatchTime.setText(match.getMct());
+            }
+            return;
+        }
 
         boolean isFootballOrBasketball = TextUtils.equals(Constants.getFbSportId(), match.getSportId()) ||
                 TextUtils.equals(Constants.getBsbSportId(), match.getSportId());
