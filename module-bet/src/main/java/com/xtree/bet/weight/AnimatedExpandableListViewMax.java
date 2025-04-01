@@ -41,6 +41,8 @@ import androidx.annotation.Nullable;
 import androidx.core.view.NestedScrollingChild;
 import androidx.core.view.NestedScrollingChildHelper;
 
+import com.xtree.base.utils.TagUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -274,32 +276,37 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
             return false;
         }
 
-        boolean lastGroup = groupPos == adapter.getGroupCount() - 1;
-        if (lastGroup && Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            return expandGroup(groupPos, true);
-        }
-
-        int groupFlatPos = getFlatListPosition(getPackedPositionForGroup(groupPos));
-        if (groupFlatPos == -1) {
-            Log.e("ExpandableListView", "Group position not found in flat list.");
-            return expandGroup(groupPos); // 直接展开
-        }
-
-        int childIndex = groupFlatPos - getFirstVisiblePosition();
-        if (childIndex >= 0 && childIndex < getChildCount()) {
-            View v = getChildAt(childIndex);
-            if (v != null && v.getBottom() >= getBottom()) {
-                adapter.notifyGroupExpanded(groupPos);
-                return expandGroup(groupPos);
+        try {
+            boolean lastGroup = groupPos == adapter.getGroupCount() - 1;
+            if (lastGroup && Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                return expandGroup(groupPos, true);
             }
+
+            int groupFlatPos = getFlatListPosition(getPackedPositionForGroup(groupPos));
+            if (groupFlatPos == -1) {
+                Log.e("ExpandableListView", "Group position not found in flat list.");
+                return expandGroup(groupPos); // 直接展开
+            }
+
+            int childIndex = groupFlatPos - getFirstVisiblePosition();
+            if (childIndex >= 0 && childIndex < getChildCount()) {
+                View v = getChildAt(childIndex);
+                if (v != null && v.getBottom() >= getBottom()) {
+                    adapter.notifyGroupExpanded(groupPos);
+                    return expandGroup(groupPos);
+                }
+            }
+
+            adapter.startExpandAnimation(groupPos, 0);
+            boolean result = expandGroup(groupPos);
+
+            // 直接使用 View.post()， 确保数据更新
+            post(adapter::notifyDataSetChanged);
+            return result;
+        }catch (Exception e){
+            TagUtils.tagEvent(getContext(),e.toString());
         }
-
-        adapter.startExpandAnimation(groupPos, 0);
-        boolean result = expandGroup(groupPos);
-
-        // 直接使用 View.post()， 确保数据更新
-        post(adapter::notifyDataSetChanged);
-        return result;
+        return false;
     }
 
 
@@ -321,8 +328,12 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
             return;
         }
 
-        adapter.startCollapseAnimation(groupPos, 0);
-        collapseGroup(groupPos);
+        try{
+            adapter.startCollapseAnimation(groupPos, 0);
+            collapseGroup(groupPos);
+        } catch (Exception e){
+            TagUtils.tagEvent(getContext(),e.toString());
+        }
         // 直接使用 View.post()， 确保数据更新
         post(adapter::notifyDataSetChanged);
     }
