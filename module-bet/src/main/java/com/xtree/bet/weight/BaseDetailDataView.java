@@ -64,56 +64,60 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
     public BaseDetailDataView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-    //临时代码，先写逻辑，等斯诺克比赛测试后优化代码
-    public void setSnkMatch(Match match, boolean isMatchList){
-        isDisplayMatchList = isMatchList;
-        List<Score> scoreList = match.getScoreList(scoreType);
-        scores = new ArrayList<>();
-        if(periods == null){
-            return;
-        }
-        List<String> periodList = Arrays.asList(periods);
-        for(Score score : scoreList){
-            if(periodList.contains(score.getPeriod())){
-                scores.add(score);
-            }
-        }
-
-        for(int i = 0; i < scores.size(); i ++){
-            Score score = scores.get(i);
-            TextView textView;
-            int limit = scores.size() -5;
-            if( limit > 0 && (i >0 && (i- limit) < 1)){ //斯诺克只展示最近五局和第一局
-                textView = new TextView(getContext());
-                textView.setTextColor(getResources().getColor(R.color.bt_color_under_bg_primary_text));
-                textView.setText("......");
-            }else{
-                if(root.getChildAt(i) == null){
-                    textView = new TextView(getContext());
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.leftMargin = ConvertUtils.dp2px(5);
-                    textView.setLayoutParams(params);
-                    int color = i == scores.size() - 1 ? R.color.bt_color_car_dialog_hight_line2 : isMatchList ? R.color.bt_text_color_primary : R.color.bt_color_under_bg_primary_text;
-                    textView.setTextColor(getResources().getColor(color));
-                    textView.setTextSize(10);
-                }else{
-                    textView = (TextView) root.getChildAt(i);
-                    int color = i == scores.size() - 1 ? R.color.bt_color_car_dialog_hight_line2 : isMatchList ? R.color.bt_text_color_primary : R.color.bt_color_under_bg_primary_text;
-                    textView.setTextColor(getResources().getColor(color));
-                }
-                textView.setText(getResources().getString(R.string.bt_detail_score, score.getScores().get(0), score.getScores().get(1)));
-            }
-
-            if(root.getChildAt(i) == null) {
-                root.addView(textView);
-            }
-
-        }
-    }
 
     /**
      * 斯诺克比分最多有35局，全部比分不容易展示，单独处理
      */
+    public void setSnkMatch(Match match, boolean isMatchList) {
+        isDisplayMatchList = isMatchList;
+        List<Score> scoreList = match.getScoreList(scoreType);
+        scores = new ArrayList<>();
+        if (periods == null) {
+            return;
+        }
+        List<String> periodList = Arrays.asList(periods);
+        // 过滤符合条件的比分
+        for (Score score : scoreList) {
+            if (periodList.contains(score.getPeriod())) {
+                scores.add(score);
+            }
+        }
+        root.removeAllViews(); // 避免重复创建视图，先清空已有视图
+        CfLog.i("setMatch getMct ====  "+match.getMct());
+        int size = scores.size();
+        for (int i = 0; i < size; i++) {
+            TextView textView = new TextView(getContext());
+            // 设置 LayoutParams
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+            params.leftMargin = ConvertUtils.dp2px(5);
+            textView.setLayoutParams(params);
+
+            // 计算颜色
+            int color = (i == size - 1) ? R.color.bt_color_car_dialog_hight_line2
+                    : (isMatchList ? R.color.bt_text_color_primary : R.color.bt_color_under_bg_primary_text);
+            textView.setTextColor(getResources().getColor(color));
+            textView.setTextSize(10);
+
+            // 处理比分显示逻辑,斯诺克只展示最近5局比分比和第1局比分
+            if (i == 1 && i < size - 5) {
+                textView.setText("......"); // 第二个位置显示省略号
+                root.addView(textView);
+                continue;
+            } else if (i > 1 && i < size - 5) {
+                continue; // 直接跳过中间部分
+            }
+            Score score = scores.get(i);
+            String scoreText = getResources().getString(R.string.bt_detail_score, score.getScores().get(0), score.getScores().get(1));
+            textView.setText(scoreText);
+
+            root.addView(textView);
+        }
+
+    }
+
     public void setMatch(Match match, boolean isMatchList){
         isDisplayMatchList = isMatchList;
         List<Score> scoreList = match.getScoreList(scoreType);
@@ -125,12 +129,9 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
         for(Score score : scoreList){
             if(periodList.contains(score.getPeriod())){
                 scores.add(score);
-                CfLog.i("scores for add score.getPeriod ====  "+score.getPeriod());
-                CfLog.i("scores for add score.score.getScores().get(0) ====  "+score.getScores().get(0));
-                CfLog.i("scores for add score.score.getScores().get(1) ====  "+score.getScores().get(1));
             }
         }
-        CfLog.i("setMatch getMct ====  "+match.getMct());
+
         for(int i = 0; i < scores.size(); i ++){
             Score score = scores.get(i);
             TextView textView;
@@ -174,7 +175,7 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
      * 增加赛事列表附加数据 ，如三盘两胜 总局数等
      */
     public void addMatchListAdditional(String info){
-        CfLog.d("addMatchListAdditional:info === "+info);
+        CfLog.d("=========== addMatchListAdditional:info ============== "+info);
         TextView textView = new TextView(getContext());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.leftMargin = ConvertUtils.dp2px(5);

@@ -20,9 +20,15 @@ public class SnkDataView extends BaseDetailDataView {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.bt_layout_basket_data, this);
         root = findViewById(R.id.ll_root);
-        periods = new String[]{"47002", "47002", "47002", "47002", "47002"};
+        //最多35局,PM接口文档35局是s154
+        periods = new String[]{"S120", "S121", "S122", "S123", "S124"
+                        ,"S125", "S126", "S127", "S128", "S129", "S130", "S131", "S132"
+                ,"S133", "S134", "S135", "S136", "S137", "S138", "S139", "S140"
+                ,"S141", "S142", "S143", "S144", "S145", "S146", "S147", "S148"
+                ,"S149", "S150", "S151", "S152", "S153", "S154"};
         scoreType = periods;
-        setMatch(match, isMatchList);
+        //setMatch(match, isMatchList);
+        setSnkMatch(match, isMatchList);
         if(match != null && match.isGoingon()){
             addMatchListAdditional(match.getFormat() + " 总分");
         }
