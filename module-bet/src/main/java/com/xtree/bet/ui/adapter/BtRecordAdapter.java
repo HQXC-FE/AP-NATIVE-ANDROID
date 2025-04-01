@@ -29,6 +29,7 @@ import com.xtree.bet.weight.AnimatedExpandableListViewMax;
 
 import java.util.List;
 
+import io.sentry.Sentry;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
 public class BtRecordAdapter extends AnimatedExpandableListViewMax.AnimatedExpandableListAdapter {
@@ -136,14 +137,20 @@ public class BtRecordAdapter extends AnimatedExpandableListViewMax.AnimatedExpan
             holder = new ChildHolder(convertView);
             convertView.setTag(holder);
         } else {
-            Object tag = convertView.getTag();
-            if (tag instanceof ChildHolder) {
-                holder = (ChildHolder) tag;
-            } else {
-                // 遇到错误的 tag 类型，重新创建 View
-                convertView = View.inflate(mContext, R.layout.bt_layout_bt_record_item, null);
-                holder = new ChildHolder(convertView);
-                convertView.setTag(holder);
+            try {
+                Object tag = convertView.getTag();
+                if (tag instanceof ChildHolder) {
+                    holder = (ChildHolder) tag;
+                } else {
+                    // 遇到错误的 tag 类型，重新创建 View
+                    convertView = View.inflate(mContext, R.layout.bt_layout_bt_record_item, null);
+                    holder = new ChildHolder(convertView);
+                    convertView.setTag(holder);
+                }
+            } catch (Exception e) {
+                Sentry.captureException(e);
+                e.printStackTrace();
+                return convertView;
             }
         }
         BtLayoutBtRecordItemBinding binding = BtLayoutBtRecordItemBinding.bind(holder.itemView);
@@ -213,7 +220,6 @@ public class BtRecordAdapter extends AnimatedExpandableListViewMax.AnimatedExpan
         }
         return convertView;
     }
-
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {

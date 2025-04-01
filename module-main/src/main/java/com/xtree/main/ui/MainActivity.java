@@ -168,9 +168,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         showFragment = mFragments.get(0);
         if (showFragment != null) {
             //默认选中第一个
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.frameLayout, showFragment);
-            transaction.commitNow();
+            try {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frameLayout, showFragment);
+                transaction.commitNow();
+            } catch (Exception e) {
+                Sentry.captureException(e);
+                e.printStackTrace();
+            }
+
         }
     }
 
