@@ -337,7 +337,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         CfLog.d("============== configureMatchTime stage ============"+stage);
         if (stage == null){
             String sportID = match.getSportId();
-            if(sportID.equals(PMConstants.SPORT_ID_SNK) || sportID.equals(FBConstants.SPORT_ID_SNK)){
+            if(sportID.equals(Constants.getSnkSportId())){
                 CfLog.d("============== configureMatchTime match.getMct() ============"+match.getMct());
                 binding.tvMatchTime.setText(match.getMct());
             }
@@ -590,9 +590,9 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         }
 
         int normalTime = getTagIntValue(tvMatchTime, R.id.tag_normal_time);
-        if (sportId.equals("1")) {
+        if (sportId.equals(Constants.getFbSportId())) {
             updateFootballTime(tvMatchTime, match, normalTime, stage);
-        } else if ((sportId.equals(PMConstants.SPORT_ID_BSB) || sportId.equals(FBConstants.SPORT_ID_BSB))) {//FB跟PM的篮球赛种代号不一致，加上赛种名称判断
+        } else if (sportId.equals(Constants.getBsbSportId())) {
             updateBasketballTime(tvMatchTime, match, normalTime, stage);
         }
     }
@@ -658,5 +658,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             this.binding = binding;
         }
     }
+
+
 
 }
