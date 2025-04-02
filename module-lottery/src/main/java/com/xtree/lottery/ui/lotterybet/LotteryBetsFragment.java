@@ -218,7 +218,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
             for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO moneyMode : betsModel.getMenuMethodLabelData().getMoneyModes()) {
                 moneyModelList.add(new LotteryMoneyModel(moneyMode.getName(), moneyMode.getRate(), moneyMode.getModeid()));
             }
-            binding.lotteryBetsMoneyView.setMoneyUnit(moneyModelList);
+            binding.lotteryBetsMoneyView.setMoneyUnit(moneyModelList,lottery);
         }
     }
 

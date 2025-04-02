@@ -13,16 +13,18 @@ import android.widget.RadioGroup;
 
 import androidx.annotation.Nullable;
 
-import com.xtree.lottery.utils.filter.MoneyFilter;
 import com.xtree.lottery.R;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.databinding.LayoutLotteryMoneyBinding;
 import com.xtree.lottery.ui.lotterybet.data.LotteryMoneyData;
 import com.xtree.lottery.ui.view.model.LotteryMoneyModel;
 import com.xtree.lottery.ui.view.viewmodel.LotteryMoneyViewModel;
+import com.xtree.lottery.utils.filter.MoneyFilter;
 
 import java.util.List;
 
 import me.xtree.mvvmhabit.utils.ConvertUtils;
+import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
  * Created by KAKA on 2024/5/2.
@@ -30,19 +32,14 @@ import me.xtree.mvvmhabit.utils.ConvertUtils;
  */
 public class LotteryMoneyView extends LinearLayout {
 
-    public interface onChangeMoneyListener{
-        void onChange(LotteryMoneyData moneyData);
-    }
-
     private LayoutLotteryMoneyBinding binding;
-
     // 设置 RadioGroup 的布局参数
     private RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
             RadioGroup.LayoutParams.WRAP_CONTENT,
             RadioGroup.LayoutParams.WRAP_CONTENT
     );
-
     private List<LotteryMoneyModel> moneyModels;
+    private Lottery lottery;
 
     public LotteryMoneyView(Context context) {
         super(context);
@@ -107,6 +104,8 @@ public class LotteryMoneyView extends LinearLayout {
                         for (LotteryMoneyModel moneyModel : moneyModels) {
                             if (moneyModel.getName().equals(selectedOption)) {
                                 binding.getModel().unitData.set(moneyModel);
+                                //保存选中的金额单元
+                                SPUtils.getInstance().put(lottery.getName(), moneyModel.getName());
                                 break;
                             }
                         }
@@ -117,22 +116,25 @@ public class LotteryMoneyView extends LinearLayout {
         });
     }
 
-
     /**
      * 设置金额格式
+     *
      * @param moneyModels 金额格式集
      */
-    public void setMoneyUnit(List<LotteryMoneyModel> moneyModels) {
+    public void setMoneyUnit(List<LotteryMoneyModel> moneyModels, Lottery lottery) {
         binding.lotteryMoneyUnit.removeAllViews();
 
+        this.lottery = lottery;
         this.moneyModels = moneyModels;
+        String defaultName = SPUtils.getInstance().getString(lottery.getName(), moneyModels.get(0).getName());
+
 
         for (int i = 0; i < moneyModels.size(); i++) {
             RadioButton radioButton = (RadioButton) LayoutInflater.from(getContext()).inflate(R.layout.label_lottery_money, null);
             radioButton.setText(moneyModels.get(i).getName());
             radioButton.setId(View.generateViewId());
             binding.lotteryMoneyUnit.addView(radioButton, layoutParams);
-            if (i == 0) {
+            if (moneyModels.get(i).getName().equals(defaultName)) {
                 binding.lotteryMoneyUnit.check(radioButton.getId());
             }
         }
@@ -140,6 +142,7 @@ public class LotteryMoneyView extends LinearLayout {
 
     /**
      * 获取没注的金额
+     *
      * @return 浮点类型
      */
     public float getMoney() {
@@ -164,5 +167,9 @@ public class LotteryMoneyView extends LinearLayout {
             binding.lotteryMoneyFactorEdit.clearFocus();
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    public interface onChangeMoneyListener {
+        void onChange(LotteryMoneyData moneyData);
     }
 }
