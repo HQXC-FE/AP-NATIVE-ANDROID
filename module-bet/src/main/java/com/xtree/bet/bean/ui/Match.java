@@ -1,7 +1,6 @@
 package com.xtree.bet.bean.ui;
 
 import com.xtree.base.vo.BaseBean;
-import com.xtree.bet.bean.response.fb.VideoInfo;
 
 import java.util.List;
 

@@ -36,6 +36,8 @@ import com.xtree.bet.bean.ui.PlayGroupFb;
 import com.xtree.bet.bean.ui.PlayGroupPm;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.constant.Constants;
+import com.xtree.bet.constant.FBConstants;
+import com.xtree.bet.constant.PMConstants;
 import com.xtree.bet.contract.BetContract;
 import com.xtree.bet.databinding.BtFbLeagueGroupBinding;
 import com.xtree.bet.databinding.BtFbMatchListBinding;
@@ -332,7 +334,15 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             return;
         }
         String stage = match.getStage();
-        if (stage == null) return;
+        CfLog.d("============== configureMatchTime stage ============"+stage);
+        if (stage == null){
+            String sportID = match.getSportId();
+            if(sportID.equals(PMConstants.SPORT_ID_SNK) || sportID.equals(FBConstants.SPORT_ID_SNK)){
+                CfLog.d("============== configureMatchTime match.getMct() ============"+match.getMct());
+                binding.tvMatchTime.setText(match.getMct());
+            }
+            return;
+        }
 
         boolean isFootballOrBasketball = TextUtils.equals(Constants.getFbSportId(), match.getSportId()) ||
                 TextUtils.equals(Constants.getBsbSportId(), match.getSportId());
@@ -582,7 +592,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         int normalTime = getTagIntValue(tvMatchTime, R.id.tag_normal_time);
         if (sportId.equals("1")) {
             updateFootballTime(tvMatchTime, match, normalTime, stage);
-        } else if ((sportId.equals("2") || sportId.equals("3")) && match.getSportName().equals("篮球")) {//FB跟PM的篮球赛种代号不一致，加上赛种名称判断
+        } else if ((sportId.equals(PMConstants.SPORT_ID_BSB) || sportId.equals(FBConstants.SPORT_ID_BSB))) {//FB跟PM的篮球赛种代号不一致，加上赛种名称判断
             updateBasketballTime(tvMatchTime, match, normalTime, stage);
         }
     }
