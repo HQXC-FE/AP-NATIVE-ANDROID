@@ -601,20 +601,21 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     }
 
     private void updateBasketballTime(TextView tvMatchTime, Match match, int normalTime, String stage) {
-        CfLog.d("================== updateBasketballTime getMess ====================="+match.getMess());
-        if(match.getMess() == 0){ //比赛暂停
-            return;
-        }
-        int timeS = match.getTimeS();
-        if (normalTime != timeS) {
-            tvMatchTime.setTag(R.id.tag_normal_time, timeS);
-            tvMatchTime.setTag(R.id.tag_add_time, 0);
+        CfLog.d("updateBasketballTime getMess: ==="+match.getMess());
+        if(match.getMess() == 0){ //篮球比赛暂停,不执行读秒操作，只显示当前接口返回时间
+            tvMatchTime.setText(stage + " " + formatTime(match.getTimeS()));
         } else {
-            int seconds = getTagIntValue(tvMatchTime, R.id.tag_add_time) + 1;
-            tvMatchTime.setTag(R.id.tag_add_time, seconds);
-            int currentTime = Math.max(normalTime - seconds, 0);
-            int lastTime = getTagIntValue(tvMatchTime, R.id.tag_last_time);
-            tvMatchTime.setText(stage + " " + formatTime(lastTime > 0 && currentTime > lastTime ? lastTime : currentTime));
+            int timeS = match.getTimeS();
+            if (normalTime != timeS) {
+                tvMatchTime.setTag(R.id.tag_normal_time, timeS);
+                tvMatchTime.setTag(R.id.tag_add_time, 0);
+            } else {
+                int seconds = getTagIntValue(tvMatchTime, R.id.tag_add_time) + 1;
+                tvMatchTime.setTag(R.id.tag_add_time, seconds);
+                int currentTime = Math.max(normalTime - seconds, 0);
+                int lastTime = getTagIntValue(tvMatchTime, R.id.tag_last_time);
+                tvMatchTime.setText(stage + " " + formatTime(lastTime > 0 && currentTime > lastTime ? lastTime : currentTime));
+            }
         }
     }
 
