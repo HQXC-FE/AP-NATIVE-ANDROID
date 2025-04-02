@@ -19,6 +19,7 @@ import com.xtree.bet.weight.CgOddLimitView;
 import com.xtree.bet.weight.KeyboardView;
 
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -69,7 +70,8 @@ public class CgOddLimitSecAdapter extends CgOddLimitView.Adapter<CgOddLimit> {
             itemView.findViewById(R.id.csl_cg_dan).setVisibility(View.GONE);
             itemView.findViewById(R.id.csl_cg_cc).setVisibility(View.VISIBLE);
             EditText etAmount = itemView.findViewById(R.id.et_bt_amount_cc);
-            etAmount.setHint("限制" + cgOddLimit.getCMin() + "-" + cgOddLimit.getCMax());
+            String max = BigDecimal.valueOf(cgOddLimit.getCMax()).toPlainString();
+            etAmount.setHint("限制" + cgOddLimit.getCMin() + "-" + max);
             etAmount.setEnabled(cgOddLimit.getCMin() > 0 && cgOddLimit.getCMax() > 0);
             if (sizeChange) {
                 itemView.findViewById(R.id.csl_win_cc).setVisibility(View.GONE);
@@ -129,7 +131,8 @@ public class CgOddLimitSecAdapter extends CgOddLimitView.Adapter<CgOddLimit> {
             itemView.findViewById(R.id.csl_cg_dan).setVisibility(View.VISIBLE);
             itemView.findViewById(R.id.csl_cg_cc).setVisibility(View.GONE);
             EditText etAmount = itemView.findViewById(R.id.et_bt_amount_dan);
-            etAmount.setHint("限制" + cgOddLimit.getDMin() + "-" + cgOddLimit.getDMax());
+            String max = BigDecimal.valueOf(cgOddLimit.getDMax()).toPlainString();
+            etAmount.setHint("限制" + cgOddLimit.getDMin() + "-" + max);
             etAmount.setEnabled(cgOddLimit.getDMin() > 0 || cgOddLimit.getDMax() > 0);
 
             etAmount.addTextChangedListener(new TextWatcher() {
