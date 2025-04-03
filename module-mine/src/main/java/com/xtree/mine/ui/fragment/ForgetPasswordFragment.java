@@ -97,7 +97,10 @@ public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordB
                 if (mUsername !=null && !TextUtils.isEmpty(mUsername) && mUsername.length() >2){
                     viewModel.getForgetUserInfo(mUsername);
                     mIsClickable = false;
-                }else{
+                } else if (mUsername == null || TextUtils.isEmpty(mUsername)) {
+                    ToastUtils.showError("请输入用户名");
+                } else{
+                    ToastUtils.showError("用户名无效");
                     CfLog.e("*******************mUsername is NULL *******************");
                 }
             }
