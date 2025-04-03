@@ -24,7 +24,7 @@ android {
         }
         // 生产环境 发布用
         xingCai_OL {
-            applicationId "com.sptxc.app" // xcsport
+            applicationId "com.xcgame.app" // xcsport
             versionName "1.4.9"
             versionCode 149
             resValue "string", "app_name", "XC Sports"
