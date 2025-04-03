@@ -26,6 +26,7 @@ import com.xtree.mine.ui.viewmodel.ForgetPasswordViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
+import me.xtree.mvvmhabit.utils.ToastUtils;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_FORGET_PASSWORD)
 public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordBinding, ForgetPasswordViewModel> {
@@ -327,6 +328,12 @@ public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordB
         viewModel.liveDataCheckPasswordSuccess.observe(this, vo -> {
             binding.llResetPassword.clResetPassword.setVisibility(View.GONE);
             binding.llFinish.clFinish.setVisibility(View.VISIBLE);
+        });
+
+        viewModel.liveDataError.observe(this, vo ->{
+            if (!TextUtils.isEmpty(vo)){
+                ToastUtils.showError(vo);
+            }
         });
     }
 
