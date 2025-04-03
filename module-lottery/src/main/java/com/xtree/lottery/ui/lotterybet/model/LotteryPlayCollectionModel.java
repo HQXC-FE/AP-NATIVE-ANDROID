@@ -26,12 +26,12 @@ public class LotteryPlayCollectionModel extends BindModel {
         this.lottery = lottery;
     }
 
-    public UserMethodsResponse.DataDTO getUserMethod(String methodid) {
-        return userMethods.get(methodid);
+    public UserMethodsResponse.DataDTO getUserMethod(String name) {
+        return userMethods.get(name);
     }
 
-    public void putUserMethods(String methodid, UserMethodsResponse.DataDTO userMethod) {
-        this.userMethods.put(methodid, userMethod);
+    public void putUserMethods(String name, UserMethodsResponse.DataDTO userMethod) {
+        this.userMethods.put(name, userMethod);
     }
 
     public MenuMethodsData.LabelsDTO.Labels1DTO getLabel() {
