@@ -1,7 +1,6 @@
 package com.xtree.bet.bean.ui;
 
 import com.xtree.base.vo.BaseBean;
-import com.xtree.bet.bean.response.fb.VideoInfo;
 
 import java.util.List;
 
@@ -221,4 +220,8 @@ public interface Match extends BaseBean {
      * @return
      */
     boolean needCheckHomeSide();
+    /**
+     * 当前是第几盘或者第几局
+     */
+    String getMct();
 }

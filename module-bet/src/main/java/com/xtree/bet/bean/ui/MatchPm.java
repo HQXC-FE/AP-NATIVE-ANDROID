@@ -15,6 +15,7 @@ import com.xtree.bet.bean.response.pm.PlayTypeInfo;
 import com.xtree.bet.bean.response.pm.VideoInfo;
 import com.xtree.bet.constant.PMConstants;
 import com.xtree.bet.constant.PMMatchPeriod;
+import com.xtree.bet.manager.SportEntityManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -509,6 +510,17 @@ public class MatchPm implements Match {
                 || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_SNK)
                 || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_BQ)
                 || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_MSZQ);
+    }
+
+    @Override
+    public String getMct() {;
+        try {
+            int num = (int) Float.parseFloat(matchInfo.mct); // 直接转换会截断小数部分
+            return SportEntityManager.getChineseFrameName(num);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return "未知";
+        }
     }
 
     /**
