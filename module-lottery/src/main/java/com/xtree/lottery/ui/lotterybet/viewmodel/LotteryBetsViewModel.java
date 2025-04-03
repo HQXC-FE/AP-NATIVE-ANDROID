@@ -677,33 +677,33 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         betDTO.setDisplay(displayDTO);
         betDTO.setSubmit(new RulesEntryData.SubmitDTO());
         rulesEntryData.setBet(betDTO);
-        List<RulesEntryData.SubmitDTO> submitDTOList = BettingEntryRule.getInstance().startEngine(rulesEntryData);
 
-        List<LotteryBetRequest.BetOrderData> betOrderlist = new ArrayList<>();
-        for (RulesEntryData.SubmitDTO submitDTO : submitDTOList) {
-            if (submitDTO.getMoney() > 0 && submitDTO.getNums() > 0) {
-                LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
-                betOrderData.setMoney(submitDTO.getMoney());
-                betOrderData.setOmodel(submitDTO.getOmodel());
-                betOrderData.setCodes(submitDTO.getCodes());
-                betOrderData.setTimes(submitDTO.getTimes());
-                betOrderData.setDesc(submitDTO.getDesc());
-                betOrderData.setMenuid(String.valueOf(submitDTO.getMenuid()));
-                betOrderData.setMethodid(String.valueOf(submitDTO.getMethodid()));
-                betOrderData.setNums(submitDTO.getNums());
-                betOrderData.setPoschoose((String) submitDTO.getPoschoose());
-                betOrderData.setSolo(submitDTO.isSolo());
-                betOrderData.setType(submitDTO.getType());
-                betOrderlist.add(betOrderData);
+        BettingEntryRule.getInstance().startEngine(rulesEntryData, result -> {
+            List<LotteryBetRequest.BetOrderData> betOrderlist = new ArrayList<>();
+            for (RulesEntryData.SubmitDTO submitDTO : result) {
+                if (submitDTO.getMoney() > 0 && submitDTO.getNums() > 0) {
+                    LotteryBetRequest.BetOrderData betOrderData = new LotteryBetRequest.BetOrderData();
+                    betOrderData.setMoney(submitDTO.getMoney());
+                    betOrderData.setOmodel(submitDTO.getOmodel());
+                    betOrderData.setCodes(submitDTO.getCodes());
+                    betOrderData.setTimes(submitDTO.getTimes());
+                    betOrderData.setDesc(submitDTO.getDesc());
+                    betOrderData.setMenuid(String.valueOf(submitDTO.getMenuid()));
+                    betOrderData.setMethodid(String.valueOf(submitDTO.getMethodid()));
+                    betOrderData.setNums(submitDTO.getNums());
+                    betOrderData.setPoschoose((String) submitDTO.getPoschoose());
+                    betOrderData.setSolo(submitDTO.isSolo());
+                    betOrderData.setType(submitDTO.getType());
+                    betOrderlist.add(betOrderData);
+                }
             }
-        }
 
-        if (betOrderlist.isEmpty()) {
-            betLiveData.setValue(null);
-        } else {
-            betLiveData.setValue(betOrderlist);
-        }
-
+            if (betOrderlist.isEmpty()) {
+                betLiveData.postValue(null);
+            } else {
+                betLiveData.postValue(betOrderlist);
+            }
+        });
     }
 
     /**
