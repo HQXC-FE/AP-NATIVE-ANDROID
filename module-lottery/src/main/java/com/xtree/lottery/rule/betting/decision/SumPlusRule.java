@@ -57,8 +57,8 @@ public class SumPlusRule {
             } else {
                 isTail = false;
             }
-            if (attached.get("flag") != null) {
-                flag = (String) attached.get("flag");
+            if (attached.get("flags") != null) {
+                flag = (String) attached.get("flags");
             }
 
             int num = 0;

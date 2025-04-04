@@ -12,7 +12,9 @@ import org.jeasy.rules.api.Facts;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -47,7 +49,7 @@ public class SpecialSingleRule {
 
             //去重
             List<String> realCode = singleRule.filter(String.join(",", formatCodes), singleRule.filter);
-            List<String> uniqueCode = new ArrayList<>(new HashSet<>(realCode));
+            List<String> uniqueCode = new ArrayList<>(new LinkedHashSet<>(realCode)); // 用 LinkedHashSet 保留順序
             List<String> message = facts.get("message");
 
             if (realCode.size() != uniqueCode.size()) {
@@ -89,31 +91,43 @@ public class SpecialSingleRule {
             facts.put("formatCodes", currentCodes);
 
             // 组选去重
-            List<String> attachedFlags = (List<String>) attached.get("flag");
+            List<String> attachedFlags = (List<String>) attached.get("flags");
             if (attachedFlags != null && attachedFlags.contains("group")) {
                 String sortSplit = singleRule.join;
 
+                // 对号码进行排序和去重
                 List<List<String>> sortedCodes = currentCodes.stream()
                         .map(code -> Arrays.asList(code.split(sortSplit)))
                         .map(list -> list.stream().sorted().collect(Collectors.toList()))
                         .distinct()
+                        // 依照排序後的字串進行排序
+                        .sorted((list1, list2) -> {
+                            String s1 = String.join(sortSplit, list1);
+                            String s2 = String.join(sortSplit, list2);
+                            return s1.compareTo(s2);
+                        })
                         .collect(Collectors.toList());
+
 
                 List<List<String>> repeatCodes = new ArrayList<>();
                 if (!attachedFlags.contains("banco")) {
                     for (List<String> code : sortedCodes) {
+                        // 如果所有号码都相同，加入重复列表
                         if (new HashSet<>(code).size() == 1) {
                             repeatCodes.add(code);
                         }
                     }
                 }
 
-                List<List<String>> finalCodes = sortedCodes.stream()
+                // 计算最终的有效号码
+                List<String> finalCodes = sortedCodes.stream()
                         .filter(code -> !repeatCodes.contains(code))
+                        .map(code -> code.stream().map(String::valueOf).collect(Collectors.joining(" ")))
                         .collect(Collectors.toList());
 
+                // 找出被移除的号码
                 List<String> removedCodes = currentCodes.stream()
-                        .filter(code -> !finalCodes.contains(Arrays.asList(code.split(sortSplit))))
+                        .filter(code -> !finalCodes.contains(code))
                         .collect(Collectors.toList());
 
                 if (!removedCodes.isEmpty()) {
@@ -121,41 +135,33 @@ public class SpecialSingleRule {
                     message.add(String.join(",", removedCodes));
                 }
 
-                facts.put("formatCodes", finalCodes.stream()
-                        .map(list -> String.join(sortSplit, list))
-                        .collect(Collectors.toList()));
+                // 更新 formatCodes
+                facts.put("formatCodes", finalCodes);
             }
 
             facts.put("num", ((List<String>) facts.get("formatCodes")).size());
         } catch (Exception e) {
-            CfLog.e(e.getMessage());
+            CfLog.e("Error in SpecialSingleRule: " + e.getMessage());
         }
     }
 
     /**
-     * 将 formatCodes 统一解析为 List<String>
+     * 统一格式化 formatCodes 确保返回 List<String>
      */
     private List<String> normalizeFormatCodes(Object rawFormatCodes) {
         if (rawFormatCodes instanceof String) {
-            String codes = (String) rawFormatCodes;
-            return new ArrayList<String>() {
-                {
-                    add(codes);
-                }
-            };
+            return Collections.singletonList(((String) rawFormatCodes).trim());
         } else if (rawFormatCodes instanceof List) {
             List<?> codes = (List<?>) rawFormatCodes;
             if (!codes.isEmpty() && codes.get(0) instanceof List) {
-                // 处理 List<List<String>>
                 return ((List<List<String>>) codes).stream()
                         .flatMap(List::stream)
                         .map(String::trim)
                         .collect(Collectors.toList());
             } else {
-                // 处理 List<String>
                 return codes.stream()
-                        .map(String.class::cast) // 显式类型转换
-                        .map(String::trim) // 调用 String 的 trim 方法
+                        .map(String.class::cast)
+                        .map(String::trim)
                         .collect(Collectors.toList());
             }
         }
