@@ -118,8 +118,8 @@ public class RecentlyEntryRule {
                     return new RecentLotteryBackReportVo((String) historyItem.get("issue"),
                             (String) historyItem.get("draw_time"),
                             (String) historyItem.get("issueClass"),
-                            (ArrayList<Map<String, String>>) historyItem.get("displayCode"),
-                            (ArrayList<Map<String, String>>) historyItem.get("form"));
+                            (List<Map<String, String>>) historyItem.get("displayCode"),
+                            (List<Map<String, String>>) historyItem.get("form"));
                 })
                 .collect(Collectors.toList());
 

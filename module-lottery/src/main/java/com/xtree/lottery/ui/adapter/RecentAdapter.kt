@@ -41,7 +41,8 @@ class RecentAdapter(list: ArrayList<RecentLotteryBackReportVo>, val alias: Strin
         rv.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        val adapter = RecentChildAdapter(item.displayCode, alias, R.layout.item_recent_child)
+        val arrayList = item.displayCode as ArrayList
+        val adapter = RecentChildAdapter(arrayList, alias, R.layout.item_recent_child)
         rv.adapter = adapter
     }
 

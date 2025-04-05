@@ -8,6 +8,6 @@ data class RecentLotteryBackReportVo(
     val issue: String,
     val draw_time: String,
     val issueClass: String,
-    val displayCode: ArrayList<Map<String, String>>,
-    val form: ArrayList<Map<String, String>>
+    val displayCode: List<Map<String, String>>,
+    val form: List<Map<String, String>>
 ) : Parcelable
