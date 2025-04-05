@@ -137,29 +137,15 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
     private AudioStateManager mAudioStateManager;
 
     private boolean mIsInFreeFormMode = false;
-
-    private boolean mAcquiredDLNASource;
-    private Boolean mIsRemotePlaying = false;
     private Boolean mIsRemoteCasted = false;
-
-
     private PriorityQueue<GiftConsumer> mPriorityQueue;
-
-    private static final SPUtils sPreferences = SPUtils.getInstance();
-
-    //倒计时
-    private CountDownTimer timer;
-
     private GiftDialog mGiftDialog;
     private List<GiftBean> mGiftBeans;
-
     private IncludeTimerBinding mTimerBinding;
     //这部分 我们暂时没有
 //    private MergeLiveRoomActionBinding mLiveActionBinding;
     private MergeLiveDetailAfterLiveRecommendBinding mRecommendBinding;
-
     private MediaSessionCompat mSession;
-    private boolean mShowReportButton;
     private PictureInPictureParams.Builder mPictureInPictureParamsBuilder;
     private ValueAnimator valueAnimator;
     private Match mMatch;
@@ -220,12 +206,13 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
      */
     @Override
     protected void initImmersionBar() {
-        //设置共同沉浸式样式
-        ImmersionBar.with(this)
-                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
-                .fitsSystemWindows(false)
-                .statusBarDarkFont(false)
-                .init();
+        super.initImmersionBar();
+//        //设置共同沉浸式样式
+//        ImmersionBar.with(this)
+////                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
+//                .fitsSystemWindows(false)
+//                .statusBarDarkFont(false)
+//                .init();
     }
 
     @Override
@@ -467,7 +454,7 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
             mType = -1;
             mLiveUserInfo = null;
             mLiveRoomInfo = null;
-            mIsRemotePlaying = false;
+
             mIsRemoteCasted = false;
             initData();
         }
@@ -664,7 +651,7 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
                     if (isVisible && !isInPictureInPictureMode()) {
                         binding.buttonBack.setVisibility(View.VISIBLE);
                         binding.widgetExoPlayer.getPipButton().setVisibility(PipModeUtils.isSupportPipMode(LiveDetailActivity.this) ? View.VISIBLE : View.GONE);
-                        binding.widgetExoPlayer.getReportButton().setVisibility(mShowReportButton ? View.VISIBLE : View.GONE);
+//                        binding.widgetExoPlayer.getReportButton().setVisibility(mShowReportButton ? View.VISIBLE : View.GONE);
 //                        binding.widgetExoPlayer.getMirrorButton().setVisibility(mAcquiredDLNASource ? View.VISIBLE : View.GONE);
                     } else {
                         binding.widgetExoPlayer.getPipButton().setVisibility(View.GONE);
@@ -966,9 +953,7 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
 
         binding.widgetExoPlayer.release();
         mAudioStateManager.abandonAudioFocus();
-        if (timer != null) {
-            timer.cancel();//关闭页面的时候取消倒计时防止引起内存泄露
-        }
+
         if (valueAnimator != null) {
             valueAnimator.cancel();
         }

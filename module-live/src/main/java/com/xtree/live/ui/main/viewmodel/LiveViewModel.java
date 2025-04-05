@@ -86,6 +86,11 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         liveAnchorModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
         liveAnchorModel.setItemType(0);
 
+        LiveHotModel liveHotModel = new LiveHotModel(FrontLivesType.HOT.getLabel());
+        liveHotModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.HOT.getValue(), page, limit, success, error);
+        liveHotModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getHotMatchList(params.get("matchId").toString(), success, error);
+        liveHotModel.setItemType(1);
+
         LiveHotModel liveFootBallModel = new LiveHotModel(FrontLivesType.FOOTBALL.getLabel());
         liveFootBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.FOOTBALL.getValue(), page, limit, success, error);
         liveFootBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
@@ -102,10 +107,12 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         liveOtherModel.setItemType(1);
 
         add(liveAnchorModel);
+        add(liveHotModel);
         add(liveFootBallModel);
         add(liveBasketBallModel);
         add(liveOtherModel);
     }};
+
 
     private final ArrayList<Integer> typeList = new ArrayList() {
         {
@@ -344,6 +351,15 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                     }
                 });
         addSubscribe(disposable);
+    }
+
+    /**
+     * 热门赛事
+     * @param matchId
+     * @param success
+     * @param error
+     */
+    private void getHotMatchList(String matchId, Observer<Match> success, Observer<Object> error) {
     }
 
     public void getGameTokenApi(String matchId, Observer<Match> success, Observer<Object> error) {

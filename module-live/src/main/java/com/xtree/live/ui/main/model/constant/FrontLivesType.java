@@ -8,6 +8,7 @@ public enum FrontLivesType {
 //    -1：获取全部，0：足球，1：篮球，2：其他，3：电竞，4：区块链。默认-1
 
     ALL("-1", "直播"),
+    HOT("-1", "热门"),
     FOOTBALL("0", "足球"),
     BASKETBALL("1", "篮球"),
     OTHER("2", "其他");
