@@ -45,14 +45,14 @@ public class RankingChosenRule {
             }
 
             // **使用迭代方式计算笛卡尔积**
-            List<List<String>> allCombination = cartesianProductIterative(formatCodes);
+            int num = countValidCartesianProduct(formatCodes);
 
-            // **优化去重逻辑**
-            long num = allCombination.stream()
-                    .filter(item -> item.size() == new LinkedHashSet<>(item).size())
-                    .count();
+            //// **优化去重逻辑**
+            //long num = allCombination.stream()
+            //        .filter(item -> item.size() == new LinkedHashSet<>(item).size())
+            //        .count();
 
-            facts.put("num", (int) num);
+            facts.put("num", num);
         } catch (Exception e) {
             CfLog.e("Error in RankingChosenRule: " + e.getMessage());
         }
@@ -60,6 +60,7 @@ public class RankingChosenRule {
 
     /**
      * **优化版：使用迭代方式计算笛卡尔积**
+     * 验证过太慢
      */
     private static List<List<String>> cartesianProductIterative(List<List<String>> lists) {
         List<List<String>> result = new ArrayList<>();
@@ -77,6 +78,24 @@ public class RankingChosenRule {
             result = newResult;
         }
         return result;
+    }
+
+    private static int countValidCartesianProduct(List<List<String>> lists) {
+        return countValidRecursive(lists, 0, new ArrayList<>());
+    }
+
+    private static int countValidRecursive(List<List<String>> lists, int index, List<String> current) {
+        if (index == lists.size()) return 1;
+
+        int count = 0;
+        for (String item : lists.get(index)) {
+            if (!current.contains(item)) {
+                current.add(item);
+                count += countValidRecursive(lists, index + 1, current);
+                current.remove(current.size() - 1);
+            }
+        }
+        return count;
     }
 }
 
