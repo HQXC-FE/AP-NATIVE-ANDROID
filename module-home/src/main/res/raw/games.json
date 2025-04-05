@@ -33,6 +33,7 @@
   { "id":"403", "title": "XXXX", "picture": "hm_gm_dj_03", "typeId": 403, "pId": 4 ,    	"playURL":"aviagame/play?autoThrad", "isH5": true, "cid":39, "imageName": "XCImage.esports_AVIA" } ,
   { "id":"404", "title": "XXXX", "picture": "hm_gm_dj_04", "typeId": 404, "pId": 4 ,    	"isH5": true, "cid":40, "imageName": "XCImage.esports_OBGDJ" } ,
 
+  { "id":"500", "title": "XXXX", "picture": "hm_gm_qp_00", "typeId": 500, "pId": 5 ,    	"isH5": true, "cid":63,"name" : "奥丁棋牌"} ,
   { "id":"506", "title": "XXXX", "picture": "hm_gm_qp_06", "typeId": 506, "pId": 5 ,    	"isH5": true, "cid":43,"name" : "瓦力棋牌"} ,
   { "id":"501", "title": "XXXX", "picture": "hm_gm_qp_01", "typeId": 501, "pId": 5 ,    	"playURL":"yygame/play?autoThrad", "isH5": true, "cid":20, "imageName": "XCImage.chess_YY" } ,
   { "id":"502", "title": "XXXX", "picture": "hm_gm_qp_02", "typeId": 502, "pId": 5 ,    	"isH5": true, "cid":32, "imageName": "XCImage.chess_OBGQP" } ,
