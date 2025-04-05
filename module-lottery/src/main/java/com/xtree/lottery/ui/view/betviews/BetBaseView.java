@@ -14,6 +14,7 @@ import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.R;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 
@@ -29,6 +30,7 @@ public abstract class BetBaseView extends FrameLayout {
     public ObservableField<Object> betCodes = new ObservableField<>();
     private LotteryBetsModel model;
     private UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup;
+    private Lottery lottery;
     private BasePopupView pop;
 
     public BetBaseView(@NonNull Context context) {
@@ -47,9 +49,10 @@ public abstract class BetBaseView extends FrameLayout {
         return model;
     }
 
-    public void setModel(LotteryBetsModel model, @Nullable UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
+    public void setModel(LotteryBetsModel model, @Nullable UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
         this.model = model;
         this.prizeGroup = prizeGroup;
+        this.lottery = lottery;
     }
 
     public void setPrizeGroup(UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {

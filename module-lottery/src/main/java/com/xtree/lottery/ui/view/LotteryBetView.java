@@ -49,6 +49,7 @@ public class LotteryBetView extends FrameLayout {
 
     private OnLotteryBetListener onLotteryBetListener = null;
     private BetBaseView betView;
+    private List<String> lotteryNumbsHistory;
 
     public LotteryBetView(@NonNull Context context) {
         super(context);
@@ -110,7 +111,7 @@ public class LotteryBetView extends FrameLayout {
             return;
         }
 
-        betView.setModel(betsModel, prizeGroup);
+        betView.setModel(betsModel, prizeGroup, lottery);
 
         betView.betData.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
@@ -120,6 +121,12 @@ public class LotteryBetView extends FrameLayout {
                 }
             }
         });
+
+        //冷热、遗漏
+        if (betView instanceof BetDigitalView) {
+            BetDigitalView digitalView = (BetDigitalView) betView;
+            digitalView.setLotteryNumbsHistory(lotteryNumbsHistory);
+        }
 
         addView(betView);
     }
@@ -153,6 +160,8 @@ public class LotteryBetView extends FrameLayout {
         if (betView != null && betView instanceof BetDigitalView) {
             BetDigitalView digitalView = (BetDigitalView) betView;
             digitalView.setLotteryNumbsHistory(lotteryNumbsHistory);
+        } else {
+            this.lotteryNumbsHistory = lotteryNumbsHistory;
         }
     }
 

@@ -1,5 +1,8 @@
 package com.xtree.lottery.utils;
 
+import com.xtree.base.mvvm.ExKt;
+import com.xtree.lottery.data.config.MissingCodesConfig;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +19,7 @@ public class LotteryAnalyzer {
     public static final String SPLIT_1 = "；";
 
     //每种单式玩法对应的有效号码位数
-    public static final Map<String, String> INPUT_PLAYS_MAP = new HashMap(){
+    public static final Map<String, String> INPUT_PLAYS_MAP = new HashMap() {
         {
             put("五星直选-单式", "5,9,1");
             put("四星直选-单式", "4,9,1");
@@ -57,6 +60,8 @@ public class LotteryAnalyzer {
             put("竞速-竞速", "2,10,2");
         }
     };
+    //输入筛选正则
+    public static final String INPUT_REGEX = "[,;；，\n]+";
 
     // 计算每个数字的热值
     public synchronized static Map<String, Integer> calculateHotValues(List<String> lotteryNumbers, List<String> betNumbers) {
@@ -164,9 +169,6 @@ public class LotteryAnalyzer {
         return minValue;
     }
 
-    //输入筛选正则
-    public static final String INPUT_REGEX = "[,;；，\n]+";
-
     // 返回符合规则的号码集合
     public static Set<String> getValidNumbers(String input, int numCount, int numMax, int digitCount) {
         Set<String> validNumbers = new HashSet<>();
@@ -248,5 +250,22 @@ public class LotteryAnalyzer {
             cleanNumbers.append(number).append(SPLIT_1);
         }
         return cleanNumbers.toString().trim();
+    }
+
+    public static MissingCodesConfig.MissingCode findMissingCodes(String alias) {
+        MissingCodesConfig.MissingCode missConf = null;
+        for (MissingCodesConfig.MissingCode item : MissingCodesConfig.MISSING_CODES) {
+            if (ExKt.includes(item.alias, alias)) {
+                missConf = item;
+                break; // 找到后立即跳出循环，提高性能
+            }
+        }
+        if (missConf != null) {
+            System.out.println("找到匹配项: " + missConf.codes);
+        } else {
+            System.out.println("未找到匹配项");
+        }
+
+        return missConf;
     }
 }

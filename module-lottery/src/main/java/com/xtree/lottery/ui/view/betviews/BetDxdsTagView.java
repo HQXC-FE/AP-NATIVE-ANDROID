@@ -12,6 +12,7 @@ import androidx.databinding.Observable;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.xtree.base.vo.UserMethodsResponse;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.databinding.LayoutBetDxdstagBinding;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
@@ -94,8 +95,8 @@ public class BetDxdsTagView extends BetBaseView {
     }
 
     @Override
-    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
-        super.setModel(model, prizeGroup);
+    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
+        super.setModel(model, prizeGroup, lottery);
         binding.getModel().initData(model);
         initTip();
     }

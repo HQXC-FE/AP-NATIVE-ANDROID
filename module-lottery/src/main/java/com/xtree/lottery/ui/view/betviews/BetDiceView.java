@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
 
 import com.xtree.base.vo.UserMethodsResponse;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.databinding.LayoutBetDiceBinding;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
@@ -104,8 +105,8 @@ public class BetDiceView extends BetBaseView {
     }
 
     @Override
-    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
-        super.setModel(model,prizeGroup);
+    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
+        super.setModel(model,prizeGroup,lottery);
         binding.getM().initData(model);
         initTip();
 
