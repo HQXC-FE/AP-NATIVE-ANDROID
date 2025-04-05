@@ -281,12 +281,8 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
             CfLog.d("request api...");
             mCallBack.onClick(vo); // vo.alias, vo.gameId
         } else {
-            // 拼装URL
-            if (vo.id.equals("601")) {
-                playGame(DomainUtil.getH5Domain() + vo.playURL, vo.name, vo.id.equals("601"));
-            } else {
-                playGame(DomainUtil.getH5Domain() + vo.playURL, vo.name);
-            }
+            //等于601是彩票
+            playGame(DomainUtil.getH5Domain() + vo.playURL, vo.name, vo.id.equals("601"));
         }
     }
 
@@ -316,15 +312,6 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
         Intent it = new Intent(ctx, BrowserActivity.class);
         it.putExtra("url", playUrl);
         it.putExtra("isLottery", isLottery);
-        it.putExtra("title", title);
-        it.putExtra(BrowserActivity.ARG_IS_GAME, true);
-        ctx.startActivity(it);
-    }
-
-    public void playGame(String playUrl, String title) {
-        CfLog.i("URL: " + playUrl);
-        Intent it = new Intent(ctx, BrowserActivity.class);
-        it.putExtra("url", playUrl);
         it.putExtra("title", title);
         it.putExtra(BrowserActivity.ARG_IS_GAME, true);
         ctx.startActivity(it);
