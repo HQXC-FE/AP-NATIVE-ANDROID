@@ -59,7 +59,12 @@ public class TimesChosenRule {
                 List<?> codesList = formatCodes;
                 if (!codesList.isEmpty() && codesList.get(0) instanceof String) {
                     // 处理 List<String>
-                    totalSum = codesList.size() * finalTimes;
+                    for (int i = 0; i <= codesList.size() - 1; i++) {
+                        if (!((String) codesList.get(i)).isEmpty()) {
+                            totalSum++;
+                        }
+                    }
+                    totalSum = totalSum * finalTimes;
                 } else if (!codesList.isEmpty() && codesList.get(0) instanceof List) {
                     // 处理 List<List<String>>
                     totalSum = codesList.stream()
