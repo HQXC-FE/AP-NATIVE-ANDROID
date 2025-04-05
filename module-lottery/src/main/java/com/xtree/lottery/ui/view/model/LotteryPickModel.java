@@ -13,8 +13,8 @@ import me.xtree.mvvmhabit.base.BaseApplication;
  */
 public class LotteryPickModel extends BindModel {
 
-    public int number = 0;
-    public String table = "";
+    public int number = 0;//排列角标号
+    public String table = "";//彩票号
     public ObservableField<String> tag = new ObservableField<>("");
     public ObservableField<Integer> tagColor = new ObservableField<>(BaseApplication.getInstance().getResources().getColor(R.color.textColor));
     public ObservableField<Boolean> checked = new ObservableField<>(false);

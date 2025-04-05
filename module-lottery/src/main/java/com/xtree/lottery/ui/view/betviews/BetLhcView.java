@@ -9,13 +9,13 @@ import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
 
 import com.xtree.base.vo.UserMethodsResponse;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.databinding.LayoutBetLhcBinding;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.view.viewmodel.BetLhcViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -77,8 +77,8 @@ public class BetLhcView extends BetBaseView {
     }
 
     @Override
-    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
-        super.setModel(model, prizeGroup);
+    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
+        super.setModel(model, prizeGroup, lottery);
         binding.getM().initData(model, prizeGroup);
     }
 

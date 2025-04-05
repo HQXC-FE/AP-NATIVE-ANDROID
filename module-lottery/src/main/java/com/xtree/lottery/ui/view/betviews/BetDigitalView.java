@@ -12,14 +12,15 @@ import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
 
 import com.xtree.base.vo.UserMethodsResponse;
+import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.databinding.LayoutBetDigitalBinding;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.view.LotterySeatView;
 import com.xtree.lottery.ui.view.viewmodel.BetDigitalViewModel;
+import com.xtree.lottery.utils.LotteryAnalyzer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -29,10 +30,7 @@ import java.util.Set;
  */
 public class BetDigitalView extends BetBaseView {
 
-    //使用冷热遗漏功能的玩法
-    private final String[] useMissPlays = {"复式", "直选复式"};
     private LayoutBetDigitalBinding binding;
-
 
     public BetDigitalView(@NonNull Context context) {
         super(context);
@@ -170,13 +168,14 @@ public class BetDigitalView extends BetBaseView {
     }
 
     @Override
-    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
-        super.setModel(model, prizeGroup);
+    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
+        super.setModel(model, prizeGroup, lottery);
         binding.getModel().initData(model);
         initTip();
 
         //复式玩法打开冷热遗漏
-        if (Arrays.asList(useMissPlays).contains(model.getMenuMethodLabelData().getDescription())) {
+//        if (Arrays.asList(useMissPlays).contains(model.getMenuMethodLabelData().getDescription())) {
+        if (LotteryAnalyzer.findMissingCodes(lottery.getAlias()) != null) {
             binding.getModel().buttonStatus.set(true);
         }
 

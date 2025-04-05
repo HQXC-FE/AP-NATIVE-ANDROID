@@ -92,6 +92,8 @@ public class BetDigitalViewModel {
 
         }
     };
+    //
+    private String showStr;
 
     @androidx.databinding.BindingAdapter("data")
     public static void initLotteryPickView(LotteryPickView view, List<LotteryPickModel> picks) {
@@ -103,7 +105,7 @@ public class BetDigitalViewModel {
     public void initData(LotteryBetsModel model) {
 
         bindModels.clear();
-        String showStr = model.getMenuMethodLabelData().getShowStr();
+        showStr = model.getMenuMethodLabelData().getShowStr();
         for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layoutDTO : model.getMenuMethodLabelData().getSelectarea().getLayout()) {
             String[] split = layoutDTO.getNo().split(LAYOUT_NO_SPLIT);
             ArrayList<LotteryPickModel> picks = new ArrayList<>();
@@ -116,7 +118,7 @@ public class BetDigitalViewModel {
                 if (!TextUtils.isEmpty(showStr) && showStr.split(",").length > i && "$".equals(showStr.split(",")[i])) {
                     continue;
                 }
-                picks.add(new LotteryPickModel(i+1, split[i]));
+                picks.add(new LotteryPickModel(i + 1, split[i]));
             }
             bindModels.add(new BetDigitalModel(layoutDTO.getTitle(), picks));
         }
@@ -210,33 +212,17 @@ public class BetDigitalViewModel {
     public synchronized void showMiss(boolean maxMiss) {
         List<String> historys = lotteryHistoryLiveData.getValue();
         if (historys != null && !bindModels.isEmpty()) {
-            for (BindModel bindModel : bindModels) {
-                BetDigitalModel digitalModel = (BetDigitalModel) bindModel;
+
+            for (int i = 0; i < bindModels.size(); i++) {
+                BetDigitalModel digitalModel = (BetDigitalModel) bindModels.get(i);
                 ArrayList<String> validNumbers = new ArrayList<>();
                 //获取有效号码
                 for (LotteryPickModel pickData : digitalModel.getPickDatas()) {
                     validNumbers.add(String.valueOf(pickData.table));
                 }
-                String tag = digitalModel.getTag();
                 ArrayList<String> splitNumbs = new ArrayList<>();
                 for (String history : historys) {
-                    switch (tag) {
-                        case "万位":
-                            splitNumbs.add(history.split(LotteryAnalyzer.SPLIT)[0]);
-                            break;
-                        case "千位":
-                            splitNumbs.add(history.split(LotteryAnalyzer.SPLIT)[1]);
-                            break;
-                        case "百位":
-                            splitNumbs.add(history.split(LotteryAnalyzer.SPLIT)[2]);
-                            break;
-                        case "十位":
-                            splitNumbs.add(history.split(LotteryAnalyzer.SPLIT)[3]);
-                            break;
-                        case "个位":
-                            splitNumbs.add(history.split(LotteryAnalyzer.SPLIT)[4]);
-                            break;
-                    }
+                    splitNumbs.add(history.split(LotteryAnalyzer.SPLIT)[getIndexFromCodes(i)]);
                 }
                 Map<String, Integer> missingValue;
                 //获取遗漏值
@@ -280,8 +266,8 @@ public class BetDigitalViewModel {
                 if (historys.size() > checkCount) {
                     historys = historys.subList(0, checkCount);
                 }
-                for (BindModel bindModel : bindModels) {
-                    BetDigitalModel digitalModel = (BetDigitalModel) bindModel;
+                for (int i = 0; i < bindModels.size(); i++) {
+                    BetDigitalModel digitalModel = (BetDigitalModel) bindModels.get(i);
                     ArrayList<String> validNumbers = new ArrayList<>();
                     //获取有效号码
                     for (LotteryPickModel pickData : digitalModel.getPickDatas()) {
@@ -291,23 +277,7 @@ public class BetDigitalViewModel {
                     String tag = digitalModel.getTag();
                     ArrayList<String> splitNumbs = new ArrayList<>();
                     for (String history : historys) {
-                        switch (tag) {
-                            case "万位":
-                                splitNumbs.add(history.split(LotteryAnalyzer.SPLIT)[0]);
-                                break;
-                            case "千位":
-                                splitNumbs.add(history.split(LotteryAnalyzer.SPLIT)[1]);
-                                break;
-                            case "百位":
-                                splitNumbs.add(history.split(LotteryAnalyzer.SPLIT)[2]);
-                                break;
-                            case "十位":
-                                splitNumbs.add(history.split(LotteryAnalyzer.SPLIT)[3]);
-                                break;
-                            case "个位":
-                                splitNumbs.add(history.split(LotteryAnalyzer.SPLIT)[4]);
-                                break;
-                        }
+                        splitNumbs.add(history.split(LotteryAnalyzer.SPLIT)[getIndexFromCodes(i)]);
                     }
                     //获取冷热值
                     Map<String, Integer> hotValues = LotteryAnalyzer
@@ -336,6 +306,20 @@ public class BetDigitalViewModel {
                 }
             }
         }
+    }
+
+    public Integer getIndexFromCodes(int index) {
+        String[] parts = showStr.split(",");
+        List<Integer> xIndexes = new ArrayList<>();
+        for (int i = 0; i < parts.length; i++) {
+            if ("X".equals(parts[i])) {
+                xIndexes.add(i);
+            }
+        }
+        if (index < xIndexes.size()) {
+            return xIndexes.get(index);
+        }
+        return null;
     }
 
     /**
