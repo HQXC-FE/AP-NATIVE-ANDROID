@@ -193,7 +193,9 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
             btCarDialogFragment.show(getActivity().getSupportFragmentManager(), "btCarDialogFragment");
         }else if(id == com.xtree.bet.R.id.iv_expand){
             CfLog.d("======== LiveBetFragment onClick expand =========");
-            fragment.expand();
+            if(fragment != null){
+                fragment.expand();
+            }
         }
     }
 

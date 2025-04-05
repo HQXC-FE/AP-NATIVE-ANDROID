@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.fb.LeagueInfo;
@@ -290,7 +291,7 @@ public class FBMainViewModel extends TemplateMainViewModel implements MainViewMo
         mLeagueListCallBack = new LeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage, mPlayMethodType, sportPos, sportId,
                 orderBy, leagueIds, searchDatePos, oddType, matchids,
                 needSecondStep, finalType, isStepSecond);
-
+        CfLog.d("============= fBListReq 2222 ==========="+fBListReq);
         Disposable disposable = (Disposable) model.getApiService().getFBList(fBListReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())

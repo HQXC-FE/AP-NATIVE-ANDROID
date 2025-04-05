@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
 import com.xtree.base.net.RetrofitClient;
+import com.xtree.bet.bean.request.fb.FBListReq;
+import com.xtree.bet.bean.response.HotLeagueInfo;
 import com.xtree.live.data.source.http.LiveClient;
 import com.xtree.base.vo.FBService;
 import com.xtree.live.data.source.ApiService;
@@ -16,7 +18,6 @@ import com.xtree.live.data.source.request.ChatRoomListRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
-import com.xtree.live.data.source.request.RoomInfoRequest;
 import com.xtree.live.data.source.request.SearchAssistantRequest;
 import com.xtree.live.data.source.request.SendToAssistantRequest;
 import com.xtree.live.data.source.request.SubscriptionRequest;
@@ -24,7 +25,6 @@ import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
-import com.xtree.live.data.source.response.LiveRoomBean;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.SearchAssistantResponse;
@@ -33,10 +33,12 @@ import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.model.AccumulatedRechargeRes;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.base.BaseModel;
 import me.xtree.mvvmhabit.http.BaseResponse;
+import retrofit2.http.Body;
 
 /**
  * MVVM的Model层，统一模块的数据仓库，包含网络数据和本地数据（一个应用可以有多个Repositor）
@@ -185,5 +187,15 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     @Override
     public Flowable<BaseResponse<AccumulatedRechargeRes>> getAmount() {
         return mHttpDataSource.getAmount();
+    }
+
+    @Override
+    public Flowable<BaseResponse<HotLeagueInfo>> getSettings(Map<String, String> filters) {
+        return mHttpDataSource.getSettings(filters);
+    }
+
+    @Override
+    public Flowable<BaseResponse<MatchInfo>> getFBList(@Body FBListReq fbListReq){
+        return mHttpDataSource.getFBList(fbListReq);
     }
 }

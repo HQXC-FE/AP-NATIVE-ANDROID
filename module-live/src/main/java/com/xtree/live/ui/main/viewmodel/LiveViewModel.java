@@ -3,6 +3,13 @@ package com.xtree.live.ui.main.viewmodel;
 import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
+import static com.xtree.bet.constant.FBConstants.SPORT_IDS;
+import static com.xtree.bet.constant.FBConstants.SPORT_IDS_ALL;
+import static com.xtree.bet.constant.FBConstants.SPORT_NAMES;
+import static com.xtree.bet.constant.FBConstants.SPORT_NAMES_TODAY_CG;
+import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 
 import android.app.Application;
 import android.text.TextUtils;
@@ -16,15 +23,22 @@ import androidx.lifecycle.Observer;
 
 import com.alibaba.fastjson.JSON;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.mvvm.recyclerview.BindModel;
+import com.xtree.base.net.FBHttpCallBack;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.SPUtil;
+import com.xtree.base.utils.TimeUtils;
 import com.xtree.base.vo.FBService;
+import com.xtree.bet.bean.request.fb.FBListReq;
+import com.xtree.bet.bean.response.HotLeagueInfo;
+import com.xtree.bet.bean.response.fb.MatchListRsp;
+import com.xtree.bet.ui.viewmodel.callback.LeagueListCallBack;
 import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
 import com.xtree.live.SPKey;
@@ -59,6 +73,7 @@ import com.xtree.live.ui.main.model.hot.LiveHotModel;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -129,6 +144,8 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     public MutableLiveData<LiveRoomBean> liveRoomInfo = new MutableLiveData<>();
     public MutableLiveData<LiveRoomBean> liveRoomInfoRefresh = new MutableLiveData<>();
     public MutableLiveData<List<GiftBean>> giftList = new MutableLiveData<>();
+
+    public List<Long> hotLeagueList = new ArrayList<>();
 
     public SingleLiveData<com.xtree.bet.bean.ui.Match> matchData = new SingleLiveData<>();
 
@@ -497,6 +514,86 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                     @Override
                     public void onError(Throwable t) {
                         //                        CfLog.e(t.toString());
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    /**
+     * 获取热门联赛
+     */
+    public void getHotLeague(String platform) {
+        Map<String, String> map = new HashMap<>();
+        map.put("fields", !TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC) ? "fbxc_popular_leagues" : "obg_popular_leagues");
+        Disposable disposable = (Disposable) model.getSettings(map)
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<HotLeagueInfo>() {
+                    @Override
+                    public void onResult(HotLeagueInfo hotLeagueInfo) {
+                        CfLog.d("=============== @@@ LiveViewModel fbxc_popular_leagues ================" + hotLeagueInfo.fbxc_popular_leagues);
+                        List<String> hotLeagues = !TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC) ? hotLeagueInfo.fbxc_popular_leagues : hotLeagueInfo.obg_popular_leagues;
+                        for (String leagueId : hotLeagues) {
+                            hotLeagueList.add(Long.valueOf(leagueId));
+                        }
+                        CfLog.d("=============== onResult hotLeagues ================" + hotLeagueList.size());
+                        List<Long> matchids = new ArrayList();
+                        getLeagueList(0, "0", 1, hotLeagueList, matchids, 6, 0, 1, false, false);
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        //super.onError(t);
+                        getHotLeague(platform);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    /**
+     * 获取赛事列表
+     *
+     * @param sportId
+     * @param orderBy
+     * @param leagueIds
+     * @param matchids
+     * @param playMethodType
+     * @param searchDatePos  查询时间列表中的位置
+     * @param oddType        盘口类型
+     */
+    public void getLeagueList(int sportPos, String sportId, int orderBy, List<Long> leagueIds, List<Long> matchids, int playMethodType, int searchDatePos, int oddType, boolean isTimerRefresh, boolean isRefresh) {
+
+        FBListReq fBListReq = new FBListReq();
+        fBListReq.setSportId(sportId);
+        fBListReq.setType(3);
+        fBListReq.setOrderBy(orderBy);
+        fBListReq.setLeagueIds(leagueIds);
+        fBListReq.setMatchIds(null);
+        fBListReq.setCurrent(1);
+        fBListReq.setSize(50);
+        //fBListReq.setCurrent(mCurrentPage);
+        fBListReq.setOddType(oddType);
+        SPORT_NAMES = SPORT_NAMES_TODAY_CG;
+        if (sportPos == -1 || TextUtils.equals(SPORT_NAMES[sportPos], "热门")) {
+            fBListReq.setSportId(null);
+        }
+
+        CfLog.d("============== getLeagueList fBListReq ===========" + fBListReq);
+        Disposable disposable = (Disposable) model.getFBList(fBListReq)
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new FBHttpCallBack<MatchListRsp>() {
+
+                    @Override
+                    public void onResult(MatchListRsp matchListRsp) {
+                        CfLog.d("============== getLeagueList onResult matchListRsp ===========" + matchListRsp.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.d("============== getLeagueList onError ===========");
+                        CfLog.e(t.toString());
                     }
                 });
         addSubscribe(disposable);

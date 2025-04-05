@@ -73,4 +73,15 @@ public class MatchListRsp implements BaseBean {
             return new MatchListRsp[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "MatchListRsp{" +
+                "current=" + current +
+                ", size=" + size +
+                ", total=" + total +
+                ", pages=" + pages +
+                ", records=" + records +
+                '}';
+    }
 }

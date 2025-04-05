@@ -233,7 +233,6 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
     }
 
     private void getMatchDetail(String matchId, Observer<Match> success, Observer<Object> error) {
-        System.out.println("================= LiveDetailViewModel getMatchDetail ===================");
         MatchDetailRequest request = new MatchDetailRequest();
         request.setMatchId(matchId);
         Disposable disposable = (Disposable) model.getMatchDetail(request)
@@ -242,7 +241,6 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
                 .subscribeWith(new HttpCallBack<MatchInfo>() {
                     @Override
                     public void onResult(MatchInfo data) {
-                        System.out.println("================= LiveDetailViewModel getMatchDetail onResult ===================");
                         if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
                             success.onChanged(new MatchFb(data.data));
                         } else {

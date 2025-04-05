@@ -1,5 +1,7 @@
 package com.xtree.live.ui.main.fragment;
 
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import com.google.gson.JsonObject;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.router.RouterFragmentPath;
+import com.xtree.base.utils.CfLog;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.util.MatchDeserializer;
 import com.xtree.live.BR;
@@ -26,6 +29,9 @@ import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.databinding.FragmentLiveBinding;
 import com.xtree.live.ui.main.viewmodel.LiveViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.utils.RxUtils;
@@ -62,6 +68,7 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
 
     @Override
     public void initView() {
+        CfLog.d("================ LiveFragment ==============");
     }
 
     @Override
@@ -103,5 +110,6 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
         //LiveMatchDetailActivity.start(getContext(),mMatch.getId());
 
 //        FloatingWindowActivity.start(getContext());
+          viewModel.getHotLeague(PLATFORM_FBXC);
     }
 }

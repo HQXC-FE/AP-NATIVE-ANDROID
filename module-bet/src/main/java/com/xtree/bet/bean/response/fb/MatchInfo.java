@@ -199,4 +199,35 @@ public class MatchInfo implements BaseBean {
             return new MatchInfo[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "MatchInfo{" +
+                "id=" + id +
+                ", nsg=" + nsg +
+                ", mg=" + mg +
+                ", tms=" + tms +
+                ", tps=" + tps +
+                ", lg=" + lg +
+                ", ts=" + ts +
+                ", mc=" + mc +
+                ", bt=" + bt +
+                ", ms=" + ms +
+                ", fid=" + fid +
+                ", fmt=" + fmt +
+                ", ss=" + ss +
+                ", ne=" + ne +
+                ", vs=" + vs +
+                ", as=" + as +
+                ", sid=" + sid +
+                ", ssi=" + ssi +
+                ", mp='" + mp + '\'' +
+                ", smt=" + smt +
+                ", ty=" + ty +
+                ", ye='" + ye + '\'' +
+                ", nm='" + nm + '\'' +
+                ", sb=" + sb +
+                '}';
+    }
+
 }

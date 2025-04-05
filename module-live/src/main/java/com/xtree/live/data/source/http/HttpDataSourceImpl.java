@@ -1,7 +1,6 @@
 package com.xtree.live.data.source.http;
 
 import android.text.TextUtils;
-import android.widget.Space;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -11,8 +10,9 @@ import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.AESUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
+import com.xtree.bet.bean.request.fb.FBListReq;
+import com.xtree.bet.bean.response.HotLeagueInfo;
 import com.xtree.live.LiveConfig;
-import com.xtree.live.SPKey;
 import com.xtree.live.data.source.APIManager;
 import com.xtree.live.data.source.ApiService;
 import com.xtree.live.data.source.HttpDataSource;
@@ -21,7 +21,6 @@ import com.xtree.live.data.source.request.ChatRoomListRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
-import com.xtree.live.data.source.request.RoomInfoRequest;
 import com.xtree.live.data.source.request.SearchAssistantRequest;
 import com.xtree.live.data.source.request.SendToAssistantRequest;
 import com.xtree.live.data.source.request.SubscriptionRequest;
@@ -29,7 +28,6 @@ import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
-import com.xtree.live.data.source.response.LiveRoomBean;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.SearchAssistantResponse;
@@ -313,5 +311,27 @@ public class HttpDataSourceImpl implements HttpDataSource {
                 );
     }
 
+    @Override
+    public Flowable<BaseResponse<HotLeagueInfo>> getSettings(Map<String, String> filters) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(filters), type);
+        return apiService.get(APIManager.SETTINGS, map).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<HotLeagueInfo>>() {
+                }));
+    }
+
+
+    @Override
+    public Flowable<BaseResponse<MatchInfo>> getFBList(FBListReq fbListReq) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(fbListReq), type);
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.FBXC_API_SERVICE_URL)) && !TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
+            if (TextUtils.isEmpty(FBRetrofitClient.baseUrl)) {
+                fbService = FBRetrofitClient.getInstance().create(ApiService.class);
+            }
+            return fbService.postJson(APIManager.GET_LIST, map).map(responseBody -> JSON.parseObject(responseBody.string(),
+                    new TypeReference<BaseResponse<MatchInfo>>() {
+                    }));
+        }
+        return null;
+    }
 
 }

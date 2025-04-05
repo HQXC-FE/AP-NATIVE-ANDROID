@@ -46,4 +46,12 @@ public class HotLeagueInfo implements BaseBean {
             return new HotLeagueInfo[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "HotLeagueInfo{" +
+                "fbxc_popular_leagues=" + fbxc_popular_leagues +
+                ", obg_popular_leagues=" + obg_popular_leagues +
+                '}';
+    }
 }

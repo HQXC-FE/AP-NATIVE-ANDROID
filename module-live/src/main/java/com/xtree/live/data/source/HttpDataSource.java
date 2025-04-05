@@ -1,12 +1,13 @@
 package com.xtree.live.data.source;
 
 import com.xtree.base.vo.FBService;
+import com.xtree.bet.bean.request.fb.FBListReq;
+import com.xtree.bet.bean.response.HotLeagueInfo;
 import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.ChatRoomListRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
-import com.xtree.live.data.source.request.RoomInfoRequest;
 import com.xtree.live.data.source.request.SearchAssistantRequest;
 import com.xtree.live.data.source.request.SendToAssistantRequest;
 import com.xtree.live.data.source.request.SubscriptionRequest;
@@ -14,7 +15,6 @@ import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
-import com.xtree.live.data.source.response.LiveRoomBean;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.SearchAssistantResponse;
@@ -23,9 +23,13 @@ import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.model.AccumulatedRechargeRes;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.http.BaseResponse;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.QueryMap;
 
 /**
  * Created by goldze on 2019/3/26.
@@ -124,4 +128,19 @@ public interface HttpDataSource {
      * @return
      */
     Flowable<BaseResponse<AccumulatedRechargeRes>> getAmount();
+
+    /**
+     * 热门联赛ID列表
+     *
+     * @return
+     */
+    Flowable<BaseResponse<HotLeagueInfo>> getSettings(@QueryMap(encoded = true) Map<String, String> filters);
+
+    /**
+     * 获取热门赛事和其它赛事标签
+     *
+     * @return
+     */
+    Flowable<BaseResponse<MatchInfo>> getFBList(@Body FBListReq fbListReq);
+
 }
