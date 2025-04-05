@@ -769,7 +769,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
                             }
                         }
                     })
-                    .logTrack(false)             //output log
+                    .logTrack(false)
                     .build();
             binding.chatList.setPanelSwitchHelper(mPanelSwitchHelper);
         }

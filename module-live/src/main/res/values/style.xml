@@ -118,4 +118,9 @@
         <item name="tabRippleColor">@android:color/transparent</item>
     </style>
 
+    <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabBackground">@drawable/tab_background_selector</item>
+        <item name="tabRippleColor">@android:color/transparent</item>
+    </style>
+
 </resources>

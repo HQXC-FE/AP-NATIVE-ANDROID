@@ -207,12 +207,12 @@ public class LiveDetailActivity extends BaseActivity<ActivityLiveDetailBinding, 
     @Override
     protected void initImmersionBar() {
         super.initImmersionBar();
-//        //设置共同沉浸式样式
-//        ImmersionBar.with(this)
-////                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
-//                .fitsSystemWindows(false)
-//                .statusBarDarkFont(false)
-//                .init();
+        //设置共同沉浸式样式
+        ImmersionBar.with(this)
+//                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
+                .fitsSystemWindows(false)
+                .statusBarDarkFont(false)
+                .init();
     }
 
     @Override

@@ -94,8 +94,8 @@
 
         <TextView
             android:id="@+id/exo_quality"
-            android:layout_width="36dp"
-            android:layout_height="30dp"
+            android:layout_width="32dp"
+            android:layout_height="24dp"
             android:padding="4dp"
             android:textColor="#5B5768"
             android:background="@drawable/shape_ffffff_r2"
@@ -108,8 +108,8 @@
 
         <TextView
             android:id="@+id/exo_anchor"
-            android:layout_width="36dp"
-            android:layout_height="30dp"
+            android:layout_width="32dp"
+            android:layout_height="24dp"
             android:padding="4dp"
             android:layout_marginEnd="5dp"
             android:textColor="#5B5768"
@@ -130,13 +130,12 @@
             app:layout_constraintBottom_toBottomOf="@id/iv_logo"
             app:layout_constraintEnd_toStartOf="@id/exo_anchor"
             app:layout_constraintTop_toTopOf="@id/iv_logo"
-             />
+             android:src="@mipmap/ic_live_score_board"/>
 
         <ImageView
             android:id="@+id/exo_fullscreen"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:padding="2dp"
             android:src="@drawable/exo_icon_fullscreen_enter"
             app:layout_constraintBottom_toBottomOf="@id/iv_logo"
             app:layout_constraintEnd_toEndOf="parent"
