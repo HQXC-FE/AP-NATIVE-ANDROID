@@ -220,9 +220,9 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
         public void onReceiveMessageOpen(MessageOpen message) {
             //发送pending消息
             viewModel.postPendingMessages(() -> {
-                        viewModel.enterRoom(roomType, mUid, mVid, wholeChatList());
+                        viewModel.enterRoom(roomType);
                     }
-                    , mUid, mVid);
+                    );
         }
 
         @Override
@@ -374,7 +374,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
 
     @Override
     public void initView() {
-        roomType = getSavedArguments().getInt("room_type", RoomType.PAGE_CHAT_UNKNOW);
+        roomType = getSavedArguments().getInt("room_type", RoomType.PAGE_CHAT_GLOBAL);
         roomInfo = getSavedArguments().getParcelable("room_info");
         chatBarMode = getSavedArguments().getInt("chatbar_mode", ChatBarMode.CHATBAR_MODE_NONE);
         mVid = getSavedArguments().getString("vid", "");
@@ -411,7 +411,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
         mAdapter.getLoadMoreModule().setLoadMoreView(new ChatLoadMoreView());
         mAdapter.getLoadMoreModule().setAutoLoadMore(true);
         mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
-            viewModel.loadMoreChatHistory(lastMsgId(), roomType, uid(), mVid);
+            viewModel.loadMoreChatHistory(lastMsgId(), roomType);
         });
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             if (view.getId() == R.id.message_retry_send) {
@@ -420,7 +420,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
                     ConversationMessage message = (ConversationMessage) obj;
                     message.setDeliveryStatus(DeliverStatus.STATUS_PENDING);
                     mAdapter.notifyItemChanged(position);
-                    viewModel.sendMessage(message.getMessageRecord(), mUid, mVid);
+                    viewModel.sendMessage(message.getMessageRecord());
                 }
             }
         });
@@ -548,7 +548,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
             involveSvgaViewMargin(binding.llSendText.getHeight());
         });
 
-        viewModel.enterRoom(roomType, mUid, mVid, wholeChatList());
+        viewModel.enterRoom(roomType);
 
     }
 
@@ -674,7 +674,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
             UnreadChanged unreadChanged = ActionGetter.getUnreadChanged(this);
             if (unreadChanged != null) unreadChanged.unreadChanged();
         }
-        viewModel.enterRoom(roomType, mUid, mVid, wholeChatList());
+        viewModel.enterRoom(roomType);
         readMessageIDLE();
         mHandler.removeCallbacks(runnable);
         mHandler.post(runnable);
@@ -901,7 +901,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     }
 
     public void getLiveInroomLog() {
-        viewModel.getLiveInroomLog(mVid);
+        viewModel.getLiveInroomLog();
     }
 
     private void involveSvgaViewMargin(int svgaViewMarginBottom) {
@@ -1216,6 +1216,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     @NonNull
     @Override
     public List<ConversationMessage> wholeChatList() {
+        viewModel.setWholeChatList(mAdapter.getData());
         return mAdapter.getData();
     }
 
@@ -1253,12 +1254,12 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     public void onQuickReplyClicked(String msg) {
         // 快捷短语回复
         binding.editText.setText(msg);
-        viewModel.sendText(roomType, mUid, mVid, msg);
+        viewModel.sendText(roomType, msg);
     }
 
     @Override
     public void sendText(String text) {
-        viewModel.sendText(roomType, mUid, mVid, text);
+        viewModel.sendText(roomType, text);
     }
 
     @Override
@@ -1277,7 +1278,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
             ToastUtils.showShort(getString(R.string.network_error));
             return;
         }
-        viewModel.sendPhoto(roomType, mUid, mVid, pic);
+        viewModel.sendPhoto(roomType,pic);
     }
 
     @Override
@@ -1302,7 +1303,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding, LiveDetailHo
     public void sendEmojiGif(String picture) {
         if (mLastSendEmojiGifTime == 0 || SystemClock.elapsedRealtime() - mLastSendEmojiGifTime > 3000) {
             mLastSendEmojiGifTime = SystemClock.elapsedRealtime();
-            viewModel.sendEmojiGif(roomType, mUid, mVid, picture);
+            viewModel.sendEmojiGif(roomType, picture);
         } else {
             ToastUtils.showShort(WordUtil.getString(R.string.send_message_too_quickly));
         }

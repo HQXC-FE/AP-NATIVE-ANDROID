@@ -103,7 +103,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
         LiveHotModel liveHotModel = new LiveHotModel(FrontLivesType.HOT.getLabel());
         liveHotModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.HOT.getValue(), page, limit, success, error);
-        liveHotModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getHotMatchList(params.get("matchId").toString(), success, error);
+        liveHotModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getHotLeague(PLATFORM_FBXC);
         liveHotModel.setItemType(1);
 
         LiveHotModel liveFootBallModel = new LiveHotModel(FrontLivesType.FOOTBALL.getLabel());

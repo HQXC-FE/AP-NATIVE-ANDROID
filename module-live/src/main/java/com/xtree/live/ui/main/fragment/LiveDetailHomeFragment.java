@@ -127,7 +127,7 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
                     case "chat_global"://广场
                         GlobalRoom room = new GlobalRoom(RoomType.PAGE_CHAT_GLOBAL, mVid, "");
                         room.uid = mUid;
-                        return ChatFragment.newInstance(RoomType.PAGE_CHAT_GLOBAL, mUid, mVid, ChatBarMode.CHATBAR_MODE_NONE, room, "", "");
+                        return ChatFragment.newInstance(RoomType.PAGE_CHAT_GLOBAL, 0, mVid, ChatBarMode.CHATBAR_MODE_NONE, room, "", "");
                     case "chat_private"://主播私聊
                         PrivateRoom pRoom = new PrivateRoom(RoomType.PAGE_CHAT_PRIVATE_ANCHOR, pVid(), "", 0);
                         pRoom.isOnline = 0;
@@ -150,6 +150,28 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
             public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
                 super.onAttachedToRecyclerView(recyclerView);
                 recyclerView.setItemViewCacheSize(fragmentTypes.size());
+            }
+        });
+
+        binding.viewpager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+            }
+        });
+
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 

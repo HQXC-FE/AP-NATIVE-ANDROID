@@ -85,6 +85,8 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
     public MutableLiveData<List<AdsBean>> listAdBeanMutable = new MutableLiveData<>();
     public MutableLiveData<ConversationMessage> conversationMessageMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<AccumulatedRechargeRes> accumulatedRechargeResMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<Float> amountMutableLiveData = new MutableLiveData<>();
+
 
 
     @Override
@@ -113,6 +115,8 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
                 .distinctUntilChanged()
                 .observeOn(AndroidSchedulers.mainThread());
         pendingMessageRecordList = new ArrayList<>();
+
+        getAmount();
     }
 
     public void setShowScrollButtonsForScrollPosition(boolean showScrollButtonsForScrollPosition, boolean willScrollToBottomOnNewMessage, int unreadCount) {
@@ -129,8 +133,8 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 
     private boolean isUpdatingChatHistory = false;
 
-    public void updateChatHistory(@RoomType int type, int uid, String vid) {
-        if (lackHistoryParams(type, uid, vid)) return;
+    public void updateChatHistory(@RoomType int type) {
+        if (lackHistoryParams(type)) return;
         if (isUpdatingChatHistory) return;
         isUpdatingChatHistory = true;
 
@@ -138,6 +142,11 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
             @Override
             public void onResult(List<MessageRecord> messageRecords) {
                 listMessageRecord.postValue(messageRecords);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
             }
         };
 
@@ -153,25 +162,25 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
     private String mRequestMsgId;
     private boolean isAutoLoadMore = true;
 
-    public void loadMoreChatHistory(String lastMsgId, @RoomType int type, int uid, String vid) {
+    public void loadMoreChatHistory(String lastMsgId, @RoomType int type) {
         Log.d("api", "mRequestMsgId:" + mRequestMsgId + "\nlastMsgId:" + lastMsgId);
         if (Objects.equals(mRequestMsgId, lastMsgId)) return;
         Log.d("api", "isAutoLoadMore:" + isAutoLoadMore);
         if (!isAutoLoadMore) return;
-        getChatHistoryWithAutoLoad(false, lastMsgId, type, uid, vid, null);
+        getChatHistoryWithAutoLoad(false, lastMsgId, type,null);
     }
 
-    public void refreshChatHistory(@RoomType int type, int uid, String vid) {
+    public void refreshChatHistory(@RoomType int type) {
 
         isAutoLoadMore = true;
-        getChatHistoryWithAutoLoad(true, "0", type, uid, vid, null);
+        getChatHistoryWithAutoLoad(true, "0", type, null);
     }
 
     private boolean isGettingChatHistory;
 
-    private void getChatHistoryWithAutoLoad(boolean isRefresh, String lastMsgId, @RoomType int type, int uid, String vid, @Nullable Runnable autoload) {
+    private void getChatHistoryWithAutoLoad(boolean isRefresh, String lastMsgId, @RoomType int type, @Nullable Runnable autoload) {
 
-        if (lackHistoryParams(type, uid, vid)) return;
+        if (lackHistoryParams(type)) return;
         if (isGettingChatHistory) return;
         isGettingChatHistory = true;
 
@@ -217,13 +226,13 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 
     }
 
-    private boolean lackHistoryParams(int type, int uid, String vid) {
+    private boolean lackHistoryParams(int type) {
         if (type != RoomType.PAGE_CHAT_PRIVATE_ANCHOR && TextUtils.isEmpty(vid)) return true;
         return type == RoomType.PAGE_CHAT_PRIVATE_ANCHOR && uid == 0;
     }
 
 
-    public void getLiveInroomLog(String vid) {
+    public void getLiveInroomLog() {
 
         LiveRep.getInstance().getLiveInroomLog(vid, 50)
                 .subscribe(new HttpCallBack<List<SystemMessageRecord>>() {
@@ -239,14 +248,14 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
      * 1 判断 是否获取vid  否则 inviteRoom 获取到 直接走inRoom
      * 广场不需要inRoom
      */
-    public void enterRoom(@RoomType int roomType, int uid, String vid, List<ConversationMessage> list) {
+    public void enterRoom(@RoomType int roomType) {
 
         if (roomType != RoomType.PAGE_CHAT_PRIVATE_ANCHOR && TextUtils.isEmpty(vid)) {
             if (roomType == RoomType.PAGE_CHAT_GLOBAL) {
                 requestGlobeVid(uid, () -> {
                     InOutRoomHelper.inRoom(vid);
                     pin(RoomType.PAGE_CHAT_GLOBAL, vid);
-                    refreshChatHistory(RoomType.PAGE_CHAT_GLOBAL, uid, vid);
+                    refreshChatHistory(RoomType.PAGE_CHAT_GLOBAL);
                 });
             }
             return;
@@ -254,11 +263,11 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
         pin(roomType, vid);
         if (list.isEmpty()) {
             InOutRoomHelper.inRoom(vid);
-            refreshChatHistory(roomType, uid, vid);
+            refreshChatHistory(roomType);
         } else {
             InOutRoomHelper.inRoom(vid);
             //漏消息无所谓
-            updateChatHistory(roomType, uid, vid);
+            updateChatHistory(roomType);
         }
     }
 
@@ -337,16 +346,16 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 
     }
 
-    public void sendText(int roomType,int uid, String vid,String text) {
+    public void sendText(int roomType,String text) {
         String sender = LiveConfig.getUserId();;
         String seed = EncryptUtils.encryptMD5ToString(sender + vid + System.currentTimeMillis());
-        sendText(roomType,uid,vid, seed, text, null);
+        sendText(roomType, seed, text, null);
     }
 
-    private void sendText(@RoomType int roomType,int uid,String vid, String seed, String text, @Nullable Runnable onFinish) {
+    private void sendText(@RoomType int roomType, String seed, String text, @Nullable Runnable onFinish) {
 //        是否主播私聊
         int msgType = roomType == RoomType.PAGE_CHAT_GLOBAL ? 0 : 1;
-        Map<String, Object> map = sendRequestMap(roomType,uid,vid, seed, msgType);
+        Map<String, Object> map = sendRequestMap(roomType, seed, msgType);
         map.put("text", text);
 
         HttpCallBack<JsonElement> callBack = new HttpCallBack<JsonElement>() {
@@ -392,14 +401,14 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
     }
 
 
-    public void sendEmojiGif(@RoomType int roomType,int uid ,String vid, String picture) {
+    public void sendEmojiGif(@RoomType int roomType, String picture) {
         String sender = LiveConfig.getUserId();
         String seed = EncryptUtils.encryptMD5ToString(sender + vid + System.currentTimeMillis());
-        sendEmojiGif(roomType, uid,vid,seed, picture, null);
+        sendEmojiGif(roomType,seed, picture, null);
     }
 
-    private void sendEmojiGif(@RoomType int roomType,int uid, String vid, String seed, String picture, @Nullable Runnable onFinish) {
-        Map<String, Object> map = sendRequestMap(roomType,uid,vid, seed, 5);
+    private void sendEmojiGif(@RoomType int roomType, String seed, String picture, @Nullable Runnable onFinish) {
+        Map<String, Object> map = sendRequestMap(roomType,seed, 5);
         map.put("pic", picture);
 
         HttpCallBack<JsonElement> callBack = new HttpCallBack<JsonElement>() {
@@ -444,17 +453,17 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
     }
 
 
-    public void sendPhoto(@RoomType int roomType,int uid,String vid, File pic) {
+    public void sendPhoto(@RoomType int roomType, File pic) {
         String sender = LiveConfig.getUserId();
         String seed = EncryptUtils.encryptMD5ToString(sender + vid + System.currentTimeMillis());
-        sendPhoto(roomType,uid,vid, seed, pic, null);
+        sendPhoto(roomType, seed, pic, null);
     }
 
 
-    private void sendPhoto(int roomType,int uid,String vid, String seed, File pic, @Nullable Runnable onFinish) {
+    private void sendPhoto(int roomType,String seed, File pic, @Nullable Runnable onFinish) {
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("pic", seed + ".jpg", RequestBody.create(pic, MediaType.parse("image/*")));
         Map<String, RequestBody> bodyMap = new HashMap<>();
-        Map<String, Object> map = sendRequestMap(roomType,uid,vid, seed, 2);
+        Map<String, Object> map = sendRequestMap(roomType, seed, 2);
 //        String timestamp = "" + ApiClient.getTimestamp();
 //        String key = Helper.productSign(timestamp, sendMessageApiPathList(roomType));
 //        String sign = RequestUtils.getApiFrontSign(map, key);
@@ -512,7 +521,7 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 //                mvpView().setRoomVid(vid);
                 pin(roomType, vid);
                 InOutRoomHelper.inRoom(vid);
-                refreshChatHistory(roomType,uid,vid);
+                refreshChatHistory(roomType);
             }
         }
     }
@@ -608,7 +617,7 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
     /**
      * 发送pending消息
      */
-    public void postPendingMessages(@Nullable Runnable runnable,int uid,String vid) {
+    public void postPendingMessages(@Nullable Runnable runnable) {
         if (pendingMessageRecordList.isEmpty()) {
             if (runnable != null) runnable.run();
             return;
@@ -618,45 +627,40 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
             case 0:
             case 1:
                 sendText(messageRecord.getType(),
-                        uid,vid,
                         messageRecord.getSeed(),
                         messageRecord.getText(),
-                        () -> postPendingMessages(runnable,uid,vid));
+                        () -> postPendingMessages(runnable));
                 break;
             case 5:
                 sendEmojiGif(messageRecord.getType(),
-                        uid,vid,
                         messageRecord.getSeed(),
                         messageRecord.getPic(),
-                        () -> postPendingMessages(runnable,uid,vid)
+                        () -> postPendingMessages(runnable)
                 );
                 break;
             case 2:
                 File file = UriUtils.uri2File(Uri.parse(messageRecord.getPic()));
                 if (FileUtils.isFileExists(file)) {
                     sendPhoto(messageRecord.getType(),
-                            uid,vid,
                             messageRecord.getSeed(),
                             file,
-                            () -> postPendingMessages(runnable,uid,vid));
+                            () -> postPendingMessages(runnable));
                 }
                 break;
         }
     }
 
-    public void sendMessage(MessageRecord messageRecord,int uid,String vid) {
+    public void sendMessage(MessageRecord messageRecord) {
         switch (messageRecord.getMsgType()) {
             case 0:
             case 1:
                 sendText(messageRecord.getType(),
-                        uid,vid,
                         messageRecord.getSeed(),
                         messageRecord.getText(),
                         null);
                 break;
             case 5:
                 sendEmojiGif(messageRecord.getType(),
-                        uid,vid,
                         messageRecord.getSeed(),
                         messageRecord.getPic(),
                         null
@@ -666,7 +670,6 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
                 File file = UriUtils.uri2File(Uri.parse(messageRecord.getPic()));
                 if (FileUtils.isFileExists(file)) {
                     sendPhoto(messageRecord.getType(),
-                            uid,vid,
                             messageRecord.getSeed(),
                             file,
                             null);
@@ -676,7 +679,7 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
     }
 
     @NonNull
-    private Map<String, Object> sendRequestMap(int roomType,int uid,String vid, String seed, int msgType) {
+    private Map<String, Object> sendRequestMap(int roomType, String seed, int msgType) {
         String channelCode = LiveConfig.getChannelCode();
         Map<String, Object> map = new HashMap<>();
         map.put("text", "");
@@ -734,7 +737,8 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
                     @Override
                     public void onResult(AccumulatedRechargeRes data) {
                         if (data != null) {
-                            accumulatedRechargeResMutableLiveData.postValue(data);
+//                            accumulatedRechargeResMutableLiveData.postValue(data);
+                            amountMutableLiveData.setValue(data.getAmount());
                         }
                     }
 
@@ -743,6 +747,11 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
                         super.onError(t);
                     }
                 });
+    }
+
+    List<ConversationMessage> list = new ArrayList<>();
+    public void setWholeChatList(List<ConversationMessage> data) {
+        this.list = data;
     }
 
 }
