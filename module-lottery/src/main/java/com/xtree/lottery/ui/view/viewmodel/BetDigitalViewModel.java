@@ -106,6 +106,7 @@ public class BetDigitalViewModel {
 
         bindModels.clear();
         showStr = model.getMenuMethodLabelData().getShowStr();
+        boolean isButton = model.getMenuMethodLabelData().getSelectarea().isIsButton();
         for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layoutDTO : model.getMenuMethodLabelData().getSelectarea().getLayout()) {
             String[] split = layoutDTO.getNo().split(LAYOUT_NO_SPLIT);
             ArrayList<LotteryPickModel> picks = new ArrayList<>();
@@ -120,7 +121,7 @@ public class BetDigitalViewModel {
                 }
                 picks.add(new LotteryPickModel(i + 1, split[i]));
             }
-            bindModels.add(new BetDigitalModel(layoutDTO.getTitle(), picks));
+            bindModels.add(new BetDigitalModel(layoutDTO.getTitle(), picks, isButton));
         }
 
         datas.set(bindModels);
