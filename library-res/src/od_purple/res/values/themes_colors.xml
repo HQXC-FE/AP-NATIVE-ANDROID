@@ -56,16 +56,27 @@
     <!--    文字-->
 
     <!--    渐变-->
+    <color name="closeGradient1Color">#DB98C4</color>
+    <color name="closeGradient2Color">#EFE5FF</color>
+
+    <color name="titleGradient1Color">#E7DAFF</color>
+    <color name="titleGradient2Color">#CFEFE5FF</color>
 
     <color name="betGradient1Color">#FFF8FC</color>
     <color name="betGradient2Color">#F4EFFF</color>
+
+    <color name="lotteryLabelGradient1Color">#E7DAFF</color>
+    <color name="lotteryLabelGradient2Color">#00EFE5FF</color>
+
+    <color name="lotteryTitleGradient1Color">#F8ECFF</color>
+    <color name="lotteryTitleGradient2Color">#00F8ECFF</color>
 
     <color name="moneyGradient1Color">#FFFFFF</color>
     <color name="moneyGradient2Color">#52BBACFD</color>
     <color name="moneyGradient3Color">#00F2EFFF</color>
 
-    <color name="moneyDefaultGradient1Color">#87F0EAFF</color>
-    <color name="moneyDefaultGradient2Color">#ECE8FF</color>
+    <color name="moneyDefaultGradient1Color">#FFF5EB</color>
+    <color name="moneyDefaultGradient2Color">#FFF0F0</color>
 
     <!--    渐变-->
 
