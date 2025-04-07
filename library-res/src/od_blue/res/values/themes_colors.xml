@@ -137,4 +137,6 @@
 
 
     <color name="offerLineColor">#6464EB</color>
+    <color name="offerGetExpiredStart">#FFFFFF</color>
+    <color name="offerGetExpiredEnd">#ECFFFFFF</color>
 </resources>
