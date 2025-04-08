@@ -96,7 +96,8 @@
                         android:layout_centerInParent="true"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="gone"
+                        tools:visibility="invisible">
 
                         <TextView
                             android:id="@+id/textView_login"
@@ -150,7 +151,8 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:visibility="visible">
+                        android:visibility="visible"
+                        tools:visibility="gone">
 
                         <TextView
                             android:id="@+id/total_money_hint"
@@ -325,7 +327,7 @@
                     android:id="@+id/ll_menu"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="2dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:orientation="horizontal"
