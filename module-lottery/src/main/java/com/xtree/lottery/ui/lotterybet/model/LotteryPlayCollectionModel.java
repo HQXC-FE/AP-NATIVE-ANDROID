@@ -1,11 +1,14 @@
 package com.xtree.lottery.ui.lotterybet.model;
 
+import android.util.ArrayMap;
+import android.util.Log;
+
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by KAKA on 2024/4/29.
@@ -15,7 +18,7 @@ public class LotteryPlayCollectionModel extends BindModel {
 
     private MenuMethodsData.LabelsDTO.Labels1DTO label;
     private MenuMethodsData.LabelsDTO menulabel;
-    private HashMap<String, UserMethodsResponse.DataDTO> userMethods = new HashMap<>();
+    private Map<String, UserMethodsResponse.DataDTO> userMethods = new ArrayMap<>();
     private Lottery lottery;
 
     public Lottery getLottery() {
@@ -26,12 +29,13 @@ public class LotteryPlayCollectionModel extends BindModel {
         this.lottery = lottery;
     }
 
-    public UserMethodsResponse.DataDTO getUserMethod(String name) {
-        return userMethods.get(name);
+    public UserMethodsResponse.DataDTO getUserMethod(String key) {
+        return userMethods.get(key);
     }
 
-    public void putUserMethods(String name, UserMethodsResponse.DataDTO userMethod) {
-        this.userMethods.put(name, userMethod);
+    public void putUserMethods(String key, UserMethodsResponse.DataDTO userMethod) {
+        Log.i("打印2：", key);
+        this.userMethods.put(key, userMethod);
     }
 
     public MenuMethodsData.LabelsDTO.Labels1DTO getLabel() {

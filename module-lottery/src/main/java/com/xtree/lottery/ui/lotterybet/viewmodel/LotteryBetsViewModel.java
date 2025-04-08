@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.xtree.base.mvvm.ExKt;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
@@ -52,6 +53,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
@@ -94,7 +97,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public LotteryViewModel lotteryViewModel;
 
     private MenuMethodsData menuMethods;
-    private UserMethodsResponse userMethods;
+    //    private UserMethodsResponse userMethods;
     private WeakReference<FragmentActivity> mActivity = null;
 
     public LotteryBetsViewModel(@NonNull Application application) {
@@ -151,10 +154,11 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
      */
     private void initPlayCollection(Lottery lottery) {
         playModels.clear();
-        List<UserMethodsResponse.DataDTO> userLabels = userMethods.getData();
+//        List<UserMethodsResponse.DataDTO> userLabels = userMethods.getData();
         List<MenuMethodsData.LabelsDTO> menuLabels = menuMethods.getLabels();
 
         boolean hasUsePlay = false;
+        String methods = SPUtils.getInstance().getString(lottery.getAlias(), "");
 
         for (MenuMethodsData.LabelsDTO label : menuLabels) {
             if (label != null && label.getLabels() != null) {
@@ -173,23 +177,18 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     la.setLabels(new ArrayList<>());
                     model.setLabel(la);
                     for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTO : labels1DTO.getLabels()) {
-                        for (UserMethodsResponse.DataDTO um : userLabels) {
-                            if (Objects.equals(labels2DTO.getMenuid(), um.getMenuid()) && Objects.equals(labels2DTO.getMethodid(), um.getMethodid())) {
-                                //只取第一条玩法
-                                if (!hasUsePlay && label.isIsdefault()) {
-                                    hasUsePlay = true;
-                                    labels2DTO.setUserPlay(true);
-                                }
-                                model.getLabel().getLabels().add(labels2DTO);
-                                model.putUserMethods(um.getName(), um);
-                                break;
-                            }
+                        if (!TextUtils.isEmpty(methods) && ExKt.includes(Arrays.asList(methods.split(",")), labels2DTO.getMenuid())) {
+                            hasUsePlay = true;
+                            labels2DTO.setUserPlay(true);
                         }
+                        model.putUserMethods(labels2DTO.getMenuid() + labels2DTO.getMethodid(), new UserMethodsResponse.DataDTO(labels2DTO.getMenuid(), labels2DTO.getMethodid(), labels2DTO.getName(), labels2DTO.getPrizeLevel(), labels2DTO.getPrizeGroup(), labels2DTO.getCateTitle(), labels2DTO.getIsMultiple(), labels2DTO.getRelationMethods()));
+                        model.getLabel().getLabels().add(labels2DTO);
                     }
-                    if (model.getLabel().getLabels().size() > 0) {
-                        playModels.add(model);
-                    }
+//                    if (model.getLabel().getLabels().size() > 0) {
+                    playModels.add(model);
+//                    }
                 }
+            } else {
             }
         }
 
@@ -197,6 +196,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             //如果没有默认玩法 则默认第一条选中
             LotteryPlayCollectionModel m = (LotteryPlayCollectionModel) playModels.get(0);
             m.getLabel().getLabels().get(0).setUserPlay(true);
+            SPUtils.getInstance().put(lottery.getAlias(), m.getLabel().getLabels().get(0).getMenuid());
         }
 
         initTabs();
@@ -218,7 +218,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     }
 
                     tabList.add(title);
-                    LotteryBetsModel lotteryBetsModel = new LotteryBetsModel(title, m.getMenulabel(), label, m.getUserMethod(label.getName()));
+                    LotteryBetsModel lotteryBetsModel = new LotteryBetsModel(title, m.getMenulabel(), label, m.getUserMethod(label.getMenuid() + label.getMethodid()));
                     betModels.add(lotteryBetsModel);
                 }
             }
@@ -228,36 +228,112 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
 
     private void initMethods(Lottery lottery) {
 
-        Map<String, MenuMethodsData> lotteryMethodsData = LotteryDataManager.INSTANCE.getLotteryMethodsData();
-        if (lotteryMethodsData != null) {
-            MenuMethodsData menuMethodsData = lotteryMethodsData.get(lottery.getAlias());
-            UserMethodsResponse userMethodsData = LotteryDataManager.INSTANCE.getUserMethods();
+        Map<String, MenuMethodsData> staticLotteryMethodsData = LotteryDataManager.INSTANCE.getStaticLotteryMethodsData();
+        if (staticLotteryMethodsData != null) {
+            MenuMethodsData menuMethodsData = staticLotteryMethodsData.get(lottery.getAlias());
+            UserMethodsResponse dynamicUserMethodsData = LotteryDataManager.INSTANCE.getDynamicUserMethods();
 
             //先使用本地数据初始化玩法
-            if (menuMethodsData != null && userMethodsData != null) {
-                menuMethods = menuMethodsData;
-                userMethods = userMethodsData;
-                initPlayCollection(lottery);
-            }
-        }
-        //加载网络数据初始化玩法
-        getMenuMethods(lottery);
-    }
+            if (menuMethodsData != null && dynamicUserMethodsData != null) {
 
-    private void getUserMethods(Lottery lottery) {
-        Disposable disposable = model.getUserMethodsData().subscribeWith(new HttpCallBack<UserMethodsResponse>() {
-            @Override
-            public void onResult(UserMethodsResponse response) {
-                if (response.getData() != null && menuMethods != null) {
-                    LotteryDataManager.INSTANCE.setUserMethods(response);
-                    userMethods = response;
-                    initPlayCollection(lottery);
+                //静态和动态数据替换
+                // 转换 methods-dynamic 数据
+                List<UserMethodsResponse.DataDTO> dy = (dynamicUserMethodsData.getData()).stream()
+                        .map(item -> {
+//                            item.put("menuid", Integer.valueOf(item.get("menuid").toString()));
+                            return item;
+                        })
+                        .collect(Collectors.toList());
+
+                // 处理每个彩票数据
+                Iterator<Map.Entry<String, MenuMethodsData>> mainIterator = staticLotteryMethodsData.entrySet().iterator();
+                while (mainIterator.hasNext()) {
+                    Map.Entry<String, MenuMethodsData> next = mainIterator.next();
+                    MenuMethodsData value = next.getValue();
+                    List<MenuMethodsData.LabelsDTO> labels = value.getLabels();
+                    // 空子玩法过滤
+                    if (labels == null || labels.isEmpty() || labels.stream()
+                            .filter(Objects::nonNull) // 过滤掉 null
+                            .collect(Collectors.toList()).isEmpty()) {
+                        CfLog.e("移除:" + new Gson().toJson(value));
+                        mainIterator.remove();
+                        continue;
+                    }
+                    Iterator<MenuMethodsData.LabelsDTO> iterator = labels.iterator();
+                    while (iterator.hasNext()) {
+                        MenuMethodsData.LabelsDTO label = iterator.next();
+                        List<MenuMethodsData.LabelsDTO.Labels1DTO> labels1DTOS = label.getLabels();
+                        // 空子玩法过滤
+                        if (labels1DTOS == null || labels1DTOS.isEmpty() || labels1DTOS.stream()
+                                .filter(Objects::nonNull) // 过滤掉 null
+                                .collect(Collectors.toList()).isEmpty()) {
+                            CfLog.e("移除:" + new Gson().toJson(label));
+                            iterator.remove();
+                            continue;
+                        }
+                        Iterator<MenuMethodsData.LabelsDTO.Labels1DTO> labels1DTOIterator = labels1DTOS.iterator();
+                        while (labels1DTOIterator.hasNext()) {
+                            MenuMethodsData.LabelsDTO.Labels1DTO labels1DTO = labels1DTOIterator.next();
+                            List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO> labels2DTOS = labels1DTO.getLabels();
+                            // 空玩法过滤
+                            if (labels2DTOS == null || labels2DTOS.isEmpty() || labels2DTOS.stream()
+                                    .filter(Objects::nonNull) // 过滤掉 null
+                                    .collect(Collectors.toList()).isEmpty()) {
+                                CfLog.e("移除:" + new Gson().toJson(labels1DTO));
+                                labels1DTOIterator.remove();
+                                continue;
+                            }
+                            Iterator<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO> labels2DTOIterator = labels2DTOS.iterator();
+                            while (labels2DTOIterator.hasNext()) {
+                                MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTO = labels2DTOIterator.next();
+                                UserMethodsResponse.DataDTO dyMethod = dy.stream()
+                                        .filter(item -> Objects.equals(item.getMenuid(), labels2DTO.getMenuid()))
+                                        .findFirst()
+                                        .orElse(null);
+                                if (dyMethod == null) {
+                                    CfLog.e("移除:" + new Gson().toJson(labels2DTO));
+                                    labels2DTOIterator.remove();
+                                } else {
+                                    //method.prize_level = dyMethod.prize_level;
+                                    //method.prize_group = dyMethod.prize_group;
+                                    //method.groupName = subCategory.gtitle;
+                                    //method.cateName = mainCategory.title;
+                                    //method.lotteryId = lottery.lotteryId;
+                                    labels2DTO.setPrizeLevel(dyMethod.getPrizeLevel());
+                                    labels2DTO.setPrizeGroup(dyMethod.getPrizeGroup());
+                                    labels2DTO.setGroupName(labels1DTO.getTitle());
+                                    labels2DTO.setCateName(label.getTitle());
+                                    labels2DTO.setLotteryid(value.getLotteryid());
+                                }
+                            }
+                        }
+                    }
+
                 }
 
+                //静态和动态数据替换
+                menuMethods = menuMethodsData;
+//                userMethods = dynamicUserMethodsData;
             }
-        });
-        addSubscribe(disposable);
+            //加载网络数据初始化玩法
+            getMenuMethods(lottery);
+        }
     }
+
+//    private void getUserMethods(Lottery lottery) {
+//        Disposable disposable = model.getUserMethodsData().subscribeWith(new HttpCallBack<UserMethodsResponse>() {
+//            @Override
+//            public void onResult(UserMethodsResponse response) {
+//                if (response.getData() != null && menuMethods != null) {
+//                    LotteryDataManager.INSTANCE.setDynamicUserMethods(response);
+//                    userMethods = response;
+//                    initPlayCollection(lottery);
+//                }
+//
+//            }
+//        });
+//        addSubscribe(disposable);
+//    }
 
     private void getMenuMethods(Lottery lottery) {
         Disposable disposable = model.getMenuMethodsData(lottery.getAlias()).subscribeWith(new HttpCallBack<MenuMethodsResponse>() {
@@ -265,6 +341,25 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             public void onResult(MenuMethodsResponse response) {
                 if (response.getData() != null) {
                     MenuMethodsData menuMethodsRemote = response.getData();
+
+                    int resSize = (int) menuMethodsRemote.getLabels().stream()
+                            .filter(Objects::nonNull)
+                            .flatMap(method -> Optional.ofNullable(method.getLabels()).orElse(Collections.emptyList()).stream())
+                            .filter(Objects::nonNull)
+                            .flatMap(label -> Optional.ofNullable(label.getLabels()).orElse(Collections.emptyList()).stream())
+                            .filter(Objects::nonNull)
+                            .count();
+                    int cacheSize = (int) menuMethods.getLabels().stream()
+                            .filter(Objects::nonNull)
+                            .flatMap(method -> Optional.ofNullable(method.getLabels()).orElse(Collections.emptyList()).stream())
+                            .filter(Objects::nonNull)
+                            .flatMap(label -> Optional.ofNullable(label.getLabels()).orElse(Collections.emptyList()).stream())
+                            .filter(Objects::nonNull)
+                            .count();
+                    if (resSize != cacheSize) {
+                        // 缓存数据落后于实时数据
+//                        $cache.remove('methods-dynamic');
+                    }
 
                     if (menuMethods != null) { //替换本地数据
                         // 构建远程数据的映射表
@@ -327,7 +422,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                                                     }
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
-                                                    CfLog.e("替换Selectarea异常" + new Gson().toJson(labels2DTOLocal));
+                                                    CfLog.e("移除" + new Gson().toJson(labels2DTOLocal));
                                                     iterator.remove();
                                                 }
                                             }
@@ -341,13 +436,15 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                         menuMethods = menuMethodsRemote;
                     }
 
-                    UserMethodsResponse userMethodsData = LotteryDataManager.INSTANCE.getUserMethods();
-                    if (userMethodsData == null) {
-                        getUserMethods(lottery);
-                    } else {
-                        userMethods = userMethodsData;
-                        initPlayCollection(lottery);
-                    }
+//                    UserMethodsResponse userMethodsData = LotteryDataManager.INSTANCE.getDynamicUserMethods();
+//                    if (userMethodsData == null) {
+//                        getUserMethods(lottery);
+//                    } else {
+//                        userMethods = userMethodsData;
+//                        initPlayCollection(lottery);
+//                    }
+
+                    initPlayCollection(lottery);
                 }
             }
         });
@@ -544,7 +641,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             }
         }
 
-        if (lotteryBetsModel.getUserMethodData().getPrizeGroup() != null) {
+        if (lotteryBetsModel.getUserMethodData().getPrizeGroup() != null && lotteryBetsModel.getUserMethodData().getPrizeGroup().size() > 0) {
             String defaultLabel = SPUtils.getInstance().getString(lotteryBetsModel.getUserMethodData().getMenuid() + lotteryBetsModel.getUserMethodData().getMethodid() + lotteryBetsModel.getUserMethodData().getName(), lotteryBetsModel.getUserMethodData().getPrizeGroup().get(0).getLabel());
             for (UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroupDTO : lotteryBetsModel.getUserMethodData().getPrizeGroup()) {
                 if (prizeGroupDTO.getLabel().equals(defaultLabel)) {
@@ -614,13 +711,12 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
 //                methodsDTO.setCurrent();
                 methodsDTOS.add(methodsDTO);
 
-                for (UserMethodsResponse.DataDTO um : userMethods.getData()) {
-                    if (l2.getMenuid().equals(um.getMenuid()) && l2.getMethodid().equals(um.getMethodid())) {
-                        methodsDTO.setPrizeLevel(userMethodData.getPrizeLevel());
-                        methodsDTO.setPrizeGroup(userMethodData.getPrizeGroup());
-                        break;
-                    }
+                UserMethodsResponse.DataDTO um = currentBetModel.getValue().getUserMethodData();
+                if (l2.getMenuid().equals(um.getMenuid()) && l2.getMethodid().equals(um.getMethodid())) {
+                    methodsDTO.setPrizeLevel(userMethodData.getPrizeLevel());
+                    methodsDTO.setPrizeGroup(userMethodData.getPrizeGroup());
                 }
+
 
                 //设置当前玩法
                 if (l2.getMenuid().equals(currentl2.getMenuid()) && l2.getMethodid().equals(currentl2.getMethodid())) {
@@ -743,7 +839,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
      * @param alias
      * @param res
      */
-    private void processLocalMethodReplaceRemote(Map<String, Object> methodData, String alias, Map<String, Object> res) {
+    private void processLocalMethodReplaceRemote(Map<String, Object> methodData, String
+            alias, Map<String, Object> res) {
 
     }
 

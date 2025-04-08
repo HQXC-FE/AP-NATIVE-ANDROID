@@ -65,6 +65,18 @@ public class UserMethodsResponse {
     }
 
     public static class DataDTO {
+
+        public DataDTO(String menuid, String methodid, String name, List<String> prizeLevel, List<PrizeGroupDTO> prizeGroup, String title, int isMultiple, List<Integer> relationMethods) {
+            this.menuid = menuid;
+            this.methodid = methodid;
+            this.name = name;
+            this.prizeLevel = prizeLevel;
+            this.prizeGroup = prizeGroup;
+            this.title = title;
+            this.isMultiple = isMultiple;
+            this.relationMethods = relationMethods;
+        }
+
         /**
          * menuid
          */
@@ -90,6 +102,17 @@ public class UserMethodsResponse {
          */
         @SerializedName("prize_group")
         private List<PrizeGroupDTO> prizeGroup;
+
+        private boolean areaPrize;
+
+        public boolean isAreaPrize() {
+            return areaPrize;
+        }
+
+        public void setAreaPrize(boolean areaPrize) {
+            this.areaPrize = areaPrize;
+        }
+
         /**
          * title
          */
@@ -198,6 +221,11 @@ public class UserMethodsResponse {
             }
 
             public void setLabel(String label) {
+                this.label = label;
+            }
+
+            public PrizeGroupDTO(int value, String label) {
+                this.value = value;
                 this.label = label;
             }
         }

@@ -18,8 +18,8 @@ import me.xtree.mvvmhabit.base.BaseApplication
 @SuppressLint("CheckResult")
 object LotteryDataManager {
 
-    var lotteryMethodsData: HashMap<String, MenuMethodsData>? = null
-    var userMethods: UserMethodsResponse? = null
+    var staticLotteryMethodsData: HashMap<String, MenuMethodsData>? = null
+    var dynamicUserMethods: UserMethodsResponse? = null
 
     init {
         Single.create { emitter ->
@@ -38,7 +38,7 @@ object LotteryDataManager {
         } .subscribeOn(Schedulers.single())
             .observeOn(Schedulers.single())
             .subscribe(
-                { data -> lotteryMethodsData = data },
+                { data -> staticLotteryMethodsData = data },
                 { error -> println("Error: ${error.message}") }
             )
     }

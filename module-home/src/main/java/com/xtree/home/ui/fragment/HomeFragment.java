@@ -35,6 +35,8 @@ import com.xtree.base.utils.StringUtils;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.EventVo;
+import com.xtree.base.vo.PrizeEntry;
+import com.xtree.base.vo.PrizeRange;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.base.widget.AppUpdateDialog;
@@ -60,7 +62,9 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.utils.KLog;
@@ -74,11 +78,11 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewModel> {
     CustomFloatWindows customFloatWindows;
     GameAdapter gameAdapter;
+    boolean isBinding = false; // 是否正在跳转到其它页面绑定手机/YHK (跳转后回来刷新用)
     private int curPId = 0; // 当前选中的游戏大类型 1体育,2真人,3电子,4电竞,5棋牌,6彩票
     private ProfileVo mProfileVo; //最新的用戶信息
     private BasePopupView ppw = null; // 底部弹窗
     private BasePopupView ppw2 = null; // 底部弹窗
-    boolean isBinding = false; // 是否正在跳转到其它页面绑定手机/YHK (跳转后回来刷新用)
     private boolean needScroll;
     private int position;
     private LinearLayoutManager manager;
@@ -288,8 +292,93 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         //});
 
         viewModel.liveDataLotteryUser.observe(getViewLifecycleOwner(), vo -> {
-            KLog.i("json11+ " + new Gson().toJson(vo));
+            //ARouter无法传输mLotteryUser这种庞大的数据
+            // 奖金组拼接
+            // 多返点时候特殊处理（返点按照区间范围显示）
+            List<UserMethodsResponse.DataDTO> dynamicMethods = vo.getData().stream()
+                    .filter(item -> {
+                        List<UserMethodsResponse.DataDTO.PrizeGroupDTO> prizeGroup = item.getPrizeGroup();
+                        return prizeGroup == null ||
+                                prizeGroup.size() <= 2;
+                    })
+                    .collect(Collectors.toList());
+
+            List<UserMethodsResponse.DataDTO> multiPrizeMode = vo.getData().stream()
+                    .filter(item -> {
+                        List<UserMethodsResponse.DataDTO.PrizeGroupDTO> prizeGroup = item.getPrizeGroup();
+                        return prizeGroup != null && prizeGroup.size() > 2;
+                    })
+                    .collect(Collectors.toList());
+
+            for (UserMethodsResponse.DataDTO prizeMode : multiPrizeMode) {
+                List<UserMethodsResponse.DataDTO.PrizeGroupDTO> pgObj = prizeMode.getPrizeGroup();
+
+                if (pgObj == null) continue;
+
+                // 解析 prize_group
+                List<PrizeEntry> parsedList = pgObj.stream()
+                        .map(item -> {
+                            String label = item.getLabel();
+                            try {
+                                String[] parts = label.split(" ")[1].split("-");
+                                float prize = Float.parseFloat(parts[0].replace("%", "").trim());
+                                float value = Float.parseFloat(parts[1].replace("%", "").trim());
+                                return new PrizeEntry(prize, value);
+                            } catch (Exception e) {
+                                return null;
+                            }
+                        })
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+
+                // 按 value 分组
+                Map<Float, List<PrizeEntry>> grouped = parsedList.stream()
+                        .collect(Collectors.groupingBy(PrizeEntry::getValue));
+
+                // 获取每组的最大和最小值
+                List<PrizeRange> minMaxValues = grouped.entrySet().stream()
+                        .map(entry -> {
+                            float value = entry.getKey();
+                            float minPrize = (float) entry.getValue().stream()
+                                    .mapToDouble(PrizeEntry::getPrize) // 使用 mapToDouble 映射到 double 类型
+                                    .min()
+                                    .orElse(0);  // 默认值 0
+                            float maxPrize = (float) entry.getValue().stream()
+                                    .mapToDouble(PrizeEntry::getPrize) // 使用 mapToDouble 映射到 double 类型
+                                    .max()
+                                    .orElse(0);  // 默认值 0
+                            return new PrizeRange(value, minPrize, maxPrize);
+                        })
+                        .sorted((a, b) -> Float.compare(b.value, a.value)) // 按 value 值降序排序
+                        .collect(Collectors.toList());
+
+
+                // 构建新的 prize_group
+                List<UserMethodsResponse.DataDTO.PrizeGroupDTO> areaPrize = new ArrayList<>();
+                if (minMaxValues.size() >= 2) {
+                    PrizeRange r1 = minMaxValues.get(0);
+                    PrizeRange r2 = minMaxValues.get(1);
+                    areaPrize.add(new UserMethodsResponse.DataDTO.PrizeGroupDTO(1, String.format("奖金 %.0f~%.0f %.0f%%", r1.min, r1.max, r1.value)));
+                    areaPrize.add(new UserMethodsResponse.DataDTO.PrizeGroupDTO(2, String.format("奖金 %.0f~%.0f %.1f%%", r2.min, r2.max, r2.value)));
+                }
+
+                // 更新 prize_group
+                prizeMode.setPrizeGroup(areaPrize);
+                prizeMode.setAreaPrize(true);
+            }
+
+            // 合并 dynamicMethods 和 multiPrizeMode
+            dynamicMethods.addAll(multiPrizeMode);
+//            dynamicMethods = dynamicMethods.stream()
+//                    .map(item -> {
+//                        item.remove("name");
+//                        item.remove("methodid");
+//                        return item;
+//                    })
+//                    .collect(Collectors.toList());
+            vo.setData(dynamicMethods);
             mLotteryUser = vo;
+            SPUtils.getInstance().put("dynamicLotteryUser", new Gson().toJson(mLotteryUser));
         });
     }
 

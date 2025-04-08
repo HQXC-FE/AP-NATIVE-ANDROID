@@ -1,6 +1,7 @@
 package com.xtree.lottery.data.source.vo;
 
 import com.google.gson.annotations.SerializedName;
+import com.xtree.base.vo.UserMethodsResponse;
 
 import java.util.List;
 
@@ -123,21 +124,11 @@ public class MenuMethodsData {
              * 是否应用玩法
              */
             public boolean userPlay = false;
-
-            public boolean isUserPlay() {
-                return userPlay;
-            }
-
-            public void setUserPlay(boolean userPlay) {
-                this.userPlay = userPlay;
-            }
-
             /**
              * title
              */
             @SerializedName(value = "title", alternate = {"gtitle"})
             private String title;
-
             /**
              * dy_title
              */
@@ -148,6 +139,14 @@ public class MenuMethodsData {
              */
             @SerializedName(value = "labels", alternate = {"label"})
             private List<Labels2DTO> labels;
+
+            public boolean isUserPlay() {
+                return userPlay;
+            }
+
+            public void setUserPlay(boolean userPlay) {
+                this.userPlay = userPlay;
+            }
 
             public String getDyTitle() {
                 return dyTitle;
@@ -184,6 +183,35 @@ public class MenuMethodsData {
                  */
                 @SerializedName(value = "cate_title")
                 private String cateTitle;
+
+                /**
+                 * title
+                 */
+                @SerializedName(value = "cateName")
+                private String cateName;
+
+                /**
+                 * title
+                 */
+                @SerializedName(value = "groupName")
+                private String groupName;
+
+                /**
+                 * prizeLevel
+                 */
+                @SerializedName("prize_level")
+                private List<String> prizeLevel;
+
+                /**
+                 * lotteryid
+                 */
+                @SerializedName("lotteryid")
+                private int lotteryid;
+                /**
+                 * prizeGroup
+                 */
+                @SerializedName("prize_group")
+                private List<UserMethodsResponse.DataDTO.PrizeGroupDTO> prizeGroup;
                 @SerializedName(value = "group_title")
                 private String groupTitle;
                 /**
@@ -230,7 +258,7 @@ public class MenuMethodsData {
                  * relationMethods
                  */
                 @SerializedName("relationMethods")
-                private Object relationMethods;
+                private List<Integer> relationMethods;
                 /**
                  * maxcodecount
                  */
@@ -276,6 +304,46 @@ public class MenuMethodsData {
                  */
                 @SerializedName("money_modes")
                 private List<MoneyModesDTO> moneyModes;
+
+                public int getLotteryid() {
+                    return lotteryid;
+                }
+
+                public void setLotteryid(int lotteryid) {
+                    this.lotteryid = lotteryid;
+                }
+
+                public String getCateName() {
+                    return cateName;
+                }
+
+                public void setCateName(String cateName) {
+                    this.cateName = cateName;
+                }
+
+                public String getGroupName() {
+                    return groupName;
+                }
+
+                public void setGroupName(String groupName) {
+                    this.groupName = groupName;
+                }
+
+                public List<String> getPrizeLevel() {
+                    return prizeLevel;
+                }
+
+                public void setPrizeLevel(List<String> prizeLevel) {
+                    this.prizeLevel = prizeLevel;
+                }
+
+                public List<UserMethodsResponse.DataDTO.PrizeGroupDTO> getPrizeGroup() {
+                    return prizeGroup;
+                }
+
+                public void setPrizeGroup(List<UserMethodsResponse.DataDTO.PrizeGroupDTO> prizeGroup) {
+                    this.prizeGroup = prizeGroup;
+                }
 
                 public String getCateTitle() {
                     return cateTitle;
@@ -365,11 +433,11 @@ public class MenuMethodsData {
                     this.isMultiple = isMultiple;
                 }
 
-                public Object getRelationMethods() {
+                public List<Integer> getRelationMethods() {
                     return relationMethods;
                 }
 
-                public void setRelationMethods(Object relationMethods) {
+                public void setRelationMethods(List<Integer> relationMethods) {
                     this.relationMethods = relationMethods;
                 }
 
@@ -457,15 +525,6 @@ public class MenuMethodsData {
                      */
                     @SerializedName("originType")
                     private String originType;
-
-                    public String getOriginType() {
-                        return originType;
-                    }
-
-                    public void setOriginType(String originType) {
-                        this.originType = originType;
-                    }
-
                     /**
                      * layout
                      */
@@ -481,12 +540,19 @@ public class MenuMethodsData {
                      */
                     @SerializedName("isButton")
                     private boolean isButton;
-
                     /**
                      * selPosition
                      */
                     @SerializedName("selPosition")
                     private boolean selPosition = false;
+
+                    public String getOriginType() {
+                        return originType;
+                    }
+
+                    public void setOriginType(String originType) {
+                        this.originType = originType;
+                    }
 
                     public boolean isSelPosition() {
                         return selPosition;
