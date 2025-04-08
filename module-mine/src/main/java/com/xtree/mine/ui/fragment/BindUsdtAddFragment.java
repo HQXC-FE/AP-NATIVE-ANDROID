@@ -216,6 +216,8 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
     private void setUsdtType() {
         typeList.add("ERC20_USDT");
         typeList.add("TRC20_USDT");
+        typeList.add("Arbitrum");
+        typeList.add("Solana");
     }
 
     //private void getUsdtType() {
@@ -312,7 +314,6 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
                 binding2 = ItemTextBinding.bind(holder.itemView);
                 String txt = get(position);
                 binding2.tvwTitle.setText(txt);
-
                 binding2.tvwTitle.setOnClickListener(v -> {
                     binding.tvwChoose.setText(txt);
                     if (txt.contains("TRC")) {
@@ -320,7 +321,15 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
                         binding.tvwTipAddress.setVisibility(View.VISIBLE);
                     } else if (txt.contains("ERC")) {
                         binding.tvwTipAddress.setText(R.string.txt_remind_usdt_erc20);
-                    } else {
+                        binding.tvwTipAddress.setVisibility(View.VISIBLE);
+                    } else if (txt.contains("Arbitrum")) {
+                        binding.tvwTipAddress.setText(R.string.txt_remind_usdt_arbitrum);
+                        binding.tvwTipAddress.setVisibility(View.VISIBLE);
+                    }else if (txt.contains("Solana")) {
+                        binding.tvwTipAddress.setText(R.string.txt_remind_usdt_solana);
+                        binding.tvwTipAddress.setVisibility(View.VISIBLE);
+                    }
+                    else {
                         binding.tvwTipAddress.setText(mUserUsdtJumpVo.remind);
                     }
 

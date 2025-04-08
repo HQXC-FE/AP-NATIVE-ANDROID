@@ -1,5 +1,7 @@
 package com.xtree.recharge.ui.fragment;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,10 +16,13 @@ import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.QrcodeUtil;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.DialogRcOrderWebBinding;
 import com.xtree.recharge.vo.RechargePayVo;
+
+import me.xtree.mvvmhabit.utils.ToastUtils;
 
 public class RechargeOrderWebDialog extends BottomPopupView {
 
@@ -50,10 +55,15 @@ public class RechargeOrderWebDialog extends BottomPopupView {
 
     private void initView() {
         binding = DialogRcOrderWebBinding.bind(findViewById(R.id.ll_root));
+        if (mRechargePayVo.paycode.toLowerCase().contains("ebpay")){
+            binding.tvw01.setText("需先下载EBPAY钱包才可进行支付，进入充值页面下载。\n"+getResources().getString(R.string.txt_rc_browser_continue));
+        }
         binding.ivwClose.setOnClickListener(v -> dismiss());
         binding.tvwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
         binding.tvwTitle.setText(mRechargePayVo.payname);
         binding.tvwMoney.setText(mRechargePayVo.money);
+
+        binding.tvwCopy.setOnClickListener(v -> copy(mRechargePayVo.qrcodeurl));
 
         String txt = mRechargePayVo.maxexpiretime + getContext().getString(R.string.txt_minutes); // xx分钟
         txt = "<font color=#EE5A5A> " + txt + " </font>"; // 加彩色
@@ -71,6 +81,7 @@ public class RechargeOrderWebDialog extends BottomPopupView {
             binding.tvwQrcodeUrl.setText(mRechargePayVo.qrcodeurl);
             binding.llQrcodeUrl.setVisibility(View.VISIBLE);
             binding.ivwQrcode.setVisibility(View.VISIBLE);
+            binding.ivwQrcode.setImageBitmap(QrcodeUtil.getQrcode(mRechargePayVo.qrcodeurl));
             binding.tvwOk.setVisibility(View.VISIBLE);
             binding.tvwShowPay.setVisibility(View.GONE); // 隐藏
         }
@@ -156,6 +167,14 @@ public class RechargeOrderWebDialog extends BottomPopupView {
     protected int getMaxHeight() {
         //return super.getMaxHeight();
         return (XPopupUtils.getScreenHeight(getContext()) * 75 / 100);
+    }
+
+    private void copy(String txt) {
+        CfLog.d(txt);
+        ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData cd = ClipData.newPlainText("txt", txt);
+        cm.setPrimaryClip(cd);
+        ToastUtils.showLong(R.string.txt_copied);
     }
 
 }

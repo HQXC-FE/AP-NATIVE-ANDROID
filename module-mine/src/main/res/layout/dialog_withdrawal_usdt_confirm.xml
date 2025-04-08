@@ -41,18 +41,6 @@
 
     <View style="@style/style_withdraw_dividing_line" />
 
-    <LinearLayout style="@style/style_withdraw_confirm_ll"
-        android:visibility="gone">
-
-        <TextView
-            style="@style/style_withdraw_show_title"
-            android:text="@string/txt_confirm_amount" />
-
-        <TextView
-            android:id="@+id/tv_confirm_amount_show"
-            style="@style/style_withdraw_confirm_value"
-            tools:text="" />
-    </LinearLayout>
 
     <View style="@style/style_withdraw_dividing_line" android:visibility="gone" />
 
