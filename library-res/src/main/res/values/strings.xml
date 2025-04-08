@@ -58,6 +58,8 @@
     <string name="txt_remind_card">请输入16到19位数字</string>
     <string name="txt_remind_usdt_trc20">TRC20_USDT地址以T开头的数字和字母组成的34位</string>
     <string name="txt_remind_usdt_erc20">ERC20_USDT地址以0x开头的数字和字母组成的42位</string>
+    <string name="txt_remind_usdt_arbitrum">Arbitrum地址以0x开头的数字和字母组成的42位</string>
+    <string name="txt_remind_usdt_solana">Solana地址以数字和字母组成的44位</string>
     <string name="txt_remind_ebpay">EBPAY地址以eb开头的数字和字母组成的34位</string>
     <string name="txt_remind_topay">TOPAY地址以tp开头的18位 或字母开头的16位</string>
     <string name="txt_remind_gcnyt">地址以CNYT开头的20位英文或数字</string>
@@ -349,6 +351,7 @@
     <string name="txt_bind_tip">您还未绑定%1$s,是否前往绑定?</string>
     <string name="txt_bind_bank_tip">银行卡</string>
     <string name="txt_bind_usdt_tip">USDT提款</string>
+    <string name="txt_bind_usdc_tip">USDC提款</string>
     <string name="txt_bind_other_type_tip">您还未绑定%1$s地址,是否前往绑定?</string>
     <string name="txt_withdrawal">提款</string>
     <string name="txt_no_withdrawals_available_tip">您今天已没有可用提款次数</string>
@@ -373,6 +376,7 @@
     <string name="txt_deposit_fee_most">最高加送%1$s%%</string>
     <string name="format_change_range">预计支付：%1$s%2$s</string>
     <string name="txt_rate_usdt">"参考汇率 1USDT ≈ %1$s元"</string>
+    <string name="txt_rate_usdc">"参考汇率 1USDC ≈ %1$s元"</string>
     <string name="txt_rate_cnyt_cny">参考汇率 1CNYT = 1.00元</string>
     <string name="txt_rate_tog_cny">参考汇率 1TOG = 1.00元</string>
     <string name="txt_rate_eb_cny">参考汇率 1EB = 1.00元</string>

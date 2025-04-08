@@ -58,32 +58,9 @@ import me.xtree.mvvmhabit.utils.Utils;
  */
 public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdrawListCallback {
 
-    @Override
-    public void onClickListItem(WithdrawalListVo.WithdrawalItemVo itemVo) {
-        CfLog.e("IWithdrawListCallback = " + itemVo.toString());
-        selectorVo = itemVo;
-        //银行卡类型
-        if (TextUtils.equals("1", selectorVo.type)) {
-            //获取当前选中的提款详情
-            LoadingDialog.show(getContext());
-            viewModel.getWithdrawalBankInfo(selectorVo.name, withdrawalListVoArrayList.check);
-        } else {
-            LoadingDialog.show(getContext());
-            //获取当前选中的提款详情
-            viewModel.getWithdrawalInfo(selectorVo.name, withdrawalListVoArrayList.check);
-        }
-    }
-
-    public interface IChooseDialogBack {
-        void closeDialog();
-
-        /*网络异常关闭Dialog*/
-        void closeDialogByError();
-
-        void closeDialogByBind();
-
-    }
-
+    public static ArrayList<WithdrawalListVo.WithdrawalItemVo> bankWithdrawalList = new ArrayList<>();//银行卡提款列表
+    public static ArrayList<WithdrawalListVo.WithdrawalItemVo> usdtWithdrawalList = new ArrayList<>();//USDT提款列表
+    public static ArrayList<WithdrawalListVo.WithdrawalItemVo> usdcWithdrawalList = new ArrayList<>();//USDC提款列表
     private String checkCode;
     private IChooseDialogBack callBack;
     private BasePopupView basePopupView = null;
@@ -102,16 +79,11 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
     private BasePopupView fundPSWPopView; // 资金密码
     private BankWithdrawalDialog.BankWithdrawalClose bankWithdrawalClose;
     private FragmentActivity mActivity;
-
-    @Override
-    protected int getImplLayoutId() {
-        return R.layout.dialog_choose_withdrawa;
-    }
-
-    @Override
-    protected int getMaxHeight() {
-        return (XPopupUtils.getScreenHeight(getContext()) * 90 / 100);
-    }
+    private WithdrawalQuotaVo quotaVo;//可提额度
+    private WithdrawalListVo.WithdrawalItemVo selectorVo;//被选中的取款类型
+    private WithdrawalListVo withdrawalListVoArrayList;//获取可提现渠道列表
+    private WithdrawalInfoVo infoVo;//当前提款渠道详情
+    private WithdrawalBankInfoVo bankInfoVo;//银行卡提现渠道详情
 
     private ChooseWithdrawalDialog(@NonNull Context context) {
         super(context);
@@ -137,6 +109,56 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
         dialog.checkCode = checkCode;
         dialog.mActivity = activity;
         return dialog;
+    }
+
+    private static void removeDupliByType(ArrayList<WithdrawalListVo.WithdrawalItemVo> list) {
+        ArrayList<WithdrawalListVo.WithdrawalItemVo> wdList = new ArrayList<>();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            list.stream().forEach(
+//                    p -> {
+//                        if (!wdList.contains(p)) {
+//                            wdList.add(p);
+//                        }
+//                    }
+//            );
+//        }
+        HashSet<String> seenTypes = new HashSet<>(); // 用于存储已见过的类型
+        for (WithdrawalListVo.WithdrawalItemVo p : list) {
+            if (!seenTypes.contains(p.type)) { // 根据 type 字段去重
+                wdList.add(p);
+                seenTypes.add(p.type); // 将该类型标记为已见
+            }
+        }
+//        LinkedHashSet<WithdrawalListVo> treeSet = new LinkedHashSet<>(list);
+//        ArrayList<WithdrawalListVo> newList = new ArrayList<>(treeSet);
+        list.clear();
+        list.addAll(wdList);
+    }
+
+    @Override
+    public void onClickListItem(WithdrawalListVo.WithdrawalItemVo itemVo) {
+        CfLog.e("IWithdrawListCallback = " + itemVo.toString());
+        selectorVo = itemVo;
+        //银行卡类型
+        if (TextUtils.equals("1", selectorVo.type)) {
+            //获取当前选中的提款详情
+            LoadingDialog.show(getContext());
+            viewModel.getWithdrawalBankInfo(selectorVo.name, withdrawalListVoArrayList.check);
+        } else {
+            LoadingDialog.show(getContext());
+            //获取当前选中的提款详情
+            viewModel.getWithdrawalInfo(selectorVo.name, withdrawalListVoArrayList.check);
+        }
+    }
+
+    @Override
+    protected int getImplLayoutId() {
+        return R.layout.dialog_choose_withdrawa;
+    }
+
+    @Override
+    protected int getMaxHeight() {
+        return (XPopupUtils.getScreenHeight(getContext()) * 90 / 100);
     }
 
     @Override
@@ -182,13 +204,6 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
     private void initData() {
         viewModel = new ChooseWithdrawViewModel((Application) Utils.getContext(), Injection.provideHomeRepository());
     }
-    private WithdrawalQuotaVo quotaVo;//可提额度
-    private WithdrawalListVo.WithdrawalItemVo selectorVo;//被选中的取款类型
-    private WithdrawalListVo withdrawalListVoArrayList;//获取可提现渠道列表
-    public static ArrayList<WithdrawalListVo.WithdrawalItemVo> bankWithdrawalList = new ArrayList<>();//银行卡提款列表
-    public static ArrayList<WithdrawalListVo.WithdrawalItemVo> usdtWithdrawalList = new ArrayList<>();//USDT提款列表
-    private WithdrawalInfoVo infoVo;//当前提款渠道详情
-    private WithdrawalBankInfoVo bankInfoVo;//银行卡提现渠道详情
 
     private void initViewObservable() {
         dismissMasksLoading();
@@ -205,6 +220,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
 
                 sortingWithdrawalListByType("1", withdrawalListVoArrayList.listdata, bankWithdrawalList);
                 sortingWithdrawalListByType("2", withdrawalListVoArrayList.listdata, usdtWithdrawalList);
+                sortingWithdrawalListByType("19", withdrawalListVoArrayList.listdata, usdcWithdrawalList);//usdc
                 referListUI(sortTypeList(withdrawalListVoArrayList.listdata));
             } else {
                 ToastUtils.showError(getContext().getString(R.string.txt_network_error));
@@ -223,6 +239,9 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
                 } else if (TextUtils.equals("2", selectorVo.type)) {
                     //选中的是USDT提款
                     showUSDTWithdrawalDialog(selectorVo.name, usdtWithdrawalList, infoVo);
+                } else if (TextUtils.equals("19", selectorVo.type)) {
+                    //选中的是USDC提款
+                    showUSDCWithdrawalDialog(selectorVo.name, usdcWithdrawalList, infoVo);
                 } else if (TextUtils.equals("onepaywx", selectorVo.name)
                         || TextUtils.equals("微信提款", selectorVo.title)
                         || TextUtils.equals("onepayzfb", selectorVo.name)
@@ -308,25 +327,26 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
      */
     private ArrayList<WithdrawalListVo.WithdrawalItemVo> sortTypeList(ArrayList<WithdrawalListVo.WithdrawalItemVo> infoList) {
         //列表去重
-        TreeSet treeSet = new TreeSet(infoList);
-        infoList.clear();
-        infoList.addAll(treeSet);
+//        TreeSet treeSet = new TreeSet(infoList);
+//        infoList.clear();
+//        infoList.addAll(treeSet);
 
         CfLog.e("sortTypeList  infoList1= " + infoList.size());
-        ArrayList<WithdrawalListVo.WithdrawalItemVo> arrayList = new ArrayList<WithdrawalListVo.WithdrawalItemVo>();
+        ArrayList<WithdrawalListVo.WithdrawalItemVo> arrayList = new ArrayList<>();
         for (int i = 0; i < infoList.size(); i++) {
             //只添加enable为 true状态的，即是开启该提款通道的体况方式
             if (infoList.get(i).enable == true) {
                 arrayList.add(infoList.get(i));
             }
         }
-        HashSet set = new HashSet(arrayList);
-        arrayList.clear();
-        arrayList.addAll(set);
-        Collections.reverse(arrayList);
+//        HashSet set = new HashSet(arrayList);
+//        arrayList.clear();
+//        arrayList.addAll(set);
+//        Collections.reverse(arrayList);
         //列表排序
         //Collections.sort(arrayList);
-        Collections.reverse(arrayList);
+//        Collections.reverse(arrayList);
+        removeDupliByType(arrayList);
         return arrayList;
     }
 
@@ -362,24 +382,8 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
                     targetList.add(vo);
                 }
             }
-            removeDupliByType(targetList);
+//            removeDupliByType(targetList);
         }
-    }
-
-    private static ArrayList<WithdrawalListVo.WithdrawalItemVo> removeDupliByType(ArrayList<WithdrawalListVo.WithdrawalItemVo> list) {
-        ArrayList<WithdrawalListVo.WithdrawalItemVo> wdList = new ArrayList<>();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            list.stream().forEach(
-                    p -> {
-                        if (!wdList.contains(p)) {
-                            wdList.add(p);
-                        }
-                    }
-            );
-        }
-        TreeSet<WithdrawalListVo.WithdrawalItemVo> treeSet = new TreeSet<WithdrawalListVo.WithdrawalItemVo>(list);
-        ArrayList<WithdrawalListVo.WithdrawalItemVo> newList = new ArrayList<>(treeSet);
-        return newList;
     }
 
     /**
@@ -401,6 +405,10 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
         } else if (TextUtils.equals("2", selectorVo.type)) {
             //USDT提款
             errorMessage = String.format(format, getContext().getResources().getString(R.string.txt_bind_usdt_tip));
+            bindType = getContext().getString(R.string.txt_bind_usdt_type);
+        } else if (TextUtils.equals("19", selectorVo.type)) {
+            //USDT提款
+            errorMessage = String.format(format, getContext().getResources().getString(R.string.txt_bind_usdc_tip));
             bindType = getContext().getString(R.string.txt_bind_usdt_type);
         } else if (TextUtils.equals("4", selectorVo.type)) {
             //EBpay提款
@@ -532,102 +540,6 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
     }
 
     /**
-     * 提款列表适配器
-     */
-    public class WithdrawalListAdapter extends BaseAdapter {
-
-        private IWithdrawListCallback callBack;
-        private Context context;
-        private ArrayList<WithdrawalListVo.WithdrawalItemVo> withdrawalItemVoArrayList;
-        private ArrayList<WithdrawalListVo.WithdrawalItemVo> withdrawalItemVoList;
-
-        public WithdrawalListAdapter(Context context, ArrayList<WithdrawalListVo.WithdrawalItemVo> voArrayList, IWithdrawListCallback callBack) {
-            this.context = context;
-            this.withdrawalItemVoArrayList = voArrayList;
-            this.callBack = callBack;
-            this.withdrawalItemVoList = removeDuplicationBy2For(this.withdrawalItemVoArrayList);
-        }
-
-        @Override
-        public int getCount() {
-            return this.withdrawalItemVoList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return this.withdrawalItemVoList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ChooseAdapterViewHolder holder = null;
-            if (convertView == null) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.dialog_choose_withdrawa_item, parent, false);
-                holder = new ChooseAdapterViewHolder();
-                holder.showInfoName = (TextView) convertView.findViewById(R.id.tv_choose_usdt);
-                holder.showInfoLinear = convertView.findViewById(R.id.ll_choose_usdt);
-                convertView.setTag(holder);
-            } else {
-                holder = (ChooseAdapterViewHolder) convertView.getTag();
-            }
-
-            final WithdrawalListVo.WithdrawalItemVo vo = this.withdrawalItemVoList.get(position);
-
-            if (TextUtils.equals("1", vo.type)) {
-                holder.showInfoName.setText("银行卡提款");
-            } else if (TextUtils.equals("2", vo.type)) {
-                holder.showInfoName.setText("USDT提款");
-            } else {
-                holder.showInfoName.setText(vo.title);
-            }
-            holder.showInfoLinear.setOnClickListener(view -> {
-                if (this.callBack != null && !ClickUtil.isFastClick()) {
-                    final WithdrawalListVo.WithdrawalItemVo itemVo = withdrawalItemVoList.get(position);
-                    this.callBack.onClickListItem(itemVo);
-                }
-            });
-            holder.showInfoName.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (callBack != null && !ClickUtil.isFastClick()) {
-                        final WithdrawalListVo.WithdrawalItemVo itemVo = withdrawalItemVoList.get(position);
-                        callBack.onClickListItem(itemVo);
-                    }
-                }
-            });
-
-            return convertView;
-        }
-
-        public class ChooseAdapterViewHolder {
-            public TextView showInfoName;
-            public LinearLayout showInfoLinear;
-        }
-
-        /**
-         * List去重
-         *
-         * @param list
-         * @return
-         */
-        public ArrayList<WithdrawalListVo.WithdrawalItemVo> removeDuplicationBy2For(ArrayList<WithdrawalListVo.WithdrawalItemVo> list) {
-            for (int i = 0; i < list.size(); i++) {
-                for (int j = i + 1; j < list.size(); j++) {
-                    if (list.get(i).type.equals(list.get(j).type)) {
-                        list.remove(i);
-                    }
-                }
-            }
-            return list;
-        }
-    }
-
-    /**
      * 请求网络数据
      */
     private void requestData() {
@@ -651,6 +563,52 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
             loadingView.dismiss();
         }
 
+    }
+
+    private void toBindCard() {
+        String msg = getContext().getString(R.string.txt_rc_bind_bank_card_pls);
+        MsgDialog dialog = new MsgDialog(getContext(), null, msg, true, new MsgDialog.ICallBack() {
+            @Override
+            public void onClickLeft() {
+            }
+
+            @Override
+            public void onClickRight() {
+
+                Bundle bundle = new Bundle();
+                bundle.putString("type", "bindcard");
+
+                String path = RouterFragmentPath.Mine.PAGER_SECURITY_VERIFY_CHOOSE;
+                Intent intent = new Intent(getContext(), ContainerActivity.class);
+                intent.putExtra(ContainerActivity.ROUTER_PATH, path);
+                intent.putExtra(ContainerActivity.BUNDLE, bundle);
+                getContext().startActivity(intent);
+                dismiss();
+                bindCardPopWindow.dismiss();
+
+            }
+        });
+        bindCardPopWindow = new XPopup.Builder(getContext()).asCustom(dialog);
+        bindCardPopWindow.show();
+
+    }
+
+    /**
+     * 显示支付宝 微信提款方式
+     */
+    private void showOtherWXWithdrawalDialog(final String name, final WithdrawalInfoVo infoVo, final String checkCode) {
+        // if (otherWXPopupView == null) {
+        otherWXPopupView = new XPopup.Builder(getContext())
+                .moveUpToKeyboard(false)
+                .asCustom(OtherWebWithdrawalDialog.newInstance(getContext(), owner, infoVo, checkCode, new OtherWebWithdrawalDialog.IOtherWebWithdrawalDialogCallback() {
+                    @Override
+                    public void closeOtherDialog() {
+                        otherWXPopupView.dismiss();
+                        otherWXPopupView = null;
+                    }
+                }));
+        // }
+        otherWXPopupView.show();
     }
 
 //    private void referUI() {
@@ -729,6 +687,256 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
 //
 //    }
 
+    /**
+     * 显示其他虚拟币提款Dialog
+     */
+    private void showOtherVirtualWithdrawalDialog(final String name, final WithdrawalListVo.WithdrawalItemVo listVo, final WithdrawalInfoVo infoVo) {
+
+        basePopupView = new XPopup.Builder(getContext())
+                .moveUpToKeyboard(false)
+                .asCustom(VirtualWithdrawalDialog.newInstance(getContext(), owner, name, listVo, infoVo, checkCode, ""));
+        basePopupView.show();
+    }
+
+    /**
+     * 跳转银行卡提款页面
+     */
+    private void showBankWithdrawalDialog(final String name, final ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo, final WithdrawalBankInfoVo selectorInfoVo) {
+        bankPopupView = new XPopup.Builder(getContext())
+                .moveUpToKeyboard(false)
+                .asCustom(BankWithdrawalDialog.newInstance(getContext(), owner, name, checkCode, listVo, selectorInfoVo, new BankWithdrawalDialog.BankWithdrawalClose() {
+                    @Override
+                    public void closeBankWithdrawal() {
+
+                    }
+
+                    @Override
+                    public void closeBankByPSW() {
+
+                    }
+                }));
+        bankPopupView.show();
+    }
+
+    /**
+     * 跳转USDT 提款
+     */
+//    private void showUSDTWithdrawalDialog(ChooseInfoVo.ChannelInfo channelInfo, final String checkCode) {
+//        if (channelInfo.title.contains("USDT")) {
+//            basePopupView = new XPopup.Builder(getContext()).asCustom(USDTWithdrawalDialog.newInstance(getContext(), owner, channelInfo, bankWithdrawalClose, checkCode, channelInfo.type));
+//        } else {
+//            basePopupView = new XPopup.Builder(getContext()).asCustom(VirtualWithdrawalDialog.newInstance(getContext(), owner, channelInfo, bankWithdrawalClose, checkCode, channelInfo.type));
+//        }
+//
+//        basePopupView.show();
+//    }
+    private void showUSDTWithdrawalDialog(final String name, final ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo, final WithdrawalInfoVo infoVo) {
+        basePopupView = new XPopup.Builder(getContext())
+                .moveUpToKeyboard(false)
+                .asCustom(USDTWithdrawalDialog.newInstance(getContext(), owner, name, listVo, infoVo, checkCode));
+
+        basePopupView.show();
+    }
+
+    private void showUSDCWithdrawalDialog(final String name, final ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo, final WithdrawalInfoVo infoVo) {
+        basePopupView = new XPopup.Builder(getContext())
+                .moveUpToKeyboard(false)
+                .asCustom(USDTWithdrawalDialog.newInstance(getContext(), owner, name, listVo, infoVo, checkCode));
+
+        basePopupView.show();
+    }
+
+    /**
+     * 显示绑定Dialog
+     */
+    private void showBindDialog(ChooseInfoVo.ChannelInfo channelInfo, String showMessage) {
+        String errorMessage = "";
+        String bindType = "";
+        if (showMessage.contains("尚未绑定银行卡")) {
+            errorMessage = "请先绑定银行卡后才可提款";
+            bindType = getContext().getString(R.string.txt_bind_card_type);
+        } else if (showMessage.contains("首次提款仅可使用银行卡方式提款")) {
+            errorMessage = showMessage;
+            bindType = getContext().getString(R.string.txt_bind_card_type);
+        } else {
+            errorMessage = showMessage;
+            bindType = channelInfo.bindType;
+        }
+
+        String finalBindType = bindType;
+        customPopWindow = new XPopup.Builder(getContext())
+                .asCustom(new MsgDialog(getContext(), getContext().getString(R.string.txt_kind_tips), errorMessage, false, new MsgDialog.ICallBack() {
+                    @Override
+                    public void onClickLeft() {
+                        customPopWindow.dismiss();
+                    }
+
+                    @Override
+                    public void onClickRight() {
+                        //跳转绑定流程
+                        Bundle bundle = new Bundle();
+                        bundle.putString("type", finalBindType);
+                        if (TextUtils.equals(finalBindType, getContext().getString(R.string.txt_bind_zfb_type))
+                                || TextUtils.equals(finalBindType, getContext().getString(R.string.txt_bind_wechat_type))) {
+                            // 绑定页面显示去提款按钮用
+                            SPUtils.getInstance().put(SPKeyGlobal.TYPE_RECHARGE_WITHDRAW, getContext().getString(R.string.txt_go_withdraw));
+                        }
+
+                        String path = RouterFragmentPath.Mine.PAGER_SECURITY_VERIFY_CHOOSE;
+                        Intent intent = new Intent(getContext(), ContainerActivity.class);
+                        intent.putExtra(ContainerActivity.ROUTER_PATH, path);
+                        intent.putExtra(ContainerActivity.BUNDLE, bundle);
+                        mActivity.startActivity(intent);
+                        customPopWindow.dismiss();
+                        callBack.closeDialogByBind();
+                    }
+                }));
+        customPopWindow.show();
+    }
+//    private void showOtherWXWithdrawalDialog(final ChooseInfoVo.ChannelInfo info, final String checkCode) {
+//        if (otherWXPopupView == null) {
+//            otherWXPopupView = new XPopup.Builder(getContext()).moveUpToKeyboard(false).asCustom(OtherWebWithdrawalDialog.newInstance(getContext(), owner, info, checkCode));
+//        }
+//        otherWXPopupView.show();
+//    }
+
+//    private void showOtherZFBWithdrawalDialog(final ChooseInfoVo.ChannelInfo info, final String checkCode) {
+//        if (otherZFBPopupView == null) {
+//            otherZFBPopupView = new XPopup.Builder(getContext()).moveUpToKeyboard(false).asCustom(OtherWebWithdrawalDialog.newInstance(getContext(), owner, info, checkCode));
+//        }
+//        otherZFBPopupView.show();
+//    }
+
+    /**
+     * 显示异常Dialog
+     */
+    private void showErrorDialog(String showMessage) {
+
+        customPopWindow = new XPopup.Builder(getContext())
+                .asCustom(new MsgDialog(getContext(), getContext().getString(R.string.txt_kind_tips), showMessage, false, new MsgDialog.ICallBack() {
+                    @Override
+                    public void onClickLeft() {
+                        customPopWindow.dismiss();
+                        // callBack.closeDialog();
+
+                    }
+
+                    @Override
+                    public void onClickRight() {
+                        customPopWindow.dismiss();
+                        // callBack.closeDialog();
+                    }
+                }));
+        customPopWindow.show();
+    }
+
+
+    public interface IChooseDialogBack {
+        void closeDialog();
+
+        /*网络异常关闭Dialog*/
+        void closeDialogByError();
+
+        void closeDialogByBind();
+
+    }
+
+    /**
+     * 提款列表适配器
+     */
+    public class WithdrawalListAdapter extends BaseAdapter {
+
+        private IWithdrawListCallback callBack;
+        private Context context;
+        private ArrayList<WithdrawalListVo.WithdrawalItemVo> withdrawalItemVoArrayList;
+        private ArrayList<WithdrawalListVo.WithdrawalItemVo> withdrawalItemVoList;
+
+        public WithdrawalListAdapter(Context context, ArrayList<WithdrawalListVo.WithdrawalItemVo> voArrayList, IWithdrawListCallback callBack) {
+            this.context = context;
+            this.withdrawalItemVoArrayList = voArrayList;
+            this.callBack = callBack;
+            this.withdrawalItemVoList = removeDuplicationBy2For(this.withdrawalItemVoArrayList);
+        }
+
+        @Override
+        public int getCount() {
+            return this.withdrawalItemVoList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return this.withdrawalItemVoList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ChooseAdapterViewHolder holder = null;
+            if (convertView == null) {
+                convertView = LayoutInflater.from(context).inflate(R.layout.dialog_choose_withdrawa_item, parent, false);
+                holder = new ChooseAdapterViewHolder();
+                holder.showInfoName = (TextView) convertView.findViewById(R.id.tv_choose_usdt);
+                holder.showInfoLinear = convertView.findViewById(R.id.ll_choose_usdt);
+                convertView.setTag(holder);
+            } else {
+                holder = (ChooseAdapterViewHolder) convertView.getTag();
+            }
+
+            final WithdrawalListVo.WithdrawalItemVo vo = this.withdrawalItemVoList.get(position);
+
+            if (TextUtils.equals("1", vo.type)) {
+                holder.showInfoName.setText("银行卡提款");
+            } else if (TextUtils.equals("2", vo.type)) {
+                holder.showInfoName.setText("USDT提款");
+            } else {
+                holder.showInfoName.setText(vo.title);
+            }
+            holder.showInfoLinear.setOnClickListener(view -> {
+                if (this.callBack != null && !ClickUtil.isFastClick()) {
+                    final WithdrawalListVo.WithdrawalItemVo itemVo = withdrawalItemVoList.get(position);
+                    this.callBack.onClickListItem(itemVo);
+                }
+            });
+            holder.showInfoName.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (callBack != null && !ClickUtil.isFastClick()) {
+                        final WithdrawalListVo.WithdrawalItemVo itemVo = withdrawalItemVoList.get(position);
+                        callBack.onClickListItem(itemVo);
+                    }
+                }
+            });
+
+            return convertView;
+        }
+
+        /**
+         * List去重
+         *
+         * @param list
+         * @return
+         */
+        public ArrayList<WithdrawalListVo.WithdrawalItemVo> removeDuplicationBy2For(ArrayList<WithdrawalListVo.WithdrawalItemVo> list) {
+            for (int i = 0; i < list.size(); i++) {
+                for (int j = i + 1; j < list.size(); j++) {
+                    if (list.get(i).type.equals(list.get(j).type)) {
+                        list.remove(i);
+                    }
+                }
+            }
+            return list;
+        }
+
+        public class ChooseAdapterViewHolder {
+            public TextView showInfoName;
+            public LinearLayout showInfoLinear;
+        }
+    }
+
     private class ChooseAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
         private IChooseCallback callBack;
@@ -790,186 +998,5 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
             public TextView showInfoName;
             public LinearLayout showInfoLinear;
         }
-    }
-
-    private void toBindCard() {
-        String msg = getContext().getString(R.string.txt_rc_bind_bank_card_pls);
-        MsgDialog dialog = new MsgDialog(getContext(), null, msg, true, new MsgDialog.ICallBack() {
-            @Override
-            public void onClickLeft() {
-            }
-
-            @Override
-            public void onClickRight() {
-
-                Bundle bundle = new Bundle();
-                bundle.putString("type", "bindcard");
-
-                String path = RouterFragmentPath.Mine.PAGER_SECURITY_VERIFY_CHOOSE;
-                Intent intent = new Intent(getContext(), ContainerActivity.class);
-                intent.putExtra(ContainerActivity.ROUTER_PATH, path);
-                intent.putExtra(ContainerActivity.BUNDLE, bundle);
-                getContext().startActivity(intent);
-                dismiss();
-                bindCardPopWindow.dismiss();
-
-            }
-        });
-        bindCardPopWindow = new XPopup.Builder(getContext()).asCustom(dialog);
-        bindCardPopWindow.show();
-
-    }
-
-    /**
-     * 显示支付宝 微信提款方式
-     *
-     */
-    private void showOtherWXWithdrawalDialog(final String name, final WithdrawalInfoVo infoVo, final String checkCode) {
-        // if (otherWXPopupView == null) {
-        otherWXPopupView = new XPopup.Builder(getContext())
-                .moveUpToKeyboard(false)
-                .asCustom(OtherWebWithdrawalDialog.newInstance(getContext(), owner, infoVo, checkCode, new OtherWebWithdrawalDialog.IOtherWebWithdrawalDialogCallback() {
-                    @Override
-                    public void closeOtherDialog() {
-                        otherWXPopupView.dismiss();
-                        otherWXPopupView = null;
-                    }
-                }));
-        // }
-        otherWXPopupView.show();
-    }
-    /**
-     * 显示其他虚拟币提款Dialog
-     */
-    private void showOtherVirtualWithdrawalDialog(final String name, final WithdrawalListVo.WithdrawalItemVo listVo, final WithdrawalInfoVo infoVo) {
-
-        basePopupView = new XPopup.Builder(getContext())
-                .moveUpToKeyboard(false)
-                .asCustom(VirtualWithdrawalDialog.newInstance(getContext(), owner, name, listVo, infoVo, checkCode, ""));
-        basePopupView.show();
-    }
-//    private void showOtherWXWithdrawalDialog(final ChooseInfoVo.ChannelInfo info, final String checkCode) {
-//        if (otherWXPopupView == null) {
-//            otherWXPopupView = new XPopup.Builder(getContext()).moveUpToKeyboard(false).asCustom(OtherWebWithdrawalDialog.newInstance(getContext(), owner, info, checkCode));
-//        }
-//        otherWXPopupView.show();
-//    }
-
-//    private void showOtherZFBWithdrawalDialog(final ChooseInfoVo.ChannelInfo info, final String checkCode) {
-//        if (otherZFBPopupView == null) {
-//            otherZFBPopupView = new XPopup.Builder(getContext()).moveUpToKeyboard(false).asCustom(OtherWebWithdrawalDialog.newInstance(getContext(), owner, info, checkCode));
-//        }
-//        otherZFBPopupView.show();
-//    }
-
-    /**
-     * 跳转银行卡提款页面
-     */
-    private void showBankWithdrawalDialog(final String name, final ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo, final WithdrawalBankInfoVo selectorInfoVo) {
-        bankPopupView = new XPopup.Builder(getContext())
-                .moveUpToKeyboard(false)
-                .asCustom(BankWithdrawalDialog.newInstance(getContext(), owner, name, checkCode, listVo, selectorInfoVo, new BankWithdrawalDialog.BankWithdrawalClose() {
-                    @Override
-                    public void closeBankWithdrawal() {
-
-                    }
-
-                    @Override
-                    public void closeBankByPSW() {
-
-                    }
-                }));
-        bankPopupView.show();
-    }
-
-
-    /**
-     * 跳转USDT 提款
-     */
-//    private void showUSDTWithdrawalDialog(ChooseInfoVo.ChannelInfo channelInfo, final String checkCode) {
-//        if (channelInfo.title.contains("USDT")) {
-//            basePopupView = new XPopup.Builder(getContext()).asCustom(USDTWithdrawalDialog.newInstance(getContext(), owner, channelInfo, bankWithdrawalClose, checkCode, channelInfo.type));
-//        } else {
-//            basePopupView = new XPopup.Builder(getContext()).asCustom(VirtualWithdrawalDialog.newInstance(getContext(), owner, channelInfo, bankWithdrawalClose, checkCode, channelInfo.type));
-//        }
-//
-//        basePopupView.show();
-//    }
-    private void showUSDTWithdrawalDialog(final String name, final ArrayList<WithdrawalListVo.WithdrawalItemVo> listVo, final WithdrawalInfoVo infoVo) {
-        basePopupView = new XPopup.Builder(getContext())
-                .moveUpToKeyboard(false)
-                .asCustom(USDTWithdrawalDialog.newInstance(getContext(), owner, name, listVo, infoVo, checkCode));
-
-        basePopupView.show();
-    }
-    /**
-     * 显示绑定Dialog
-     */
-    private void showBindDialog(ChooseInfoVo.ChannelInfo channelInfo, String showMessage) {
-        String errorMessage = "";
-        String bindType = "";
-        if (showMessage.contains("尚未绑定银行卡")) {
-            errorMessage = "请先绑定银行卡后才可提款";
-            bindType = getContext().getString(R.string.txt_bind_card_type);
-        } else if (showMessage.contains("首次提款仅可使用银行卡方式提款")) {
-            errorMessage = showMessage;
-            bindType = getContext().getString(R.string.txt_bind_card_type);
-        } else {
-            errorMessage = showMessage;
-            bindType = channelInfo.bindType;
-        }
-
-        String finalBindType = bindType;
-        customPopWindow = new XPopup.Builder(getContext())
-                .asCustom(new MsgDialog(getContext(), getContext().getString(R.string.txt_kind_tips), errorMessage, false, new MsgDialog.ICallBack() {
-                    @Override
-                    public void onClickLeft() {
-                        customPopWindow.dismiss();
-                    }
-
-                    @Override
-                    public void onClickRight() {
-                        //跳转绑定流程
-                        Bundle bundle = new Bundle();
-                        bundle.putString("type", finalBindType);
-                        if (TextUtils.equals(finalBindType, getContext().getString(R.string.txt_bind_zfb_type))
-                                || TextUtils.equals(finalBindType, getContext().getString(R.string.txt_bind_wechat_type))) {
-                            // 绑定页面显示去提款按钮用
-                            SPUtils.getInstance().put(SPKeyGlobal.TYPE_RECHARGE_WITHDRAW, getContext().getString(R.string.txt_go_withdraw));
-                        }
-
-                        String path = RouterFragmentPath.Mine.PAGER_SECURITY_VERIFY_CHOOSE;
-                        Intent intent = new Intent(getContext(), ContainerActivity.class);
-                        intent.putExtra(ContainerActivity.ROUTER_PATH, path);
-                        intent.putExtra(ContainerActivity.BUNDLE, bundle);
-                        mActivity.startActivity(intent);
-                        customPopWindow.dismiss();
-                        callBack.closeDialogByBind();
-                    }
-                }));
-        customPopWindow.show();
-    }
-
-    /**
-     * 显示异常Dialog
-     */
-    private void showErrorDialog(String showMessage) {
-
-        customPopWindow = new XPopup.Builder(getContext())
-                .asCustom(new MsgDialog(getContext(), getContext().getString(R.string.txt_kind_tips), showMessage, false, new MsgDialog.ICallBack() {
-                    @Override
-                    public void onClickLeft() {
-                        customPopWindow.dismiss();
-                        // callBack.closeDialog();
-
-                    }
-
-                    @Override
-                    public void onClickRight() {
-                        customPopWindow.dismiss();
-                        // callBack.closeDialog();
-                    }
-                }));
-        customPopWindow.show();
     }
 }
