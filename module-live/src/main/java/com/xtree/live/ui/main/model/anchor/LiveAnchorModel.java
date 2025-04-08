@@ -69,13 +69,7 @@ public class LiveAnchorModel extends BindModel implements BackPressed {
                 String  matchID = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getMatchId();
                 int uid = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getUid();
                 String vid = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getVid();
-//                LiveMatchDetailActivity.start(context, matchID,uid,vid);
                 LiveDetailActivity.forward(context, uid,vid,matchID);
-               /* ARouter.getInstance().build(RouterFragmentPath.Live.LIVE_DETAIL)
-                        .withString("matchID",matchID)
-                        .withString("vid",vid)
-                        .withInt("uid",uid)
-                        .navigation();*/
             }else{
                 goLogin();
             }

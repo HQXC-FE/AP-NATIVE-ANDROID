@@ -12,7 +12,7 @@ public class LiveConfig {
 
     public static String getUserId() {
 
-        return SPUtils.getInstance().getInt(SPKey.UID, 0) + "";
+        return SPUtils.getInstance().getString(SPKeyGlobal.USER_ID);
     }
 
     public static boolean isNotificationBeepOn() {
@@ -53,7 +53,7 @@ public class LiveConfig {
     }
 
     public static Boolean isVisitor() {
-        return 0 == SPUtils.getInstance().getInt(SPKey.UID, 0);
+        return TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_ID));
     }
 
     public static void setReferer(String url) {

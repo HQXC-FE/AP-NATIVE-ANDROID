@@ -9,8 +9,6 @@ import com.xtree.base.net.live.X9LiveInfo;
 public class LiveTokenRequest {
     private String fingerprint = "";
     private String device_type = "android";
-    private int uid = 10;
-
 
     public String getFingerprint() {
         return X9LiveInfo.INSTANCE.getOaid();

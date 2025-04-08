@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.CfLog;
+import com.xtree.live.LiveConfig;
 import com.xtree.live.chat.RequestUtils;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.httpnew.LiveRep;
@@ -56,7 +57,7 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
         setActivity(mActivity);
 
         if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
-            model.getLiveToken(new LiveTokenRequest())
+            /*model.getLiveToken(new LiveTokenRequest())
                     .compose(RxUtils.schedulersTransformer())
                     .compose(RxUtils.exceptionTransformer())
                     .subscribe(new HttpCallBack<LiveTokenResponse>() {
@@ -77,13 +78,13 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
 
                             super.onError(t);
                         }
-                    });
+                    });*/
 
-            /*JsonObject json = new JsonObject();
+            JsonObject json = new JsonObject();
             json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
             json.addProperty("device_type", "android");
             json.addProperty("channel_code", "xc");
-            json.addProperty("user_id", 10);
+            json.addProperty("user_id", LiveConfig.getUserId());
 
             LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
                     .subscribe(new HttpCallBack<LiveTokenResponse>() {
@@ -103,7 +104,7 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
                         public void onError(Throwable t) {
                             super.onError(t);
                         }
-                    });*/
+                    });
 
         } else {
             initData();

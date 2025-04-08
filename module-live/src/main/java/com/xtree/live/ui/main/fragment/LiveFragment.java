@@ -20,6 +20,7 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.util.MatchDeserializer;
 import com.xtree.live.BR;
+import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
 import com.xtree.live.chat.RequestUtils;
 import com.xtree.live.data.LiveRepository;
@@ -45,9 +46,13 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewModel> {
 
     public LiveFragment() {
-        LiveRepository.getInstance().getLiveToken(new LiveTokenRequest())
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
+
+        JsonObject json = new JsonObject();
+        json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
+        json.addProperty("device_type", "android");
+        json.addProperty("user_id", LiveConfig.getUserId());
+
+        LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
                 .subscribe(new HttpCallBack<LiveTokenResponse>() {
                     @Override
                     public void onResult(LiveTokenResponse data) {

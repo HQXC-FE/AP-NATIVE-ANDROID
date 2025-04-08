@@ -56,6 +56,7 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
     private int mUid, matchType, matchId;
     private String mVid, pVid;
     private final String[] mTabList = {"广场", "投注","主播私聊","主播助理"};
+    private ViewPagerAdapter adapter;
 
     public static LiveDetailHomeFragment newInstance(int anchorId, String vId, String privateVid, int matchType, int matchId) {
         LiveDetailHomeFragment fragment = new LiveDetailHomeFragment();
@@ -117,41 +118,30 @@ public class LiveDetailHomeFragment extends BaseFragment<FragmentLiveDetailHomeB
         }else {
             binding.tabLayout.setTabGravity(TabLayout.GRAVITY_START);
         }
+
+        adapter = new ViewPagerAdapter(requireActivity());
+        // 添加三个指定的Fragment，并设置对应的标题
+        GlobalRoom room = new GlobalRoom(RoomType.PAGE_CHAT_GLOBAL, mVid, "");
+        room.uid = mUid;
+        ChatFragment chatFragment1 = ChatFragment.newInstance(RoomType.PAGE_CHAT_GLOBAL, 0, mVid, ChatBarMode.CHATBAR_MODE_NONE, room, "", "");
+
+        PrivateRoom pRoom = new PrivateRoom(RoomType.PAGE_CHAT_PRIVATE_ANCHOR, pVid(), "", 0);
+        pRoom.isOnline = 0;
+        ChatFragment chatFragment2 = ChatFragment.newInstance(RoomType.PAGE_CHAT_PRIVATE_ANCHOR, mUid, pVid(), ChatBarMode.CHATBAR_MODE_NONE, pRoom, "1", ""+mUid);
+
+        ChatRoomContainerFragment chatFragment3 = ChatRoomContainerFragment.newInstance(ChatBarMode.CHATBAR_MODE_LOW, "2", "" + mUid);
+
+        Fragment betFragment= (Fragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_BET).navigation();
+
+        adapter.addFragment(chatFragment1, "广场");
+        adapter.addFragment(betFragment, "投注");
+        adapter.addFragment(chatFragment2, "主播私聊");
+        adapter.addFragment(chatFragment3, "主播助理");
+
+        binding.viewpager.setAdapter(adapter);
+
         binding.viewpager.setOffscreenPageLimit(fragmentTypes.size());
         binding.viewpager.setUserInputEnabled(false);
-        binding.viewpager.setAdapter(new FragmentStateAdapter(this) {
-            @NonNull
-            @Override
-            public Fragment createFragment(int position) {
-                switch (fragmentTypes.get(position)) {
-                    case "chat_global"://广场
-                        GlobalRoom room = new GlobalRoom(RoomType.PAGE_CHAT_GLOBAL, mVid, "");
-                        room.uid = mUid;
-                        return ChatFragment.newInstance(RoomType.PAGE_CHAT_GLOBAL, 0, mVid, ChatBarMode.CHATBAR_MODE_NONE, room, "", "");
-                    case "chat_private"://主播私聊
-                        PrivateRoom pRoom = new PrivateRoom(RoomType.PAGE_CHAT_PRIVATE_ANCHOR, pVid(), "", 0);
-                        pRoom.isOnline = 0;
-                        return ChatFragment.newInstance(RoomType.PAGE_CHAT_PRIVATE_ANCHOR, mUid, pVid(), ChatBarMode.CHATBAR_MODE_NONE, pRoom, "1", ""+mUid);
-
-                    case "chat_list"://聊天 主播助理
-                        return ChatRoomContainerFragment.newInstance(ChatBarMode.CHATBAR_MODE_LOW, "2", "" + mUid);
-                    case "bet_fragment"://投注
-                        return (Fragment) ARouter.getInstance().build(RouterFragmentPath.Live.PAGER_LIVE_BET).navigation();
-                }
-                return new Fragment();
-            }
-
-            @Override
-            public int getItemCount() {
-                return fragmentTypes.size();
-            }
-
-            @Override
-            public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-                super.onAttachedToRecyclerView(recyclerView);
-                recyclerView.setItemViewCacheSize(fragmentTypes.size());
-            }
-        });
 
         binding.viewpager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
