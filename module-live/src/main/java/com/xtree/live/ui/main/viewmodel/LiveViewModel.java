@@ -5,15 +5,11 @@ import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
-import static com.xtree.bet.constant.FBConstants.SPORT_IDS;
-import static com.xtree.bet.constant.FBConstants.SPORT_IDS_ALL;
 import static com.xtree.bet.constant.FBConstants.SPORT_NAMES;
 import static com.xtree.bet.constant.FBConstants.SPORT_NAMES_TODAY_CG;
-import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 
 import android.app.Application;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -21,10 +17,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import com.alibaba.fastjson.JSON;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.FBHttpCallBack;
@@ -32,27 +25,18 @@ import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
-import com.xtree.base.utils.SPUtil;
-import com.xtree.base.utils.TimeUtils;
 import com.xtree.base.vo.FBService;
 import com.xtree.bet.bean.request.fb.FBListReq;
 import com.xtree.bet.bean.response.HotLeagueInfo;
 import com.xtree.bet.bean.response.fb.MatchListRsp;
-import com.xtree.bet.ui.viewmodel.callback.LeagueListCallBack;
-import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
 import com.xtree.live.SPKey;
-import com.xtree.live.chat.RequestUtils;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.httpnew.LiveRep;
-import com.xtree.live.data.source.httpnew.LiveService;
-import com.xtree.live.data.source.httpnew.RepositoryManager;
-import com.xtree.live.data.source.httpnew.RxLifecycleUtils;
 import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
-import com.xtree.live.data.source.request.RoomInfoRequest;
 import com.xtree.live.data.source.request.SubscriptionRequest;
 import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
@@ -64,7 +48,6 @@ import com.xtree.live.data.source.response.fb.Match;
 import com.xtree.live.data.source.response.fb.MatchFb;
 import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.model.GiftBean;
-import com.xtree.live.ui.main.listener.FetchListener;
 import com.xtree.live.ui.main.model.anchor.LiveAnchorModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerItemModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerModel;
@@ -80,7 +63,6 @@ import java.util.Map;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import io.sentry.Sentry;
-import me.xtree.mvvmhabit.base.BaseApplication;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
 import me.xtree.mvvmhabit.http.BaseResponse;
@@ -307,6 +289,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         ArrayList<BindModel> bindModels = new ArrayList<BindModel>();
                         for (BannerResponse bannerResponse : data) {
                             LiveBannerItemModel itemModel = new LiveBannerItemModel();
+                            itemModel.img.set(bannerResponse.getImg());
                             itemModel.backImg.set(bannerResponse.getBackImg());
                             itemModel.foreImg.set(bannerResponse.getForeImg());
                             itemModel.androidUrl.set(bannerResponse.getAndroidUrl());
@@ -372,11 +355,13 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
     /**
      * 热门赛事
+     *
      * @param matchId
      * @param success
      * @param error
      */
     private void getHotMatchList(String matchId, Observer<Match> success, Observer<Object> error) {
+
     }
 
     public void getGameTokenApi(String matchId, Observer<Match> success, Observer<Object> error) {
@@ -424,18 +409,19 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
     /**
      * 获取直播间详情
+     *
      * @param uid
      */
-    public void getRoomInfo(int uid){
+    public void getRoomInfo(int uid) {
         String channelCode = X9LiveInfo.INSTANCE.getChannel();
-        LiveRep.getInstance().getRoomInfo(uid,channelCode)
+        LiveRep.getInstance().getRoomInfo(uid, channelCode)
                 .subscribe(new HttpCallBack<LiveRoomBean>() {
                     @Override
                     public void onResult(LiveRoomBean liveRoomBean) {
                         liveRoomInfo.postValue(liveRoomBean);
-                        if(liveRoomBean.getInfo()!=null){
+                        if (liveRoomBean.getInfo() != null) {
                             X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
-                            SPUtils.getInstance().put(SPKey.UID,uid);
+                            SPUtils.getInstance().put(SPKey.UID, uid);
                         }
                     }
 
@@ -447,16 +433,17 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                 });
 
     }
-    public void refreshRoomInfo(int uid){
+
+    public void refreshRoomInfo(int uid) {
         String channelCode = X9LiveInfo.INSTANCE.getChannel();
-        LiveRep.getInstance().getRoomInfo(uid,channelCode)
+        LiveRep.getInstance().getRoomInfo(uid, channelCode)
                 .subscribe(new HttpCallBack<LiveRoomBean>() {
                     @Override
                     public void onResult(LiveRoomBean liveRoomBean) {
                         liveRoomInfoRefresh.postValue(liveRoomBean);
-                        if(liveRoomBean.getInfo()!=null){
+                        if (liveRoomBean.getInfo() != null) {
                             X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
-                            SPUtils.getInstance().put(SPKey.UID,uid);
+                            SPUtils.getInstance().put(SPKey.UID, uid);
                         }
                     }
 
