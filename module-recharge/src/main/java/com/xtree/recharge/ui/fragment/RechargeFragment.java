@@ -81,8 +81,11 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 @Route(path = RouterFragmentPath.Recharge.PAGER_RECHARGE)
 public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, RechargeViewModel> {
 
-    private Method method;
-    private Object object;
+    private static final String KEY_MANUAL = "manual"; // 人工充值
+    private static final String ONE_PAY_FIX = "onepayfix"; // 极速充值包含的关键字
+    private static final int MSG_CLICK_CHANNEL = 1001;
+    private static final int MSG_ADD_PAYMENT = 1002;
+    private static final long REFRESH_DELAY = 30 * 60 * 1000L; // 刷新间隔等待时间(如果长时间没刷新)
     RechargeAdapter mTypeAdapter;
     RechargeChannelAdapter mChannelAdapter;//充值渠道适配器
     AmountAdapter mAmountAdapter;
@@ -105,20 +108,45 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
     ProfileVo mProfileVo = null; // 个人信息
     // HQAP2-2963 这几个充值渠道 内部浏览器要加个外跳的按钮 2024-03-23
     String[] arrayBrowser = new String[]{"onepayfix3", "onepayfix4", "onepayfix5", "onepayfix6"};
-
-    private static final String KEY_MANUAL = "manual"; // 人工充值
-    private static final String ONE_PAY_FIX = "onepayfix"; // 极速充值包含的关键字
     String bankCode = ""; // 付款银行编号 (极速充值用) ABC
     HiWalletVo mHiWalletVo; // 一键进入 HiWallet钱包
     PaymentTypeVo curPaymentTypeVo;
     PaymentDataVo mPaymentDataVo;
-    private static final int MSG_CLICK_CHANNEL = 1001;
-    private static final int MSG_ADD_PAYMENT = 1002;
     HashMap<String, RechargeVo> mapRechargeVo = new HashMap<>(); // 缓存的,跳转第三方链接的充值渠道
     List<String> payCodeList = new ArrayList<>(); // 含弹出支付窗口的充值渠道类型列表(从缓存加载用)
     boolean isNeedReset = false; // 是否正在跳转到其它页面 (极速充值订单) (跳转后回来刷新用)
     long lastRefresh = System.currentTimeMillis(); // 上次刷新时间
-    private static final long REFRESH_DELAY = 30 * 60 * 1000L; // 刷新间隔等待时间(如果长时间没刷新)
+    Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            //super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_CLICK_CHANNEL:
+                    if (binding.rcvPayChannel.getAdapter().getItemCount() > 0) {
+                        RechargeVo vo = (RechargeVo) msg.obj;
+                        View child = binding.rcvPayChannel.findViewWithTag(vo.bid);
+                        if (child != null) {
+                            child.performClick();
+                        }
+                        for (int i = 0; i < curPaymentTypeVo.payChannelList.size(); i++) {
+                            if (curPaymentTypeVo.payChannelList.get(i).bid.equals(vo.bid)) {
+                                binding.rcvPayChannel.scrollToPosition(i); // 自动滑动到选中的充值渠道
+                                return;
+                            }
+                        }
+                    }
+                    break;
+                case MSG_ADD_PAYMENT:
+                    SPUtils.getInstance().put(SPKeyGlobal.RC_PAYMENT_THIRIFRAME, new Gson().toJson(mapRechargeVo));
+                    break;
+                default:
+                    CfLog.i("****** default");
+                    break;
+            }
+        }
+    };
+    private Method method;
+    private Object object;
     private BasePopupView customPopWindow = null; // 公共弹窗 底部弹窗
 
     @Override
@@ -326,10 +354,10 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                     mAmountAdapter.setAmount(amount);
                     mAmountAdapter.notifyDataSetChanged();
                 }
-                if (amount.length() > 0){
+                if (amount.length() > 0) {
 //                    binding.btnNext.setEnabled(true); // 默认禁用.
 //                    binding.btnNext.setBackground(getContext().getDrawable(R.mipmap.cm_btn_recharge_long_disable));
-                }else{
+                } else {
 //                    binding.btnNext.setEnabled(false); // 默认禁用.
 //                    binding.btnNext.setBackground(getContext().getDrawable(R.mipmap.cm_btn_recharge_long_press));
                 }
@@ -385,36 +413,6 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                 || (bk.getHot() != null && !bk.getHot().isEmpty());
         return vo.paycode.contains(ONE_PAY_FIX) && isNotEmpty;
     }
-
-    Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            //super.handleMessage(msg);
-            switch (msg.what) {
-                case MSG_CLICK_CHANNEL:
-                    if (binding.rcvPayChannel.getAdapter().getItemCount() > 0) {
-                        RechargeVo vo = (RechargeVo) msg.obj;
-                        View child = binding.rcvPayChannel.findViewWithTag(vo.bid);
-                        if (child != null) {
-                            child.performClick();
-                        }
-                        for (int i = 0; i < curPaymentTypeVo.payChannelList.size(); i++) {
-                            if (curPaymentTypeVo.payChannelList.get(i).bid.equals(vo.bid)) {
-                                binding.rcvPayChannel.scrollToPosition(i); // 自动滑动到选中的充值渠道
-                                return;
-                            }
-                        }
-                    }
-                    break;
-                case MSG_ADD_PAYMENT:
-                    SPUtils.getInstance().put(SPKeyGlobal.RC_PAYMENT_THIRIFRAME, new Gson().toJson(mapRechargeVo));
-                    break;
-                default:
-                    CfLog.i("****** default");
-                    break;
-            }
-        }
-    };
 
     private void onClickPaymentType(PaymentTypeVo vo) {
         CfLog.i(vo.toInfo());
@@ -621,7 +619,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         }
 
         //支付宝和微信判断银行卡绑定信息
-        if (vo.paycode.contains("zfb")|| vo.paycode.contains("wx")) {
+        if (vo.paycode.contains("zfb") || vo.paycode.contains("wx")) {
             //if (vo.op_thiriframe_use && vo.userBankList.isEmpty() && vo.view_bank_card && !vo.phone_needbind) {
             if (vo.view_bank_card && vo.userBankList.isEmpty()) {
 
@@ -869,15 +867,17 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             return;
         } else if (vo.paycode.equals("hiwallet")) {
             type = "CNYT";
-        } else if (vo.paycode.equals("hqppaytopay")) {
+        } else if (vo.paycode.toLowerCase().contains("topay")) {
             type = "TOG";
-        } else if (vo.paycode.equals("ebpay")) {
+        } else if (vo.paycode.toLowerCase().contains("ebpay")) {
             type = "EB";
-        } else if (vo.paycode.equals("hqppaygobao")) {
+        } else if (vo.paycode.toLowerCase().contains("edpay")) {
+            type = "ED";
+        } else if (vo.paycode.toLowerCase().contains("gobao")) {
             type = "GB";
-        } else if (vo.paycode.equals("hqppayokpay")) {
+        } else if (vo.paycode.toLowerCase().contains("okpay")) {
             type = "OKG";
-        } else if (vo.paycode.equals("hqppaygopay")) {
+        } else if (vo.paycode.toLowerCase().contains("gopay")) {
             type = "GOP";
         } else {
             binding.tvwPrePay.setVisibility(View.GONE);
@@ -1241,12 +1241,20 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
         if (!TextUtils.isEmpty(vo.usdtrate)) {
             setUsdtRate(vo);
-        } else if (vo.paycode.equals("hiwallet")) {
+        } else if (vo.paycode.toLowerCase().contains("hiwallet")) {
             binding.tvwFxRate.setText(R.string.txt_rate_cnyt_cny);
-        } else if (vo.paycode.equals("hqppaytopay")) {
+        } else if (vo.paycode.toLowerCase().contains("topay")) {
             binding.tvwFxRate.setText(R.string.txt_rate_tog_cny);
-        } else if (vo.paycode.equals("ebpay")) {
+        } else if (vo.paycode.toLowerCase().contains("ebpay")) {
             binding.tvwFxRate.setText(R.string.txt_rate_eb_cny);
+        } else if (vo.paycode.toLowerCase().contains("edpay")) {
+            binding.tvwFxRate.setText(R.string.txt_rate_ed_cny);
+        } else if (vo.paycode.toLowerCase().contains("gobao")) {
+            binding.tvwFxRate.setText(R.string.txt_rate_gobao_cny);
+        } else if (vo.paycode.toLowerCase().contains("okpay")) {
+            binding.tvwFxRate.setText(R.string.txt_rate_okpay_cny);
+        } else if (vo.paycode.toLowerCase().contains("gopay")) {
+            binding.tvwFxRate.setText(R.string.txt_rate_gopay_cny);
         } else {
             binding.tvwFxRate.setText("");
             binding.llRate.setVisibility(View.GONE);
@@ -1360,12 +1368,18 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 //    }
 
     private void setUsdtRate(RechargeVo vo) {
-        binding.tvwFxRate.setText(getString(R.string.txt_rate_usdt, vo.usdtrate));
         int realMoney = Integer.parseInt(0 + binding.tvwRealAmount.getText().toString());
         float realUsdt = realMoney / Float.parseFloat(vo.usdtrate);
         //String usdt = new DecimalFormat("#.##").format(realUsdt);
         //String usdt = String.format(getString(R.string.format_change_range), realUsdt);
-        String usdt = String.format(getString(R.string.format_change_range), NumberUtils.formatUp(realUsdt, 2), "USDT");
+        String typeTxt = "USDT";
+        String fxRateTxt = getString(R.string.txt_rate_usdt, vo.usdtrate);
+        if (vo.paycode.toLowerCase().contains("usdc")) {
+            typeTxt = "USDC";
+            fxRateTxt = getString(R.string.txt_rate_usdc, vo.usdtrate);
+        }
+        binding.tvwFxRate.setText(fxRateTxt);
+        String usdt = String.format(getString(R.string.format_change_range), NumberUtils.formatUp(realUsdt, 2), typeTxt);
         binding.tvwPrePay.setText(usdt);
     }
 
