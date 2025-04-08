@@ -57,7 +57,6 @@ public class AnchorLivesListModel extends BindModel {
         }
 
         public void setUid(int uid) {
-            SPUtils.getInstance().put(SPKey.UID,uid);
             this.uid = uid;
         }
 

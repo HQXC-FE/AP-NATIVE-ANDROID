@@ -313,6 +313,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         ArrayList<BindModel> bindModels = new ArrayList<BindModel>();
                         for (BannerResponse bannerResponse : data) {
                             LiveBannerItemModel itemModel = new LiveBannerItemModel();
+                            itemModel.img.set(bannerResponse.getImg());
                             itemModel.backImg.set(bannerResponse.getBackImg());
                             itemModel.foreImg.set(bannerResponse.getForeImg());
                             itemModel.androidUrl.set(bannerResponse.getAndroidUrl());
@@ -378,11 +379,13 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
     /**
      * 热门赛事
+     *
      * @param matchId
      * @param success
      * @param error
      */
     private void getHotMatchList(String matchId, Observer<Match> success, Observer<Object> error) {
+
     }
 
     public void getGameTokenApi(String matchId, Observer<Match> success, Observer<Object> error) {
@@ -430,18 +433,19 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
     /**
      * 获取直播间详情
+     *
      * @param uid
      */
-    public void getRoomInfo(int uid){
+    public void getRoomInfo(int uid) {
         String channelCode = X9LiveInfo.INSTANCE.getChannel();
-        LiveRep.getInstance().getRoomInfo(uid,channelCode)
+        LiveRep.getInstance().getRoomInfo(uid, channelCode)
                 .subscribe(new HttpCallBack<LiveRoomBean>() {
                     @Override
                     public void onResult(LiveRoomBean liveRoomBean) {
                         liveRoomInfo.postValue(liveRoomBean);
-                        if(liveRoomBean.getInfo()!=null){
+                        if (liveRoomBean.getInfo() != null) {
                             X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
-                            SPUtils.getInstance().put(SPKey.UID,uid);
+
                         }
                     }
 
@@ -453,16 +457,16 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                 });
 
     }
-    public void refreshRoomInfo(int uid){
+
+    public void refreshRoomInfo(int uid) {
         String channelCode = X9LiveInfo.INSTANCE.getChannel();
-        LiveRep.getInstance().getRoomInfo(uid,channelCode)
+        LiveRep.getInstance().getRoomInfo(uid, channelCode)
                 .subscribe(new HttpCallBack<LiveRoomBean>() {
                     @Override
                     public void onResult(LiveRoomBean liveRoomBean) {
                         liveRoomInfoRefresh.postValue(liveRoomBean);
-                        if(liveRoomBean.getInfo()!=null){
+                        if (liveRoomBean.getInfo() != null) {
                             X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
-                            SPUtils.getInstance().put(SPKey.UID,uid);
                         }
                     }
 
