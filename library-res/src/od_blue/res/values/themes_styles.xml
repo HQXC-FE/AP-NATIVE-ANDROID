@@ -51,7 +51,7 @@
     </style>
 
     <style name="textForgotAttrStyle">
-        <item name="android:textColor">@color/textForgotColor</item>
+        <item name="android:textColor">@color/tertiaryColor</item>
     </style>
 
     <style name="clr_item_text_style">
@@ -259,7 +259,7 @@
     </style>
 
     <style name="style_home_top_name">
-        <item name="android:textColor">@color/textMainUnSelectorColor</item>
+        <item name="android:textColor">@color/textPrimaryColor</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">XXX</item>
@@ -271,7 +271,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">XXX</item>
-        <item name="android:textColor">@color/textMainUnSelectorColor</item>
+        <item name="android:textColor">@color/textPrimaryColor</item>
         <item name="android:textSize">12sp</item>
     </style>
 
@@ -622,7 +622,7 @@
         <item name="android:paddingHorizontal" tools:targetApi="o">6dp</item>
         <item name="android:button">@drawable/checkbox_bg_selector</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/textMainUnSelectorColor</item>
+        <item name="android:textColor">@color/textPrimaryColor</item>
     </style>
 
     <!-- 登录页 眼睛 睁开/关闭 -->

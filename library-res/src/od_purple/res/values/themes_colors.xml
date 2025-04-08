@@ -54,7 +54,7 @@
     <!--   状态-->
 
     <!--    文字-->
-    <color name="textDescriptionColor">#9A96A4</color>
+    <color name="textDescriptionColor">#5F55D9</color>
     <color name="textPrimaryColor">#302E36</color>
     <color name="textSecondaryColor">#5B5768</color>
     <color name="textTertiaryColor">#9A96A4</color>
@@ -80,6 +80,7 @@
     <color name="lotteryTitleGradient1Color">#F8ECFF</color>
     <color name="lotteryTitleGradient2Color">#00F8ECFF</color>
 
+
     <color name="moneyGradient1Color">#FFFFFF</color>
     <color name="moneyGradient2Color">#52BBACFD</color>
     <color name="moneyGradient3Color">#00F2EFFF</color>
@@ -91,7 +92,7 @@
 
     <!--    其他-->
     <color name="dividerColor2">#38D9D9D9</color>
-    <color name="buttonText">#FFFFFF</color>
+
     <color name="buttonShadowColor">#1A8869E6</color>
     <color name="strokeColor">#9179E7</color>
     <color name="strokeDialogColor">#DFDFDF</color>
@@ -102,33 +103,24 @@
     <color name="textAgreementColor">#6246CF</color>
     <color name="textHomeTextColor">#393152</color>
     <!--其他  测速远点颜色-->
-    <!--底部Bar文字选中-->
-    <color name="textMainSelectorColor">#A354D0</color>
-    <!--底部Bar文字未选中-->
-    <color name="textMainUnSelectorColor">#9A96A4</color>
+
+
+
     <color name="mainActivityBackgroupColor">#F2F2F2</color>
     <color name="mainListAcBackgroupColor">#F3F3F3</color>
-    <color name="msgTopTextColorStart">#F9C1DC</color>
-    <color name="msgTopTextColorEnd">#B5A9FF</color>
+
 
     <color name="meForgetPsWordBgColor">#CCFFFFFF</color>
-    <color name="warningFeedbackColor">#FB6156</color>
+
     <color name="meLevelProgressbarStart">#FFA3CF</color>
     <color name="meLevelProgressbarEnd">#9384F1</color>
-    <color name="activityTopDivideLineColor">#DFDBDA</color>
-    <color name="customeAgreColor">#CE86CE</color>
-    <color name="customQAColor">#99FFFFFF</color>
-    <color name="reBindTextColor">#FFFFFF</color>
-    <color name="updateTitleTextColor">#775493</color>
-    <color name="itemWalletTextColor">#302E36</color>
 
-    <color name="me_progress_bar_bg">#BCB2D6</color>
-    <color name="meProgressBarStart">#A798CD</color>
-    <color name="meProgressBarEnd">#A798CD</color>
-    <color name="meProgressTipTextColor">#9A96A4</color>
+
+    <color name="customQAColor">#99FFFFFF</color>
+
 
     <color name="offerLineColor">#6D61E2</color>
 
-    <color name="offerGetExpiredStart">#FFFFFF</color>
     <color name="offerGetExpiredEnd">#ECFFFFFF</color>
+
 </resources>

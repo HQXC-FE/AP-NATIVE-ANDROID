@@ -64,7 +64,7 @@
     <color name="textQuaternaryColor">#C2CEC8</color>
     <color name="textQuinaryColor">#EEF4F0</color>
     <color name="textSenaryColor">#F5F7F6</color>
-    <color name="textForgotColor">#518FD8</color>
+   <!-- <color name="textForgotColor">#518FD8</color>-->
     <!--    文字-->
 
     <!--    渐变-->
@@ -111,34 +111,26 @@
     <color name="textHomeTextColor">#393152</color>
     <!--其他  测速远点颜色-->
     <color name="textSpeedTestColor">#F5BF56</color>
-    <!--底部Bar文字选中-->
-    <color name="textMainSelectorColor">#57A574</color>
+
     <!--底部Bar文字未选中-->
-    <color name="textMainUnSelectorColor">#97A89E</color>
+
     <color name="mainActivityBackgroupColor">#F2F2F2</color>
     <color name="mainListAcBackgroupColor">#F3F3F3</color>
 
     <color name="meForgetPsWordBgColor">#CCFFFFFF</color>
-    <color name="warningFeedbackColor">#FB6156</color>
+
     <color name="msgTopTextColorStart">#FFBC6E</color>
+    <color name="msgTopTextColorEnd">#B5A9FF</color>
+
     <color name="meLevelProgressbarStart">#FFA3CF</color>
     <color name="meLevelProgressbarEnd">#9384F1</color>
-    <color name="activityTopDivideLineColor">#DFDBDA</color>
+
     <color name="customQAColor">#99FFFFFF</color>
-    <color name="customeAgreColor">#E7A018</color>
-    <color name="reBindTextColor">#F96C54</color>
-    <color name="updateTitleTextColor">#57A574</color>
-    <color name="itemWalletTextColor">#97A89E</color>
-    <color name="me_progress_bar_bg">#84CDA0</color>
-    <color name="meProgressBarStart">#67AC7F</color>
-    <color name="meProgressBarEnd">#67AC7F</color>
-    <color name="meProgressTipTextColor">#97A89E</color>
-    <color name="offerLineColor">#67AC7F</color>
-    <color name="offerGradientColor">#F0FFF5</color>
-    <color name="offerSelectTextColor">#57A574</color>
 
 
-    <color name="offerGetExpiredStart">#FFFFFF</color>
+    <color name="me_progress_bar_bg">#BCB2D6</color>
+    <color name="offerLineColor">#6D61E2</color>
+
     <color name="offerGetExpiredEnd">#ECFFFFFF</color>
 
 </resources>

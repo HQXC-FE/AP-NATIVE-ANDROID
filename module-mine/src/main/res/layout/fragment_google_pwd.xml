@@ -42,7 +42,7 @@
             android:id="@+id/cl_google_psw_top_view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/activityTopDivideLineColor"
+            android:background="@color/textQuaternaryColor"
             app:layout_constraintTop_toBottomOf="@id/cl_title" />
         <!---->
         <LinearLayout

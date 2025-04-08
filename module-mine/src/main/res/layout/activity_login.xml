@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="36dp"
                 android:text="@string/me_login"
-                android:textColor="@color/buttonText"
+                android:textColor="@color/moneyGradient1Color"
                 app:layout_constraintTop_toTopOf="@+id/login_header"
                 app:layout_constraintStart_toStartOf="parent"
                 android:paddingLeft="10dp"
@@ -366,7 +366,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="@string/me_agreement_content"
-                            android:textColor="@color/textAgreementColor"
+                            android:textColor="@color/tertiaryColor"
                             android:textSize="@dimen/me_text_size_sp12sp"
                             android:textStyle="bold" />
 

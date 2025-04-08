@@ -5,7 +5,7 @@
     <gradient
         android:angle="0"
         android:endColor="@color/offerGetExpiredEnd"
-        android:startColor="@color/offerGetExpiredStart" />
+        android:startColor="@color/moneyGradient1Color" />
     <corners android:radius="20dp" />
 
 </shape>

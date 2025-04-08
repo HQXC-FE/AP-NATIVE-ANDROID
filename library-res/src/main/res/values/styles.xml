@@ -345,7 +345,7 @@
     <!-- 通用 提示小字 桔红色 -->
     <style name="style_cm_tip_small_orange" parent="style_cm_tip_small_grey">
         <item name="android:text">@string/txt_note_asterisks_cannot_empty</item>
-        <item name="android:textColor">@color/warningFeedbackColor</item>
+        <item name="android:textColor">@color/warningColor</item>
     </style>
     <!-- 通用 提示小字 桔红色 2 -->
     <style name="style_cm_tip_small_orange2" parent="style_cm_tip_small_grey">

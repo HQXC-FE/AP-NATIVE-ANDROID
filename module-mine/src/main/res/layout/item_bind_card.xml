@@ -109,7 +109,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="14dp"
-            android:textColor="@color/reBindTextColor"
+            android:textColor="@color/moneyGradient1Color"
             />
     </LinearLayout>
 </LinearLayout>

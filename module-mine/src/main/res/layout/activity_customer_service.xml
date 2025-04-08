@@ -494,7 +494,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="@string/me_agreement_content"
-                            android:textColor="@color/customeAgreColor"
+                            android:textColor="@color/infoColor"
                             android:textSize="@dimen/me_text_size_sp12sp"
                             android:textStyle="bold" />
 

@@ -8,6 +8,6 @@
         <item name="android:paddingHorizontal" tools:targetApi="o">6dp</item>
         <item name="android:button">@drawable/checkbox_bg_selector</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/textMainUnSelectorColor</item>
+        <item name="android:textColor">@color/textDescriptionColor</item>
     </style>
 </resources>

@@ -50,7 +50,7 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/txt_update"
-            android:textColor="@color/updateTitleTextColor"
+            android:textColor="@color/channelTextSelectColor"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
