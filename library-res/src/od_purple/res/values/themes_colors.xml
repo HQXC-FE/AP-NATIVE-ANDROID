@@ -42,6 +42,15 @@
     <!--    主题色-->
 
     <!--   状态-->
+    <color name="successColor">#5ADF8F</color>
+    <color name="errorColor">#FF804B</color>
+    <color name="warningColor">#FB6156</color>
+    <color name="winColor">#F34E6C</color>
+    <color name="loseColor">#FF804B</color>
+    <color name="drawColor">#E9AF3E</color>
+    <color name="unsettleColor">#C8C8C8</color>
+    <color name="invalidColor">#BEBED0</color>
+    <color name="infoColor">#E66AA6</color>
     <!--   状态-->
 
     <!--    文字-->
