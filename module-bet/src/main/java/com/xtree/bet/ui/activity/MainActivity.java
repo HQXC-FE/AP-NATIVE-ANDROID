@@ -4,6 +4,7 @@ import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM_NAME;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FB;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_IM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
@@ -200,6 +201,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     @Override
     public void initParam() {
         mPlatform = getIntent().getStringExtra(KEY_PLATFORM);
+        CfLog.d("==== MainActivity mPlatform ===="+mPlatform);
         initPlatFormName();
         SPUtils.getInstance().put(KEY_PLATFORM, mPlatform);
         SPUtils.getInstance().put(KEY_PLATFORM_NAME, mPlatformName);
@@ -221,9 +223,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         } else if (TextUtils.equals(mPlatform, PLATFORM_PM)) {
             mPlatformName = getString(R.string.bt_platform_name_pm);
             isDisabled = SPUtils.getInstance().getBoolean(SPKeyGlobal.PM_DISABLED);
-        } else {
+        } else if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
             mPlatformName = getString(R.string.bt_platform_name_pmxc);
             isDisabled = SPUtils.getInstance().getBoolean(SPKeyGlobal.PMXC_DISABLED);
+        } else if (TextUtils.equals(mPlatform, PLATFORM_IM)) {
+            mPlatformName = getString(R.string.bt_platform_name_pmxc);
+            isDisabled = SPUtils.getInstance().getBoolean(SPKeyGlobal.IMONE_DISABLED);
         }
         if (isDisabled) {
             MsgDialog dialog = new MsgDialog(this, "温馨提示", "该场馆已被关闭，请切换至其它场馆进行游玩。感谢您的支持。", true, new MsgDialog.ICallBack() {

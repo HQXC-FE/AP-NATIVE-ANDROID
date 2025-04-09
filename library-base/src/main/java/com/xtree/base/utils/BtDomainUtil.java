@@ -14,6 +14,7 @@ public class BtDomainUtil {
     public final static String PLATFORM_FB = "fb";
     public final static String PLATFORM_PM = "obg";
     public final static String PLATFORM_PMXC = "obgzy";
+    public final static String PLATFORM_IM = "im";
     private static List<String> domainUrl = new ArrayList<>();
     private static List<String> fbDomainUrl = new ArrayList<>();
     private static List<String> fbxcDomainUrl = new ArrayList<>();
@@ -21,6 +22,7 @@ public class BtDomainUtil {
     private static String defaultFbxcDomainUrl;
     private static String defaultPmDomainUrl;
     private static String defaultPmxcDomainUrl;
+    private static String defaultImDomainUrl;
 
     /**
      * 是否支持多线路
@@ -41,8 +43,10 @@ public class BtDomainUtil {
             return !TextUtils.isEmpty(defaultFbDomainUrl);
         } else if (TextUtils.equals(platform, PLATFORM_PMXC)) {
             return !TextUtils.isEmpty(defaultPmxcDomainUrl);
-        } else {
+        } else if (TextUtils.equals(platform, PLATFORM_PM)) {
             return !TextUtils.isEmpty(defaultPmDomainUrl);
+        } else {
+            return !TextUtils.isEmpty(defaultImDomainUrl);
         }
     }
 
@@ -59,8 +63,10 @@ public class BtDomainUtil {
             BtDomainUtil.domainUrl.addAll(BtDomainUtil.getFbDomainUrl());
         } else if (TextUtils.equals(platform, PLATFORM_PMXC)) {
             BtDomainUtil.domainUrl.add(defaultPmxcDomainUrl);
+        } else if (TextUtils.equals(platform, PLATFORM_PM)) {
+            BtDomainUtil.domainUrl.add(defaultPmxcDomainUrl);
         } else {
-            BtDomainUtil.domainUrl.add(defaultPmDomainUrl);
+            BtDomainUtil.domainUrl.add(defaultImDomainUrl);
         }
     }
 
@@ -121,4 +127,13 @@ public class BtDomainUtil {
     public static void setDefaultPmxcDomainUrl(String defaultPmxcDomainUrl) {
         BtDomainUtil.defaultPmxcDomainUrl = defaultPmxcDomainUrl;
     }
+
+    public static String getDefaultImDomainUrl() {
+        return defaultImDomainUrl;
+    }
+
+    public static void setDefaultgetDefaultImoneDomainUrlDomainUrl(String defaultImDomainUrl) {
+        BtDomainUtil.defaultImDomainUrl = defaultImDomainUrl;
+    }
+
 }
