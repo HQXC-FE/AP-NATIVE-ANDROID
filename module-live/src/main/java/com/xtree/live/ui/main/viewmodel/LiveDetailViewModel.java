@@ -79,23 +79,6 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
         setActivity(mActivity);
 
         if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
-            /*model.getLiveToken(new LiveTokenRequest())
-                    .compose(RxUtils.schedulersTransformer())
-                    .compose(RxUtils.exceptionTransformer())
-                    .subscribe(new HttpCallBack<LiveTokenResponse>() {
-                        @Override
-                        public void onResult(LiveTokenResponse data) {
-                            if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
-                                model.setLive(data);
-                                initData();
-                            }
-                        }
-
-                        @Override
-                        public void onError(Throwable t) {
-                            super.onError(t);
-                        }
-                    });*/
 
             JsonObject json = new JsonObject();
             json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());

@@ -718,7 +718,13 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 
 
     public void readMessage(String msgId) {
-//        addSubscription(getApiStores().readMessage(mvpView().getRoomVid(), msgId, AppConfig.getChannel()), new NothingObserver());
+
+        LiveRep.getInstance().readMessage(vid,msgId).subscribe(new HttpCallBack<JsonElement>() {
+            @Override
+            public void onResult(JsonElement jsonElement) {
+
+            }
+        });
     }
 
 

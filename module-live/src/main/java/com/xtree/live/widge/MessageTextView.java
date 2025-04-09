@@ -147,22 +147,22 @@ public class MessageTextView extends androidx.appcompat.widget.AppCompatTextView
         SpannableStringBuilder ssb = new SpannableStringBuilder();
         if (message.isEnterRoomMessage()) {
             ssb.append(message.getWelcomeText());
-            ssb.append(getSpace(ConvertUtils.dp2px(4)));
+            ssb.append(getSpace(ConvertUtils.dp2px(6)));
             if(!message.isMessageFromTourist()){
                 SpannableString titleSpan = getTitleSpan(message);
                 ssb.append(titleSpan);
-                ssb.append(getSpace(ConvertUtils.dp2px(4)));
+                ssb.append(getSpace(ConvertUtils.dp2px(6)));
             }
             appendUserName(nickName, ssb);
-            ssb.append(getSpace(ConvertUtils.dp2px(4)));
+            ssb.append(getSpace(ConvertUtils.dp2px(6)));
             ssb.append(ConversationMessage.ENTER_ROOM);
             setText(ssb);
             setTextColor(ConversationMessage.TEXT_COLOR_TERTIARY);
         } else if (message.isThanksForGift()) {
             ssb.append(ConversationMessage.CHAT_ROOM_THANKS);
-            ssb.append(getSpace(ConvertUtils.dp2px(4)));
+            ssb.append(getSpace(ConvertUtils.dp2px(6)));
             appendUserName(nickName, ssb);
-            ssb.append(getSpace(ConvertUtils.dp2px(4)));
+            ssb.append(getSpace(ConvertUtils.dp2px(6)));
             ssb.append(ConversationMessage.CHAT_ROOM_GIFTED);
             ssb.append(message.getGiftName());
             setText(ssb);
@@ -174,7 +174,7 @@ public class MessageTextView extends androidx.appcompat.widget.AppCompatTextView
                 if(!message.isMessageFromTourist()){
                     SpannableString titleSpan = getTitleSpan(message);
                     ssb.append(titleSpan);
-                    ssb.append(getSpace(ConvertUtils.dp2px(4)));
+                    ssb.append(getSpace(ConvertUtils.dp2px(6)));
                 }
             }
 
@@ -273,8 +273,8 @@ public class MessageTextView extends androidx.appcompat.widget.AppCompatTextView
     private final int DESIGNATION_ANCHOR_BG_COLOR = WordUtil.getColor(R.color.designation_anchor_bg_color);
     private SpannableString getTitleSpan(ConversationMessage message) {
         TagSpan tag = new TagSpan();
-        tag.paddingL = ConvertUtils.dp2px(6);
-        tag.paddingR = ConvertUtils.dp2px(6);
+        tag.paddingL = ConvertUtils.dp2px(2);
+        tag.paddingR = ConvertUtils.dp2px(2);
 
         if (message.isFromAnchor()) {
             tag.iconRes = R.mipmap.ic_level_anchor;
@@ -300,17 +300,18 @@ public class MessageTextView extends androidx.appcompat.widget.AppCompatTextView
             return spannableString;
         } else {
             int levelInt = message.getFromRecipient().getLevel();
-            if (levelInt == 0) levelInt = 1;
+//            if (levelInt == 0) levelInt = 1;
 //            String text = "Lv." + levelInt;
-            String text = "";
+            String text = " ";
+//            String text = message.getMessageRecord().getText();
             tag.iconRes = mLevelDrawables[Math.min(Math.max(0, levelInt), mLevelDrawables.length - 1)];
 //            tag.textColor = mLevelTextColors[Math.min(Math.max(0, levelInt), mLevelTextColors.length - 1)];
             tag.textColor = DESIGNATION_ANCHOR_TEXT_COLOR;
 //            tag.bgColor = mLevelBgColors[Math.min(Math.max(0, levelInt), mLevelBgColors.length - 1)];
-            tag.bgColor = mDesignationTextColors[Math.min(Math.max(0, levelInt), mDesignationTextColors.length - 1)];
-//            SpannableString spannableString = new SpannableString(text);
-//            spannableString.setSpan(tag, 0, text.length(), SpannableString.SPAN_INCLUSIVE_EXCLUSIVE);
-            return new SpannableString(" ");
+            tag.bgColor = WordUtil.getColor(R.color.clr_transparent);
+            SpannableString spannableString = new SpannableString(text);
+            spannableString.setSpan(tag, 0, text.length(), SpannableString.SPAN_INCLUSIVE_EXCLUSIVE);
+            return spannableString;
         }
     }
 

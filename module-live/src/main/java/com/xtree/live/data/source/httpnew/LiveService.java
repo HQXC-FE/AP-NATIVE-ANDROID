@@ -96,6 +96,9 @@ public interface LiveService {
     @GET("api/gift/getList")
     Flowable<BaseResponse<List<GiftBean>>> getGiftList(@Query(SPKey.CHANNEL_CODE) String code);
 
+    @GET("api/chat/read")
+    Flowable<BaseResponse<JsonElement>> readMessage(@Query("vid") String vid, @Query("lastMsgId") String msgId, @Query(SPKey.CHANNEL_CODE) String channel);
+
 
 
 }

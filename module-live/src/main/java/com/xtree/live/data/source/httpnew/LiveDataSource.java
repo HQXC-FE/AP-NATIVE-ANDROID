@@ -52,5 +52,6 @@ public interface LiveDataSource {
 
     Flowable<ChatRoomPin> pinChatRoom(RequestBody body);
     Flowable<List<GiftBean>> getGiftList();
+    Flowable<JsonElement> readMessage(String vid,String msgId);
 
 }

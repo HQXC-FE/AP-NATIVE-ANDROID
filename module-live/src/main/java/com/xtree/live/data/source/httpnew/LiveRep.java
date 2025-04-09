@@ -198,5 +198,14 @@ public class LiveRep extends BaseRepository implements LiveDataSource {
                 .compose(RxUtils.exceptionTransformer());
     }
 
+    @Override
+    public Flowable<JsonElement> readMessage(String vid,String msgId) {
+        String channelCode = LiveConfig.getChannelCode();
+        return obtainJsonService(LiveService.class)
+                .readMessage(vid,msgId,channelCode)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer());
+    }
+
 
 }
