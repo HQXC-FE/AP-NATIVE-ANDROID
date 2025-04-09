@@ -198,6 +198,14 @@
         <item name="bt_item_offer_now_attr">@style/style_bt_item_offer_now</item>
         <item name="bt_item_offer_expired_attr">@style/style_bt_item_offer_expired</item>
 
+
+        <item name="ads_bg_attr">@style/style_ads_bg</item>
+        <item name="ads_login_attr">@style/style_ads_login</item>
+        <item name="ads_sponsor_word_attr">@style/style_ads_sponsor_word</item>
+        <item name="ads_pic_down_attr">@style/style_ads_pic_down</item>
+        <item name="ads_save_attr">@style/style_ads_save</item>
+        <item name="ads_iOS_store_attr">@style/style_ads_iOS_store</item>
+        <item name="ads_android_store_attr">@style/style_ads_android_store</item>
     </style>
 
 </resources>

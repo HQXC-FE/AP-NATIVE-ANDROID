@@ -824,4 +824,27 @@
         <item name="android:background">@drawable/bt_item_offer_get_now</item>
     </style>
 
+
+    <style name="style_ads_bg">
+        <item name="android:background">@drawable/ads_bg</item>
+    </style>
+    <style name="style_ads_login">
+        <item name="android:background">@drawable/ads_logo_image</item>
+    </style>
+    <style name="style_ads_sponsor_word">
+        <item name="android:background">@drawable/ads_sponsor_word</item>
+    </style>
+    <style name="style_ads_pic_down">
+        <item name="android:background">@drawable/ads_pic_download</item>
+    </style>
+    <style name="style_ads_save">
+        <item name="android:background">@drawable/ads_safe</item>
+    </style>
+    <style name="style_ads_iOS_store">
+        <item name="android:background">@drawable/ads_ios_store</item>
+    </style>
+    <style name="style_ads_android_store">
+        <item name="android:background">@drawable/ads_android_store</item>
+    </style>
+
 </resources>

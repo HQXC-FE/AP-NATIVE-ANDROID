@@ -173,4 +173,12 @@
 
     <attr name="bt_item_offer_now_attr" format="reference" />
     <attr name="bt_item_offer_expired_attr" format="reference" />
+
+    <attr name="ads_bg_attr" format="reference" />
+    <attr name="ads_login_attr" format="reference" />
+    <attr name="ads_sponsor_word_attr" format="reference" />
+    <attr name="ads_pic_down_attr" format="reference" />
+    <attr name="ads_save_attr" format="reference" />
+    <attr name="ads_iOS_store_attr" format="reference" />
+    <attr name="ads_android_store_attr" format="reference" />
 </resources>

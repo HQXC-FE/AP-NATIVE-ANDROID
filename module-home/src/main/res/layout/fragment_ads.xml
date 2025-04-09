@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
+        android:id="@+id/adsRootLinear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/clr_white"
         android:orientation="horizontal">
 
-        <TextView
+       <!-- <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="1000dp"
@@ -37,18 +38,94 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            tools:visibility="visible" />-->
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            style="?attr/ads_bg_attr"
+           >
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/adsLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="80dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="?attr/ads_login_attr"
+                        />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/adsSponsorWord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        app:layout_constraintTop_toBottomOf="@+id/adsLogin"
+                        app:layout_constraintStart_toStartOf="@+id/adsLogin"
+                        app:layout_constraintEnd_toEndOf="@+id/adsLogin"
+                        style="?attr/ads_sponsor_word_attr"
+                        />
+                    <ImageView
+                        android:id="@+id/adsPicDown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        app:layout_constraintTop_toBottomOf="@+id/adsSponsorWord"
+                        app:layout_constraintStart_toStartOf="@+id/adsSponsorWord"
+                        app:layout_constraintEnd_toEndOf="@+id/adsSponsorWord"
 
-                <ImageView
+                        style="?attr/ads_pic_down_attr"
+                        />
+
+                    <ImageView
+                        android:id="@+id/adsSave"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        app:layout_constraintTop_toBottomOf="@+id/adsPicDown"
+                        app:layout_constraintStart_toStartOf="@+id/adsPicDown"
+                        app:layout_constraintEnd_toEndOf="@+id/adsPicDown"
+                        style="?attr/ads_save_attr"
+                        />
+                    <ImageView
+                        android:id="@+id/adsiOSStore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        app:layout_constraintTop_toBottomOf="@+id/adsSave"
+                        app:layout_constraintStart_toStartOf="@+id/adsSave"
+                        app:layout_constraintEnd_toEndOf="@+id/adsSave"
+                        style="?attr/ads_iOS_store_attr"
+                        />
+
+                    <ImageView
+                        android:id="@+id/adsAndroidStore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        app:layout_constraintTop_toBottomOf="@+id/adsiOSStore"
+                        app:layout_constraintStart_toStartOf="@+id/adsiOSStore"
+                        app:layout_constraintEnd_toEndOf="@+id/adsiOSStore"
+                        style="?attr/ads_android_store_attr"
+                        />
+                    <ImageView
+                        android:id="@+id/adsAndroidStores"
+                        android:layout_width="wrap_content"
+                        android:layout_height="180dp"
+                        android:layout_marginTop="40dp"
+                        app:layout_constraintTop_toBottomOf="@+id/adsAndroidStore"
+                        app:layout_constraintStart_toStartOf="@+id/adsAndroidStore"
+                        app:layout_constraintEnd_toEndOf="@+id/adsAndroidStore"
+
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+              <!--  <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@mipmap/hm_img_center_01" />
@@ -65,8 +142,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="64dp" />
-            </LinearLayout>
+                    android:layout_height="64dp" />-->
+
         </androidx.core.widget.NestedScrollView>
     </FrameLayout>
 </layout>
