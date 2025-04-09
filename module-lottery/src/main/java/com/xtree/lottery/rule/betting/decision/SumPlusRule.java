@@ -47,7 +47,7 @@ public class SumPlusRule {
                 number = Integer.parseInt((String) attached.get("number"));
             }
             boolean isTail;
-            String flag = "";
+            List<String> flag = new ArrayList<>();
             List<List<Integer>> pendingArr = Collections.nCopies(number, scope);
 
             // 获取全部组合类型
@@ -58,7 +58,7 @@ public class SumPlusRule {
                 isTail = false;
             }
             if (attached.get("flags") != null) {
-                flag = (String) attached.get("flags");
+                flag = (List<String>) attached.get("flags");
             }
 
             int num = 0;

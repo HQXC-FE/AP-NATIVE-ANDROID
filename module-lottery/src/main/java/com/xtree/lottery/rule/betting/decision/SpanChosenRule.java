@@ -31,10 +31,10 @@ public class SpanChosenRule {
     public void then(Facts facts) {
         try {
             // 从 facts 中获取必要数据
-            Map<String, List<Integer>> attached = facts.get("attached");
-            Integer number = attached.get("number").get(0);
-            List<Integer> scope = attached.get("scope");
-            List<List<String>> formatCodes = facts.get("formatCodes");
+            Map<String, Object> attached = facts.get("attached");
+            Integer number = Integer.parseInt((String) attached.get("number"));
+            List<Integer> scope = (List<Integer>) attached.get("scope");
+            List<Object> formatCodes = facts.get("formatCodes");
 
             // 默认 scope 为 0-9
             if (scope == null) {
@@ -64,11 +64,20 @@ public class SpanChosenRule {
                 combination.sort(Integer::compareTo);
                 int span = combination.get(combination.size() - 1) - combination.get(0);
 
-                for (List<String> eachCodes : formatCodes) {
-                    for (String code : eachCodes) {
-                        if (span == Integer.parseInt(code)) {
+                if (formatCodes.get(0) instanceof String) {
+                    for (Object eachCodes : formatCodes) {
+                        if (span == Integer.parseInt((String) eachCodes)) {
                             validCount++;
                             break;
+                        }
+                    }
+                } else {
+                    for (Object eachCodes : formatCodes) {
+                        for (String code : (List<String>) eachCodes) {
+                            if (span == Integer.parseInt(code)) {
+                                validCount++;
+                                break;
+                            }
                         }
                     }
                 }
