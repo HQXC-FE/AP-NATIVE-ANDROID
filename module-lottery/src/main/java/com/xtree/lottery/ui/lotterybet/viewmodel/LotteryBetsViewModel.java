@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import io.reactivex.disposables.Disposable;
@@ -198,7 +199,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             m.getLabel().getLabels().get(0).setUserPlay(true);
             SPUtils.getInstance().put(lottery.getAlias(), m.getLabel().getLabels().get(0).getMenuid());
         }
-
+        CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
         initTabs();
     }
 
@@ -227,12 +228,12 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     }
 
     private void initMethods(Lottery lottery) {
-
+        CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
         Map<String, MenuMethodsData> staticLotteryMethodsData = LotteryDataManager.INSTANCE.getStaticLotteryMethodsData();
         if (staticLotteryMethodsData != null) {
             MenuMethodsData menuMethodsData = staticLotteryMethodsData.get(lottery.getAlias());
             UserMethodsResponse dynamicUserMethodsData = LotteryDataManager.INSTANCE.getDynamicUserMethods();
-
+            CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
             //先使用本地数据初始化玩法
             if (menuMethodsData != null && dynamicUserMethodsData != null) {
 
@@ -247,58 +248,54 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
 
                 // 处理每个彩票数据
                 Iterator<Map.Entry<String, MenuMethodsData>> mainIterator = staticLotteryMethodsData.entrySet().iterator();
+                CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
+                // dy提前转成Map，避免每次遍历
+                Map<String, UserMethodsResponse.DataDTO> dyMap = dy.stream()
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toMap(UserMethodsResponse.DataDTO::getMenuid, Function.identity(), (a, b) -> a));
+
                 while (mainIterator.hasNext()) {
                     Map.Entry<String, MenuMethodsData> next = mainIterator.next();
                     MenuMethodsData value = next.getValue();
                     List<MenuMethodsData.LabelsDTO> labels = value.getLabels();
-                    // 空子玩法过滤
-                    if (labels == null || labels.isEmpty() || labels.stream()
-                            .filter(Objects::nonNull) // 过滤掉 null
-                            .collect(Collectors.toList()).isEmpty()) {
-                        CfLog.e("移除:" + new Gson().toJson(value));
+
+                    if (labels == null || labels.stream().noneMatch(Objects::nonNull)) {
+                        CfLog.e("移除玩法:" + value);
                         mainIterator.remove();
                         continue;
                     }
+
                     Iterator<MenuMethodsData.LabelsDTO> iterator = labels.iterator();
                     while (iterator.hasNext()) {
                         MenuMethodsData.LabelsDTO label = iterator.next();
                         List<MenuMethodsData.LabelsDTO.Labels1DTO> labels1DTOS = label.getLabels();
-                        // 空子玩法过滤
-                        if (labels1DTOS == null || labels1DTOS.isEmpty() || labels1DTOS.stream()
-                                .filter(Objects::nonNull) // 过滤掉 null
-                                .collect(Collectors.toList()).isEmpty()) {
-                            CfLog.e("移除:" + new Gson().toJson(label));
+
+                        if (labels1DTOS == null || labels1DTOS.stream().noneMatch(Objects::nonNull)) {
+                            CfLog.e("移除玩法:" + label);
                             iterator.remove();
                             continue;
                         }
+
                         Iterator<MenuMethodsData.LabelsDTO.Labels1DTO> labels1DTOIterator = labels1DTOS.iterator();
                         while (labels1DTOIterator.hasNext()) {
                             MenuMethodsData.LabelsDTO.Labels1DTO labels1DTO = labels1DTOIterator.next();
                             List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO> labels2DTOS = labels1DTO.getLabels();
-                            // 空玩法过滤
-                            if (labels2DTOS == null || labels2DTOS.isEmpty() || labels2DTOS.stream()
-                                    .filter(Objects::nonNull) // 过滤掉 null
-                                    .collect(Collectors.toList()).isEmpty()) {
-                                CfLog.e("移除:" + new Gson().toJson(labels1DTO));
+
+                            if (labels2DTOS == null || labels2DTOS.stream().noneMatch(Objects::nonNull)) {
+                                CfLog.e("移除玩法:" + labels1DTO);
                                 labels1DTOIterator.remove();
                                 continue;
                             }
+
                             Iterator<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO> labels2DTOIterator = labels2DTOS.iterator();
                             while (labels2DTOIterator.hasNext()) {
                                 MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO labels2DTO = labels2DTOIterator.next();
-                                UserMethodsResponse.DataDTO dyMethod = dy.stream()
-                                        .filter(item -> Objects.equals(item.getMenuid(), labels2DTO.getMenuid()))
-                                        .findFirst()
-                                        .orElse(null);
+                                UserMethodsResponse.DataDTO dyMethod = dyMap.get(labels2DTO.getMenuid());
+
                                 if (dyMethod == null) {
-                                    CfLog.e("移除:" + new Gson().toJson(labels2DTO));
+                                    CfLog.e("移除玩法:" + labels2DTO);
                                     labels2DTOIterator.remove();
                                 } else {
-                                    //method.prize_level = dyMethod.prize_level;
-                                    //method.prize_group = dyMethod.prize_group;
-                                    //method.groupName = subCategory.gtitle;
-                                    //method.cateName = mainCategory.title;
-                                    //method.lotteryId = lottery.lotteryId;
                                     labels2DTO.setPrizeLevel(dyMethod.getPrizeLevel());
                                     labels2DTO.setPrizeGroup(dyMethod.getPrizeGroup());
                                     labels2DTO.setGroupName(labels1DTO.getTitle());
@@ -308,9 +305,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                             }
                         }
                     }
-
                 }
-
+                CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
                 //静态和动态数据替换
                 menuMethods = menuMethodsData;
 //                userMethods = dynamicUserMethodsData;
@@ -318,6 +314,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             //加载网络数据初始化玩法
             getMenuMethods(lottery);
         }
+        CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
     }
 
 //    private void getUserMethods(Lottery lottery) {
@@ -339,6 +336,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         Disposable disposable = model.getMenuMethodsData(lottery.getAlias()).subscribeWith(new HttpCallBack<MenuMethodsResponse>() {
             @Override
             public void onResult(MenuMethodsResponse response) {
+                CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
                 if (response.getData() != null) {
                     MenuMethodsData menuMethodsRemote = response.getData();
 
@@ -443,7 +441,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
 //                        userMethods = userMethodsData;
 //                        initPlayCollection(lottery);
 //                    }
-
+                    CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
                     initPlayCollection(lottery);
                 }
             }
