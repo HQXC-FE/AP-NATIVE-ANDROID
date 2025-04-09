@@ -36,15 +36,13 @@ import me.xtree.mvvmhabit.base.BaseFragment;
 @Route(path = RouterFragmentPath.Mine.PAGER_BIND_USDT)
 public class BindUsdtFragment extends BaseFragment<FragmentBindUsdtBinding, BindUsdtViewModel> {
 
+    UserUsdtJumpVo mUserUsdtJumpVo;
+    ItemBindCardBinding binding2;
+    CachedAutoRefreshAdapter<UsdtVo> mAdapter;
     private String tokenSign = "";
     private String mark = "bindusdt";
     private int digitalNum = 0;
-
-    UserUsdtJumpVo mUserUsdtJumpVo;
-
-    ItemBindCardBinding binding2;
-
-    CachedAutoRefreshAdapter<UsdtVo> mAdapter;
+    private boolean verifyLastBank = false;
 
     public BindUsdtFragment() {
     }
@@ -69,7 +67,7 @@ public class BindUsdtFragment extends BaseFragment<FragmentBindUsdtBinding, Bind
         binding.tvwAdd.setOnClickListener(v -> {
             CfLog.i("****** add");
             Bundle bundle = getArguments();
-            bundle.putInt("digitalNum", digitalNum);
+            bundle.putBoolean("verifyLastBank", verifyLastBank);
             startContainerFragment(RouterFragmentPath.Mine.PAGER_BIND_USDT_ADD, bundle);
         });
 
@@ -86,7 +84,7 @@ public class BindUsdtFragment extends BaseFragment<FragmentBindUsdtBinding, Bind
             public void onBindViewHolder(@NonNull CacheViewHolder holder, int position) {
                 binding2 = ItemBindCardBinding.bind(holder.itemView);
                 UsdtVo vo = get(position);
-                CfLog.e("mAdapter  UsdtVo = " +vo.toString());
+                CfLog.e("mAdapter  UsdtVo = " + vo.toString());
                 binding2.tvwUserName.setText(vo.user_name);
                 binding2.tvwBindTime.setText(vo.atime);
                 binding2.tvwType.setText(vo.usdt_type);
@@ -170,7 +168,7 @@ public class BindUsdtFragment extends BaseFragment<FragmentBindUsdtBinding, Bind
                 mAdapter.addAll(vo.banklist);
             }
 
-            digitalNum = vo.my_bind_counts.digit_count;
+            verifyLastBank = vo.my_bind_counts.digit_count == 0 || (vo.banklist == null || vo.banklist.size() == 0);
 
             if (!TextUtils.isEmpty(vo.num)) {
                 String txt = "<font color=#EE5A5A>" + vo.num + "</font>";

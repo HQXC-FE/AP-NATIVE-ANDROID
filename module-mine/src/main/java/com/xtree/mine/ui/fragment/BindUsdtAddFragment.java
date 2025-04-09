@@ -49,20 +49,18 @@ import project.tqyb.com.library_res.databinding.ItemTextBinding;
 public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding, BindUsdtViewModel> {
 
     private final String controller = "security";
-    private String action = "adduserusdt"; // adduserusdt
-    private String mark = "bindusdt"; // bindusdt
-    //private String tokenSign = "";
-    private String id = "";
-    int digitalNum = 0;
+    boolean verifyLastBank = false;
     String type = ""; // ERC20_USDT,TRC20_USDT
     UserUsdtJumpVo mUserUsdtJumpVo;
-
     ItemTextBinding binding2;
     BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
     List<String> typeList = new ArrayList<>();
     ProfileVo mProfileVo;
-
     UserUsdtConfirmVo mConfirmVo;
+    private String action = "adduserusdt"; // adduserusdt
+    private String mark = "bindusdt"; // bindusdt
+    //private String tokenSign = "";
+    private String id = "";
     private BasePopupView loadingView;//显示loadView
 
     public BindUsdtAddFragment() {
@@ -86,7 +84,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
             binding.tvwChooseTitle.setVisibility(View.GONE);
         }
 
-        if (mProfileVo != null && digitalNum > 0) {
+        if (mProfileVo != null && !verifyLastBank && mProfileVo.is_binding_usdt) {
             binding.llVerify.setVisibility(View.VISIBLE);
             binding.llAdd.setVisibility(View.GONE);
             binding.llConfirm.setVisibility(View.GONE);
@@ -146,7 +144,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
             type = mUserUsdtJumpVo.type;
             //id = mUserUsdtJumpVo.id;
             viewModel.key = mUserUsdtJumpVo.key;
-            digitalNum = getArguments().getInt("digitalNum", 0);
+            verifyLastBank = getArguments().getBoolean("verifyLastBank", false);
         }
         if (TextUtils.isEmpty(mark)) {
             CfLog.e("Arguments is null... ");
@@ -326,11 +324,10 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
                     } else if (txt.contains("Arbitrum")) {
                         binding.tvwTipAddress.setText(R.string.txt_remind_usdt_arbitrum);
                         binding.tvwTipAddress.setVisibility(View.VISIBLE);
-                    }else if (txt.contains("Solana")) {
+                    } else if (txt.contains("Solana")) {
                         binding.tvwTipAddress.setText(R.string.txt_remind_usdt_solana);
                         binding.tvwTipAddress.setVisibility(View.VISIBLE);
-                    }
-                    else {
+                    } else {
                         binding.tvwTipAddress.setText(mUserUsdtJumpVo.remind);
                     }
 
@@ -350,8 +347,8 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         String account = binding.edtOldAcc.getText().toString().trim();
         String account_name = binding.edtOldName.getText().toString().trim();
 
-        if(mProfileVo.binding_usdt_info != null && digitalNum > 0) {
-            if(account.isEmpty()) {
+        if (mProfileVo.binding_usdt_info != null && !verifyLastBank) {
+            if (account.isEmpty()) {
                 ToastUtils.showLong(R.string.txt_enter_verify_wallet_addr);
                 return;
             }
@@ -361,7 +358,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
             ToastUtils.showLong(R.string.txt_enter_bank_num);
             return;
         }
-        if (account_name.isEmpty() && digitalNum == 0) {
+        if (account_name.isEmpty() && verifyLastBank) {
             ToastUtils.showLong(R.string.txt_enter_account_name);
             return;
         }
@@ -372,7 +369,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
 
         HashMap map = new HashMap();
         map.put("account", account);
-        if (mProfileVo != null && digitalNum > 0) {
+        if (mProfileVo != null && !verifyLastBank) {
             map.put("account_name", "");
             map.put("is_digital", "1");
         } else {
