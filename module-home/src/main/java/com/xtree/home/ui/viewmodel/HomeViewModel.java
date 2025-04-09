@@ -354,9 +354,9 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
             for (GameStatusVo vo2 : b) {
                 if (vo.cid == vo2.cid) {
                     // cid=3时,是"AG娱乐",包含 AG真人,AG电子,AG捕鱼,AG街机.   cid=43时,包括瓦力真人、瓦力棋牌
-                    if (vo.cid != 3 && vo.cid != 43) {
-                        vo.name = vo2.name;
-                    }
+                    //if (vo.cid != 3 && vo.cid != 43) {
+                    //    vo.name = vo2.name;
+                    //}name改为取本地name
                     vo.alias = vo2.alias;
                     vo.status = vo2.status;
                     vo.maintenance_start = vo2.maintenance_start;
@@ -365,10 +365,6 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                 }
             }
 
-            if (vo.cid == 0 || TextUtils.isEmpty(vo.playURL)) {
-                // 原生的,或者需要请求接口的
-                CfLog.w("******: " + vo);
-            }
             if (vo.status == 2 || vo.cid == 17 || vo.cid == 33 ) {
                 //17:CQ9娱乐 33：MG电子
                 // 已下架,不要加到列表里面了

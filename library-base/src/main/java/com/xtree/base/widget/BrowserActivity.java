@@ -7,6 +7,7 @@ import static com.xtree.base.utils.EventConstant.EVENT_UPLOAD_EXCEPTION;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
@@ -130,13 +131,20 @@ public class BrowserActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        title = getIntent().getStringExtra(ARG_TITLE);
+        //BBIN电子和JDB电子需要横竖屏切换，因为有横屏游戏
+        if (TextUtils.equals(title, "BBIN电子") || TextUtils.equals(title, "JDB电子")) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
 
         EventBus.getDefault().register(this);
         FightFanZhaUtils.init();
         initView();
-        title = getIntent().getStringExtra(ARG_TITLE);
+
         isContainTitle = getIntent().getBooleanExtra(ARG_IS_CONTAIN_TITLE, false);
         isShowLoading = getIntent().getBooleanExtra(ARG_IS_SHOW_LOADING, false);
         isGame = getIntent().getBooleanExtra(ARG_IS_GAME, false);
