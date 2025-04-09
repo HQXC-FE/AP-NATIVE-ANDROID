@@ -23,9 +23,12 @@ import com.xtree.lottery.ui.lotterybet.model.LotteryPlayCollectionModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
  * Created by KAKA on 2024/4/26.
@@ -93,13 +96,29 @@ public class LotteryPlayCollectionViewModel extends BaseViewModel<LotteryReposit
                             Lottery lottery = betsViewModel.lotteryViewModel.lotteryLiveData.getValue();
                             String methods = SPUtils.getInstance().getString(lottery.getAlias(), "");
                             StringBuilder sb = new StringBuilder(methods);
-                            if (!TextUtils.isEmpty(sb) && sb.toString().contains(",")) {
+                            if (!TextUtils.isEmpty(sb)) {
                                 if (!ExKt.includes(Arrays.asList(sb.toString().split(",")), label.getMenuid())) {
                                     sb.append(",").append(label.getMenuid());
+                                    if (sb.toString().split(",").length > 10) {
+                                        ((CheckBox) (v)).setChecked(false);
+                                        ToastUtils.show("最多可收藏10个玩法", ToastUtils.ShowType.Default);
+                                        return;
+                                    }
+                                } else {//取消
+                                    List<String> collectMethods = new ArrayList<>(Arrays.asList(sb.toString().split(",")));
+                                    collectMethods.removeIf(item -> item.equals(label.getMenuid()));
+                                    if (collectMethods.size() == 0) {
+                                        ((CheckBox) (v)).setChecked(true);
+                                        ToastUtils.show("当前玩法不可取消收藏", ToastUtils.ShowType.Default);
+                                        return;
+                                    }
+                                    sb = new StringBuilder(collectMethods.stream()
+                                            .collect(Collectors.joining(",")));
                                 }
                             } else {
                                 sb = new StringBuilder(label.getMenuid());
                             }
+
                             SPUtils.getInstance().put(lottery.getAlias(), sb.toString());
                             label.setUserPlay(!label.isUserPlay());
                             if (betsViewModel != null) {

@@ -420,7 +420,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                                                     }
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
-                                                    CfLog.e("移除" + new Gson().toJson(labels2DTOLocal));
+                                                    CfLog.e("移除" + labels2DTOLocal);
                                                     iterator.remove();
                                                 }
                                             }
@@ -443,6 +443,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
 //                    }
                     CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
                     initPlayCollection(lottery);
+                }else{
+                    CfLog.e("耗时:玩法数据为空");
                 }
             }
         });
