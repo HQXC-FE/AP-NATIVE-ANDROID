@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#F3F5F8"
+    android:background="@drawable/message_incoming_container_bg"
     android:orientation="vertical"
-    android:padding="6dp"
+    android:paddingVertical="4dp"
+    android:paddingHorizontal="10dp"
     tools:viewBindingIgnore="true"
     tools:ignore="HardcodedText, ContentDescription">
 

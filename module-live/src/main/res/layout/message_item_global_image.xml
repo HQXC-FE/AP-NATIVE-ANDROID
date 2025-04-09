@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_new_global_chat"
+    android:background="@drawable/message_incoming_container_bg"
     android:orientation="vertical"
     android:padding="6dp"
     tools:viewBindingIgnore="true"
