@@ -98,8 +98,9 @@ ext {
             "kotlin-reflect"                       : "org.jetbrains.kotlin:kotlin-reflect:1.6.10",
             "BaseQuickAdapter"                     : "io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.14",
             //html解析
-            "jsoup"                                : "org.jsoup:jsoup:1.14.3"
-
+            "jsoup"                                : "org.jsoup:jsoup:1.14.3",
+            // 腾讯X5
+            "tbs"                                  : "com.tencent.tbs:tbssdk:44286"
     ]
 }
 
