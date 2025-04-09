@@ -79,13 +79,15 @@
         android:layout_marginEnd="20dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textColor="#302E36"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/tv_text"
         app:layout_constraintEnd_toStartOf="@+id/tv_time"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toEndOf="@+id/flagGroup"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="555555d55556666999777555333" />
+        tools:text="555555d5555666" />
 
     <TextView
         android:id="@+id/tv_text"
@@ -96,6 +98,8 @@
         app:layout_goneMarginStart="8dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textColor="#9A96A4"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/line"
         app:layout_constraintEnd_toEndOf="@id/tv_user"
         app:layout_constraintHorizontal_chainStyle="packed"

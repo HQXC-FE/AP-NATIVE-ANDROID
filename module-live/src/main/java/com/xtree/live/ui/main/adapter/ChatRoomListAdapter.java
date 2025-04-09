@@ -92,7 +92,7 @@ public class ChatRoomListAdapter extends BaseQuickAdapter<ChatRoomInfo, BaseView
 
     private void setPinChatRoom(@NonNull BaseViewHolder holder,ChatRoomInfo item) {
         if(LiveConfig.isLogin()){
-            holder.setGone(R.id.pinChatRoom, false);
+            holder.setGone(R.id.pinChatRoom, true);
             holder.getView(R.id.pinChatRoom).setSelected(item.getIsPin() == 1);
             holder.getView(R.id.pinChatRoom).setOnClickListener(view->{
                 listListener.onPinChatRoom(item);
