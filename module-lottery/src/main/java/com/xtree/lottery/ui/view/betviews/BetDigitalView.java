@@ -1,5 +1,7 @@
 package com.xtree.lottery.ui.view.betviews;
 
+import static com.xtree.lottery.data.config.MissingCodesConfig.MISSING_CODES;
+
 import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
@@ -13,6 +15,7 @@ import androidx.databinding.Observable;
 
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.config.Lottery;
+import com.xtree.lottery.data.config.MissingCodesConfig.MissingCode;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.databinding.LayoutBetDigitalBinding;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
@@ -22,6 +25,7 @@ import com.xtree.lottery.utils.LotteryAnalyzer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -175,7 +179,12 @@ public class BetDigitalView extends BetBaseView {
 
         //复式玩法打开冷热遗漏
 //        if (Arrays.asList(useMissPlays).contains(model.getMenuMethodLabelData().getDescription())) {
-        if (LotteryAnalyzer.findMissingCodes(lottery.getAlias()) != null) {
+        if (LotteryAnalyzer.findMissingCodes(lottery.getAlias()) != null && MISSING_CODES.stream()
+                .filter(Objects::nonNull)
+                .map(MissingCode::getMenuids) // SomeType 是 MISSING_CODES 里对象的类型
+                .filter(Objects::nonNull)
+                .flatMap(List::stream)
+                .anyMatch(id -> Objects.equals(id + "", model.getUserMethodData().getMenuid()))) {
             binding.getModel().buttonStatus.set(true);
         }
 
