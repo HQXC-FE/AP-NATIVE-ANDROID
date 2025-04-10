@@ -228,7 +228,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             isDisabled = SPUtils.getInstance().getBoolean(SPKeyGlobal.PMXC_DISABLED);
         } else if (TextUtils.equals(mPlatform, PLATFORM_IM)) {
             mPlatformName = getString(R.string.bt_platform_name_pmxc);
-            isDisabled = SPUtils.getInstance().getBoolean(SPKeyGlobal.IMONE_DISABLED);
+            isDisabled = SPUtils.getInstance().getBoolean(SPKeyGlobal.IM_DISABLED);
         }
         if (isDisabled) {
             MsgDialog dialog = new MsgDialog(this, "温馨提示", "该场馆已被关闭，请切换至其它场馆进行游玩。感谢您的支持。", true, new MsgDialog.ICallBack() {
