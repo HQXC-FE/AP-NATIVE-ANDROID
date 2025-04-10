@@ -58,6 +58,9 @@ public class BetDigitalViewModel {
     public MutableLiveData<List<String>> lotteryHistoryLiveData = new MutableLiveData<>();
     //选中号码
     public ObservableField<String> codesData = new ObservableField<>("");
+    //
+    private String showStr;
+    private String groupTitle;
     public final BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
         @Override
         public void onBind(@NonNull BindingAdapter.BindingViewHolder bindingViewHolder, @NonNull View view, int itemViewType) {
@@ -66,22 +69,40 @@ public class BetDigitalViewModel {
 
                 LotteryPickView pickView = view.findViewById(R.id.item_digital_lotterypickview);
                 //全
-                view.findViewById(R.id.item_digital_a).setOnClickListener(v -> pickView.pickAll());
+                view.findViewById(R.id.item_digital_a).setOnClickListener(v -> {
+                    pickView.pickAll();
+                    pickAfterCheckDanCode(pickView);
+                });
                 //大
-                view.findViewById(R.id.item_digital_l).setOnClickListener(v -> pickView.pickLarge());
+                view.findViewById(R.id.item_digital_l).setOnClickListener(v -> {
+                    pickView.pickLarge();
+                    pickAfterCheckDanCode(pickView);
+                });
                 //小
-                view.findViewById(R.id.item_digital_s).setOnClickListener(v -> pickView.pickSmall());
+                view.findViewById(R.id.item_digital_s).setOnClickListener(v -> {
+                    pickView.pickSmall();
+                    pickAfterCheckDanCode(pickView);
+                });
                 //奇
-                view.findViewById(R.id.item_digital_o).setOnClickListener(v -> pickView.pickOdd());
+                view.findViewById(R.id.item_digital_o).setOnClickListener(v -> {
+                    pickView.pickOdd();
+                    pickAfterCheckDanCode(pickView);
+                });
                 //偶
-                view.findViewById(R.id.item_digital_e).setOnClickListener(v -> pickView.pickEven());
+                view.findViewById(R.id.item_digital_e).setOnClickListener(v -> {
+                    pickView.pickEven();
+                    pickAfterCheckDanCode(pickView);
+                });
                 //清
-                view.findViewById(R.id.item_digital_c).setOnClickListener(v -> pickView.pickClear());
+                view.findViewById(R.id.item_digital_c).setOnClickListener(v -> {
+                    pickView.pickClear();
+                });
 
                 pickView.setPickListener(new LotteryPickView.onPickListener() {
                     @Override
                     public void onPick(List<String> pickNums) {
                         codesData.set(formatCode());
+                        pickAfterCheckDanTuo(bindingViewHolder.getModelPosition(), pickView);
                     }
                 });
             }
@@ -92,8 +113,6 @@ public class BetDigitalViewModel {
 
         }
     };
-    //
-    private String showStr;
 
     @androidx.databinding.BindingAdapter("data")
     public static void initLotteryPickView(LotteryPickView view, List<LotteryPickModel> picks) {
@@ -107,7 +126,7 @@ public class BetDigitalViewModel {
         bindModels.clear();
         showStr = model.getMenuMethodLabelData().getShowStr();
         boolean isButton = model.getMenuMethodLabelData().getSelectarea().isIsButton();
-        String groupTitle = model.getMenuMethodLabelData().getGroupTitle();
+        groupTitle = model.getMenuMethodLabelData().getGroupTitle();
         for (int i = 0; i < model.getMenuMethodLabelData().getSelectarea().getLayout().size(); i++) {
             MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layoutDTO = model.getMenuMethodLabelData().getSelectarea().getLayout().get(i);
             String[] split = layoutDTO.getNo().split(LAYOUT_NO_SPLIT);
@@ -132,6 +151,54 @@ public class BetDigitalViewModel {
 
 
         datas.set(bindModels);
+    }
+
+    /**
+     * 全大小偶奇选中之后检查胆码
+     *
+     * @param pickView
+     */
+    private void pickAfterCheckDanCode(LotteryPickView pickView) {
+        if ("任选胆拖".equals(groupTitle)) {
+            unCheckOpp(false);
+            codesData.set(formatCode());
+        }
+    }
+
+    /**
+     * 选号之后检查胆拖
+     */
+    private void pickAfterCheckDanTuo(int index, LotteryPickView pickView) {
+        if ("任选胆拖".equals(groupTitle)) {
+            if (index == 0) {//胆码
+                unCheckOpp(true);
+            } else if (index == 1) {//拖码
+                unCheckOpp(false);
+            }
+            codesData.set(formatCode());
+        }
+    }
+
+    /**
+     * 胆拖把对立的清除
+     */
+    private void unCheckOpp(boolean isDanPick) {
+        //把胆码、拖码同样选中清除
+        BetDigitalModel danModel = (BetDigitalModel) bindModels.get(0);
+        BetDigitalModel tuoModel = (BetDigitalModel) bindModels.get(1);
+        for (int i = 0; i < tuoModel.getPickDatas().size(); i++) {
+            LotteryPickModel pickTuoModel = tuoModel.getPickDatas().get(i);
+            LotteryPickModel pickDanModel = danModel.getPickDatas().get(i);
+            if (isDanPick) {
+                if (pickDanModel.checked.get()) {
+                    pickTuoModel.checked.set(false);
+                }
+            } else {
+                if (pickTuoModel.checked.get()) {
+                    pickDanModel.checked.set(false);
+                }
+            }
+        }
     }
 
     /**
