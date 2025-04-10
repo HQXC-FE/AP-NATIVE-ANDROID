@@ -7,7 +7,7 @@
     android:background="@mipmap/lt_icon_lottery_pick_checked"
     android:gravity="center"
     android:text="@{model.drawCode.get(0)}"
-    android:textColor="@color/white"
+    android:textColor="@color/clr_main_18"
     android:textSize="20sp"
     android:textStyle="bold">
 
