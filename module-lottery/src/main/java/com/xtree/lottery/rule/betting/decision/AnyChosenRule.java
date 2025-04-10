@@ -32,7 +32,7 @@ public class AnyChosenRule {
     public void then(Facts facts) {
         try {
             List<List<String>> formatCodes = facts.get("formatCodes");
-            int number = (int) ((Map<String, Object>) facts.get("attached")).get("number");
+            int number = Integer.parseInt(((Map<String, String>) facts.get("attached")).get("number"));
 
             int num = 0;
             List<Integer> eachNumbers = new ArrayList<>();

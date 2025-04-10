@@ -3,6 +3,7 @@ package com.xtree.lottery.rule.betting;
 import com.xtree.lottery.rule.betting.decision.AnyChosenRule;
 import com.xtree.lottery.rule.betting.decision.CombinationChosenRule;
 import com.xtree.lottery.rule.betting.decision.CombinationRule;
+import com.xtree.lottery.rule.betting.decision.DantuoAnyRule;
 import com.xtree.lottery.rule.betting.decision.DantuoDif2Rule;
 import com.xtree.lottery.rule.betting.decision.DantuoDif3Rule;
 import com.xtree.lottery.rule.betting.decision.GeneralElectionRule;
@@ -43,5 +44,6 @@ public class DecisionRules {
         rules.register(new SingleNumberMultipleBetsRule());
         rules.register(new LineMissRule());
         rules.register(new MultiplyRule());
+        rules.register(new DantuoAnyRule());
     }
 }
