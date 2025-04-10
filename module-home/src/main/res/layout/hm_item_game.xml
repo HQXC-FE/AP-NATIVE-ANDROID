@@ -15,14 +15,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
          />
-    <!--android:layout_margin="10dp"-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_fc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginTop="100dp"
-        android:layout_marginRight="60dp"
+        android:layout_marginTop="92dp"
+        android:layout_marginRight="20dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,12 +28,14 @@
 
         <ImageView
             android:id="@+id/iv_fc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             style="?attr/main_game_fast_attr"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
             android:id="@+id/iv_left"
