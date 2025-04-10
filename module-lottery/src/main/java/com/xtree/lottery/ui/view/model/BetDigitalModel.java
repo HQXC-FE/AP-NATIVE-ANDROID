@@ -10,14 +10,14 @@ import java.util.List;
  */
 public class BetDigitalModel extends BindModel {
 
-    public Boolean isButton;
+    public Boolean isShowButton;
     private String tag = "";
     private List<LotteryPickModel> pickDatas;
 
-    public BetDigitalModel(String tag, List<LotteryPickModel> pickDatas, boolean isButton) {
+    public BetDigitalModel(String tag, List<LotteryPickModel> pickDatas, boolean isShowButton) {
         this.tag = tag;
         this.pickDatas = pickDatas;
-        this.isButton = isButton;
+        this.isShowButton = isShowButton;
     }
 
     public String getTag() {

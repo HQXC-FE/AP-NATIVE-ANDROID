@@ -107,22 +107,29 @@ public class BetDigitalViewModel {
         bindModels.clear();
         showStr = model.getMenuMethodLabelData().getShowStr();
         boolean isButton = model.getMenuMethodLabelData().getSelectarea().isIsButton();
-        for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layoutDTO : model.getMenuMethodLabelData().getSelectarea().getLayout()) {
+        String groupTitle = model.getMenuMethodLabelData().getGroupTitle();
+        for (int i = 0; i < model.getMenuMethodLabelData().getSelectarea().getLayout().size(); i++) {
+            MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layoutDTO = model.getMenuMethodLabelData().getSelectarea().getLayout().get(i);
             String[] split = layoutDTO.getNo().split(LAYOUT_NO_SPLIT);
             ArrayList<LotteryPickModel> picks = new ArrayList<>();
-
-            for (int i = 0; i < split.length; i++) {
+            for (int j = 0; j < split.length; j++) {
                 // 若占位是$的话隐藏
 //                if (method.show_str.split(',')[index] === '$') {
 //                    return (<></>)
 //                }
-                if (!TextUtils.isEmpty(showStr) && showStr.split(",").length > i && "$".equals(showStr.split(",")[i])) {
+                if (!TextUtils.isEmpty(showStr) && showStr.split(",").length > j && "$".equals(showStr.split(",")[j])) {
                     continue;
                 }
-                picks.add(new LotteryPickModel(i + 1, split[i]));
+                picks.add(new LotteryPickModel(j + 1, split[j]));
             }
-            bindModels.add(new BetDigitalModel(layoutDTO.getTitle(), picks, isButton));
+            if (!"任选胆拖".equals(groupTitle)) {
+                bindModels.add(new BetDigitalModel(layoutDTO.getTitle(), picks, isButton));
+            } else {
+                //任选胆拖 拖码才需要全大小偶奇清
+                bindModels.add(new BetDigitalModel(layoutDTO.getTitle(), picks, i == 1 && isButton));
+            }
         }
+
 
         datas.set(bindModels);
     }
