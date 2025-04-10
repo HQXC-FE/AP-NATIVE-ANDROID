@@ -62,8 +62,13 @@
         android:layout_height="0dp"
         style="?attr/main_game_cover_attr"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ivw_img"
+        app:layout_constraintStart_toStartOf="@+id/ivw_img"
+        app:layout_constraintEnd_toEndOf="@+id/ivw_img"
+        app:layout_constraintBottom_toBottomOf="@+id/ivw_img"
+        android:layout_marginBottom="7dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
         tools:visibility="visible" />
     <LinearLayout
         android:id="@+id/llMaintenance"
