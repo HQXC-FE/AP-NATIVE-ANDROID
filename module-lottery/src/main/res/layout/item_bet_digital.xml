@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="@{m.isButton?View.VISIBLE:View.GONE}"
+                android:visibility="@{m.isShowButton?View.VISIBLE:View.GONE}"
                 app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintTop_toTopOf="@id/item_digital_label"
                 app:layout_constraintBottom_toBottomOf="@id/item_digital_label"
