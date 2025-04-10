@@ -7,16 +7,8 @@ import android.os.Looper
 import android.os.Message
 import android.text.TextUtils
 import androidx.lifecycle.ViewModelProvider
-import com.drake.net.Get
-import com.drake.net.NetConfig
-import com.drake.net.transform.transform
-import com.drake.net.utils.fastest
-import com.drake.net.utils.scopeNet
 import com.xtree.base.global.SPKeyGlobal
 import com.xtree.base.net.RetrofitClient
-import com.xtree.base.net.fastest.ChangeH5LineUtil
-import com.xtree.base.net.fastest.FASTEST_BLOCK
-import com.xtree.base.net.fastest.getFastestAPI
 import com.xtree.base.utils.CfLog
 import com.xtree.base.utils.DomainUtil
 import com.xtree.base.utils.TagUtils
@@ -26,13 +18,10 @@ import com.xtree.main.R
 import com.xtree.main.databinding.ActivitySplashBinding
 import com.xtree.main.ui.viewmodel.SplashViewModel
 import com.xtree.main.ui.viewmodel.factory.AppViewModelFactory
-import io.reactivex.Observable
-import io.reactivex.functions.Consumer
 import me.xtree.mvvmhabit.base.BaseActivity
 import me.xtree.mvvmhabit.bus.Messenger
 import me.xtree.mvvmhabit.utils.SPUtils
 import me.xtree.mvvmhabit.utils.ToastUtils
-import java.util.concurrent.TimeUnit
 
 /**
  * 冷启动
@@ -69,82 +58,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding?, SplashViewModel?>() 
     override fun initView() {
         init()
         initTag()
-        Observable.timer(10, TimeUnit.SECONDS)
-            .subscribe {
-                setFasterApi()
-                setFasterDomain()
-            }
-
-    }
-
-    companion object {
-
-        /**
-         * 当前预埋域名列表
-         */
-        lateinit var mCurDomainList: HashSet<String>
-        lateinit var mCurApiList: HashSet<String>
-    }
-
-    init {
-        mCurDomainList = HashSet()
-        mCurApiList = HashSet()
-    }
-
-    private fun addDomainList(domainList: List<String>) {
-        domainList.forEachIndexed { _, s ->
-            run {
-                mCurDomainList.add(s)
-            }
-        }
-    }
-
-    private fun addApiList(list: List<String>) {
-        list.forEachIndexed { _, s ->
-            run {
-                mCurApiList.add(s)
-            }
-        }
-    }
-
-    private fun getFastestDomain() {
-        ChangeH5LineUtil.instance.start(object :Consumer<String>{
-            override fun accept(url: String?) {
-                url?.let {
-                    CfLog.i("$url")
-                    NetConfig.host = url
-                    DomainUtil.setDomainUrl(url)
-                }?:run {
-                    viewModel?.noWebData?.postValue(null)
-                }
-            }
-        })
-    }
-
-    private fun getFastestApi() {
-        scopeNet {
-            // 并发请求本地配置的域名 命名参数 uid = "the fastest line" 用于库自动取消任务
-            val domainTasks = mCurApiList.map { host ->
-                Get<String>(
-                    getFastestAPI(host),
-                    "the_fastest_api", block = FASTEST_BLOCK)
-                    .transform { data ->
-                        CfLog.i("$host")
-                        NetConfig.host = host
-                        DomainUtil.setApiUrl(host)
-                        RetrofitClient.init() // 重置URL
-                        viewModel?.reNewViewModel?.postValue(null)
-                        data
-                    }
-            }
-            try {
-                fastest(domainTasks, "the_fastest_api")
-            } catch (e: Exception) {
-                CfLog.e(e.toString())
-                e.printStackTrace()
-                viewModel?.noWebData?.postValue(null)
-            }
-        }
+        binding?.root?.postDelayed({ inMain() }, DELAY_MILLIS)
     }
 
     private fun init() {
@@ -152,39 +66,14 @@ class SplashActivity : BaseActivity<ActivitySplashBinding?, SplashViewModel?>() 
         val url = getString(R.string.domain_url) // 如果为空或者不正确,转用API的
 
         if (api.startsWith("http://") || api.startsWith("https://")) {
-            DomainUtil.setApiUrl(url)
-            RetrofitClient.init() // 重置URL
+            DomainUtil.setApiUrl(api)
         }
 
         if (url.startsWith("http://") || url.startsWith("https://")) {
             DomainUtil.setDomainUrl(url)
-            //RetrofitClient.init() // 重置URL
         } else {
             DomainUtil.setDomainUrl(api)
         }
-    }
-
-    /**
-     * 线路竞速
-     */
-    private fun setFasterApi() {
-        val apis = getString(R.string.domain_api_list) // 不能为空,必须正确
-        val apiList = listOf(*apis.split(";".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray())
-        addApiList(apiList)
-        getFastestApi()
-    }
-
-    private fun setFasterDomain() {
-        var urls = getString(R.string.domain_url_list) // 如果为空或者不正确,转用API的
-        if (urls.length < 10) {
-            urls = getString(R.string.domain_api_list) // 如果域名列表为空,就使用API列表
-        }
-        val list = listOf(*urls.split(";".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray())
-
-        addDomainList(list)
-        getFastestDomain()
     }
 
     override fun initViewObservable() {

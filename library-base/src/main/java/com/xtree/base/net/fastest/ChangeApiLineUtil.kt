@@ -1,14 +1,18 @@
 package com.xtree.base.net.fastest
 
 import android.content.Intent
+import com.alibaba.android.arouter.utils.TextUtils
 import com.drake.net.Get
 import com.drake.net.transform.transform
 import com.drake.net.utils.fastest
 import com.drake.net.utils.scopeNet
+import com.google.gson.Gson
 import com.xtree.base.R
 import com.xtree.base.net.RetrofitClient
+import com.xtree.base.utils.AESUtil
 import com.xtree.base.utils.CfLog
 import com.xtree.base.utils.DomainUtil
+import com.xtree.base.vo.Domain
 import me.xtree.mvvmhabit.base.AppManager
 import me.xtree.mvvmhabit.utils.ToastUtils
 import me.xtree.mvvmhabit.utils.Utils
@@ -39,8 +43,9 @@ class ChangeApiLineUtil private constructor() {
         if (!mIsRunning) {
             CfLog.e("=====开始切换线路========")
             mIsRunning = true
-//            setThirdFasterDomain()
+            setThirdFasterDomain()
             setFasterApiDomain()
+            getThirdFastestDomain()
         }
     }
 
@@ -88,7 +93,7 @@ class ChangeApiLineUtil private constructor() {
                         ToastUtils.showLong("切换线路失败，请检查手机网络连接情况")
                         mIsRunning = false
                     } else {
-//                        getThirdFastestDomain()
+                        getThirdFastestDomain()
                     }
                 }
             }
@@ -97,40 +102,46 @@ class ChangeApiLineUtil private constructor() {
 
     var index: Int = 0
 
-//    /**
-//     * 三方域名存储地址竞速
-//     */
-//    private fun getThirdFastestDomain() {
-//        mCurApiDomainList.clear()
-//            if (index < mThirdDomainList.size && !TextUtils.isEmpty(mThirdDomainList[index])) {
-//                scopeNet {
-//                    val data = Get<String>(
-//                        mThirdDomainList[index]/*,
-//                        absolutePath = true,
-//                        tag = RESPONSE,
-//                        uid = "the_fastest_line_third"*/
-//                        , block = FASTEST_BLOCK).await()
-//
-//                    try {
-//                        var domainJson = AESUtil.decryptData(
-//                            data,
-//                            "wnIem4HOB2RKzhiqpaqbZuxtp7T36afAHH88BUht/2Y="
-//                        )
-//                        val domain: Domain = Gson().fromJson(domainJson, Domain::class.java)
-//                        mCurApiDomainList = domain.api
-//                        if (mCurApiDomainList.isNotEmpty()) {
-//                            getFastestApiDomain(isThird = true)
-//                        }
-//                        CfLog.e("getThirdFastestDomain success")
-//
-//                    } catch (e: Exception) {
-//                        CfLog.e("getThirdFastestDomain fail")
-//                        getThirdFastestDomain()
-//                        index ++
-//                    }
-//                }
-//        }
-//    }
+    /**
+     * 三方域名存储地址竞速
+     */
+    private fun getThirdFastestDomain() {
+        mCurApiDomainList.clear()
+        if (index < mThirdDomainList.size && !TextUtils.isEmpty(mThirdDomainList[index])) {
+                scopeNet {
+                    val data = Get<String>(
+                        mThirdDomainList[index]/*,
+                        absolutePath = true,
+                        tag = RESPONSE,
+                        uid = "the_fastest_line_third"*/
+                        , block = FASTEST_BLOCK).await()
+
+                    try {
+                        var domainJson = AESUtil.decryptData(
+                            data,
+                            "wnIem4HOB2RKzhiqpaqbZuxtp7T36afAHH88BUht/2Y="
+                        )
+                        val domain: Domain = Gson().fromJson(domainJson, Domain::class.java)
+                        mCurApiDomainList = domain.api
+                        if (mCurApiDomainList.isNotEmpty()) {
+                            getFastestApiDomain(isThird = true)
+                        } else {
+                            getThirdFastestDomain()
+                            index ++
+                        }
+                        CfLog.e("getThirdFastestDomain success")
+
+                    } catch (e: Exception) {
+                        CfLog.e("getThirdFastestDomain fail")
+                        getThirdFastestDomain()
+                        index ++
+                    }
+                }
+        } else {
+            setFasterApiDomain()
+            getFastestApiDomain(false)
+        }
+    }
 
     /**
      * 线路竞速
@@ -140,16 +151,15 @@ class ChangeApiLineUtil private constructor() {
         val apiList = listOf(*apis.split(";".toRegex()).dropLastWhile { it.isEmpty() }
             .toTypedArray())
         addApiDomainList(apiList)
-        getFastestApiDomain(isThird = false)
     }
 
-//    /**
-//     * 设置三方存储domain域名地址
-//     */
-//    private fun setThirdFasterDomain() {
-//        val urls = Utils.getContext().getString(R.string.domain_url_list_third)
-//        val list = listOf(*urls.split(";".toRegex()).dropLastWhile { it.isEmpty() }
-//            .toTypedArray())
-//        addThirdDomainList(list)
-//    }
+    /**
+     * 设置三方存储domain域名地址
+     */
+    private fun setThirdFasterDomain() {
+        val urls = Utils.getContext().getString(R.string.domain_url_list_third)
+        val list = listOf(*urls.split(";".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray())
+        addThirdDomainList(list)
+    }
 }

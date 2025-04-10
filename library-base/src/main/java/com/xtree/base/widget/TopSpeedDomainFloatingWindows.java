@@ -2,7 +2,6 @@ package com.xtree.base.widget;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
-
 import static com.xtree.base.net.fastest.FastestConfigKt.FASTEST_GOURP_NAME;
 
 import android.annotation.SuppressLint;
@@ -34,8 +33,8 @@ import com.xtree.base.adapter.MainDomainAdapter;
 import com.xtree.base.databinding.MainLayoutTopSpeedDomainBinding;
 import com.xtree.base.net.fastest.ChangeH5LineUtil;
 import com.xtree.base.net.fastest.FastestTopDomainUtil;
+import com.xtree.base.net.fastest.TopSpeedDomain;
 import com.xtree.base.utils.TagUtils;
-import com.xtree.base.vo.TopSpeedDomain;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1397,4 +1397,8 @@
         <item name="android:textColor">@color/clr_grey_13</item>
     </style>
 
+    <style name="style_item_ll_row_0" parent="style_item_ll_row">
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
 </resources>
