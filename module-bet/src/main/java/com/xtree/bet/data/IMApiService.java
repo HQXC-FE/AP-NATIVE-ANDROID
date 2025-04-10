@@ -36,180 +36,236 @@ import retrofit2.http.QueryMap;
 
 public interface IMApiService {
     /**
-     * 获取 PM赛事列表
+     * 获取 所有体育计数
      * @return
      */
-    @POST("/yewu11/v1/m/matchesPagePB")
+    @POST("/yewu11/v1/m/getAllSportCount")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<MatchListRsp>> matchesPagePB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<MatchListRsp>> getAllSportCount(@Body PMListReq pmListReq);
     /**
-     * 获取 PM赛事列表 分页获取非滚球赛事信息
+     * 索取所有竞赛计数
      * @return
      */
-    @POST("/yewu11/v1/m/noLiveMatchesPagePB")
+    @POST("/yewu11/v1/m/getAllCompetitionCount")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<MatchListRsp>> noLiveMatchesPagePB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<MatchListRsp>> getAllCompetitionCount(@Body PMListReq pmListReq);
 
     /**
-     * 获取 PM赛事列表
+     * 索取赛事和主要玩法资料
      * @return
      */
-    @POST("/yewu11/v1/m/liveMatchesPB")
+    @POST("/yewu11/v1/m/getEventInfoMbt")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<MatchInfo>>> liveMatchesPB(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<List<MatchInfo>>> getEventInfoMbt(@Body PMListReq pmListReq);
 
     /**
-     * 按运动、分类类型统计可投注的赛事个数
+     * 索取DELTA赛事和主要玩法详情
      * @return
      */
-    @GET("/yewu11/pub/v1/m/menu/initPB")
+    @GET("/yewu11/pub/v1/m/getDeltaEventInfoMbt")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<MenuInfo>>> initPB(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<List<MenuInfo>>> getDeltaEventInfoMbt(@QueryMap Map<String, String> map);
 
     /**
-     * 获取最新投注数据，投注前查询指定玩法赔率
+     * 索取DELTA其他玩法详情
      * @return
      */
-    @POST("/yewu13/v1/betOrder/client/queryLatestMarketInfo")
+    @POST("/yewu13/v1/getDeltaMlInfoObt")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<BtConfirmInfo>>> batchBetMatchMarketOfJumpLine(@Body BtCarReq btCarReq);
+    Flowable<BaseResponse<List<CgOddLimitInfo>>> getDeltaMlInfoObt(@Body BtCarCgReq btCarCgReq);
 
     /**
-     * 查询最大最小投注金额
+     * 索取其他玩法资料
      * @return
      */
-    @POST("/yewu13/v1/betOrder/client/queryMarketMaxMinBetMoney")
+    @POST("/yewu13/v1/getMlInfoObt")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<CgOddLimitInfo>>> queryMarketMaxMinBetMoney(@Body BtCarCgReq btCarCgReq);
+    Flowable<BaseResponse<List<BtConfirmInfo>>> getMlInfoObt(@Body BtCarReq btCarReq);
 
     /**
-     * 详情页获取赛事详情信息
+     * 索取赛事选项资料
      * @return
      */
-    @GET("/yewu11/v1/w/matchDetail/getMatchDetailPB")
+    @GET("/yewu11/v1/w/getSelectedEventInfo")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<MatchInfo>> getMatchDetail(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<MatchInfo>> getSelectedEventInfo(@QueryMap Map<String, String> map);
 
     /**
-     * 详情页获取赛果详情信息
+     * 索取虚拟赛事列表
      * @return
      */
-    @GET("/yewu11/v1/m/matchDetail/getMatchDetailPB")
+    @GET("/yewu11/v1/m/getVsEventInfo")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<MatchInfo>> getMatchDetailResult(@QueryMap Map<String, String> map);
-
+    Flowable<BaseResponse<MatchInfo>> getVsEventInfo(@QueryMap Map<String, String> map);
 
     /**
-     * 获取赛果详情玩法
+     * 索取虚拟赛事资料
      */
-    @GET("/yewu11/v1/m/matchDetail/getMatchResultPB")
+    @GET("/yewu11/v1/m/getVsEventDetails")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<PlayTypeInfo>>> getMatchResultPB(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<List<PlayTypeInfo>>> getVsEventDetails(@QueryMap Map<String, String> map);
 
     /**
-     * 获取详情玩法集
+     * 索取优胜冠军赛事
      * @return
      */
-    @GET("/yewu11/v1/w/category/getCategoryList")
+    @GET("/yewu11/v1/getOutrightEvents")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<CategoryPm>>> getCategoryList(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<List<CategoryPm>>> getOutrightEvents(@QueryMap Map<String, String> map);
 
     /**
-     * 获取赛事玩法
+     * 索取 DELTA 优胜冠军赛事
      * @return
      */
-    @GET("/yewu11/v1/m/matchDetail/getMatchOddsInfoPB")
+    @GET("/yewu11/v1/getDeltaOutrightEventInfo")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<PlayTypeInfo>>> getMatchOddsInfoPB(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<List<PlayTypeInfo>>> getDeltaOutrightEventInfo(@QueryMap Map<String, String> map);
+
+    /**
+     * 索取现场赛果
+     * @return
+     */
+    @POST("/yewu13/v1/getLiveResults")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<BtResultInfo>> getLiveResults(@Body BtReq btReq);
+
+    /**
+     * 索取定位
+     * @return
+     */
+    @POST("/yewu13/v1/getLocalizations")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<BtRecordRsp>> getLocalizations(@Body BtRecordReq btRecordReq);
+
+    /**
+     * 索取DELTA定位
+     * @return
+     */
+    @GET("/yewu11/v1/getDeltaLocalizations")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<List<LeagueAreaInfo>>> getDeltaLocalizations(@QueryMap Map<String, String> map);
+
+    /**
+     * 索取完整赛果
+     * @return
+     */
+    @POST("/yewu11/v1/getCompletedResults")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<VideoAnimationInfo>> getCompletedResults(@Body Map<String, String> map);
+
+    /**
+     * 退出
+     * @return
+     */
+    @POST("/yewu11/v1/m/logOut")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<List<MatchInfo>>> logOut(@Body PMListReq pmListReq);
+
+    /**
+     * 索取投注信息
+     * @return
+     */
+    @GET("/yewu12/api/getBetInfo")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<BalanceInfo>> getBetInfo(@QueryMap Map<String, String> map);
 
     /**
      * 投注
-     * @return
-     */
-    @POST("/yewu13/v1/betOrder/client/bet")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<BtResultInfo>> bet(@Body BtReq btReq);
-
-    /**
-     * 投注记录接口，按照投注时间查询
-     * @return
-     */
-    @POST("/yewu13/v1/betOrder/client/getOrderListV4PB")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<BtRecordRsp>> betRecord(@Body BtRecordReq btRecordReq);
-
-    /**
-     * 获取联赛列表
-     * @return
-     */
-    @GET("/yewu11/v1/m/getFilterMatchListPB")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<LeagueAreaInfo>>> getOnSaleLeagues(@QueryMap Map<String, String> map);
-
-    /**
-     * 获取联赛列表
-     * @return
-     */
-    @POST("/yewu11/v1/w/videoAnimationUrlPB")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<VideoAnimationInfo>> videoAnimationUrlPB(@Body Map<String, String> map);
-
-    /**
-     * 获取 PM赛事列表
-     * @return
-     */
-    @POST("/yewu11/v1/m/getMatchBaseInfoByMidsPB")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<MatchInfo>>> getMatchBaseInfoByMidsPB(@Body PMListReq pmListReq);
-
-    @GET("/yewu12/api/user/amount")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<BalanceInfo>> getUserBanlace(@QueryMap Map<String, String> map);
-
-    /**
-     * 提前结算实时查询最高返还批量/批量获取订单提前结算报价
      * @param map
      * @return
      */
-    @GET("/yewu13/order/betRecord/getCashoutMaxAmountList")
+    @GET("/yewu13/placeBet")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<BtCashOutPriceInfo>>> getCashoutMaxAmountList(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<List<BtCashOutPriceInfo>>> placeBet(@QueryMap Map<String, String> map);
 
     /**
-     * 注单提前结算
+     * 索取投注明细
      * @param btCashOutBetReq
      * @return
      */
-    @POST("/yewu13/v1/betOrder/orderPreSettle")
+    @POST("/yewu13/v1/getBetList")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<BtCashOutPriceInfo>> orderPreSettle(@Body BtCashOutBetReq btCashOutBetReq);
+    Flowable<BaseResponse<BtCashOutPriceInfo>> getBetList(@Body BtCashOutBetReq btCashOutBetReq);
 
     /**
-     * 查询注单提前结算状态
+     * 以页数索取投注明细
      * @return
      */
-    @GET("/yewu13/v1/betOrder/queryOrderPreSettleConfirm")
+    @GET("/yewu13/v1/getBetListByPage")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<BtCashOutStatusInfo>>> queryOrderPreSettleConfirm();
+    Flowable<BaseResponse<List<BtCashOutStatusInfo>>> getBetListByPage();
 
     /**
-     * 公告列表集合
+     * 索取投注账目
      */
-    @POST("/yewu11/v2/notice/frontListPB")
+    @POST("/yewu11/v2/getStatement")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<FrontListInfo>> frontListPB();
+    Flowable<BaseResponse<FrontListInfo>> getStatement();
 
     /**
-     * 赛果菜单统计
+     * 索取余额
      */
-    @GET("/yewu11/v2/m/menu/resultMenuPB")
+    @GET("/yewu11/v2/m/getBalance")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<PMResultBean>>> resultMenuPB(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<List<PMResultBean>>> getBalance(@QueryMap Map<String, String> map);
 
     /**
-     * 获取赛果信息赛事列表
+     * 索取通告
      */
-    @POST("/yewu11/v1/m/matcheResultPB")
+    @POST("/yewu11/v1/m/getAnnouncement")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<MatchInfo>>> matcheResultPB(@Body Map<String, String> map);
+    Flowable<BaseResponse<List<MatchInfo>>> getAnnouncement(@Body Map<String, String> map);
+
+
+    /**
+     * 索取待处理投注状态
+     */
+    @POST("/yewu11/v1/m/getPendingWagerStatus")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<List<MatchInfo>>> getPendingWagerStatus(@Body Map<String, String> map);
+
+    /**
+     * 索取会员信息
+     */
+    @POST("/yewu11/v1/m/getMemberByToken")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<List<MatchInfo>>> getMemberByToken(@Body Map<String, String> map);
+
+    /**
+     * 索取用户自定义
+     */
+    @POST("/yewu11/v1/getUserPreferences")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<List<MatchInfo>>> getUserPreferences(@Body Map<String, String> map);
+
+    /**
+     * 更新用户自定义
+     */
+    @POST("/yewu11/v1/m/updateUserPreferences")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<List<MatchInfo>>> updateUserPreferences(@Body Map<String, String> map);
+
+    /**
+     * 索取所有收藏赛事
+     */
+    @POST("/yewu11/v1/m/getPendingWagerStatus")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<List<MatchInfo>>> getFavouriteEvent(@Body Map<String, String> map);
+
+
+    /**
+     * 加收藏赛事
+     */
+    @POST("/yewu11/v1/m/getPendingWagerStatus")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<List<MatchInfo>>> addFavouriteEvent(@Body Map<String, String> map);
+
+
+    /**
+     *  删除收藏赛事
+     */
+    @POST("/yewu11/v1/m/removeFavouriteEvent")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<List<MatchInfo>>> removeFavouriteEvent(@Body Map<String, String> map);
+
 }
