@@ -9,9 +9,9 @@ import android.view.View;
 
 import com.xtree.base.R;
 import com.xtree.base.databinding.MainLayoutDomainAgentItemBinding;
+import com.xtree.base.net.fastest.TopSpeedDomain;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.NumberUtils;
-import com.xtree.base.vo.TopSpeedDomain;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.ArrayList;

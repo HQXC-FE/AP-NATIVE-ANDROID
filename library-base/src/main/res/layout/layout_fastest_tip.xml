@@ -48,14 +48,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.2" />
+            app:layout_constraintGuide_percent="0.3" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.7" />
+            app:layout_constraintGuide_percent="0.8" />
 
         <TextView
             android:id="@+id/fastest_tip_content"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:text="@string/txt_fastest_tip"
             android:textSize="12sp"
-            android:textColor="@color/clr_txt_grey_09"
+            android:textColor="@color/clr_txt_07"
             android:gravity="center"
             app:layout_constrainedWidth="true"
             app:layout_constraintVertical_bias="0"
@@ -78,8 +78,8 @@
             android:layout_height="25dp"
             android:text="忽略"
             android:textSize="12sp"
-            android:textColor="@color/clr_txt_grey_10"
-            android:background="@drawable/shape_solide_white_stroke_d1d1d1_c24"
+            android:textColor="@color/clr_white"
+            android:background="@mipmap/fastest_tip_left_btn_bg"
             android:gravity="center"
             android:layout_marginTop="5dp"
             app:layout_constraintVertical_bias="0"
@@ -95,7 +95,7 @@
             android:text="切换"
             android:textSize="12sp"
             android:textColor="@color/clr_white"
-            android:background="@drawable/shape_gradient_9179e7_ca9be6_c24"
+            android:background="@mipmap/fastest_tip_right_btn_bg"
             android:gravity="center"
             android:layout_marginTop="5dp"
             app:layout_constraintVertical_bias="0"

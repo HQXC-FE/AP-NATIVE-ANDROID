@@ -52,7 +52,6 @@ public class TagUtils {
     public static final String KEY_FASTEST_GETTHIRDDOMAIN = "获取三方域名列表成功";
     public static final String KEY_FASTEST_GETTHIRDDOMAIN_ERROR = "获取三方域名列表失败";
 
-
     private static String CHANNEL_NAME = ""; // 本包的渠道名,关于页显示当前安装包的渠道名用的。
     private static String MEDIA_SOURCE = ""; // 旧包的渠道名,就是升级到最新官方安装包前的渠道名。
     private static boolean IS_TAG = false; // 是否开启打点统计, true:开启, false:关闭

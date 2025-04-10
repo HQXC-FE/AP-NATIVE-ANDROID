@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.RetrofitClient;
+import com.xtree.base.net.fastest.FastestMonitorCache;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.FBService;
@@ -327,14 +328,16 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public void getSettings() {
         HashMap<String, String> map = new HashMap();
         map.put("fields", "customer_service_url,public_key,barrage_api_url," +
-                "x9_customer_service_url," + "promption_code,default_promption_code");
+                "x9_customer_service_url," + "promption_code,default_promption_code," +
+                "ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time," +
+                "app_response_speed_calculation,app_response_speed_max,hichat_url_suffix");
         Disposable disposable = (Disposable) model.getApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<SettingsVo>() {
                     @Override
                     public void onResult(SettingsVo vo) {
-                        CfLog.i("****** ");
+                        CfLog.i("****** SettingsVo " + vo.toString());
                         public_key = vo.public_key
                                 .replace("\n", "")
                                 .replace("\t", " ")
@@ -343,6 +346,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
                         SPUtils.getInstance().put(SPKeyGlobal.PUBLIC_KEY, public_key);
                         SPUtils.getInstance().put("customer_service_url", vo.customer_service_url);
+                        SPUtils.getInstance().put(SPKeyGlobal.APP_RESPONSE_SPEED_CALCULATION, vo.app_response_speed_calculation);
+                        SPUtils.getInstance().put(SPKeyGlobal.APP_Response_Speed_Max, vo.app_response_speed_max);
+                        //设置测速扣除百分比
+                        FastestMonitorCache.INSTANCE.setSPEED_CALCULATION(vo.app_response_speed_calculation);
+                        //设置测速显示上限
+                        FastestMonitorCache.INSTANCE.setApp_response_speed_max(vo.app_response_speed_max);
 
                         liveDataSettings.setValue(vo);
                     }
@@ -351,7 +360,6 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                     public void onError(Throwable t) {
                         CfLog.e("error, " + t.toString());
                         //super.onError(t);
-                        //ToastUtils.showLong("请求失败");
                     }
                 });
         addSubscribe(disposable);
