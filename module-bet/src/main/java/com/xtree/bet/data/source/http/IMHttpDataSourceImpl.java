@@ -10,21 +10,21 @@ import com.xtree.bet.data.source.HttpDataSource;
 /**
  * Created by goldze on 2019/3/26.
  */
-public class HttpDataSourceImpl implements HttpDataSource {
+public class IMHttpDataSourceImpl implements HttpDataSource {
     private ApiService baseApiService;
-    private FBApiService apiService;
-    private volatile static HttpDataSourceImpl INSTANCE = null;
+    private IMApiService imApiService;
+    private volatile static IMHttpDataSourceImpl INSTANCE = null;
 
-    public static HttpDataSourceImpl getInstance(FBApiService apiService, ApiService baseApiService, boolean reNew) {
+    public static IMHttpDataSourceImpl getInstance(IMApiService apiService, ApiService baseApiService, boolean reNew) {
         if(reNew){
-            synchronized (HttpDataSourceImpl.class) {
-                INSTANCE = new HttpDataSourceImpl(apiService, baseApiService);
+            synchronized (IMHttpDataSourceImpl.class) {
+                INSTANCE = new IMHttpDataSourceImpl(apiService, baseApiService);
             }
         }else {
             if (INSTANCE == null) {
-                synchronized (HttpDataSourceImpl.class) {
+                synchronized (IMHttpDataSourceImpl.class) {
                     if (INSTANCE == null) {
-                        INSTANCE = new HttpDataSourceImpl(apiService, baseApiService);
+                        INSTANCE = new IMHttpDataSourceImpl(apiService, baseApiService);
                     }
                 }
             }
@@ -36,14 +36,14 @@ public class HttpDataSourceImpl implements HttpDataSource {
         INSTANCE = null;
     }
 
-    private HttpDataSourceImpl(FBApiService apiService, ApiService baseApiService) {
-        this.apiService = apiService;
+    private IMHttpDataSourceImpl(IMApiService apiService, ApiService baseApiService) {
+        this.imApiService = apiService;
         this.baseApiService = baseApiService;
     }
 
     @Override
     public FBApiService getApiService() {
-        return apiService;
+        return null;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class HttpDataSourceImpl implements HttpDataSource {
 
     @Override
     public IMApiService getIMApiService() {
-        return null;
+        return imApiService;
     }
 
     @Override

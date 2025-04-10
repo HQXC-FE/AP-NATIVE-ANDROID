@@ -3,6 +3,7 @@ package com.xtree.bet.data.source.http;
 
 import com.xtree.bet.data.ApiService;
 import com.xtree.bet.data.FBApiService;
+import com.xtree.bet.data.IMApiService;
 import com.xtree.bet.data.PMApiService;
 import com.xtree.bet.data.source.HttpDataSource;
 
@@ -48,6 +49,11 @@ public class PMHttpDataSourceImpl implements HttpDataSource {
     @Override
     public PMApiService getPMApiService() {
         return apiService;
+    }
+
+    @Override
+    public IMApiService getIMApiService() {
+        return null;
     }
 
     @Override

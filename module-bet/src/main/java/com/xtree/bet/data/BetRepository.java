@@ -53,6 +53,11 @@ public class BetRepository extends BaseModel implements HttpDataSource, LocalDat
     }
 
     @Override
+    public IMApiService getIMApiService() {
+        return mHttpDataSource.getIMApiService();
+    }
+
+    @Override
     public ApiService getBaseApiService() {
         return mHttpDataSource.getBaseApiService();
     }

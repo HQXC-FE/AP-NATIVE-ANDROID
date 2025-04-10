@@ -192,13 +192,13 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         // 获取 Flowable 对象
         Flowable flowable = getFlowableMatchesPagePB(pmListReq);
         // 根据是否使用缓存选择不同的回调
-        Object callback = isUseCacheApiService()
-                ? new PMHotMatchCountCacheCallBack(this)
-                : new PMHotMatchCountCallBack(this);
+//        Object callback = isUseCacheApiService()
+//                ? new PMHotMatchCountCacheCallBack(this)
+//                : new PMHotMatchCountCallBack(this);
 
         // 1.创建 Disposable，2.并进行订阅
-        Disposable disposable = createDisposable(flowable, callback);
-        addSubscribe(disposable);
+//        Disposable disposable = createDisposable(flowable, callback);
+//        addSubscribe(disposable);
     }
 
     @Override
@@ -416,13 +416,13 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
             pmListReq.setEuid(sportId);
         }//再试试断网情况 和弱网情况
 
-        Flowable flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
-        Object callback = isUseCacheApiService()
-                ? new PMChampionListCacheCallBack(this, sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh, mCurrentPage)
-                : new PMChampionListCallBack(this, sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh, mCurrentPage);
+//        Flowable flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
+//        Object callback = isUseCacheApiService()
+//                ? new PMChampionListCacheCallBack(this, sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh, mCurrentPage)
+//                : new PMChampionListCallBack(this, sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh, mCurrentPage);
         // 1.创建 Disposable，2.并进行订阅
-        Disposable disposable = createDisposable(flowable, callback);
-        addSubscribe(disposable);
+//        Disposable disposable = createDisposable(flowable, callback);
+//        addSubscribe(disposable);
     }
 
     /**
@@ -800,36 +800,36 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     // 根据条件设置 HttpCallBack 类型的对象
     public void createPMListCallback(boolean isTimerRefresh, boolean isRefresh, int sportPos, String sportId, int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchidList, Flowable flowable) {
         // 根据是否使用缓存选择回调类型
-        Object callback = isUseCacheApiService()
-                ? new PMListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType,
-                sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList)
-                : new PMListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType,
-                sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList);
-
-        // 统一处理 Flowable 的线程调度和异常处理
-        Disposable disposable = createDisposable(flowable, callback);
-        // 添加订阅管理
-        addSubscribe(disposable);
+//        Object callback = isUseCacheApiService()
+//                ? new PMListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType,
+//                sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList)
+//                : new PMListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType,
+//                sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList);
+//
+//        // 统一处理 Flowable 的线程调度和异常处理
+//        Disposable disposable = createDisposable(flowable, callback);
+//        // 添加订阅管理
+//        addSubscribe(disposable);
     }
 
     // 根据条件返回 HttpCallBack 类型的对象
     public void createPMLeagueListCallback(boolean isTimerRefresh, boolean isRefresh,
                                            int sportPos, String sportId, int orderBy, List<Long> leagueIds,
                                            int searchDatePos, int oddType, List<Long> matchidList, int finalType, boolean isStepSecond, Flowable flowable) {
-        mPmLeagueCallBack = new PMLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage,
-                mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType,
-                matchidList, finalType, isStepSecond);
-        mPmCacheLeagueCallBack = new PMLeagueListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage,
-                mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType,
-                matchidList, finalType, isStepSecond);
-        // 根据是否使用缓存选择回调
-        Object callback = isUseCacheApiService()
-                ? mPmCacheLeagueCallBack
-                : mPmLeagueCallBack;
-        // 统一处理 Flowable 的线程调度和异常处理
-        Disposable disposable = createDisposable(flowable, callback);
-        // 添加订阅管理
-        addSubscribe(disposable);
+//        mPmLeagueCallBack = new PMLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage,
+//                mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType,
+//                matchidList, finalType, isStepSecond);
+//        mPmCacheLeagueCallBack = new PMLeagueListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage,
+//                mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType,
+//                matchidList, finalType, isStepSecond);
+//        // 根据是否使用缓存选择回调
+//        Object callback = isUseCacheApiService()
+//                ? mPmCacheLeagueCallBack
+//                : mPmLeagueCallBack;
+//        // 统一处理 Flowable 的线程调度和异常处理
+//        Disposable disposable = createDisposable(flowable, callback);
+//        // 添加订阅管理
+//        addSubscribe(disposable);
     }
 
     private Disposable createDisposable(Flowable flowable, Object callBack) {
