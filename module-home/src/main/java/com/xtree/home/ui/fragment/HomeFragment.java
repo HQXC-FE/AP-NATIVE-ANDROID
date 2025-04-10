@@ -532,7 +532,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 if (ClickUtil.isFastClick3000()) {
                     return;
                 }
-                if (mLotteryUser == null || mLotteryUser.getData() == null || mLotteryUser.getData().isEmpty()) {
+                if ((mLotteryUser == null || mLotteryUser.getData() == null || mLotteryUser.getData().isEmpty())
+                        && SPUtils.getInstance().getString("dynamicLotteryUser", "").isEmpty()) {
                     if (isFirstToLottery) {
                         isFirstToLottery = false;
                         binding.rcvList.postDelayed(() -> toLottery(), 3000);
@@ -542,7 +543,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     return;
                 }
                 //ARouter无法传输mLotteryUser这种庞大的数据
-                SPUtils.getInstance().put("mLotteryUser", new Gson().toJson(mLotteryUser));
                 ARouter.getInstance().build(RouterActivityPath.Lottery.PAGER_LOTTERY_HOME)
                         .navigation();
             }
