@@ -36,10 +36,10 @@ android {
             resValue "string", "ms_secret_key", "efa54723-d17f-40a5-ba10-95f6a4ec7832"
             resValue "string", "sentry_dsn", "https://78cf4cf46e69206c1ddc741b9ab7edca@o4507447554539520.ingest.us.sentry.io/4507456764706816"
             resValue "bool", "is_tag", "true" // 是否开启统计
-            resValue "string", "domain_api_list", "https://app1.a8h1cp.vip;" +
-                    "https://app1.p5x5uf.vip;" +
-                    "https://app1.r9r4om.vip;" +
-                    "https://app1.u5u6cy.vip;" +
+            resValue "string", "domain_api_list", "https://app1.i7b4fu.vip;" +
+                    "https://app1.t3i8ra.vip;" +
+                    "https://app1.v1w5kv.vip;" +
+                    "https://app1.w7a3cl.vip;" +
                     "https://app2.c8b7cy.vip;" +
                     "https://app2.n9s9ky.vip;" +
                     "https://app2.f5t2ou.vip;" +
@@ -63,21 +63,21 @@ android {
                     "http://1.95.166.113:16803;" +
                     "http://113.44.59.111:16803;" +
                     "http://121.36.226.177:16803"
-            resValue "string", "domain_url_list", "https://h11.a4r8em.vip;" +
-                    "https://h11.m2a2zg.vip;" +
-                    "https://h11.t6v2sl.vip;" +
-                    "https://h21.r5i2va.vip;" +
-                    "https://h21.b9f3cv.vip;" +
-                    "https://h21.x3b5at.vip;" +
-                    "https://h31.r5n9zc.vip;" +
-                    "https://h31.u2d6yk.vip;" +
-                    "https://h31.t4k3my.vip;" +
-                    "https://h41.w2i1jo.vip;" +
+            resValue "string", "domain_url_list", "https://h12.a4r8em.vip;" +
+                    "https://h12.m2a2zg.vip;" +
+                    "https://h12.t6v2sl.vip;" +
+                    "https://h22.r5i2va.vip;" +
+                    "https://h22.b9f3cv.vip;" +
+                    "https://h22.x3b5at.vip;" +
+                    "https://h32.r5n9zc.vip;" +
+                    "https://h32.u2d6yk.vip;" +
+                    "https://h32.t4k3my.vip;" +
+                    "https://h42.w2i1jo.vip;" +
                     "https://h61.saaen.com:16801;" +
                     "https://h61.caaau.com:16801;" +
                     "https://h61.baafj.com:16801;" +
                     "https://h61.aaagx.com:16801;" +
-                    "https://h61.xuanwujx.com:16801;" +
+                    "https://h62.xuanwujx.com:16801;" +
                     "https://h61.yhlims.com:16801;" +
                     "https://h61.bfangwang.com:16801;" +
                     "https://www.y9v2hh.xyz:16800"
