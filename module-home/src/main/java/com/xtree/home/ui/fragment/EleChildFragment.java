@@ -39,7 +39,6 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
 
     private int position;
     private int curPage = 1;
-    private EleVo eleVo;
     private GameVo gameVo;
     private CachedAutoRefreshAdapter<Ele> adapter;
 
@@ -107,7 +106,7 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
                         return;
                     }
                     if (gameVo.cid == 52) {
-                        viewModel.getPlayUrl("odin", String.valueOf(vo1.getId()), vo1.getName());
+                        viewModel.getPlayUrl("odin", String.valueOf(vo1.getId()), gameVo.name);
                     } else {
                         CfLog.i(vo1.toString());
                         String eventName = gameVo.name != null && gameVo.name.length() > 2 ? gameVo.name.substring(0, 2) : "gm2";
