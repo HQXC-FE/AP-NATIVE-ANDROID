@@ -128,6 +128,9 @@
 
     <color name="me_progress_bar_bg">#FFBC6E</color>
     <color name="offerLineColor">#6464EB</color>
-
     <color name="offerGetExpiredEnd">#ECFFFFFF</color>
+
+
+    <color name="msgTopColorEnd">#BFACFA</color>
+
 </resources>

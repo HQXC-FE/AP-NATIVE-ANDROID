@@ -127,5 +127,5 @@
     <color name="offerLineColor">#FFD7C8</color>
 
     <color name="offerGetExpiredEnd">#ECFFFFFF</color>
-
+    <color name="msgTopColorEnd">@color/primaryVariant</color>
 </resources>
