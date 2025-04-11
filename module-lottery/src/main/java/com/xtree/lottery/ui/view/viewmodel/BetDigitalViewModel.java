@@ -22,8 +22,10 @@ import com.xtree.lottery.utils.LotteryAnalyzer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import me.xtree.mvvmhabit.base.BaseApplication;
 
@@ -61,6 +63,7 @@ public class BetDigitalViewModel {
     //
     private String showStr;
     private String groupTitle;
+    private int maxDanCodecount;
     public final BaseDatabindingAdapter.onBindListener onBindListener = new BaseDatabindingAdapter.onBindListener() {
         @Override
         public void onBind(@NonNull BindingAdapter.BindingViewHolder bindingViewHolder, @NonNull View view, int itemViewType) {
@@ -101,8 +104,8 @@ public class BetDigitalViewModel {
                 pickView.setPickListener(new LotteryPickView.onPickListener() {
                     @Override
                     public void onPick(List<String> pickNums) {
+                        pickBeforeCheckDanTuo(bindingViewHolder.getModelPosition(), pickView);
                         codesData.set(formatCode());
-                        pickAfterCheckDanTuo(bindingViewHolder.getModelPosition(), pickView);
                     }
                 });
             }
@@ -145,6 +148,9 @@ public class BetDigitalViewModel {
                 bindModels.add(new BetDigitalModel(layoutDTO.getTitle(), picks, isButton));
             } else {
                 //任选胆拖 拖码才需要全大小偶奇清
+                if (i == 0) {
+                    maxDanCodecount = layoutDTO.getMinchosen();
+                }
                 bindModels.add(new BetDigitalModel(layoutDTO.getTitle(), picks, i == 1 && isButton));
             }
         }
@@ -168,14 +174,24 @@ public class BetDigitalViewModel {
     /**
      * 选号之后检查胆拖
      */
-    private void pickAfterCheckDanTuo(int index, LotteryPickView pickView) {
+    private void pickBeforeCheckDanTuo(int index, LotteryPickView pickView) {
         if ("任选胆拖".equals(groupTitle)) {
             if (index == 0) {//胆码
                 unCheckOpp(true);
+                //判断最大胆码使用
+                List<LotteryPickModel> pickOrderDatas = ((BetDigitalModel) bindModels.get(0))
+                        .getPickDatas()
+                        .stream()
+                        .filter(t -> Boolean.TRUE.equals(t.checked.get())) // 避免空指针
+                        .sorted(Comparator.comparingInt(t -> t.checkOrderMine))
+                        .collect(Collectors.toList());
+                if (pickOrderDatas.size() > maxDanCodecount) {
+                    //胆码超过最大值，删除第一个
+                    pickOrderDatas.get(0).checked.set(false);
+                }
             } else if (index == 1) {//拖码
                 unCheckOpp(false);
             }
-            codesData.set(formatCode());
         }
     }
 
