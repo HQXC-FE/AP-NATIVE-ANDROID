@@ -74,7 +74,7 @@
                 android:layout_marginEnd="10dp"
                 style="?attr/msg_info_delete_all_attr"
                 android:text="@string/txt_delete_selected"
-                android:textColor="@color/lotteryLabelGradient2Color"
+                android:textColor="@color/textPrimaryColor"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_all_delete"

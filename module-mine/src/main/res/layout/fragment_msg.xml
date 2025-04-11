@@ -64,7 +64,7 @@
             android:layout_marginTop="0dp"
             android:padding="2dp"
             app:tabBackground="@color/mainListAcBackgroupColor"
-            app:tabIndicatorColor="@color/clr_purple_01"
+            app:tabIndicatorColor="@color/msgTopColorEnd"
             app:tabPadding="2dp"
             app:tabMode="fixed"
             app:tabGravity="fill"
