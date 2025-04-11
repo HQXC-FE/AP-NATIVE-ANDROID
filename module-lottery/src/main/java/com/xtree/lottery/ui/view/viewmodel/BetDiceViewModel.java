@@ -46,21 +46,20 @@ public class BetDiceViewModel extends BindModel {
         @Override
         public void onBind(@NonNull BindingAdapter.BindingViewHolder bindingViewHolder, @NonNull View view, int itemViewType) {
             ItemBetDiceNumsBinding binding = (ItemBetDiceNumsBinding) bindingViewHolder.getViewBinding();
-            Bitmap diceSource = BitmapFactory.decodeResource(binding.getRoot().getResources(), R.raw.lottery_dice);
             BetDiceModel model = bindingViewHolder.getModel();
             boolean isActived = dice.isActived(model.number, lotteryNumbs);
             String actionNumber;
             if ("1".equals(model.number) || "2".equals(model.number) || "3".equals(model.number) || "4".equals(model.number) || "5".equals(model.number) || "6".equals(model.number)) {
-                binding.iv1.setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(model.number), isActived ? 1 : 0));
+                binding.iv1.setImageBitmap(DiceCutter.diceChooseCode(binding.getRoot().getResources(), Integer.parseInt(model.number), isActived ? 1 : 0));
                 binding.iv1.setVisibility(View.VISIBLE);
                 binding.iv2.setVisibility(View.GONE);
                 binding.iv3.setVisibility(View.GONE);
                 binding.tvTitle.setVisibility(View.GONE);
                 actionNumber = model.number;
             } else if ("11*".equals(model.number) || "22*".equals(model.number) || "33*".equals(model.number) || "44*".equals(model.number) || "55*".equals(model.number) || "66*".equals(model.number)) {
-                binding.iv1.setImageBitmap(DiceCutter.cutDiceImage(diceSource, 7, isActived ? 1 : 0));
-                binding.iv2.setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
-                binding.iv3.setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
+                binding.iv1.setImageBitmap(DiceCutter.diceChooseCode(binding.getRoot().getResources(), 7, isActived ? 1 : 0));
+                binding.iv2.setImageBitmap(DiceCutter.diceChooseCode(binding.getRoot().getResources(), Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
+                binding.iv3.setImageBitmap(DiceCutter.diceChooseCode(binding.getRoot().getResources(), Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
                 binding.tvTitle.setText(model.number);
                 binding.iv1.setVisibility(View.VISIBLE);
                 binding.iv2.setVisibility(View.VISIBLE);
@@ -68,9 +67,9 @@ public class BetDiceViewModel extends BindModel {
                 binding.tvTitle.setVisibility(View.VISIBLE);
                 actionNumber = String.valueOf(model.number.charAt(0));
             } else if ("111".equals(model.number) || "222".equals(model.number) || "333".equals(model.number) || "444".equals(model.number) || "555".equals(model.number) || "666".equals(model.number)) {
-                binding.iv1.setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
-                binding.iv2.setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
-                binding.iv3.setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
+                binding.iv1.setImageBitmap(DiceCutter.diceChooseCode(binding.getRoot().getResources(), Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
+                binding.iv2.setImageBitmap(DiceCutter.diceChooseCode(binding.getRoot().getResources(), Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
+                binding.iv3.setImageBitmap(DiceCutter.diceChooseCode(binding.getRoot().getResources(), Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
                 binding.tvTitle.setText(model.number);
                 binding.iv1.setVisibility(View.VISIBLE);
                 binding.iv2.setVisibility(View.VISIBLE);
@@ -78,9 +77,9 @@ public class BetDiceViewModel extends BindModel {
                 binding.tvTitle.setVisibility(View.VISIBLE);
                 actionNumber = String.valueOf(model.number.charAt(0));
             } else if ("123".equals(model.number) || "234".equals(model.number) || "345".equals(model.number) || "456".equals(model.number)) {
-                binding.iv1.setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
-                binding.iv2.setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(String.valueOf(model.number.charAt(1))), isActived ? 1 : 0));
-                binding.iv3.setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(String.valueOf(model.number.charAt(2))), isActived ? 1 : 0));
+                binding.iv1.setImageBitmap(DiceCutter.diceChooseCode(binding.getRoot().getResources(), Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
+                binding.iv2.setImageBitmap(DiceCutter.diceChooseCode(binding.getRoot().getResources(), Integer.parseInt(String.valueOf(model.number.charAt(1))), isActived ? 1 : 0));
+                binding.iv3.setImageBitmap(DiceCutter.diceChooseCode(binding.getRoot().getResources(), Integer.parseInt(String.valueOf(model.number.charAt(2))), isActived ? 1 : 0));
                 binding.tvTitle.setText(model.number);
                 binding.iv1.setVisibility(View.VISIBLE);
                 binding.iv2.setVisibility(View.VISIBLE);
@@ -88,8 +87,8 @@ public class BetDiceViewModel extends BindModel {
                 binding.tvTitle.setVisibility(View.VISIBLE);
                 actionNumber = "6";
             } else if ("11".equals(model.number) || "22".equals(model.number) || "33".equals(model.number) || "44".equals(model.number) || "55".equals(model.number) || "66".equals(model.number)) {
-                binding.iv2.setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
-                binding.iv3.setImageBitmap(DiceCutter.cutDiceImage(diceSource, Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
+                binding.iv2.setImageBitmap(DiceCutter.diceChooseCode(binding.getRoot().getResources(), Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
+                binding.iv3.setImageBitmap(DiceCutter.diceChooseCode(binding.getRoot().getResources(), Integer.parseInt(String.valueOf(model.number.charAt(0))), isActived ? 1 : 0));
                 binding.iv1.setVisibility(View.GONE);
                 binding.iv2.setVisibility(View.VISIBLE);
                 binding.iv3.setVisibility(View.VISIBLE);

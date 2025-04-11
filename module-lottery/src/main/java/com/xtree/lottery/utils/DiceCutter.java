@@ -41,21 +41,41 @@ public class DiceCutter {
      * @return
      */
     public static @Nullable Bitmap diceResult(Resources resources, int num) {
-        if (num == 1) {
-            return BitmapFactory.decodeResource(resources, R.mipmap.dice_1);
-        } else if (num == 2) {
-            return BitmapFactory.decodeResource(resources, R.mipmap.dice_2);
-        } else if (num == 3) {
-            return BitmapFactory.decodeResource(resources, R.mipmap.dice_3);
-        } else if (num == 4) {
-            return BitmapFactory.decodeResource(resources, R.mipmap.dice_4);
-        } else if (num == 5) {
-            return BitmapFactory.decodeResource(resources, R.mipmap.dice_5);
-        } else if (num == 6) {
-            return BitmapFactory.decodeResource(resources, R.mipmap.dice_6);
-        } else {
-            return null;
-        }
+        if (num < 1 || num > 6) return null;
+
+        final int[] diceResIds = {
+                R.mipmap.dice_1, R.mipmap.dice_2, R.mipmap.dice_3,
+                R.mipmap.dice_4, R.mipmap.dice_5, R.mipmap.dice_6
+        };
+
+        return BitmapFactory.decodeResource(resources, diceResIds[num - 1]);
+    }
+
+
+    /**
+     * 骰子选号图  1-7 最后一个是问号
+     *
+     * @return
+     */
+    public static @Nullable Bitmap diceChooseCode(Resources resources, int row, int colIndex) {
+        if (row < 1 || row > 7) return null;
+
+        final int[][] diceResIds = {
+                {
+                        R.mipmap.dice_001, R.mipmap.dice_002, R.mipmap.dice_003,
+                        R.mipmap.dice_004, R.mipmap.dice_005, R.mipmap.dice_006,
+                        R.mipmap.dice_007
+                },
+                {
+                        R.mipmap.dice_01, R.mipmap.dice_02, R.mipmap.dice_03,
+                        R.mipmap.dice_04, R.mipmap.dice_05, R.mipmap.dice_06,
+                        R.mipmap.dice_07
+                }
+        };
+
+        if (colIndex < 0 || colIndex >= diceResIds.length) return null;
+
+        return BitmapFactory.decodeResource(resources, diceResIds[colIndex][row - 1]);
     }
 
 }
