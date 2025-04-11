@@ -1,5 +1,6 @@
 package com.xtree.lottery.ui.view.model;
 
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 
 import com.xtree.base.mvvm.recyclerview.BindModel;
@@ -54,6 +55,7 @@ public class BetRacingNumModel extends BindModel {
 
     public String number = "?";
     public int icon = R.drawable.car01;
+    public ObservableBoolean  enable = new ObservableBoolean(true);
     private int color = R.color.lt_color_racing_default;
 
     public ObservableField<String> tag = new ObservableField<>("");

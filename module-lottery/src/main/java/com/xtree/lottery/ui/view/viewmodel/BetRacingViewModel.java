@@ -18,6 +18,8 @@ import com.xtree.lottery.ui.view.model.BetRacingNumModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 /**
@@ -100,14 +102,21 @@ public class BetRacingViewModel {
         @Override
         public void onItemClick(int modelPosition, int layoutPosition, int itemViewType) {
             BetRacingNumModel nData = (BetRacingNumModel) numBindModels.get(modelPosition);
+            if (!nData.enable.get()) {
+                return;
+            }
             for (int i = 1; i < betBindModels.size(); i++) {
                 BetRacingBetModel bData = (BetRacingBetModel) betBindModels.get(i);
                 if (bData.number_v1.get() == null) {
                     bData.setV1(nData);
+                    //设置某个号码不可选
+                    changeNumsChooseEnable(nData.number);
                     break;
                 }
                 if (bData.number_v2.get() == null) {
                     bData.setV2(nData);
+                    //恢复所有号码可选
+                    changeNumsChooseEnable("?");
                     break;
                 }
             }
@@ -128,6 +137,8 @@ public class BetRacingViewModel {
                             bData.clearV1();
                             bData.clearV2();
                             lotteryNumbs.set(formatCode());
+                            //恢复所有号码可选
+                            changeNumsChooseEnable("?");
                         }
                     }
                 });
@@ -135,26 +146,30 @@ public class BetRacingViewModel {
 
             if (itemViewType == R.layout.item_bet_racing_bets) {
                 BetRacingBetModel bData = (BetRacingBetModel) betBindModels.get(bindingViewHolder.getModelPosition());
-                view.findViewById(R.id.item_racing_bet_bt1).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        bData.clearV1();
-                        lotteryNumbs.set(formatCode());
-                    }
-                });
-                view.findViewById(R.id.item_racing_bet_bt2).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        bData.clearV2();
-                        lotteryNumbs.set(formatCode());
-                    }
-                });
+//                view.findViewById(R.id.item_racing_bet_bt1).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        bData.clearV1();
+//                        lotteryNumbs.set(formatCode());
+//                    }
+//                });
+//                view.findViewById(R.id.item_racing_bet_bt2).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        bData.clearV2();
+//                        lotteryNumbs.set(formatCode());
+//                    }
+//                });
                 view.findViewById(R.id.item_racing_bet_bt3).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         bData.clearV1();
                         bData.clearV2();
                         lotteryNumbs.set(formatCode());
+                        //平移后面代码
+                        shiftNumsForward(bindingViewHolder.getModelPosition()-1);//去掉标题的index
+                        //恢复所有号码可选
+                        changeNumsChooseEnable("?");
                     }
                 });
             }
@@ -168,6 +183,41 @@ public class BetRacingViewModel {
     };
     private BasePopupView pop;
     private LotteryBetsModel betModel;
+
+    /**
+     * 往前平移选号
+     *
+     * @param index
+     */
+    private void shiftNumsForward(int index) {
+        List<BetRacingBetModel> betChooseBindModels = betBindModels.stream()
+                .filter(bindModel -> bindModel instanceof BetRacingBetModel)
+                .map(bindModel -> (BetRacingBetModel) bindModel)
+                .filter(bData -> bData.number_v1.get() != null)
+                .collect(Collectors.toList());
+
+        List<BetRacingBetModel> betNumBindModels = betBindModels.stream()
+                .filter(bindModel -> bindModel instanceof BetRacingBetModel)
+                .map(bindModel -> (BetRacingBetModel) bindModel)
+                .collect(Collectors.toList());
+
+        int size = betNumBindModels.size();
+        int chooseSize = betChooseBindModels.size();
+        if (index < 0 || index >= size) return;
+
+        for (int i = index; i < size; i++) {
+            BetRacingBetModel bData = betNumBindModels.get(i);
+            if (i < chooseSize) {
+                BetRacingBetModel bChooseData = betChooseBindModels.get(i);
+                bData.setV1(bChooseData.number_v1.get());
+                bData.setV2(bChooseData.number_v2.get());
+            } else {//其余的清空
+                bData.clearV1();
+                bData.clearV2();
+            }
+        }
+    }
+
 
     /**
      * 格式化投注号码
@@ -266,5 +316,21 @@ public class BetRacingViewModel {
      */
     public void clear() {
         lotteryNumbs.set("");
+    }
+
+    /**
+     * 号码可选或不可选
+     */
+    private void changeNumsChooseEnable(String flagNumber) {
+        //恢复所有号码可选
+        for (BindModel bindModel : numDatas.get()) {
+            BetRacingNumModel betRacingNumModel = (BetRacingNumModel) bindModel;
+            if (Objects.equals(betRacingNumModel.number, flagNumber)) {
+                betRacingNumModel.enable.set(false);
+            } else {
+                betRacingNumModel.enable.set(true);
+            }
+
+        }
     }
 }
