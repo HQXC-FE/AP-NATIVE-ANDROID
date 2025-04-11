@@ -29,6 +29,7 @@ import com.xtree.live.data.source.httpnew.LiveRep;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.databinding.FragmentLiveBinding;
+import com.xtree.live.ui.main.model.chat.LiveThiredLoginRequest;
 import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 
 import java.util.ArrayList;
@@ -46,13 +47,9 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewModel> {
 
     public LiveFragment() {
-
-        JsonObject json = new JsonObject();
-        json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
-        json.addProperty("device_type", "android");
-        json.addProperty("user_id", LiveConfig.getUserId());
-
-        LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
+        LiveRepository.getInstance().getLiveToken(new LiveTokenRequest())
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
                 .subscribe(new HttpCallBack<LiveTokenResponse>() {
                     @Override
                     public void onResult(LiveTokenResponse data) {
@@ -68,12 +65,32 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
                 });
 
 
+        /*JsonObject json = new JsonObject();
+        json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
+        json.addProperty("device_type", "android");
+        json.addProperty("user_id", 48);
+
+        LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
+                .subscribe(new HttpCallBack<LiveTokenResponse>() {
+                    @Override
+                    public void onResult(LiveTokenResponse data) {
+                        if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                            LiveRepository.getInstance().setLive(data);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
+                });*/
+
+
     }
 
 
     @Override
     public void initView() {
-        CfLog.d("================ LiveFragment ==============");
     }
 
     @Override

@@ -28,12 +28,19 @@ import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
+import com.xtree.live.data.source.response.LiveRoomBean;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.SearchAssistantResponse;
 import com.xtree.live.data.source.response.SendToAssistantResponse;
 import com.xtree.live.data.source.response.fb.MatchInfo;
+import com.xtree.live.message.MessageRecord;
+import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.model.AccumulatedRechargeRes;
+import com.xtree.live.ui.main.model.chat.AnchorChatHistoryRequest;
+import com.xtree.live.ui.main.model.chat.GetChatHistroyRequest;
+import com.xtree.live.ui.main.model.chat.GetRoomInfoRequest;
+import com.xtree.live.ui.main.model.chat.LiveThiredLoginRequest;
 
 import java.util.HashMap;
 import java.util.List;
@@ -159,6 +166,65 @@ public class HttpDataSourceImpl implements HttpDataSource {
                         });
             }
         });
+    }
+
+    public Flowable<BaseResponse<LiveTokenResponse>> getXLiveToken(LiveThiredLoginRequest request){
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return liveService.get(APIManager.live_third_login, map).map(new Function<ResponseBody, BaseResponse<LiveTokenResponse>>() {
+            @Override
+            public BaseResponse<LiveTokenResponse> apply(ResponseBody responseBody) throws Exception {
+                return JSON.parseObject(responseBody.string(),
+                        new TypeReference<BaseResponse<LiveTokenResponse>>() {
+
+                        });
+            }
+        });
+    }
+
+    public Flowable<BaseResponse<LiveRoomBean>> getRoomInfo(GetRoomInfoRequest request){
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return liveService.get(APIManager.GET_ROOM_INFO, map).map(new Function<ResponseBody, BaseResponse<LiveRoomBean>>() {
+            @Override
+            public BaseResponse<LiveRoomBean> apply(ResponseBody responseBody) throws Exception {
+                return JSON.parseObject(responseBody.string(),
+                        new TypeReference<BaseResponse<LiveRoomBean>>() {
+
+                        });
+            }
+        });
+    }
+
+    public Flowable<BaseResponse<List<MessageRecord>>> getChatHistory(GetChatHistroyRequest request){
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return liveService.get(APIManager.GET_CHAT_HISTORY, map).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<List<MessageRecord>>>() {
+                }));
+    }
+    public Flowable<BaseResponse<List<MessageRecord>>> getAnchorChatHistory(AnchorChatHistoryRequest request){
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return liveService.get(APIManager.GET_ANCHOR_CHAT_HISTORY, map).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<List<MessageRecord>>>() {
+                }));
+    }
+
+    public Flowable<BaseResponse<LiveRoomBean>> getLiveDetail(GetRoomInfoRequest request){
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return liveService.get(APIManager.GET_LIVE_DETAIL, map).map(new Function<ResponseBody, BaseResponse<LiveRoomBean>>() {
+            @Override
+            public BaseResponse<LiveRoomBean> apply(ResponseBody responseBody) throws Exception {
+                return JSON.parseObject(responseBody.string(),
+                        new TypeReference<BaseResponse<LiveRoomBean>>() {
+
+                        });
+            }
+        });
+    }
+
+    public Flowable<BaseResponse<List<SystemMessageRecord>>> getLiveInRoomLog(GetChatHistroyRequest request){
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(request), type);
+        return liveService.get(APIManager.GET_LIVE_IN_ROOM_LOG, map).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<List<SystemMessageRecord>>>() {
+                }));
     }
 
     /**

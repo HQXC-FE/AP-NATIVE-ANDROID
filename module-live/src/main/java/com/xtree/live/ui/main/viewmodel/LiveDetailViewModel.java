@@ -36,6 +36,7 @@ import com.xtree.live.data.source.response.fb.Match;
 import com.xtree.live.data.source.response.fb.MatchFb;
 import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.ui.main.model.banner.LiveBannerModel;
+import com.xtree.live.ui.main.model.chat.LiveThiredLoginRequest;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -80,12 +81,17 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
 
         if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
 
-            JsonObject json = new JsonObject();
-            json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
-            json.addProperty("device_type", "android");
-            json.addProperty("user_id", LiveConfig.getUserId());
+//            JsonObject json = new JsonObject();
+//            json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
+//            json.addProperty("device_type", "android");
+//            json.addProperty("user_id", LiveConfig.getUserId());
 
-            LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
+            LiveThiredLoginRequest request = new LiveThiredLoginRequest(
+                    X9LiveInfo.INSTANCE.getOaid(),"android",LiveConfig.getUserId()
+            );
+            LiveRepository.getInstance().getXLiveToken(request)
+                    .compose(RxUtils.schedulersTransformer())
+                    .compose(RxUtils.exceptionTransformer())
                     .subscribe(new HttpCallBack<LiveTokenResponse>() {
                         @Override
                         public void onResult(LiveTokenResponse data) {

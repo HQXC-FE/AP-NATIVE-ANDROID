@@ -38,60 +38,7 @@ public class LiveRep extends BaseRepository implements LiveDataSource {
         return mInstance;
     }
 
-    @Override
-    public Flowable<LiveTokenResponse> getXLiveToken(RequestBody body) {
 
-        return obtainJsonService(LiveService.class)
-                .getXLiveToken(body)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer());
-    }
-
-    @Override
-    public Flowable<LiveRoomBean> getRoomInfo(int uid, String channelCode) {
-
-        return obtainJsonService(LiveService.class)
-                .getRoomInfo(uid, channelCode)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer());
-    }
-
-    @Override
-    public Flowable<List<MessageRecord>> getChatHistory(int roomType, String vid, String lastId, int limit) {
-
-        String channelCode = LiveConfig.getChannelCode();
-        return obtainJsonService(LiveService.class)
-                .getChatHistory(roomType, vid, lastId, limit, channelCode)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer());
-    }
-
-    @Override
-    public Flowable<List<MessageRecord>> getAnchorChatHistory(int uid, String lastId, int limit) {
-        String channelCode = LiveConfig.getChannelCode();
-        return obtainJsonService(LiveService.class)
-                .getAnchorChatHistory(uid, lastId, limit, channelCode)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer());
-    }
-
-    @Override
-    public Flowable<LiveRoomBean> getLiveDetail(int uid) {
-        String channelCode = LiveConfig.getChannelCode();
-        return obtainJsonService(LiveService.class)
-                .getLiveDetail(uid, channelCode)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer());
-    }
-
-    @Override
-    public Flowable<List<SystemMessageRecord>> getLiveInroomLog(String vid, int limit) {
-        String channelCode = LiveConfig.getChannelCode();
-        return obtainJsonService(LiveService.class)
-                .getLiveInroomLog(vid, limit,channelCode)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer());
-    }
 
     @Override
     public Flowable<InRoomData> pin(RequestBody body) {

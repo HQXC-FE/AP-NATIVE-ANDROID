@@ -15,12 +15,19 @@ import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.BannerResponse;
 import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.FrontLivesResponse;
+import com.xtree.live.data.source.response.LiveRoomBean;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.ReviseHotResponse;
 import com.xtree.live.data.source.response.SearchAssistantResponse;
 import com.xtree.live.data.source.response.SendToAssistantResponse;
 import com.xtree.live.data.source.response.fb.MatchInfo;
+import com.xtree.live.message.MessageRecord;
+import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.model.AccumulatedRechargeRes;
+import com.xtree.live.ui.main.model.chat.AnchorChatHistoryRequest;
+import com.xtree.live.ui.main.model.chat.GetChatHistroyRequest;
+import com.xtree.live.ui.main.model.chat.GetRoomInfoRequest;
+import com.xtree.live.ui.main.model.chat.LiveThiredLoginRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +35,6 @@ import java.util.Map;
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
 import retrofit2.http.QueryMap;
 
 /**
@@ -142,5 +148,17 @@ public interface HttpDataSource {
      * @return
      */
     Flowable<BaseResponse<MatchInfo>> getFBList(@Body FBListReq fbListReq);
+
+    Flowable<BaseResponse<LiveTokenResponse>> getXLiveToken(LiveThiredLoginRequest request);
+
+    Flowable<BaseResponse<LiveRoomBean>> getRoomInfo(GetRoomInfoRequest request);
+
+    Flowable<BaseResponse<List<MessageRecord>>> getChatHistory(GetChatHistroyRequest request);
+
+    Flowable<BaseResponse<List<MessageRecord>>> getAnchorChatHistory(AnchorChatHistoryRequest request);
+
+    Flowable<BaseResponse<LiveRoomBean>> getLiveDetail(GetRoomInfoRequest request);
+
+    Flowable<BaseResponse<List<SystemMessageRecord>>> getLiveInRoomLog(GetChatHistroyRequest request);
 
 }

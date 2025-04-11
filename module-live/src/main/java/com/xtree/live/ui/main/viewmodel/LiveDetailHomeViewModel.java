@@ -41,6 +41,9 @@ import com.xtree.live.message.RoomType;
 import com.xtree.live.message.SystemMessageRecord;
 import com.xtree.live.message.inroom.InRoomData;
 import com.xtree.live.model.AccumulatedRechargeRes;
+import com.xtree.live.ui.main.model.chat.AnchorChatHistoryRequest;
+import com.xtree.live.ui.main.model.chat.GetChatHistroyRequest;
+import com.xtree.live.ui.main.model.chat.GetRoomInfoRequest;
 import com.xtree.live.uitl.JsonUtil;
 import com.xtree.live.uitl.RxStore;
 import com.xtree.live.uitl.WordUtil;
@@ -151,9 +154,19 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
         };
 
         if (type == RoomType.PAGE_CHAT_PRIVATE_ANCHOR) {
-            LiveRep.getInstance().getAnchorChatHistory(uid, "0", DEFAULT_LIMIT).subscribe(callBack);
+//            LiveRep.getInstance().getAnchorChatHistory(uid, "0", DEFAULT_LIMIT).subscribe(callBack);
+            AnchorChatHistoryRequest request = new AnchorChatHistoryRequest(uid, "0", DEFAULT_LIMIT, LiveConfig.getChannelCode());
+            LiveRepository.getInstance().getAnchorChatHistory(request)
+                    .compose(RxUtils.schedulersTransformer())
+                    .compose(RxUtils.exceptionTransformer())
+                    .subscribe(callBack);
         } else {
-            LiveRep.getInstance().getChatHistory(type, vid, "0", DEFAULT_LIMIT).subscribe(callBack);
+//            LiveRep.getInstance().getChatHistory(type, vid, "0", DEFAULT_LIMIT).subscribe(callBack);
+            GetChatHistroyRequest request = new GetChatHistroyRequest(type, vid, "0", DEFAULT_LIMIT, LiveConfig.getChannelCode());
+            LiveRepository.getInstance().getChatHistory(request)
+                    .compose(RxUtils.schedulersTransformer())
+                    .compose(RxUtils.exceptionTransformer())
+                    .subscribe(callBack);
         }
 
     }
@@ -219,9 +232,20 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
         };
 
         if (type == RoomType.PAGE_CHAT_PRIVATE_ANCHOR) {
-            LiveRep.getInstance().getAnchorChatHistory(uid, lastMsgId, DEFAULT_LIMIT).subscribe(callBack);
+//            LiveRep.getInstance().getAnchorChatHistory(uid, lastMsgId, DEFAULT_LIMIT).subscribe(callBack);
+
+            AnchorChatHistoryRequest request = new AnchorChatHistoryRequest(uid, lastMsgId, DEFAULT_LIMIT, LiveConfig.getChannelCode());
+            LiveRepository.getInstance().getAnchorChatHistory(request)
+                    .compose(RxUtils.schedulersTransformer())
+                    .compose(RxUtils.exceptionTransformer())
+                    .subscribe(callBack);
         } else {
-            LiveRep.getInstance().getChatHistory(type, vid, lastMsgId, DEFAULT_LIMIT).subscribe(callBack);
+//            LiveRep.getInstance().getChatHistory(type, vid, lastMsgId, DEFAULT_LIMIT).subscribe(callBack);
+            GetChatHistroyRequest request = new GetChatHistroyRequest(type, vid, "0", DEFAULT_LIMIT, LiveConfig.getChannelCode());
+            LiveRepository.getInstance().getChatHistory(request)
+                    .compose(RxUtils.schedulersTransformer())
+                    .compose(RxUtils.exceptionTransformer())
+                    .subscribe(callBack);
         }
 
     }
@@ -234,7 +258,11 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 
     public void getLiveInroomLog() {
 
-        LiveRep.getInstance().getLiveInroomLog(vid, 50)
+//        LiveRep.getInstance().getLiveInroomLog(vid, 50)
+        GetChatHistroyRequest request = new GetChatHistroyRequest(vid,50, LiveConfig.getChannelCode());
+        LiveRepository.getInstance().getLiveInRoomLog(request)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
                 .subscribe(new HttpCallBack<List<SystemMessageRecord>>() {
                     @Override
                     public void onResult(List<SystemMessageRecord> systemMessageRecords) {
@@ -273,7 +301,12 @@ public class LiveDetailHomeViewModel extends BaseViewModel<LiveRepository> {
 
     public void requestGlobeVid(int uid, @NonNull Runnable runnable) {
 
-        LiveRep.getInstance().getLiveDetail(uid).subscribe(new HttpCallBack<LiveRoomBean>() {
+//        LiveRep.getInstance().getLiveDetail(uid)
+        GetRoomInfoRequest request = new GetRoomInfoRequest(uid, LiveConfig.getChannelCode());
+               LiveRepository.getInstance().getLiveDetail(request)
+                       .compose(RxUtils.schedulersTransformer())
+                       .compose(RxUtils.exceptionTransformer())
+                .subscribe(new HttpCallBack<LiveRoomBean>() {
             @Override
             public void onResult(LiveRoomBean liveRoomBean) {
                 liveRoomData.postValue(liveRoomBean);

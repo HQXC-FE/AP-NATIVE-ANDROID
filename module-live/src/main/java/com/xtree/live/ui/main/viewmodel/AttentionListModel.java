@@ -23,6 +23,7 @@ import com.xtree.live.data.source.response.AnchorSortResponse;
 import com.xtree.live.data.source.response.ChatRoomResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.data.source.response.SearchAssistantResponse;
+import com.xtree.live.ui.main.model.chat.LiveThiredLoginRequest;
 
 import java.lang.ref.WeakReference;
 
@@ -80,13 +81,18 @@ public class AttentionListModel extends BaseViewModel<LiveRepository> {
                         }
                     });*/
 
-            JsonObject json = new JsonObject();
-            json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
-            json.addProperty("device_type", "android");
-            json.addProperty("channel_code", "xc");
-            json.addProperty("user_id", LiveConfig.getUserId());
+//            JsonObject json = new JsonObject();
+//            json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
+//            json.addProperty("device_type", "android");
+//            json.addProperty("channel_code", "xc");
+//            json.addProperty("user_id", LiveConfig.getUserId());
 
-            LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
+            LiveThiredLoginRequest request = new LiveThiredLoginRequest(
+                    X9LiveInfo.INSTANCE.getOaid(),"android",LiveConfig.getUserId()
+            );
+            LiveRepository.getInstance().getXLiveToken(request)
+                    .compose(RxUtils.schedulersTransformer())
+                    .compose(RxUtils.exceptionTransformer())
                     .subscribe(new HttpCallBack<LiveTokenResponse>() {
                         @Override
                         public void onResult(LiveTokenResponse data) {

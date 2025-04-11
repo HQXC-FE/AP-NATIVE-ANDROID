@@ -32,27 +32,11 @@ import retrofit2.http.Query;
 
 public interface LiveService {
 
-    //获取token
-    @POST("api/ThirdUser/ThirdLogin")
-    Flowable<BaseResponse<LiveTokenResponse>> getXLiveToken(@Body RequestBody body);
-    // 获取直播间详情
-    @GET("api/li_stre/getRoomInfo")
-    Flowable<BaseResponse<LiveRoomBean>> getRoomInfo(@Query("uid") int uid, @Query("channel_code") String code);
 
 //    直播间渠道公告
     @POST("api/chat/pin")
     Flowable<BaseResponse<InRoomData>> pin(@Body RequestBody body);
 
-    // 获取历史消息
-    @GET("api/chat/history")
-    Flowable<BaseResponse<List<MessageRecord>>> getChatHistory(@Query("room_type") int type, @Query("vid") String vid, @Query("last_id") String lastId, @Query("limit") int limit, @Query(SPKey.CHANNEL_CODE) String code);
-
-    @GET("api/chat/anchorHistory")
-    Flowable<BaseResponse<List<MessageRecord>>> getAnchorChatHistory(@Query("anchorId") int uid, @Query("last_id") String lastId, @Query("limit") int limit, @Query(SPKey.CHANNEL_CODE) String code);
-
-    // 获取直播详情
-    @GET("api/li_stre/getRoomInfo")
-    Flowable<BaseResponse<LiveRoomBean>> getLiveDetail(@Query("uid") int uid, @Query(SPKey.CHANNEL_CODE) String code);
 
     //直播间进房纪录
     @GET("api/chat/getLiveInRoomLog")

@@ -21,17 +21,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public interface LiveDataSource {
-    Flowable<LiveTokenResponse> getXLiveToken(RequestBody body);
 
-    Flowable<LiveRoomBean> getRoomInfo(int uid,String channelCode);
 
-    Flowable<List<MessageRecord>> getChatHistory(int roomType, String vid, String lastId, int limit);
-
-    Flowable<List<MessageRecord>> getAnchorChatHistory(int uid, String lastId, int limit);
-
-    Flowable<LiveRoomBean> getLiveDetail(int uid);
-
-    Flowable<List<SystemMessageRecord>> getLiveInroomLog(String vid, int limit);
 
     Flowable<InRoomData> pin(RequestBody body);
 

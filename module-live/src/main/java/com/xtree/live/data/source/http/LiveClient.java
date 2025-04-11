@@ -8,6 +8,7 @@ import com.xtree.base.net.HttpsUtils;
 import com.xtree.base.net.live.LiveHeaderInterceptor;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.live.LiveConfig;
 
 import java.io.File;
 import java.util.Map;
@@ -59,7 +60,8 @@ public class LiveClient {
     }
 
     public static void init() {
-        baseUrl = DomainUtil.getApiUrl();
+//        baseUrl = DomainUtil.getApiUrl();
+        baseUrl = LiveConfig.getAppApi();
         LiveClient.SingletonHolder.INSTANCE = new LiveClient();
         CfLog.i("OkHttpClient init");
     }

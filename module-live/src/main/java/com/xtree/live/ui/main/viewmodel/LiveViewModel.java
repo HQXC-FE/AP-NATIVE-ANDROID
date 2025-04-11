@@ -54,6 +54,8 @@ import com.xtree.live.model.GiftBean;
 import com.xtree.live.ui.main.model.anchor.LiveAnchorModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerItemModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerModel;
+import com.xtree.live.ui.main.model.chat.GetRoomInfoRequest;
+import com.xtree.live.ui.main.model.chat.LiveThiredLoginRequest;
 import com.xtree.live.ui.main.model.constant.FrontLivesType;
 import com.xtree.live.ui.main.model.hot.LiveHotModel;
 
@@ -147,9 +149,13 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         setActivity(mActivity);
 
         if (X9LiveInfo.INSTANCE.getToken().isEmpty()) {
-            /*model.getLiveToken(new LiveTokenRequest())
-                    .compose(RxUtils.schedulersTransformer())
-                    .compose(RxUtils.exceptionTransformer())
+
+//            JsonObject json = new JsonObject();
+//            json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
+//            json.addProperty("device_type", "android");
+//            json.addProperty("user_id", LiveConfig.getUserId());
+
+            /*LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
                     .subscribe(new HttpCallBack<LiveTokenResponse>() {
                         @Override
                         public void onResult(LiveTokenResponse data) {
@@ -165,12 +171,12 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         }
                     });*/
 
-            JsonObject json = new JsonObject();
-            json.addProperty("fingerprint", X9LiveInfo.INSTANCE.getOaid());
-            json.addProperty("device_type", "android");
-            json.addProperty("user_id", LiveConfig.getUserId());
-
-            LiveRep.getInstance().getXLiveToken(RequestUtils.getRequestBody(json))
+            LiveThiredLoginRequest request = new LiveThiredLoginRequest(
+                    X9LiveInfo.INSTANCE.getOaid(),"android",LiveConfig.getUserId()
+            );
+            LiveRepository.getInstance().getXLiveToken(request)
+                    .compose(RxUtils.schedulersTransformer())
+                    .compose(RxUtils.exceptionTransformer())
                     .subscribe(new HttpCallBack<LiveTokenResponse>() {
                         @Override
                         public void onResult(LiveTokenResponse data) {
@@ -438,7 +444,10 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
      */
     public void getRoomInfo(int uid) {
         String channelCode = X9LiveInfo.INSTANCE.getChannel();
-        LiveRep.getInstance().getRoomInfo(uid, channelCode)
+//        LiveRep.getInstance().getRoomInfo(uid, channelCode)
+        LiveRepository.getInstance().getRoomInfo(new GetRoomInfoRequest(uid, channelCode))
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
                 .subscribe(new HttpCallBack<LiveRoomBean>() {
                     @Override
                     public void onResult(LiveRoomBean liveRoomBean) {
@@ -460,7 +469,10 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
     public void refreshRoomInfo(int uid) {
         String channelCode = X9LiveInfo.INSTANCE.getChannel();
-        LiveRep.getInstance().getRoomInfo(uid, channelCode)
+//        LiveRep.getInstance().getRoomInfo(uid, channelCode)
+        LiveRepository.getInstance().getRoomInfo(new GetRoomInfoRequest(uid, channelCode))
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
                 .subscribe(new HttpCallBack<LiveRoomBean>() {
                     @Override
                     public void onResult(LiveRoomBean liveRoomBean) {
