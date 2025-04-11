@@ -6,6 +6,8 @@ import com.xtree.bet.bean.request.pm.BtCashOutBetReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
+import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
+import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.response.pm.BalanceInfo;
 import com.xtree.bet.bean.response.pm.BtCashOutPriceInfo;
 import com.xtree.bet.bean.response.pm.BtCashOutStatusInfo;
@@ -35,13 +37,24 @@ import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 
 public interface IMApiService {
+
     /**
-     * 获取 所有体育计数
+     * 获取获取公告
+     * 参数使用对比PM的frontListPB接口
+     * @return
+     */
+    @POST("/yewu11/v1/m/getAnnouncement")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<GetAnnouncementRsp>> getAnnouncement();
+    /**
+     * 获取所有体育赛种数量
+     * 参数使用对比PM的initPB接口
      * @return
      */
     @POST("/yewu11/v1/m/getAllSportCount")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<MatchListRsp>> getAllSportCount(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<SportCountRsp>> getAllSportCount(@QueryMap Map<String, String> map);
+
     /**
      * 索取所有竞赛计数
      * @return
@@ -114,7 +127,7 @@ public interface IMApiService {
     Flowable<BaseResponse<List<CategoryPm>>> getOutrightEvents(@QueryMap Map<String, String> map);
 
     /**
-     * 索取 DELTA 优胜冠军赛事
+     * 索取DELTA优胜冠军赛事
      * @return
      */
     @GET("/yewu11/v1/getDeltaOutrightEventInfo")
