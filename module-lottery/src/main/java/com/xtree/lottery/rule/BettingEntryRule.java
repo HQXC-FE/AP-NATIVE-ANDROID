@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BettingEntryRule {
     private static BettingEntryRule INSTANCE;
@@ -47,7 +48,7 @@ public class BettingEntryRule {
         return INSTANCE;
     }
 
-    public List<RulesEntryData.SubmitDTO> startEngine(RulesEntryData rulesEntryData) {
+    public RulesEntryData.RulesResultData startEngine(RulesEntryData rulesEntryData) {
         facts = new Facts();
         Map<String, String> currentCategory = new HashMap<>();
         Map<String, Object> currentMethod = new HashMap<>();
@@ -194,8 +195,15 @@ public class BettingEntryRule {
                 submitDTOList.add(calcSubmit(submit));
             }
         }
-
-        return submitDTOList;
+        RulesEntryData.RulesResultData rulesResult = new RulesEntryData.RulesResultData();
+        rulesResult.setSubmitDTOS(submitDTOList);
+        if (done.get("display") instanceof Map) {
+            rulesResult.setDisplay(calcDisplay((Map<String, Object>) done.get("display")));
+        }
+        if (done.get("message") instanceof List) {
+            rulesResult.setMessages((List<String>) ((List<?>) done.get("message")).stream().collect(Collectors.toList()));
+        }
+        return rulesResult;
     }
 
     private RulesEntryData.SubmitDTO calcSubmit(HashMap<String, Object> submit) {
@@ -219,6 +227,17 @@ public class BettingEntryRule {
         }
         submitDTO.setDesc((String) submit.get("desc"));
         return submitDTO;
+    }
+
+    private RulesEntryData.BetDTO.DisplayDTO calcDisplay(Map<String, Object> display) {
+        RulesEntryData.BetDTO.DisplayDTO displayDTO = new RulesEntryData.BetDTO.DisplayDTO();
+        if (display.get("codes") != null) {
+            displayDTO.setCodes(display.get("codes").toString());
+        }
+//        if (display.get("prize_level") instanceof List) {
+//            displayDTO.setPrizeLevel((List<String>) display.get("prize_level"));
+//        }
+        return displayDTO;
     }
 
 }

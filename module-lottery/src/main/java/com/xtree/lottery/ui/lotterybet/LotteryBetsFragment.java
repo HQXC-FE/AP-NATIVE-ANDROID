@@ -210,7 +210,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
 
     private void setBetData(LotteryBetsModel betsModel, @Nullable UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
         //设置选注形态
-        binding.lotteryBetsBetlayout.setData(betsModel, prizeGroup, lottery);
+        binding.lotteryBetsBetlayout.setData(viewModel.rulesResultDataLiveData,betsModel, prizeGroup, lottery);
 
         //设置投注金额
         if (betsModel.getMenuMethodLabelData() != null && betsModel.getMenuMethodLabelData().getMoneyModes() != null) {

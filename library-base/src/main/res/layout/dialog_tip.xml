@@ -56,41 +56,60 @@
             app:layout_constraintStart_toStartOf="@id/ivw_bg"
             app:layout_constraintTop_toTopOf="@id/ivw_bg" />
 
-        <TextView
-            android:id="@+id/tvw_msg"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:gravity="center"
-            android:textColor="@color/clr_grey_60"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@id/ivw_bg"
-            app:layout_constraintStart_toStartOf="@id/ivw_bg"
-            app:layout_constraintTop_toBottomOf="@id/tvw_title"
-            tools:text="这是内容  这是内容这是内容这是内容这是内容这是内容" />
-
-        <TextView
-            android:id="@+id/tvw_msg2"
-            style="@style/style_cm_tip_small_orange"
+        <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:fadeScrollbars="false"
-            android:gravity="center"
-            android:scrollbars="vertical"
-            android:textColor="@color/clr_grey_60"
-            android:textSize="14sp"
-            android:visibility="gone"
+            android:scrollbars="none"
             app:layout_constraintBottom_toTopOf="@+id/layout_tvw"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+            app:layout_constraintHeight_default="wrap"
             app:layout_constraintStart_toStartOf="@id/ivw_bg"
             app:layout_constraintTop_toBottomOf="@id/tvw_title"
-            tools:text="这是内容 长的4行52字"
-            tools:visibility="gone" />
+            app:layout_constraintVertical_bias="0">
+
+            <TextView
+                android:id="@+id/tvw_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/clr_grey_60"
+                android:textSize="14sp"
+                tools:text="07,06 01 08,06 01 09,06 01 10,06 01 11,06 02 01,06 02 03,06 02 04,06 02 05,06 02 07,06 02 08,06 02 09,06 02 10,06 02 11,06 03 01,06 03 02,06 03 04,06 03 05,06 03 07,06 03 08,06 03 09,06 03 10,06 03 11,06 04 01,06 04 02,06 04 03,06 04 05,06 04 07,06 04 08,06 04 09,06 04 10,06 04 11,06 05 01,06 05 02,06 05 03,06 05 04,06 05 07,06 05 08,06 05 09,06 05 10,06 05 11,06 07 01,06 07 02,06 07 03,06 07 04,06 07 05,06 07 08,06 07 09,06 07 10,06 07 11,06 08 01,06 08 02,06 08 03,06 08 04,06 08 05,06 08 07,06 08 09,06 08 10,06 08 11,06 09 01,06 09 02,06 09 03,06 09 04,06 09 05,06 09 07,06 09 08,06 09 10,06 09 11,06 10 01,06 10 02,06 10 03,06 10 04,06 10 05,06 10 07,06 10 08,06 10 09,06 10 11,06 11 01,06 11 02,06 11 03,06 11 04,06 11 05,06 11 07,06 11 08,06 11 09,06 11 10,07 01 02,07 01 03,07 01 04,07 01 05,07 01 06,07 01 08,07 01 09,07 01 10,07 01 11,07 02 01,07 02 03,07 02 04,07 02 05,07 02 06,07 02 08,07 02 09,07 02 10,07 02 11,07 03 01,07 03 02,07 03 04,07 03 05,07 03 06,07 03 08,07 03 09,07 03 10,07 03 11,07 04 01,07 04 02,07 04 03,07 04 05,07 04 06,07 04 08,07 04 09,07 04 10,07 04 11,07 05 01,07 05 02,07 05 03,07 05 04,07 05 06,07 05 08,07 05 09,07 05 10,07 05 11,07 06 01,07 06 02,07 06 03,07 06 04,07 06 05,07 06 08,07 06 09,07 06 10,07 06 11,07 08 01,07 08 02,07 08 03,07 08 04,07 08 05,07 08 06,07 08 09,07 08 10,07 08 11,07 09 01,07 09 02,07 09 03,07 09 04,07 09 05,07 09 06,07 09 08,07 09 10,07 09 11,07 10 01,07 10 02,07 10 03,07 10 04,07 10 05,07 10 06,07 10 08,07 10 09,07 10 11,07 11 01,07 11 02,07 11 03,07 11 04,07 11 05,07 11 06,07 11 08,07 11 09,07 11 10,08 01 02,08 01 03,08 01 04,08 01 05,08 01 06,08 01 07,08 01 09,08 01 10,08 01 11,08 02 01,08 02 03,08 02 04,08 02 05,08 02 06,08 02 07,08 02 09,08 02 10,08 02 11,08 03 01,08 03 02,08 03 04,08 03 05,08 03 06,08 03 07,08 03 09,08 03 10,08 03 11,08 04 01,08 04 02,08 04 03,08 04 05,08 04 06,08 04 07,08 04 09,08 04 10,08 04 11,08 05 01,08 05 02,08 05 03,08 05 04,08 05 06,08 05 07,08 05 09,08 05 10,08 05 11,08 06 01,08 06 02,08 06 03,08 06 04,08 06 05,08 06 07,08 06 09,08 06 10,08 06 11,08 07 01,08 07 02,08 07 03,08 07 04,08 07 05,08 07 06,08 07 09,08 07 10,08 07 11,08 09 01,08 09 02,08 09 03,08 09 04,08 09 05,08 09 06,08 09 07,08 09 10,08 09 11,08 10 01,08 10 02,08 10 03,08 10 04,08 10 05,08 10 06,08 10 07,08 10 09,08 10 11,08 11 01,08 11 02,08 11 03,08 11 04,08 11 05,08 11 06,08 11 07,08 11 09,08 11 10,09 01 02,09 01 03,09 01 04,09 01 05,09 01 06,09 01 07,09 01 08,09 01 10,09 01 11,09 02 01,09 02 03,09 02 04,09 02 05,09 02 06,09 02 07,09 02 08,09 02 10,09 02 11,09 03 01,09 03 02,09 03 04,09 03 05,09 03 06,09 03 07,09 03 08,09 03 10,09 03 11,09 04 01,09 04 02,09 04 03,09 04 05,09 04 06,09 04 07,09 04 08,09 04 10,09 04 11,09 05 01,09 05 02,09 05 03,09 05 04,09 05 06,09 05 07,09 05 08,09 05 10,09 05 11,09 06 01,09 06 02,09 06 03,09 06 04,09 06 05,09 06 07,09 06 08,09 06 10,09 06 11,09 07 01,09 07 02,09 07 03,09 07 04,09 07 05,09 07 06,09 07 08,09 07 10,09 07 11,09 08 01,09 08 02,09 08 03,09 08 04,09 08 05,09 08 06,09 08 07,09 08 10,09 08 11,09 10 01,09 10 02,09 10 03,09 10 04,09 10 05,09 10 06,09 10 07,09 10 08,09 10 11,09 11 01,09 11 02,09 11 03,09 11 04,09 11 05,09 11 06,09 11 07,09 11 08,09 11 10,10 01 02,10 01 03,10 01 04,10 01 05,10 01 06,10 01 07,10 01 08,10 01 09,10 01 11,10 02 01,10 02 03,10 02 04,10 02 05,10 02 06,10 02 07,10 02 08,10 02 09,10 02 11,10 03 01,10 03 02,10 03 04,10 03 05,10 03 06,10 03 07,10 03 08,10 03 09,10 03 11,10 04 01,10 04 02,10 04 03,10 04 05,10 04 06,10 04 07,10 04 08,10 04 09,10 04 11,10 05 01,10 05 02,10 05 03,10 05 04,10 05 06,10 05 07,10 05 08,10 05 09,10 05 11,10 06 01,10 06 02,10 06 03,10 06 04,10 06 05,10 06 07,10 06 08,10 06 09,10 06 11,10 07 01,10 07 02,10 07 03,10 07 04,10 07 05,10 07 06,10 07 08,10 07 09,10 07 11,10 08 01,10 08 02,10 08 03,10 08 04,10 08 05,10 08 06,10 08 07,10 08 09,10 08 11,10 09 01,10 09 02,10 09 03,10 09 04,10 09 05,10 09 06,10 09 07,10 09 08,10 09 11,10 11 01,10 11 02,10 11 03,10 11 04,10 11 05,10 11 06,10 11 07,10 11 08,10 11 09,11 01 02,11 01 03,11 01 04,11 01 05,11 01 06,11 01 07,11 01 08,11 01 09,11 01 10,11 02" />
+        </ScrollView>
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@+id/layout_tvw"
+            app:layout_constraintEnd_toEndOf="@id/ivw_bg"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintStart_toStartOf="@id/ivw_bg"
+            app:layout_constraintTop_toBottomOf="@id/tvw_title"
+            app:layout_constraintVertical_bias="0">
+
+            <TextView
+                android:id="@+id/tvw_msg2"
+                style="@style/style_cm_tip_small_orange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="20dp"
+                android:fadeScrollbars="false"
+                android:gravity="center"
+                android:scrollbars="vertical"
+                android:textColor="@color/clr_grey_60"
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:visibility="gone" />
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/layout_tvw"

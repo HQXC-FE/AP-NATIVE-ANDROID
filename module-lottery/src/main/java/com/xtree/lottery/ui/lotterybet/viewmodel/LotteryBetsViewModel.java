@@ -96,7 +96,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     //投注数和总金额
     public MediatorLiveData<LotteryBetsTotal> betTotalLiveData = new MediatorLiveData<>();
     public LotteryViewModel lotteryViewModel;
-
+    //当前投注规则返回结果
+    public SingleLiveData<RulesEntryData.RulesResultData> rulesResultDataLiveData = new SingleLiveData<>();
     private MenuMethodsData menuMethods;
     //    private UserMethodsResponse userMethods;
     private WeakReference<FragmentActivity> mActivity = null;
@@ -199,7 +200,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             m.getLabel().getLabels().get(0).setUserPlay(true);
             SPUtils.getInstance().put(lottery.getAlias(), m.getLabel().getLabels().get(0).getMenuid());
         }
-        CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
+//        CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
         initTabs();
     }
 
@@ -228,12 +229,12 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     }
 
     private void initMethods(Lottery lottery) {
-        CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
+//        CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
         Map<String, MenuMethodsData> staticLotteryMethodsData = LotteryDataManager.INSTANCE.getStaticLotteryMethodsData();
         if (staticLotteryMethodsData != null) {
             MenuMethodsData menuMethodsData = staticLotteryMethodsData.get(lottery.getAlias());
             UserMethodsResponse dynamicUserMethodsData = LotteryDataManager.INSTANCE.getDynamicUserMethods();
-            CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
+//            CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
             //先使用本地数据初始化玩法
             if (menuMethodsData != null && dynamicUserMethodsData != null) {
 
@@ -248,7 +249,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
 
                 // 处理每个彩票数据
                 Iterator<Map.Entry<String, MenuMethodsData>> mainIterator = staticLotteryMethodsData.entrySet().iterator();
-                CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
+//                CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
                 // dy提前转成Map，避免每次遍历
                 Map<String, UserMethodsResponse.DataDTO> dyMap = dy.stream()
                         .filter(Objects::nonNull)
@@ -260,7 +261,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     List<MenuMethodsData.LabelsDTO> labels = value.getLabels();
 
                     if (labels == null || labels.stream().noneMatch(Objects::nonNull)) {
-                        CfLog.e("移除玩法:" + value);
+//                        CfLog.e("移除玩法:" + value);
                         mainIterator.remove();
                         continue;
                     }
@@ -271,7 +272,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                         List<MenuMethodsData.LabelsDTO.Labels1DTO> labels1DTOS = label.getLabels();
 
                         if (labels1DTOS == null || labels1DTOS.stream().noneMatch(Objects::nonNull)) {
-                            CfLog.e("移除玩法:" + label);
+//                            CfLog.e("移除玩法:" + label);
                             iterator.remove();
                             continue;
                         }
@@ -282,7 +283,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                             List<MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO> labels2DTOS = labels1DTO.getLabels();
 
                             if (labels2DTOS == null || labels2DTOS.stream().noneMatch(Objects::nonNull)) {
-                                CfLog.e("移除玩法:" + labels1DTO);
+//                                CfLog.e("移除玩法:" + labels1DTO);
                                 labels1DTOIterator.remove();
                                 continue;
                             }
@@ -293,7 +294,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                                 UserMethodsResponse.DataDTO dyMethod = dyMap.get(labels2DTO.getMenuid());
 
                                 if (dyMethod == null) {
-                                    CfLog.e("移除玩法:" + labels2DTO);
+//                                    CfLog.e("移除玩法:" + labels2DTO);
                                     labels2DTOIterator.remove();
                                 } else {
                                     labels2DTO.setPrizeLevel(dyMethod.getPrizeLevel());
@@ -306,7 +307,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                         }
                     }
                 }
-                CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
+//                CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
                 //静态和动态数据替换
                 menuMethods = menuMethodsData;
 //                userMethods = dynamicUserMethodsData;
@@ -314,7 +315,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             //加载网络数据初始化玩法
             getMenuMethods(lottery);
         }
-        CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
+//        CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
     }
 
 //    private void getUserMethods(Lottery lottery) {
@@ -420,7 +421,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                                                     }
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
-                                                    CfLog.e("移除" + labels2DTOLocal);
+//                                                    CfLog.e("移除" + labels2DTOLocal);
                                                     iterator.remove();
                                                 }
                                             }
@@ -441,10 +442,10 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
 //                        userMethods = userMethodsData;
 //                        initPlayCollection(lottery);
 //                    }
-                    CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
+//                    CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
                     initPlayCollection(lottery);
-                }else{
-                    CfLog.e("耗时:玩法数据为空");
+                } else {
+//                    CfLog.e("耗时:玩法数据为空");
                 }
             }
         });
@@ -770,8 +771,11 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         betDTO.setDisplay(displayDTO);
         betDTO.setSubmit(new RulesEntryData.SubmitDTO());
         rulesEntryData.setBet(betDTO);
-        List<RulesEntryData.SubmitDTO> submitDTOList = BettingEntryRule.getInstance().startEngine(rulesEntryData);
-
+//        List<RulesEntryData.SubmitDTO> submitDTOList = BettingEntryRule.getInstance().startEngine(rulesEntryData);
+        RulesEntryData.RulesResultData rulesResultData = BettingEntryRule.getInstance().startEngine(rulesEntryData);
+        List<RulesEntryData.SubmitDTO> submitDTOList = rulesResultData.getSubmitDTOS();
+        //将规则结果保存
+        rulesResultDataLiveData.setValue(rulesResultData);
         List<LotteryBetRequest.BetOrderData> betOrderlist = new ArrayList<>();
         for (RulesEntryData.SubmitDTO submitDTO : submitDTOList) {
             if (submitDTO.getMoney() > 0 && submitDTO.getNums() > 0) {

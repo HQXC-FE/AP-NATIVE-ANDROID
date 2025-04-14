@@ -1286,4 +1286,34 @@ public class RulesEntryData {
             this.desc = desc;
         }
     }
+
+    public static class RulesResultData {
+        private RulesEntryData.BetDTO.DisplayDTO display;
+        private List<SubmitDTO> submitDTOS;
+        private List<String> messages;
+
+        public RulesEntryData.BetDTO.DisplayDTO getDisplay() {
+            return display;
+        }
+
+        public void setDisplay(RulesEntryData.BetDTO.DisplayDTO display) {
+            this.display = display;
+        }
+
+        public List<SubmitDTO> getSubmitDTOS() {
+            return submitDTOS;
+        }
+
+        public void setSubmitDTOS(List<SubmitDTO> submitDTOS) {
+            this.submitDTOS = submitDTOS;
+        }
+
+        public List<String> getMessages() {
+            return messages;
+        }
+
+        public void setMessages(List<String> messages) {
+            this.messages = messages;
+        }
+    }
 }
