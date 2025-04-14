@@ -34,6 +34,8 @@ import com.xtree.lottery.utils.filter.LotteryInputFilter;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.xtree.mvvmhabit.utils.ToastUtils;
+
 /**
  * Created by KAKA on 2024/5/3.
  * Describe: 输入投注视图
@@ -72,13 +74,12 @@ public class BetInputView extends BetBaseView {
             RulesEntryData.RulesResultData rulesResultDataLiveDataValue = rulesResultDataLiveData.getValue();
             if (rulesResultDataLiveDataValue != null) {
                 List<String> messages = rulesResultDataLiveDataValue.getMessages();
-                String msg;
                 if (messages != null && messages.size() > 0) {
-                    msg = String.join("\n", messages);
+                    showMsg(String.join("\n", messages));
                 } else {
-                    msg = "当前没有重复号码";
+                    ToastUtils.showShort("当前没有重复号码");
                 }
-                showMsg(msg);
+
                 RulesEntryData.BetDTO.DisplayDTO display = rulesResultDataLiveDataValue.getDisplay();
                 if (display != null && !TextUtils.isEmpty(display.getCodes())) {
                     binding.betInputEdit.setText(display.getCodes());

@@ -1,28 +1,10 @@
 package com.xtree.lottery.ui.view.viewmodel;
 
-import static com.xtree.lottery.utils.LotteryAnalyzer.INPUT_PLAYS_MAP;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.text.TextUtils;
-import android.view.View;
 
 import androidx.databinding.ObservableField;
 
-import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.core.BasePopupView;
-import com.xtree.base.widget.MsgDialog;
-import com.xtree.base.widget.TipDialog;
-import com.xtree.lottery.R;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
-import com.xtree.lottery.utils.LotteryAnalyzer;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
  * Created by KAKA on 2024/5/6.
@@ -31,10 +13,10 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 public class BetInputViewModel {
 
     public final ObservableField<String> lotteryNumbs = new ObservableField<>("");
-    //是否显示位数按钮
     public ObservableField<Boolean> showSeatView = new ObservableField<>(false);
 
     private LotteryBetsModel betModel;
+
     public void initData(LotteryBetsModel model) {
         this.betModel = model;
     }
