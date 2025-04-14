@@ -50,12 +50,13 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/txt_update"
-            android:textColor="@color/channelTextSelectColor"
-            android:textSize="20sp"
+            style="?attr/app_update_text_attr"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
             app:layout_constraintStart_toStartOf="@id/ivw_bg"
-            app:layout_constraintTop_toBottomOf="@+id/ivw_bell" />
+            app:layout_constraintTop_toBottomOf="@+id/ivw_bell"
+            />
 
         <LinearLayout
             android:id="@+id/linearLayoutS"
@@ -78,18 +79,27 @@
                     android:id="@+id/tvw_update_version"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/txt_update"
-                    android:textColor="@color/bt_color_car_dialog_hight_line2"
+                    android:text="@string/txt_update_number"
+                    style="?attr/app_update_text_attr"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
                 <TextView
-                    android:id="@+id/tvw_upgrade_tips"
+                    android:id="@+id/tvwUserVersion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvw_update_version"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/clr_withdrawal_text_bg"
+                    android:textSize="12sp"
+                    style="?attr/app_update_current_version_attr"
+                    android:text="@string/txt_user_version"
+                    />
+                <TextView
+                    android:id="@+id/tvw_upgrade_tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvwUserVersion"
+                    android:layout_marginTop="10dp"
+                   style="?attr/app_update_content_attr"
                     android:textSize="12sp"
                     android:visibility="visible"
                     tools:text="iOS自5.0.9版本开始，正式包具有强制升级功能；所有版本正式包均有升级提醒功能。
@@ -108,17 +118,17 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
-
+                        <!-- style="?android:attr/progressBarStyleHorizontal"-->
                         <ProgressBar
                             android:id="@+id/bottom_progressbar"
-                            style="?android:attr/progressBarStyleHorizontal"
+
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
                             android:layout_alignParentTop="true"
                             android:layout_marginTop="10dp"
                             android:background="@drawable/down_progressbar_bg"
                             android:max="100"
-                            android:progressDrawable="@drawable/down_progressbar"
+                            style="?attr/app_update_progress_drawable_attr"
                             android:visibility="visible"
                             tools:visibility="visible" />
 
@@ -171,7 +181,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-20dp"
-            android:text="@string/txt_update_bottom_error_tip"
+            style="?attr/app_update_text_attr"
             android:textColor="@color/clr_purple_12"
             android:textSize="14sp"
             android:visibility="invisible"

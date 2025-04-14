@@ -846,4 +846,19 @@
     <style name="style_ads_android_store">
         <item name="android:background">@drawable/ads_android_store</item>
     </style>
+    <style name="style_app_update_text">
+        <item name="android:textColor">@color/secondaryColor</item>
+    </style>
+
+    <style name="app_update_content_attr">
+        <item name="android:textColor">@color/textPrimaryColor</item>
+    </style>
+
+    <style name="style_app_update_current_version">
+        <item name="android:textColor">@color/textTertiaryColor</item>
+    </style>
+
+    <style name="style_app_update_progress_drawable" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/down_progressbar</item>
+    </style>
 </resources>

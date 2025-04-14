@@ -181,4 +181,11 @@
     <attr name="ads_save_attr" format="reference" />
     <attr name="ads_iOS_store_attr" format="reference" />
     <attr name="ads_android_store_attr" format="reference" />
+
+    <attr name="app_update_text_attr" format="reference" />
+
+    <attr name="app_update_current_version_attr" format="reference" />
+
+    <attr name="app_update_content_attr" format="reference" />
+    <attr name="app_update_progress_drawable_attr" format="reference" />
 </resources>
