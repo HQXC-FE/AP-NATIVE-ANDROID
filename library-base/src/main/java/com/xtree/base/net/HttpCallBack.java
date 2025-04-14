@@ -122,7 +122,6 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             case CodeRule.CODE_30004:
                 ToastUtils.showShort(baseResponse.getMessage());
                 break;
-
             case CodeRule.CODE_402035:
                 if (context!=null){
                     ToastUtils.showShort(context.getString(R.string.txt_insufficient_balance));
@@ -148,7 +147,6 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                     ToastUtils.showShort(context.getString(R.string.txt_betting_failed_try_again));
                 }
                 break;
-
             //case HttpCallBack.CodeRule.CODE_510:
             //    //无效的Token，提示跳入登录页
             //    ToastUtils.showShort("token已过期，请重新登录");
@@ -492,6 +490,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         /**
          * 验签  不允许投注「投注失败，请再试一次」
          */
+
         public static final int CODE_402036 = 402036;
 
         /**
