@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ObservableField;
+import androidx.lifecycle.LiveData;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
@@ -16,6 +17,7 @@ import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
+import com.xtree.lottery.rule.betting.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public abstract class BetBaseView extends FrameLayout {
 
     public ObservableField<List<LotteryBetRequest.BetOrderData>> betData = new ObservableField<>();
     public ObservableField<Object> betCodes = new ObservableField<>();
+    protected LiveData<RulesEntryData.RulesResultData> rulesResultDataLiveData;
     private LotteryBetsModel model;
     private UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup;
     private Lottery lottery;
@@ -45,18 +48,19 @@ public abstract class BetBaseView extends FrameLayout {
         return prizeGroup;
     }
 
+    public void setPrizeGroup(UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
+        this.prizeGroup = prizeGroup;
+    }
+
     public LotteryBetsModel getModel() {
         return model;
     }
 
-    public void setModel(LotteryBetsModel model, @Nullable UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
+    public void setModel(LiveData<RulesEntryData.RulesResultData> rulesResultDataLiveData, LotteryBetsModel model, @Nullable UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
+        this.rulesResultDataLiveData = rulesResultDataLiveData;
         this.model = model;
         this.prizeGroup = prizeGroup;
         this.lottery = lottery;
-    }
-
-    public void setPrizeGroup(UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup) {
-        this.prizeGroup = prizeGroup;
     }
 
     public abstract void clearBet();

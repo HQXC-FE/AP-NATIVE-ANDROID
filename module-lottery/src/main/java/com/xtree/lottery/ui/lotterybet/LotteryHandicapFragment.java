@@ -115,7 +115,7 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
             public void onChanged(LotteryBetsModel lotteryBetsModel) {
                 if (lotteryBetsModel != null) {
                     //设置选注形态
-                    binding.lotteryHandicapBetlayout.setData(lotteryBetsModel, null, lottery);
+                    binding.lotteryHandicapBetlayout.setData(viewModel.rulesResultDataLiveData,lotteryBetsModel, null, lottery);
                     mTabPosition = lotteryBetsModel.getPosition();
                     mTabTitle = lotteryBetsModel.getTitle();
 //                    //设置投注金额

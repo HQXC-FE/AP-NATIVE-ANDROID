@@ -12,12 +12,14 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
+import androidx.lifecycle.LiveData;
 
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.config.MissingCodesConfig.MissingCode;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.databinding.LayoutBetDigitalBinding;
+import com.xtree.lottery.rule.betting.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.view.LotterySeatView;
 import com.xtree.lottery.ui.view.viewmodel.BetDigitalViewModel;
@@ -172,8 +174,8 @@ public class BetDigitalView extends BetBaseView {
     }
 
     @Override
-    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
-        super.setModel(model, prizeGroup, lottery);
+    public void setModel(LiveData<RulesEntryData.RulesResultData> rulesResultDataLiveData, LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
+        super.setModel(rulesResultDataLiveData, model, prizeGroup, lottery);
         binding.getModel().initData(model);
         initTip();
 

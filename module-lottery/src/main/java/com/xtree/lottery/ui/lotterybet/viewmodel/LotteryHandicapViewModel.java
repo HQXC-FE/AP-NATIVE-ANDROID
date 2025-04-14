@@ -27,6 +27,7 @@ import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
+import com.xtree.lottery.rule.betting.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.LotteryChipSettingDialogFragment;
 import com.xtree.lottery.ui.lotterybet.data.LotteryHandicapPrizeData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
@@ -108,7 +109,8 @@ public class LotteryHandicapViewModel extends BaseViewModel<LotteryRepository> i
     public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
     //投注数和总金额
     public MediatorLiveData<LotteryBetsTotal> betTotalLiveData = new MediatorLiveData<>();
-
+    //当前投注规则返回结果
+    public SingleLiveData<RulesEntryData.RulesResultData> rulesResultDataLiveData = new SingleLiveData<>();
     //清除投注框事件
     public SingleLiveData<String> clearBetEvent = new SingleLiveData<>();
     public LotteryViewModel lotteryViewModel;

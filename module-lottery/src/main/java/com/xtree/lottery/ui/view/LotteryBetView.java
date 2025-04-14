@@ -7,11 +7,13 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
+import androidx.lifecycle.LiveData;
 
 import com.xtree.base.mvvm.ExKt;
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
+import com.xtree.lottery.rule.betting.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.view.betviews.BetBaseView;
 import com.xtree.lottery.ui.view.betviews.BetDiceAllView;
@@ -59,7 +61,7 @@ public class LotteryBetView extends FrameLayout {
         super(context, attrs);
     }
 
-    public void setData(LotteryBetsModel betsModel, @Nullable UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
+    public void setData(LiveData<RulesEntryData.RulesResultData> rulesResultDataOptional, LotteryBetsModel betsModel, @Nullable UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
 
         removeAllViews();
 
@@ -111,7 +113,7 @@ public class LotteryBetView extends FrameLayout {
             return;
         }
 
-        betView.setModel(betsModel, prizeGroup, lottery);
+        betView.setModel(rulesResultDataOptional, betsModel, prizeGroup, lottery);
 
         betView.betData.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override

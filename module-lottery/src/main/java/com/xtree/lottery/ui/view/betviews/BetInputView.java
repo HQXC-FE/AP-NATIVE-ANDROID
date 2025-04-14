@@ -3,7 +3,9 @@ package com.xtree.lottery.ui.view.betviews;
 import static com.xtree.lottery.utils.LotteryAnalyzer.INPUT_PLAYS_MAP;
 import static com.xtree.lottery.utils.LotteryAnalyzer.INPUT_REGEX;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -13,19 +15,24 @@ import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.Observable;
+import androidx.lifecycle.LiveData;
 
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.vo.UserMethodsResponse;
+import com.xtree.base.widget.MsgDialog;
+import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.databinding.LayoutBetInputBinding;
+import com.xtree.lottery.rule.betting.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
-import com.xtree.lottery.ui.view.LotterySeatView;
 import com.xtree.lottery.ui.view.viewmodel.BetInputViewModel;
 import com.xtree.lottery.utils.filter.LotteryInputFilter;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by KAKA on 2024/5/3.
@@ -34,6 +41,7 @@ import java.util.Set;
 public class BetInputView extends BetBaseView {
 
     private LayoutBetInputBinding binding;
+    private BasePopupView pop;
 
     public BetInputView(@NonNull Context context) {
         this(context, null);
@@ -58,10 +66,53 @@ public class BetInputView extends BetBaseView {
             }
         });
 
-        binding.betInputSeatview.setOnSeatListener(new LotterySeatView.onSeatListener() {
-            @Override
-            public void onSeat(Set<String> seats) {
-                setBetData();
+        binding.betInputSeatview.setOnSeatListener(seats -> setBetData());
+
+        binding.betInputDerepeat.setOnClickListener(view -> {
+            RulesEntryData.RulesResultData rulesResultDataLiveDataValue = rulesResultDataLiveData.getValue();
+            if (rulesResultDataLiveDataValue != null) {
+                List<String> messages = rulesResultDataLiveDataValue.getMessages();
+                if (messages != null && messages.size() > 0) {
+
+                    String msg = String.join("\n", messages);
+
+                    Context realContext = view.getContext();
+                    while (realContext instanceof ContextWrapper && !(realContext instanceof Activity)) {
+                        realContext = ((ContextWrapper) realContext).getBaseContext();
+                    }
+
+                    if (realContext instanceof Activity) {
+                        Activity activity = (Activity) realContext;
+                        // 继续你的逻辑
+                        MsgDialog dialog = new MsgDialog(activity,
+                                view.getContext().getString(R.string.txt_kind_tips),
+                                msg,
+                                true,
+                                new TipDialog.ICallBack() {
+                                    @Override
+                                    public void onClickLeft() {
+
+                                    }
+
+                                    @Override
+                                    public void onClickRight() {
+                                        if (pop != null) {
+                                            pop.dismiss();
+                                        }
+                                    }
+                                });
+
+                        pop = new XPopup.Builder(activity)
+                                .dismissOnTouchOutside(true)
+                                .dismissOnBackPressed(true)
+                                .asCustom(dialog).show();
+                    }
+                }
+
+                RulesEntryData.BetDTO.DisplayDTO display = rulesResultDataLiveDataValue.getDisplay();
+                if (display != null && !TextUtils.isEmpty(display.getCodes())) {
+                    binding.betInputEdit.setText(display.getCodes());
+                }
             }
         });
     }
@@ -176,8 +227,8 @@ public class BetInputView extends BetBaseView {
     }
 
     @Override
-    public void setModel(LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
-        super.setModel(model, prizeGroup, lottery);
+    public void setModel(LiveData<RulesEntryData.RulesResultData> rulesResultDataLiveData, LotteryBetsModel model, UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
+        super.setModel(rulesResultDataLiveData, model, prizeGroup, lottery);
         binding.getModel().initData(model);
 
         initTip();
