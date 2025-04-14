@@ -96,7 +96,7 @@ class LotteryReportFragment : BaseFragment<FragmentLotteryReportBinding, Lottery
                 R.id.tv_bet_details -> {
                     val dialog: BtCpDetailDialog =
                         BtCpDetailDialog.newInstance(
-                            context,
+                            requireContext(),
                             viewLifecycleOwner,
                             (adapter.getItem(position) as LotteryOrderVo).projectid
                         )

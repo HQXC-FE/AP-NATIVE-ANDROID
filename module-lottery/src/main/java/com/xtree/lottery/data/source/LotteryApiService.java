@@ -1,5 +1,6 @@
 package com.xtree.lottery.data.source;
 
+import com.xtree.lottery.data.source.vo.CancelOrderVo;
 import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.data.source.vo.LotteryChaseDetailVo;
 import com.xtree.lottery.data.source.vo.LotteryOrderVo;
@@ -61,6 +62,13 @@ public interface LotteryApiService {
      */
     @GET("/gameinfo/newgamedetail/{id}?client=m")
     Flowable<LotteryOrderVo> getBtCpOrderDetail(@Path("id") String id);
+
+    /**
+     * 取消订单
+     * platform=FBXC,project_id=10950255273****7510,nonce=***
+     */
+    @GET("/gameinfo/cancelgame/{id}?client=m")
+    Flowable<CancelOrderVo> cancelOrder(@Path("id") String id);
 
     /**
      * 追号记录-列表(彩票)

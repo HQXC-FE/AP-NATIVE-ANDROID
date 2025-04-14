@@ -22,6 +22,7 @@ import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.data.LotteryRepository;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.request.LotteryCopyBetRequest;
+import com.xtree.lottery.data.source.vo.CancelOrderVo;
 import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.data.source.vo.LotteryChaseDetailVo;
 import com.xtree.lottery.data.source.vo.LotteryOrderVo;
@@ -56,6 +57,7 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
     public MutableLiveData<ArrayList<IssueVo>> liveDataListIssue = new SingleLiveData<>();
     public MutableLiveData<LotteryReportVo> liveDataCpReport = new MutableLiveData<>(); // 投注记录-列表(彩票)
     public MutableLiveData<LotteryOrderVo> liveDataBtCpDetail = new MutableLiveData<>(); // 投注记录-详情(彩票)
+    public SingleLiveData<CancelOrderVo> liveDataCancelOrder = new SingleLiveData<>(); // 取消订单
     public MutableLiveData<TraceInfoVo> liveDataTraceinfo = new MutableLiveData<>(); // 追号记录-列表(彩票)
     public MutableLiveData<LotteryChaseDetailVo> liveDataBtChaseDetail = new MutableLiveData<>(); // 追号记录-详情(彩票)
     //当前期号
@@ -223,6 +225,27 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
                 });
         addSubscribe(disposable);
     }
+
+    public void cancelOrder(String id) {
+        Disposable disposable = (Disposable) model.getApiService().cancelOrder(id)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<CancelOrderVo>() {
+                    @Override
+                    public void onResult(CancelOrderVo vo) {
+                        CfLog.d("******");
+                        liveDataCancelOrder.setValue(vo);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        super.onError(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
 
     public void getTraceinfo() {
         // 获取日历实例

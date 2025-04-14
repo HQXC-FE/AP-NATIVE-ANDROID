@@ -27,7 +27,7 @@ public class LotteryOrderVo {
     public String username; // "tst033",
 
     public String nocode; // "30176",
-    //public boolean is_cancelable; // false,
+    public boolean is_cancelable; // false,
     public String lottery; // "河内5分彩",
     public String method; // "后三码后三直选",
     public String id; // "D20240203-192VDAHHGECCED",
