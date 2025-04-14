@@ -72,49 +72,53 @@ public class BetInputView extends BetBaseView {
             RulesEntryData.RulesResultData rulesResultDataLiveDataValue = rulesResultDataLiveData.getValue();
             if (rulesResultDataLiveDataValue != null) {
                 List<String> messages = rulesResultDataLiveDataValue.getMessages();
+                String msg;
                 if (messages != null && messages.size() > 0) {
-
-                    String msg = String.join("\n", messages);
-
-                    Context realContext = view.getContext();
-                    while (realContext instanceof ContextWrapper && !(realContext instanceof Activity)) {
-                        realContext = ((ContextWrapper) realContext).getBaseContext();
-                    }
-
-                    if (realContext instanceof Activity) {
-                        Activity activity = (Activity) realContext;
-                        // 继续你的逻辑
-                        MsgDialog dialog = new MsgDialog(activity,
-                                view.getContext().getString(R.string.txt_kind_tips),
-                                msg,
-                                true,
-                                new TipDialog.ICallBack() {
-                                    @Override
-                                    public void onClickLeft() {
-
-                                    }
-
-                                    @Override
-                                    public void onClickRight() {
-                                        if (pop != null) {
-                                            pop.dismiss();
-                                        }
-                                    }
-                                });
-
-                        pop = new XPopup.Builder(activity)
-                                .dismissOnTouchOutside(true)
-                                .dismissOnBackPressed(true)
-                                .asCustom(dialog).show();
-                    }
+                    msg = String.join("\n", messages);
+                } else {
+                    msg = "当前没有重复号码";
                 }
-
+                showMsg(msg);
                 RulesEntryData.BetDTO.DisplayDTO display = rulesResultDataLiveDataValue.getDisplay();
                 if (display != null && !TextUtils.isEmpty(display.getCodes())) {
                     binding.betInputEdit.setText(display.getCodes());
                 }
             }
         });
+    }
+
+    private void showMsg(String msg) {
+        Context realContext = getContext();
+        while (realContext instanceof ContextWrapper && !(realContext instanceof Activity)) {
+            realContext = ((ContextWrapper) realContext).getBaseContext();
+        }
+
+        if (realContext instanceof Activity) {
+            Activity activity = (Activity) realContext;
+            // 继续你的逻辑
+            MsgDialog dialog = new MsgDialog(activity,
+                    getContext().getString(R.string.txt_kind_tips),
+                    msg,
+                    true,
+                    new TipDialog.ICallBack() {
+                        @Override
+                        public void onClickLeft() {
+
+                        }
+
+                        @Override
+                        public void onClickRight() {
+                            if (pop != null) {
+                                pop.dismiss();
+                            }
+                        }
+                    });
+
+            pop = new XPopup.Builder(activity)
+                    .dismissOnTouchOutside(true)
+                    .dismissOnBackPressed(true)
+                    .asCustom(dialog).show();
+        }
     }
 
     /**
