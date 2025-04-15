@@ -4,7 +4,10 @@ import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
 import static com.xtree.base.utils.EventConstant.EVENT_LOG_OUT;
 import static me.xtree.mvvmhabit.http.ExceptionHandle.ERROR.HIJACKED_ERROR;
 
+import android.content.Context;
+
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.xtree.base.R;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.fastest.ChangeApiLineUtil;
 import com.xtree.base.net.fastest.FastestTopDomainUtil;
@@ -50,6 +53,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         BaseResponse baseResponse = (BaseResponse) o;
         int status = baseResponse.getStatus() == -1 ? baseResponse.getCode() : baseResponse.getStatus();
         BusinessException ex = new BusinessException(status, baseResponse.getMessage(), baseResponse.getData());
+        Context context = Utils.getContext();
         switch (status) {
             case HttpCallBack.CodeRule.CODE_0:
             case HttpCallBack.CodeRule.CODE_10000:
@@ -118,6 +122,31 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
             case CodeRule.CODE_30004:
                 ToastUtils.showShort(baseResponse.getMessage());
                 break;
+            case CodeRule.CODE_402035:
+                if (context!=null){
+                    ToastUtils.showShort(context.getString(R.string.txt_insufficient_balance));
+                }
+                KLog.e("余额不足");
+                break;
+            case CodeRule.CODE_402042:
+                if (context!=null){
+                    ToastUtils.showShort(context.getString(R.string.txt_betting_failed_contact_cs));
+                }
+                KLog.e("无此商户，非法的使用。");
+                break;
+            case CodeRule.CODE_402028:
+            case CodeRule.CODE_402029:
+            case CodeRule.CODE_402030:
+            case CodeRule.CODE_402031:
+            case CodeRule.CODE_402032:
+            case CodeRule.CODE_402033:
+            case CodeRule.CODE_402034:
+            case CodeRule.CODE_402036:
+            case CodeRule.CODE_402037:
+                if (context!=null){
+                    ToastUtils.showShort(context.getString(R.string.txt_betting_failed_try_again));
+                }
+                break;
             //case HttpCallBack.CodeRule.CODE_510:
             //    //无效的Token，提示跳入登录页
             //    ToastUtils.showShort("token已过期，请重新登录");
@@ -182,6 +211,7 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
                 ToastUtils.showShort("当前网络环境异常，切换线路中..."); // ("域名被劫持"  + "，切换线路中...");
                 ChangeApiLineUtil.getInstance().start();
                 break;
+
             default:
                 KLog.e("status is not normal: " + baseResponse);
                 onFail(ex);
@@ -411,6 +441,63 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
          * 没开通视频权限
          */
         public static final int CODE_408028 = 408028;
+
+        /**
+         * 余额不足  余额不足 「余额不足」
+         */
+        public static final int CODE_402035 = 402035;
+
+        /**
+         * 无此商户  非法的使用。「投注失败，请联系客服」
+         */
+        public static final int CODE_402042 = 402042;
+
+        /**
+         * 网络异常，请稍后再试  不允许投注「投注失败，请再试一次」
+         */
+        public static final int CODE_402028 = 402028;
+
+        /**
+         * 网络异常, 服务器熔断  不允许投注「投注失败，请再试一次」
+         */
+        public static final int CODE_402029 = 402029;
+
+        /**
+         * 入参异常,请检查入参后再次调用  不允许投注「投注失败，请再试一次」
+         */
+        public static final int CODE_402030 = 402030;
+
+        /**
+         * 页码不能为空  不允许投注「投注失败，请再试一次」
+         */
+        public static final int CODE_402031 = 402031;
+
+        /**
+         * 页数不能为空  不允许投注「投注失败，请再试一次」
+         */
+        public static final int CODE_402032 = 402032;
+
+        /**
+         * ID不能为空  不允许投注「投注失败，请再试一次」
+         */
+        public static final int CODE_402033 = 402033;
+
+        /**
+         * 搜索条件不能为空  不允许投注「投注失败，请再试一次」
+         */
+        public static final int CODE_402034 = 402034;
+
+        /**
+         * 验签  不允许投注「投注失败，请再试一次」
+         */
+
+        public static final int CODE_402036 = 402036;
+
+        /**
+         * 响应失败  不允许投注「投注失败，请再试一次」
+         */
+        public static final int CODE_402037 = 402037;
+
 
     }
 
