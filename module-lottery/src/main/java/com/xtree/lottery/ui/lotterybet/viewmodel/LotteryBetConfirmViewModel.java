@@ -13,8 +13,11 @@ import androidx.lifecycle.Observer;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
+import com.xtree.base.mvvm.ExKt;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.utils.ClickUtil;
+import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.R;
@@ -112,7 +115,9 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
      * 投注
      */
     public void bet(View view) {
-
+        if(ClickUtil.isFastClick()){
+            return;
+        }
         if (issueLiveData.getValue() == null) {
             ToastUtils.showError("期数数据错误");
             return;
@@ -189,6 +194,15 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
                     ToastUtils.showError(t.message);
                 }
 
+            }
+
+            @Override
+            protected void onStart() {
+                super.onStart();
+                Activity activity = ExKt.getActivity(view);
+                if (activity != null) {
+                    LoadingDialog.show(activity);
+                }
             }
         });
     }
