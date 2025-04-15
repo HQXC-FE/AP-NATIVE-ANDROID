@@ -38,6 +38,7 @@ public class DuplicateRemovalRule {
             if (realCode.size() != uniqueCode.size()) {
                 List<String> message = facts.get("message");
                 message.add("已经自动去重");
+                facts.put("message", message);
             }
 
             facts.put("formatCodes", uniqueCode);

@@ -50,8 +50,8 @@ public class SSCDontCalculateProfitRule {
 
             // 不计算盈利的，清除奖金和奖励
             if (disabled) {
-                facts.put("currentBonus", null);
-                facts.put("currentPrize", null);
+                facts.put("currentBonus", "");
+                facts.put("currentPrize", "");
             }
         } catch (Exception e) {
             CfLog.e(e.getMessage());
