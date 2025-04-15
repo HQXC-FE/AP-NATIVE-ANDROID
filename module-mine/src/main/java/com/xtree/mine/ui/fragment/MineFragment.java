@@ -74,6 +74,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
 
     private void refresh() {
         if (TextUtils.isEmpty(token)) {
+
             binding.ivwSetting.setClickable(false);
             binding.ivwMsg.setClickable(false);
             //binding.tvwChangjianWenti.setClickable(false);
@@ -81,7 +82,10 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             setChildClickable(binding.llMenu, false);
             setChildClickable(binding.llMenu01, false);
             setChildClickable(binding.llMenu02, false);
+            binding.iconName.setBackground(getContext().getResources().getDrawable(R.drawable.me_icon_name));
+
         } else {
+
             binding.ivwSetting.setClickable(true);
             binding.ivwMsg.setClickable(true);
             //binding.tvwChangjianWenti.setClickable(true);
@@ -91,6 +95,9 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             setChildClickable(binding.llMenu02, true);
             viewModel.readCache(); // 读取缓存
             viewModel.getReward(); // 获取优惠中心是否显示小红点
+            binding.iconName.setVisibility(View.GONE);
+            binding.iconNameLogin.setVisibility(View.VISIBLE);
+            binding.iconNameLogin.setBackground(getContext().getResources().getDrawable(R.drawable.me_icon_name_login));
         }
     }
 
@@ -113,6 +120,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
 
     @Override
     public void initView() {
+        CfLog.e("------------------ initView ------------------" );
         binding.btnLogout.setOnClickListener(v -> showLogoutDialog());
 
         binding.ivwSetting.setOnClickListener(view -> {
@@ -300,11 +308,12 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        CfLog.e("------------------ onViewCreated ------------------" );
         if (mProfileVo == null || TextUtils.isEmpty(token)) {
             CfLog.i("****** not login");
             binding.llLogin.setVisibility(View.VISIBLE);
             binding.clAlreadyLogin.setVisibility(View.INVISIBLE);
+            binding.iconNameLogin.setVisibility(View.GONE);
             binding.iconName.setBackground(getContext().getResources().getDrawable(R.drawable.me_icon_name));
             // 未登录状态下,直接跳到登录页,并关闭当前页
             //ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_LOGIN_REGISTER).navigation();
@@ -313,14 +322,18 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             CfLog.i("****** already login");
             binding.llLogin.setVisibility(View.GONE);
             binding.clAlreadyLogin.setVisibility(View.VISIBLE);
-            binding.iconName.setBackground(getContext().getResources().getDrawable(R.drawable.me_icon_name_login));
+            binding.iconName.setVisibility(View.GONE);
+            binding.iconNameLogin.setVisibility(View.VISIBLE);
+            binding.iconNameLogin.setBackground(getContext().getResources().getDrawable(R.drawable.me_icon_name_login));
             resetView();
         }
     }
 
     @Override
     public void initData() {
+        CfLog.e("------------------ initData ------------------" );
         token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
+        CfLog.e("------------------ initData ------------------ token " +token );
         if (TextUtils.isEmpty(token)) {
             //ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_LOGIN_REGISTER).navigation();
             //return;

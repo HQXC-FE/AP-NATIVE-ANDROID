@@ -37,6 +37,13 @@
                         style="?attr/me_icon_name_attr"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+                    <ImageView
+                        android:id="@+id/icon_name_login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/red"
+                        android:visibility="gone"
+                        />
 
                     <TextView
                         android:id="@+id/tvw_name"
