@@ -6,6 +6,7 @@ import com.xtree.bet.bean.request.pm.BtCashOutBetReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
+import com.xtree.bet.bean.response.im.DeltaEventListRsp;
 import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
 import com.xtree.bet.bean.response.im.OutrightEventRsp;
@@ -80,7 +81,7 @@ public interface IMApiService {
      */
     @GET("/yewu11/pub/v1/m/getDeltaEventInfoMbt")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<EventListRsp>> getDeltaEventInfoMbt(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<DeltaEventListRsp>> getDeltaEventInfoMbt(@QueryMap Map<String, String> map);
 
     /**
      * 索取DELTA其他玩法详情
@@ -88,7 +89,7 @@ public interface IMApiService {
      */
     @POST("/yewu13/v1/getDeltaMlInfoObt")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<CgOddLimitInfo>>> getDeltaMlInfoObt(@Body BtCarCgReq btCarCgReq);
+    Flowable<BaseResponse<DeltaEventListRsp>> getDeltaMlInfoObt(@Body BtCarCgReq btCarCgReq);
 
     /**
      * 索取其他玩法资料
@@ -96,7 +97,7 @@ public interface IMApiService {
      */
     @POST("/yewu13/v1/getMlInfoObt")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<BtConfirmInfo>>> getMlInfoObt(@Body BtCarReq btCarReq);
+    Flowable<BaseResponse<EventListRsp>> getMlInfoObt(@Body BtCarReq btCarReq);
 
     /**
      * 索取赛事选项资料
@@ -104,7 +105,7 @@ public interface IMApiService {
      */
     @GET("/yewu11/v1/w/getSelectedEventInfo")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<MatchInfo>> getSelectedEventInfo(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<EventListRsp>> getSelectedEventInfo(@QueryMap Map<String, String> map);
 
 
     /**
