@@ -8,6 +8,7 @@ import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
 import com.xtree.bet.bean.response.im.SportCountRsp;
+import com.xtree.bet.bean.response.im.WagerListRsp;
 import com.xtree.bet.bean.response.pm.BalanceInfo;
 import com.xtree.bet.bean.response.pm.BtCashOutPriceInfo;
 import com.xtree.bet.bean.response.pm.BtCashOutStatusInfo;
@@ -103,28 +104,28 @@ public interface IMApiService {
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Flowable<BaseResponse<MatchInfo>> getSelectedEventInfo(@QueryMap Map<String, String> map);
 
-    /**
-     * 索取虚拟赛事列表
-     * @return
-     */
-    @GET("/yewu11/v1/m/getVsEventInfo")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<MatchInfo>> getVsEventInfo(@QueryMap Map<String, String> map);
+//    /**
+//     * 索取虚拟赛事列表
+//     * @return
+//     */
+//    @GET("/yewu11/v1/m/getVsEventInfo")
+//    @Headers({"Content-Type: application/json; charset=utf-8"})
+//    Flowable<BaseResponse<MatchInfo>> getVsEventInfo(@QueryMap Map<String, String> map);
+//
+//    /**
+//     * 索取虚拟赛事资料
+//     */
+//    @GET("/yewu11/v1/m/getVsEventDetails")
+//    @Headers({"Content-Type: application/json; charset=utf-8"})
+//    Flowable<BaseResponse<List<PlayTypeInfo>>> getVsEventDetails(@QueryMap Map<String, String> map);
 
     /**
-     * 索取虚拟赛事资料
-     */
-    @GET("/yewu11/v1/m/getVsEventDetails")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<PlayTypeInfo>>> getVsEventDetails(@QueryMap Map<String, String> map);
-
-    /**
-     * 索取优胜冠军赛事
+     * 获取冠军赛事
      * @return
      */
     @GET("/yewu11/v1/getOutrightEvents")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<CategoryPm>>> getOutrightEvents(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<WagerListRsp>> getOutrightEvents(@QueryMap Map<String, String> map);
 
     /**
      * 索取DELTA优胜冠军赛事
@@ -198,7 +199,7 @@ public interface IMApiService {
      */
     @POST("/yewu13/v1/getBetList")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<BtCashOutPriceInfo>> getBetList(@Body BtCashOutBetReq btCashOutBetReq);
+    Flowable<BaseResponse<WagerListRsp>> getBetList(@Body BtCashOutBetReq btCashOutBetReq);
 
     /**
      * 以页数索取投注明细
