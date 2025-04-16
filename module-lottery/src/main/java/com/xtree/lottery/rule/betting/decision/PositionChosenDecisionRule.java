@@ -30,10 +30,10 @@ public class PositionChosenDecisionRule {
     public void then(Facts facts) {
         try {
             // 从 facts 中获取相关数据
-            List<Boolean> poschoose = ((Map<String, List<Boolean>>) facts.get("betposchoose")).get("poschoose");
+            List<Boolean> poschoose = ((Map<String, List<Boolean>>) facts.get("bet")).get("poschoose");
 
             Integer posnum = (Integer) ((Map<String, Object>) facts.get("attached")).get("posnum");
-            Integer number = (Integer) ((Map<String, Object>) facts.get("attached")).get("number");
+            Integer number = Integer.parseInt(((Map<String, String>) facts.get("attached")).get("number"));
             Integer num = facts.get("num");
 
             if (poschoose == null || num == null) {

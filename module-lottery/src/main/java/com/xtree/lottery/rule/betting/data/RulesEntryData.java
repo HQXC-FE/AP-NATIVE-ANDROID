@@ -847,7 +847,7 @@ public class RulesEntryData {
          * submit
          */
         @SerializedName("poschoose")
-        private Object poschoose;
+        private String poschoose;
 
         public String getMethodid() {
             return methodid;
@@ -905,11 +905,11 @@ public class RulesEntryData {
             this.submit = submit;
         }
 
-        public Object getPoschoose() {
+        public String getPoschoose() {
             return poschoose;
         }
 
-        public void setPoschoose(Object poschoose) {
+        public void setPoschoose(String poschoose) {
             this.poschoose = poschoose;
         }
 
@@ -1171,7 +1171,7 @@ public class RulesEntryData {
          * poschoose
          */
         @SerializedName("poschoose")
-        private Object poschoose;
+        private String poschoose;
         /**
          * menuid
          */
@@ -1243,11 +1243,11 @@ public class RulesEntryData {
             this.times = times;
         }
 
-        public Object getPoschoose() {
+        public String getPoschoose() {
             return poschoose;
         }
 
-        public void setPoschoose(Object poschoose) {
+        public void setPoschoose(String poschoose) {
             this.poschoose = poschoose;
         }
 

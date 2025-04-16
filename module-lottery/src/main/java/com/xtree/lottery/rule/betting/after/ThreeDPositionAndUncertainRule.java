@@ -38,7 +38,7 @@ public class ThreeDPositionAndUncertainRule {
         Map<String, List<Boolean>> bet = facts.get("bet");
         double currentPrize = Double.parseDouble(facts.get("currentPrize"));
         double currentBonus = Double.parseDouble(facts.get("currentBonus"));
-        List<Boolean> posChoose = bet.get("posChoose");
+        List<Boolean> posChoose = bet.get("poschoose");
         List<List<String>> formatCodes = facts.get("formatCodes");
 
         int posChooseNum = 0;

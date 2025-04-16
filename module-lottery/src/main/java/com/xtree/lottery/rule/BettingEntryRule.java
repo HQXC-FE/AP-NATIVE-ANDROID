@@ -17,6 +17,8 @@ import org.jeasy.rules.api.RulesEngine;
 import org.jeasy.rules.core.DefaultRulesEngine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -163,9 +165,20 @@ public class BettingEntryRule {
         bet.put("times", String.valueOf(rulesEntryData.getBet().getTimes()));
         //bet.prize
         bet.put("prize", String.valueOf(rulesEntryData.getBet().getPrize()));
-        //Todo bet.poschoose这个参数到最后还是无法知道
         //bet.poschoose
-        bet.put("poschoose", rulesEntryData.getBet().getPoschoose());
+        List<Boolean> list = new ArrayList<>(Collections.nCopies(5, false));
+        String sPoschoose = rulesEntryData.getBet().getPoschoose();
+        List<Integer> trueIndexes = Arrays.stream(sPoschoose.split(","))
+                .map(String::trim)
+                .mapToInt(Integer::parseInt)
+                .map(i -> i - 1) // 因为输入是从 1 开始的
+                .filter(i -> i >= 0 && i < 5) // 防止越界
+                .boxed()
+                .collect(Collectors.toList());
+        for (int index : trueIndexes) {
+            list.set(index, true);
+        }
+        bet.put("poschoose", list);
 
         facts.put("lotteryType", rulesEntryData.getType());
         facts.put("currentCategory", currentCategory);
@@ -217,7 +230,7 @@ public class BettingEntryRule {
         submitDTO.setOmodel(Integer.valueOf(submit.get("omodel").toString()));
         submitDTO.setMode(Integer.valueOf(submit.get("mode").toString()));
         submitDTO.setTimes(Integer.valueOf(submit.get("times").toString()));
-        submitDTO.setPoschoose(submit.get("poschoose"));
+        submitDTO.setPoschoose(submit.get("poschoose").toString());
         submitDTO.setMenuid(Integer.valueOf(submit.get("menuid").toString()));
         submitDTO.setType(submit.get("type").toString());
         submitDTO.setNums(Integer.valueOf(submit.get("nums").toString()));

@@ -29,12 +29,12 @@ public class Choose5LotteryRule {
     @Action
     public void then(Facts facts) {
         try {
-            String methodName = ((Map<String, String>) facts.get("currentCategory")).get("name") + ((Map<String, String>) facts.get("currentMethodName")).get("name");
+            String methodName = ((Map<String, String>) facts.get("currentCategory")).get("name") + ((Map<String, String>) facts.get("currentMethod")).get("name");
             int poschooseNum = calculatePositionChosenNumber(facts);
             String currentBonus = facts.get("currentBonus");
             String currentPrize = facts.get("currentPrize");
-            int money = facts.get("money");
-            List<List<String>> formatCodes = facts.get("formatCodes");
+            double money = facts.get("money");
+            List<Object> formatCodes = facts.get("formatCodes");
             switch (methodName) {
                 case "任选二直选复式":
                 case "任选二直选和值":
@@ -50,58 +50,58 @@ public class Choose5LotteryRule {
                     }
                     break;
                 case "任选二组选复式":
-                    if (poschooseNum == 3 && formatCodes.get(0).size() == 2) {
+                    if (poschooseNum == 3 && formatCodes.size() == 2) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) + Double.parseDouble(currentBonus)));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 2));
-                    } else if (poschooseNum == 3 && formatCodes.get(0).size() >= 3) {
+                    } else if (poschooseNum == 3 &&  formatCodes.size() >= 3) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 3 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 3));
-                    } else if (poschooseNum == 4 && formatCodes.get(0).size() == 2) {
+                    } else if (poschooseNum == 4 && formatCodes.size() == 2) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 4 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 4));
-                    } else if (poschooseNum == 4 && formatCodes.get(0).size() == 3) {
+                    } else if (poschooseNum == 4 && formatCodes.size() == 3) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 5 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 5));
-                    } else if (poschooseNum == 4 && formatCodes.get(0).size() >= 4) {
+                    } else if (poschooseNum == 4 && formatCodes.size() >= 4) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 6 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 6));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() == 2) {
+                    } else if (poschooseNum == 5 && formatCodes.size() == 2) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 6 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 6));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() == 3) {
+                    } else if (poschooseNum == 5 && formatCodes.size() == 3) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 8 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 8));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() == 4) {
+                    } else if (poschooseNum == 5 && formatCodes.size() == 4) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 9 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 9));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() >= 5) {
+                    } else if (poschooseNum == 5 && formatCodes.size() >= 5) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 10 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 10));
                     }
                     break;
                 case "任选二组选和值":
-                    if (poschooseNum == 3 && formatCodes.get(0).size() == 1) {
+                    if (poschooseNum == 3 && ((List<String>) formatCodes.get(0)).size() == 1) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) + Double.parseDouble(currentBonus)));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 2));
-                    } else if (poschooseNum == 3 && formatCodes.get(0).size() >= 2) {
+                    } else if (poschooseNum == 3 && ((List<String>) formatCodes.get(0)).size() >= 2) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 3 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 3));
-                    } else if (poschooseNum == 4 && formatCodes.get(0).size() == 1) {
+                    } else if (poschooseNum == 4 && ((List<String>) formatCodes.get(0)).size() == 1) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 4 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 4));
-                    } else if (poschooseNum == 4 && formatCodes.get(0).size() == 2) {
+                    } else if (poschooseNum == 4 && ((List<String>) formatCodes.get(0)).size() == 2) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 5 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 5));
-                    } else if (poschooseNum == 4 && formatCodes.get(0).size() >= 3) {
+                    } else if (poschooseNum == 4 && ((List<String>) formatCodes.get(0)).size() >= 3) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 6 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 6));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() == 1) {
+                    } else if (poschooseNum == 5 && ((List<String>) formatCodes.get(0)).size() == 1) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 5 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 5));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() >= 3 && formatCodes.get(0).size() <= 6) {
+                    } else if (poschooseNum == 5 && ((List<String>) formatCodes.get(0)).size() >= 3 && ((List<String>) ((List<String>) formatCodes.get(0))).size() <= 6) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 9 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 9));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() >= 7) {
+                    } else if (poschooseNum == 5 && ((List<String>) formatCodes.get(0)).size() >= 7) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 10 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 10));
                     }
@@ -126,37 +126,37 @@ public class Choose5LotteryRule {
                     }
                     break;
                 case "任选三组六":
-                    if (poschooseNum == 4 && formatCodes.get(0).size() == 3) {
+                    if (poschooseNum == 4 && ((List<String>) formatCodes.get(0)).size() == 3) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) + Double.parseDouble(currentBonus)));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 2));
-                    } else if (poschooseNum == 4 && formatCodes.get(0).size() >= 4) {
+                    } else if (poschooseNum == 4 && ((List<String>) formatCodes.get(0)).size() >= 4) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 4 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 4));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() == 3) {
+                    } else if (poschooseNum == 5 && ((List<String>) formatCodes.get(0)).size() == 3) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 3 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 4));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() == 4) {
+                    } else if (poschooseNum == 5 && ((List<String>) formatCodes.get(0)).size() == 4) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 7 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 7));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() >= 5) {
+                    } else if (poschooseNum == 5 && ((List<String>) formatCodes.get(0)).size() >= 5) {
                         facts.put("currentBonus", currentBonus + "~" + round(Double.parseDouble(currentPrize) * 10 - money));
                         facts.put("currentPrize", currentPrize + "~" + round(Double.parseDouble(currentPrize) * 10));
                     }
                     break;
                 case "任选三组选和值":
-                    if (poschooseNum == 4 && formatCodes.get(0).size() == 1) {
+                    if (poschooseNum == 4 && ((List<String>) formatCodes.get(0)).size() == 1) {
                         facts.put("currentBonus", Double.parseDouble(currentBonus.split("~")[0] + "~" + round(Double.parseDouble(currentPrize.split("~")[1]) * 3 - money)));
                         facts.put("currentPrize", currentPrize.split("~")[0] + "~" + round(Double.parseDouble(currentPrize.split("~")[1]) * 3));
-                    } else if (poschooseNum == 4 && formatCodes.get(0).size() >= 2) {
+                    } else if (poschooseNum == 4 && ((List<String>) formatCodes.get(0)).size() >= 2) {
                         facts.put("currentBonus", Double.parseDouble(currentBonus.split("~")[0] + "~" + round(Double.parseDouble(currentPrize.split("~")[1]) * 4 - money)));
                         facts.put("currentPrize", currentPrize.split("~")[0] + "~" + round(Double.parseDouble(currentPrize.split("~")[1]) * 4));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() == 1) {
+                    } else if (poschooseNum == 5 && ((List<String>) formatCodes.get(0)).size() == 1) {
                         facts.put("currentBonus", Double.parseDouble(currentBonus.split("~")[0] + "~" + round(Double.parseDouble(currentPrize.split("~")[1]) * 6 - money)));
                         facts.put("currentPrize", currentPrize.split("~")[0] + "~" + round(Double.parseDouble(currentPrize.split("~")[1]) * 6));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() == 2) {
+                    } else if (poschooseNum == 5 && ((List<String>) formatCodes.get(0)).size() == 2) {
                         facts.put("currentBonus", Double.parseDouble(currentBonus.split("~")[0] + "~" + round(Double.parseDouble(currentPrize.split("~")[1]) * 8 - money)));
                         facts.put("currentPrize", currentPrize.split("~")[0] + "~" + round(Double.parseDouble(currentPrize.split("~")[1]) * 8));
-                    } else if (poschooseNum == 5 && formatCodes.get(0).size() >= 3) {
+                    } else if (poschooseNum == 5 && ((List<String>) formatCodes.get(0)).size() >= 3) {
                         facts.put("currentBonus", Double.parseDouble(currentBonus.split("~")[0] + "~" + round(Double.parseDouble(currentPrize.split("~")[1]) * 9 - money)));
                         facts.put("currentPrize", currentPrize.split("~")[0] + "~" + round(Double.parseDouble(currentPrize.split("~")[1]) * 9));
                     }
@@ -203,12 +203,12 @@ public class Choose5LotteryRule {
     private int calculatePositionChosenNumber(Facts facts) {
         Map<String, List<Boolean>> bet = facts.get("bet");
         List<Boolean> poschoose = bet.get("poschoose");
-        List<List<String>> formatCodes = facts.get("formatCodes");
+        List<Object> formatCodes = facts.get("formatCodes");
 
         if (poschoose != null) {
             return (int) poschoose.stream().filter(item -> item).count();
         } else {
-            return (int) formatCodes.stream().filter(code -> !code.isEmpty()).count();
+            return (int) formatCodes.stream().count();
         }
     }
 
