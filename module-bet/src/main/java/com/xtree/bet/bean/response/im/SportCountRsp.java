@@ -16,7 +16,7 @@ public class SportCountRsp implements BaseBean {
     /**
      * 所有赛事信息
      */
-    public List<Sport> sportCount;
+    public List<SportMatch> sportCount;
     /**
      * 盘口id(对应hid)
      */
@@ -35,7 +35,7 @@ public class SportCountRsp implements BaseBean {
     }
 
     protected SportCountRsp(Parcel in) {
-        this.sportCount = in.createTypedArrayList(Sport.CREATOR);
+        this.sportCount = in.createTypedArrayList(SportMatch.CREATOR);
         this.serverTime = in.readString();
         this.statusCode = in.readInt();
         this.statusDesc = in.readString();
@@ -50,7 +50,7 @@ public class SportCountRsp implements BaseBean {
     }
 
     public void readFromParcel(Parcel source) {
-        this.sportCount = source.createTypedArrayList(Sport.CREATOR);
+        this.sportCount = source.createTypedArrayList(SportMatch.CREATOR);
         this.serverTime = source.readString();
         this.statusCode = source.readInt();
         this.statusDesc = source.readString();

@@ -1,32 +1,36 @@
 package com.xtree.bet.bean.response.im;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.xtree.base.vo.BaseBean;
 
 import java.util.List;
 
-public class Event implements BaseBean {
+/**
+ * 优胜冠军赛事Event
+ */
+
+public class OutrightEvent implements BaseBean {
 
     public String OutrightEventName;
     public long EventId;
     public int EventStatusId;
     public int OrderNumber;
     public String EventDate;
-    public Competition Competition;
-    public List<MarketLine> MarketLines;
+    public SportCompetition Competition;
+    public List<SportMarketLine> MarketLines;
 
-    public Event() {}
+    public OutrightEvent() {
+    }
 
-    protected Event(Parcel in) {
+    protected OutrightEvent(Parcel in) {
         OutrightEventName = in.readString();
         EventId = in.readLong();
         EventStatusId = in.readInt();
         OrderNumber = in.readInt();
         EventDate = in.readString();
-        Competition = in.readParcelable(Competition.class.getClassLoader());
-        MarketLines = in.createTypedArrayList(MarketLine.CREATOR);
+        Competition = in.readParcelable(SportCompetition.class.getClassLoader());
+        MarketLines = in.createTypedArrayList(SportMarketLine.CREATOR);
     }
 
     @Override
@@ -45,15 +49,16 @@ public class Event implements BaseBean {
         return 0;
     }
 
-    public static final Creator<Event> CREATOR = new Creator<Event>() {
+    public static final Creator<OutrightEvent> CREATOR = new Creator<OutrightEvent>() {
         @Override
-        public Event createFromParcel(Parcel in) {
-            return new Event(in);
+        public OutrightEvent createFromParcel(Parcel in) {
+            return new OutrightEvent(in);
         }
 
         @Override
-        public Event[] newArray(int size) {
-            return new Event[size];
+        public OutrightEvent[] newArray(int size) {
+            return new OutrightEvent[size];
         }
     };
+
 }

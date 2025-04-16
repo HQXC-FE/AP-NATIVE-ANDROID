@@ -4,6 +4,12 @@ import android.os.Parcel;
 
 import com.xtree.base.vo.BaseBean;
 
+/**
+ * 赛事公告详情
+ *
+ * */
+
+
 public class AnnouncementDetail implements BaseBean {
 
     public String languageCode;

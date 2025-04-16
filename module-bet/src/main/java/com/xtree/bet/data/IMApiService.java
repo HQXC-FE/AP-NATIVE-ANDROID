@@ -6,7 +6,9 @@ import com.xtree.bet.bean.request.pm.BtCashOutBetReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
+import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
+import com.xtree.bet.bean.response.im.OutrightEventRsp;
 import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.response.im.WagerListRsp;
 import com.xtree.bet.bean.response.pm.BalanceInfo;
@@ -70,7 +72,7 @@ public interface IMApiService {
      */
     @POST("/yewu11/v1/m/getEventInfoMbt")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<MatchInfo>>> getEventInfoMbt(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<EventListRsp>> getEventInfoMbt(@Body PMListReq pmListReq);
 
     /**
      * 索取DELTA赛事和主要玩法详情
@@ -78,7 +80,7 @@ public interface IMApiService {
      */
     @GET("/yewu11/pub/v1/m/getDeltaEventInfoMbt")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<MenuInfo>>> getDeltaEventInfoMbt(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<EventListRsp>> getDeltaEventInfoMbt(@QueryMap Map<String, String> map);
 
     /**
      * 索取DELTA其他玩法详情
@@ -104,20 +106,6 @@ public interface IMApiService {
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Flowable<BaseResponse<MatchInfo>> getSelectedEventInfo(@QueryMap Map<String, String> map);
 
-//    /**
-//     * 索取虚拟赛事列表
-//     * @return
-//     */
-//    @GET("/yewu11/v1/m/getVsEventInfo")
-//    @Headers({"Content-Type: application/json; charset=utf-8"})
-//    Flowable<BaseResponse<MatchInfo>> getVsEventInfo(@QueryMap Map<String, String> map);
-//
-//    /**
-//     * 索取虚拟赛事资料
-//     */
-//    @GET("/yewu11/v1/m/getVsEventDetails")
-//    @Headers({"Content-Type: application/json; charset=utf-8"})
-//    Flowable<BaseResponse<List<PlayTypeInfo>>> getVsEventDetails(@QueryMap Map<String, String> map);
 
     /**
      * 获取冠军赛事
@@ -128,12 +116,12 @@ public interface IMApiService {
     Flowable<BaseResponse<WagerListRsp>> getOutrightEvents(@QueryMap Map<String, String> map);
 
     /**
-     * 索取DELTA优胜冠军赛事
+     * 获取优胜冠军赛事指定比赛,如足球或篮球等
      * @return
      */
     @GET("/yewu11/v1/getDeltaOutrightEventInfo")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<PlayTypeInfo>>> getDeltaOutrightEventInfo(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<OutrightEventRsp>> getDeltaOutrightEventInfo(@QueryMap Map<String, String> map);
 
     /**
      * 索取现场赛果

@@ -12,7 +12,7 @@ public class SportInfo implements BaseBean {
 
     public String sportId;
     public String sportName;
-    public List<Event> events;
+    public List<SportEvent> events;
 
     public SportInfo() {
     }
@@ -20,7 +20,7 @@ public class SportInfo implements BaseBean {
     protected SportInfo(Parcel in) {
         this.sportId = in.readString();
         this.sportName = in.readString();
-        this.events = in.createTypedArrayList(Event.CREATOR);
+        this.events = in.createTypedArrayList(SportEvent.CREATOR);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SportInfo implements BaseBean {
     public void readFromParcel(Parcel source) {
         this.sportId = source.readString();
         this.sportName = source.readString();
-        this.events = source.createTypedArrayList(Event.CREATOR);
+        this.events = source.createTypedArrayList(SportEvent.CREATOR);
     }
 
     @Override

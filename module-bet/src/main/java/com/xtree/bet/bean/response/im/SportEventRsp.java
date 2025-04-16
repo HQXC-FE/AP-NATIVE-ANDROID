@@ -1,7 +1,6 @@
 package com.xtree.bet.bean.response.im;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
@@ -11,7 +10,7 @@ import java.util.List;
 
 public class SportEventRsp implements BaseBean {
 
-    public List<Sport> sports;
+    public List<SportMatch> sports;
     public String serverTime;
     public int statusCode;
     public String statusDesc;
@@ -19,7 +18,7 @@ public class SportEventRsp implements BaseBean {
     public SportEventRsp() {}
 
     protected SportEventRsp(Parcel in) {
-        this.sports = in.createTypedArrayList(Sport.CREATOR);
+        this.sports = in.createTypedArrayList(SportMatch.CREATOR);
         this.serverTime = in.readString();
         this.statusCode = in.readInt();
         this.statusDesc = in.readString();
@@ -34,7 +33,7 @@ public class SportEventRsp implements BaseBean {
     }
 
     public void readFromParcel(Parcel source) {
-        this.sports = source.createTypedArrayList(Sport.CREATOR);
+        this.sports = source.createTypedArrayList(SportMatch.CREATOR);
         this.serverTime = source.readString();
         this.statusCode = source.readInt();
         this.statusDesc = source.readString();

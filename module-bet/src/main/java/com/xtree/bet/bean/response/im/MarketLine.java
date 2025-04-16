@@ -1,47 +1,49 @@
 package com.xtree.bet.bean.response.im;
 
 import android.os.Parcel;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 
 import com.xtree.base.vo.BaseBean;
 
 import java.util.List;
 
-public class MarketLine implements BaseBean, Parcelable {
 
-    public String marketLineId;
-    public String marketType;
-    public String handicap;
-    public String status;
-    public List<Outcome> outcomes;
+public class MarketLine implements BaseBean {
+
+    public long MarketlineId;
+    public int BetTypeId;
+    public String BetTypeName;
+    public int PeriodId;
+    public String PeriodName;
+    public int MarketLineLevel;
+    public int MarketlineStatusId;
+    public boolean IsLocked;
+    public List<WagerSelection> WagerSelections;
 
     public MarketLine() {}
 
     protected MarketLine(Parcel in) {
-        this.marketLineId = in.readString();
-        this.marketType = in.readString();
-        this.handicap = in.readString();
-        this.status = in.readString();
-        this.outcomes = in.createTypedArrayList(Outcome.CREATOR);
+        MarketlineId = in.readLong();
+        BetTypeId = in.readInt();
+        BetTypeName = in.readString();
+        PeriodId = in.readInt();
+        PeriodName = in.readString();
+        MarketLineLevel = in.readInt();
+        MarketlineStatusId = in.readInt();
+        IsLocked = in.readByte() != 0;
+        WagerSelections = in.createTypedArrayList(WagerSelection.CREATOR);
     }
 
     @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(this.marketLineId);
-        dest.writeString(this.marketType);
-        dest.writeString(this.handicap);
-        dest.writeString(this.status);
-        dest.writeTypedList(this.outcomes);
-    }
-
-    public void readFromParcel(Parcel source) {
-        this.marketLineId = source.readString();
-        this.marketType = source.readString();
-        this.handicap = source.readString();
-        this.status = source.readString();
-        this.outcomes = source.createTypedArrayList(Outcome.CREATOR);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(MarketlineId);
+        dest.writeInt(BetTypeId);
+        dest.writeString(BetTypeName);
+        dest.writeInt(PeriodId);
+        dest.writeString(PeriodName);
+        dest.writeInt(MarketLineLevel);
+        dest.writeInt(MarketlineStatusId);
+        dest.writeByte((byte) (IsLocked ? 1 : 0));
+        dest.writeTypedList(WagerSelections);
     }
 
     @Override
@@ -51,8 +53,8 @@ public class MarketLine implements BaseBean, Parcelable {
 
     public static final Creator<MarketLine> CREATOR = new Creator<MarketLine>() {
         @Override
-        public MarketLine createFromParcel(Parcel source) {
-            return new MarketLine(source);
+        public MarketLine createFromParcel(Parcel in) {
+            return new MarketLine(in);
         }
 
         @Override

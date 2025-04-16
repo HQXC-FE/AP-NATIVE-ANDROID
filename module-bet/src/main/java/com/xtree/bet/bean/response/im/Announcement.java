@@ -6,6 +6,10 @@ import com.xtree.base.vo.BaseBean;
 
 import java.util.List;
 
+/**
+ * 赛事公告
+ * */
+
 public class Announcement implements BaseBean {
 
     public int announcementId;
