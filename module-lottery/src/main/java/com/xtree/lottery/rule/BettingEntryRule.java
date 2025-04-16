@@ -197,6 +197,7 @@ public class BettingEntryRule {
 
         List<RulesEntryData.SubmitDTO> submitDTOList = new ArrayList<>();
         HashMap<String, Object> done = facts.get("done");
+        RulesEntryData.RulesResultData rulesResult = new RulesEntryData.RulesResultData();
         if (done != null) {
             if (done.get("submit") instanceof List) {
                 List<HashMap<String, Object>> submitList = (List<HashMap<String, Object>>) done.get("submit");
@@ -207,15 +208,15 @@ public class BettingEntryRule {
                 HashMap<String, Object> submit = (HashMap<String, Object>) done.get("submit");
                 submitDTOList.add(calcSubmit(submit));
             }
+            if (done.get("display") instanceof Map) {
+                rulesResult.setDisplay(calcDisplay((Map<String, Object>) done.get("display")));
+            }
+            if (done.get("message") instanceof List) {
+                rulesResult.setMessages((List<String>) ((List<?>) done.get("message")).stream().collect(Collectors.toList()));
+            }
         }
-        RulesEntryData.RulesResultData rulesResult = new RulesEntryData.RulesResultData();
         rulesResult.setSubmitDTOS(submitDTOList);
-        if (done.get("display") instanceof Map) {
-            rulesResult.setDisplay(calcDisplay((Map<String, Object>) done.get("display")));
-        }
-        if (done.get("message") instanceof List) {
-            rulesResult.setMessages((List<String>) ((List<?>) done.get("message")).stream().collect(Collectors.toList()));
-        }
+
         return rulesResult;
     }
 
