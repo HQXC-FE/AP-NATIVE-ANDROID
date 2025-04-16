@@ -6,33 +6,31 @@ import com.xtree.bet.bean.request.pm.BtCashOutBetReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
+import com.xtree.bet.bean.response.im.BetInfo;
 import com.xtree.bet.bean.response.im.DeltaEventListRsp;
 import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
 import com.xtree.bet.bean.response.im.OutrightEventRsp;
+import com.xtree.bet.bean.response.im.RecommendedSelections;
 import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.response.im.WagerListRsp;
 import com.xtree.bet.bean.response.pm.BalanceInfo;
 import com.xtree.bet.bean.response.pm.BtCashOutPriceInfo;
 import com.xtree.bet.bean.response.pm.BtCashOutStatusInfo;
-import com.xtree.bet.bean.response.pm.BtConfirmInfo;
 import com.xtree.bet.bean.response.pm.BtRecordRsp;
 import com.xtree.bet.bean.response.pm.BtResultInfo;
-import com.xtree.bet.bean.response.pm.CgOddLimitInfo;
 import com.xtree.bet.bean.response.pm.FrontListInfo;
 import com.xtree.bet.bean.response.pm.LeagueAreaInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
 import com.xtree.bet.bean.response.pm.MatchListRsp;
-import com.xtree.bet.bean.response.pm.MenuInfo;
 import com.xtree.bet.bean.response.pm.PMResultBean;
-import com.xtree.bet.bean.response.pm.PlayTypeInfo;
 import com.xtree.bet.bean.response.pm.VideoAnimationInfo;
-import com.xtree.bet.bean.ui.CategoryPm;
 
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -45,14 +43,17 @@ public interface IMApiService {
     /**
      * 获取获取公告
      * 参数使用对比PM的frontListPB接口
+     *
      * @return
      */
     @POST("/yewu11/v1/m/getAnnouncement")
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Flowable<BaseResponse<GetAnnouncementRsp>> getAnnouncement();
+
     /**
      * 获取所有体育赛种数量
      * 参数使用对比PM的initPB接口
+     *
      * @return
      */
     @POST("/yewu11/v1/m/getAllSportCount")
@@ -61,6 +62,7 @@ public interface IMApiService {
 
     /**
      * 索取所有竞赛计数
+     *
      * @return
      */
     @POST("/yewu11/v1/m/getAllCompetitionCount")
@@ -69,6 +71,7 @@ public interface IMApiService {
 
     /**
      * 索取赛事和主要玩法资料
+     *
      * @return
      */
     @POST("/yewu11/v1/m/getEventInfoMbt")
@@ -77,6 +80,7 @@ public interface IMApiService {
 
     /**
      * 索取DELTA赛事和主要玩法详情
+     *
      * @return
      */
     @GET("/yewu11/pub/v1/m/getDeltaEventInfoMbt")
@@ -85,6 +89,7 @@ public interface IMApiService {
 
     /**
      * 索取DELTA其他玩法详情
+     *
      * @return
      */
     @POST("/yewu13/v1/getDeltaMlInfoObt")
@@ -93,6 +98,7 @@ public interface IMApiService {
 
     /**
      * 索取其他玩法资料
+     *
      * @return
      */
     @POST("/yewu13/v1/getMlInfoObt")
@@ -101,6 +107,7 @@ public interface IMApiService {
 
     /**
      * 索取赛事选项资料
+     *
      * @return
      */
     @GET("/yewu11/v1/w/getSelectedEventInfo")
@@ -110,6 +117,7 @@ public interface IMApiService {
 
     /**
      * 获取冠军赛事
+     *
      * @return
      */
     @GET("/yewu11/v1/getOutrightEvents")
@@ -118,6 +126,7 @@ public interface IMApiService {
 
     /**
      * 获取优胜冠军赛事指定比赛,如足球或篮球等
+     *
      * @return
      */
     @GET("/yewu11/v1/getDeltaOutrightEventInfo")
@@ -126,6 +135,7 @@ public interface IMApiService {
 
     /**
      * 索取现场赛果
+     *
      * @return
      */
     @POST("/yewu13/v1/getLiveResults")
@@ -134,6 +144,7 @@ public interface IMApiService {
 
     /**
      * 索取定位
+     *
      * @return
      */
     @POST("/yewu13/v1/getLocalizations")
@@ -142,6 +153,7 @@ public interface IMApiService {
 
     /**
      * 索取DELTA定位
+     *
      * @return
      */
     @GET("/yewu11/v1/getDeltaLocalizations")
@@ -150,6 +162,7 @@ public interface IMApiService {
 
     /**
      * 索取完整赛果
+     *
      * @return
      */
     @POST("/yewu11/v1/getCompletedResults")
@@ -158,6 +171,7 @@ public interface IMApiService {
 
     /**
      * 退出
+     *
      * @return
      */
     @POST("/yewu11/v1/m/logOut")
@@ -165,15 +179,8 @@ public interface IMApiService {
     Flowable<BaseResponse<List<MatchInfo>>> logOut(@Body PMListReq pmListReq);
 
     /**
-     * 索取投注信息
-     * @return
-     */
-    @GET("/yewu12/api/getBetInfo")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<BalanceInfo>> getBetInfo(@QueryMap Map<String, String> map);
-
-    /**
      * 投注
+     *
      * @param map
      * @return
      */
@@ -183,6 +190,7 @@ public interface IMApiService {
 
     /**
      * 索取投注明细
+     *
      * @param btCashOutBetReq
      * @return
      */
@@ -192,6 +200,7 @@ public interface IMApiService {
 
     /**
      * 以页数索取投注明细
+     *
      * @return
      */
     @GET("/yewu13/v1/getBetListByPage")
@@ -265,10 +274,29 @@ public interface IMApiService {
 
 
     /**
-     *  删除收藏赛事
+     * 删除收藏赛事
      */
     @POST("/yewu11/v1/m/removeFavouriteEvent")
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Flowable<BaseResponse<List<MatchInfo>>> removeFavouriteEvent(@Body Map<String, String> map);
+
+
+    /**
+     * 推荐投注选项
+     */
+    @POST("/yewu11/v1/m/getRecommendedSelections")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Single<BaseResponse<RecommendedSelections>> getRecommendedSelection(@Body Map<String, String> map);
+
+
+    /**
+     * 推荐投注选项
+     */
+    @POST("/yewu11/v1/m/getBetInfo")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Single<BaseResponse<BetInfo>> getBetInfo(@Body Map<String, String> map);
+
+
+
 
 }
