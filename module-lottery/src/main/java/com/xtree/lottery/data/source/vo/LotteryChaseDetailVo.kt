@@ -38,7 +38,7 @@ data class ATaskdetail(
     val lotteryid: String,
     val modes: String,
     val multiple: String,
-    val projectid: String,
+    val projectid: String?,
     val rank: String,
     val saleend: String,
     val salestart: String,

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/clr_line_02"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <View
+        android:id="@+id/v1"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/clr_line_02"
+        app:layout_constraintEnd_toStartOf="@+id/tv_chase_number"/>
+
+    <View
+        android:id="@+id/v2"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/clr_line_02"
+        app:layout_constraintEnd_toStartOf="@+id/tv_chase_status"/>
+
+    <View
+        android:id="@+id/v3"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/clr_line_02"
+        app:layout_constraintEnd_toStartOf="@+id/tv_order_detail"/>
+    <CheckBox
+        android:id="@+id/cb_issue"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:button="@drawable/checkbox_item"
+        android:text="奖期"
+        android:textColor="@color/textColor"
+        app:layout_constraintEnd_toStartOf="@+id/tv_chase_number"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_chase_number"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="追号倍数"
+        android:textColor="@color/textColor"
+        app:layout_constraintEnd_toStartOf="@+id/tv_chase_status" />
+
+    <TextView
+        android:id="@+id/tv_chase_status"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="追号状态"
+        android:textColor="@color/textColor"
+        app:layout_constraintEnd_toStartOf="@+id/tv_order_detail" />
+
+    <TextView
+        android:id="@+id/tv_order_detail"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="查看详情"
+        android:textColor="@color/textColor"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
