@@ -11,6 +11,7 @@ import com.xtree.bet.bean.response.im.DeltaEventListRsp;
 import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
 import com.xtree.bet.bean.response.im.OutrightEventRsp;
+import com.xtree.bet.bean.response.im.PlaceBet;
 import com.xtree.bet.bean.response.im.RecommendedSelections;
 import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.response.im.WagerListRsp;
@@ -179,16 +180,6 @@ public interface IMApiService {
     Flowable<BaseResponse<List<MatchInfo>>> logOut(@Body PMListReq pmListReq);
 
     /**
-     * 投注
-     *
-     * @param map
-     * @return
-     */
-    @GET("/yewu13/placeBet")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<BtCashOutPriceInfo>>> placeBet(@QueryMap Map<String, String> map);
-
-    /**
      * 索取投注明细
      *
      * @param btCashOutBetReq
@@ -290,11 +281,20 @@ public interface IMApiService {
 
 
     /**
-     * 推荐投注选项
+     * 索取投注信息
      */
     @POST("/yewu11/v1/m/getBetInfo")
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Single<BaseResponse<BetInfo>> getBetInfo(@Body Map<String, String> map);
+
+
+    /**
+     * 投注 [ 此 API 常用于展示各投注项目. 当会员在确认投注时将被调用.]
+     */
+    @POST("/yewu11/v1/m/placeBet")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Single<BaseResponse<PlaceBet>> placeBet(@Body Map<String, String> map);
+
 
 
 

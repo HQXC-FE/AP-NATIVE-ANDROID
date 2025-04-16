@@ -3,7 +3,7 @@ package com.xtree.bet.bean.response.im;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public  class WagerSelectionInfo implements Parcelable {
+public class WagerSelectionInfo implements Parcelable {
     public int BetTypeId;
     public long EventId;
     public int SportId;
@@ -19,7 +19,14 @@ public  class WagerSelectionInfo implements Parcelable {
     public boolean ReturnNearestHandicap;
     public String Specifiers;
 
-    public WagerSelectionInfo() {}
+    public String WagerId;
+    public String BetStatusMessage;
+    public int ComboSelectionId;
+    public int BetConfirmationStatus;
+    public double EstimatedPayoutFullAmount;
+
+    public WagerSelectionInfo() {
+    }
 
     protected WagerSelectionInfo(Parcel in) {
         BetTypeId = in.readInt();
@@ -36,6 +43,11 @@ public  class WagerSelectionInfo implements Parcelable {
         OutrightTeamId = in.readInt();
         ReturnNearestHandicap = in.readByte() != 0;
         Specifiers = in.readString();
+        WagerId = in.readString();
+        BetStatusMessage = in.readString();
+        ComboSelectionId = in.readInt();
+        BetConfirmationStatus = in.readInt();
+        EstimatedPayoutFullAmount = in.readDouble();
     }
 
     @Override
@@ -54,6 +66,11 @@ public  class WagerSelectionInfo implements Parcelable {
         dest.writeInt(OutrightTeamId);
         dest.writeByte((byte) (ReturnNearestHandicap ? 1 : 0));
         dest.writeString(Specifiers);
+        dest.writeString(WagerId);
+        dest.writeString(BetStatusMessage);
+        dest.writeInt(ComboSelectionId);
+        dest.writeInt(BetConfirmationStatus);
+        dest.writeDouble(EstimatedPayoutFullAmount);
     }
 
     @Override
