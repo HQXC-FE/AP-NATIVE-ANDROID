@@ -166,19 +166,21 @@ public class BettingEntryRule {
         //bet.prize
         bet.put("prize", String.valueOf(rulesEntryData.getBet().getPrize()));
         //bet.poschoose
-        List<Boolean> list = new ArrayList<>(Collections.nCopies(5, false));
-        String sPoschoose = rulesEntryData.getBet().getPoschoose();
-        List<Integer> trueIndexes = Arrays.stream(sPoschoose.split(","))
-                .map(String::trim)
-                .mapToInt(Integer::parseInt)
-                .map(i -> i - 1) // 因为输入是从 1 开始的
-                .filter(i -> i >= 0 && i < 5) // 防止越界
-                .boxed()
-                .collect(Collectors.toList());
-        for (int index : trueIndexes) {
-            list.set(index, true);
+        if (rulesEntryData.getBet().getPoschoose() != null) {
+            List<Boolean> list = new ArrayList<>(Collections.nCopies(5, false));
+            String sPoschoose = rulesEntryData.getBet().getPoschoose();
+            List<Integer> trueIndexes = Arrays.stream(sPoschoose.split(","))
+                    .map(String::trim)
+                    .mapToInt(Integer::parseInt)
+                    .map(i -> i - 1) // 因为输入是从 1 开始的
+                    .filter(i -> i >= 0 && i < 5) // 防止越界
+                    .boxed()
+                    .collect(Collectors.toList());
+            for (int index : trueIndexes) {
+                list.set(index, true);
+            }
+            bet.put("poschoose", list);
         }
-        bet.put("poschoose", list);
 
         facts.put("lotteryType", rulesEntryData.getType());
         facts.put("currentCategory", currentCategory);
