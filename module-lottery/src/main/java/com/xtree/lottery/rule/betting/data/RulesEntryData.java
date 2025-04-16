@@ -843,6 +843,11 @@ public class RulesEntryData {
          */
         @SerializedName("submit")
         private SubmitDTO submit;
+        /**
+         * submit
+         */
+        @SerializedName("poschoose")
+        private Object poschoose;
 
         public String getMethodid() {
             return methodid;
@@ -898,6 +903,14 @@ public class RulesEntryData {
 
         public void setSubmit(SubmitDTO submit) {
             this.submit = submit;
+        }
+
+        public Object getPoschoose() {
+            return poschoose;
+        }
+
+        public void setPoschoose(Object poschoose) {
+            this.poschoose = poschoose;
         }
 
         public static class ModeDTO {

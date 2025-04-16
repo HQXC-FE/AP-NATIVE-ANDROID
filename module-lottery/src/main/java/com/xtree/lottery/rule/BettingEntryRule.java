@@ -165,7 +165,7 @@ public class BettingEntryRule {
         bet.put("prize", String.valueOf(rulesEntryData.getBet().getPrize()));
         //Todo bet.poschoose这个参数到最后还是无法知道
         //bet.poschoose
-        bet.put("poschoose", null);
+        bet.put("poschoose", rulesEntryData.getBet().getPoschoose());
 
         facts.put("lotteryType", rulesEntryData.getType());
         facts.put("currentCategory", currentCategory);
