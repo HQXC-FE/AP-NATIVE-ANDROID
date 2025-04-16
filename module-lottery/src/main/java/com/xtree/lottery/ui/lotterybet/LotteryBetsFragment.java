@@ -123,6 +123,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
                     betDTO.setDisplay(new RulesEntryData.BetDTO.DisplayDTO());
                     betDTO.setSubmit(new RulesEntryData.SubmitDTO());
                     betDTO.setCodes(codes);
+                    betDTO.setPoschoose(betOrderData.getPoschoose());
                     viewModel.rule(betDTO);
                 }
             } else {
@@ -174,6 +175,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
                     betDTO.setDisplay(new RulesEntryData.BetDTO.DisplayDTO());
                     betDTO.setSubmit(new RulesEntryData.SubmitDTO());
                     betDTO.setCodes(codes);
+                    betDTO.setPoschoose(betOrderData.getPoschoose());
                     viewModel.rule(betDTO);
                 }
             } else {

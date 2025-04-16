@@ -25,7 +25,7 @@
             android:layout_height="34dp"
             android:text="@{m.table}"
             android:textSize="20sp"
-            android:textColor="@color/lt_color_text13_white"
+            android:textColor="@color/clr_main_18"
             android:gravity="center"
             android:layout_gravity="center"
             tools:text="1"

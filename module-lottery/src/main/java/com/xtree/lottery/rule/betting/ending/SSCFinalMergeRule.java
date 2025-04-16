@@ -91,28 +91,22 @@ public class SSCFinalMergeRule {
             List<String> betCodes = new ArrayList<>();
             if (facts.get("formatCodes") instanceof List) {
                 List<Object> finalFormatCodes = formatCodes;
-                betCodes = formatCodes.stream()
-                        .map(item -> {
-                            if (item instanceof List<?>) {
+
+                if (formatCodes.get(0) instanceof List<?>) {
+                    betCodes = formatCodes.stream()
+                            .map(item -> {
                                 // 确保 `item` 是 List，并将其转换为字符串，同时使用指定分隔符
                                 String codeSp = (String) currentMethod.get("code_sp");
                                 codeSp = (codeSp != null && !codeSp.isEmpty()) ? codeSp : ",";
                                 return ((List<?>) item).stream()
                                         .map(Object::toString)
                                         .collect(Collectors.joining(codeSp));
-                            } else if (item instanceof String) {
-                                // 因为show_str的显示，所以如果是字符串应该把里面全部加入进去
-                                String allCodes = "";
-                                for (Object itemString : finalFormatCodes) {
-                                    allCodes += allCodes.isEmpty() ? itemString : ";" + itemString;
-                                }
-                                return allCodes;
-                            } else {
-                                // 如果类型不符合预期，处理异常或返回默认值
-                                return "";
-                            }
-                        })
-                        .collect(Collectors.toList());
+                            }).collect(Collectors.toList());
+                } else if (formatCodes.get(0) instanceof String) {
+                    for (Object item : formatCodes) {
+                        betCodes.add((String) item);
+                    }
+                }
             }
 
             forDisplay.put("prize", "");

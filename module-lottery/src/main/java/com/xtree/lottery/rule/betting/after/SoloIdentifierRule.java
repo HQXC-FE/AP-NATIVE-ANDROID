@@ -37,7 +37,7 @@ public class SoloIdentifierRule {
             String lotteryAlias = currentCategory.get("flag");
 
             Map<String, List<Boolean>> bet = facts.get("bet");
-            List<Boolean> posChoose = bet.get("posChoose");
+            List<Boolean> posChoose = bet.get("poschoose");
             Object formatCodes = facts.get("formatCodes");
 
             boolean solo = false;

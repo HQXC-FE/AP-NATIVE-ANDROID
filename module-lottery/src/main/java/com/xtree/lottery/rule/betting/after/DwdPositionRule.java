@@ -34,14 +34,14 @@ public class DwdPositionRule {
     @Action
     public void then(Facts facts) {
         try {
-            Map<String, List<String>> bet = facts.get("bet");
-            List<String> betPosChoose = bet.get("PosChoose");
+            Map<String, List<Boolean>> bet = facts.get("bet");
+            List<Boolean> betPosChoose = bet.get("poschoose");
             List<List<String>> formatCodes = facts.get("formatCodes");
             String currentBonus = facts.get("currentBonus");
             String currentPrize = facts.get("currentPrize");
 
             int posChooseNum = (betPosChoose != null)
-                    ? (int) betPosChoose.stream().filter(item -> item != null && !item.isEmpty()).count()
+                    ? (int) betPosChoose.stream().filter(item -> item != null).count()
                     : (int) formatCodes.stream().filter(item -> !item.isEmpty()).count();
 
             int differenceNum = (int) formatCodes.stream().filter(item -> !item.isEmpty()).count();

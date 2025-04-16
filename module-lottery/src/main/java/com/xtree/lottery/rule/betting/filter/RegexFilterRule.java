@@ -52,6 +52,7 @@ public class RegexFilterRule {
                 List<String> message = facts.get("message");
                 message.add("以下号码错误，已进行自动过滤");
                 message.add(String.join(",", errorCodes));
+                facts.put("message", message);
             }
 
             facts.put("formatCodes", currentCodes);

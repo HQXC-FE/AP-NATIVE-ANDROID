@@ -30,6 +30,7 @@ public class NoRuleSetFoundRule {
         try {
             List<String> message = facts.get("message");
             message.add("没有找到规则指纹对应的规则集合");
+            facts.put("message", message);
         } catch (Exception e) {
             CfLog.e(e.getMessage());
         }

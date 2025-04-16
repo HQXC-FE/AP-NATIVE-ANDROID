@@ -50,9 +50,9 @@ public class SpecialSingleRule {
             //去重
             List<String> realCode = singleRule.filter(String.join(",", formatCodes), singleRule.filter);
             List<String> uniqueCode = new ArrayList<>(new LinkedHashSet<>(realCode)); // 用 LinkedHashSet 保留順序
-            List<String> message = facts.get("message");
 
             if (realCode.size() != uniqueCode.size()) {
+                List<String> message = facts.get("message");
                 message.add("以下号码重复，已进行自动去重");
                 message.add(realCode.stream()
                         .collect(Collectors.groupingBy(code -> code, Collectors.counting()))
@@ -60,6 +60,7 @@ public class SpecialSingleRule {
                         .filter(entry -> entry.getValue() > 1)
                         .map(Map.Entry::getKey)
                         .collect(Collectors.joining(",")));
+                facts.put("message", message);
             }
 
             facts.put("formatCodes", uniqueCode);
@@ -84,8 +85,10 @@ public class SpecialSingleRule {
             }
 
             if (!errorCodes.isEmpty()) {
+                List<String> message = facts.get("message");
                 message.add("以下号码错误，已进行自动过滤");
                 message.add(String.join(",", errorCodes));
+                facts.put("message", message);
             }
 
             facts.put("formatCodes", currentCodes);
@@ -131,8 +134,10 @@ public class SpecialSingleRule {
                         .collect(Collectors.toList());
 
                 if (!removedCodes.isEmpty()) {
+                    List<String> message = facts.get("message");
                     message.add("已经过滤以下号码");
                     message.add(String.join(",", removedCodes));
+                    facts.put("message", message);
                 }
 
                 // 更新 formatCodes

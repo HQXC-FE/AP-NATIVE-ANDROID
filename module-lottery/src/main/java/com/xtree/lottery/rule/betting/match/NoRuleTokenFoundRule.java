@@ -30,6 +30,7 @@ public class NoRuleTokenFoundRule {
         try {
             List<String> message = facts.get("message");
             message.add("没有找到玩法对应的规则指纹");
+            facts.put("message", message);
         } catch (Exception e) {
             CfLog.e(e.getMessage());
         }
