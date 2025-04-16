@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
@@ -16,6 +17,7 @@ import com.xtree.lottery.data.Injection;
 import com.xtree.lottery.data.source.vo.LotteryChaseDetailVo;
 import com.xtree.lottery.data.source.vo.Task;
 import com.xtree.lottery.databinding.DialogBtChaseDetailBinding;
+import com.xtree.lottery.ui.adapter.ChasingDetailAdapter;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 
 import me.xtree.mvvmhabit.utils.Utils;
@@ -107,6 +109,16 @@ public class BtChaseDetailDialog extends BottomPopupView {
         }
         binding.tvwStatus.setText(status);
         binding.tvwCode.setText(vo.getCodes());
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return false; // 禁止垂直滚动
+            }
+        };
+
+        binding.rvChase.setLayoutManager(layoutManager);
+        binding.rvChase.setAdapter(new ChasingDetailAdapter(t.getATaskdetail(), owner));
     }
 
     private void requestData() {

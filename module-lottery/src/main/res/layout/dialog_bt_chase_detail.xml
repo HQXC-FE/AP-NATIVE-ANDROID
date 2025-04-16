@@ -57,6 +57,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="12dp">
+
                 <View
                     style="@style/style_filter_info_dividing"
                     android:layout_marginTop="6dp"
@@ -74,11 +75,11 @@
                         style="@style/style_item_report_value"
                         tools:text="D20240130-141***EEF" />
                 </LinearLayout>
+
                 <View
                     style="@style/style_filter_info_dividing"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp" />
-
 
                 <LinearLayout style="@style/style_item_ll_row">
 
@@ -91,7 +92,6 @@
                         style="@style/style_item_report_value"
                         tools:text="2024-01-13 13:53:53" />
                 </LinearLayout>
-
 
                 <View
                     style="@style/style_filter_info_dividing"
@@ -143,6 +143,7 @@
                         style="@style/style_item_report_value"
                         tools:text="河内5分彩" />
                 </LinearLayout>
+
                 <View
                     style="@style/style_filter_info_dividing"
                     android:layout_marginTop="6dp"
@@ -172,11 +173,11 @@
                         tools:text="2元" />
                 </LinearLayout>
 
-
                 <View
                     style="@style/style_filter_info_dividing"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp" />
+
                 <LinearLayout style="@style/style_item_ll_row">
 
                     <TextView
@@ -188,6 +189,7 @@
                         style="@style/style_item_report_value"
                         tools:text="6" />
                 </LinearLayout>
+
                 <LinearLayout style="@style/style_item_ll_row">
 
                     <TextView
@@ -211,6 +213,7 @@
                         style="@style/style_item_report_value"
                         tools:text="0" />
                 </LinearLayout>
+
                 <View
                     style="@style/style_filter_info_dividing"
                     android:layout_marginTop="6dp"
@@ -244,6 +247,7 @@
                     style="@style/style_filter_info_dividing"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp" />
+
                 <LinearLayout style="@style/style_item_ll_row">
 
                     <TextView
@@ -255,6 +259,7 @@
                         style="@style/style_item_report_value"
                         tools:text="是" />
                 </LinearLayout>
+
                 <LinearLayout style="@style/style_item_ll_row">
 
                     <TextView
@@ -286,6 +291,67 @@
                     android:id="@+id/tvw_code"
                     style="@style/style_item_report_value"
                     tools:text="1,1,1" />
+
+                <LinearLayout
+                    android:id="@+id/layout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/rv_chasing"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:background="@color/clr_main_03">
+
+                        <CheckBox
+                            android:id="@+id/cb_all_issue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:button="@drawable/checkbox_item"
+                            android:text="奖期"
+                            android:textColor="@color/textColor"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/tv1"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv1"
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="追号倍数"
+                            android:textColor="@color/textColor"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/tv2" />
+
+                        <TextView
+                            android:id="@+id/tv2"
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="追号状态"
+                            android:textColor="@color/textColor"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/tv3" />
+
+                        <TextView
+                            android:id="@+id/tv3"
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="注单详情"
+                            android:textColor="@color/textColor"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_chase"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
