@@ -138,6 +138,7 @@
     <string name="txt_venue_obgdj">DB电竞</string>
     <string name="txt_venue_yy">云游棋牌</string>
     <string name="txt_venue_wali">瓦力真人&amp;棋牌</string>
+    <string name="txt_venue_ad">奥丁棋牌</string>
     <string name="txt_venue_aug">AUG棋牌</string>
 
     <string name="txt_query_type">查询类型</string>
@@ -225,6 +226,8 @@
     <string name="txt_rc_hi_down">下载嗨钱包</string>
 
     <string name="txt_update">版本更新</string>
+    <string name="txt_update_version_tip">更新版本:</string>
+    <string name="txt_user_version">当前版本：</string>
     <string name="txt_update_tip">更新中，请稍候...</string>
     <string name="txt_update_down_over_tip">下载完成</string>
     <string name="txt_update_down_fail_tip">下载失败，请稍候重试</string>
@@ -277,6 +280,7 @@
     <string name="txt_bind_error_sys_tip">您尚未绑定</string>
     <string name="txt_bind_bank_tip">银行卡</string>
     <string name="txt_bind_usdt_tip">USDT提款</string>
+    <string name="txt_bind_usdc_tip">USDC提款</string>
     <string name="txt_withdrawal_usdt_tip">USDT介绍及提款教程</string>
     <string name="txt_single_withdrawal_range">单笔取款范围 %1$s-%2$s 元</string>
     <string name="txt_withdraw_input_error_tip">请输入提款金额</string>
@@ -376,4 +380,6 @@
 
     <string name="me_agreement_hint">我已阅读并同意</string>
     <string name="me_agreement_content">《游戏网站使用者条款》</string>
+    <string name="app_update_until_next_time">下次再说</string>
+    <string name="app_update_now">立即更新</string>
 </resources>

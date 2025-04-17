@@ -28,6 +28,7 @@
   { "id":"402", "title": "XXXX", "picture": "hm_gm_dj_02", "typeId": 402, "pId": 4 ,    	"name":"IM电竞", "isH5": true, "cid":30, "imageName": "XCImage.esports_IMONE", "gameId": 2758 } ,
   { "id":"404", "title": "XXXX", "picture": "hm_gm_dj_04", "typeId": 404, "pId": 4 ,    	"name":"DB电竞", "isH5": true, "cid":40, "imageName": "XCImage.esports_OBGDJ" } ,
 
+  { "id":"500", "title": "XXXX", "picture": "hm_gm_qp_00", "typeId": 500, "pId": 5 ,    	"name" : "奥丁棋牌", "isH5": true, "cid":63} ,
   { "id":"506", "title": "XXXX", "picture": "hm_gm_qp_06", "typeId": 506, "pId": 5 ,    	"name" : "瓦力棋牌","isH5": true, "cid":43} ,
   { "id":"501", "title": "XXXX", "picture": "hm_gm_qp_01", "typeId": 501, "pId": 5 ,    	"name" : "云游棋牌","playURL":"yygame/play?autoThrad", "isH5": true, "cid":20, "imageName": "XCImage.chess_YY" } ,
   { "id":"502", "title": "XXXX", "picture": "hm_gm_qp_02", "typeId": 502, "pId": 5 ,    	"name" : "DB棋牌","isH5": true, "cid":32, "imageName": "XCImage.chess_OBGQP" } ,

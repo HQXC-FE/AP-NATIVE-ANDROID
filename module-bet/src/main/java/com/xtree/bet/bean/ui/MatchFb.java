@@ -448,6 +448,15 @@ public class MatchFb implements Match{
 
     //目前只针对斯诺克表示当前第几局，如果其它赛种使用需要写扩展逻辑
     @Override
+    public int getMess() {
+        if(matchInfo.mc.r){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+    @Override
     public String getMct() {
         CfLog.d("=============== FB matchInfo.mc.pe =============="+matchInfo.mc.pe);
         SportEntity sportEntity = SportEntityManager.getSportEntityById(matchInfo.mc.pe);
@@ -455,15 +464,6 @@ public class MatchFb implements Match{
            return "未知";
         }else{
             return sportEntity.getName();
-        }
-    }
-
-    @Override
-    public int getMess() {
-        if(matchInfo.mc.r){
-            return 1;
-        }else{
-            return 0;
         }
     }
 

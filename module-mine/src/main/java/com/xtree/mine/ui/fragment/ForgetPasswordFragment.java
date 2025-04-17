@@ -26,6 +26,7 @@ import com.xtree.mine.ui.viewmodel.ForgetPasswordViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
+import me.xtree.mvvmhabit.utils.ToastUtils;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_FORGET_PASSWORD)
 public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordBinding, ForgetPasswordViewModel> {
@@ -96,7 +97,10 @@ public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordB
                 if (mUsername !=null && !TextUtils.isEmpty(mUsername) && mUsername.length() >2){
                     viewModel.getForgetUserInfo(mUsername);
                     mIsClickable = false;
-                }else{
+                } else if (mUsername == null || TextUtils.isEmpty(mUsername)) {
+                    ToastUtils.showError("请输入用户名");
+                } else{
+                    ToastUtils.showError("用户名无效");
                     CfLog.e("*******************mUsername is NULL *******************");
                 }
             }
@@ -327,6 +331,12 @@ public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordB
         viewModel.liveDataCheckPasswordSuccess.observe(this, vo -> {
             binding.llResetPassword.clResetPassword.setVisibility(View.GONE);
             binding.llFinish.clFinish.setVisibility(View.VISIBLE);
+        });
+
+        viewModel.liveDataError.observe(this, vo ->{
+            if (!TextUtils.isEmpty(vo)){
+                ToastUtils.showError(vo);
+            }
         });
     }
 

@@ -86,6 +86,7 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 @Route(path = RouterActivityPath.Widget.PAGER_BROWSER)
 public class BrowserActivity extends AppCompatActivity {
     public static final String ARG_TITLE = "title";
+    public static final String ARG_PARENT_TITLE = "parentTitle";
     public static final String ARG_URL = "url";
     public static final String ARG_IS_CONTAIN_TITLE = "isContainTitle";
     public static final String ARG_IS_SHOW_LOADING = "isShowLoading";
@@ -114,6 +115,7 @@ public class BrowserActivity extends AppCompatActivity {
     boolean isHideTitle = false; // 是否隐藏标题
 
     String title = "";
+    String parentTitle = "";
     String url = "";
     boolean isContainTitle = false; // 网页自身是否包含标题(少数情况下会包含)
     boolean isGame = false; // 三方游戏, 不需要header和token
@@ -147,11 +149,12 @@ public class BrowserActivity extends AppCompatActivity {
         isShowLoading = getIntent().getBooleanExtra(ARG_IS_SHOW_LOADING, false);
         isGame = getIntent().getBooleanExtra(ARG_IS_GAME, false);
         isThirdDomain = getIntent().getBooleanExtra(ARG_IS_THIRD, false);
+        parentTitle = getIntent().getStringExtra(ARG_PARENT_TITLE);
         isLottery = getIntent().getBooleanExtra(ARG_IS_LOTTERY, false);
         isHideTitle = getIntent().getBooleanExtra(ARG_IS_HIDE_TITLE, false);
+        isFB = getIntent().getBooleanExtra(ARG_IS_FB, false);
         token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
         isFirstOpenBrowser = SPUtils.getInstance().getBoolean(SPKeyGlobal.IS_FIRST_OPEN_BROWSER, true);
-        isFB = getIntent().getBooleanExtra(ARG_IS_FB, false);
 
         if (isHideTitle) {
             clTitle.setVisibility(View.GONE);
@@ -583,10 +586,11 @@ public class BrowserActivity extends AppCompatActivity {
         ctx.startActivity(it);
     }
 
-    public static void start(Context ctx, String title, String url, boolean isContainTitle, boolean isGame) {
+    public static void start(Context ctx, String parentTitle, String title, String url, boolean isContainTitle, boolean isGame) {
         CfLog.i(title + ", isContainTitle: " + false + ", url: " + url);
         Intent it = new Intent(ctx, BrowserActivity.class);
         it.putExtra(ARG_TITLE, title);
+        it.putExtra(ARG_PARENT_TITLE, parentTitle);
         it.putExtra(ARG_URL, url);
         it.putExtra(ARG_IS_CONTAIN_TITLE, isContainTitle);
         it.putExtra(ARG_IS_GAME, isGame);
@@ -618,6 +622,17 @@ public class BrowserActivity extends AppCompatActivity {
         Intent it = new Intent(ctx, BrowserActivity.class);
         it.putExtra(ARG_URL, playUrl);
         it.putExtra(ARG_TITLE, title);
+        it.putExtra(ARG_IS_THIRD, true);
+        it.putExtra(BrowserActivity.ARG_IS_GAME, true);
+        ctx.startActivity(it);
+    }
+
+    public static void startThirdDomain(Context ctx, String title, String playUrl, String parentTitle) {
+        CfLog.i("URL: " + playUrl);
+        Intent it = new Intent(ctx, BrowserActivity.class);
+        it.putExtra(ARG_URL, playUrl);
+        it.putExtra(ARG_TITLE, title);
+        it.putExtra(ARG_PARENT_TITLE, parentTitle);
         it.putExtra(ARG_IS_THIRD, true);
         it.putExtra(BrowserActivity.ARG_IS_GAME, true);
         ctx.startActivity(it);
@@ -813,10 +828,18 @@ public class BrowserActivity extends AppCompatActivity {
             UploadExcetionReq req = new UploadExcetionReq();
             if (isThirdDomain) {
                 req.setLogTag("thirdgame_domain_block");
-                req.setLogType("三方域名：" + title + "打开失败");
+                if (parentTitle == null) {
+                    req.setLogType("三方域名：" + title + "打开失败");
+                } else {
+                    req.setLogType("三方域名：" + parentTitle + "-" + title + "打开失败");
+                }
             } else {
                 req.setLogTag("thirdgame_domain_exception");
-                req.setLogType("公司域名：" + title + "打开失败");
+                if (parentTitle == null) {
+                    req.setLogType("公司域名：" + title + "打开失败");
+                } else {
+                    req.setLogType("公司域名：" + parentTitle + "-" + title + "打开失败");
+                }
             }
 
             req.setApiUrl(url);
