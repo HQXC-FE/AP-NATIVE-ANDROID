@@ -67,6 +67,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
     private ProfileVo mProfileVo;
     private USDTFruitHorRecyclerViewAdapter recyclerViewAdapter;//顶部选项卡adapter
     private String wtype;
+    private String title;
     private WithdrawalInfoVo.UserBankInfo selectorBankInfo;//选中的支付地址
     private ArrayList<WithdrawalInfoVo.UserBankInfo> bankInfoList;//提款地址
     private ArrayList<WithdrawalListVo> listVo;
@@ -83,11 +84,13 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
     public static USDTWithdrawalDialog newInstance(Context context,
                                                    LifecycleOwner owner,
                                                    final String wtype,
+                                                   final String title,
                                                    ArrayList<WithdrawalListVo> listVo,
                                                    final WithdrawalInfoVo infoVo) {
         USDTWithdrawalDialog dialog = new USDTWithdrawalDialog(context);
         dialog.owner = owner;
         dialog.wtype = wtype;
+        dialog.title = title;
         dialog.listVo = listVo;
         dialog.infoVo = infoVo;
         dialog.bankInfoList = new ArrayList<>();
@@ -127,7 +130,7 @@ public class USDTWithdrawalDialog extends BottomPopupView implements USDTFruitHo
     private void initView() {
         binding = DialogBankWithdrawalUsdtBinding.bind(findViewById(R.id.ll_root));
         binding.ivwClose.setOnClickListener(v -> dismiss());
-        binding.tvwTitle.setText(getContext().getString(R.string.txt_withdrawal_usdt_title));
+        binding.tvwTitle.setText(title);
         initNoticeView();
         //注册监听
         initListener();

@@ -230,10 +230,10 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
                     /*showBankWithdrawalDialog(selectorVo.name, infoVo, bankWithdrawalList);*/
                 } else if (TextUtils.equals("2", selectorVo.type)) {
                     //选中的是USDT提款
-                    showUSDTWithdrawalDialog(selectorVo.name, usdtWithdrawalList, infoVo);
+                    showUSDTWithdrawalDialog(selectorVo.name, getContext().getString(R.string.txt_withdrawal_usdt_title), usdtWithdrawalList, infoVo);
                 } else if (TextUtils.equals("19", selectorVo.type)) {
                     //选中的是USDC提款
-                    showUSDCWithdrawalDialog(selectorVo.name, usdcWithdrawalList, infoVo);
+                    showUSDCWithdrawalDialog(selectorVo.name, getContext().getString(R.string.txt_withdrawal_usdc_title), usdcWithdrawalList, infoVo);
                 } else if (TextUtils.equals("onepayzfb", selectorVo.name) || TextUtils.equals("onepaywx", selectorVo.name)
                         || TextUtils.equals("支付宝提款", selectorVo.title) || TextUtils.equals("微信提款", selectorVo.title)) {
                     //选中的是微信/支付宝
@@ -367,10 +367,10 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
     /**
      * 跳转USDT 提款
      */
-    private void showUSDTWithdrawalDialog(final String name, final ArrayList<WithdrawalListVo> listVo, final WithdrawalInfoVo infoVo) {
+    private void showUSDTWithdrawalDialog(final String name, final String title, final ArrayList<WithdrawalListVo> listVo, final WithdrawalInfoVo infoVo) {
         basePopupView = new XPopup.Builder(getContext())
                 .moveUpToKeyboard(false)
-                .asCustom(USDTWithdrawalDialog.newInstance(getContext(), owner, name, listVo, infoVo));
+                .asCustom(USDTWithdrawalDialog.newInstance(getContext(), owner, name, title, listVo, infoVo));
 
         basePopupView.show();
     }
@@ -378,10 +378,10 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
     /**
      * 跳转USDC 提款
      */
-    private void showUSDCWithdrawalDialog(final String name, final ArrayList<WithdrawalListVo> listVo, final WithdrawalInfoVo infoVo) {
+    private void showUSDCWithdrawalDialog(final String name, final String title, final ArrayList<WithdrawalListVo> listVo, final WithdrawalInfoVo infoVo) {
         basePopupView = new XPopup.Builder(getContext())
                 .moveUpToKeyboard(false)
-                .asCustom(USDTWithdrawalDialog.newInstance(getContext(), owner, name, listVo, infoVo));
+                .asCustom(USDTWithdrawalDialog.newInstance(getContext(), owner, name, title, listVo, infoVo));
 
         basePopupView.show();
     }
