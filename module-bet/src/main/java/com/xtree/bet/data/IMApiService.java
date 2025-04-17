@@ -1,7 +1,14 @@
 package com.xtree.bet.data;
 
-import com.xtree.bet.bean.request.pm.BtCarCgReq;
-import com.xtree.bet.bean.request.pm.BtCarReq;
+import com.xtree.bet.bean.request.im.AnnouncementReq;
+import com.xtree.bet.bean.request.im.CometitionCountReq;
+import com.xtree.bet.bean.request.im.DeltaOutrightEventsReq;
+import com.xtree.bet.bean.request.im.DeltaEventInfoMbtReq;
+import com.xtree.bet.bean.request.im.EventInfoMbtReq;
+import com.xtree.bet.bean.request.im.OutrightEventsReq;
+import com.xtree.bet.bean.request.im.SelectedEventInfoReq;
+import com.xtree.bet.bean.request.im.SportCountReq;
+import com.xtree.bet.bean.request.im.StatementReq;
 import com.xtree.bet.bean.request.pm.BtCashOutBetReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
 import com.xtree.bet.bean.request.pm.BtReq;
@@ -13,17 +20,16 @@ import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
 import com.xtree.bet.bean.response.im.OutrightEventRsp;
 import com.xtree.bet.bean.response.im.PlaceBet;
 import com.xtree.bet.bean.response.im.RecommendedSelections;
+import com.xtree.bet.bean.response.im.SportCompetitionCountRsp;
 import com.xtree.bet.bean.response.im.SportCountRsp;
+import com.xtree.bet.bean.response.im.StatementRsp;
 import com.xtree.bet.bean.response.im.WagerListRsp;
-import com.xtree.bet.bean.response.pm.BalanceInfo;
-import com.xtree.bet.bean.response.pm.BtCashOutPriceInfo;
 import com.xtree.bet.bean.response.pm.BtCashOutStatusInfo;
 import com.xtree.bet.bean.response.pm.BtRecordRsp;
 import com.xtree.bet.bean.response.pm.BtResultInfo;
 import com.xtree.bet.bean.response.pm.FrontListInfo;
 import com.xtree.bet.bean.response.pm.LeagueAreaInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
-import com.xtree.bet.bean.response.pm.MatchListRsp;
 import com.xtree.bet.bean.response.pm.PMResultBean;
 import com.xtree.bet.bean.response.pm.VideoAnimationInfo;
 
@@ -49,7 +55,7 @@ public interface IMApiService {
      */
     @POST("/yewu11/v1/m/getAnnouncement")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<GetAnnouncementRsp>> getAnnouncement();
+    Flowable<BaseResponse<GetAnnouncementRsp>> getAnnouncement(@Body AnnouncementReq announcementReq);
 
     /**
      * 获取所有体育赛种数量
@@ -59,7 +65,7 @@ public interface IMApiService {
      */
     @POST("/yewu11/v1/m/getAllSportCount")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<SportCountRsp>> getAllSportCount(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<SportCountRsp>> getAllSportCount(@Body SportCountReq sportCountReq);
 
     /**
      * 索取所有竞赛计数
@@ -68,7 +74,7 @@ public interface IMApiService {
      */
     @POST("/yewu11/v1/m/getAllCompetitionCount")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<MatchListRsp>> getAllCompetitionCount(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<SportCompetitionCountRsp>> getAllCompetitionCount(@Body CometitionCountReq cometitionCountReq);
 
     /**
      * 索取赛事和主要玩法资料
@@ -77,7 +83,7 @@ public interface IMApiService {
      */
     @POST("/yewu11/v1/m/getEventInfoMbt")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<EventListRsp>> getEventInfoMbt(@Body PMListReq pmListReq);
+    Flowable<BaseResponse<EventListRsp>> getEventInfoMbt(@Body EventInfoMbtReq eventInfoMbtReq);
 
     /**
      * 索取DELTA赛事和主要玩法详情
@@ -86,16 +92,7 @@ public interface IMApiService {
      */
     @GET("/yewu11/pub/v1/m/getDeltaEventInfoMbt")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<DeltaEventListRsp>> getDeltaEventInfoMbt(@QueryMap Map<String, String> map);
-
-    /**
-     * 索取DELTA其他玩法详情
-     *
-     * @return
-     */
-    @POST("/yewu13/v1/getDeltaMlInfoObt")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<DeltaEventListRsp>> getDeltaMlInfoObt(@Body BtCarCgReq btCarCgReq);
+    Flowable<BaseResponse<DeltaEventListRsp>> getDeltaEventInfoMbt(@Body DeltaEventInfoMbtReq evenDeltatInfoMbtReq);
 
     /**
      * 索取其他玩法资料
@@ -104,7 +101,16 @@ public interface IMApiService {
      */
     @POST("/yewu13/v1/getMlInfoObt")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<EventListRsp>> getMlInfoObt(@Body BtCarReq btCarReq);
+    Flowable<BaseResponse<EventListRsp>> getMlInfoObt(@Body EventInfoMbtReq eventInfoMbtReq);
+
+    /**
+     * 索取DELTA其他玩法详情
+     *
+     * @return
+     */
+    @POST("/yewu13/v1/getDeltaMlInfoObt")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<DeltaEventListRsp>> getDeltaMlInfoObt(@Body DeltaEventInfoMbtReq evenDeltatInfoMbtReq);
 
     /**
      * 索取赛事选项资料
@@ -113,8 +119,7 @@ public interface IMApiService {
      */
     @GET("/yewu11/v1/w/getSelectedEventInfo")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<EventListRsp>> getSelectedEventInfo(@QueryMap Map<String, String> map);
-
+    Flowable<BaseResponse<EventListRsp>> getSelectedEventInfo(@Body SelectedEventInfoReq selectedEventInfoReq);
 
     /**
      * 获取冠军赛事
@@ -123,7 +128,7 @@ public interface IMApiService {
      */
     @GET("/yewu11/v1/getOutrightEvents")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<WagerListRsp>> getOutrightEvents(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<WagerListRsp>> getOutrightEvents(@Body OutrightEventsReq outrightEventsReq);
 
     /**
      * 获取优胜冠军赛事指定比赛,如足球或篮球等
@@ -132,7 +137,16 @@ public interface IMApiService {
      */
     @GET("/yewu11/v1/getDeltaOutrightEventInfo")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<OutrightEventRsp>> getDeltaOutrightEventInfo(@QueryMap Map<String, String> map);
+    Flowable<BaseResponse<OutrightEventRsp>> getDeltaOutrightEventInfo(@Body DeltaOutrightEventsReq deltaOutrightEventsReq);
+
+    /**
+     * 获取优胜冠军赛事指定比赛,如足球或篮球等
+     *
+     * @return
+     */
+    @GET("/yewu11/v1/getStatement")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<StatementRsp>> getStatement(@Body StatementReq statementReq);
 
     /**
      * 索取现场赛果
@@ -294,9 +308,5 @@ public interface IMApiService {
     @POST("/yewu11/v1/m/placeBet")
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Single<BaseResponse<PlaceBet>> placeBet(@Body Map<String, String> map);
-
-
-
-
 
 }
