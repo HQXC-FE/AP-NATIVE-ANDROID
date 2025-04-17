@@ -5,6 +5,7 @@ import com.xtree.bet.bean.request.im.CometitionCountReq;
 import com.xtree.bet.bean.request.im.DeltaOutrightEventsReq;
 import com.xtree.bet.bean.request.im.DeltaEventInfoMbtReq;
 import com.xtree.bet.bean.request.im.EventInfoMbtReq;
+import com.xtree.bet.bean.request.im.GetBetListReq;
 import com.xtree.bet.bean.request.im.OutrightEventsReq;
 import com.xtree.bet.bean.request.im.SelectedEventInfoReq;
 import com.xtree.bet.bean.request.im.SportCountReq;
@@ -14,6 +15,7 @@ import com.xtree.bet.bean.request.pm.BtRecordReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.im.BetInfo;
+import com.xtree.bet.bean.response.im.BetList;
 import com.xtree.bet.bean.response.im.DeltaEventListRsp;
 import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
@@ -23,6 +25,7 @@ import com.xtree.bet.bean.response.im.RecommendedSelections;
 import com.xtree.bet.bean.response.im.SportCompetitionCountRsp;
 import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.response.im.StatementRsp;
+import com.xtree.bet.bean.response.im.Wager;
 import com.xtree.bet.bean.response.im.WagerListRsp;
 import com.xtree.bet.bean.response.pm.BtCashOutStatusInfo;
 import com.xtree.bet.bean.response.pm.BtRecordRsp;
@@ -308,5 +311,32 @@ public interface IMApiService {
     @POST("/yewu11/v1/m/placeBet")
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Single<BaseResponse<PlaceBet>> placeBet(@Body Map<String, String> map);
+
+
+    /**
+     * 索取投注明细
+     */
+    @POST("/yewu11/v1/m/getBetList")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Single<BaseResponse<List<Wager>>> getBetList(@Body GetBetListReq getBetListReq);
+
+
+    /**
+     *以页数索取投注明细
+     */
+    @POST("/yewu11/v1/m/getBetListByPage")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Single<BaseResponse<BetList>> getBetListByPage(@Body GetBetListReq getBetListReq);
+
+
+
+    /**
+     * 索取投注账目
+     */
+    @POST("/yewu11/v1/m/getStatement")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Single<BaseResponse<List<Wager>>> getStatement(@Body Map<String, String> map);
+
+
 
 }
