@@ -84,7 +84,7 @@ public class USDTFruitHorRecyclerViewAdapter extends RecyclerView.Adapter {
     private static class ViewHolder extends RecyclerView.ViewHolder {
         private View itemView;
         private TextView showTextView;
-        private LinearLayout showLayout;
+        private View showLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
