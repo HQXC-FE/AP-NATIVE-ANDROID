@@ -11,6 +11,7 @@ import org.jeasy.rules.api.Facts;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Rule(name = "PK10JSSMBigSmallOddEven", description = "PK10, JSSM 大小单双规则")
 public class PK10JSSMBigSmallOddEvenRule {
@@ -49,7 +50,7 @@ public class PK10JSSMBigSmallOddEvenRule {
                 case "大小单双中三和值":
                 case "大小单双后三和值": {
                     String codeJoin = (String) formatCodes.get(0);
-                    if (((String)formatCodes.get(0)).length() > 1 && !List.of("大小", "小大", "单双", "双单").contains(codeJoin)) {
+                    if (((String) formatCodes.get(0)).length() > 1 && !List.of("大小", "小大", "单双", "双单").contains(codeJoin)) {
                         facts.put("currentBonus", currentBonus + "~" + round(currentPrize + currentBonus, 4));
                         facts.put("currentPrize", currentPrize + "~" + round(currentPrize * 2, 4));
                     }
@@ -70,7 +71,7 @@ public class PK10JSSMBigSmallOddEvenRule {
                 case "大小单双后三大小个数":
                     List<String> codeJoinCol1 = formatCodes.stream()
                             .map(obj -> (String) obj)
-                            .toList();
+                            .collect(Collectors.toList());
                     String codeJoin1 = String.join("", codeJoinCol1);
                     int num1 = facts.get("num");
                     if (num1 < 3 && List.of("全大", "全小", "全大全小").contains(codeJoin1)) {
@@ -87,7 +88,7 @@ public class PK10JSSMBigSmallOddEvenRule {
                 case "大小单双后三单双个数": {
                     List<String> codeJoinCol2 = formatCodes.stream()
                             .map(obj -> (String) obj)
-                            .toList();
+                            .collect(Collectors.toList());
                     String codeJoin2 = String.join("", codeJoinCol2);
                     int num2 = facts.get("num");
                     if (num2 < 3 && List.of("全单", "全双", "全单全双").contains(codeJoin2)) {
@@ -108,8 +109,8 @@ public class PK10JSSMBigSmallOddEvenRule {
 
     private void calculateBonusAndPrize(List<Object> formatCodes, double currentPrize, double currentBonus, Facts facts) {
         int prizeNum = calculatePrizeMultiplier((List<String>) formatCodes.get(0));
-        int prizeNum2 = calculatePrizeMultiplier((List<String>)formatCodes.get(1));
-        int prizeNum3 = formatCodes.size() > 2 ? calculatePrizeMultiplier((List<String>)formatCodes.get(2)) : 1;
+        int prizeNum2 = calculatePrizeMultiplier((List<String>) formatCodes.get(1));
+        int prizeNum3 = formatCodes.size() > 2 ? calculatePrizeMultiplier((List<String>) formatCodes.get(2)) : 1;
 
         int totalMultiplier = prizeNum * prizeNum2 * prizeNum3;
         if (totalMultiplier > 1) {
