@@ -75,12 +75,13 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tvAmmountTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="需充值USDT数量"
                 android:textColor="@color/clr_grey_80"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:text="需充值USDT数量" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -276,12 +277,13 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/ivTransExample"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="@dimen/layout_margin"
                 android:layout_marginTop="@dimen/layout_margin"
-                android:src="@mipmap/rc_trans_usdt" />
+                tools:src="@mipmap/rc_trans_usdt" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
