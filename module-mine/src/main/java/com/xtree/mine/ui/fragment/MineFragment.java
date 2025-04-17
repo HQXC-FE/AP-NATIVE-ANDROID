@@ -504,10 +504,10 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             SPUtils.getInstance().put(SPKeyGlobal.APP_LAST_CHECK_TIME, System.currentTimeMillis());
             long versionCode = Long.valueOf(StringUtils.getVersionCode(getContext()));
             CfLog.i("versionCode = " + versionCode);
-           /* if (versionCode >= updateVo.version_code) {
+            if (versionCode >= updateVo.version_code) {
                 ToastUtils.showSuccess(getResources().getString(R.string.txt_update_version));
                 return;
-            }*/
+            }
 
             //线上版本大于本机版本
             if (updateVo.type == 0) {
