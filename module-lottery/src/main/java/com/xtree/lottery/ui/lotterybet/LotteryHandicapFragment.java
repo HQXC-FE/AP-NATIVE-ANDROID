@@ -28,8 +28,6 @@ import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.lottery.utils.AnimUtils;
 import com.xtree.lottery.utils.LotteryAnalyzer;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,7 +113,7 @@ public class LotteryHandicapFragment extends BaseFragment<FragmentLotteryHandica
             public void onChanged(LotteryBetsModel lotteryBetsModel) {
                 if (lotteryBetsModel != null) {
                     //设置选注形态
-                    binding.lotteryHandicapBetlayout.setData(viewModel.rulesResultDataLiveData,lotteryBetsModel, null, lottery);
+                    binding.lotteryHandicapBetlayout.setData(viewModel.rulesResultDataLiveData, lotteryBetsModel, null, lottery);
                     mTabPosition = lotteryBetsModel.getPosition();
                     mTabTitle = lotteryBetsModel.getTitle();
 //                    //设置投注金额

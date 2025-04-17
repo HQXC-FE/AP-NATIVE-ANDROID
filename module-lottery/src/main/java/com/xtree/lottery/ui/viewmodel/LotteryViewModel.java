@@ -7,11 +7,13 @@ import android.content.ContextWrapper;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.mvvm.ExKt;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
@@ -29,6 +31,7 @@ import com.xtree.lottery.data.source.vo.LotteryOrderVo;
 import com.xtree.lottery.data.source.vo.LotteryReportVo;
 import com.xtree.lottery.data.source.vo.MethodMenus;
 import com.xtree.lottery.data.source.vo.RecentLotteryVo;
+import com.xtree.lottery.data.source.vo.SimulatedNumber;
 import com.xtree.lottery.data.source.vo.TraceInfoVo;
 
 import java.text.ParseException;
@@ -37,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
@@ -316,7 +321,7 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
         lotteryCopyBetRequest.setId(id);
         lotteryCopyBetRequest.setPlay_source(6);
         lotteryCopyBetRequest.setNonce(UuidUtil.getID24());
-        model.copyBet(lotteryCopyBetRequest).subscribe(new HttpCallBack<Object>() {
+        Disposable disposable = (Disposable) model.copyBet(lotteryCopyBetRequest).subscribeWith(new HttpCallBack<Object>() {
             @Override
             public void onResult(Object response) {
 
@@ -381,6 +386,39 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
 
             }
         });
+        addSubscribe(disposable);
+    }
+
+
+    /**
+     * 模拟开奖
+     */
+    public void simulatedNumber(View view, ObservableField<List<String>> drawCode) {
+        Disposable disposable = (Disposable) model.simulatedNumber("" + lotteryLiveData.getValue().getId())
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<SimulatedNumber>() {
+                    @Override
+                    public void onResult(SimulatedNumber simulatedNumber) {
+                        try {
+                            drawCode.set(simulatedNumber.getNumber().chars()
+                                    .mapToObj(c -> String.valueOf((char) c))
+                                    .collect(Collectors.toList()));
+                        } catch (Exception e) {
+                            CfLog.e(e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    protected void onStart() {
+                        super.onStart();
+                        Activity activity = ExKt.getActivity(view);
+                        if (activity != null) {
+                            LoadingDialog.show(activity);
+                        }
+                    }
+                });
+        addSubscribe(disposable);
     }
 
     /*
