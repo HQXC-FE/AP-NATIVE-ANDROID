@@ -31,15 +31,6 @@ public class PositionChosenDecisionRule {
         try {
             // 从 facts 中获取相关数据
             List<Boolean> poschoose = ((Map<String, List<Boolean>>) facts.get("bet")).get("poschoose");
-            Integer posnum = 0;
-            Integer number = 0;
-
-            if (((Map<String, String>) facts.get("attached")).get("posnum") != null) {
-                posnum = Integer.parseInt(((Map<String, String>) facts.get("attached")).get("posnum"));
-            }
-            if (((Map<String, String>) facts.get("attached")).get("number") != null) {
-                number = Integer.parseInt(((Map<String, String>) facts.get("attached")).get("number"));
-            }
             Integer num = facts.get("num");
 
             if (poschoose == null || num == null) {
@@ -50,7 +41,8 @@ public class PositionChosenDecisionRule {
             long selectedCount = poschoose.stream().filter(item -> item).count();
 
             // 计算最小选择数
-            int minNumber = (posnum != null) ? posnum : (number != null ? number : 0);
+            int minNumber = (((Map<String, String>) facts.get("attached")).get("posnum") != null) ? Integer.parseInt(((Map<String, String>) facts.get("attached")).get("posnum"))
+                    : (((Map<String, String>) facts.get("attached")).get("number") != null ? Integer.parseInt(((Map<String, String>) facts.get("attached")).get("number")) : 0);
 
             if (minNumber > selectedCount) {
                 facts.put("num", 0); // 如果选中的位数小于最小选择量，将 num 置为 0
