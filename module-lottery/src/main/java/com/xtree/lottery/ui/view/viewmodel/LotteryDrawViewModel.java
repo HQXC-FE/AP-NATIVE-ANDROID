@@ -6,7 +6,7 @@ import androidx.databinding.ObservableField;
 
 import com.xtree.lottery.ui.view.LotteryDrawView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by KAKA on 2024/5/1.
@@ -17,7 +17,7 @@ public class LotteryDrawViewModel {
     //开奖日期
     public ObservableField<String> drawDate = new ObservableField<>();
     //开奖号码
-    public ObservableField<ArrayList<String>> drawCode = new ObservableField<>();
+    public ObservableField<List<String>> drawCode = new ObservableField<>();
     //别名
     public ObservableField<String> alias = new ObservableField<>();
 
@@ -30,6 +30,17 @@ public class LotteryDrawViewModel {
     public void refresh(View view) {
         if (listener != null) {
             listener.onRefresh(view);
+        }
+    }
+
+    /**
+     * 模拟开奖
+     *
+     * @param view
+     */
+    public void simulate(View view) {
+        if (listener != null) {
+            listener.onSimulate(view, drawCode);
         }
     }
 }

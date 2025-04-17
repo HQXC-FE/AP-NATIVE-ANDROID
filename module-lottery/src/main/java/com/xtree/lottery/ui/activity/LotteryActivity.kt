@@ -3,6 +3,7 @@ package com.xtree.lottery.ui.activity
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -78,6 +79,13 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         if (lottery.handicap) {//是否显示盘口玩法
             binding.tlLottery.addTab(binding.tlLottery.newTab().setText("盘口玩法"))
         }
+        if ("mmc".equals(lottery.alias)) {
+            binding.tvTitle.visibility = View.GONE;
+            binding.tvTime.visibility = View.GONE;
+        } else {
+            binding.tvTitle.visibility = View.GONE;
+            binding.tvTime.visibility = View.GONE;
+        }
         binding.tlLottery.addTab(binding.tlLottery.newTab().setText("投注记录"))
         binding.tlLottery.addTab(binding.tlLottery.newTab().setText("追号记录"))
         binding.tlLottery.addOnTabSelectedListener(object : OnTabSelectedListener {
@@ -121,7 +129,9 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
 
     override fun initData() {
         //viewModel.getMethodMenus(lottery.alias)
-        viewModel.getCurrentIssue(lottery.id)
+        if (!"mmc".equals(lottery.alias)) {
+            viewModel.getCurrentIssue(lottery.id)
+        }
     }
 
     override fun initViewObservable() {
