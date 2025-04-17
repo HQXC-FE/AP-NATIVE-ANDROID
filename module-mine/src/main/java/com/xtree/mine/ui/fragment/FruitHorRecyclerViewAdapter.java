@@ -5,7 +5,6 @@ import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -91,7 +90,7 @@ public class FruitHorRecyclerViewAdapter extends RecyclerView.Adapter {
     private static class ViewHolder extends RecyclerView.ViewHolder {
         private View itemView;
         private TextView showTextView;
-        private LinearLayout showLayout;
+        private View showLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
