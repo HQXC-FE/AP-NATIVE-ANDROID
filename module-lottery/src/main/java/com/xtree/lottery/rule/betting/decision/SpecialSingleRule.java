@@ -100,10 +100,20 @@ public class SpecialSingleRule {
 
                 // 对号码进行排序和去重
                 List<List<String>> sortedCodes = currentCodes.stream()
-                        .map(code -> Arrays.asList(code.split(sortSplit)))
-                        .map(list -> list.stream().sorted().collect(Collectors.toList()))
+                        .map(code -> {
+                            String[] parts;
+                            if (!code.contains(sortSplit)) {
+                                // 没有空格，拆成單個字元
+                                parts = code.split("");
+                            } else {
+                                parts = code.split(sortSplit);
+                            }
+                            return Arrays.stream(parts)
+                                    .filter(s -> !s.isEmpty())
+                                    .sorted()
+                                    .collect(Collectors.toList());
+                        })
                         .distinct()
-                        // 依照排序後的字串進行排序
                         .sorted((list1, list2) -> {
                             String s1 = String.join(sortSplit, list1);
                             String s2 = String.join(sortSplit, list2);

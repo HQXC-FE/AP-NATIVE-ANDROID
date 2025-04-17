@@ -233,7 +233,11 @@ public class BettingEntryRule {
         submitDTO.setOmodel(Integer.valueOf(submit.get("omodel").toString()));
         submitDTO.setMode(Integer.valueOf(submit.get("mode").toString()));
         submitDTO.setTimes(Integer.valueOf(submit.get("times").toString()));
-        submitDTO.setPoschoose(submit.get("poschoose").toString());
+        if (submit.get("poschoose") != null) {
+            submitDTO.setPoschoose(submit.get("poschoose").toString());
+        } else {
+            submitDTO.setPoschoose("");
+        }
         submitDTO.setMenuid(Integer.valueOf(submit.get("menuid").toString()));
         submitDTO.setType(submit.get("type").toString());
         submitDTO.setNums(Integer.valueOf(submit.get("nums").toString()));

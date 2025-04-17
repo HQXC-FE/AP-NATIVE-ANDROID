@@ -31,9 +31,15 @@ public class PositionChosenDecisionRule {
         try {
             // 从 facts 中获取相关数据
             List<Boolean> poschoose = ((Map<String, List<Boolean>>) facts.get("bet")).get("poschoose");
+            Integer posnum = 0;
+            Integer number = 0;
 
-            Integer posnum = (Integer) ((Map<String, Object>) facts.get("attached")).get("posnum");
-            Integer number = Integer.parseInt(((Map<String, String>) facts.get("attached")).get("number"));
+            if (((Map<String, String>) facts.get("attached")).get("posnum") != null) {
+                posnum = Integer.parseInt(((Map<String, String>) facts.get("attached")).get("posnum"));
+            }
+            if (((Map<String, String>) facts.get("attached")).get("number") != null) {
+                number = Integer.parseInt(((Map<String, String>) facts.get("attached")).get("number"));
+            }
             Integer num = facts.get("num");
 
             if (poschoose == null || num == null) {

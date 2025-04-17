@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Rule(name = "Niuniu", description = "Analyze Niuniu shape based on history codes")
@@ -91,7 +92,7 @@ public class NiuniuRule {
         int n = array.size();
         int[] indices = IntStream.range(0, size).toArray();
         while (indices[size - 1] < n) {
-            combinations.add(IntStream.of(indices).mapToObj(array::get).toList());
+            combinations.add(IntStream.of(indices).mapToObj(array::get).collect(Collectors.toList()));
             int t = size - 1;
             while (t != 0 && indices[t] == n - size + t) t--;
             indices[t]++;
@@ -103,7 +104,7 @@ public class NiuniuRule {
     private List<Map<String, String>> mapToDisabled(List<Integer> workCode) {
         return workCode.stream()
                 .map(item -> Map.of("codes", item.toString(), "className", "disabled"))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private List<Map<String, String>> mapToDisplay(List<Integer> workCode, List<Integer> niuIndex) {
@@ -111,7 +112,7 @@ public class NiuniuRule {
                 .mapToObj(i -> Map.of(
                         "codes", workCode.get(i).toString(),
                         "className", niuIndex.contains(i) ? "active" : "disabled"))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private List<Integer> findIndices(List<Integer> workCode, List<Integer> niuArr) {
