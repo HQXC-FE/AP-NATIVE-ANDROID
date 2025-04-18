@@ -210,6 +210,14 @@
         <item name="app_update_text_attr">@style/style_app_update_text</item>
         <item name="app_update_current_version_attr">@style/style_app_update_current_version</item>
         <item name="app_update_progress_drawable_attr">@style/style_app_update_progress_drawable</item>
+
+        <item name="welcome_banner_image_1_attr">@style/style_welcome_banner_image_1</item>
+        <item name="welcome_banner_image_2_attr">@style/style_welcome_banner_image_2</item>
+        <item name="welcome_banner_image_3_attr">@style/style_welcome_banner_image_3</item>
+        <item name="welcome_bottom_attr">@style/style_welcome_bottom</item>
+        <item name="welcome_bottom_logo_attr">@style/style_welcome_bottom_logo</item>
+        <item name="welcome_top_image_attr">@style/style_welcome_top_image</item>
+
     </style>
 
 </resources>

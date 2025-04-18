@@ -8,7 +8,6 @@ import android.os.Message
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.xtree.base.global.SPKeyGlobal
-import com.xtree.base.net.RetrofitClient
 import com.xtree.base.router.RouterActivityPath
 import com.xtree.base.utils.DomainUtil
 import com.xtree.base.utils.TagUtils

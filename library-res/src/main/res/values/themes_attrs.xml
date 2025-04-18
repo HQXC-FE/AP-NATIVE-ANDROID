@@ -188,4 +188,11 @@
 
     <attr name="app_update_content_attr" format="reference" />
     <attr name="app_update_progress_drawable_attr" format="reference" />
+
+    <attr name="welcome_banner_image_1_attr" format="reference" />
+    <attr name="welcome_banner_image_2_attr" format="reference" />
+    <attr name="welcome_banner_image_3_attr" format="reference" />
+    <attr name="welcome_bottom_attr" format="reference" />
+    <attr name="welcome_bottom_logo_attr" format="reference" />
+    <attr name="welcome_top_image_attr" format="reference" />
 </resources>

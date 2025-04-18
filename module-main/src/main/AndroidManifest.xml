@@ -2,8 +2,20 @@
     package="com.xtree.main">
 
     <application>
+
         <activity
-            android:name=".ui.SplashActivity"
+            android:name=".ui.WelcomeActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+       >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+       <!-- <activity
+            android:name=".ui.WelcomeActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.Start">
@@ -12,7 +24,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
         <!--在自己组件中注册Activity-->
         <activity
             android:name="com.xtree.main.ui.MainActivity"

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/clr_transparent">
+
+        <ImageView
+            android:id="@+id/ivWelcomeTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            style="?attr/welcome_top_image_attr"
+            android:layout_marginTop="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <com.youth.banner.Banner
+            android:id="@+id/ivWelcomeBanner"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            app:banner_auto_loop="true"
+            app:banner_indicator_normal_color="@color/white"
+            app:banner_indicator_selected_color="@color/clr_hm_purple_03"
+            app:banner_infinite_loop="true"
+            app:banner_loop_time="2500"
+            app:banner_orientation="horizontal"
+            android:layout_marginTop="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivWelcomeTop">
+
+            <ImageView
+                style="?attr/home_top_banner_attr"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                />
+
+            <!--<ImageView
+                android:id="@+id/ivw_cs"
+                style="@style/style_ic_title_right"
+                android:layout_gravity="end|top"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="16dp"
+                android:src="@mipmap/cm_ic_cs" />-->
+        </com.youth.banner.Banner>
+
+        <ImageView
+            android:id="@+id/ivLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?attr/welcome_bottom_attr"
+            android:layout_marginTop="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivWelcomeBanner"
+            />
+        <ImageView
+            android:id="@+id/ivBottomLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?attr/welcome_bottom_logo_attr"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivLogin"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -864,4 +864,25 @@
     <style name="style_app_update_progress_drawable" parent="android:Widget.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/down_progressbar</item>
     </style>
+
+    <style name="style_welcome_banner_image_1">
+        <item name="android:background">@drawable/welcome_banner_image_1</item>
+    </style>
+    <style name="style_welcome_banner_image_2">
+        <item name="android:background">@drawable/welcome_banner_image_2</item>
+    </style>
+
+    <style name="style_welcome_banner_image_3">
+        <item name="android:background">@drawable/welcome_banner_image_3</item>
+    </style>
+    <style name="style_welcome_bottom">
+        <item name="android:background">@drawable/welcome_bottom</item>
+    </style>
+
+    <style name="style_welcome_bottom_logo">
+        <item name="android:background">@drawable/welcome_bottom_logo</item>
+    </style>
+    <style name="style_welcome_top_image">
+        <item name="android:background">@drawable/welcome_top_image</item>
+    </style>
 </resources>
