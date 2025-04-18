@@ -38,6 +38,7 @@ import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.widget.AppUpdateDialog;
 import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.VerticalSpaceItemDecoration;
 import com.xtree.home.BR;
@@ -423,12 +424,14 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     startContainerFragment(RouterFragmentPath.Home.AUG);
                     return;
                 }
-                if (vo.cid == 19 || vo.cid == 34 || vo.cid == 1) {
+                if (vo.cid == 19 || vo.cid == 34 || vo.cid == 1 || vo.cid == 52) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("vo", vo);
                     startContainerFragment(RouterFragmentPath.Home.ELE, bundle);
                     return;
                 }
+
+                LoadingDialog.show(getContext());
                 viewModel.getPlayUrl(vo.alias, vo.gameId, vo.name);
             }
 
