@@ -416,6 +416,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                                                             for (int index = 0; index < layoutDTOLocal.size(); index++) {
                                                                 MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layout = layoutDTOLocal.get(index);
                                                                 layout.setTitle(layoutDTORemote.get(index).getTitle());
+                                                                layout.setNo(layoutDTORemote.get(index).getNo());
                                                             }
                                                         }
                                                     }
