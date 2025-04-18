@@ -12,6 +12,7 @@ import com.xtree.lottery.data.source.request.LotteryCopyBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
+import com.xtree.lottery.data.source.vo.BetResult;
 import com.xtree.lottery.data.source.vo.SimulatedNumber;
 
 import java.util.Map;
@@ -91,6 +92,11 @@ public class LotteryRepository extends BaseModel implements HttpDataSource, Loca
         return mHttpDataSource.bet(betRequest, params)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer());
+    }
+
+    @Override
+    public Flowable<BaseResponse<BetResult>> mmcBet(LotteryBetRequest betRequest, Map<String, Object> params) {
+        return mHttpDataSource.mmcBet(betRequest, params);
     }
 
     @Override

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.lxj.xpopup.util.KeyboardUtils;
@@ -142,8 +141,8 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
             }
 
             @Override
-            public void onSimulate(View view, ObservableField<List<String>> drawCode) {
-                binding.getModel().lotteryViewModel.simulatedNumber(view,drawCode);
+            public void onSimulate(View view) {
+                binding.getModel().lotteryViewModel.simulatedNumber(view);
             }
         });
 
@@ -212,6 +211,10 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
                 binding.lotteryBetsDrawview.setDrawCode(bonusNumbers.get(0));
 
             }
+        });
+
+        binding.getModel().lotteryViewModel.drawCodeLiveData.observe(this, number -> {
+            binding.lotteryBetsDrawview.setDrawCode(number);
         });
 
         binding.lotteryBetsSavebetLayout.setOnClickListener(v -> {

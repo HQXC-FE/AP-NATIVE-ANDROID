@@ -7,7 +7,6 @@ import android.content.ContextWrapper;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableField;
 import androidx.lifecycle.MutableLiveData;
 
 import com.lxj.xpopup.XPopup;
@@ -40,8 +39,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
@@ -69,6 +66,8 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
     public MutableLiveData<IssueVo> currentIssueLiveData = new MutableLiveData<>();
     //彩票信息
     public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
+    //投注结果号，秒秒彩
+    public MutableLiveData<String> drawCodeLiveData = new MutableLiveData<>();
 
     private BasePopupView popupView;
 
@@ -391,22 +390,16 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
 
 
     /**
-     * 模拟开奖
+     * 秒秒彩模拟开奖
      */
-    public void simulatedNumber(View view, ObservableField<List<String>> drawCode) {
+    public void simulatedNumber(View view) {
         Disposable disposable = (Disposable) model.simulatedNumber("" + lotteryLiveData.getValue().getId())
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<SimulatedNumber>() {
                     @Override
                     public void onResult(SimulatedNumber simulatedNumber) {
-                        try {
-                            drawCode.set(simulatedNumber.getNumber().chars()
-                                    .mapToObj(c -> String.valueOf((char) c))
-                                    .collect(Collectors.toList()));
-                        } catch (Exception e) {
-                            CfLog.e(e.getMessage());
-                        }
+                        drawCodeLiveData.setValue(simulatedNumber.getNumber());
                     }
 
                     @Override

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.xtree.base.widget.TipDialog;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.LotteryRepository;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
+import com.xtree.lottery.data.source.vo.BetResult;
 import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
@@ -30,9 +32,12 @@ import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
+import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.http.BusinessException;
+import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
 /**
@@ -115,7 +120,11 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
      * 投注
      */
     public void bet(View view) {
-        if(ClickUtil.isFastClick()){
+        if (ClickUtil.isFastClick()) {
+            return;
+        }
+        if ("mmc".equals(betsViewModel.lotteryLiveData.getValue().getAlias())) {
+            mmBet(view);
             return;
         }
         if (issueLiveData.getValue() == null) {
@@ -146,7 +155,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
         if (chasingNumberParams.getValue() != null && chasingNumberParams.getValue().getParmes() != null) {
             parmes.putAll(chasingNumberParams.getValue().getParmes());
         }
-        model.bet(lotteryBetRequest, parmes).subscribe(new HttpCallBack<Object>() {
+        Disposable disposable = (Disposable) model.bet(lotteryBetRequest, parmes).subscribeWith(new HttpCallBack<Object>() {
             @Override
             public void onResult(Object response) {
                 chasingNumberParams.setValue(null);
@@ -205,6 +214,157 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
                 }
             }
         });
+        addSubscribe(disposable);
+    }
+
+    /**
+     * 秒秒彩投注
+     */
+    public void mmBet(View view) {
+
+        LotteryBetRequest lotteryBetRequest = new LotteryBetRequest();
+        ArrayList<LotteryBetRequest.BetOrderData> betOrders = new ArrayList<>();
+
+        BigDecimal money = BigDecimal.ZERO;
+        int nums = 0;
+        for (BindModel bindModel : datas.getValue()) {
+            LotteryBetRequest.BetOrderData data = (LotteryBetRequest.BetOrderData) bindModel;
+            money = money.add(BigDecimal.valueOf(data.getMoney()));
+            nums += data.getNums();
+            betOrders.add(data);
+        }
+        lotteryBetRequest.setLt_project(betOrders);
+        lotteryBetRequest.setLotteryid(betsViewModel.lotteryLiveData.getValue().getId());
+        lotteryBetRequest.setCurmid(betsViewModel.lotteryLiveData.getValue().getCurmid());
+        lotteryBetRequest.setLt_total_money(money.toPlainString());
+        lotteryBetRequest.setLt_total_nums(nums);
+        lotteryBetRequest.setPlay_source(6);
+
+        HashMap<String, Object> parmes = new HashMap<>();
+        if (chasingNumberParams.getValue() != null && chasingNumberParams.getValue().getParmes() != null) {
+            parmes.putAll(chasingNumberParams.getValue().getParmes());
+        }
+        AtomicReference<Disposable> disposableRef = new AtomicReference<>();
+
+        Disposable disposable = (Disposable) model.mmcBet(lotteryBetRequest, parmes)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<BetResult>() {
+                    @Override
+                    public void onResult(BetResult response) {
+                        chasingNumberParams.setValue(null);
+                        betsViewModel.betLiveData.setValue(null);
+                        betsViewModel.betOrdersLiveData.setValue(null);
+                        betsViewModel.betCartOrdersLiveData.setValue(null);
+                        betsViewModel.clearBetEvent.setValue(null);
+                        lotteryViewModel.drawCodeLiveData.setValue(response.getWcodes());
+                        finish();
+                        Activity activity = ExKt.getActivity(view);
+                        if (activity != null) {
+                            String count = "1";
+                            StringBuilder message = new StringBuilder();
+                            message.append(String.format("投注完成，共完成 %s 次游戏投注", count));
+                            if (!TextUtils.isEmpty(response.getBonus())) {
+                                BigDecimal bigDecimalBonus = new BigDecimal(response.getBonus());
+                                if (bigDecimalBonus.compareTo(BigDecimal.ZERO) > 0) {
+                                    message.append("\n").append(String.format("第 %s 次游戏，中奖 %s 元", 1, bigDecimalBonus.toPlainString()));
+                                    message.append("\n").append(String.format("共计奖金：%s 元", bigDecimalBonus.toPlainString()));
+                                }
+                            }
+                            if (popupView != null && popupView.isShow()) {
+                                popupView.dismiss();
+                            }
+                            MsgDialog dialog = new MsgDialog(activity, "连续游戏", message, true, new TipDialog.ICallBack() {
+                                @Override
+                                public void onClickLeft() {
+
+                                }
+
+                                @Override
+                                public void onClickRight() {
+                                    if (popupView != null) {
+                                        popupView.dismiss();
+                                    }
+                                }
+                            });
+
+                            popupView = new XPopup.Builder(activity)
+                                    .dismissOnTouchOutside(true)
+                                    .dismissOnBackPressed(true)
+                                    .asCustom(dialog).show();
+                        } else {
+                            ToastUtils.showSuccess("投注成功");
+                        }
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        super.onFail(t);
+
+                        Activity activity = ExKt.getActivity(view);
+                        if (activity != null) {
+                            MsgDialog dialog = new MsgDialog(activity, "", t.message, true, new TipDialog.ICallBack() {
+                                @Override
+                                public void onClickLeft() {
+
+                                }
+
+                                @Override
+                                public void onClickRight() {
+                                    if (popupView != null) {
+                                        popupView.dismiss();
+                                    }
+                                }
+                            });
+
+                            popupView = new XPopup.Builder(activity)
+                                    .dismissOnTouchOutside(true)
+                                    .dismissOnBackPressed(true)
+                                    .asCustom(dialog).show();
+                        } else {
+                            // 处理错误情况
+                            ToastUtils.showError(t.message);
+                        }
+                    }
+
+                    @Override
+                    protected void onStart() {
+                        super.onStart();
+                        Activity activity = ExKt.getActivity(view);
+                        if (activity != null) {
+                            MsgDialog dialog = new MsgDialog(activity, "连续游戏", String.format("正在开奖 %s 期，当前第 %s 期", 1, 1), "停止", "取消", new TipDialog.ICallBack() {
+                                @Override
+                                public void onClickLeft() {
+                                    if (disposableRef.get() != null) {
+                                        disposableRef.get().dispose();
+                                    }
+                                    if (popupView != null) {
+                                        popupView.dismiss();
+                                        popupView = null;
+                                    }
+                                }
+
+                                @Override
+                                public void onClickRight() {
+                                    if (disposableRef.get() != null) {
+                                        disposableRef.get().dispose();
+                                    }
+                                    if (popupView != null) {
+                                        popupView.dismiss();
+                                        popupView = null;
+                                    }
+                                }
+                            });
+
+                            popupView = new XPopup.Builder(activity)
+                                    .dismissOnTouchOutside(true)
+                                    .dismissOnBackPressed(true)
+                                    .asCustom(dialog).show();
+                        }
+                    }
+                });
+        disposableRef.set(disposable);
+        addSubscribe(disposable);
+
     }
 
     /**

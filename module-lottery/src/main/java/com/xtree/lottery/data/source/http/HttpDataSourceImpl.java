@@ -11,6 +11,7 @@ import com.xtree.lottery.data.source.request.LotteryCopyBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
+import com.xtree.lottery.data.source.vo.BetResult;
 import com.xtree.lottery.data.source.vo.SimulatedNumber;
 
 import java.util.HashMap;
@@ -90,6 +91,17 @@ public class HttpDataSourceImpl implements HttpDataSource {
         }
         return apiService.post(APIManager.BET_URL, map, "application/vnd.sc-api.v1.json").map(responseBody -> JSON.parseObject(responseBody.string(),
                 new TypeReference<BaseResponse>() {
+                }));
+    }
+
+    @Override
+    public Flowable<BaseResponse<BetResult>> mmcBet(LotteryBetRequest betRequest, Map<String, Object> params) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(betRequest), type);
+        if (params != null) {
+            map.putAll(params);
+        }
+        return apiService.post(APIManager.MMC_BET_URL, map, "application/vnd.sc-api.v1.json").map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<BetResult>>() {
                 }));
     }
 

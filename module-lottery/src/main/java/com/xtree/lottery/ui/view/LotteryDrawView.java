@@ -16,6 +16,7 @@ import androidx.databinding.Observable;
 import androidx.databinding.ObservableField;
 
 import com.xtree.base.mvvm.ExKt;
+import com.xtree.base.utils.CfLog;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.data.source.vo.RecentLotteryVo;
@@ -25,6 +26,7 @@ import com.xtree.lottery.utils.DiceCutter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import me.xtree.mvvmhabit.utils.ConvertUtils;
 
@@ -84,7 +86,18 @@ public class LotteryDrawView extends LinearLayout {
 
     public void setDrawCode(RecentLotteryVo bonusNumber) {
         binding.getModel().drawDate.set(bonusNumber.getIssue() + "期：");
-        binding.getModel().drawCode.set((ArrayList<String>) bonusNumber.getSplit_code());
+        binding.getModel().drawCode.set(bonusNumber.getSplit_code());
+    }
+
+    public void setDrawCode(String number) {
+        try {
+            binding.getModel().drawCode.set(number.chars()
+                    .mapToObj(c -> String.valueOf((char) c))
+                    .collect(Collectors.toList()));
+        } catch (Exception e) {
+            CfLog.e(e.getMessage());
+        }
+
     }
 
     public void setLottery(Lottery lottery) {
@@ -104,7 +117,7 @@ public class LotteryDrawView extends LinearLayout {
     public static abstract class OnLotteryDrawListener {
         public abstract void onRefresh(View view);
 
-        public void onSimulate(View view, ObservableField<List<String>> drawCode) {
+        public void onSimulate(View view) {
 
         }
     }

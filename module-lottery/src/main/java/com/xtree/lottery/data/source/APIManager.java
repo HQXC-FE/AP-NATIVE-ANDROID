@@ -14,11 +14,13 @@ public class APIManager {
     public static final String HANDICAP_METHODS_URL = "/api/lottery/%s/dsp-methods";
     //获取用户余额
     public static final String BALANCE_URL = "/api/account/balance";
-    //彩票投注
+    //普通彩票投注
     public static final String BET_URL = "/api/lottery/bet";
     //再来一注
     public static final String COPY_BET_URL = "/api/lottery/copy-bet";
-    //模拟开奖
+    //秒秒彩模拟开奖
     public static final String SIMULATED_NUMBER = "/api/lottery/%s/simulated-number";
+    //秒秒彩投注
+    public static final String MMC_BET_URL = "/api/lottery/mmc/bet";
 
 }

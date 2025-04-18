@@ -40,7 +40,7 @@ public class LotteryDrawViewModel {
      */
     public void simulate(View view) {
         if (listener != null) {
-            listener.onSimulate(view, drawCode);
+            listener.onSimulate(view);
         }
     }
 }

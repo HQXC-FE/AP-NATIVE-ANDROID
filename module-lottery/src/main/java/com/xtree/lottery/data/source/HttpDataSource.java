@@ -6,6 +6,7 @@ import com.xtree.lottery.data.source.request.LotteryCopyBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
+import com.xtree.lottery.data.source.vo.BetResult;
 import com.xtree.lottery.data.source.vo.SimulatedNumber;
 
 import java.util.Map;
@@ -40,9 +41,14 @@ public interface HttpDataSource {
     Flowable<BalanceResponse> getUserBalance();
 
     /**
-     * 彩票投注
+     * 普通彩票投注
      */
     Flowable<BaseResponse> bet(LotteryBetRequest betRequest, Map<String, Object> params);
+
+    /**
+     * 秒秒彩彩票投注
+     */
+    Flowable<BaseResponse<BetResult>> mmcBet(LotteryBetRequest betRequest, Map<String, Object> params);
 
     /**
      * 再来一注
