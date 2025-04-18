@@ -186,10 +186,10 @@ public class WidgetExoPlayer extends ConstraintLayout {
     private boolean _403RefreshSource = false;
     @SuppressLint("MissingInflatedId")
     private void initialize() {
-//        this.animateOut = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
-//        animateOut.setDuration(300);
-//        this.animateIn = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
-//        animateIn.setDuration(300);
+        this.animateOut = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
+        animateOut.setDuration(300);
+        this.animateIn = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
+        animateIn.setDuration(300);
 
         mViewConfiguration = ViewConfiguration.get(getContext());
 
@@ -335,10 +335,6 @@ public class WidgetExoPlayer extends ConstraintLayout {
 //        mediaSourcePath = "https://stream01aa.shdihgs.cn/live/5_1742788360.m3u8?txSecret=9446dcea6d65b5af2bcb9070b0cb215b&txTime=67e12885";
 //        mPlayerSeekBar.setVisibility(mIsLiveStream ? GONE : VISIBLE);
         mQuality.setOnClickListener(v -> showQuality(v, sourceType));
-
-        mChangeLine.setOnClickListener(l ->{
-            //TODO 跟赛事详情里，比分看板一样的流媒体
-        });
 
         initPlayer();
         MediaSource mediaSource = getSourceMedia(sourceType, mediaSourcePath);

@@ -9,7 +9,7 @@
     <application>
         <activity
             android:name="com.xtree.live.ui.main.bet.LiveMatchDetailActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|uiMode"
             android:screenOrientation="portrait"/>
 
         <activity

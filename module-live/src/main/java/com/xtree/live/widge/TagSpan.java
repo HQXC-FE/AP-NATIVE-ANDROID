@@ -20,9 +20,9 @@ public class TagSpan extends ReplacementSpan {
 
     public @DrawableRes int iconRes;
 
-    public int paddingL=2, paddingT=0, paddingR=2, paddingB=0;
+    public int paddingL, paddingT, paddingR, paddingB;
 
-    private final int IMAGE_SIZE = ConvertUtils.dp2px (26);
+    private final int IMAGE_SIZE = ConvertUtils.dp2px (16);
     private final int DIVIDER_IMAGE_TEXT = ConvertUtils.dp2px (2);
 
 
@@ -88,15 +88,13 @@ public class TagSpan extends ReplacementSpan {
             int iconStart = (int) x + paddingL;
             int iconEnd = iconStart + IMAGE_SIZE;
 
-            dstRect.top = -5;
-            dstRect.bottom = bottom+10;
+            dstRect.top = top + DIVIDER_IMAGE_TEXT;
+            dstRect.bottom = bottom - DIVIDER_IMAGE_TEXT;
 
             int dstWidth = (int) (dstRect.height() * rate);
             int dalta = (iconEnd - iconStart - dstWidth) / 2;
-            dstRect.left = iconStart + dalta+10;
-            dstRect.right = iconEnd - dalta +15;
-
-
+            dstRect.left = iconStart + dalta;
+            dstRect.right = iconEnd - dalta;
             canvas.drawBitmap(bitmap,sourceRect, dstRect, paint);
             textStart =  iconEnd + DIVIDER_IMAGE_TEXT;
         }
