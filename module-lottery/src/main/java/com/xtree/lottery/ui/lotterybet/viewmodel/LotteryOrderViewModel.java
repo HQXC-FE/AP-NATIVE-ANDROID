@@ -27,6 +27,7 @@ import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import me.xtree.mvvmhabit.base.BaseViewModel;
 
@@ -46,8 +47,8 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
     public final ArrayList<BindModel> bindModels = new ArrayList<>();
     //中奖通知
     public MutableLiveData<Boolean> winNotifi = new MutableLiveData<>(true);
-    //是否是六合彩
-    public MutableLiveData<Boolean> isLhc = new MutableLiveData<>(false);
+    //是否可以追号(六合彩、秒秒彩没有)
+    public MutableLiveData<Boolean> canChasing = new MutableLiveData<>(false);
     //选中的订单数
     public MutableLiveData<String> orderNums = new MutableLiveData<>();
     //共几注
@@ -57,7 +58,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
     public MutableLiveData<String> moneyNums = new MutableLiveData<>();
     private final Observer<List<LotteryOrderModel>> orderObserver = lotteryOrderModels -> {
         Lottery lottery = betsViewModel.lotteryLiveData.getValue();
-        isLhc.setValue("lhc".equals(lottery.getLinkType()));
+        canChasing.setValue(!Objects.equals("lhc",lottery.getLinkType())||!Objects.equals("mmc",lottery.getLinkType()));
         if (lotteryOrderModels == null) {
             bindModels.clear();
             datas.setValue(bindModels);
@@ -68,7 +69,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
         bindModels.clear();
         for (LotteryOrderModel orderData : lotteryOrderModels) {
             StringBuilder stringBuilder = new StringBuilder();
-            if (isLhc.getValue()) {
+            if (canChasing.getValue()) {
                 stringBuilder
                         .append(orderData.getBetOrderData().getNums()).append("注 x ")
                         .append(orderData.getBetOrderData().getTimes()).append("倍 x ")
