@@ -1,0 +1,58 @@
+
+XC直播项目
+
+产品原型：https://fd4mf5.axshare.com/
+
+接口文档：
+https://docs.google.com/document/d/1Qo7lh_hBBrLu4N_2PJVl5GUcmCvIgxnuK_P1ZK9RyYk/edit?tab=t.0
+
+设计稿figma：
+https://www.figma.com/design/onyscqtYrnLdI3mZ49imtG/MEGASOFT%EF%BC%88%E6%96%B0%E7%89%88%E5%AF%BC%E5%85%A5%EF%BC%89?node-id=113-2763&t=92y6nCWmZXlPyB4O-1
+
+目前进度：功能基本完成，但是无数据
+未完成需求：
+1.	晒单，跟单（未完成原因：后端暂时还不支持这个消息类型）
+2.	关注和关注列表（未完成原因：产品不断更改这里的需求）
+
+
+代码与产品结构
+一． Livefragment：直播列表{直播，热门，足球，篮球，关注，其他}
+LiveViewModel：{
+1.	LiveAnchorModel(FrontLivesType.ALL.getLabel())
+直播，主播viewmodel数据处理；
+2.	new LiveHotModel(FrontLivesType.HOT.getLabel()) 所有列表
+3.	new LiveHotModel(FrontLivesType.FOOTBALL.getLabel()) 足球直播列表
+4.	new LiveHotModel(FrontLivesType.BASKETBALL.getLabel()) 篮球直播列表
+5.	new LiveHotModel(FrontLivesType.OTHER.getLabel()) 其他直播列表
+
+}
+
+二、直播页面
+LiveDetailHomeFragment
+这个页面上部分是直播播放器，使用的是EXO的player
+下半部分是聊天室
+1.	ChatFragment 广场聊天室
+2.	LiveBetFragment 投注部分
+3.	ChatFragment  主播私聊
+4.	ChatRoomContainerFragment 主播助理
+
+ChatAdapter  聊天室消息展示的adapter
+EmojiRecyclerFragment 表情包（为了便于跨端显示，使用指定的这里的表情包）
+QuickReplyFragment   快捷回复
+
+5．播放器 WidgetExoPlayer
+
+6. MessageTextView 自定义消息文本处理，设置
+
+
+如果有不懂的，或者有疑问为什么要搞这么复杂，可以看一下小九直播的代码。
+由于产品也不知道具体需求，说按照小九的来，
+于是只能按照小九的业务来copy，并且来适应XC的框架结构，所以不能直接copy小九的代码，要做一个转换。
+
+小九代码可以找组内人员要一下。
+
+
+
+
+
+
