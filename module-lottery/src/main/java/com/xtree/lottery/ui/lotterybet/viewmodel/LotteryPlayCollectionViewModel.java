@@ -24,6 +24,7 @@ import com.xtree.lottery.ui.lotterybet.model.LotteryPlayCollectionModel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import me.xtree.mvvmhabit.base.BaseViewModel;
@@ -107,7 +108,8 @@ public class LotteryPlayCollectionViewModel extends BaseViewModel<LotteryReposit
                                 } else {//取消
                                     List<String> collectMethods = new ArrayList<>(Arrays.asList(sb.toString().split(",")));
                                     collectMethods.removeIf(item -> item.equals(label.getMenuid()));
-                                    if (collectMethods.size() == 0) {
+
+                                    if (collectMethods.size() == 0 || Objects.equals(label.getMenuid(), betsViewModel.currentBetModel.getValue().getUserMethodData().getMenuid())) {
                                         ((CheckBox) (v)).setChecked(true);
                                         ToastUtils.show("当前玩法不可取消收藏", ToastUtils.ShowType.Default);
                                         return;
