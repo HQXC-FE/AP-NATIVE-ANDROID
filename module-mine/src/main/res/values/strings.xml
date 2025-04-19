@@ -169,9 +169,9 @@
     <string name="txt_enter_wallet_old_addr">请输入旧的钱包地址</string>
     <string name="txt_verify_name">*上次绑定银行卡开户名</string>
     <string name="txt_verify_acc">*上次绑定银行卡号</string>
-    <string name="txt_verify_addr">*上次绑定钱包地址</string>
-    <string name="txt_verify_addr_warning">请输入最新绑定钱包地址</string>
-    <string name="txt_enter_verify_wallet_addr">请输入上次绑定的钱包地址</string>
+    <string name="txt_verify_addr">*注：增加绑定需提供最近一次绑定的微信/支付宝/虚拟币等钱包账号！</string>
+    <string name="txt_verify_addr_warning">请输入最近一次绑定的微信/支付宝/虚拟币等钱包账号</string>
+    <string name="txt_enter_verify_wallet_addr">请输入最近一次绑定的微信/支付宝/虚拟币等钱包账号</string>
 
     <string name="txt_lock_card">锁定银行卡</string>
     <string name="txt_add_bind">增加绑定</string>
