@@ -1,7 +1,7 @@
 package com.xtree.lottery.ui.view;
 
 
-import static com.xtree.lottery.utils.EventConstant.EVENT_TIME_FINISH;
+import static com.xtree.lottery.utils.LotteryEventConstant.EVENT_TIME_FINISH;
 
 import android.content.Context;
 import android.graphics.Color;

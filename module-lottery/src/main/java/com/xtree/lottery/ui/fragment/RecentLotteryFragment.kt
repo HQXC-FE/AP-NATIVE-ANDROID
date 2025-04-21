@@ -18,7 +18,7 @@ import com.xtree.lottery.ui.activity.LotteryActivity
 import com.xtree.lottery.ui.adapter.RecentAdapter
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
-import com.xtree.lottery.utils.EventConstant
+import com.xtree.lottery.utils.LotteryEventConstant
 import com.xtree.lottery.utils.EventVo
 import me.xtree.mvvmhabit.base.BaseFragment
 import me.xtree.mvvmhabit.utils.KLog
@@ -106,7 +106,7 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: EventVo) {
         when (event.event) {
-            EventConstant.EVENT_RULES_ENTRY_DATA -> {
+            LotteryEventConstant.EVENT_RULES_ENTRY_DATA -> {
                 currentData = event.data as RulesEntryData
                 KLog.i("RulesEntryData1", Gson().toJson(currentData))
                 setList()

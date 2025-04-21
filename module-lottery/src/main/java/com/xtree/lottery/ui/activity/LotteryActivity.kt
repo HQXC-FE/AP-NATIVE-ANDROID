@@ -1,8 +1,10 @@
 package com.xtree.lottery.ui.activity
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -10,7 +12,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.xtree.base.global.SPKeyGlobal
+import com.xtree.base.net.fastest.ChangeH5LineUtil
+import com.xtree.base.net.fastest.FastestTopDomainUtil
+import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows
 import com.xtree.base.utils.CfLog
+import com.xtree.base.vo.EventConstant
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
 import com.xtree.lottery.data.LotteryDetailManager
@@ -26,12 +33,15 @@ import com.xtree.lottery.ui.lotterybet.LotteryBetsFragment
 import com.xtree.lottery.ui.lotterybet.LotteryHandicapFragment
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
-import com.xtree.lottery.utils.EventConstant
 import com.xtree.lottery.utils.EventVo
+import com.xtree.lottery.utils.LotteryEventConstant
 import me.xtree.mvvmhabit.base.BaseActivity
 import me.xtree.mvvmhabit.utils.KLog
+import me.xtree.mvvmhabit.utils.SPUtils
 import me.xtree.mvvmhabit.utils.ToastUtils
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * 彩票详情
@@ -44,6 +54,8 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
     private var methodMenus: MethodMenus? = null
     lateinit var lottery: Lottery
     private val fragmentList = ArrayList<Fragment>()
+    private var mTopSpeedDomainFloatingWindows: TopSpeedDomainFloatingWindows? = null
+    private var mIsDomainSpeedChecked = false
 
     override fun initContentView(savedInstanceState: Bundle?): Int {
         return R.layout.activity_lottery
@@ -58,6 +70,13 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         val factory = AppViewModelFactory.getInstance(this.application)
         viewModel.setModel(factory.getmRepository())
         return viewModel
+    }
+
+    public override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
+        FastestTopDomainUtil.instance.start()
+        ChangeH5LineUtil.instance.start()
     }
 
     override fun initView() {
@@ -120,6 +139,11 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         val tab0 = (binding.tlLottery.getChildAt(0) as ViewGroup).getChildAt(0)
         tab0.isEnabled = false
         binding.tlLottery.getTabAt(1)?.select()
+
+        mTopSpeedDomainFloatingWindows = TopSpeedDomainFloatingWindows(
+            this@LotteryActivity
+        )
+        mTopSpeedDomainFloatingWindows?.show()
     }
 
     fun setTab0Enable() {
@@ -127,10 +151,58 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         tab0.isEnabled = true
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: EventVo) {
+        when (event.event) {
+
+            EventConstant.EVENT_TOP_SPEED_FINISH -> {
+                CfLog.e("EVENT_TOP_SPEED_FINISH竞速完成。。。")
+                mTopSpeedDomainFloatingWindows?.refresh()
+                mIsDomainSpeedChecked = true
+            }
+
+            EventConstant.EVENT_TOP_SPEED_FAILED -> mTopSpeedDomainFloatingWindows!!.onError()
+
+//            EventConstant.EVENT_LOG_OUT -> refreshRechargeFloatingWindows();
+        }
+    }
+
     override fun initData() {
         //viewModel.getMethodMenus(lottery.alias)
         if (!"mmc".equals(lottery.alias)) {
             viewModel.getCurrentIssue(lottery.id)
+        }
+    }
+
+
+    /**
+     * 启动充提记录悬浮窗
+     */
+    var mRechargeFloatingWindows: Any? = null
+    private var isFloating = false
+    private fun refreshRechargeFloatingWindows() {
+        if (!isFloating) {
+            CfLog.i("rechargeFloatingWindows.show")
+            try {
+                val myClass = Class.forName("com.xtree.home.ui.custom.view.RechargeFloatingWindows")
+                val constructor = myClass.getConstructor(Context::class.java)
+                mRechargeFloatingWindows = constructor.newInstance(this)
+                val method = mRechargeFloatingWindows?.javaClass?.getMethod("show")
+                method?.invoke(mRechargeFloatingWindows)
+            } catch (e: Exception) {
+                CfLog.e(e.message)
+            }
+            isFloating = true
+        }
+        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
+            try {
+                val method = mRechargeFloatingWindows?.javaClass?.getMethod("removeView")
+                method?.invoke(mRechargeFloatingWindows)
+                isFloating = false
+            } catch (e: Exception) {
+                CfLog.e(e.message)
+            }
+
         }
     }
 
@@ -199,7 +271,7 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
                     CfLog.w("倒计时结束了...")
                     countDownTimer(index + 1)
                     EventBus.getDefault()
-                        .post(EventVo(EventConstant.EVENT_TIME_FINISH, ""))
+                        .post(EventVo(LotteryEventConstant.EVENT_TIME_FINISH, ""))
                     viewModel.getRecentLottery()
                 }
             }
@@ -213,9 +285,19 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
 
     override fun onDestroy() {
         super.onDestroy()
+        EventBus.getDefault().unregister(this)
         //清空当前彩种的共享数据
         LotteryDetailManager.clearData()
         timer?.cancel()
+
+        if (mTopSpeedDomainFloatingWindows != null) {
+            mTopSpeedDomainFloatingWindows!!.removeView()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        refreshRechargeFloatingWindows()
     }
 
     // Activity 提供方法供 Fragment 调用

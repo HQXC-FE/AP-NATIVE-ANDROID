@@ -38,7 +38,7 @@ import com.xtree.lottery.ui.lotterybet.model.LotteryOrderModel;
 import com.xtree.lottery.ui.lotterybet.model.LotteryPlayCollectionModel;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 import com.xtree.lottery.utils.AnimUtils;
-import com.xtree.lottery.utils.EventConstant;
+import com.xtree.lottery.utils.LotteryEventConstant;
 import com.xtree.lottery.utils.EventVo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -639,7 +639,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     rulesEntryData.setCurrentMethod(currentMethodDTO);
                     rulesEntryData.setCurrentCategory(currentCategoryDTO);
                     KLog.i("RulesEntryData3", new Gson().toJson(rulesEntryData));
-                    EventBus.getDefault().post(new EventVo(EventConstant.EVENT_RULES_ENTRY_DATA, rulesEntryData));
+                    EventBus.getDefault().post(new EventVo(LotteryEventConstant.EVENT_RULES_ENTRY_DATA, rulesEntryData));
                 }
             }
         }

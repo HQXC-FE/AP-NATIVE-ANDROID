@@ -44,7 +44,7 @@ import me.xtree.mvvmhabit.base.ContainerActivity;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
-public class CustomFloatWindows extends RelativeLayout {
+public class RechargeFloatingWindows extends RelativeLayout {
     private Context ctx;
     private WindowManager windowManager;
     private View floatView;
@@ -56,7 +56,7 @@ public class CustomFloatWindows extends RelativeLayout {
     HttpDataSource httpDataSource = HttpDataSourceImpl.getInstance(apiService);
     WindowManager.LayoutParams floatLp;
 
-    public CustomFloatWindows(Context context) {
+    public RechargeFloatingWindows(Context context) {
         super(context);
         ctx = context;
 
