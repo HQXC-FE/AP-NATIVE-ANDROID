@@ -12,12 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.google.gson.Gson
 import com.xtree.base.global.SPKeyGlobal
 import com.xtree.base.net.fastest.ChangeH5LineUtil
 import com.xtree.base.net.fastest.FastestTopDomainUtil
 import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows
 import com.xtree.base.utils.CfLog
 import com.xtree.base.vo.EventConstant
+import com.xtree.base.vo.EventVo
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
 import com.xtree.lottery.data.LotteryDetailManager
@@ -33,8 +35,8 @@ import com.xtree.lottery.ui.lotterybet.LotteryBetsFragment
 import com.xtree.lottery.ui.lotterybet.LotteryHandicapFragment
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
-import com.xtree.lottery.utils.EventVo
 import com.xtree.lottery.utils.LotteryEventConstant
+import com.xtree.lottery.utils.LotteryEventVo
 import me.xtree.mvvmhabit.base.BaseActivity
 import me.xtree.mvvmhabit.utils.KLog
 import me.xtree.mvvmhabit.utils.SPUtils
@@ -81,12 +83,20 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
 
     override fun initView() {
         if (Build.VERSION.SDK_INT >= 33) {
-            lottery = intent.getParcelableExtra("Lottery", Lottery::class.java)!!
+            lottery =
+                intent?.getParcelableExtra("Lottery", Lottery::class.java) ?: (Gson().fromJson(
+                    SPUtils.getInstance().getString("Lottery"),
+                    Lottery::class.java
+                ))
             //userMethods = intent.getParcelableArrayListExtra("userMethods", UserMethodsVo::class.java)!!
         } else {
-            lottery = intent.getParcelableExtra<Lottery>("Lottery")!!
+            lottery = intent?.getParcelableExtra<Lottery>("Lottery") ?: (Gson().fromJson(
+                SPUtils.getInstance().getString("Lottery"),
+                Lottery::class.java
+            ))
             //userMethods = intent.getParcelableArrayListExtra("userMethods")!!
         }
+        SPUtils.getInstance().put("Lottery", Gson().toJson(lottery))
         binding.tvBack.text = lottery.name
         binding.tvBack.setOnClickListener { finish() }
 
@@ -154,7 +164,6 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: EventVo) {
         when (event.event) {
-
             EventConstant.EVENT_TOP_SPEED_FINISH -> {
                 CfLog.e("EVENT_TOP_SPEED_FINISH竞速完成。。。")
                 mTopSpeedDomainFloatingWindows?.refresh()
@@ -271,7 +280,7 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
                     CfLog.w("倒计时结束了...")
                     countDownTimer(index + 1)
                     EventBus.getDefault()
-                        .post(EventVo(LotteryEventConstant.EVENT_TIME_FINISH, ""))
+                        .post(LotteryEventVo(LotteryEventConstant.EVENT_TIME_FINISH, ""))
                     viewModel.getRecentLottery()
                 }
             }

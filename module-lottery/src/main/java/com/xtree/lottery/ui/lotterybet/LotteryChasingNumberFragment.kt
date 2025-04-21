@@ -21,7 +21,7 @@ import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetConfirmViewModel
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryOrderViewModel
 import com.xtree.lottery.utils.LotteryEventConstant
-import com.xtree.lottery.utils.EventVo
+import com.xtree.lottery.utils.LotteryEventVo
 import me.xtree.mvvmhabit.base.BaseDialogFragment
 import me.xtree.mvvmhabit.utils.ToastUtils
 import org.greenrobot.eventbus.EventBus
@@ -250,7 +250,7 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: EventVo) {
+    fun onMessageEvent(event: LotteryEventVo) {
         when (event.event) {
             LotteryEventConstant.EVENT_TIME_FINISH -> {
 
