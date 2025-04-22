@@ -1,47 +1,32 @@
 package com.xtree.main.ui;
 
-import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_TO_ACT;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.text.TextUtils;
-import android.view.RoundedCorner;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterActivityPath;
-import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
-import com.xtree.base.vo.EventVo;
-import com.xtree.base.widget.BrowserActivity;
-import com.xtree.main.BR ;
+import com.xtree.main.BR;
+import com.xtree.main.BuildConfig;
 import com.xtree.main.R;
 import com.xtree.main.databinding.ActivityWelcomeBinding;
 import com.xtree.main.ui.viewmodel.SplashViewModel;
-import com.xtree.main.BuildConfig ;
 import com.xtree.main.ui.viewmodel.factory.AppViewModelFactory;
-import com.youth.banner.adapter.BannerAdapter;
 import com.youth.banner.adapter.BannerImageAdapter;
-import com.youth.banner.config.BannerConfig;
 import com.youth.banner.holder.BannerImageHolder;
 import com.youth.banner.indicator.CircleIndicator;
-import com.youth.banner.listener.OnBannerListener;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,16 +38,6 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 @Route(path = RouterActivityPath.Main.PAGER_WELCOME)
 
 public class WelcomeActivity extends BaseActivity<ActivityWelcomeBinding, SplashViewModel> {
-    private ArrayList bannerList = new ArrayList();
-    private int MSG_IN_MAIN = 100 ; // 消息类型
-    private int DELAY_MILLIS = 100 ; // 延长时间
-    private Handler mHandler = new Handler(Looper.getMainLooper()){
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            //loginMain();
-        }
-    };
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +45,6 @@ public class WelcomeActivity extends BaseActivity<ActivityWelcomeBinding, Splash
         if (BuildConfig.DEBUG) {
             ToastUtils.showLong("Debug Model");
         }
-        CfLog.e("WelcomeActivityWelcomeActivityWelcomeActivityWelcomeActivityWelcomeActivity");
     }
 
     @Override
