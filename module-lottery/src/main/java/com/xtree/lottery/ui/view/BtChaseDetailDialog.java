@@ -2,6 +2,8 @@ package com.xtree.lottery.ui.view;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -11,15 +13,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.Injection;
+import com.xtree.lottery.data.source.vo.ATaskdetail;
 import com.xtree.lottery.data.source.vo.LotteryChaseDetailVo;
 import com.xtree.lottery.data.source.vo.Task;
 import com.xtree.lottery.databinding.DialogBtChaseDetailBinding;
 import com.xtree.lottery.ui.adapter.ChasingDetailAdapter;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import me.xtree.mvvmhabit.utils.ToastUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
 public class BtChaseDetailDialog extends BottomPopupView {
@@ -31,6 +41,8 @@ public class BtChaseDetailDialog extends BottomPopupView {
     //ReportViewModel viewModel;
     DialogBtChaseDetailBinding binding;
     private LotteryViewModel viewModel;
+    private ChasingDetailAdapter chasingDetailAdapter;
+    private Timer timer;
 
     private BtChaseDetailDialog(@NonNull Context context) {
         super(context);
@@ -70,6 +82,10 @@ public class BtChaseDetailDialog extends BottomPopupView {
         viewModel.liveDataBtChaseDetail.observe(owner, vo -> {
             CfLog.i();
             setView(vo);
+        });
+        viewModel.liveDataCancelTask.observe(owner, vo -> {
+            ToastUtils.showLong(vo.getMsg_detail());
+            requestData();
         });
     }
 
@@ -116,9 +132,34 @@ public class BtChaseDetailDialog extends BottomPopupView {
                 return false; // 禁止垂直滚动
             }
         };
-
+        chasingDetailAdapter = new ChasingDetailAdapter(t.getATaskdetail(), owner);
         binding.rvChase.setLayoutManager(layoutManager);
-        binding.rvChase.setAdapter(new ChasingDetailAdapter(t.getATaskdetail(), owner));
+        binding.rvChase.setAdapter(chasingDetailAdapter);
+
+        if (timer == null) {
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        chasingDetailAdapter.notifyDataSetChanged();
+                    });
+                }
+            }, 0, 10000); // 0延迟，10秒间隔
+        }
+
+        binding.tvChaseStop.setOnClickListener(v -> {
+            if (ClickUtil.isFastClick()) {
+                return;
+            }
+            List<String> selectedItems = new ArrayList<>();
+            for (ATaskdetail item : chasingDetailAdapter.getData()) {
+                if (item.isChecked() && item.getShowCheckbox()) {
+                    selectedItems.add(item.getEntry());
+                }
+            }
+            viewModel.cancelTask(id, selectedItems);
+        });
     }
 
     private void requestData() {
@@ -136,4 +177,13 @@ public class BtChaseDetailDialog extends BottomPopupView {
         return (XPopupUtils.getScreenHeight(getContext()) * 80 / 100);
     }
 
+    @Override
+    public void onDestroy() {
+        if (timer != null) {
+            timer.cancel();   // 停止任务
+            timer.purge();    // 清除任务
+            timer = null;     // 释放引用
+        }
+        super.onDestroy();
+    }
 }

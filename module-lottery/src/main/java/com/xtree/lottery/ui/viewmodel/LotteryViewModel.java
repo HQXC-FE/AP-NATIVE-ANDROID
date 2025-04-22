@@ -30,6 +30,7 @@ import com.xtree.lottery.data.source.vo.LotteryReportVo;
 import com.xtree.lottery.data.source.vo.MethodMenus;
 import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.data.source.vo.TraceInfoVo;
+import com.xtree.lottery.databinding.DialogLotteryBetConfirmBindingImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
@@ -60,6 +63,7 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
     public SingleLiveData<CancelOrderVo> liveDataCancelOrder = new SingleLiveData<>(); // 取消订单
     public MutableLiveData<TraceInfoVo> liveDataTraceinfo = new MutableLiveData<>(); // 追号记录-列表(彩票)
     public MutableLiveData<LotteryChaseDetailVo> liveDataBtChaseDetail = new MutableLiveData<>(); // 追号记录-详情(彩票)
+    public MutableLiveData<CancelOrderVo> liveDataCancelTask = new MutableLiveData<>(); // 追号终止
     //当前期号
     public MutableLiveData<IssueVo> currentIssueLiveData = new MutableLiveData<>();
     //彩票信息
@@ -246,7 +250,6 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
         addSubscribe(disposable);
     }
 
-
     public void getTraceinfo() {
         // 获取日历实例
         Calendar calendar = Calendar.getInstance();
@@ -296,6 +299,33 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
                     public void onResult(LotteryChaseDetailVo vo) {
                         CfLog.d("******");
                         liveDataBtChaseDetail.setValue(vo);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        super.onError(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    /**
+     * 追号终止
+     */
+    public void cancelTask(String id, List list) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("taskid", list);
+        params.put("id", id);
+        params.put("nonce", UuidUtil.getID24());
+        Disposable disposable = (Disposable) model.getApiService().cancelTask(params)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<CancelOrderVo>() {
+                    @Override
+                    public void onResult(CancelOrderVo vo) {
+                        CfLog.d("******");
+                        liveDataCancelTask.setValue(vo);
                     }
 
                     @Override

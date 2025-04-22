@@ -19,6 +19,7 @@ import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
@@ -84,6 +85,13 @@ public interface LotteryApiService {
      */
     @GET("/report/taskdetail/{id}?client=m")
     Flowable<LotteryChaseDetailVo> getBtChaseDetailDetail(@Path("id") String id);
+
+    /**
+     * 追号终止
+     */
+    @POST("/gameinfo/canceltask?client=m")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<CancelOrderVo> cancelTask(@Body Map<String, Object> map);
 
     /**
      * GET

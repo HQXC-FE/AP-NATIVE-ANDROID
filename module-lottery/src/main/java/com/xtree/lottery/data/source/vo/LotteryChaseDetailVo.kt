@@ -59,7 +59,9 @@ data class ATaskdetail(
     val verifyid: String,
     val verifytime: String,
     val writeid: String,
-    val writetime: String
+    val writetime: String,
+    var showCheckbox: Boolean,
+    var isChecked: Boolean
 )
 
 data class Task(

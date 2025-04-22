@@ -352,7 +352,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
-
+                <TextView
+                    android:id="@+id/tv_chase_stop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/lt_shape_gradient_clrmain03_clrmain11_c4"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="追号终止"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_cancel_order"
+                    app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
