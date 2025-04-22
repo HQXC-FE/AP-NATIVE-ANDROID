@@ -11,6 +11,7 @@ import org.jeasy.rules.api.Facts;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Rule(name = "Lottery Position Selection Rule", description = "Handle optional position selection for SSC lottery")
 public class PositionChosenRule {
@@ -51,7 +52,7 @@ public class PositionChosenRule {
             // Convert selected positions to a comma-separated string
             String posChoose = String.join(",", selectedPositions.stream()
                     .map(String::valueOf)
-                    .toList());
+                    .collect(Collectors.toList()));
 
             // Update the facts
             facts.put("poschoose", posChoose);

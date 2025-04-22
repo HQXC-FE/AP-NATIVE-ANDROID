@@ -10,6 +10,7 @@ import org.jeasy.rules.api.Facts;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 //Todo 还有问题
 @Rule(name = "RelationMethodsRule", description = "处理与当前方法相关的规则")
@@ -50,7 +51,7 @@ public class RelationMethodsRule {
                         result.putAll(callbackData);
                         return result;
                     })
-                    .toList();
+                    .collect(Collectors.toList());
 
             // 存储 relationMethods 结果
             facts.put("relationMethods", relationMethods);

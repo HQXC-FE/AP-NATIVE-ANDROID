@@ -1,7 +1,7 @@
 package com.xtree.lottery.ui.view;
 
 
-import static com.xtree.lottery.utils.EventConstant.EVENT_TIME_FINISH;
+import static com.xtree.lottery.utils.LotteryEventConstant.EVENT_TIME_FINISH;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -31,7 +31,7 @@ import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.databinding.DialogRoadMapBinding;
 import com.xtree.lottery.ui.view.model.RoadMapDLItemModel;
 import com.xtree.lottery.ui.view.model.RoadMapZLItemModel;
-import com.xtree.lottery.utils.EventVo;
+import com.xtree.lottery.utils.LotteryEventVo;
 import com.xtree.lottery.utils.RoadMapDataUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -281,7 +281,7 @@ public class LotteryRoadMapDialog extends CenterPopupView implements View.OnClic
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(EventVo event) {
+    public void onMessageEvent(LotteryEventVo event) {
         switch (event.getEvent()) {
             case EVENT_TIME_FINISH:
                 requestData();

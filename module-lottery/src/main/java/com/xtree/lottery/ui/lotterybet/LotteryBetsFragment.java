@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.xtree.lottery.inter.ParentChildCommunication;
 import com.xtree.lottery.rule.betting.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel;
+import com.xtree.lottery.ui.view.LotteryDrawView;
 import com.xtree.lottery.ui.view.model.LotteryMoneyModel;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
@@ -131,9 +133,17 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
             }
         });
 
-        binding.lotteryBetsDrawview.setOnLotteryDrawListener(view -> {
-            binding.getModel().lotteryViewModel.getRecentLottery();
-            AnimUtils.rotateView(view);
+        binding.lotteryBetsDrawview.setOnLotteryDrawListener(new LotteryDrawView.OnLotteryDrawListener() {
+            @Override
+            public void onRefresh(View view) {
+                binding.getModel().lotteryViewModel.getRecentLottery();
+                AnimUtils.rotateView(view);
+            }
+
+            @Override
+            public void onSimulate(View view) {
+                binding.getModel().lotteryViewModel.simulatedNumber(view);
+            }
         });
 
         binding.getModel().combinedPrizeBetLiveData.observe(this, combinedData -> {
@@ -203,6 +213,10 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
             }
         });
 
+        binding.getModel().lotteryViewModel.drawCodeLiveData.observe(this, number -> {
+            binding.lotteryBetsDrawview.setDrawCode(number);
+        });
+
         binding.lotteryBetsSavebetLayout.setOnClickListener(v -> {
             binding.getModel().saveBetOrder();
             binding.lotteryBetsBetlayout.clearBet();
@@ -212,7 +226,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
 
     private void setBetData(LotteryBetsModel betsModel, @Nullable UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroup, Lottery lottery) {
         //设置选注形态
-        binding.lotteryBetsBetlayout.setData(viewModel.rulesResultDataLiveData,betsModel, prizeGroup, lottery);
+        binding.lotteryBetsBetlayout.setData(viewModel.rulesResultDataLiveData, betsModel, prizeGroup, lottery);
 
         //设置投注金额
         if (betsModel.getMenuMethodLabelData() != null && betsModel.getMenuMethodLabelData().getMoneyModes() != null) {
@@ -220,7 +234,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
             for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.MoneyModesDTO moneyMode : betsModel.getMenuMethodLabelData().getMoneyModes()) {
                 moneyModelList.add(new LotteryMoneyModel(moneyMode.getName(), moneyMode.getRate(), moneyMode.getModeid()));
             }
-            binding.lotteryBetsMoneyView.setMoneyUnit(moneyModelList,lottery);
+            binding.lotteryBetsMoneyView.setMoneyUnit(moneyModelList, lottery);
         }
     }
 

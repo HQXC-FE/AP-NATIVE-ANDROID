@@ -20,8 +20,8 @@ import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetConfirmViewModel
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryOrderViewModel
-import com.xtree.lottery.utils.EventConstant
-import com.xtree.lottery.utils.EventVo
+import com.xtree.lottery.utils.LotteryEventConstant
+import com.xtree.lottery.utils.LotteryEventVo
 import me.xtree.mvvmhabit.base.BaseDialogFragment
 import me.xtree.mvvmhabit.utils.ToastUtils
 import org.greenrobot.eventbus.EventBus
@@ -250,9 +250,9 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: EventVo) {
+    fun onMessageEvent(event: LotteryEventVo) {
         when (event.event) {
-            EventConstant.EVENT_TIME_FINISH -> {
+            LotteryEventConstant.EVENT_TIME_FINISH -> {
 
                 val issues = if (LotteryDetailManager.mIssues.size < LotteryDetailManager.mIndex + 200) {
                     LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIndex + 200)

@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.mvvm.ExKt;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
@@ -29,6 +30,7 @@ import com.xtree.lottery.data.source.vo.LotteryOrderVo;
 import com.xtree.lottery.data.source.vo.LotteryReportVo;
 import com.xtree.lottery.data.source.vo.MethodMenus;
 import com.xtree.lottery.data.source.vo.RecentLotteryVo;
+import com.xtree.lottery.data.source.vo.SimulatedNumber;
 import com.xtree.lottery.data.source.vo.TraceInfoVo;
 import com.xtree.lottery.databinding.DialogLotteryBetConfirmBindingImpl;
 
@@ -68,6 +70,8 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
     public MutableLiveData<IssueVo> currentIssueLiveData = new MutableLiveData<>();
     //彩票信息
     public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
+    //投注结果号，秒秒彩
+    public MutableLiveData<String> drawCodeLiveData = new MutableLiveData<>();
 
     private BasePopupView popupView;
 
@@ -346,7 +350,7 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
         lotteryCopyBetRequest.setId(id);
         lotteryCopyBetRequest.setPlay_source(6);
         lotteryCopyBetRequest.setNonce(UuidUtil.getID24());
-        model.copyBet(lotteryCopyBetRequest).subscribe(new HttpCallBack<Object>() {
+        Disposable disposable = (Disposable) model.copyBet(lotteryCopyBetRequest).subscribeWith(new HttpCallBack<Object>() {
             @Override
             public void onResult(Object response) {
 
@@ -411,6 +415,33 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
 
             }
         });
+        addSubscribe(disposable);
+    }
+
+
+    /**
+     * 秒秒彩模拟开奖
+     */
+    public void simulatedNumber(View view) {
+        Disposable disposable = (Disposable) model.simulatedNumber("" + lotteryLiveData.getValue().getId())
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<SimulatedNumber>() {
+                    @Override
+                    public void onResult(SimulatedNumber simulatedNumber) {
+                        drawCodeLiveData.setValue(simulatedNumber.getNumber());
+                    }
+
+                    @Override
+                    protected void onStart() {
+                        super.onStart();
+                        Activity activity = ExKt.getActivity(view);
+                        if (activity != null) {
+                            LoadingDialog.show(activity);
+                        }
+                    }
+                });
+        addSubscribe(disposable);
     }
 
     /*

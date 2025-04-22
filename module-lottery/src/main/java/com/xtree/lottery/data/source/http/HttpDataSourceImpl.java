@@ -11,14 +11,14 @@ import com.xtree.lottery.data.source.request.LotteryCopyBetRequest;
 import com.xtree.lottery.data.source.response.BalanceResponse;
 import com.xtree.lottery.data.source.response.HandicapResponse;
 import com.xtree.lottery.data.source.response.MenuMethodsResponse;
+import com.xtree.lottery.data.source.vo.BetResult;
+import com.xtree.lottery.data.source.vo.SimulatedNumber;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
 import me.xtree.mvvmhabit.http.BaseResponse;
-import okhttp3.ResponseBody;
 
 /**
  * Created by goldze on 2019/3/26.
@@ -57,50 +57,30 @@ public class HttpDataSourceImpl implements HttpDataSource {
 
     @Override
     public Flowable<UserMethodsResponse> getUserMethodsData() {
-        return apiService.get(APIManager.USER_METHODS_URL).map(new Function<ResponseBody, UserMethodsResponse>() {
-            @Override
-            public UserMethodsResponse apply(ResponseBody responseBody) throws Exception {
-                return JSON.parseObject(responseBody.string(),
-                        new TypeReference<UserMethodsResponse>() {
-                        });
-            }
-        });
+        return apiService.get(APIManager.USER_METHODS_URL).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<UserMethodsResponse>() {
+                }));
     }
 
     @Override
     public Flowable<MenuMethodsResponse> getMenuMethodsData(String lotteryName) {
-        return apiService.get(String.format(APIManager.MENU_METHODS_URL, lotteryName)).map(new Function<ResponseBody, MenuMethodsResponse>() {
-            @Override
-            public MenuMethodsResponse apply(ResponseBody responseBody) throws Exception {
-                return JSON.parseObject(responseBody.string(),
-                        new TypeReference<MenuMethodsResponse>() {
-                        });
-            }
-        });
+        return apiService.get(String.format(APIManager.MENU_METHODS_URL, lotteryName)).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<MenuMethodsResponse>() {
+                }));
     }
 
     @Override
     public Flowable<HandicapResponse> getHandicapData(String lotteryName) {
-        return apiService.get(String.format(APIManager.HANDICAP_METHODS_URL, lotteryName)).map(new Function<ResponseBody, HandicapResponse>() {
-            @Override
-            public HandicapResponse apply(ResponseBody responseBody) throws Exception {
-                return JSON.parseObject(responseBody.string(),
-                        new TypeReference<HandicapResponse>() {
-                        });
-            }
-        });
+        return apiService.get(String.format(APIManager.HANDICAP_METHODS_URL, lotteryName)).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<HandicapResponse>() {
+                }));
     }
 
     @Override
     public Flowable<BalanceResponse> getUserBalance() {
-        return apiService.get(APIManager.BALANCE_URL).map(new Function<ResponseBody, BalanceResponse>() {
-            @Override
-            public BalanceResponse apply(ResponseBody responseBody) throws Exception {
-                return JSON.parseObject(responseBody.string(),
-                        new TypeReference<BalanceResponse>() {
-                        });
-            }
-        });
+        return apiService.get(APIManager.BALANCE_URL).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BalanceResponse>() {
+                }));
     }
 
     @Override
@@ -109,14 +89,20 @@ public class HttpDataSourceImpl implements HttpDataSource {
         if (params != null) {
             map.putAll(params);
         }
-        return apiService.post(APIManager.BET_URL, map, "application/vnd.sc-api.v1.json").map(new Function<ResponseBody, BaseResponse>() {
-            @Override
-            public BaseResponse apply(ResponseBody responseBody) throws Exception {
-                return JSON.parseObject(responseBody.string(),
-                        new TypeReference<BaseResponse>() {
-                        });
-            }
-        });
+        return apiService.post(APIManager.BET_URL, map, "application/vnd.sc-api.v1.json").map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse>() {
+                }));
+    }
+
+    @Override
+    public Flowable<BaseResponse<BetResult>> mmcBet(LotteryBetRequest betRequest, Map<String, Object> params) {
+        Map<String, Object> map = JSON.parseObject(JSON.toJSONString(betRequest), type);
+        if (params != null) {
+            map.putAll(params);
+        }
+        return apiService.post(APIManager.MMC_BET_URL, map, "application/vnd.sc-api.v1.json").map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<BetResult>>() {
+                }));
     }
 
     @Override
@@ -124,14 +110,16 @@ public class HttpDataSourceImpl implements HttpDataSource {
         Map<String, Object> map = JSON.parseObject(JSON.toJSONString(betRequest), type);
         return apiService.post(APIManager.COPY_BET_URL, new HashMap<String, Object>() {{
             put("client", "m");
-        }}, map, "application/vnd.sc-api.v1.json").map(new Function<ResponseBody, BaseResponse>() {
-            @Override
-            public BaseResponse apply(ResponseBody responseBody) throws Exception {
-                return JSON.parseObject(responseBody.string(),
-                        new TypeReference<BaseResponse>() {
-                        });
-            }
-        });
+        }}, map, "application/vnd.sc-api.v1.json").map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse>() {
+                }));
+    }
+
+    @Override
+    public Flowable<BaseResponse<SimulatedNumber>> simulatedNumber(String id) {
+        return apiService.get(String.format(APIManager.SIMULATED_NUMBER, id)).map(responseBody -> JSON.parseObject(responseBody.string(),
+                new TypeReference<BaseResponse<SimulatedNumber>>() {
+                }));
     }
 
 }

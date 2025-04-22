@@ -46,7 +46,7 @@ import com.xtree.home.BR;
 import com.xtree.home.R;
 import com.xtree.home.databinding.FragmentHomeBinding;
 import com.xtree.home.ui.adapter.GameAdapter;
-import com.xtree.home.ui.custom.view.CustomFloatWindows;
+import com.xtree.home.ui.custom.view.RechargeFloatingWindows;
 import com.xtree.home.ui.viewmodel.HomeViewModel;
 import com.xtree.home.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.home.vo.BannersVo;
@@ -76,7 +76,7 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
  */
 @Route(path = RouterFragmentPath.Home.PAGER_HOME)
 public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewModel> {
-    CustomFloatWindows customFloatWindows;
+    RechargeFloatingWindows customFloatWindows;
     GameAdapter gameAdapter;
     boolean isBinding = false; // 是否正在跳转到其它页面绑定手机/YHK (跳转后回来刷新用)
     private int curPId = 0; // 当前选中的游戏大类型 1体育,2真人,3电子,4电竞,5棋牌,6彩票
@@ -386,7 +386,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         CfLog.e(String.valueOf(getActivity().getClass()));
         if (!isFloating) {
             CfLog.e("customFloatWindows.show");
-            customFloatWindows = new CustomFloatWindows(getActivity());
+            customFloatWindows = new RechargeFloatingWindows(getActivity());
             customFloatWindows.show();
             isFloating = true;
         }

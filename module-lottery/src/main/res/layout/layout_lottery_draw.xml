@@ -8,13 +8,16 @@
         <variable
             name="model"
             type="com.xtree.lottery.ui.view.viewmodel.LotteryDrawViewModel" />
+
+        <import type="android.view.View" />
     </data>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:shadowColor="@color/lt_color_shadows1"
         app:cardCornerRadius="10dp"
-        app:cardElevation="2dp"
-        android:shadowColor="@color/lt_color_shadows1">
+        app:cardElevation="2dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -22,46 +25,69 @@
             android:paddingStart="10dp"
             android:paddingEnd="5dp">
 
-            <TextView
-                android:id="@+id/lottery_period"
+            <FrameLayout
+                android:id="@+id/flLotteryPeriod"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@{model.drawDate}"
-                tools:text="20230822-184期："
-                android:textColor="@color/lt_color_text7"
-                android:textSize="14sp"
                 android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:text="@{model.drawDate}"
+                    android:textColor="@color/lt_color_text7"
+                    android:textSize="14sp"
+                    android:visibility="@{!`mmc`.equals(model.alias) ? View.VISIBLE : View.GONE}"
+                    tools:text="20230822-184期：" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/lt_shape_solid_clrblack_c4"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:onClick="@{(view) -> model.simulate(view)}"
+                    android:text="模拟开奖"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:visibility="@{`mmc`.equals(model.alias) ? View.VISIBLE : View.GONE}" />
+            </FrameLayout>
+
 
             <ImageView
                 android:id="@+id/lottery_refresh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="5dp"
-                android:src="@mipmap/lt_icon_lotterynum_refresh"
-                android:onClick="@{(view) -> model.refresh(view)}"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:importantForAccessibility="no" />
+                android:gravity="center"
+                android:importantForAccessibility="no"
+                android:onClick="@{(view) -> model.refresh(view)}"
+                android:padding="5dp"
+                android:src="@mipmap/lt_icon_lotterynum_refresh" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_toStartOf="@id/lottery_refresh"
-                android:layout_toEndOf="@id/lottery_period"
-                android:scrollbars="none"
-                android:layout_centerVertical="true">
+                android:layout_toEndOf="@id/flLotteryPeriod"
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:id="@+id/lottery_draw_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="start|center_vertical">
+                    android:gravity="start|center_vertical"
+                    android:orientation="horizontal">
 
                 </LinearLayout>
 
