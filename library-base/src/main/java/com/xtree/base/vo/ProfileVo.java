@@ -81,6 +81,7 @@ public class ProfileVo {
     public String onepayzfb_count; // "1"
     public String onepaywx_count; // "1"
     public String register_promotion_code ;//
+    public String real_name; //
 
     @Override
     public String toString() {

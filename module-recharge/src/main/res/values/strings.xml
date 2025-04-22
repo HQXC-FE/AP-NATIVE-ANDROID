@@ -30,7 +30,10 @@
     <string name="txt_bind_phone">立刻绑定手机</string>
     <string name="txt_bind_bank_card">立刻绑定银行卡</string>
     <string name="txt_deposit_name">存款人姓名</string>
+    <string name="txt_real_name">真实姓名：</string>
+    <string name="txt_real_name_hint">仅支持中文</string>
     <string name="txt_enter_real_name_pls">请如实填写支付账户中文姓名，并保证与提款所使用的银行卡姓名相同，否则无法保证您的正常提款！</string>
+    <string name="txt_enter_real_name_pls2">注意：请输入自己真实中文姓名，以避免后续无法提款</string>
     <string name="txt_enter_recharge_amount">请输入充值金额，最低%1$s元，最高%2$s元</string>
     <string name="txt_choose_recharge_amount">请选择金额</string>
     <string name="txt_enter_correct_amount">请输入范围%1$s~%2$s内的金额！</string>

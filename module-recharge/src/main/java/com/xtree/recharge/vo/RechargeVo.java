@@ -69,6 +69,8 @@ public class RechargeVo {
     public String bankcardstatus_onepaywx; // false 时需要弹窗提示绑定WX, 默认为null
     public String bankcardstatus_onepayzfb; // false 时需要弹窗提示绑定ZFB, 默认为null
     public String onepay_customer_service_link; // op客服链接
+    public boolean can_use_name_channel_status;//是否已配置 仅真实姓名可用渠道
+    public boolean need_fill_real_name;//是否需要填写真实姓名
 
     /**
      * opBankList

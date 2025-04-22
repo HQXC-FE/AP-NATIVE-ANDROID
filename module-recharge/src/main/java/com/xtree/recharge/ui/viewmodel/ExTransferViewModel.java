@@ -973,7 +973,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             return;
         }
         HashMap<String, String> map = null;
-        if (pvalue.getUserBankInfo() != null) {
+        if (pvalue.getUserBankInfo() != null && JSON.toJSONString(pvalue.getUserBankInfo()).startsWith("{")) {
             String jsonString = JSON.toJSONString(pvalue.getUserBankInfo());
             map = JSON.parseObject(jsonString, new TypeReference<HashMap<String, String>>() {
             });
@@ -981,11 +981,13 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
 
         ExRechargeOrderCheckResponse.DataDTO.OpBankListDTO opBankList = pvalue.getOpBankList();
         ArrayList<RechargeVo.OpBankListDTO.BankInfoDTO> bankInfoDTOS = new ArrayList<>();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            RechargeVo.OpBankListDTO.BankInfoDTO bankInfoDTO = new RechargeVo.OpBankListDTO.BankInfoDTO();
-            bankInfoDTO.setBankCode(entry.getKey());
-            bankInfoDTO.setBankName(entry.getValue());
-            bankInfoDTOS.add(bankInfoDTO);
+        if (map != null) {
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                RechargeVo.OpBankListDTO.BankInfoDTO bankInfoDTO = new RechargeVo.OpBankListDTO.BankInfoDTO();
+                bankInfoDTO.setBankCode(entry.getKey());
+                bankInfoDTO.setBankName(entry.getValue());
+                bankInfoDTOS.add(bankInfoDTO);
+            }
         }
 
         RechargeVo.OpBankListDTO bankSearchData = new RechargeVo.OpBankListDTO();

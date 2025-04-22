@@ -87,6 +87,7 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
     public SingleLiveData<Boolean> liveDataExpNoOrder = new SingleLiveData<>(); // 极速充值 没有未完成的订单 (显示银行/姓名/金额/下一步)
     //    public SingleLiveData<String> liveDataExpTitle = new SingleLiveData<>(); // 极速充值流程渠道标题
     public SingleLiveData<Object> liveSkipGuideData = new SingleLiveData<>();//跳过引导接口
+    public SingleLiveData<Object> liveRealNameData = new SingleLiveData<>();//实名填写
 
     public RechargeViewModel(@NonNull Application application) {
         super(application);
@@ -753,6 +754,34 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
         addSubscribe(disposable);
     }
 
+
+    /**
+     * 实名保存
+     * 成功返回：
+     * <p>
+     * {"status":10000,"message":"success","data":null,"timestamp":1729759455}
+     * <p>
+     * 失败code：
+     * 30719 真实姓名格式不正确
+     * 30405 操作失败
+     */
+    public void setRealName(String realname) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("realname", realname);
+        map.put("nonce", UuidUtil.getID16());
+        Disposable disposable = (Disposable) model.getApiService().setRealName(map)
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<Object>() {
+                    @Override
+                    public void onResult(Object vo) {
+                        CfLog.d("********"); // RechargePayVo
+                        liveRealNameData.setValue(new Object());
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
     /**
      * 提交充值请求
      *
@@ -897,8 +926,14 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
         if (vo2 != null) {
             //liveDataPayment.setValue(vo);
             //liveDataPaymentData.setValue(vo2);
-            liveDataPayCodeArr.setValue(vo2.payCodeArr);
-            liveDataPayTypeList.setValue(vo2.chongzhiList);
+            if (vo2.payCodeArr != null) {
+                liveDataPayCodeArr.setValue(vo2.payCodeArr);
+            }
+
+            if (vo2.chongzhiList != null) {
+                liveDataPayTypeList.setValue(vo2.chongzhiList);
+            }
+
             liveDataTutorial.setValue(vo2.bankdirect_url);
         }
 

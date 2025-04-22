@@ -88,7 +88,8 @@ public interface ApiService {
     /**
      * 获取 充值列表(分大小类)
      */
-    @GET("/api/deposit/paymentsclassify?getinfo=true")
+//    @GET("/api/deposit/paymentsclassify?getinfo=true")
+    @GET("/api/deposit/list?getinfo=true")
     Flowable<BaseResponse<PaymentDataVo>> getPaymentsTypeList();
 
     /**
@@ -103,7 +104,7 @@ public interface ApiService {
      * 获取 充值类型详情 (跳转链接用的)
      */
     //@GET("/api/deposit/payments?")
-    @GET("/api/deposit/info/{bid}")
+    @GET("/api/deposit/info/{bid}?cache=0")
     Flowable<BaseResponse<RechargeVo>> getPayment(@Path("bid") String bid);
 
     /**
@@ -112,6 +113,14 @@ public interface ApiService {
     @POST("/api/deposit/rechargepay/{bid}")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<Object>> getRealMoney(@Path("bid") String bid, @Body Map<String, String> map);
+
+
+    /**
+     * 实名保存
+     */
+    @POST("/api/account/setrealname")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<Object>> setRealName(@Body Map<String, String> map);
 
     /**
      * 提交充值
