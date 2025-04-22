@@ -70,8 +70,10 @@ import com.xtree.bet.ui.fragment.BtRecordDialogFragment;
 import com.xtree.bet.ui.fragment.BtSettingDialogFragment;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.bet.ui.viewmodel.factory.IMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FBMainViewModel;
+import com.xtree.bet.ui.viewmodel.im.ImMainViewModel;
 import com.xtree.bet.ui.viewmodel.pm.PMMainViewModel;
 import com.xtree.bet.weight.AnimatedExpandableListViewMax;
 import com.xtree.bet.weight.BettingNetFloatingWindows;
@@ -363,12 +365,15 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
     @Override
     public TemplateMainViewModel initViewModel() {
-        if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+        if (TextUtils.equals(mPlatform, PLATFORM_FB) && !TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
             AppViewModelFactory factory = AppViewModelFactory.getInstance(getApplication());
             return new ViewModelProvider(this, factory).get(FBMainViewModel.class);
-        } else {
+        } else if(TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)){
             PMAppViewModelFactory factory = PMAppViewModelFactory.getInstance(getApplication());
             return new ViewModelProvider(this, factory).get(PMMainViewModel.class);
+        }else{
+            IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance(getApplication());
+            return new ViewModelProvider(this, factory).get(ImMainViewModel.class);
         }
     }
 

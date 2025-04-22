@@ -26,6 +26,7 @@ import me.xtree.mvvmhabit.utils.SPUtils;
  */
 public class MatchIm implements Match {
     private String className;
+
     MatchInfo matchInfo;
 
     LeaguePm mLeague;

@@ -32,6 +32,10 @@ import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.MainViewModel;
 import com.xtree.bet.ui.viewmodel.SportCacheType;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
+import com.xtree.bet.ui.viewmodel.callback.IMLeagueListCacheCallBack;
+import com.xtree.bet.ui.viewmodel.callback.IMLeagueListCallBack;
+import com.xtree.bet.ui.viewmodel.callback.IMListCacheCallBack;
+import com.xtree.bet.ui.viewmodel.callback.IMListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.PMChampionListCacheCallBack;
 import com.xtree.bet.ui.viewmodel.callback.PMChampionListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.PMHotMatchCountCacheCallBack;
@@ -69,15 +73,15 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     public List<MatchInfo> mChampionMatchInfoList = new ArrayList<>();
     private Map<String, List<SportTypeItem>> sportCountMap = new HashMap<>();
     private List<MenuInfo> mMenuInfoList = new ArrayList<>();
-    private PMLeagueListCallBack mPmLeagueCallBack;
-    private PMLeagueListCacheCallBack mPmCacheLeagueCallBack;
+    private IMLeagueListCallBack mImLeagueCallBack;
+    private IMLeagueListCacheCallBack mPmCacheLeagueCallBack; //后台的缓存接口回调
 
     private HashMap<Integer, SportTypeItem> mMatchGames = new HashMap<>();
 
     private int mGoingOnPageSize = 300;
     private int mPageSize = 20;
     /**
-     * 获取赛事列表
+     *
      *
      * @param sportId
      * @param orderBy
@@ -97,41 +101,41 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         sportItemData.postValue(new String[]{});
     }
 
-    public void saveLeague(PMListCallBack pmListCallBack) {
-        mLeagueList = pmListCallBack.getLeagueList();
-        mGoingOnLeagueList = pmListCallBack.getGoingOnLeagueList();
-        mMapLeague = pmListCallBack.getMapLeague();
-        mMatchList = pmListCallBack.getMatchList();
-        mMapMatch = pmListCallBack.getMapMatch();
-        mMapSportType = pmListCallBack.getMapSportType();
+    public void saveLeague(IMListCallBack imListCallBack) {
+        mLeagueList = imListCallBack.getLeagueList();
+        mGoingOnLeagueList = imListCallBack.getGoingOnLeagueList();
+        mMapLeague = imListCallBack.getMapLeague();
+        mMatchList = imListCallBack.getMatchList();
+        mMapMatch = imListCallBack.getMapMatch();
+        mMapSportType = imListCallBack.getMapSportType();
     }
 
-    public void saveLeague(PMLeagueListCallBack pmListCallBack) {
-        mLeagueList = pmListCallBack.getLeagueList();
-        mGoingOnLeagueList = pmListCallBack.getGoingOnLeagueList();
-        mMapLeague = pmListCallBack.getMapLeague();
-        mMatchList = pmListCallBack.getMatchList();
-        mMapMatch = pmListCallBack.getMapMatch();
-        mMapSportType = pmListCallBack.getMapSportType();
-        mNoLiveheaderLeague = pmListCallBack.getNoLiveheaderLeague();
+    public void saveLeague(IMLeagueListCallBack imListCallBack) {
+        mLeagueList = imListCallBack.getLeagueList();
+        mGoingOnLeagueList = imListCallBack.getGoingOnLeagueList();
+        mMapLeague = imListCallBack.getMapLeague();
+        mMatchList = imListCallBack.getMatchList();
+        mMapMatch = imListCallBack.getMapMatch();
+        mMapSportType = imListCallBack.getMapSportType();
+        mNoLiveheaderLeague = imListCallBack.getNoLiveheaderLeague();
     }
 
-    public void saveLeague(PMListCacheCallBack pmListCallBack) {
-        mLeagueList = pmListCallBack.getLeagueList();
-        mGoingOnLeagueList = pmListCallBack.getGoingOnLeagueList();
-        mMapLeague = pmListCallBack.getMapLeague();
-        mMatchList = pmListCallBack.getMatchList();
-        mMapMatch = pmListCallBack.getMapMatch();
-        mMapSportType = pmListCallBack.getMapSportType();
+    public void saveLeague(IMListCacheCallBack imListCallBack) {
+        mLeagueList = imListCallBack.getLeagueList();
+        mGoingOnLeagueList = imListCallBack.getGoingOnLeagueList();
+        mMapLeague = imListCallBack.getMapLeague();
+        mMatchList = imListCallBack.getMatchList();
+        mMapMatch = imListCallBack.getMapMatch();
+        mMapSportType = imListCallBack.getMapSportType();
     }
 
-    public void saveLeague(PMLeagueListCacheCallBack pmListCallBack) {
-        mLeagueList = pmListCallBack.getLeagueList();
-        mGoingOnLeagueList = pmListCallBack.getGoingOnLeagueList();
-        mMapLeague = pmListCallBack.getMapLeague();
-        mMatchList = pmListCallBack.getMatchList();
-        mMapMatch = pmListCallBack.getMapMatch();
-        mMapSportType = pmListCallBack.getMapSportType();
+    public void saveLeague(IMLeagueListCacheCallBack imListCallBack) {
+        mLeagueList = imListCallBack.getLeagueList();
+        mGoingOnLeagueList = imListCallBack.getGoingOnLeagueList();
+        mMapLeague = imListCallBack.getMapLeague();
+        mMatchList = imListCallBack.getMatchList();
+        mMapMatch = imListCallBack.getMapMatch();
+        mMapSportType = imListCallBack.getMapSportType();
     }
 
     public Map<String, League> getMapLeague() {
@@ -206,8 +210,8 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         mSearchWord = searchWord;
         mIsChampion = isChampion;
         if (!isChampion) {
-            if (mPmLeagueCallBack != null) {
-                mPmLeagueCallBack.searchMatch(searchWord);
+            if (mImLeagueCallBack != null) {
+                mImLeagueCallBack.searchMatch(searchWord);
             } else if (mPmCacheLeagueCallBack != null) {
                 mPmCacheLeagueCallBack.searchMatch(searchWord);
             }
