@@ -1,6 +1,7 @@
 package com.xtree.bet.ui.activity;
 
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_IM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
@@ -48,8 +49,11 @@ import com.xtree.bet.ui.fragment.BtCarDialogFragment;
 import com.xtree.bet.ui.fragment.BtDetailOptionFragment;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.bet.ui.viewmodel.factory.IMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FbBtDetailViewModel;
+import com.xtree.bet.ui.viewmodel.im.IMBtCarViewModel;
+import com.xtree.bet.ui.viewmodel.im.IMBtDetailViewModel;
 import com.xtree.bet.ui.viewmodel.pm.PmBtDetailViewModel;
 import com.xtree.bet.util.MatchDeserializer;
 import com.xtree.bet.weight.BaseDetailDataView;
@@ -106,11 +110,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
      */
     protected void initImmersionBar() {
         //设置共同沉浸式样式
-        ImmersionBar.with(this)
-                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
-                .fitsSystemWindows(false)
-                .statusBarDarkFont(false)
-                .init();
+        ImmersionBar.with(this).navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color).fitsSystemWindows(false).statusBarDarkFont(false).init();
     }
 
     public static void start(Context context, Match match) {
@@ -122,6 +122,11 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
 
     @Override
     public TemplateBtDetailViewModel initViewModel() {
+//        if (TextUtils.equals(mPlatform, PLATFORM_IM)) {
+//            IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance(getApplication());
+//            return new ViewModelProvider(this, factory).get(IMBtDetailViewModel.class);
+//        } else
+
         if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
             AppViewModelFactory factory = AppViewModelFactory.getInstance(getApplication());
             return new ViewModelProvider(this, factory).get(FbBtDetailViewModel.class);
@@ -160,10 +165,10 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tabPos = tab.getPosition();
-                for(int i = 0; i < binding.tabCategoryType.getTabCount(); i ++){
-                    if(tabPos == i){
+                for (int i = 0; i < binding.tabCategoryType.getTabCount(); i++) {
+                    if (tabPos == i) {
                         binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(R.mipmap.bt_bg_category_tab_selected);
-                    }else {
+                    } else {
                         binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(R.drawable.bt_bg_category_tab);
                     }
                 }
@@ -202,28 +207,21 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
     @Override
     protected void onResume() {
         super.onResume();
-        viewModel.addSubscribe(Observable.interval(5, 5, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    viewModel.getMatchDetail(mMatch.getId());
-                    viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
+        viewModel.addSubscribe(Observable.interval(5, 5, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(aLong -> {
+            viewModel.getMatchDetail(mMatch.getId());
+            viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
                     /*if (!mCategories.isEmpty() && mCategories.size() > tabPos) {
                         viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
                     }*/
-                })
-        );
+        }));
 
         if (sportsTimerDisposable != null) {
             viewModel.removeSubscribe(sportsTimerDisposable);
         }
-        sportsTimerDisposable = Observable.interval(1, 1, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    secoend = secoend+1;
-                    updateMatchTime(mMatch);
-                });
+        sportsTimerDisposable = Observable.interval(1, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(aLong -> {
+            secoend = secoend + 1;
+            updateMatchTime(mMatch);
+        });
         viewModel.addSubscribe(sportsTimerDisposable);
 
 
@@ -310,21 +308,10 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         if (!TextUtils.isEmpty(mMatch.getReferUrl())) {
             header.put("Referer", mMatch.getReferUrl());
         }
-        return new GSYVideoOptionBuilder()
-                .setThumbImageView(thumb)
-                .setUrl(videoUrl)
-                .setMapHeadData(header)
-                .setCacheWithPlay(false)
-                .setShrinkImageRes(R.mipmap.bt_video_shrink)
-                .setEnlargeImageRes(R.mipmap.bt_video_enlarge)
-                .setVideoTitle(mMatch.getTeamMain() + score + mMatch.getTeamVistor())
-                .setIsTouchWiget(false)
+        return new GSYVideoOptionBuilder().setThumbImageView(thumb).setUrl(videoUrl).setMapHeadData(header).setCacheWithPlay(false).setShrinkImageRes(R.mipmap.bt_video_shrink).setEnlargeImageRes(R.mipmap.bt_video_enlarge).setVideoTitle(mMatch.getTeamMain() + score + mMatch.getTeamVistor()).setIsTouchWiget(false)
                 //.setAutoFullWithSize(true)
-                .setRotateViewAuto(false)
-                .setLockLand(false)
-                .setShowFullAnimation(false)//打开动画
-                .setNeedLockFull(false)
-                .setSeekRatio(1);
+                .setRotateViewAuto(false).setLockLand(false).setShowFullAnimation(false)//打开动画
+                .setNeedLockFull(false).setSeekRatio(1);
     }
 
     @Override
@@ -346,9 +333,8 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
     private void updateOptionData() {
         if (fragment == null) {
             if (mCategories != null && !mCategories.isEmpty()) {
-                fragment = BtDetailOptionFragment.getInstance(mMatch, (ArrayList<PlayType>) mCategories.get(tabPos).getPlayTypeList(),false);
-                FragmentTransaction trans = getSupportFragmentManager()
-                        .beginTransaction();
+                fragment = BtDetailOptionFragment.getInstance(mMatch, (ArrayList<PlayType>) mCategories.get(tabPos).getPlayTypeList(), false);
+                FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
                 trans.replace(R.id.fl_option, fragment);
                 trans.commitAllowingStateLoss();
             }
@@ -387,23 +373,19 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             binding.tvLeagueName.setText(match.getLeague().getLeagueName());
             binding.tvTeamMain.setText(match.getTeamMain());
             binding.tvTeamVisisor.setText(match.getTeamVistor());
-            Glide.with(this)
-                    .load(match.getIconMain())
+            Glide.with(this).load(match.getIconMain())
                     //.apply(new RequestOptions().placeholder(placeholderRes))
                     .into(binding.ivLogoMain);
 
-            Glide.with(this)
-                    .load(match.getIconVisitor())
+            Glide.with(this).load(match.getIconVisitor())
                     //.apply(new RequestOptions().placeholder(placeholderRes))
                     .into(binding.ivLogoVisitor);
 
-            Glide.with(this)
-                    .load(match.getIconMain())
+            Glide.with(this).load(match.getIconMain())
                     //.apply(new RequestOptions().placeholder(placeholderRes))
                     .into(binding.ivLogoMainTop);
 
-            Glide.with(this)
-                    .load(match.getIconVisitor())
+            Glide.with(this).load(match.getIconVisitor())
                     //.apply(new RequestOptions().placeholder(placeholderRes))
                     .into(binding.ivLogoVisitorTop);
 
@@ -451,41 +433,41 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 binding.llEnd.llEmpty.setVisibility(View.GONE);
             }
             //if (mCategories.size() != categories.size()) {
-                mCategories = categories;
-                if(binding.tabCategoryType.getTabCount() == 0) {
-                    for (int i = 0; i < categories.size(); i++) {
-                        View view = LayoutInflater.from(this).inflate(R.layout.bt_layout_bet_catory_tab_item, null);
-                        TextView tvName = view.findViewById(R.id.tab_item_name);
-                        String name = categories.get(i) == null ? "" : categories.get(i).getName();
+            mCategories = categories;
+            if (binding.tabCategoryType.getTabCount() == 0) {
+                for (int i = 0; i < categories.size(); i++) {
+                    View view = LayoutInflater.from(this).inflate(R.layout.bt_layout_bet_catory_tab_item, null);
+                    TextView tvName = view.findViewById(R.id.tab_item_name);
+                    String name = categories.get(i) == null ? "" : categories.get(i).getName();
 
-                        tvName.setText(name);
-                        ColorStateList colorStateList = getResources().getColorStateList(R.color.bt_color_category_tab_text);
-                        tvName.setTextColor(colorStateList);
+                    tvName.setText(name);
+                    ColorStateList colorStateList = getResources().getColorStateList(R.color.bt_color_category_tab_text);
+                    tvName.setTextColor(colorStateList);
 
-                        binding.tabCategoryType.addTab(binding.tabCategoryType.newTab().setCustomView(view));
+                    binding.tabCategoryType.addTab(binding.tabCategoryType.newTab().setCustomView(view));
 
-                    }
-                }else{
-                    for (int i = 0; i < categories.size(); i++) {
-                        try {
-                            if (binding.tabCategoryType == null) {
-                                CfLog.e("=========binding.tabCategoryType == null=========");
-                            }
-                            if (categories.get(i) == null && binding.tabCategoryType != null && i < binding.tabCategoryType.getTabCount()) {
-                                binding.tabCategoryType.removeTabAt(i);
-                                if (binding.tabCategoryType.getTabCount() == 0) {
-                                    binding.rlPlayMethod.setVisibility(View.GONE);
-                                    binding.flOption.setVisibility(View.GONE);
-                                    binding.llEnd.llEmpty.setVisibility(View.VISIBLE);
-                                }
-                            }
-                        }catch (Exception e){
-                            CfLog.e("binding.tabCategoryType.getTabCount()-------" + binding.tabCategoryType.getTabCount() + "-----" + i);
-                            CfLog.e(e.getMessage());
-                        }
-                    }
-                    viewModel.updateCategoryData();
                 }
+            } else {
+                for (int i = 0; i < categories.size(); i++) {
+                    try {
+                        if (binding.tabCategoryType == null) {
+                            CfLog.e("=========binding.tabCategoryType == null=========");
+                        }
+                        if (categories.get(i) == null && binding.tabCategoryType != null && i < binding.tabCategoryType.getTabCount()) {
+                            binding.tabCategoryType.removeTabAt(i);
+                            if (binding.tabCategoryType.getTabCount() == 0) {
+                                binding.rlPlayMethod.setVisibility(View.GONE);
+                                binding.flOption.setVisibility(View.GONE);
+                                binding.llEnd.llEmpty.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    } catch (Exception e) {
+                        CfLog.e("binding.tabCategoryType.getTabCount()-------" + binding.tabCategoryType.getTabCount() + "-----" + i);
+                        CfLog.e(e.getMessage());
+                    }
+                }
+                viewModel.updateCategoryData();
+            }
             updateOptionData();
             /*} else {
                 mCategories = categories;
@@ -527,7 +509,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 ToastUtils.showLong(getText(R.string.bt_bt_must_have_two_match));
                 return;
             }
-            if(ClickUtil.isFastClick()){
+            if (ClickUtil.isFastClick()) {
                 return;
             }
             BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
@@ -572,7 +554,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         }
     }
 
-    private void updateMatchTime(Match match){
+    private void updateMatchTime(Match match) {
         // 比赛未开始
         if (!match.isGoingon()) {
             binding.tvTimeTop.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_HH_MM));
@@ -582,15 +564,15 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             if (TextUtils.equals(Constants.getFbSportId(), match.getSportId()) || TextUtils.equals(Constants.getBsbSportId(), match.getSportId())) { // 足球和篮球
                 //int currentTime = match.getTimeS() + secoend;
 
-                if(match.getSportId().equals("1")){ //足球
+                if (match.getSportId().equals("1")) { //足球
                     int currentTime = match.getTimeS() + secoend;
                     binding.tvTime.setText(match.getStage() + " " + formatTime(currentTime));
                     binding.tvTimeTop.setText(match.getStage() + " " + formatTime(currentTime));
-                }else if(match.getSportId().equals("2")){ //篮球
+                } else if (match.getSportId().equals("2")) { //篮球
                     int currentTime = match.getTimeS() - secoend;
                     binding.tvTime.setText(match.getStage() + " " + formatTime(currentTime));
                     binding.tvTimeTop.setText(match.getStage() + " " + formatTime(currentTime));
-                }else{ //其它
+                } else { //其它
                     binding.tvTime.setText(match.getStage() + " " + match.getTime());
                     binding.tvTimeTop.setText(match.getStage() + " " + match.getTime());
                 }

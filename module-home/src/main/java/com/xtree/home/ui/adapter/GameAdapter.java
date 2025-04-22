@@ -298,12 +298,16 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
     private void goApp(GameVo vo) {
         String cgToken;
         if (TextUtils.equals(vo.alias, PLATFORM_FBXC)) {
+            //杏彩体育旗舰
             cgToken = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_TOKEN);
         } else if (TextUtils.equals(vo.alias, PLATFORM_FB)) {
+            //FB体育
             cgToken = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
         } else if (TextUtils.equals(vo.alias, PLATFORM_PMXC)) {
+            //杏彩体育[熊猫自营]
             cgToken = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN);
         } else {
+            //熊猫体育
             cgToken = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
         }
 
