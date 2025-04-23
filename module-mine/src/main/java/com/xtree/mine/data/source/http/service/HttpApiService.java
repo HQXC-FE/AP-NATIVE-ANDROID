@@ -2,6 +2,7 @@ package com.xtree.mine.data.source.http.service;
 
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.FBService;
+import com.xtree.base.vo.MsgPersonListVo;
 import com.xtree.base.vo.PMService;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.mine.vo.AWVo;
@@ -36,7 +37,6 @@ import com.xtree.mine.vo.MemberManagerVo;
 import com.xtree.mine.vo.MsgInfoVo;
 import com.xtree.mine.vo.MsgListVo;
 import com.xtree.mine.vo.MsgPersonInfoVo;
-import com.xtree.base.vo.MsgPersonListVo;
 import com.xtree.mine.vo.OtherWebWithdrawVo;
 import com.xtree.mine.vo.PlatWithdrawConfirmVo;
 import com.xtree.mine.vo.PlatWithdrawVo;
@@ -65,6 +65,8 @@ import com.xtree.mine.vo.VirtualCashVo;
 import com.xtree.mine.vo.VirtualConfirmVo;
 import com.xtree.mine.vo.VirtualSecurityVo;
 import com.xtree.mine.vo.request.AdduserRequest;
+import com.xtree.mine.vo.response.ShowThirdManagement;
+import com.xtree.mine.vo.response.ThirdManagementResponse;
 import com.xtree.mine.vo.withdrawals.WithdrawalBankInfoVo;
 import com.xtree.mine.vo.withdrawals.WithdrawalInfoVo;
 import com.xtree.mine.vo.withdrawals.WithdrawalListVo;
@@ -800,8 +802,9 @@ public interface HttpApiService {
     @GET("/api/activity/pool?")
     Flowable<BaseResponse<BonusPoolReportVo>> getBonusPoolReport(@QueryMap Map<String, String> qMap);
 
-    /**?
-     *一种是账户未绑定银行卡：输入资金密码后，为绑定USDT界面
+    /**
+     * ?
+     * 一种是账户未绑定银行卡：输入资金密码后，为绑定USDT界面
      * 一种是账户已经绑定银行卡，输入资金密码后，输入上次绑定银行卡界面
      * client=m&controller=security&action=addusdt
      */
@@ -811,10 +814,23 @@ public interface HttpApiService {
 
     /**
      * 绑定提交
+     *
      * @param map
      * @return
      */
     @POST("/user/?controller=security&action=adduserusdt&client=m")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<UserUsdtConfirmVo> doFirstBindUsdtSubmit( @Body Map<String, String> map);
+    Flowable<UserUsdtConfirmVo> doFirstBindUsdtSubmit(@Body Map<String, String> map);
+
+    /**
+     * 顯示三方管理
+     */
+    @GET("/api/activity/thirdfee?type=check&client=m")
+    Flowable<ShowThirdManagement> showThirdManagement();
+
+    /**
+     * 三方管理
+     */
+    @GET("/api/activity/thirdfee?p=1&pn=20&type=list&client=m")
+    Flowable<ThirdManagementResponse> getThirdManagement(@QueryMap Map<String, String> map);
 }

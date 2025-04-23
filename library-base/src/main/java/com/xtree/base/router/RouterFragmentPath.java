@@ -42,6 +42,7 @@ public class RouterFragmentPath {
         public static final String PAGER_CHANGE_PWD = MINE + "/ChangePwd";
         public static final String PAGER_EASTER_REPORT = MINE + "/EasterReport";
         public static final String PAGER_BONUS_POOL = MINE + "/BonusPool";
+        public static final String PAGER_THIRD_MANAGEMENT = MINE + "/ThirdManagement";
         /**
          * 綁定谷歌动态口令
          */
