@@ -33,6 +33,8 @@ import com.xtree.mine.vo.SendMoneyVo;
 import com.xtree.mine.vo.VipInfoVo;
 import com.xtree.mine.vo.VipUpgradeInfoVo;
 import com.xtree.mine.vo.request.AdduserRequest;
+import com.xtree.mine.vo.response.ShowThirdManagement;
+import com.xtree.mine.vo.response.ThirdManagementResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +72,8 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
     public SingleLiveData<EasterReportVo> liveDataEasterReport = new SingleLiveData<>();
     public SingleLiveData<Boolean> liveDataSetPoint = new SingleLiveData<>(); // 设置返点
     public SingleLiveData<BonusPoolReportVo> liveDataBonusPoolReport = new SingleLiveData<>(); // 奖金池
+    public SingleLiveData<Boolean> liveDataShowThirdManagement = new SingleLiveData<>(); // 显示三方报表
+    public SingleLiveData<ThirdManagementResponse.DataDTO> liveDataGetThirdManagement = new SingleLiveData<>(); // 三方报表
 
     public MineViewModel(@NonNull Application application, MineRepository repository) {
         super(application, repository);
@@ -506,6 +510,54 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
                             liveDataSetPoint.setValue(true);
                         } else {
                             ToastUtils.showError(map.get("message"));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    /**
+     * 显示三方管理
+     */
+    public void showThirdManagement() {
+        Disposable disposable = (Disposable) model.getApiService().showThirdManagement()
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<ShowThirdManagement>() {
+                    @Override
+                    public void onResult(ShowThirdManagement showThirdManagement) {
+                        if (showThirdManagement != null) {
+                            liveDataShowThirdManagement.setValue(showThirdManagement.getData().getShow() == 1);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    /**
+     * 三方管理
+     */
+    public void getThirdManagement(Map<String, String> map) {
+        Disposable disposable = (Disposable) model.getApiService().getThirdManagement(map)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<ThirdManagementResponse>() {
+                    @Override
+                    public void onResult(ThirdManagementResponse thirdManagementResponse) {
+                        if (thirdManagementResponse != null) {
+                            liveDataGetThirdManagement.setValue(thirdManagementResponse.getData());
                         }
                     }
 
