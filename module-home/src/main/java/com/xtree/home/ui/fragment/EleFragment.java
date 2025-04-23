@@ -2,6 +2,7 @@ package com.xtree.home.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,7 @@ import com.xtree.home.vo.GameVo;
 import me.xtree.mvvmhabit.base.BaseFragment;
 
 /**
- * PG电子，PP电子，PT电子
+ * PG电子，PP电子，PT电子，奥丁电子
  */
 @Route(path = RouterFragmentPath.Home.ELE)
 public class EleFragment extends BaseFragment<FragmentEleBinding, HomeViewModel> {
@@ -55,6 +56,7 @@ public class EleFragment extends BaseFragment<FragmentEleBinding, HomeViewModel>
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
         mAdapter = new FragmentStateAdapter(getChildFragmentManager(), getLifecycle()) {
             @NonNull
             @Override
@@ -86,4 +88,10 @@ public class EleFragment extends BaseFragment<FragmentEleBinding, HomeViewModel>
         AppViewModelFactory factory = AppViewModelFactory.getInstance(getActivity().getApplication());
         return new ViewModelProvider(this, factory).get(HomeViewModel.class);
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
 }
