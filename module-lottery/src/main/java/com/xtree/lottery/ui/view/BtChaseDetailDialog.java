@@ -136,6 +136,10 @@ public class BtChaseDetailDialog extends BottomPopupView {
         binding.rvChase.setLayoutManager(layoutManager);
         binding.rvChase.setAdapter(chasingDetailAdapter);
 
+        binding.cbAllIssue.setOnCheckedChangeListener( (buttonView, isChecked)  ->  {
+            chasingDetailAdapter.selectAll(isChecked);
+        });
+
         if (timer == null) {
             timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {

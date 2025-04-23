@@ -40,6 +40,8 @@ class ChasingDetailAdapter(list: MutableList<ATaskdetail>, val owner: LifecycleO
         cbIssue.isClickable = showCheckbox
         cbIssue.isFocusable = showCheckbox
         item.showCheckbox = showCheckbox
+
+        cbIssue.setOnCheckedChangeListener(null); // 防复用干扰
         cbIssue.isChecked = item.isChecked
         cbIssue.setOnCheckedChangeListener { _, _ ->
             item.isChecked = cbIssue.isChecked
@@ -80,5 +82,13 @@ class ChasingDetailAdapter(list: MutableList<ATaskdetail>, val owner: LifecycleO
             }
         }
 
+    }
+
+    // === 👇 添加全选方法 ===
+    fun selectAll(isSelected: Boolean) {
+        for (item in data) {
+            item.isChecked = isSelected
+        }
+        notifyDataSetChanged() // 通知刷新
     }
 }
