@@ -107,8 +107,10 @@ public class FilterView extends LinearLayout {
         return binding.edtInput.getText().toString().trim();
     }
 
-    public void setTopTotal(String count, String money) {
+    public void setTopTotal(String countTitle, String count, String moneyTitle, String money) {
         binding.llTopTotal.setVisibility(View.VISIBLE);
+        binding.tvwReturnCountTitle.setText(countTitle);
+        binding.tvwReturnMoneyTitle.setText(moneyTitle);
         binding.tvwReturnMoney.setText(money);
         binding.tvwReturnCount.setText(count);
     }
