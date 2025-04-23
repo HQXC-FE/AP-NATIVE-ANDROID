@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/layout_margin">
+    android:layout_marginBottom="@dimen/layout_margin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,8 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/layout_margin"
+            android:drawableStart="@mipmap/ic_calendar"
+            android:drawablePadding="3dp"
             android:text="日期："
-            android:textColor="@color/clr_txt_01"
+            android:textColor="@color/clr_txt_02"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +52,6 @@
             android:layout_height="wrap_content"
             android:text="ydcd008"
             android:textColor="@color/clr_red_01"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/tvw_name_title"
             app:layout_constraintStart_toEndOf="@id/tvw_name_title"
             app:layout_constraintTop_toTopOf="@id/tvw_name_title" />
@@ -59,11 +60,11 @@
             android:id="@+id/tvw_platform_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/layout_margin"
             android:text="游戏平台："
             android:textColor="@color/clr_txt_01"
-            app:layout_constraintStart_toStartOf="@id/tvw_name_title"
-            app:layout_constraintTop_toBottomOf="@id/tvw_name_title" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvw_name"
+            app:layout_constraintTop_toTopOf="@id/tvw_name_title" />
 
         <TextView
             android:id="@+id/tvw_platform"
@@ -71,7 +72,6 @@
             android:layout_height="wrap_content"
             android:text="PP娱乐"
             android:textColor="@color/clr_txt_02"
-            android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@id/tvw_platform_title"
             app:layout_constraintTop_toTopOf="@+id/tvw_platform_title" />
 
@@ -82,8 +82,8 @@
             android:layout_marginTop="@dimen/layout_margin"
             android:text="中奖金额："
             android:textColor="@color/clr_txt_01"
-            app:layout_constraintStart_toStartOf="@id/tvw_platform_title"
-            app:layout_constraintTop_toBottomOf="@id/tvw_platform_title" />
+            app:layout_constraintStart_toStartOf="@id/tvw_name_title"
+            app:layout_constraintTop_toBottomOf="@id/tvw_name_title" />
 
         <TextView
             android:id="@+id/tvw_bonus_money"
@@ -91,7 +91,6 @@
             android:layout_height="wrap_content"
             android:text="2359.2"
             android:textColor="@color/clr_txt_02"
-            android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@id/tvw_bonus_money_title"
             app:layout_constraintTop_toTopOf="@+id/tvw_bonus_money_title" />
 
@@ -115,7 +114,6 @@
             android:singleLine="true"
             android:text="2.3592"
             android:textColor="@color/clr_txt_02"
-            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvw_return_money_title"
             app:layout_constraintTop_toTopOf="@+id/tvw_return_money_title" />

@@ -625,6 +625,10 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                     binding.tvwThirdManagement3.setVisibility(View.GONE);
                     binding.tvwThirdManagement4.setVisibility(View.GONE);
                 }
+            } else {
+                binding.tvwThirdManagement1.setVisibility(View.GONE);
+                binding.tvwThirdManagement2.setVisibility(View.GONE);
+                binding.tvwThirdManagement3.setVisibility(View.GONE);
             }
         });
 
