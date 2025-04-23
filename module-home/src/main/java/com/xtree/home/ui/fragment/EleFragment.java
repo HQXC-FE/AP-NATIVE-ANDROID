@@ -2,7 +2,6 @@ package com.xtree.home.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -88,10 +87,4 @@ public class EleFragment extends BaseFragment<FragmentEleBinding, HomeViewModel>
         AppViewModelFactory factory = AppViewModelFactory.getInstance(getActivity().getApplication());
         return new ViewModelProvider(this, factory).get(HomeViewModel.class);
     }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
 }

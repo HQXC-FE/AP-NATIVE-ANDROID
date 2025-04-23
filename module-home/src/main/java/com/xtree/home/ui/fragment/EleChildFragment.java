@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.xtree.base.adapter.CacheViewHolder;
 import com.xtree.base.adapter.CachedAutoRefreshAdapter;
-import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
@@ -93,7 +92,7 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
             public void onBindViewHolder(@NonNull CacheViewHolder holder, int position) {
                 EleItemBinding binding = EleItemBinding.bind(holder.itemView);
                 Ele vo1 = get(position);
-                CfLog.i(vo1.toString());
+                //CfLog.i(vo1.toString());
                 Glide.with(EleChildFragment.this.requireContext())
                         .load(DomainUtil.getDomain2() + vo1.getPicture())
                         .placeholder(R.mipmap.cm_placeholder_image)
