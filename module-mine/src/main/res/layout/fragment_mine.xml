@@ -375,6 +375,38 @@
                             style="@style/style_menu_black"
                             android:drawableTop="@mipmap/me_gr_easter"
                             android:text="@string/txt_easter_report" />
+
+                        <TextView
+                            android:id="@+id/tvw_third_management_1"
+                            style="@style/style_menu_black"
+                            android:drawableTop="@mipmap/me_third"
+                            android:text="@string/txt_third_management"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_menu_04"
+                        style="@style/style_ll_row_2">
+
+                        <TextView
+                            android:id="@+id/tvw_third_management_2"
+                            style="@style/style_menu_black"
+                            android:drawableTop="@mipmap/me_third"
+                            android:text="@string/txt_third_management"
+                            android:visibility="gone" />
+
+                        <TextView style="@style/style_wallet_space" />
+
+                        <TextView style="@style/style_menu_black" />
+
+                        <TextView style="@style/style_wallet_space" />
+
+                        <TextView style="@style/style_menu_black" />
+
+                        <TextView style="@style/style_wallet_space" />
+
+                        <TextView style="@style/style_menu_black" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -466,7 +498,12 @@
                         android:id="@+id/ll_menu_client_03"
                         style="@style/style_ll_row_2">
 
-                        <TextView style="@style/style_menu_black" />
+                        <TextView
+                            android:id="@+id/tvw_third_management_3"
+                            style="@style/style_menu_black"
+                            android:drawableTop="@mipmap/me_third"
+                            android:text="@string/txt_third_management"
+                            android:visibility="gone" />
 
                         <TextView style="@style/style_wallet_space" />
 

@@ -15,7 +15,7 @@ import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
-import com.xtree.mine.databinding.FragmentEasterReportBinding;
+import com.xtree.mine.databinding.FragmentThirdManagementBinding;
 import com.xtree.mine.ui.viewmodel.MineViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
@@ -23,21 +23,19 @@ import java.util.HashMap;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
 
-@Route(path = RouterFragmentPath.Mine.PAGER_EASTER_REPORT)
-public class EasterReportFragment extends BaseFragment<FragmentEasterReportBinding, MineViewModel> {
-    EasterReportAdapter adapter;
+@Route(path = RouterFragmentPath.Mine.PAGER_THIRD_MANAGEMENT)
+public class ThirdManagementFragment extends BaseFragment<FragmentThirdManagementBinding, MineViewModel> {
+    ThirdManagementAdapter adapter;
 
     private String starttime;
     private String endtime;
-    private String typeId = "0";
-    private String status = "0";
     private String userName = "";
 
     @Override
     public void initView() {
         binding.ivwBack.setOnClickListener(v -> getActivity().finish());
         binding.fvMain.setVisibility(View.GONE, View.GONE, View.GONE, View.GONE, View.VISIBLE);
-        binding.fvMain.setTopTotal("", "0", getString(R.string.txt_easter_top), "0.0000");
+        binding.fvMain.setTopTotal("", "0", getString(R.string.txt__third_return_top), "0.0000");
         binding.fvMain.setDefEdit("代理名称", "", "请输入代理名称");
 
         binding.fvMain.setQueryListener(v -> {
@@ -49,12 +47,7 @@ public class EasterReportFragment extends BaseFragment<FragmentEasterReportBindi
             requestData();
         });
 
-
-        adapter = new EasterReportAdapter(getContext(), member -> {
-            binding.fvMain.setEdit(member);
-            adapter.clear();
-            requestData();
-        });
+        adapter = new ThirdManagementAdapter(getContext());
 
         binding.rcvMain.setAdapter(adapter);
         binding.rcvMain.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -62,7 +55,7 @@ public class EasterReportFragment extends BaseFragment<FragmentEasterReportBindi
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return R.layout.fragment_easter_report;
+        return R.layout.fragment_third_management;
     }
 
     @Override
@@ -78,13 +71,13 @@ public class EasterReportFragment extends BaseFragment<FragmentEasterReportBindi
 
     @Override
     public void initViewObservable() {
-        viewModel.liveDataEasterReport.observe(this, vo -> {
-            binding.fvMain.setTopTotal("", "0", getString(R.string.txt_easter_top), vo.total);
+        viewModel.liveDataGetThirdManagement.observe(this, vo -> {
+            binding.fvMain.setTopTotal("", "0", getString(R.string.txt__third_return_top), vo.getTotalMyselfPrice());
 
-            if (!vo.data.isEmpty()) {
+            if (!vo.getList().isEmpty()) {
                 binding.tvwNoData.setVisibility(View.GONE);
 
-                adapter.addAll(vo.data);
+                adapter.addAll(vo.getList());
             } else {
                 binding.tvwNoData.setVisibility(View.VISIBLE);
             }
@@ -94,28 +87,14 @@ public class EasterReportFragment extends BaseFragment<FragmentEasterReportBindi
     private void requestData() {
         starttime = binding.fvMain.getStartDate();
         endtime = binding.fvMain.getEndDate();
-        typeId = binding.fvMain.getTypeId("");
-        status = binding.fvMain.getStatusId("");
         userName = binding.fvMain.getEdit("");
 
-        if (typeId.equals("-1")) {
-            typeId = "";
-        }
-
-        if (status.equals("-1")) {
-            status = "";
-        }
-
         HashMap<String, String> map = new HashMap<>();
-        map.put("from", starttime);
-        map.put("to", endtime);
+        map.put("start_time", starttime);
+        map.put("end_time", endtime);
         map.put("username", userName);
-        map.put("lotteryid", "");
-        map.put("currencytype", "0");
-        map.put("status", "1"); // ""-全部 0-未发放, 1-已发放, 2-已测回
-        map.put("page", "1");
 
-        viewModel.getEasterReport(map);
+        viewModel.getThirdManagement(map);
     }
 }
 
