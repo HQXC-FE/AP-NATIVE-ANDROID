@@ -5,8 +5,8 @@ android {
         // 测试环境 测试用
         eon3_pre {
             applicationId "com.${name.toLowerCase()}.app"
-            versionName "1.0.5"
-            versionCode 105
+            versionName "1.0.6"
+            versionCode 106
             //resValue "string", "app_name", "${name}"
             resValue "string", "app_name", "意昂3T${versionCode}"
             // 后面可能会改成 https://preyiang22test.oxldkm.com 如后续有连线问题 尝试看看
@@ -30,8 +30,8 @@ android {
         // 生产环境 发布用
         eon3_OL {
             applicationId "com.eon3.app" // eon3
-            versionName "1.0.5"
-            versionCode 105
+            versionName "1.0.6"
+            versionCode 106
             resValue "string", "app_name", "意昂体育3"
             resValue "string", "domain_api", "http://129.226.129.111:46820"
             resValue "string", "domain_url", "https://h51.d4c1tc.vip"
