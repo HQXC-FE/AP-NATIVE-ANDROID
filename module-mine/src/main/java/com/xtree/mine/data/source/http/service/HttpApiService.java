@@ -820,6 +820,6 @@ public interface HttpApiService {
     /**
      * 三方管理
      */
-    @GET("/api/activity/thirdfee?p=1&pn=20&type=list&client=m")
+    @GET("/api/activity/thirdfee?pn=20&type=list&client=m")
     Flowable<ThirdManagementResponse> getThirdManagement(@QueryMap Map<String, String> map);
 }

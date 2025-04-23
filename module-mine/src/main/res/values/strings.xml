@@ -531,6 +531,7 @@
     <string name="txt_lottery_all_kind">所有彩种</string>
     <string name="txt_notice_tip">注意事项：</string>
     <string name="txt_third_management">三方管理费</string>
+    <string name="txt_third_management_title">三方管理费报表</string>
 
     <string name="txt_set_point">设置返点</string>
     <string name="txt_username_title">用户名：</string>

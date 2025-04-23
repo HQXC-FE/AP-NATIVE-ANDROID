@@ -30,6 +30,7 @@ public class ThirdManagementFragment extends BaseFragment<FragmentThirdManagemen
     private String starttime;
     private String endtime;
     private String userName = "";
+    int curPage = 1;
 
     @Override
     public void initView() {
@@ -42,9 +43,28 @@ public class ThirdManagementFragment extends BaseFragment<FragmentThirdManagemen
             if (ClickUtil.isFastClick()) {
                 return;
             }
+            binding.refreshLayout.setEnableLoadMore(true);
+            binding.refreshLayout.setEnableRefresh(true);
+            curPage = 1;
             LoadingDialog.show(getActivity());
             adapter.clear();
-            requestData();
+            requestData(curPage);
+        });
+
+        binding.refreshLayout.setOnRefreshListener(refreshLayout -> {
+            if (ClickUtil.isFastClick()) {
+                return;
+            }
+            binding.refreshLayout.setEnableLoadMore(true);
+            binding.refreshLayout.setEnableRefresh(true);
+            curPage = 1;
+            adapter.clear();
+            requestData(curPage);
+        });
+
+        binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            curPage++;
+            requestData(curPage);
         });
 
         adapter = new ThirdManagementAdapter(getContext());
@@ -74,17 +94,19 @@ public class ThirdManagementFragment extends BaseFragment<FragmentThirdManagemen
         viewModel.liveDataGetThirdManagement.observe(this, vo -> {
             binding.fvMain.setTopTotal("", "0", getString(R.string.txt__third_return_top), vo.getTotalMyselfPrice());
 
-            if (!vo.getList().isEmpty()) {
-                binding.tvwNoData.setVisibility(View.GONE);
+            binding.refreshLayout.finishRefresh();
+            binding.refreshLayout.finishLoadMore();
 
+            binding.refreshLayout.setEnableLoadMore(vo.getP() != vo.getTotalPage());
+
+            if (vo.getList() != null && !vo.getList().isEmpty()) {
+                binding.tvwNoData.setVisibility(View.GONE);
                 adapter.addAll(vo.getList());
-            } else {
-                binding.tvwNoData.setVisibility(View.VISIBLE);
             }
         });
     }
 
-    private void requestData() {
+    private void requestData(int curPage) {
         starttime = binding.fvMain.getStartDate();
         endtime = binding.fvMain.getEndDate();
         userName = binding.fvMain.getEdit("");
@@ -93,6 +115,7 @@ public class ThirdManagementFragment extends BaseFragment<FragmentThirdManagemen
         map.put("start_time", starttime);
         map.put("end_time", endtime);
         map.put("username", userName);
+        map.put("p", String.valueOf(curPage));
 
         viewModel.getThirdManagement(map);
     }
