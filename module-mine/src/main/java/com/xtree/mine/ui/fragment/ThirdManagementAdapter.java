@@ -15,7 +15,6 @@ import com.xtree.mine.vo.response.ThirdManagementResponse;
 public class ThirdManagementAdapter extends CachedAutoRefreshAdapter<ThirdManagementResponse.ThirdManagementResponseDTO> {
     Context ctx;
     ItemThirdManagementBinding binding;
-    int maxNum = 17;
 
     public interface ICallBack {
         void onClick(String member);
