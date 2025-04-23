@@ -28,15 +28,8 @@ import me.xtree.mvvmhabit.utils.ToastUtils
  */
 class SplashActivity : BaseActivity<ActivitySplashBinding?, SplashViewModel?>() {
 
-    private val MSG_IN_MAIN: Int = 100 // 消息类型
-    private val DELAY_MILLIS: Long = 2500L // 延长时间
+    private val DELAY_MILLIS: Long = 100L // 延长时间
     private var mSavedInstanceState: Bundle? = null
-    private var mHandler: Handler = object : Handler(Looper.getMainLooper()) {
-        override fun handleMessage(msg: Message) {
-            //super.handleMessage(msg)
-            inMain()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,9 +70,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding?, SplashViewModel?>() 
     }
 
     override fun initViewObservable() {
-        viewModel?.inMainData?.observe(this) {
-            mHandler.sendEmptyMessageDelayed(MSG_IN_MAIN, DELAY_MILLIS)
-        }
         viewModel?.reNewViewModel?.observe(this) {
             RetrofitClient.init()
             AppViewModelFactory.init()
@@ -94,15 +84,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding?, SplashViewModel?>() 
             viewModel = null
             initViewDataBinding(mSavedInstanceState)
             viewModel?.setModel(AppViewModelFactory.getInstance(application).getmRepository())
-            val token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN)
-            if (!TextUtils.isEmpty(token)) {
-                CfLog.i("getFBGameTokenApi init")
-                viewModel?.getFBGameTokenApi()
-                viewModel?.getFBXCGameTokenApi()
-                viewModel?.getPMGameTokenApi()
-            } else {
-                mHandler.sendEmptyMessageDelayed(MSG_IN_MAIN, DELAY_MILLIS)
-            }
         }
         viewModel?.noWebData?.observe(this) {
             ToastUtils.showLong("网络异常，请检查手机网络连接情况")
@@ -138,7 +119,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding?, SplashViewModel?>() 
             startActivity(Intent(this, MainActivity::class.java))
             finish();
         }*/
-        mHandler.removeMessages(MSG_IN_MAIN)
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
