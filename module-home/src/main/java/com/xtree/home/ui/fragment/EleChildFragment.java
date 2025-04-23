@@ -106,7 +106,6 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
                     if (gameVo.cid == 52) {
                         viewModel.getPlayUrl("odin", String.valueOf(vo1.getId()), gameVo.name);
                     } else {
-                        CfLog.i(vo1.toString());
                         String eventName = gameVo.name != null && gameVo.name.length() > 2 ? gameVo.name.substring(0, 2) : "gm2";
                         TagUtils.tagEvent(getContext(), eventName, vo1.getId()); // 打点
                         BrowserActivity.start(getContext(), gameVo.name, DomainUtil.getDomain() + gameVo.playURL + vo1.getId(), false, true);
@@ -141,7 +140,7 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
             String url = Objects.requireNonNull(map.get("url")).toString();
             String name = Objects.requireNonNull(map.get("name")).toString();
             // 跳转到游戏H5
-            CfLog.i("URL: " + url);
+            //CfLog.i("URL: " + url);
             BrowserActivity.start(getContext(), name, url, false, true);
         });
     }
