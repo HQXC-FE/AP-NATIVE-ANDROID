@@ -251,7 +251,7 @@
                         android:text="追号"
                         android:textColor="@color/clr_white"
                         android:textSize="14sp"
-                        android:visibility="@{model.canChasing?View.GONE:View.VISIBLE}"
+                        android:visibility="@{model.canChasing?View.VISIBLE:View.GONE}"
                         tools:visibility="visible" />
 
                     <!--            一键投注-->

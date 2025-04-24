@@ -58,7 +58,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
     public MutableLiveData<String> moneyNums = new MutableLiveData<>();
     private final Observer<List<LotteryOrderModel>> orderObserver = lotteryOrderModels -> {
         Lottery lottery = betsViewModel.lotteryLiveData.getValue();
-        canChasing.setValue(!Objects.equals("lhc",lottery.getLinkType())||!Objects.equals("mmc",lottery.getLinkType()));
+        canChasing.setValue(!Objects.equals("lhc", lottery.getLinkType()) && !Objects.equals("mmc", lottery.getLinkType()));
         if (lotteryOrderModels == null) {
             bindModels.clear();
             datas.setValue(bindModels);
