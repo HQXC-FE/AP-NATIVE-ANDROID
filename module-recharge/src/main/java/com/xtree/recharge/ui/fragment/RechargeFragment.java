@@ -619,9 +619,10 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             toBindPhoneNumber();
             return;
         }
-        CfLog.e("vo.view_bank_card ==false " + vo.view_bank_card + " || vo.userBankList = " +vo.userBankList.size()) ;
-        //增加银行卡充值判断绑卡绑卡逻辑
-        if (vo.view_bank_card && vo.userBankList.size() == 0) {
+
+        //银行卡绑定判断
+        if (vo.view_bank_card && vo.userBankList.isEmpty()) {
+
             binding.llBindInfo.setVisibility(View.VISIBLE);
             binding.tvwBindYhk.setVisibility(View.VISIBLE);
 
@@ -631,10 +632,10 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             return;
         }
 
-        //支付宝和微信判断银行卡绑定信息
-        if (vo.paycode.contains("zfb")|| vo.paycode.contains("wx")) {
+        //支付宝和微信判断银行卡绑定信息(极速充值也需要)
+        if (vo.paycode.contains("zfb") || vo.paycode.contains("wx") || vo.paycode.contains(ONE_PAY_FIX)) {
             //if (vo.op_thiriframe_use && vo.userBankList.isEmpty() && vo.view_bank_card && !vo.phone_needbind) {
-            if (vo.view_bank_card ==false&& vo.userBankList.isEmpty()) {
+            if (vo.view_bank_card && vo.userBankList.isEmpty()) {
 
                 binding.llBindInfo.setVisibility(View.VISIBLE);
                 binding.tvwBindYhk.setVisibility(View.VISIBLE);
@@ -1153,7 +1154,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
         String realName = binding.edtName.getText().toString().trim();
         //if (curRechargeVo.realchannel_status && curRechargeVo.phone_fillin_name) {
-        if (curRechargeVo.phone_fillin_name && curRechargeVo.recharge_pattern == 2) {
+        if (curRechargeVo.phone_fillin_name && curRechargeVo.recharge_pattern == 2 && !curRechargeVo.paycode.equals("ecnyhqppay")) {
             if (TextUtils.isEmpty(realName)) {
                 ToastUtils.showLong(getString(R.string.txt_pls_enter_ur_real_name));
                 return;
