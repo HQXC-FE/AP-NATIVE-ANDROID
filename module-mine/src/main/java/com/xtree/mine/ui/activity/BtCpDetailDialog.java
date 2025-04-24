@@ -65,13 +65,13 @@ public class BtCpDetailDialog extends BottomPopupView {
         binding = DialogBtCpDetailBinding.bind(findViewById(R.id.ll_root));
         binding.ivwClose.setOnClickListener(v -> dismiss());
 
-        binding.btnDeleteCp.setOnClickListener(v -> {
-            showDialog();
-        });
-
-        binding.btnDeleteCpBig.setOnClickListener(v -> {
-            showDialog();
-        });
+        //binding.btnDeleteCp.setOnClickListener(v -> {
+        //    showDialog();
+        //});
+        //
+        //binding.btnDeleteCpBig.setOnClickListener(v -> {
+        //    showDialog();
+        //});
     }
 
     private void initData() {
@@ -84,22 +84,22 @@ public class BtCpDetailDialog extends BottomPopupView {
             setView(vo);
         });
 
-        viewModel.liveDataDeleteCp.observe(owner, vo -> {
-            ppw2 = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), "", vo, true, new MsgDialog.ICallBack() {
-                @Override
-                public void onClickLeft() {
-                    ppw2.dismiss();
-                }
-
-                @Override
-                public void onClickRight() {
-                    binding.btnDeleteCp.setVisibility(View.INVISIBLE);
-                    binding.btnDeleteCpBig.setVisibility(View.INVISIBLE);
-                    ppw2.dismiss();
-                }
-            }));
-            ppw2.show();
-        });
+        //viewModel.liveDataDeleteCp.observe(owner, vo -> {
+        //    ppw2 = new XPopup.Builder(getContext()).asCustom(new MsgDialog(getContext(), "", vo, true, new MsgDialog.ICallBack() {
+        //        @Override
+        //        public void onClickLeft() {
+        //            ppw2.dismiss();
+        //        }
+        //
+        //        @Override
+        //        public void onClickRight() {
+        //            binding.btnDeleteCp.setVisibility(View.INVISIBLE);
+        //            binding.btnDeleteCpBig.setVisibility(View.INVISIBLE);
+        //            ppw2.dismiss();
+        //        }
+        //    }));
+        //    ppw2.show();
+        //});
     }
 
     private void setView(LotteryDetailVo t) {
@@ -122,10 +122,10 @@ public class BtCpDetailDialog extends BottomPopupView {
         binding.tvwModes.setText(vo.modes);
         binding.tvwCode.setText(vo.code);
 
-        if (vo.iscancel.equals("0") && vo.isgetprize.equals("0")) {
-            binding.btnDeleteCp.setVisibility(View.VISIBLE);
-            binding.btnDeleteCpBig.setVisibility(View.VISIBLE);
-        }
+        //if (vo.iscancel.equals("0") && vo.isgetprize.equals("0")) {
+        //    binding.btnDeleteCp.setVisibility(View.VISIBLE);
+        //    binding.btnDeleteCpBig.setVisibility(View.VISIBLE);
+        //}
 
     }
 
