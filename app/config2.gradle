@@ -38,24 +38,23 @@ android {
             resValue "string", "mixpanel_token", "6a1ec9cae116d7a920a4697a46599ca9"
             resValue "string", "ms_secret_key", "139dbbd0-5ab4-4be6-b197-e3af17a95279"
             resValue "string", "sentry_dsn", "https://37abb5e9cfc1ee3efe43f0f96abd9b33@o4507447554539520.ingest.us.sentry.io/4508771117105152"
-            resValue "string", "domain_api_list", "https://app1.d6d7vh.click;" +
-                    "https://app1.c3u3sf.vip;" +
-                    "https://app1.q1i7ff.vip;" +
-                    "https://app1.p2e2vs.click;" +
-                    "https://app2.a7h6ho.click;" +
-                    "https://app2.s4v7qk.click;" +
-                    "https://app2.e2u1wp.click;" +
-                    "https://app2.b8i4bq.click;" +
-                    "https://app3.s9a6dd.click;" +
-                    "https://app3.q4x4gf.click;" +
-                    "https://app3.j3e7ms.click;" +
-                    "https://app3.x1e9fu.click;" +
-                    "https://app4.z3p9tu.click;" +
-                    "https://app5.t4v1su.click;" +
+            resValue "string", "domain_api_list", "https://app11.tbcbn.vip;" +
+                    "https://app11.f319l.vip;" +
+                    "https://app11.vqqne.vip;" +
+                    "https://app11.0r0a8.vip;" +
+                    "https://app21.nyi6k.vip;" +
+                    "https://app21.xcyl5.vip;" +
+                    "https://app21.dj03g.vip;" +
+                    "https://app21.qg0sz.vip;" +
+                    "https://app31.yqjv2.vip;" +
+                    "https://app31.qnvo2.vip;" +
+                    "https://app31.j0eo4.vip;" +
+                    "https://app31.i0pi3.vip;" +
+                    "https://app41.9wk5b.vip;" +
                     "http://101.32.73.228:16811;" +
                     "http://129.226.129.111:16811;" +
                     "http://146.56.241.223:16811;" +
-                    "http://1.95.166.113:16811;" +
+                    "http://114.117.238.52:16811;" +
                     "http://113.44.59.111:16811;" +
                     "http://121.36.226.177:16811;"
             resValue "string", "domain_url_list", "https://h51.x9f4ke.click;" +
