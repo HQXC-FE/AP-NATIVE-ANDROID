@@ -37,20 +37,24 @@ android {
             resValue "string", "mixpanel_token", "5b010a2b31cbfd8c759cf6b135efe3d7"
             resValue "string", "ms_secret_key", "3c668bf3-b6b2-4146-86b2-7c000c2d1d49"
             resValue "string", "sentry_dsn", "https://552dcc17bc3f9472be954a1fd5b5610b@o4507447554539520.ingest.us.sentry.io/4508341154676736"
-            resValue "string", "domain_api_list", "https://app1.h4v5xr.vip;" +
-                    "https://app1.d3q1wi.vip;" +
-                    "https://app1.y8u8gh.vip;" +
-                    "https://app2.y2e6ao.vip;" +
-                    "https://app2.k1f9jo.vip;" +
-                    "https://app2.g7u5jb.vip;" +
-                    "https://app3.a3k7pl.vip;" +
-                    "https://app3.x5u2qy.vip;" +
-                    "https://app3.l7n4pv.vip;" +
-                    "https://app4.x2v2ez.vip;" +
+            resValue "string", "domain_api_list", "https://app11.31wje.vip;" +
+                    "https://app11.0p2vp.vip;" +
+                    "https://app11.z4a95.vip;" +
+                    "https://app11.sogl4.vip;" +
+                    "https://app11.44u6c.vip;" +
+                    "https://app21.rsenb.vip;" +
+                    "https://app21.d0wad.vip;" +
+                    "https://app21.hi6df.vip;" +
+                    "https://app21.8rb9f.vip;" +
+                    "https://app31.yx8np.vip;" +
+                    "https://app31.kn95t.vip;" +
+                    "https://app31.186af.vip;" +
+                    "https://app31.zs2gh.vip;" +
+                    "https://app41.8i0by.vip;" +
                     "http://101.32.73.228:16812;" +
                     "http://129.226.129.111:16812;" +
                     "http://146.56.241.223:16812;" +
-                    "http://1.95.166.113:16812;" +
+                    "http://114.117.238.52:16812;" +
                     "http://113.44.59.111:16812;" +
                     "http://121.36.226.177:16812;"
             resValue "string", "domain_url_list", "https://h51.d8a6br.vip;" +
