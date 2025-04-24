@@ -41,23 +41,23 @@ android {
             resValue "string", "ms_secret_key", "0ad1d127-3d6e-47f0-8904-1fd9eff9d97b"
             resValue "string", "sentry_dsn", "https://0cefc03e1c8e991010eb93fb0722e362@o4507447554539520.ingest.us.sentry.io/4507604245217280"
             resValue "bool", "is_tag", "true" // 是否开启统计
-            resValue "string", "domain_api_list", "https://app1.y9w4di.vip;" +
-                    "https://app1.w6b7la.vip;" +
-                    "https://app1.r5e9ds.vip;" +
-                    "https://app1.k7k3lw.vip;" +
-                    "https://app2.e9l6is.vip;" +
-                    "https://app2.c7v5mh.vip;" +
-                    "https://app2.f4v5wd.vip;" +
-                    "https://app2.n1t2ww.vip;" +
-                    "https://app3.r6y5lb.vip;" +
-                    "https://app3.i4o1br.vip;" +
-                    "https://app3.g1u6oc.vip;" +
-                    "https://app3.j4h7lk.vip;" +
-                    "https://app4.g2c8ne.vip;" +
+            resValue "string", "domain_api_list", "https://app11.z6q4uv.vip;" +
+                    "https://app11.l1q5nu.vip;" +
+                    "https://app11.q2k3qb.vip;" +
+                    "https://app11.c8h1yh.vip;" +
+                    "https://app21.z6i4tf.vip;" +
+                    "https://app21.u5r4ry.vip;" +
+                    "https://app21.i1n2gd.vip;" +
+                    "https://app21.f1j6ux.vip;" +
+                    "https://app31.i4d1hp.vip;" +
+                    "https://app31.f9p7vn.vip;" +
+                    "https://app31.s8i2ye.vip;" +
+                    "https://app31.m3i5jw.vip;" +
+                    "https://app41.c6q3go.vip;" +
                     "http://101.32.73.228:46803;" +
                     "http://129.226.129.111:46803;" +
                     "http://146.56.241.223:46803;" +
-                    "http://1.95.166.113:46803;" +
+                    "http://114.117.238.52:46803;" +
                     "http://113.44.59.111:46803;" +
                     "http://121.36.226.177:46803;"
             resValue "string", "domain_url_list", "https://h51.g1d3nf.vip;" +
