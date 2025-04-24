@@ -34,7 +34,7 @@ android {
             versionName "1.0.2"
             versionCode 102
             resValue "string", "app_name", "意昂F凯捷"
-            resValue "string", "domain_api", "http://1.95.166.113:46830"
+            resValue "string", "domain_api", "http://114.117.238.52:46830"
             resValue "string", "domain_url", "https://h51.s3r1yj.vip"
             resValue "string", "channel_name", "eon4"  // 渠道名称
             resValue "string", "platform_set", "47"  // 平台代号,升级用 35-意昂, 38-意昂2 40-意昂3，47-意昂4(意昂凯捷F)
@@ -44,24 +44,25 @@ android {
             resValue "string", "sentry_dsn", "https://4330e6b8f582bb8f84b3f97f7afd0e1c@o4507447554539520.ingest.us.sentry.io/4508816270032896"
             resValue "bool", "is_tag", "true" // 是否开启统计
             resValue "string", "domain_api_list", "http://146.56.241.223:46830;" +
-                    "http://1.95.166.113:46830;" +
+                    "http://114.117.238.52:46830;" +
                     "http://113.44.59.111:46830;" +
                     "http://121.36.226.177:46830;" +
                     "http://101.32.73.228:46830;" +
                     "http://129.226.129.111:46830;" +
-                    "https://app1.y7e2ux.vip;" +
-                    "https://app1.e5h2ml.vip;" +
-                    "https://app1.h2g9hs.vip;" +
-                    "https://app1.s6u3bo.vip;" +
-                    "https://app2.s4x9lj.vip;" +
-                    "https://app2.j7s3fm.vip;" +
-                    "https://app2.u2d1jc.vip;" +
-                    "https://app2.m5u1lm.vip;" +
-                    "https://app3.t9t6mz.vip;" +
-                    "https://app3.w5e9es.vip;" +
-                    "https://app3.a2f9do.vip;" +
-                    "https://app3.k1b7oo.vip;" +
-                    "https://app4.e6t5sc.vip;"
+                    "https://app11.y7z2ml.vip;" +
+                    "https://app11.y6t9mf.vip;" +
+                    "https://app11.h8p9ds.vip;" +
+                    "https://app11.p2y1rv.vip;" +
+                    "https://app11.h7b9wf.vip;" +
+                    "https://app21.d3a3ci.vip;" +
+                    "https://app21.i5l9cw.vip;" +
+                    "https://app21.j8i8th.vip;" +
+                    "https://app21.s7o2qh.vip;" +
+                    "https://app31.s2o3pn.vip;" +
+                    "https://app31.h2y3oi.vip;" +
+                    "https://app31.h1f5cg.vip;" +
+                    "https://app31.k6v4vs.vip;" +
+                    "https://app41.s7w3iu.vip;"
             resValue "string", "domain_url_list", "https://h51.q2b9bw.vip;" +
                     "https://h51.s3r1yj.vip;" +
                     "https://h51.l9q2gg.vip;" +
