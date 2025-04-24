@@ -50,9 +50,9 @@ android {
                     "http://101.32.73.228:26803;" +
                     "http://129.226.129.111:26803;" +
                     "http://146.56.241.223:26803;" +
-                    "http://1.95.166.113:26803;" +
+                    "http://114.117.238.52:26803;" +
                     "http://113.44.59.111:26803;" +
-                    "http://121.36.226.177:26803"
+                    "http://121.36.226.177:26803;"
             resValue "string", "domain_url_list", "https://www.alltm1s.com;" +
                     "https://www.ykusti.com;" +
                     "https://www.covgra.com;" +
