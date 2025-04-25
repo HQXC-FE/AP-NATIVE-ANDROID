@@ -3,6 +3,7 @@ package com.xtree.live.data.source;
 import com.xtree.base.vo.FBService;
 import com.xtree.bet.bean.request.fb.FBListReq;
 import com.xtree.bet.bean.response.HotLeagueInfo;
+import com.xtree.bet.bean.response.fb.MatchListRsp;
 import com.xtree.live.data.source.request.AnchorSortRequest;
 import com.xtree.live.data.source.request.ChatRoomListRequest;
 import com.xtree.live.data.source.request.FrontLivesRequest;
@@ -147,7 +148,7 @@ public interface HttpDataSource {
      *
      * @return
      */
-    Flowable<BaseResponse<MatchInfo>> getFBList(@Body FBListReq fbListReq);
+    Flowable<BaseResponse<MatchListRsp>> getFBList(@Body FBListReq fbListReq);
 
     Flowable<BaseResponse<LiveTokenResponse>> getXLiveToken(LiveThiredLoginRequest request);
 

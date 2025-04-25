@@ -132,6 +132,7 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
         //LiveMatchDetailActivity.start(getContext(),mMatch.getId());
 
 //        FloatingWindowActivity.start(getContext());
-          viewModel.getHotLeague(PLATFORM_FBXC);
+        //
+        //viewModel.getHotLeague(PLATFORM_FBXC);
     }
 }

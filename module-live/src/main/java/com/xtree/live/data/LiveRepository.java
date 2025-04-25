@@ -6,6 +6,7 @@ import androidx.annotation.VisibleForTesting;
 import com.xtree.base.net.RetrofitClient;
 import com.xtree.bet.bean.request.fb.FBListReq;
 import com.xtree.bet.bean.response.HotLeagueInfo;
+import com.xtree.bet.bean.response.fb.MatchListRsp;
 import com.xtree.live.data.source.http.LiveClient;
 import com.xtree.base.vo.FBService;
 import com.xtree.live.data.source.ApiService;
@@ -202,7 +203,7 @@ public class LiveRepository extends BaseModel implements HttpDataSource, LocalDa
     }
 
     @Override
-    public Flowable<BaseResponse<MatchInfo>> getFBList(@Body FBListReq fbListReq){
+    public Flowable<BaseResponse<MatchListRsp>> getFBList(@Body FBListReq fbListReq){
         return mHttpDataSource.getFBList(fbListReq);
     }
 

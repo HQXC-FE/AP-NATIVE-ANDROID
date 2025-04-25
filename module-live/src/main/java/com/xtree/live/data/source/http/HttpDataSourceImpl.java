@@ -12,6 +12,7 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
 import com.xtree.bet.bean.request.fb.FBListReq;
 import com.xtree.bet.bean.response.HotLeagueInfo;
+import com.xtree.bet.bean.response.fb.MatchListRsp;
 import com.xtree.live.LiveConfig;
 import com.xtree.live.data.source.APIManager;
 import com.xtree.live.data.source.ApiService;
@@ -387,14 +388,14 @@ public class HttpDataSourceImpl implements HttpDataSource {
 
 
     @Override
-    public Flowable<BaseResponse<MatchInfo>> getFBList(FBListReq fbListReq) {
+    public Flowable<BaseResponse<MatchListRsp>> getFBList(FBListReq fbListReq) {
         Map<String, Object> map = JSON.parseObject(JSON.toJSONString(fbListReq), type);
         if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.FBXC_API_SERVICE_URL)) && !TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
             if (TextUtils.isEmpty(FBRetrofitClient.baseUrl)) {
                 fbService = FBRetrofitClient.getInstance().create(ApiService.class);
             }
             return fbService.postJson(APIManager.GET_LIST, map).map(responseBody -> JSON.parseObject(responseBody.string(),
-                    new TypeReference<BaseResponse<MatchInfo>>() {
+                    new TypeReference<BaseResponse<MatchListRsp>>() {
                     }));
         }
         return null;

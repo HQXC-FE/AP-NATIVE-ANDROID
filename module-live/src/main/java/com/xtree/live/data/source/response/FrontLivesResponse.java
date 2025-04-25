@@ -133,4 +133,25 @@ public class FrontLivesResponse {
     public void setHeat(int heat) {
         this.heat = heat;
     }
+
+    @Override
+    public String toString() {
+        return "FrontLivesResponse{" +
+                "id=" + id +
+                ", vid='" + vid + '\'' +
+                ", uid=" + uid +
+                ", type=" + type +
+                ", isLive=" + isLive +
+                ", loadingBar=" + loadingBar +
+                ", pull='" + pull + '\'' +
+                ", matchId=" + matchId +
+                ", title='" + title + '\'' +
+                ", thumb='" + thumb + '\'' +
+                ", isLoop=" + isLoop +
+                ", avatar='" + avatar + '\'' +
+                ", userNickname='" + userNickname + '\'' +
+                ", heat=" + heat +
+                '}';
+    }
+
 }
