@@ -808,6 +808,17 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             binding.llBankCard.setVisibility(View.GONE);
         }
 
+        //op下单是否可选银行卡
+        if (vo.op_direct_config != null && vo.op_direct_config.allow_bank_select == 0) {
+            if (vo.getOpBankList() != null && vo.getOpBankList().getUsed() != null && !vo.getOpBankList().getUsed().isEmpty()) {
+                binding.llBankCard.setVisibility(View.VISIBLE);
+                binding.tvwBankCard.setClickable(false);
+            } else {
+                binding.llBankCard.setVisibility(View.GONE);
+            }
+
+        }
+
         // 设置存款人姓名
         if (vo.realchannel_status && vo.phone_fillin_name) {
             CfLog.i("设置存款人姓名 = " + vo.accountname);
@@ -1109,10 +1120,14 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             return;
         }
 
-        // 普通银行卡充值 bankId非空; 极速充值 bankId,bankCode 至少要有一个非空
-        if (curRechargeVo.view_bank_card) {
-            if (TextUtils.isEmpty(bankId) && TextUtils.isEmpty(bankCode)) {
-                return;
+        if (viewModel.isOnePayFix(curRechargeVo) && curRechargeVo.op_direct_config != null && curRechargeVo.op_direct_config.allow_bank_select == 0) {
+            //无需开启银行卡
+        } else {
+            // 普通银行卡充值 bankId非空; 极速充值 bankId,bankCode 至少要有一个非空
+            if (curRechargeVo.view_bank_card) {
+                if (TextUtils.isEmpty(bankId) && TextUtils.isEmpty(bankCode)) {
+                    return;
+                }
             }
         }
 

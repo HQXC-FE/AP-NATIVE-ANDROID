@@ -69,6 +69,7 @@ public class RechargeVo {
     public String bankcardstatus_onepaywx; // false 时需要弹窗提示绑定WX, 默认为null
     public String bankcardstatus_onepayzfb; // false 时需要弹窗提示绑定ZFB, 默认为null
     public String onepay_customer_service_link; // op客服链接
+    public OpDirectConfig op_direct_config;
 
     /**
      * opBankList
@@ -281,5 +282,11 @@ public class RechargeVo {
                 this.type = type;
             }
         }
+    }
+
+    public static class OpDirectConfig {
+        public String returncode;
+        public String service_url; // op客服链接
+        public Integer allow_bank_select; // 1=開(代表開啟選擇銀行別) 0=關(代表關閉選擇銀行別)
     }
 }
