@@ -444,6 +444,13 @@ public class VerifyViewModel extends BaseViewModel<MineRepository> {
                 //startNextPage(ctx, RouterFragmentPath.Mine.PAGER_BIND_USDT, vo);
                 startUsdt(ctx, type, title, remind, vo, true);
                 return;
+            case Constant.BIND_USDC:
+                title = ctx.getString(R.string.txt_bind_usdc); //"绑定USDT";
+                remind = ctx.getString(R.string.txt_remind_usdt_erc20);
+                //url = DomainUtil.getDomain2() + "/user/userusdtinfo?check=" + vo.tokenSign + "&mark=" + vo.mark;
+                //startNextPage(ctx, RouterFragmentPath.Mine.PAGER_BIND_USDT, vo);
+                startUsdt(ctx, type, title, remind, vo, true);
+                return;
             case Constant.BIND_EBPAY:
                 title = ctx.getString(R.string.txt_bind_ebpay); //"绑定EBPAY";
                 remind = ctx.getString(R.string.txt_remind_ebpay);

@@ -18,6 +18,7 @@ import com.xtree.base.adapter.CachedAutoRefreshAdapter;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.widget.ListDialog;
+import com.xtree.base.widget.MsgDialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.FragmentBindUsdtAddBinding;
@@ -51,6 +52,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
     BasePopupView ppw = null; // 底部弹窗 (选择**菜单)
     List<String> typeList = new ArrayList<>();
     UserUsdtConfirmVo mConfirmVo;
+    BasePopupView sycDialogPopWindow;
     private String action = "adduserusdt"; // adduserusdt
     private String mark = "bindusdt"; // bindusdt
     private String tokenSign = ""; // 绑定手机邮箱后直接跳转过来会用到
@@ -90,7 +92,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         binding.ivwNext.setOnClickListener(v -> doNext());
         //新增返回按钮
         binding.tvwBindBack.setOnClickListener(v -> getActivity().finish());
-        binding.tvwSubmit.setOnClickListener(v -> doSubmit());
+        binding.tvwSubmit.setOnClickListener(v -> doSubmit(action, mark, false));
 
         binding.tvwBack.setOnClickListener(v -> {
             if (binding.llAdd.getVisibility() == View.GONE) {
@@ -153,6 +155,9 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
             CfLog.i("******");
             //getActivity().finish();
             viewModel.getProfile();
+        });
+        viewModel.syncAddress.observe(this, vo -> {
+            showSycDialog();
         });
         viewModel.liveDataProfile.observe(this, vo -> {
             CfLog.i("******");
@@ -219,7 +224,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         viewModel.doBindCardByCheck(queryMap, map);
     }
 
-    private void doSubmit() {
+    private void doSubmit(String action, String mark, boolean isCopy) {
 
         HashMap queryMap = new HashMap();
         queryMap.put("controller", controller);
@@ -229,7 +234,12 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         queryMap.put("check", tokenSign); // 绑定手机邮箱后直接跳转过来会用到
 
         HashMap map = new HashMap();
-        map.put("flag", "confirm");
+        if (isCopy) {
+            map.put("flag", "iscopy");
+        } else {
+            map.put("flag", "confirm");
+        }
+
         map.put("controller", controller);
         map.put("action", action);
 
@@ -291,6 +301,36 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         adapter.addAll(typeList);
         ppw = new XPopup.Builder(getContext()).asCustom(new ListDialog(getContext(), "", adapter));
         ppw.show();
+    }
+
+    private void showSycDialog() {
+        String actionCopy;
+        String markCopy;
+        String title;
+        if (action.toLowerCase().contains("usdt")) {
+            actionCopy = "adduserusdc";
+            markCopy = "bindusdc";
+            title = "USDC";
+        } else {
+            actionCopy = "adduserusdt";
+            markCopy = "bindusdt";
+            title = "USDT";
+        }
+        sycDialogPopWindow = new XPopup.Builder(getContext())
+                .asCustom(new MsgDialog(getContext(), getContext().getString(R.string.txt_kind_tips), String.format(getString(R.string.txt_bind_address_sync), title), getString(R.string.txt_cancel), getString(R.string.text_confirm), new MsgDialog.ICallBack() {
+                    @Override
+                    public void onClickLeft() {
+                        sycDialogPopWindow.dismiss();
+                    }
+
+                    @Override
+                    public void onClickRight() {
+                        sycDialogPopWindow.dismiss();
+                        //跳转同步流程
+                        doSubmit(actionCopy, markCopy, true);
+                    }
+                }));
+        sycDialogPopWindow.show();
     }
 
 }

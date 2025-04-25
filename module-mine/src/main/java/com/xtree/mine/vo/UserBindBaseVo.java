@@ -50,6 +50,7 @@ public class UserBindBaseVo<T> {
     public int status; // 1 查询列表,列表为空时
     public String msg;
     public Object data;
+    public Sdata sdata;
     //之前绑定银行卡、支付宝、微信绑定的姓名
     public String accountname;
 
@@ -88,8 +89,15 @@ public class UserBindBaseVo<T> {
                 ", status=" + status +
                 ", msg='" + msg + '\'' +
                 ", data=" + data +
+                ", sdata=" + sdata +
                 ", accountname='" + accountname + '\'' +
                 ", lockbankoprate=" + lockbankoprate +
                 '}';
+    }
+
+    public static class Sdata{
+        public String entrancetype;
+        public String checkcode;
+        public String isCopy;
     }
 }
