@@ -29,6 +29,7 @@ import com.xtree.live.data.source.httpnew.LiveRep;
 import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.databinding.FragmentLiveBinding;
+import com.xtree.live.ui.main.listener.OnLiveTokenGetListener;
 import com.xtree.live.ui.main.model.chat.LiveThiredLoginRequest;
 import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 
@@ -47,22 +48,27 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewModel> {
 
     public LiveFragment() {
-        LiveRepository.getInstance().getLiveToken(new LiveTokenRequest())
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribe(new HttpCallBack<LiveTokenResponse>() {
-                    @Override
-                    public void onResult(LiveTokenResponse data) {
-                        if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
-                            LiveRepository.getInstance().setLive(data);
-                        }
-                    }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
-                });
+
+//        LiveRepository.getInstance().getLiveToken(new LiveTokenRequest())
+//                .compose(RxUtils.schedulersTransformer())
+//                .compose(RxUtils.exceptionTransformer())
+//                .subscribe(new HttpCallBack<LiveTokenResponse>() {
+//                    @Override
+//                    public void onResult(LiveTokenResponse data) {
+//                        if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+//                            LiveRepository.getInstance().setLive(data);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//                        super.onError(t);
+//                    }
+//                });
+
+
+
 
 
         /*JsonObject json = new JsonObject();
@@ -91,6 +97,7 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
 
     @Override
     public void initView() {
+//        viewModel.getLiveToken();
     }
 
     @Override
@@ -112,7 +119,8 @@ public class LiveFragment extends BaseFragment<FragmentLiveBinding, LiveViewMode
     @Override
     public void initData() {
         super.initData();
-        viewModel.initData(requireActivity());
+
+        viewModel.getLiveToken(() -> viewModel.initData(requireActivity()));
     }
 
     @Override

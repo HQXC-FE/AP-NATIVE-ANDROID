@@ -213,6 +213,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 .subscribe(aLong -> {
                     viewModel.getMatchDetail(mMatch.getId());
                     viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
+                    KLog.d("MatchId:"+mMatch.getId());
                     /*if (!mCategories.isEmpty() && mCategories.size() > tabPos) {
                         viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
                     }*/

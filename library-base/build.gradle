@@ -91,8 +91,6 @@ dependencies {
     api rootProject.ext.dependencies["constraintlayout"]
     api rootProject.ext.dependencies["okhttp-dnsoverhttps"]
 
-    api rootProject.ext.dependencies["GsonFactory"]
-    api rootProject.ext.dependencies["autodispose"]
     api rootProject.ext.dependencies["SVGAPlayer"]
     api rootProject.ext.dependencies["recyclerview-flexibledivider"]
 

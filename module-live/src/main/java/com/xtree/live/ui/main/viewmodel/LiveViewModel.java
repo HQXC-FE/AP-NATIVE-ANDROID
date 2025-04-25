@@ -51,6 +51,7 @@ import com.xtree.live.data.source.response.fb.Match;
 import com.xtree.live.data.source.response.fb.MatchFb;
 import com.xtree.live.data.source.response.fb.MatchInfo;
 import com.xtree.live.model.GiftBean;
+import com.xtree.live.ui.main.listener.OnLiveTokenGetListener;
 import com.xtree.live.ui.main.model.anchor.LiveAnchorModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerItemModel;
 import com.xtree.live.ui.main.model.banner.LiveBannerModel;
@@ -67,6 +68,7 @@ import java.util.Map;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.sentry.Sentry;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
@@ -171,26 +173,21 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         }
                     });*/
 
-            LiveThiredLoginRequest request = new LiveThiredLoginRequest(
-                    X9LiveInfo.INSTANCE.getOaid(),"android",LiveConfig.getUserId()
-            );
-            LiveRepository.getInstance().getXLiveToken(request)
-                    .compose(RxUtils.schedulersTransformer())
-                    .compose(RxUtils.exceptionTransformer())
-                    .subscribe(new HttpCallBack<LiveTokenResponse>() {
-                        @Override
-                        public void onResult(LiveTokenResponse data) {
-                            if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
-                                model.setLive(data);
-                                initData();
-                            }
-                        }
+            LiveThiredLoginRequest request = new LiveThiredLoginRequest(X9LiveInfo.INSTANCE.getOaid(), "android", LiveConfig.getUserId());
+            LiveRepository.getInstance().getXLiveToken(request).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribe(new HttpCallBack<LiveTokenResponse>() {
+                @Override
+                public void onResult(LiveTokenResponse data) {
+                    if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                        model.setLive(data);
+                        initData();
+                    }
+                }
 
-                        @Override
-                        public void onError(Throwable t) {
-                            super.onError(t);
-                        }
-                    });
+                @Override
+                public void onError(Throwable t) {
+                    super.onError(t);
+                }
+            });
 
         } else {
             initData();
@@ -237,15 +234,12 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         datas.setValue(bindModels);
 
         //获取直播配置文件
-        model.getReviseHot()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribe(new HttpCallBack<ReviseHotResponse>() {
-                    @Override
-                    public void onResult(ReviseHotResponse o) {
-                        CfLog.d(o.toString());
-                    }
-                });
+        model.getReviseHot().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribe(new HttpCallBack<ReviseHotResponse>() {
+            @Override
+            public void onResult(ReviseHotResponse o) {
+                CfLog.d(o.toString());
+            }
+        });
     }
 
     public void refresh(String tag) {
@@ -279,107 +273,127 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         request.setLimit(limit);
         request.setType(type);
         request.setPage(page);
-        Disposable disposable = (Disposable) model.getFrontLives(request)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<FrontLivesResponse>>() {
-                    @Override
-                    public void onResult(List<FrontLivesResponse> data) {
-                        success.onChanged(data);
-                    }
+        Disposable disposable = (Disposable) model.getFrontLives(request).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<FrontLivesResponse>>() {
+            @Override
+            public void onResult(List<FrontLivesResponse> data) {
+                success.onChanged(data);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                        error.onChanged(t);
-                    }
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
+                error.onChanged(t);
+            }
 
-                    @Override
-                    public void onFail(BusinessException t) {
-                        super.onFail(t);
-                        error.onChanged(t);
-                    }
-                });
+            @Override
+            public void onFail(BusinessException t) {
+                super.onFail(t);
+                error.onChanged(t);
+            }
+        });
         addSubscribe(disposable);
 
     }
 
     private void getBannerList() {
 
-        Disposable disposable = (Disposable) model.getBannerList()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<BannerResponse>>() {
-                    @Override
-                    public void onResult(List<BannerResponse> data) {
-                        if (data == null || data.size() == 0) {
-                            Sentry.captureException(new Exception("直播轮播图数据为空"));
-                            return;
-                        }
-                        ArrayList<BindModel> bindModels = new ArrayList<BindModel>();
-                        for (BannerResponse bannerResponse : data) {
-                            LiveBannerItemModel itemModel = new LiveBannerItemModel();
-                            itemModel.img.set(bannerResponse.getImg());
-                            itemModel.backImg.set(bannerResponse.getBackImg());
-                            itemModel.foreImg.set(bannerResponse.getForeImg());
-                            itemModel.androidUrl.set(bannerResponse.getAndroidUrl());
-                            itemModel.params.set(bannerResponse.getParams());
-                            bindModels.add(itemModel);
-                        }
-                        bannerModel.bannerBg.set(((LiveBannerItemModel) bindModels.get(0)).backImg.get());
-                        bannerModel.datas.setValue(new ArrayList<>(bindModels));
-                    }
+        Disposable disposable = (Disposable) model.getBannerList().compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<BannerResponse>>() {
+            @Override
+            public void onResult(List<BannerResponse> data) {
+                if (data == null || data.size() == 0) {
+                    Sentry.captureException(new Exception("直播轮播图数据为空"));
+                    return;
+                }
+                ArrayList<BindModel> bindModels = new ArrayList<BindModel>();
+                for (BannerResponse bannerResponse : data) {
+                    LiveBannerItemModel itemModel = new LiveBannerItemModel();
+                    itemModel.img.set(bannerResponse.getImg());
+                    itemModel.backImg.set(bannerResponse.getBackImg());
+                    itemModel.foreImg.set(bannerResponse.getForeImg());
+                    itemModel.androidUrl.set(bannerResponse.getAndroidUrl());
+                    itemModel.params.set(bannerResponse.getParams());
+                    bindModels.add(itemModel);
+                }
+                bannerModel.bannerBg.set(((LiveBannerItemModel) bindModels.get(0)).backImg.get());
+                bannerModel.datas.setValue(new ArrayList<>(bindModels));
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
 
-                    }
+            }
 
-                    @Override
-                    public void onFail(BusinessException t) {
-                        super.onFail(t);
-                    }
-                });
+            @Override
+            public void onFail(BusinessException t) {
+                super.onFail(t);
+            }
+        });
         addSubscribe(disposable);
+    }
+
+
+    public void getLiveToken(OnLiveTokenGetListener listener) {
+        launchFlow(model.getLiveToken(new LiveTokenRequest()), new HttpCallBack<LiveTokenResponse>() {
+            @Override
+            public void onResult(LiveTokenResponse data) {
+                if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+                    model.setLive(data);
+                    listener.onLiveTokenGet();
+                }
+            }
+        });
+
+
+//        Disposable disposable = (Disposable) model.getLiveToken(new LiveTokenRequest()).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<LiveTokenResponse>() {
+//            @Override
+//            public void onResult(LiveTokenResponse data) {
+//                if (data.getAppApi() != null && !data.getAppApi().isEmpty()) {
+//                    model.setLive(data);
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable t) {
+//                super.onError(t);
+//            }
+//        });
+//        addSubscribe(disposable);
     }
 
     public void getMatchDetail(String matchId, Observer<Match> success, Observer<Object> error) {
         MatchDetailRequest request = new MatchDetailRequest();
         request.setMatchId(matchId);
-        Disposable disposable = (Disposable) model.getMatchDetail(request)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<MatchInfo>() {
-                    @Override
-                    public void onResult(MatchInfo data) {
-                        if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
-                            success.onChanged(new MatchFb(data.data));
-                        } else {
-                            success.onChanged(new MatchFb(data));
-                        }
-                    }
+        Disposable disposable = (Disposable) model.getMatchDetail(request).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<MatchInfo>() {
+            @Override
+            public void onResult(MatchInfo data) {
+                if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN))) {
+                    success.onChanged(new MatchFb(data.data));
+                } else {
+                    success.onChanged(new MatchFb(data));
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                        if ((t instanceof ResponseThrowable) && ((ResponseThrowable) t).code == CODE_14010) {
-                            getGameTokenApi(matchId, success, error);
-                        } else {
-                            error.onChanged(t);
-                        }
-                    }
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
+                if ((t instanceof ResponseThrowable) && ((ResponseThrowable) t).code == CODE_14010) {
+                    getGameTokenApi(matchId, success, error);
+                } else {
+                    error.onChanged(t);
+                }
+            }
 
-                    @Override
-                    public void onFail(BusinessException t) {
-                        super.onFail(t);
-                        if (t.code == CODE_14010) {
-                            getGameTokenApi(matchId, success, error);
-                        } else {
-                            error.onChanged(t);
-                        }
-                    }
-                });
+            @Override
+            public void onFail(BusinessException t) {
+                super.onFail(t);
+                if (t.code == CODE_14010) {
+                    getGameTokenApi(matchId, success, error);
+                } else {
+                    error.onChanged(t);
+                }
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -402,10 +416,8 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         } else {
             flowable = model.getFBGameTokenApi();
         }
-        Disposable disposable = (Disposable) flowable
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<FBService>() {
+        Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<FBService>() {
                     @Override
                     public void onResult(FBService fbService) {
                         if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
@@ -445,49 +457,43 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     public void getRoomInfo(int uid) {
         String channelCode = X9LiveInfo.INSTANCE.getChannel();
 //        LiveRep.getInstance().getRoomInfo(uid, channelCode)
-        LiveRepository.getInstance().getRoomInfo(new GetRoomInfoRequest(uid, channelCode))
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribe(new HttpCallBack<LiveRoomBean>() {
-                    @Override
-                    public void onResult(LiveRoomBean liveRoomBean) {
-                        liveRoomInfo.postValue(liveRoomBean);
-                        if (liveRoomBean.getInfo() != null) {
-                            X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
+        LiveRepository.getInstance().getRoomInfo(new GetRoomInfoRequest(uid, channelCode)).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribe(new HttpCallBack<LiveRoomBean>() {
+            @Override
+            public void onResult(LiveRoomBean liveRoomBean) {
+                liveRoomInfo.postValue(liveRoomBean);
+                if (liveRoomBean.getInfo() != null) {
+                    X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
 
-                        }
-                    }
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
+            }
 
-                });
+        });
 
     }
 
     public void refreshRoomInfo(int uid) {
         String channelCode = X9LiveInfo.INSTANCE.getChannel();
 //        LiveRep.getInstance().getRoomInfo(uid, channelCode)
-        LiveRepository.getInstance().getRoomInfo(new GetRoomInfoRequest(uid, channelCode))
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribe(new HttpCallBack<LiveRoomBean>() {
-                    @Override
-                    public void onResult(LiveRoomBean liveRoomBean) {
-                        liveRoomInfoRefresh.postValue(liveRoomBean);
-                        if (liveRoomBean.getInfo() != null) {
-                            X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
-                        }
-                    }
+        LiveRepository.getInstance().getRoomInfo(new GetRoomInfoRequest(uid, channelCode)).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribe(new HttpCallBack<LiveRoomBean>() {
+            @Override
+            public void onResult(LiveRoomBean liveRoomBean) {
+                liveRoomInfoRefresh.postValue(liveRoomBean);
+                if (liveRoomBean.getInfo() != null) {
+                    X9LiveInfo.INSTANCE.setUid(liveRoomBean.getInfo().getUid());
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
+            }
 
-                });
+        });
 
     }
 
@@ -495,49 +501,42 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
      * 获取gift列表
      */
     public void getGiftList() {
-        LiveRep.getInstance().getGiftList()
-                .subscribe(new HttpCallBack<List<GiftBean>>() {
-                    @Override
-                    public void onResult(List<GiftBean> data) {
-                        giftList.postValue(data);
-                    }
-                });
+        LiveRep.getInstance().getGiftList().subscribe(new HttpCallBack<List<GiftBean>>() {
+            @Override
+            public void onResult(List<GiftBean> data) {
+                giftList.postValue(data);
+            }
+        });
     }
 
     public void getAnchorSort() {
-        LiveRepository.getInstance().getAnchorSort(new AnchorSortRequest())
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribe(new HttpCallBack<AnchorSortResponse>() {
-                    @Override
-                    public void onResult(AnchorSortResponse data) {
+        LiveRepository.getInstance().getAnchorSort(new AnchorSortRequest()).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribe(new HttpCallBack<AnchorSortResponse>() {
+            @Override
+            public void onResult(AnchorSortResponse data) {
 
-                        if (data != null) {
-                            CfLog.e("getAnchorSort ---->" + data.toString());
-                        }
-                    }
+                if (data != null) {
+                    CfLog.e("getAnchorSort ---->" + data.toString());
+                }
+            }
 
-                });
+        });
     }
 
     public void getWebsocket() {
         SubscriptionRequest request = new SubscriptionRequest();
         request.action = "sub";
         request.vid = "AAABBBCCC";
-        Disposable disposable = (Disposable) model.getWebsocket(request)
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<Object>() {
-                    @Override
-                    public void onResult(Object object) {
-                        getWsTokenLiveData.setValue(object);
-                    }
+        Disposable disposable = (Disposable) model.getWebsocket(request).compose(RxUtils.schedulersTransformer()).compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<Object>() {
+            @Override
+            public void onResult(Object object) {
+                getWsTokenLiveData.setValue(object);
+            }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        //                        CfLog.e(t.toString());
-                    }
-                });
+            @Override
+            public void onError(Throwable t) {
+                //                        CfLog.e(t.toString());
+            }
+        });
         addSubscribe(disposable);
     }
 
@@ -547,10 +546,8 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     public void getHotLeague(String platform) {
         Map<String, String> map = new HashMap<>();
         map.put("fields", !TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC) ? "fbxc_popular_leagues" : "obg_popular_leagues");
-        Disposable disposable = (Disposable) model.getSettings(map)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<HotLeagueInfo>() {
+        Disposable disposable = (Disposable) model.getSettings(map).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<HotLeagueInfo>() {
                     @Override
                     public void onResult(HotLeagueInfo hotLeagueInfo) {
                         CfLog.d("=============== @@@ LiveViewModel fbxc_popular_leagues ================" + hotLeagueInfo.fbxc_popular_leagues);
@@ -602,10 +599,8 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         }
 
         CfLog.d("============== getLeagueList fBListReq ===========" + fBListReq);
-        Disposable disposable = (Disposable) model.getFBList(fBListReq)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FBHttpCallBack<MatchListRsp>() {
+        Disposable disposable = (Disposable) model.getFBList(fBListReq).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new FBHttpCallBack<MatchListRsp>() {
 
                     @Override
                     public void onResult(MatchListRsp matchListRsp) {
