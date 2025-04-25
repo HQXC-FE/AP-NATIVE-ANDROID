@@ -17,7 +17,7 @@ import com.xtree.base.adapter.CachedAutoRefreshAdapter;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.TimeUtils;
-import com.xtree.base.widget.BrowserDialog;
+import com.xtree.base.widget.BrowserDialogX5;
 import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.DialogRcRecommendBinding;
 import com.xtree.recharge.databinding.ItemRcRecommendBinding;
@@ -89,7 +89,7 @@ public class RechargeRecommendDialog extends CenterPopupView {
             // 充值教程
             if (!TextUtils.isEmpty(tutorialUrl)) {
                 String title = ctx.getString(R.string.txt_recharge_tutorial);
-                new XPopup.Builder(getContext()).asCustom(new BrowserDialog(getContext(), title, tutorialUrl)).show();
+                new XPopup.Builder(getContext()).asCustom(new BrowserDialogX5(getContext(), title, tutorialUrl)).show();
             }
         });
         binding.tvwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));

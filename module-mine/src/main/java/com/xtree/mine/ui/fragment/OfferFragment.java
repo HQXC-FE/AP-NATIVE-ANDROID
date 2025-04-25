@@ -22,7 +22,7 @@ import com.xtree.base.utils.CalenderUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.UuidUtil;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.base.widget.DateTimePickerDialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
@@ -79,7 +79,7 @@ public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewMo
                         binding2.tvActive.setVisibility(View.VISIBLE);
                         binding2.tvActive.setOnClickListener(v -> {
                             String url = DomainUtil.getH5Domain2() + Constant.URL_ACTIVITY + vo.activity_id;
-                            BrowserActivity.start(getContext(), vo.reward_title, url, true);
+                            BrowserActivityX5.start(getContext(), vo.reward_title, url, true);
                         });
                     }
 

@@ -154,7 +154,7 @@ public class FeedbackFragment extends BaseFragment<FragmentFeedbackBinding, Rech
             }
             String title = getContext().getString(R.string.txt_custom_center);
             String url = DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE;
-            new XPopup.Builder(getContext()).asCustom(new BrowserDialog(getContext(), title, url)).show();
+            new XPopup.Builder(getContext()).asCustom(new BrowserDialogX5(getContext(), title, url)).show();
             v -> AppUtil.goCustomerService(getContext())
         });*/
         //我的客服

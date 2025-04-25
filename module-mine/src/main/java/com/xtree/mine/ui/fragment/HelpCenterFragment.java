@@ -11,7 +11,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.xtree.base.global.Constant;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.DomainUtil;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.FragmentHelpCenterBinding;
@@ -28,7 +28,7 @@ public class HelpCenterFragment extends BaseFragment<FragmentHelpCenterBinding, 
         binding.clLotteryInfo.setOnClickListener(v -> goWebView(getString(R.string.txt_lottery_info), Constant.URL_LOTTERY_INFO, true));
         binding.clQuestion.setOnClickListener(v -> startContainerFragment(RouterFragmentPath.Mine.PAGER_QUESTION));
         binding.clPlayIntro.setOnClickListener(v -> goWebView(getString(R.string.txt_play_intro), Constant.URL_PLAY_INTRO, true));
-        binding.clLotteryTutorial.setOnClickListener(v -> BrowserActivity.start(getContext(), DomainUtil.getH5Domain2() + Constant.URL_TUTORIAL));
+        binding.clLotteryTutorial.setOnClickListener(v -> BrowserActivityX5.start(getContext(), DomainUtil.getH5Domain2() + Constant.URL_TUTORIAL));
     }
 
     @Override
@@ -49,6 +49,6 @@ public class HelpCenterFragment extends BaseFragment<FragmentHelpCenterBinding, 
 
     private void goWebView(String title, String path, boolean isContainTitle) {
         String url = DomainUtil.getH5Domain2() + path;
-        BrowserActivity.start(getContext(), title, url, isContainTitle);
+        BrowserActivityX5.start(getContext(), title, url, isContainTitle);
     }
 }

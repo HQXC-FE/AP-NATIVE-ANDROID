@@ -28,7 +28,7 @@ import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.mine.R;
@@ -42,12 +42,7 @@ import com.xtree.mine.vo.WithdrawVo.WithdrawalListVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalQuotaVo;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.TreeSet;
 
 import me.xtree.mvvmhabit.base.ContainerActivity;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -685,9 +680,9 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
 
             binding.tvChooseTutorial.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
             binding.tvChooseTutorial.setOnClickListener(v -> {
-                Intent intent = new Intent(getContext(), BrowserActivity.class);
-                intent.putExtra(BrowserActivity.ARG_TITLE, "USDT教程");
-                intent.putExtra(BrowserActivity.ARG_URL, DomainUtil.getH5Domain2() + "/static/usdt-description/as/usdt_m.html");
+                Intent intent = new Intent(getContext(), BrowserActivityX5.class);
+                intent.putExtra(BrowserActivityX5.ARG_TITLE, "USDT教程");
+                intent.putExtra(BrowserActivityX5.ARG_URL, DomainUtil.getH5Domain2() + "/static/usdt-description/as/usdt_m.html");
                 getContext().startActivity(intent);
             });
 
@@ -791,7 +786,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
         }
     }
 
-    private static  void removeDupliByType(ArrayList<WithdrawalListVo> list) {
+    private static void removeDupliByType(ArrayList<WithdrawalListVo> list) {
         ArrayList<WithdrawalListVo> wdList = new ArrayList<>();
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 //            list.stream().forEach(
@@ -803,7 +798,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
 //            );
 //        }
         HashSet<String> seenTypes = new HashSet<>(); // 用于存储已见过的类型
-        for (WithdrawalListVo p: list) {
+        for (WithdrawalListVo p : list) {
             if (!seenTypes.contains(p.type)) { // 根据 type 字段去重
                 wdList.add(p);
                 seenTypes.add(p.type); // 将该类型标记为已见

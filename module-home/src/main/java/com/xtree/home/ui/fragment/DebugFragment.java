@@ -23,22 +23,22 @@ import com.lxj.xpopup.XPopup;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.fastest.FastestMonitorCache;
 import com.xtree.base.net.fastest.FastestTopDomainUtil;
+import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
-import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.TopSpeedDomain;
-import com.xtree.base.widget.BrowserDialog;
+import com.xtree.base.widget.BrowserDialogX5;
 import com.xtree.home.BR;
 import com.xtree.home.BuildConfig;
 import com.xtree.home.R;
 import com.xtree.home.databinding.FragmentDebugBinding;
 import com.xtree.home.ui.viewmodel.HomeViewModel;
 import com.xtree.home.ui.viewmodel.factory.AppViewModelFactory;
-import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -119,6 +119,7 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
         int fastest_monitor_timeout = SPUtils.getInstance().getInt(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT);
         binding.tvwFastestMonitorTimeout.setChecked(fastest_monitor_timeout > 0);
     }
+
     @Override
     public void initView() {
         mTopSpeedDomainFloatingWindows = new TopSpeedDomainFloatingWindows(getContext());
@@ -177,7 +178,7 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
                 FightFanZhaUtils.isOpenTest = true;
                 new XPopup.Builder(getActivity()).moveUpToKeyboard(false)
                         .isViewMode(true)
-                        .asCustom(BrowserDialog.newInstance(getActivity(),
+                        .asCustom(BrowserDialogX5.newInstance(getActivity(),
                                 DomainUtil.getH5Domain2() + "/webapp/?isNative=1#/activity/298")).show();
                 return false;
             }
@@ -209,7 +210,7 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
         if (mTopSpeedDomainFloatingWindows != null) {
             mTopSpeedDomainFloatingWindows.removeView();
         }
-        FightFanZhaUtils.isOpenTest = false ;
+        FightFanZhaUtils.isOpenTest = false;
     }
 
     @Override

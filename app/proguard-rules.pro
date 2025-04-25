@@ -298,7 +298,7 @@
 #----------------------------------------------------------------------------
 
 #---------------------------------webview------------------------------------
--keepclassmembers class com.xtree.base.widget.BorwserWebView {
+-keepclassmembers class com.xtree.base.widget.BrowserWebView {
    public *;
 }
 -keepclassmembers class * extends android.webkit.WebViewClient {

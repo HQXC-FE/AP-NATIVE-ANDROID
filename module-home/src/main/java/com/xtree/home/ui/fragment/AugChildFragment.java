@@ -19,7 +19,7 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.home.BR;
 import com.xtree.home.R;
 import com.xtree.home.databinding.AugItemBinding;
@@ -110,7 +110,7 @@ public class AugChildFragment extends BaseFragment<FragmentAugChildBinding, Home
             String name = Objects.requireNonNull(map.get("name")).toString();
             // 跳转到游戏H5
             CfLog.i("URL: " + url);
-            BrowserActivity.startThirdDomain(getContext(), name, url);
+            BrowserActivityX5.startThirdDomain(getContext(), name, url);
         });
     }
 

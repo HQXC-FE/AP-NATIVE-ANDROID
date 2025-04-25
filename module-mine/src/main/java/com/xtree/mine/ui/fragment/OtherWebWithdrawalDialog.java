@@ -9,12 +9,6 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
@@ -31,18 +25,25 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
+import com.xtree.base.BuildConfig;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.FightFanZhaUtils;
-import com.xtree.base.utils.StringUtils;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.widget.GlideEngine;
 import com.xtree.base.widget.ImageFileCompressEngine;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.TipDialog;
+import com.xtree.base.widget.X5WebView;
 import com.xtree.mine.R;
 import com.xtree.mine.data.Injection;
 import com.xtree.mine.databinding.DialogOtherWithdrawalWebBinding;
@@ -70,13 +71,14 @@ import me.xtree.mvvmhabit.utils.Utils;
  * 微信/支付宝提款
  */
 public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHorOtherRecyclerViewAdapter.IOtherFruitHorCallback {
-
+    private Context mContext;
     private LifecycleOwner owner;
     private ChooseWithdrawViewModel viewModel;
     private OtherWebWithdrawVo otherWebWithdrawVo;
     private ChooseInfoVo.ChannelInfo chooseInfoVo;
     private BasePopupView ppwError = null; // 底部弹窗 (显示错误信息)
     private BasePopupView maskLoadPopView;
+    private X5WebView x5WebView;
     private FruitHorOtherRecyclerViewAdapter recyclerViewAdapter;
     ValueCallback<Uri> mUploadCallbackBelow;
     ValueCallback<Uri[]> mUploadCallbackAboveL;
@@ -84,7 +86,6 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
     @NonNull
     DialogOtherWithdrawalWebBinding binding;
     private String jumpUrl;//外跳URL
-
     private String wtype;
     private WithdrawalInfoVo.UserBankInfo selectorBankInfo;//选中的支付地址
     private WithdrawalListVo listVo;
@@ -95,6 +96,7 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
 
     public OtherWebWithdrawalDialog(@NonNull Context context) {
         super(context);
+        this.mContext = context;
     }
 
     public static OtherWebWithdrawalDialog newInstance(Context context, LifecycleOwner owner, final String wtype,
@@ -124,6 +126,7 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
     @Override
     protected void onCreate() {
         super.onCreate();
+        x5WebView = X5WebView.getInstance(mContext);
         EventBus.getDefault().register(this);
         FightFanZhaUtils.init();
         initView();
@@ -239,7 +242,7 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
 //        if (!StringUtils.isStartHttp(url)) {
 //            url = DomainUtil.getH5Domain2() + url;
 //        }
-        if (!TextUtils.isEmpty(url)&&!url.startsWith("http")) {
+        if (!TextUtils.isEmpty(url) && !url.startsWith("http")) {
             String separator;
             if (DomainUtil.getH5Domain2().endsWith("/") && url.startsWith("/")) {
                 url = url.substring(1);
@@ -258,94 +261,22 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
         //为WebView 页面添加 跳转外部的浮窗
         //showCashPopView(url);
         binding.nsH5View.setVisibility(View.VISIBLE);
-        binding.nsH5View.loadUrl(url, getHeader());
-        this.initWebView(binding.nsH5View);
-        binding.nsH5View.setWebViewClient(new WebViewClient() {
+        // debug模式
+        if (BuildConfig.DEBUG) {
+            x5WebView.setDebug();
+        }
 
-
-            @Override
-            public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
-                if(FightFanZhaUtils.checkRequest(getContext(),webResourceRequest,false,jumpUrl)){
-                    return FightFanZhaUtils.replaceLoadingHtml(false);
-                }
-                return super.shouldInterceptRequest(webView, webResourceRequest);
-            }
-
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                if(FightFanZhaUtils.checkRequest(getContext(),request,false,jumpUrl)){
-                    return false;
-                }
-                return super.shouldOverrideUrlLoading(view, request);
-            }
-
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // LoadingDialog.show(getContext());
-                view.loadUrl(url);
-                return true;
-            }
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                dismissLoading();
-                binding.maskH5View.setVisibility(View.GONE);
-            }
-        });
-
-        // 上传文件
-        binding.nsH5View.setWebChromeClient(new WebChromeClient() {
-
-            @Override
-            public void onReceivedTitle(WebView webView, String s) {
-                super.onReceivedTitle(webView, s);
-                FightFanZhaUtils.checkHeadTitle(webView,s,false,jumpUrl);
-            }
-
-
-            /**
-             * For Android >= 4.1
-             * 16(Android 4.1.2) <= API <= 20(Android 4.4W.2)回调此方法
-             */
-            public void openFileChooser(ValueCallback<Uri> valueCallback, String acceptType, String capture) {
-                CfLog.i("*********");
-                mUploadCallbackBelow = valueCallback;
-                //openImageChooserActivity();
-                gotoSelectMedia();
-            }
-
-            /**
-             * For Android >= 5.0
-             * API >= 21(Android 5.0.1)回调此方法
-             */
-            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-                CfLog.i("*********");
-                // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
-                mUploadCallbackAboveL = filePathCallback;
-                //openImageChooserActivity();
-                gotoSelectMedia();
-                return true;
-            }
-
-            @Override
-            public void onProgressChanged(WebView view, int progress) {
-                //显示加载进度
-                super.onProgressChanged(view, progress);
-                binding.webProgress.setVisibility(View.VISIBLE);
-                binding.webProgress.setProgress(progress);
-                binding.webProgress.setVisibility((progress > 0 && progress < 100) ? View.VISIBLE : View.GONE);
-            }
-
-        });
-
+        initWebView(x5WebView.getWebView());
+        // 設定模式
+        x5WebView.setMode(X5WebView.WebViewMode.DEFAULT);
+        // 設定 WebViewClient
+        x5WebView.setWebViewClient(new CustomWebViewClient());
+        // 設定 WebChromeClient
+        x5WebView.setWebChromeClient(new CustomWebChromeClient());
+        // 將 WebView 加入容器
+        x5WebView.bindToContainer(binding.nsH5View);
+        // 加载
+        x5WebView.loadUrl(url);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -354,16 +285,16 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
             case EVENT_CHANGE_URL_FANZHA_FINSH:
                 //只有自己的h5域名站作更换域名，重新Load
                 String newBaseUrl = DomainUtil.getH5Domain2();
-                if(TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(jumpUrl)){
+                if (TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(jumpUrl)) {
                     return;
                 }
                 String oldBaseUrl = FightFanZhaUtils.getDomain(jumpUrl);
-                if(!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)){
+                if (!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)) {
                     return;
                 }
-                String goUrl = jumpUrl.replace(oldBaseUrl,newBaseUrl);
+                String goUrl = jumpUrl.replace(oldBaseUrl, newBaseUrl);
                 CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
-                binding.nsH5View.loadUrl(goUrl, getHeader());
+                x5WebView.getWebView().loadUrl(goUrl, getHeader());
                 break;
         }
     }
@@ -494,10 +425,7 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
         settings.setDatabaseEnabled(true);
         settings.setSupportZoom(true);
 
-        //settings.setAppCacheEnabled(true);
         settings.setUseWideViewPort(true);
-        //settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        //settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         settings.setLoadWithOverviewMode(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setLoadsImagesAutomatically(true);
@@ -520,6 +448,90 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
 
     @Override
     public void callbackWithFruitHor(OtherWebWithdrawVo.ChannelInfo selectVo) {
+
+    }
+
+    public class CustomWebViewClient extends WebViewClient {
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
+            if (FightFanZhaUtils.checkRequest(getContext(), webResourceRequest, false, jumpUrl)) {
+                return FightFanZhaUtils.replaceLoadingHtml(false);
+            }
+            return super.shouldInterceptRequest(webView, webResourceRequest);
+        }
+
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            if (FightFanZhaUtils.checkRequest(getContext(), request, false, jumpUrl)) {
+                return false;
+            }
+            return super.shouldOverrideUrlLoading(view, request);
+        }
+
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            // LoadingDialog.show(getContext());
+            view.loadUrl(url);
+            return true;
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            dismissLoading();
+            binding.maskH5View.setVisibility(View.GONE);
+        }
+    }
+
+    public class CustomWebChromeClient extends WebChromeClient {
+
+        @Override
+        public void onReceivedTitle(WebView webView, String s) {
+            super.onReceivedTitle(webView, s);
+            FightFanZhaUtils.checkHeadTitle(webView, s, false, jumpUrl);
+        }
+
+
+        /**
+         * For Android >= 4.1
+         * 16(Android 4.1.2) <= API <= 20(Android 4.4W.2)回调此方法
+         */
+        public void openFileChooser(ValueCallback<Uri> valueCallback, String acceptType, String capture) {
+            CfLog.i("*********");
+            mUploadCallbackBelow = valueCallback;
+            //openImageChooserActivity();
+            gotoSelectMedia();
+        }
+
+        /**
+         * For Android >= 5.0
+         * API >= 21(Android 5.0.1)回调此方法
+         */
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+            CfLog.i("*********");
+            // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
+            mUploadCallbackAboveL = filePathCallback;
+            //openImageChooserActivity();
+            gotoSelectMedia();
+            return true;
+        }
+
+        @Override
+        public void onProgressChanged(WebView view, int progress) {
+            //显示加载进度
+            super.onProgressChanged(view, progress);
+            binding.webProgress.setVisibility(View.VISIBLE);
+            binding.webProgress.setProgress(progress);
+            binding.webProgress.setVisibility((progress > 0 && progress < 100) ? View.VISIBLE : View.GONE);
+        }
 
     }
 }

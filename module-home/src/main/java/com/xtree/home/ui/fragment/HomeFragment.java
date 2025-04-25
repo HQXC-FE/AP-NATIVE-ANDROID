@@ -48,7 +48,7 @@ import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.widget.AppUpdateDialog;
 import com.xtree.base.widget.AppUpdateErrorDialog;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.base.widget.ImageDialog;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
@@ -304,7 +304,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         viewModel.liveDataPlayUrl.observe(getViewLifecycleOwner(), map -> {
             CfLog.d("*** " + new Gson().toJson(map));
             // 跳转到游戏H5
-            BrowserActivity.startThirdDomain(requireContext(), Objects.requireNonNull(map.get("name")).toString(), map.get("url").toString());
+            BrowserActivityX5.startThirdDomain(requireContext(), Objects.requireNonNull(map.get("name")).toString(), map.get("url").toString());
         });
         viewModel.liveDataProfile.observe(getViewLifecycleOwner(), vo -> {
             CfLog.d("*** " + new Gson().toJson(vo));
@@ -438,7 +438,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 }
                 String url = getString(result);
                 CfLog.e(url);
-                BrowserActivity.start(getContext(), data.title, url, true);
+                BrowserActivityX5.start(getContext(), data.title, url, true);
             }
         });
 
@@ -506,8 +506,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             }
             //startContainerFragment(RouterFragmentPath.Mine.PAGER_VIP_UPGRADE);
             //BrowserActivity.start(getContext(), getString(R.string.txt_vip_center), DomainUtil.getDomain2() + Constant.URL_VIP_CENTER, true, false, true);
-            BrowserActivity.start(getContext(), DomainUtil.getH5Domain2() + Constant.URL_VIP_CENTER);
-            //new XPopup.Builder(getContext()).asCustom(new BrowserDialog(getContext(), title, url, true)).show();
+            BrowserActivityX5.start(getContext(), DomainUtil.getH5Domain2() + Constant.URL_VIP_CENTER);
+            //new XPopup.Builder(getContext()).asCustom(new BrowserDialogX5(getContext(), title, url, true)).show();
         });
 
         GameAdapter.ICallBack mCallBack = new GameAdapter.ICallBack() {

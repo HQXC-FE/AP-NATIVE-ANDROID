@@ -14,7 +14,7 @@ import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
-import com.xtree.base.widget.BrowserDialog;
+import com.xtree.base.widget.BrowserDialogX5;
 import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.DialogRcOrderBankBinding;
 import com.xtree.recharge.vo.RechargePayVo;
@@ -96,7 +96,7 @@ public class RechargeOrderBankDialog extends BottomPopupView {
             if (!url.startsWith("http")) {
                 url = DomainUtil.getH5Domain2() + url;
             }
-            new XPopup.Builder(getContext()).asCustom(new BrowserDialog(getContext(), title, url)).show();
+            new XPopup.Builder(getContext()).asCustom(new BrowserDialogX5(getContext(), title, url)).show();
         }
     }
 

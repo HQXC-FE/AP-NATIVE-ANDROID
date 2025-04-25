@@ -167,7 +167,7 @@
                             android:layout_height="230dp"
                             android:visibility="gone" />
 
-                        <WebView
+                        <FrameLayout
                             android:id="@+id/wv_amin"
                             android:layout_width="match_parent"
                             android:layout_height="230dp"
