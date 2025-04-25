@@ -98,6 +98,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public LotteryViewModel lotteryViewModel;
     //当前投注规则返回结果
     public SingleLiveData<RulesEntryData.RulesResultData> rulesResultDataLiveData = new SingleLiveData<>();
+    //是否可以追号(六合彩、秒秒彩没有)
+    public MutableLiveData<Boolean> canChasing = new MutableLiveData<>(false);
     private MenuMethodsData menuMethods;
     //    private UserMethodsResponse userMethods;
     private WeakReference<FragmentActivity> mActivity = null;
@@ -119,6 +121,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         combinedPrizeBetLiveData.addSource(prizeData, prizeGroup -> createLotteryBetsPrizeGroup(true));
         betTotalLiveData.addSource(betLiveData, betOrders -> calBetOrdersNums());
         moneyView.setValue(!"lhc".equals(lottery.getLinkType()));
+        canChasing.setValue(!Objects.equals("lhc", lottery.getLinkType()) && !Objects.equals("mmc", lottery.getLinkType()));
     }
 
     private void calBetOrdersNums() {
@@ -792,6 +795,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 betOrderData.setPoschoose((String) submitDTO.getPoschoose());
                 betOrderData.setSolo(submitDTO.isSolo());
                 betOrderData.setType(submitDTO.getType());
+                betOrderData.setDisplay(rulesResultData.getDisplay());
                 betOrderlist.add(betOrderData);
             }
         }
@@ -811,6 +815,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
 
         ArrayList<LotteryOrderModel> orderList = betOrdersLiveData.getValue();
         List<LotteryBetRequest.BetOrderData> curOrder = betLiveData.getValue();
+        betCartOrdersLiveData.setValue(null);
 
         if (orderList != null) {
             for (int i = 0; i < orderList.size(); i++) {

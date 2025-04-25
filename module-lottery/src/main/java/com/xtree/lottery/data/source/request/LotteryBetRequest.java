@@ -3,6 +3,7 @@ package com.xtree.lottery.data.source.request;
 import com.google.gson.annotations.SerializedName;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.utils.UuidUtil;
+import com.xtree.lottery.rule.betting.data.RulesEntryData;
 
 import java.util.List;
 
@@ -176,11 +177,26 @@ public class LotteryBetRequest {
         @SerializedName("solo")
         private boolean solo;
 
+        @SerializedName("display")
+        private RulesEntryData.BetDTO.DisplayDTO display;
         /**
          * moneyName
          */
         @SerializedName("solo")
         private String moneyName = "";
+        /**
+         * desc
+         */
+        @SerializedName("desc")
+        private String desc;
+
+        public RulesEntryData.BetDTO.DisplayDTO getDisplay() {
+            return display;
+        }
+
+        public void setDisplay(RulesEntryData.BetDTO.DisplayDTO display) {
+            this.display = display;
+        }
 
         public String getMoneyName() {
             return moneyName;
@@ -189,12 +205,6 @@ public class LotteryBetRequest {
         public void setMoneyName(String moneyName) {
             this.moneyName = moneyName;
         }
-
-        /**
-         * desc
-         */
-        @SerializedName("desc")
-        private String desc;
 
         public String getMethodid() {
             return methodid;

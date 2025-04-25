@@ -33,6 +33,7 @@ import com.xtree.lottery.ui.fragment.LotteryReportFragment
 import com.xtree.lottery.ui.fragment.RecentLotteryFragment
 import com.xtree.lottery.ui.lotterybet.LotteryBetsFragment
 import com.xtree.lottery.ui.lotterybet.LotteryHandicapFragment
+import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetConfirmViewModel
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
 import com.xtree.lottery.utils.LotteryEventConstant
@@ -251,7 +252,12 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         LotteryDetailManager.mIssues[index].apply {
 
             viewModel.currentIssueLiveData.value = this
-
+            val viewmodel = ViewModelProvider(
+                this@LotteryActivity
+            ).get(
+                LotteryBetConfirmViewModel::class.java
+            )
+            viewmodel.chasingNumberParams.value = null//清空追号
             if (issue.contains("-")) {
                 binding.tvTitle.text = issue.split("-")[1].plus("期")
             } else {

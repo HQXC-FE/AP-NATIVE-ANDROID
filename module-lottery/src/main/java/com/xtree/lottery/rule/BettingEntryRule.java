@@ -254,6 +254,12 @@ public class BettingEntryRule {
         if (display.get("codes") != null) {
             displayDTO.setCodes(display.get("codes").toString());
         }
+        if (display.get("minPrize") != null) {
+            displayDTO.setMinPrize(display.get("minPrize").toString());
+        }
+        if (display.get("rate") != null) {
+            displayDTO.setRate(display.get("rate").toString());
+        }
 //        if (display.get("prize_level") instanceof List) {
 //            displayDTO.setPrizeLevel((List<String>) display.get("prize_level"));
 //        }

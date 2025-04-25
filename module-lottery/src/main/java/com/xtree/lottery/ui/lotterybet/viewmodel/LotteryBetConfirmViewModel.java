@@ -9,8 +9,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
@@ -26,6 +26,7 @@ import com.xtree.lottery.data.LotteryRepository;
 import com.xtree.lottery.data.source.request.LotteryBetRequest;
 import com.xtree.lottery.data.source.vo.BetResult;
 import com.xtree.lottery.data.source.vo.IssueVo;
+import com.xtree.lottery.ui.lotterybet.model.ChasingNumberIssue;
 import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel;
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel;
 
@@ -60,6 +61,8 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
     //追号入参
     public final MutableLiveData<ChasingNumberRequestModel> chasingNumberParams = new MutableLiveData<>();
     public final MutableLiveData<IssueVo> issueLiveData = new MutableLiveData<>();
+    //期数和追号数据组合
+    public MediatorLiveData<ChasingNumberIssue> combinedChasingNumberIssueLiveData = new MediatorLiveData<>();
     public LotteryBetsViewModel betsViewModel;
     public LotteryViewModel lotteryViewModel;
     private BasePopupView popupView;
@@ -78,15 +81,21 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
         datas.getValue().clear();
         bonusNumberTitle.setValue("");
         issueLiveData.setValue(null);
+        combinedChasingNumberIssueLiveData.removeSource(chasingNumberParams);
+        combinedChasingNumberIssueLiveData.removeSource(lotteryViewModel.currentIssueLiveData);
+        combinedChasingNumberIssueLiveData.addSource(chasingNumberParams, chasingNumberRequestModel -> combinedChasingNumberIssueLiveData.setValue(new ChasingNumberIssue(chasingNumberParams.getValue(), lotteryViewModel.currentIssueLiveData.getValue())));
+        combinedChasingNumberIssueLiveData.addSource(lotteryViewModel.currentIssueLiveData, issueVo -> combinedChasingNumberIssueLiveData.setValue(new ChasingNumberIssue(chasingNumberParams.getValue(), lotteryViewModel.currentIssueLiveData.getValue())));
 
-        lotteryViewModel.currentIssueLiveData.observe(activity, new Observer<IssueVo>() {
-            @Override
-            public void onChanged(IssueVo issueVo) {
-                if (issueVo != null) {
-                    issueLiveData.setValue(issueVo);
-
-                    bonusNumberTitle.setValue("确认要加入" + issueVo.getIssue() + "期?");
+        combinedChasingNumberIssueLiveData.observe(activity, chasingNumberIssue -> {
+            if (chasingNumberIssue.issueVo != null) {
+                issueLiveData.setValue(chasingNumberIssue.issueVo);
+                if (betsViewModel.canChasing.getValue()
+                        && chasingNumberIssue.chasingNumberRequestModel != null
+                        && chasingNumberIssue.chasingNumberRequestModel.getParmes() != null) {
+                    bonusNumberTitle.setValue("确定要追号" + chasingNumberParams.getValue().getParmes().get("lt_trace_count_input") + "期?");
+                    return;
                 }
+                bonusNumberTitle.setValue("确定要加入" + chasingNumberIssue.issueVo.getIssue() + "期?");
             }
         });
 
@@ -152,7 +161,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
         lotteryBetRequest.setPlay_source(6);
 
         HashMap<String, Object> parmes = new HashMap<>();
-        if (chasingNumberParams.getValue() != null && chasingNumberParams.getValue().getParmes() != null) {
+        if (betsViewModel.canChasing.getValue() && chasingNumberParams.getValue() != null && chasingNumberParams.getValue().getParmes() != null) {
             parmes.putAll(chasingNumberParams.getValue().getParmes());
         }
         Disposable disposable = (Disposable) model.bet(lotteryBetRequest, parmes).subscribeWith(new HttpCallBack<Object>() {
@@ -391,7 +400,7 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
             finish();
             return;
         }
-
+        chasingNumberParams.setValue(null);
         containSolo.setValue(false);
 
         totalMoney.setValue(money.toPlainString());

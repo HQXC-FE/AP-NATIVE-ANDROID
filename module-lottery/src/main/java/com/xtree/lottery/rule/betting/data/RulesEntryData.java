@@ -970,7 +970,7 @@ public class RulesEntryData {
              * rate
              */
             @SerializedName("rate")
-            private int rate;
+            private String rate;
             /**
              * times
              */
@@ -996,6 +996,12 @@ public class RulesEntryData {
              */
             @SerializedName("codes")
             private String codes;
+
+            /**
+             * minPrize
+             */
+            @SerializedName("minPrize")
+            private String minPrize;
             /**
              * prizeGroup
              */
@@ -1027,6 +1033,14 @@ public class RulesEntryData {
             @SerializedName("singleDesc")
             private Object singleDesc;
 
+            public String getMinPrize() {
+                return minPrize;
+            }
+
+            public void setMinPrize(String minPrize) {
+                this.minPrize = minPrize;
+            }
+
             public String getPrize() {
                 return prize;
             }
@@ -1043,11 +1057,11 @@ public class RulesEntryData {
                 this.mode = mode;
             }
 
-            public int getRate() {
+            public String getRate() {
                 return rate;
             }
 
-            public void setRate(int rate) {
+            public void setRate(String rate) {
                 this.rate = rate;
             }
 
