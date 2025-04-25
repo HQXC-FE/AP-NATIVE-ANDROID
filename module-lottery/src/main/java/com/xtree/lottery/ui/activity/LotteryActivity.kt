@@ -109,7 +109,7 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         if (lottery.handicap) {//是否显示盘口玩法
             binding.tlLottery.addTab(binding.tlLottery.newTab().setText("盘口玩法"))
         }
-        if ("mmc".equals(lottery.alias)) {
+        if (TextUtils.equals("mmc", lottery.alias)) {
             binding.tvTitle.visibility = View.GONE
             binding.tvTime.visibility = View.GONE
         } else {

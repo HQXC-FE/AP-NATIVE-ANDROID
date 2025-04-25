@@ -1,5 +1,6 @@
 package com.xtree.lottery.ui.adapter
 
+import android.text.TextUtils
 import android.widget.CheckBox
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter

@@ -12,8 +12,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.xtree.lottery.R
 import com.xtree.lottery.data.LotteryDetailManager
+import com.xtree.lottery.data.source.request.LotteryBetRequest
+import com.xtree.lottery.data.source.request.LotteryBetRequest.BetOrderData
 import com.xtree.lottery.databinding.DialogChasingNumberBinding
 import com.xtree.lottery.ui.adapter.ChasingAdapter
 import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel
@@ -27,6 +31,7 @@ import me.xtree.mvvmhabit.utils.ToastUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import kotlin.math.floor
 import kotlin.math.pow
 
 
@@ -35,6 +40,7 @@ import kotlin.math.pow
  * Describe: 追号弹窗
  */
 open class LotteryChasingNumberFragment private constructor() : BaseDialogFragment<DialogChasingNumberBinding, LotteryOrderViewModel>() {
+    private lateinit var orders: List<LotteryBetRequest.BetOrderData>
     private var money = 0.0
     private var betNums = ""
     private lateinit var chasingAdapter: ChasingAdapter
@@ -101,14 +107,56 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
             when (checkPosition) {
 
                 0 -> {//利润率追号
-                    ToastUtils.showLong("已生成最低利润率：" + plus5 + "，起始倍数：" + plus1 + "，追号：" + plus2 + "期的投注方案")
+
+                    val profit = plus5
+                    val times = plus1
+                    val count = plus2
+                    if (count > newList.size) {
+                        ToastUtils.showLong("超过最大可追奖期，请重新选择")
+                        return@setOnClickListener
+                    }
+
+
+                    // 计算中奖金额总和
+                    var sumPrize = 0.0
+                    for (order in orders) {
+                        val prize = floor(order.display.minPrize.toDouble() * order.display.rate.toDouble() * 100) / 100
+                        sumPrize += prize
+
+                    }
+
+                    val maxProfit = (sumPrize / money - 1) * 100
+                    if (maxProfit < profit) {
+                        ToastUtils.showLong("当前最高利润率为${"%.1f".format(maxProfit)}")
+                        return@setOnClickListener
+                    }
+
+                    for (i in 0 until count) {
+                        var currentTimes = 1
+
+                        // 计算前面已选倍数的总和
+                        var sumTimes = 0
+                        for (j in 0 until i) {
+                            sumTimes += newList[j].multiple
+                        }
+                        //(中奖金额*currentTimes)/(投资金额*(前面已选倍数的总和+currentTimes))<=(1+最低利润率/100)
+                        while ((sumPrize * currentTimes) / (money * (sumTimes + currentTimes)) <= (1 + profit / 100)) {
+                            currentTimes++
+                        }
+
+                        newList[i].multiple = currentTimes
+                    }
+
                     for (i in 0 until plus2) {
                         newList[i].apply {
-                            multiple = plus1
-                            amount = money
+                            multiple *= times // 所有倍数乘上起始倍数
+                            amount = money * multiple
                             allMoney += amount
                         }
                     }
+
+                    //ToastUtils.showLong("已生成最低利润率：" + plus5 + "，起始倍数：" + plus1 + "，追号：" + plus2 + "期的投注方案")
+                    ToastUtils.showLong("已生成最低利润率：$profit，起始倍数：$times，追号：$count 期的投注方案")
                 }
 
                 1 -> {//同倍追号
@@ -152,6 +200,10 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
         if (activity != null) {
             betNums = requireArguments().getString("betNums")!!
             money = requireArguments().getString("money")!!.toDouble()
+            val jsonString = requireArguments().getString("orders")!!
+            val gson = Gson()
+            val type = object : TypeToken<List<BetOrderData?>?>() {}.getType()
+            orders = gson.fromJson(jsonString, type)
             val issues = if (LotteryDetailManager.mIssues.size < LotteryDetailManager.mIndex + 200) {
                 LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIndex + 200)
             } else {
@@ -177,7 +229,7 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                 val chasingNumberRequestModel = ChasingNumberRequestModel()
                 chasingNumberRequestModel.parmes = hashMapOf<String, Any>().apply {
                     put("lt_trace_issues", hashMap)
-                    put("lt_trace_count_input", chasingAdapter.data.size)
+                    put("lt_trace_count_input", hashMap.size)
                     put("lt_trace_if", "yes")
                     put("lt_trace_money", allMoney.toString())
                     put(
@@ -190,9 +242,7 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                 }
                 val viewmodel = ViewModelProvider(
                     requireActivity()
-                ).get(
-                    LotteryBetConfirmViewModel::class.java
-                )
+                )[LotteryBetConfirmViewModel::class.java]
                 viewmodel.chasingNumberParams.value = chasingNumberRequestModel
                 dismissAllowingStateLoss()
             }
@@ -237,11 +287,12 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
          * @param activity 获取FragmentManager
          */
         @JvmStatic
-        fun show(activity: FragmentActivity, betNums: String, moneyNums: String) {
+        fun show(activity: FragmentActivity, betNums: String, moneyNums: String, orders: String) {
             val fragment = LotteryChasingNumberFragment()
             val bundle = Bundle()
             bundle.putString("betNums", betNums)
             bundle.putString("money", moneyNums)
+            bundle.putString("orders", orders)
             //fragment传参数，谷歌官方建议使用setArguments
             //使用有参构造函数传参数，依附的Activity重建时，Fragment会调取无参构造函数重建，没有无参构造就会闪退
             fragment.arguments = bundle

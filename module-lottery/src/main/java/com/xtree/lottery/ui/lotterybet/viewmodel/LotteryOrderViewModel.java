@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.drake.brv.BindingAdapter;
+import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.mvvm.recyclerview.BaseDatabindingAdapter;
@@ -55,6 +56,8 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
     public MutableLiveData<String> moneyNums = new MutableLiveData<>();
     //是否可以追号(六合彩、秒秒彩没有)
     public MutableLiveData<Boolean> canChasing = new MutableLiveData<>(false);
+    //订单列表
+    public MutableLiveData<String> ordersLiveData = new MutableLiveData<>();
     private final Observer<List<LotteryOrderModel>> orderObserver = lotteryOrderModels -> {
         canChasing.setValue(betsViewModel.canChasing.getValue());
         if (lotteryOrderModels == null) {
@@ -142,15 +145,19 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
     private void checkOrder() {
         int totalBet = 0;
         BigDecimal totalMoney = BigDecimal.ZERO;
+        List<LotteryBetRequest.BetOrderData> orderList = new ArrayList<>();
         for (BindModel binmodel : bindModels) {
             LotteryOrderModel orderModel = (LotteryOrderModel) binmodel;
             LotteryBetRequest.BetOrderData betOrderData = orderModel.getBetOrderData();
+            orderList.add(betOrderData);
             totalBet += betOrderData.getNums();
             totalMoney = totalMoney.add(BigDecimal.valueOf(betOrderData.getMoney()));
         }
 
         orderNums.setValue(String.valueOf(bindModels.size()));
         moneyNums.setValue(totalMoney.toPlainString());
+        Gson gson = new Gson();
+        ordersLiveData.setValue(gson.toJson(orderList));
         betNums.setValue(String.valueOf(totalBet));
     }
 

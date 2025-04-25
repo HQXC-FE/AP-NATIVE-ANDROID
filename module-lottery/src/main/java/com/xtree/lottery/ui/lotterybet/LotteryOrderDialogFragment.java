@@ -57,7 +57,7 @@ public class LotteryOrderDialogFragment extends BaseDialogFragment<DialogLottery
             }
 
             if (!LotteryDetailManager.INSTANCE.getMIssues().isEmpty()) {
-                LotteryChasingNumberFragment.show(requireActivity(), binding.getModel().betNums.getValue(), binding.getModel().moneyNums.getValue());
+                LotteryChasingNumberFragment.show(requireActivity(), binding.getModel().betNums.getValue(), binding.getModel().moneyNums.getValue(), binding.getModel().ordersLiveData.getValue());
                 viewModel.goChasing();
             }
 
