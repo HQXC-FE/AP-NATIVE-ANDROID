@@ -67,7 +67,16 @@ public class X5WebView {
     }
 
     public void bindToContainer(ViewGroup viewGroup) {
-        webView.bringChildToFront(viewGroup);
+        ViewGroup parent = (ViewGroup) webView.getParent();
+        if (parent != null) {
+            parent.removeView(webView);
+        }
+
+        viewGroup.removeAllViews(); // 防止重複添加
+        viewGroup.addView(webView, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        ));
     }
 
     public WebView getWebView() {
@@ -75,11 +84,7 @@ public class X5WebView {
     }
 
     public void loadUrl(String url) {
-        // 若 WebView 有父容器，記得先移除（防止重複加載造成崩潰）
-        if (webView.getParent() != null) {
-            ((android.view.ViewGroup) webView.getParent()).removeView(webView);
-        }
-
+        cleanCache();
         String token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
         boolean isFirstOpenBrowser = SPUtils.getInstance().getBoolean(SPKeyGlobal.IS_FIRST_OPEN_BROWSER, true);
 
@@ -127,5 +132,21 @@ public class X5WebView {
         } else {
             webView.loadUrl(url);
         }
+    }
+
+    private void cleanCache() {
+        // 1. 清除 WebView 資源
+        webView.clearHistory();
+        webView.clearFormData();
+        webView.clearCache(true);
+        webView.loadUrl("about:blank"); // 清除視圖上的內容
+
+        // 2. 清除 Cookie（可選）
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeAllCookies(null);
+        cookieManager.flush();
+
+        // 3. 清除 localStorage / sessionStorage（需注入 JavaScript）
+        webView.evaluateJavascript("localStorage.clear(); sessionStorage.clear();", null);
     }
 }
