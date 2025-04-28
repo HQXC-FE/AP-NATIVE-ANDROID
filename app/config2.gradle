@@ -3,17 +3,17 @@ android {
 
     productFlavors {
         // 测试环境 测试用
-        eon4_pre {
+        eon5_pre {
             applicationId "com.${name.toLowerCase()}.app"
-            versionName "1.0.1"
-            versionCode 101
+            versionName "1.0.0"
+            versionCode 100
 
             //resValue "string", "app_name", "${name}"
-            resValue "string", "app_name", "意昂F凯捷T${versionCode}"
+            resValue "string", "app_name", "意昂5 T${versionCode}"
             // 后面可能会改成 https://preyiang22test.oxldkm.com 如后续有连线问题 尝试看看
             resValue "string", "domain_api", "https://preyiang4.oxldkm.com"
             resValue "string", "domain_url", "https://preyiang4.oxldkm.com"
-            resValue "string", "channel_name", "eon4"  // 渠道名称
+            resValue "string", "channel_name", "eon5"  // 渠道名称
             resValue "string", "platform_set", "47"  // 平台代号,升级用 35-意昂, 38-意昂2 ，40-意昂3，47-意昂4(意昂凯捷F)
             resValue "string", "build_time", "${buildTime()}"
             resValue "string", "mixpanel_token", "a572f2f1cc1e69d3f7072c706a730896"
@@ -29,14 +29,14 @@ android {
         }
 
         // 生产环境 发布用
-        eon4_OL {
-            applicationId "com.eon4.app"
-            versionName "1.0.1"
-            versionCode 101
-            resValue "string", "app_name", "意昂F凯捷"
+        eon5_OL {
+            applicationId "com.eon5.app"
+            versionName "1.0.0"
+            versionCode 100
+            resValue "string", "app_name", "意昂5"
             resValue "string", "domain_api", "http://1.95.166.113:46830"
             resValue "string", "domain_url", "https://h51.s3r1yj.vip"
-            resValue "string", "channel_name", "eon4"  // 渠道名称
+            resValue "string", "channel_name", "eon5"  // 渠道名称
             resValue "string", "platform_set", "47"  // 平台代号,升级用 35-意昂, 38-意昂2 40-意昂3，47-意昂4(意昂凯捷F)
             resValue "string", "build_time", "${buildTime()}"
             resValue "string", "mixpanel_token", "a572f2f1cc1e69d3f7072c706a730896"
@@ -139,12 +139,12 @@ androidJunkCode {
         debug config
         release config
 
-        eon4Debug config2
-        eon4Release config2
-        eon4_preDebug config2
-        eon4_preRelease config2
-        eon4_OLDebug config2
-        eon4_OLRelease config2
+        eon5Debug config2
+        eon5Release config2
+        eon5_preDebug config2
+        eon5_preRelease config2
+        eon5_OLDebug config2
+        eon5_OLRelease config2
     }
 
 }

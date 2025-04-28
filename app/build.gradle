@@ -28,7 +28,7 @@ android {
 
     signingConfigs {
         cfg {
-            storeFile file("eon4.jks")
+            storeFile file("eon5.jks")
             storePassword "xingcai666a"
             keyAlias "app"
             keyPassword "xingcai666a"
