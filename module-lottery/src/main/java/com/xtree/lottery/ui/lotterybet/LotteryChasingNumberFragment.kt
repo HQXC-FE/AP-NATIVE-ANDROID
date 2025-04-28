@@ -12,8 +12,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.xtree.lottery.R
 import com.xtree.lottery.data.LotteryDetailManager
+import com.xtree.lottery.data.source.request.LotteryBetRequest
+import com.xtree.lottery.data.source.request.LotteryBetRequest.BetOrderData
 import com.xtree.lottery.databinding.DialogChasingNumberBinding
 import com.xtree.lottery.ui.adapter.ChasingAdapter
 import com.xtree.lottery.ui.lotterybet.model.ChasingNumberRequestModel
@@ -27,6 +31,9 @@ import me.xtree.mvvmhabit.utils.ToastUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.math.BigDecimal
+import java.math.RoundingMode
+import kotlin.math.floor
 import kotlin.math.pow
 
 
@@ -35,11 +42,12 @@ import kotlin.math.pow
  * Describe: 追号弹窗
  */
 open class LotteryChasingNumberFragment private constructor() : BaseDialogFragment<DialogChasingNumberBinding, LotteryOrderViewModel>() {
-    private var money = 0.0
+    private lateinit var orders: List<LotteryBetRequest.BetOrderData>
+    private var money = BigDecimal.ZERO
     private var betNums = ""
     private lateinit var chasingAdapter: ChasingAdapter
     private var checkPosition = 0
-    var allMoney = 0.0
+    private var allMoney = BigDecimal.ZERO
 
     override fun initView() {
         binding.ivClose.setOnClickListener { dismissAllowingStateLoss() }
@@ -97,18 +105,70 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
             }
             // 使用 map 深拷贝每个对象
             val newList = issues.map { it.copy() }
-            allMoney = 0.0
+            allMoney = BigDecimal.ZERO
             when (checkPosition) {
 
                 0 -> {//利润率追号
-                    ToastUtils.showLong("已生成最低利润率：" + plus5 + "，起始倍数：" + plus1 + "，追号：" + plus2 + "期的投注方案")
+
+                    val profit = plus5
+                    val times = plus1
+                    val count = plus2
+                    if (count > newList.size) {
+                        ToastUtils.showLong("超过最大可追奖期，请重新选择")
+                        return@setOnClickListener
+                    }
+
+
+                    // 计算中奖金额总和
+                    var sumPrize =  BigDecimal.ZERO
+                    for (order in orders) {
+                        // 计算每个订单的中奖金额，并保留两位小数
+                        val prize = BigDecimal(order.display.minPrize)
+                            .multiply(BigDecimal(order.display.rate))
+                            .multiply(BigDecimal(100))  // 乘以100
+                            .setScale(2, RoundingMode.FLOOR)  // 向下保留两位小数
+
+                        sumPrize = sumPrize.add(prize)  // 累加中奖金额
+
+                    }
+
+                    // 计算最大利润率
+                    val maxProfit = (sumPrize.divide(money, 2, RoundingMode.FLOOR).subtract(BigDecimal(1)))
+                        .multiply(BigDecimal(100))
+                    // 检查利润率
+                    if (maxProfit < BigDecimal(profit)) {
+                        ToastUtils.showLong("当前最高利润率为${"%.1f".format(maxProfit)}")
+                        return@setOnClickListener
+                    }
+
+                    for (i in 0 until count) {
+                        var currentTimes = 1
+
+                        // 计算前面已选倍数的总和
+                        var sumTimes = BigDecimal.ZERO
+                        for (j in 0 until i) {
+                            sumTimes = sumTimes.add(BigDecimal(newList[j].multiple))
+                        }
+                        //(中奖金额*currentTimes)/(投资金额*(前面已选倍数的总和+currentTimes))<=(1+最低利润率/100)
+                        // 计算是否满足利润条件
+                        while ((sumPrize.multiply(BigDecimal(currentTimes))) / (money.multiply(sumTimes.add(BigDecimal(currentTimes))))
+                            <= BigDecimal(1).add(BigDecimal(profit).divide(BigDecimal(100)))) {
+                            currentTimes++
+                        }
+
+                        newList[i].multiple = currentTimes
+                    }
+
                     for (i in 0 until plus2) {
                         newList[i].apply {
-                            multiple = plus1
-                            amount = money
-                            allMoney += amount
+                            multiple *= times // 所有倍数乘上起始倍数
+                            amountBigDecimal = BigDecimal(multiple).multiply(money)
+                            allMoney = allMoney.add(amountBigDecimal)
                         }
                     }
+
+                    //ToastUtils.showLong("已生成最低利润率：" + plus5 + "，起始倍数：" + plus1 + "，追号：" + plus2 + "期的投注方案")
+                    ToastUtils.showLong("已生成最低利润率：$profit，起始倍数：$times，追号：$count 期的投注方案")
                 }
 
                 1 -> {//同倍追号
@@ -116,8 +176,8 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                     for (i in 0 until plus2) {
                         newList[i].apply {
                             multiple = plus1
-                            amount = money
-                            allMoney += amount
+                            amountBigDecimal = BigDecimal(multiple).multiply(money)
+                            allMoney = allMoney.add(amountBigDecimal)
                         }
                     }
                 }
@@ -129,8 +189,8 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                             val quotient = i / plus4//获取商值
                             //追号倍数*翻倍倍数的商值方
                             multiple = plus1 * plus3.toDouble().pow(quotient.toDouble()).toInt()
-                            amount = multiple * money
-                            allMoney += amount
+                            amountBigDecimal = BigDecimal(multiple).multiply(money)
+                            allMoney = allMoney.add(amountBigDecimal)
                         }
                     }
                 }
@@ -142,16 +202,53 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
 
     }
 
+    //fun checkProfit(): Boolean {
+    //    var result = true
+    //
+    //    // 1. 检查是否存在浮动奖金（currentBonus 为字符串）
+    //    for (order in orders) {
+    //        val bonus = order.display.currentBonus
+    //        if (bonus is String) {
+    //            result = false
+    //            break
+    //        }
+    //    }
+    //
+    //    // 2. 检查是否为单一玩法（按 menuid 去重后个数必须是 1）
+    //    val menuidSet = mutableSetOf<Int>()
+    //    for (order in orders) {
+    //        menuidSet.add(order.submit.menuid)
+    //    }
+    //    if (menuidSet.size != 1) {
+    //        result = false
+    //    }
+    //
+    //    // 3. 检查是否有 display 中的项没有 minPrize
+    //    loop@ for (order in orders) {
+    //        if (order.display.minPrize == null) {
+    //            result = false
+    //            break@loop
+    //        }
+    //    }
+    //
+    //    return result
+    //}
+
+
     private fun changeResultText(plus2: Int) {
-        val html = "<p>单期注数：<font color=\"#EB5428\">" + betNums + "</font>  追号总期数：<font color=\"#EB5428\">" + plus2 +
-                "</font>            追号总金额：<font color=\"#EB5428\">" + allMoney + "</font> </p>"
+        val html = "<p>单期注数：<font color=\"#EB5428\">" + betNums + "</font> 追号总期数：<font color=\"#EB5428\">" + plus2 +
+                "</font> 追号总金额：<font color=\"#EB5428\">" + allMoney + "</font> </p>"
         binding.tvResult.text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
     private fun initRv() {
         if (activity != null) {
             betNums = requireArguments().getString("betNums")!!
-            money = requireArguments().getString("money")!!.toDouble()
+            money = BigDecimal(requireArguments().getString("money")!!)
+            val jsonString = requireArguments().getString("orders")!!
+            val gson = Gson()
+            val type = object : TypeToken<List<BetOrderData?>?>() {}.getType()
+            orders = gson.fromJson(jsonString, type)
             val issues = if (LotteryDetailManager.mIssues.size < LotteryDetailManager.mIndex + 200) {
                 LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIndex + 200)
             } else {
@@ -162,7 +259,10 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
             binding.rvChasingNumber.setHasFixedSize(true)
             binding.rvChasingNumber.layoutManager = LinearLayoutManager(requireContext())
             chasingAdapter = ChasingAdapter(newList, money, changeNumber = {
-                allMoney -= it
+                allMoney = BigDecimal.ZERO
+                for (i in 0..chasingAdapter.checkedPosition) {
+                    allMoney = allMoney.add(chasingAdapter.data[i].amountBigDecimal)
+                }
                 changeResultText(binding.plus2.getNumber())
             })
             binding.rvChasingNumber.adapter = chasingAdapter
@@ -177,7 +277,7 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                 val chasingNumberRequestModel = ChasingNumberRequestModel()
                 chasingNumberRequestModel.parmes = hashMapOf<String, Any>().apply {
                     put("lt_trace_issues", hashMap)
-                    put("lt_trace_count_input", chasingAdapter.data.size)
+                    put("lt_trace_count_input", hashMap.size)
                     put("lt_trace_if", "yes")
                     put("lt_trace_money", allMoney.toString())
                     put(
@@ -190,9 +290,7 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                 }
                 val viewmodel = ViewModelProvider(
                     requireActivity()
-                ).get(
-                    LotteryBetConfirmViewModel::class.java
-                )
+                )[LotteryBetConfirmViewModel::class.java]
                 viewmodel.chasingNumberParams.value = chasingNumberRequestModel
                 dismissAllowingStateLoss()
             }
@@ -237,11 +335,12 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
          * @param activity 获取FragmentManager
          */
         @JvmStatic
-        fun show(activity: FragmentActivity, betNums: String, moneyNums: String) {
+        fun show(activity: FragmentActivity, betNums: String, moneyNums: String, orders: String) {
             val fragment = LotteryChasingNumberFragment()
             val bundle = Bundle()
             bundle.putString("betNums", betNums)
             bundle.putString("money", moneyNums)
+            bundle.putString("orders", orders)
             //fragment传参数，谷歌官方建议使用setArguments
             //使用有参构造函数传参数，依附的Activity重建时，Fragment会调取无参构造函数重建，没有无参构造就会闪退
             fragment.arguments = bundle
@@ -263,7 +362,7 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                 val newList = issues.map { it.copy() }
                 chasingAdapter.checkedPosition = -1
                 chasingAdapter.setList(newList)
-                allMoney = 0.0
+                allMoney = BigDecimal.ZERO
                 changeResultText(0)
             }
         }

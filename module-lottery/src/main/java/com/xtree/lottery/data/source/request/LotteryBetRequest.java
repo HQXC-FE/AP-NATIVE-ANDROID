@@ -182,7 +182,7 @@ public class LotteryBetRequest {
         /**
          * moneyName
          */
-        @SerializedName("solo")
+        @SerializedName("moneyName")
         private String moneyName = "";
         /**
          * desc

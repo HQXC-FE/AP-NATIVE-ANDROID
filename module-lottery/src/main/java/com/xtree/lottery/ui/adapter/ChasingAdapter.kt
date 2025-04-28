@@ -1,14 +1,17 @@
 package com.xtree.lottery.ui.adapter
 
+import android.text.TextUtils
 import android.widget.CheckBox
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.xtree.lottery.R
 import com.xtree.lottery.data.source.vo.IssueVo
+import java.math.BigDecimal
 
 
-class ChasingAdapter(list: MutableList<IssueVo>, public val money: Double, val changeNumber: (Double) -> Unit) : BaseQuickAdapter<IssueVo, BaseViewHolder>(R.layout.item_chasing_number, list) {
+class ChasingAdapter(list: MutableList<IssueVo>, public val money: BigDecimal, val changeNumber: () -> Unit) :
+    BaseQuickAdapter<IssueVo, BaseViewHolder>(R.layout.item_chasing_number, list) {
     public var checkedPosition = -1
     override fun convert(holder: BaseViewHolder, item: IssueVo) {
 
@@ -19,22 +22,29 @@ class ChasingAdapter(list: MutableList<IssueVo>, public val money: Double, val c
         holder.setText(R.id.tv_issue, item.issue)
 
         tvMultiple.text = item.multiple.toString()
-        tvMoney.text = "¥".plus(item.amount.toString())
-
-
-        cbNumber.setOnCheckedChangeListener { buttonView, isChecked ->
-            //if (isChecked) {
-            //    tvMultiple.text = "1"
-            //    tvMoney.text = "¥" + money
-            //} else {
-            //    tvMultiple.text = "0"
-            //    tvMoney.text = "¥0.0000"
-            //}
-            //changeNumber(item.amount)
-            item.isCheck = isChecked
+        if (item.amountBigDecimal == null) {
+            item.amountBigDecimal = BigDecimal.ZERO
         }
+        tvMoney.text = "¥".plus(item.amountBigDecimal?.toPlainString())
+
         item.isCheck = holder.layoutPosition <= checkedPosition
         cbNumber.isChecked = item.isCheck
+        cbNumber.setOnCheckedChangeListener { buttonView, isChecked ->
+            //倍数等于”0“，且已选中
+            if (TextUtils.equals(tvMultiple.text.toString(), "0")) {
+                if (isChecked) {
+                    tvMultiple.text = "1"
+                    tvMoney.text = "¥".plus(money.toPlainString())
+                    changeNumber()
+                }
+            }
+            if (!isChecked) {
+                tvMultiple.text = "0"
+                tvMoney.text = "¥0.0"
+                changeNumber()
+            }
+            item.isCheck = isChecked
+        }
     }
 
 }

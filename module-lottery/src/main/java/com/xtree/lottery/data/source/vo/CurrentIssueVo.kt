@@ -2,6 +2,7 @@ package com.xtree.lottery.data.source.vo
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import java.math.BigDecimal
 
 @Parcelize
 data class IssueVo(
@@ -11,8 +12,7 @@ data class IssueVo(
     val issueid: String,
     val track_limit: Int,
 
-
     var multiple: Int = 0,
-    var amount: Double = 0.000,
+    var amountBigDecimal: BigDecimal? = BigDecimal.ZERO,
     var isCheck: Boolean = false
 ) : Parcelable
