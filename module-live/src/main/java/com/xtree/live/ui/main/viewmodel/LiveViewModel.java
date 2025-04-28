@@ -99,13 +99,13 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
         LiveHotModel liveFootBallModel = new LiveHotModel(FrontLivesType.FOOTBALL.getLabel());
         liveFootBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.HOT.getValue(), page, limit, success, error);
-        liveHotModel.matchListResponseFetchListener = (page, limit, params, success, error) -> getHotLeague(PLATFORM_FBXC,success, error);
+        //liveFootBallModel.matchListResponseFetchListener = (page, limit, params, success, error) -> getLeagueList(0, "1", 1, hotLeagueList,  6, 0, 1, false, false,success,error);
         liveFootBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
         liveFootBallModel.setItemType(2);
 
         LiveHotModel liveBasketBallModel = new LiveHotModel(FrontLivesType.BASKETBALL.getLabel());
         liveBasketBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.HOT.getValue(), page, limit, success, error);
-        liveHotModel.matchListResponseFetchListener = (page, limit, params, success, error) -> getHotLeague(PLATFORM_FBXC,success, error);
+       // liveBasketBallModel.matchListResponseFetchListener = (page, limit, params, success, error) -> getLeagueList(0, "2", 1, hotLeagueList, matchids, 6, 0, 1, false, false,success,error);
         liveBasketBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
         liveBasketBallModel.setItemType(3);
 
@@ -563,8 +563,8 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                             }
                         }
                         CfLog.d("=============== onResult hotLeagues ================" + hotLeagueList.size());
-                        List<Long> matchids = new ArrayList();
-                        getLeagueList(0, "0", 1, hotLeagueList, matchids, 6, 0, 1, false, false,success,error);
+                        //List<Long> matchids = new ArrayList();
+                        getLeagueList(0, "0", 1, hotLeagueList,success,error);
 
                     }
 
@@ -588,7 +588,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
      * @param searchDatePos  查询时间列表中的位置
      * @param oddType        盘口类型
      */
-    public void getLeagueList(int sportPos, String sportId, int orderBy, List<Long> leagueIds, List<Long> matchids, int playMethodType, int searchDatePos, int oddType, boolean isTimerRefresh, boolean isRefresh,Observer<MatchListRsp> success, Observer<Object> error) {
+    public void getLeagueList(int sportPos, String sportId, int orderBy, List<Long> leagueIds,Observer<MatchListRsp> success, Observer<Object> error) {
 
         FBListReq fBListReq = new FBListReq();
         fBListReq.setSportId(sportId);
@@ -599,7 +599,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
         fBListReq.setCurrent(1);
         fBListReq.setSize(50);
         //fBListReq.setCurrent(mCurrentPage);
-        fBListReq.setOddType(oddType);
+        fBListReq.setOddType(1);
         SPORT_NAMES = SPORT_NAMES_TODAY_CG;
         if (sportPos == -1 || TextUtils.equals(SPORT_NAMES[sportPos], "热门")) {
             fBListReq.setSportId(null);

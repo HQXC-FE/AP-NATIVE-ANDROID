@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.FBHttpCallBack;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.request.UploadExcetionReq;
@@ -156,6 +157,7 @@ public class LeagueListCallBack extends FBHttpCallBack<MatchListRsp> {
 
     @Override
     public void onResult(MatchListRsp matchListRsp) {
+        CfLog.d("============== LeagueListCallBack onResult matchListRsp size ==============="+matchListRsp.records.size());
         if (mIsTimerRefresh) {
             if (matchListRsp.records.size() != mMatchids.size()) {
                 List<Long> matchIdList = new ArrayList<>();
@@ -238,6 +240,7 @@ public class LeagueListCallBack extends FBHttpCallBack<MatchListRsp> {
 
     @Override
     public void onError(Throwable t) {
+        CfLog.d("============== LeagueListCallBack onError ===============");
         mViewModel.getUC().getDismissDialogEvent().call();
         if (t instanceof ResponseThrowable) {
             if(((ResponseThrowable) t).isHttpError){

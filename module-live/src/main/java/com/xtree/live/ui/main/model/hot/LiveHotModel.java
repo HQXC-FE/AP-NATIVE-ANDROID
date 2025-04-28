@@ -123,7 +123,6 @@ public class LiveHotModel extends BindModel {
         //to do
         //设置标签，用于显示TAB标题
         setTag(tag);
-
         datas.set(bindModels);
     }
 

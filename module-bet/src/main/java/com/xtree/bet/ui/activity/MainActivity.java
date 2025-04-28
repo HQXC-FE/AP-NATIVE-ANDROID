@@ -1119,6 +1119,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             }
         }
         if (!matchIdList.isEmpty()) {
+            CfLog.d("=============== MainActivity matchIdList ================="+matchIdList);
             getMatchData(String.valueOf(getSportId()), mOrderBy, mLeagueIdList, matchIdList,
                     playMethodType, searchDatePos, true, false);
         }
@@ -1543,6 +1544,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         if (mLeagueAdapter == null) {
             mLeagueAdapter = new LeagueAdapter(MainActivity.this, mLeagueList);
             initLeagueListView();
+            System.out.println("============= MainActivity updateLeagueData =============="+mLeagueList);
             binding.rvLeague.setAdapter(mLeagueAdapter);
             setGoingOnAllExpand(true);
             setWaitingAllExpand(true);
