@@ -169,9 +169,9 @@ public class ProfitLossFragment extends BaseFragment<FragmentReportBinding, Repo
             }
 
             if (curPage == 1) {
-                listType.clear();
+                //listType.clear();
                 //listType.add(new OrderTypeVo(0, getString(R.string.txt_all)));
-                listType.addAll(vo.fromgameArr);
+                //listType.addAll(vo.fromgameArr);
 
                 binding.fvMain.reSetData(listType);
             }
