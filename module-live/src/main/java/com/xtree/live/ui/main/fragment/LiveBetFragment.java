@@ -1,5 +1,6 @@
 package com.xtree.live.ui.main.fragment;
 
+import static com.uber.autodispose.AutoDispose.autoDisposable;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -24,6 +26,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.gyf.immersionbar.ImmersionBar;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
@@ -50,15 +54,17 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import me.xtree.mvvmhabit.base.BaseFragment;
 import me.xtree.mvvmhabit.bus.RxBus;
+import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
 @Route(path = RouterFragmentPath.Live.PAGER_LIVE_BET)
 
-public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBtDetailViewModel> implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener{
+public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBtDetailViewModel> implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     private List<Category> mCategories = new ArrayList<>();
     private Match mMatch;
@@ -68,7 +74,7 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
 
     @Override
     public void initView() {
-        CfLog.d("initView mMatch:"+mMatch);
+        CfLog.d("initView mMatch:" + mMatch);
         initImmersionBar();
         Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
         mMatch = gson.fromJson(SPUtils.getInstance().getString(KEY_MATCH), Match.class);
@@ -76,10 +82,10 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tabPos = tab.getPosition();
-                for(int i = 0; i < binding.tabCategoryType.getTabCount(); i ++){
-                    if(tabPos == i){
+                for (int i = 0; i < binding.tabCategoryType.getTabCount(); i++) {
+                    if (tabPos == i) {
                         binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(R.drawable.shape_live_bet_selected_gradient_33);
-                    }else {
+                    } else {
                         binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(com.xtree.bet.R.drawable.bt_bg_category_tab);
                     }
                 }
@@ -106,8 +112,8 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
         //mMatch = getIntent().getParcelableExtra(KEY_MATCH);
         Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
         mMatch = gson.fromJson(SPUtils.getInstance().getString(KEY_MATCH), Match.class);
-        CfLog.d("initData mMatch:"+mMatch);
-        if(mMatch != null){
+        CfLog.d("initData mMatch:" + mMatch);
+        if (mMatch != null) {
             viewModel.getMatchDetail(mMatch.getId());
             viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
             viewModel.addSubscription();
@@ -119,14 +125,12 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
     @Override
     public void onResume() {
         super.onResume();
-        viewModel.addSubscribe(Observable.interval(5, 5, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
+        Observable.interval(5, 5, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    viewModel.getMatchDetail(mMatch.getId());
-                    viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
-                })
-        );
+                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this))).subscribe(aLong -> {
+            viewModel.getMatchDetail(mMatch.getId());
+            viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
+        });
     }
 
 
@@ -186,14 +190,14 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
                 ToastUtils.showLong(getText(com.xtree.bet.R.string.bt_bt_must_have_two_match));
                 return;
             }
-            if(ClickUtil.isFastClick()){
+            if (ClickUtil.isFastClick()) {
                 return;
             }
             BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
             btCarDialogFragment.show(getActivity().getSupportFragmentManager(), "btCarDialogFragment");
-        }else if(id == com.xtree.bet.R.id.iv_expand){
+        } else if (id == com.xtree.bet.R.id.iv_expand) {
             CfLog.d("======== LiveBetFragment onClick expand =========");
-            if(fragment != null){
+            if (fragment != null) {
                 fragment.expand();
             }
         }
@@ -207,20 +211,18 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
     public void initViewObservable() {
         viewModel.matchData.observe(this, match -> {
             this.mMatch = match;
-            CfLog.d("initViewObservable mMatch:"+mMatch);
+            CfLog.d("initViewObservable mMatch:" + mMatch);
             if (match == null) {
                 return;
             }
 
             binding.tvTeamMain.setText(mMatch.getTeamMain());
             binding.tvTeamVisisor.setText(mMatch.getTeamVistor());
-            Glide.with(this)
-                    .load(match.getIconMain())
+            Glide.with(this).load(match.getIconMain())
                     //.apply(new RequestOptions().placeholder(placeholderRes))
                     .into(binding.ivLogoMain);
 
-            Glide.with(this)
-                    .load(match.getIconVisitor())
+            Glide.with(this).load(match.getIconVisitor())
                     //.apply(new RequestOptions().placeholder(placeholderRes))
                     .into(binding.ivLogoVisitor);
         });
@@ -240,7 +242,7 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
             }
             //if (mCategories.size() != categories.size()) {
             mCategories = categories;
-            if(binding.tabCategoryType.getTabCount() == 0) {
+            if (binding.tabCategoryType.getTabCount() == 0) {
                 for (int i = 0; i < categories.size(); i++) {
                     View view = LayoutInflater.from(getContext()).inflate(com.xtree.bet.R.layout.live_layout_bet_catory_tab_item, null);
                     TextView tvName = view.findViewById(com.xtree.bet.R.id.tab_item_name);
@@ -253,7 +255,7 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
                     binding.tabCategoryType.addTab(binding.tabCategoryType.newTab().setCustomView(view));
 
                 }
-            }else{
+            } else {
                 for (int i = 0; i < categories.size(); i++) {
                     try {
                         if (binding.tabCategoryType == null) {
@@ -266,7 +268,7 @@ public class LiveBetFragment extends BaseFragment<FragmentBetBinding, TemplateBt
                                 binding.llEnd.llEmpty.setVisibility(View.VISIBLE);
                             }
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         CfLog.e("binding.tabCategoryType.getTabCount()-------" + binding.tabCategoryType.getTabCount() + "-----" + i);
                         CfLog.e(e.getMessage());
                     }

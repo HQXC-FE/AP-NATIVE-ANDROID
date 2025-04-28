@@ -1,7 +1,5 @@
 package com.xtree.live.ui.main.fragment;
 
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -12,32 +10,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.xtree.base.net.HttpCallBack;
-import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.router.RouterFragmentPath;
-import com.xtree.base.utils.CfLog;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.util.MatchDeserializer;
 import com.xtree.live.BR;
-import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
-import com.xtree.live.chat.RequestUtils;
-import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.factory.AppViewModelFactory;
-import com.xtree.live.data.source.httpnew.LiveRep;
-import com.xtree.live.data.source.request.LiveTokenRequest;
-import com.xtree.live.data.source.response.LiveTokenResponse;
 import com.xtree.live.databinding.FragmentLiveBinding;
-import com.xtree.live.ui.main.listener.OnLiveTokenGetListener;
-import com.xtree.live.ui.main.model.chat.LiveThiredLoginRequest;
 import com.xtree.live.ui.main.viewmodel.LiveViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
