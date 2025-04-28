@@ -92,6 +92,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             setChildClickable(binding.llMenuClient02, true);
             setChildClickable(binding.llMenuClient03, true);
             viewModel.readCache(); // 读取缓存
+            viewModel.showThirdManagement();
 
             if (mProfileVo != null) {
                 //==1时，当前用户是代理，可以进行注册推广功能
@@ -100,9 +101,13 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                     binding.llMenu3.setVisibility(View.GONE);
                     if (mProfileVo.getUserLevel() == 1 || mProfileVo.getUserLevel() > 4) {
                         binding.tvwEaster.setVisibility(View.INVISIBLE);
+                    } else {
+                        binding.tvwEaster.setVisibility(View.VISIBLE);
                     }
                     if (mProfileVo.getUserLevel() == 2) {
                         binding.tvwBonusPool.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.tvwBonusPool.setVisibility(View.INVISIBLE);
                     }
                 } else {
                     binding.llMenu2.setVisibility(View.GONE);
@@ -178,8 +183,6 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                     viewModel.do1kAutoRecycle();
                     ppw.dismiss();
                 }
-
-
             }));
             ppw.show();
         });
@@ -350,6 +353,22 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         binding.tvwBonusPool.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_BONUS_POOL);
         });
+
+        binding.tvwThirdManagement1.setOnClickListener(v -> {
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_THIRD_MANAGEMENT);
+        });
+
+        binding.tvwThirdManagement2.setOnClickListener(v -> {
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_THIRD_MANAGEMENT);
+        });
+
+        binding.tvwThirdManagement3.setOnClickListener(v -> {
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_THIRD_MANAGEMENT);
+        });
+
+        binding.tvwThirdManagement4.setOnClickListener(v -> {
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_THIRD_MANAGEMENT);
+        });
     }
 
     private void goWebView(String title, String path) {
@@ -475,7 +494,6 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                 viewModel.doLogout();
                 ppw.dismiss();
             }
-
         });
         ppw = new XPopup.Builder(getContext())
                 .dismissOnTouchOutside(false)
@@ -575,6 +593,43 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                 //热更
             }
 
+        });
+
+        viewModel.liveDataShowThirdManagement.observe(this, vo -> {
+            if (vo) {
+                if (mProfileVo.usertype == 1) {
+                    if (mProfileVo.getUserLevel() == 1 || mProfileVo.getUserLevel() > 4) {
+                        binding.tvwEaster.setVisibility(View.GONE);
+                        binding.tvwBonusPool.setVisibility(View.GONE);
+                        binding.tvwThirdManagement1.setVisibility(View.GONE);
+                        binding.tvwThirdManagement2.setVisibility(View.VISIBLE);
+                        binding.tvwThirdManagement3.setVisibility(View.GONE);
+                        binding.tvwThirdManagement4.setVisibility(View.GONE);
+                    }
+                    if (mProfileVo.getUserLevel() == 2) {
+                        binding.tvwThirdManagement1.setVisibility(View.GONE);
+                        binding.tvwThirdManagement2.setVisibility(View.GONE);
+                        binding.tvwThirdManagement3.setVisibility(View.GONE);
+                        binding.tvwThirdManagement4.setVisibility(View.VISIBLE);
+                    }
+                    if (mProfileVo.getUserLevel() == 3 || mProfileVo.getUserLevel() == 4) {
+                        binding.tvwBonusPool.setVisibility(View.GONE);
+                        binding.tvwThirdManagement1.setVisibility(View.GONE);
+                        binding.tvwThirdManagement2.setVisibility(View.GONE);
+                        binding.tvwThirdManagement3.setVisibility(View.VISIBLE);
+                        binding.tvwThirdManagement4.setVisibility(View.GONE);
+                    }
+                } else {
+                    binding.tvwThirdManagement1.setVisibility(View.VISIBLE);
+                    binding.tvwThirdManagement2.setVisibility(View.GONE);
+                    binding.tvwThirdManagement3.setVisibility(View.GONE);
+                    binding.tvwThirdManagement4.setVisibility(View.GONE);
+                }
+            } else {
+                binding.tvwThirdManagement1.setVisibility(View.GONE);
+                binding.tvwThirdManagement2.setVisibility(View.GONE);
+                binding.tvwThirdManagement3.setVisibility(View.GONE);
+            }
         });
 
         //viewModel.liveDataVipUpgrade.observe(this, vo -> {

@@ -10,5 +10,6 @@
     <string name="txt_query">查询</string>
     <string name="txt_tip_date">截止日期不能小于开始日期</string>
     <string name="txt_easter_top">总计返比金额 (元)</string>
+    <string name="txt__third_return_top">总计返佣金额 (元)</string>
     <string name="txt_easter_top_count">总笔数</string>
 </resources>
