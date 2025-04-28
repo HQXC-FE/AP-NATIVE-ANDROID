@@ -2,6 +2,7 @@ package com.xtree.mine.data.source.http.service;
 
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.FBService;
+import com.xtree.base.vo.MsgPersonListVo;
 import com.xtree.base.vo.PMService;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.mine.vo.AWVo;
@@ -35,7 +36,6 @@ import com.xtree.mine.vo.MemberManagerVo;
 import com.xtree.mine.vo.MsgInfoVo;
 import com.xtree.mine.vo.MsgListVo;
 import com.xtree.mine.vo.MsgPersonInfoVo;
-import com.xtree.base.vo.MsgPersonListVo;
 import com.xtree.mine.vo.OtherWebWithdrawVo;
 import com.xtree.mine.vo.PlatWithdrawConfirmVo;
 import com.xtree.mine.vo.PlatWithdrawVo;
@@ -62,6 +62,8 @@ import com.xtree.mine.vo.VirtualCashVo;
 import com.xtree.mine.vo.VirtualConfirmVo;
 import com.xtree.mine.vo.VirtualSecurityVo;
 import com.xtree.mine.vo.request.AdduserRequest;
+import com.xtree.mine.vo.response.ShowThirdManagement;
+import com.xtree.mine.vo.response.ThirdManagementResponse;
 import com.xtree.mine.vo.withdrawals.WithdrawalBankInfoVo;
 import com.xtree.mine.vo.withdrawals.WithdrawalInfoVo;
 import com.xtree.mine.vo.withdrawals.WithdrawalListVo;
@@ -780,4 +782,16 @@ public interface HttpApiService {
     @PUT("/api/user/set-child-point")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<HashMap<String, String>> updateReturnPoint(@Body Map<String, String> map);
+
+    /**
+     * 顯示三方管理
+     */
+    @GET("/api/activity/thirdfee?type=check&client=m")
+    Flowable<ShowThirdManagement> showThirdManagement();
+
+    /**
+     * 三方管理
+     */
+    @GET("/api/activity/thirdfee?pn=20&type=list&client=m")
+    Flowable<ThirdManagementResponse> getThirdManagement(@QueryMap Map<String, String> map);
 }

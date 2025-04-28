@@ -91,6 +91,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             setChildClickable(binding.llMenuClient02, true);
             setChildClickable(binding.llMenuClient03, true);
             viewModel.readCache(); // 读取缓存
+            viewModel.showThirdManagement();
 
             if (mProfileVo != null) {
                 //==1时，当前用户是代理，可以进行注册推广功能
@@ -99,6 +100,8 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                     binding.llMenu3.setVisibility(View.GONE);
                     if (mProfileVo.getUserLevel() == 1) {
                         binding.tvwEaster.setVisibility(View.INVISIBLE);
+                    } else {
+                        binding.tvwEaster.setVisibility(View.VISIBLE);
                     }
                 } else {
                     binding.llMenu2.setVisibility(View.GONE);
@@ -329,6 +332,18 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         binding.tvwEaster.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_EASTER_REPORT);
         });
+
+        binding.tvwThirdManagement1.setOnClickListener(v -> {
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_THIRD_MANAGEMENT);
+        });
+
+        binding.tvwThirdManagement2.setOnClickListener(v -> {
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_THIRD_MANAGEMENT);
+        });
+
+        binding.tvwThirdManagement3.setOnClickListener(v -> {
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_THIRD_MANAGEMENT);
+        });
     }
 
     private void goWebView(String title, String path) {
@@ -553,6 +568,34 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                 //热更
             }
 
+        });
+
+        viewModel.liveDataShowThirdManagement.observe(this, vo -> {
+            if (vo) {
+                if (binding.llMenu3.getVisibility() == View.VISIBLE) {
+                    binding.tvwThirdManagement1.setVisibility(View.GONE);
+                    binding.tvwThirdManagement2.setVisibility(View.GONE);
+                    binding.tvwThirdManagement3.setVisibility(View.VISIBLE);
+                } else {
+                    if (binding.tvwEaster.getVisibility() == View.GONE || binding.tvwEaster.getVisibility() == View.INVISIBLE) {
+                        binding.tvwEaster.setVisibility(View.GONE);
+                        binding.tvwThirdManagement1.setVisibility(View.VISIBLE);
+                        binding.tvwThirdManagement2.setVisibility(View.GONE);
+                        binding.tvwThirdManagement3.setVisibility(View.GONE);
+                    } else {
+                        binding.tvwThirdManagement1.setVisibility(View.GONE);
+                        binding.tvwThirdManagement2.setVisibility(View.VISIBLE);
+                        binding.tvwThirdManagement3.setVisibility(View.GONE);
+                    }
+                }
+            } else {
+                if (binding.llMenu3.getVisibility() != View.VISIBLE) {
+                    binding.tvwEaster.setVisibility(View.INVISIBLE);
+                }
+                binding.tvwThirdManagement1.setVisibility(View.GONE);
+                binding.tvwThirdManagement2.setVisibility(View.GONE);
+                binding.tvwThirdManagement3.setVisibility(View.GONE);
+            }
         });
 
         //viewModel.liveDataVipUpgrade.observe(this, vo -> {
