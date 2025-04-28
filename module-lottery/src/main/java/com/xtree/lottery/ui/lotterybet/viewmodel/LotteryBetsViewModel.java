@@ -60,6 +60,7 @@ import java.util.stream.Collectors;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -448,12 +449,33 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
 //                    }
 //                    CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
                     initPlayCollection(lottery);
+                    new Thread(() -> SPUtils.getInstance().put("lotteryMenuMethods" + lottery.getAlias(), new Gson().toJson(menuMethods))).start();
                 } else {
 //                    CfLog.e("耗时:玩法数据为空");
                 }
             }
+
+            @Override
+            public void onError(Throwable t) {
+                super.onError(t);
+                getLocalMenuMethods(lottery);
+            }
+
+            @Override
+            public void onFail(BusinessException t) {
+                super.onFail(t);
+                getLocalMenuMethods(lottery);
+            }
         });
         addSubscribe(disposable);
+    }
+
+    private void getLocalMenuMethods(Lottery lottery) {
+        String menuMethodsJson = SPUtils.getInstance().getString("lotteryMenuMethods" + lottery.getAlias(), "");
+        if (!TextUtils.isEmpty(menuMethodsJson)) {
+            menuMethods = new Gson().fromJson(menuMethodsJson, MenuMethodsData.class);
+            initPlayCollection(lottery);
+        }
     }
 
     /**
@@ -599,7 +621,6 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         LotteryBetsModel lotteryBetsModel = betModels.get(tab.getPosition());
-        currentBetModel.setValue(lotteryBetsModel);
 
         Lottery lottery = lotteryLiveData.getValue();
         UserMethodsResponse.DataDTO userMethodData = lotteryBetsModel.getUserMethodData();
@@ -655,6 +676,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 }
             }
         }
+
+        currentBetModel.setValue(lotteryBetsModel);
     }
 
     @Override
