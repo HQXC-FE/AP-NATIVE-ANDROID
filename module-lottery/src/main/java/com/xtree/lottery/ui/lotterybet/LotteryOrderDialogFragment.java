@@ -18,6 +18,7 @@ import com.xtree.lottery.BR;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.LotteryDetailManager;
 import com.xtree.lottery.databinding.DialogLotteryOrderBinding;
+import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetConfirmViewModel;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryOrderViewModel;
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory;
@@ -49,18 +50,17 @@ public class LotteryOrderDialogFragment extends BaseDialogFragment<DialogLottery
 
     @Override
     public void initView() {
-        binding.tvChasingNumber.setOnClickListener(v -> {
+        binding.fvChasingNumber.setOnClickListener(v -> {
             ArrayList<BindModel> list = viewModel.datas.getValue();
             if (list == null || list.isEmpty()) {
                 ToastUtils.showLong("请先选号");
                 return;
             }
-
+            new ViewModelProvider(requireActivity()).get(LotteryBetConfirmViewModel.class).chasingNumberParams.setValue(null);//清空追号
             if (!LotteryDetailManager.INSTANCE.getMIssues().isEmpty()) {
                 LotteryChasingNumberFragment.show(requireActivity(), binding.getModel().betNums.getValue(), binding.getModel().moneyNums.getValue(), binding.getModel().ordersLiveData.getValue());
                 viewModel.goChasing();
             }
-
         });
     }
 
@@ -82,6 +82,7 @@ public class LotteryOrderDialogFragment extends BaseDialogFragment<DialogLottery
     public void initData() {
         super.initData();
         binding.setVariable(BR.model, viewModel);
+        binding.setConfirmModel(new ViewModelProvider(getActivity()).get(LotteryBetConfirmViewModel.class));
         viewModel.initData(getActivity());
     }
 

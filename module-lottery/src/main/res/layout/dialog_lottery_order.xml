@@ -9,6 +9,10 @@
             name="model"
             type="com.xtree.lottery.ui.lotterybet.viewmodel.LotteryOrderViewModel" />
 
+        <variable
+            name="confirmModel"
+            type="com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetConfirmViewModel" />
+
         <import type="android.view.View" />
 
     </data>
@@ -240,19 +244,42 @@
                         android:textColor="@color/clr_white"
                         android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/tv_chasing_number"
+                    <FrameLayout
+                        android:id="@+id/fv_chasing_number"
                         android:layout_width="0dp"
                         android:layout_height="42dp"
                         android:layout_marginStart="4dp"
                         android:layout_weight="1"
                         android:background="@drawable/lt_shape_solid_clrmain13_c8"
-                        android:gravity="center"
-                        android:text="追号"
-                        android:textColor="@color/clr_white"
-                        android:textSize="14sp"
                         android:visibility="@{model.canChasing?View.VISIBLE:View.GONE}"
-                        tools:visibility="visible" />
+                        tools:visibility="visible">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:gravity="center"
+                                android:text="追号"
+                                android:textColor="@color/clr_white"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@mipmap/lottery_iv_chasing"
+                                android:visibility="@{confirmModel.chasingNumberParams!=null?View.VISIBLE:View.GONE}"
+                                tools:visibility="visible" />
+                        </LinearLayout>
+
+                    </FrameLayout>
+
 
                     <!--            一键投注-->
                     <com.lihang.ShadowLayout
