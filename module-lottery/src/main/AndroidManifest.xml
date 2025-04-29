@@ -6,7 +6,7 @@
         <activity
             android:name="com.xtree.lottery.ui.activity.LotteryActivity"
             android:exported="false"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" /> <!-- 在自己组件中注册Activity -->
         <activity
             android:name="com.xtree.lottery.ui.activity.LotterySelectActivity"
