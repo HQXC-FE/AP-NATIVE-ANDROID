@@ -33,5 +33,4 @@
                 android:paddingEnd="6dp" />
         </RelativeLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-
 </layout>
