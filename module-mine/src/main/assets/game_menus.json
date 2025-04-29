@@ -517,6 +517,22 @@
     "unionId": "gameId_32c2016f-7906-4161-90fe-bad5371c4bd6"
   },
   {
+    "cid": 63,
+    "name": "奥丁棋牌",
+    "alias": "AD",
+    "key": "ad",
+    "needTransfer": true,
+    "forward": {
+      "chess": {
+        "route": "GameFrame"
+      }
+    },
+    "cate": "chess",
+    "cateName": "棋牌",
+    "unionKey": "ad",
+    "unionId": "gameId_32c2016f-7906-4161-90fe-bad5371c4bd6"
+  },
+  {
     "cid": 200,
     "name": "彩票",
     "key": "caipao",

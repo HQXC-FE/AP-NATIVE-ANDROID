@@ -36,6 +36,8 @@ import com.xtree.bet.bean.ui.PlayGroupFb;
 import com.xtree.bet.bean.ui.PlayGroupPm;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.constant.Constants;
+import com.xtree.bet.constant.FBConstants;
+import com.xtree.bet.constant.PMConstants;
 import com.xtree.bet.contract.BetContract;
 import com.xtree.bet.databinding.BtFbLeagueGroupBinding;
 import com.xtree.bet.databinding.BtFbMatchListBinding;
@@ -46,6 +48,7 @@ import com.xtree.bet.weight.AnimatedExpandableListViewMax;
 import com.xtree.bet.weight.BaseDetailDataView;
 import com.xtree.bet.weight.DiscolourTextView;
 import com.xtree.bet.weight.PageHorizontalScrollView;
+import com.xtree.bet.weight.pm.SnkDataView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -331,7 +334,15 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             return;
         }
         String stage = match.getStage();
-        if (stage == null) return;
+        CfLog.d("============== configureMatchTime stage ============"+stage);
+        if (stage == null){
+            String sportID = match.getSportId();
+            if(sportID.equals(Constants.getSnkSportId())){
+                CfLog.d("============== configureMatchTime match.getMct() ============"+match.getMct());
+                binding.tvMatchTime.setText(match.getMct());
+            }
+            return;
+        }
 
         boolean isFootballOrBasketball = TextUtils.equals(Constants.getFbSportId(), match.getSportId()) ||
                 TextUtils.equals(Constants.getBsbSportId(), match.getSportId());
@@ -383,6 +394,10 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             if (match.isGoingon()) {
                 binding.llScoreData.setVisibility(View.VISIBLE);
                 BaseDetailDataView scoreDataView = BaseDetailDataView.getInstance(mContext, match, true);
+                if (scoreDataView instanceof SnkDataView || scoreDataView instanceof com.xtree.bet.weight.fb.SnkDataView) {
+                    scoreDataView.setSnkMatch(match, true);
+                    scoreDataView.addMatchListAdditional(match.getFormat() + " 总分");
+                }
                 if (scoreDataView != null) binding.llScoreData.addView(scoreDataView);
             }
         }
@@ -575,9 +590,9 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         }
 
         int normalTime = getTagIntValue(tvMatchTime, R.id.tag_normal_time);
-        if (sportId.equals("1")) {
+        if (sportId.equals(Constants.getFbSportId())) {
             updateFootballTime(tvMatchTime, match, normalTime, stage);
-        } else if ((sportId.equals("2") || sportId.equals("3")) && match.getSportName().equals("篮球")) {//FB跟PM的篮球赛种代号不一致，加上赛种名称判断
+        } else if (sportId.equals(Constants.getBsbSportId())) {
             updateBasketballTime(tvMatchTime, match, normalTime, stage);
         }
     }
@@ -601,16 +616,21 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
     }
 
     private void updateBasketballTime(TextView tvMatchTime, Match match, int normalTime, String stage) {
-        int timeS = match.getTimeS();
-        if (normalTime != timeS) {
-            tvMatchTime.setTag(R.id.tag_normal_time, timeS);
-            tvMatchTime.setTag(R.id.tag_add_time, 0);
+        CfLog.d("updateBasketballTime getMess: ==="+match.getMess());
+        if(match.getMess() == 0){ //篮球比赛暂停,不执行读秒操作，只显示当前接口返回时间
+            tvMatchTime.setText(stage + " " + formatTime(match.getTimeS()));
         } else {
-            int seconds = getTagIntValue(tvMatchTime, R.id.tag_add_time) + 1;
-            tvMatchTime.setTag(R.id.tag_add_time, seconds);
-            int currentTime = Math.max(normalTime - seconds, 0);
-            int lastTime = getTagIntValue(tvMatchTime, R.id.tag_last_time);
-            tvMatchTime.setText(stage + " " + formatTime(lastTime > 0 && currentTime > lastTime ? lastTime : currentTime));
+            int timeS = match.getTimeS();
+            if (normalTime != timeS) {
+                tvMatchTime.setTag(R.id.tag_normal_time, timeS);
+                tvMatchTime.setTag(R.id.tag_add_time, 0);
+            } else {
+                int seconds = getTagIntValue(tvMatchTime, R.id.tag_add_time) + 1;
+                tvMatchTime.setTag(R.id.tag_add_time, seconds);
+                int currentTime = Math.max(normalTime - seconds, 0);
+                int lastTime = getTagIntValue(tvMatchTime, R.id.tag_last_time);
+                tvMatchTime.setText(stage + " " + formatTime(lastTime > 0 && currentTime > lastTime ? lastTime : currentTime));
+            }
         }
     }
 
@@ -643,5 +663,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
             this.binding = binding;
         }
     }
+
+
 
 }

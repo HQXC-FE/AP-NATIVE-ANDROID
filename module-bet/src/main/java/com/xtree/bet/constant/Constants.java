@@ -155,6 +155,20 @@ public class Constants {
     }
 
     /**
+     * 获取斯诺克的体育 ID
+     *
+     * @return
+     */
+    public static String getSnkSportId() {
+        String mPlatform = SPUtils.getInstance().getString(KEY_PLATFORM);
+        if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+            return FBConstants.SPORT_ID_SNK;
+        } else {
+            return PMConstants.SPORT_ID_SNK;
+        }
+    }
+
+    /**
      * 获取热门联赛icon
      *
      * @return

@@ -200,7 +200,7 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
         String gameId = vo.alias == null ? "xccp" : vo.alias.equals("ag") ? "ag_" + vo.id : vo.alias;
         TagUtils.tagEvent(ctx, "gm", gameId);
 
-        if (vo.cid == 7 || vo.cid == 19 || vo.cid == 34 || vo.cid == 52 || (vo.cid == 1 && vo.cateId.equals("4"))) {
+        if (vo.cid == 7 || vo.cid == 19 || vo.cid == 34 || vo.cid == 52|| vo.cid == 63  || (vo.cid == 1 && vo.cateId.equals("4"))) {
             mCallBack.onClick(vo);
             return;
         }
@@ -284,12 +284,8 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
             CfLog.d("request api...");
             mCallBack.onClick(vo); // vo.alias, vo.gameId
         } else {
-            // 拼装URL
-            if (vo.id.equals("601")) {
-                playGame(DomainUtil.getH5Domain() + vo.playURL, vo.name, vo.id.equals("601"));
-            } else {
-                playGame(DomainUtil.getH5Domain() + vo.playURL, vo.name);
-            }
+            //等于601是彩票
+            playGame(DomainUtil.getH5Domain() + vo.playURL, vo.name, vo.id.equals("601"));
         }
     }
 
@@ -319,15 +315,6 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
         Intent it = new Intent(ctx, BrowserActivity.class);
         it.putExtra("url", playUrl);
         it.putExtra("isLottery", isLottery);
-        it.putExtra("title", title);
-        it.putExtra(BrowserActivity.ARG_IS_GAME, true);
-        ctx.startActivity(it);
-    }
-
-    public void playGame(String playUrl, String title) {
-        CfLog.i("URL: " + playUrl);
-        Intent it = new Intent(ctx, BrowserActivity.class);
-        it.putExtra("url", playUrl);
         it.putExtra("title", title);
         it.putExtra(BrowserActivity.ARG_IS_GAME, true);
         ctx.startActivity(it);
