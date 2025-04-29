@@ -86,6 +86,7 @@
     <color name="lt_color_text15">#A1A1A1</color>
     <color name="lt_color_text16">#101941</color>
     <color name="lt_color_text17">#FFFFFF</color>
+    <color name="lt_color_text18">#0860B7</color>
 
     <!--    阴影颜色-->
     <color name="lt_color_shadows1">#50AD7851</color>

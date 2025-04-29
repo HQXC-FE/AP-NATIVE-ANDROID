@@ -687,6 +687,8 @@ public class Matchers {
 
     // 快3
     public static final List<String> k3Alias = Arrays.asList("jsk3", "ahk3", "gxk3", "hbk3", "hnks", "jlks");
+    //六合彩
+    public static final List<String> lhcAlias = Arrays.asList("xglhc", "amlhc");
 
     // vnm - 北部
     public static final List<String> vnmNorAlias = Arrays.asList("vnn");

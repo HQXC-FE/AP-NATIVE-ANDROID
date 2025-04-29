@@ -1,23 +1,28 @@
 package com.xtree.lottery.ui.fragment
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
+import com.xtree.base.mvvm.includes
 import com.xtree.base.widget.LoadingDialog
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
+import com.xtree.lottery.data.source.vo.RecentLotteryBackReportVo
 import com.xtree.lottery.data.source.vo.RecentLotteryVo
 import com.xtree.lottery.databinding.FragmentRecentLotteryBinding
 import com.xtree.lottery.rule.RecentlyEntryRule
+import com.xtree.lottery.rule.betting.Matchers
 import com.xtree.lottery.rule.betting.data.RulesEntryData
 import com.xtree.lottery.ui.activity.LotteryActivity
 import com.xtree.lottery.ui.adapter.RecentAdapter
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
+import com.xtree.lottery.utils.LhcHelper
 import com.xtree.lottery.utils.LotteryEventConstant
 import com.xtree.lottery.utils.LotteryEventVo
 import me.xtree.mvvmhabit.base.BaseFragment
@@ -109,8 +114,12 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
             LotteryEventConstant.EVENT_RULES_ENTRY_DATA -> {
                 currentData = event.data as RulesEntryData
                 KLog.i("RulesEntryData1", Gson().toJson(currentData))
-                setList()
-
+                //pk10\ssm\快三\六合彩  没有状态，不进行状态刷新
+                if (!(Matchers.pk10Alias.includes(mAdapter.alias) || Matchers.jssmAlias.includes(mAdapter.alias) ||
+                            Matchers.lhcAlias.includes(mAdapter.alias) || Matchers.k3Alias.includes(mAdapter.alias)) || mAdapter.data.isEmpty()
+                ) {
+                    setList()
+                }
                 if (!isTab0Enabled) {
                     //tab0近期开奖 在彩种投注页面未加载完时，禁止点击
                     (activity as LotteryActivity).setTab0Enable()
@@ -122,15 +131,23 @@ class RecentLotteryFragment : BaseFragment<FragmentRecentLotteryBinding, Lottery
 
     private fun setList() {
         synchronized(this) {
-            val result = RecentlyEntryRule.getInstance().startEngine(currentData, mList)
-            if (result.title.isEmpty()) {
-                binding.tvStatusTop.visibility = View.GONE
+            if (!TextUtils.isEmpty(mAdapter.alias) && Matchers.lhcAlias.includes(mAdapter.alias)) {
+                val list = ArrayList<RecentLotteryBackReportVo>()
+                for (i in mList) {
+                    list.add(RecentLotteryBackReportVo(i.issue, "", "", LhcHelper.makeLhcIssue(i.code), arrayListOf()))
+                }
+                mAdapter.setList(list)
             } else {
-                binding.tvStatusTop.visibility = View.VISIBLE
-                binding.tvStatusTop.text = result.title
+                val result = RecentlyEntryRule.getInstance().startEngine(currentData, mList)
+                if (result.title.isEmpty()) {
+                    binding.tvStatusTop.visibility = View.GONE
+                } else {
+                    binding.tvStatusTop.visibility = View.VISIBLE
+                    binding.tvStatusTop.text = result.title
+                }
+                KLog.i("RulesEntryData2", Gson().toJson(result))
+                mAdapter.setList(result.histories)
             }
-            KLog.i("RulesEntryData2", Gson().toJson(result))
-            mAdapter.setList(result.histories)
         }
     }
 
