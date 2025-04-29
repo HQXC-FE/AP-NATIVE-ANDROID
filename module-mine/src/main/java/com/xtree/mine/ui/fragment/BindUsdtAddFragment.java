@@ -92,7 +92,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         binding.ivwNext.setOnClickListener(v -> doNext());
         //新增返回按钮
         binding.tvwBindBack.setOnClickListener(v -> getActivity().finish());
-        binding.tvwSubmit.setOnClickListener(v -> doSubmit(action, mark, false));
+        binding.tvwSubmit.setOnClickListener(v -> doSubmit(action, mark, "confirm", action));
 
         binding.tvwBack.setOnClickListener(v -> {
             if (binding.llAdd.getVisibility() == View.GONE) {
@@ -224,7 +224,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         viewModel.doBindCardByCheck(queryMap, map);
     }
 
-    private void doSubmit(String action, String mark, boolean isCopy) {
+    private void doSubmit(String action, String mark, String flag, String actionCopy) {
 
         HashMap queryMap = new HashMap();
         queryMap.put("controller", controller);
@@ -234,14 +234,9 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         queryMap.put("check", tokenSign); // 绑定手机邮箱后直接跳转过来会用到
 
         HashMap map = new HashMap();
-        if (isCopy) {
-            map.put("flag", "iscopy");
-        } else {
-            map.put("flag", "confirm");
-        }
-
+        map.put("flag", flag);
         map.put("controller", controller);
-        map.put("action", action);
+        map.put("action", actionCopy);
 
         map.put("usdt_type", mConfirmVo.usdt_type);
         map.put("usdt_card", mConfirmVo.usdt_card);
@@ -309,11 +304,9 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
         String title;
         if (action.toLowerCase().contains("usdt")) {
             actionCopy = "adduserusdc";
-            markCopy = "bindusdc";
             title = "USDC";
         } else {
             actionCopy = "adduserusdt";
-            markCopy = "bindusdt";
             title = "USDT";
         }
         sycDialogPopWindow = new XPopup.Builder(getContext())
@@ -327,7 +320,7 @@ public class BindUsdtAddFragment extends BaseFragment<FragmentBindUsdtAddBinding
                     public void onClickRight() {
                         sycDialogPopWindow.dismiss();
                         //跳转同步流程
-                        doSubmit(actionCopy, markCopy, true);
+                        doSubmit(action, mark, "iscopy", actionCopy);
                     }
                 }));
         sycDialogPopWindow.show();

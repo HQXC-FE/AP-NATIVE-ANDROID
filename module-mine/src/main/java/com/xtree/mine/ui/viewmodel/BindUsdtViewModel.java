@@ -1,6 +1,7 @@
 package com.xtree.mine.ui.viewmodel;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -17,7 +18,6 @@ import com.xtree.mine.vo.UserUsdtConfirmVo;
 import com.xtree.mine.vo.UserUsdtTypeVo;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
@@ -113,7 +113,7 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onResult(UserUsdtConfirmVo vo) {
                         CfLog.d("******");
-                        if (vo.msg_type == 1 || vo.msg_type == 2) {
+                        if (vo.msg_type == 1 || vo.msg_type == 2 || !TextUtils.isEmpty(vo.message)) {
                             ToastUtils.showLong(vo.message); // 异常
                         } else {
                             liveDataBindCardCheck.setValue(vo);
@@ -138,15 +138,15 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onResult(UserUsdtConfirmVo vo) {
                         CfLog.d("******");
-                        if (vo.msg_type == 1 || vo.msg_type == 2) {
-                            ToastUtils.showLong(vo.message); // 异常
-                        } else if (vo.msg_type == 3) {
+                        if (vo.msg_type == 3 || vo.isCopy) {
                             ToastUtils.showLong(vo.message); // "绑定成功！温馨提示：新绑定卡需0小时后才能提现"
-                            if (vo.sdata != null && Objects.equals(vo.sdata.isCopy, "yes")) {
+                            if (vo.isCopy) {
                                 syncAddress.setValue(new Object());
                             } else {
                                 liveDataBindCardResult.setValue(vo);
                             }
+                        } else {
+                            ToastUtils.showLong(vo.message); // 异常
                         }
                     }
 
