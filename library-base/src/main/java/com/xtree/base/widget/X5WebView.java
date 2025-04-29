@@ -1,9 +1,11 @@
 package com.xtree.base.widget;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 
 import com.tencent.smtt.sdk.CookieManager;
 import com.tencent.smtt.sdk.WebChromeClient;
@@ -84,7 +86,19 @@ public class X5WebView {
     }
 
     public void loadUrl(String url) {
-        cleanCache();
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setAllowFileAccess(true);
+        webView.getSettings().setAllowContentAccess(true);
+        webView.getSettings().setAllowFileAccessFromFileURLs(true);
+        webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
         String token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
         boolean isFirstOpenBrowser = SPUtils.getInstance().getBoolean(SPKeyGlobal.IS_FIRST_OPEN_BROWSER, true);
 
@@ -134,7 +148,7 @@ public class X5WebView {
         }
     }
 
-    private void cleanCache() {
+    public void cleanCache() {
         // 1. 清除 WebView 資源
         webView.clearHistory();
         webView.clearFormData();
