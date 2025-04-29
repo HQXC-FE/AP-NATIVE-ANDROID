@@ -545,6 +545,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         super.onDestroy();
         // 不可以摧毁单例模式
         //x5WebView.getWebView().destroy();
+        x5WebView.cleanCache();
     }
 
     public class CustomWebViewClient extends WebViewClient {

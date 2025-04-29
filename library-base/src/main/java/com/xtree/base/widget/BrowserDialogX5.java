@@ -341,8 +341,8 @@ public class BrowserDialogX5 extends BottomPopupView {
                 .append("  let expires = \"expires=\" + d.toUTCString();\n")
                 .append("  document.cookie = \"auth=").append(token).append(";\" + expires + \";path=/\";\n")
                 .append("  document.cookie = \"_sessionHandler=").append(sessid).append(";\" + expires + \";path=/\";\n")
-                .append("  localStorage.setItem('USER-PROFILE', '").append(escapeForJs(userProfile)).append("');\n")
-                .append("  localStorage.setItem('AUTH', '").append(escapeForJs(auth)).append("');\n")
+                .append("  localStorage.setItem('USER-PROFILE', '").append(userProfile).append("');\n")
+                .append("  localStorage.setItem('AUTH', '").append(auth).append("');\n")
                 .append("})();\n");
 
         CfLog.i(js.toString().replace("\n", "\t"));
@@ -357,19 +357,18 @@ public class BrowserDialogX5 extends BottomPopupView {
         return gson.toJson(map);
     }
 
-    // 防止 JSON 被 JS 注入時破壞語法，例如包含引號
-    private String escapeForJs(String input) {
-        return input.replace("\\", "\\\\")
-                .replace("'", "\\'")
-                .replace("\n", "\\n")
-                .replace("\r", "\\r");
-    }
-
     @Override
     public void onDestroy() {
         FightFanZhaUtils.reset();
         super.onDestroy();
+        X5WebView.getInstance(mContext).cleanCache();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        X5WebView.getInstance(mContext).cleanCache();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

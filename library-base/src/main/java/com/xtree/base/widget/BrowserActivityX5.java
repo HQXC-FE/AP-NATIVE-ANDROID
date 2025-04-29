@@ -409,6 +409,7 @@ public class BrowserActivityX5 extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        X5WebView.getInstance(this).cleanCache();
 
         FightFanZhaUtils.reset();
         EventBus.getDefault().unregister(this);

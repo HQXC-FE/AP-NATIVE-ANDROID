@@ -451,6 +451,12 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
 
     }
 
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        X5WebView.getInstance(mContext).cleanCache();
+    }
+
     public class CustomWebViewClient extends WebViewClient {
 
         @Override

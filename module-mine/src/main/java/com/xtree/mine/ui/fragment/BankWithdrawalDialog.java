@@ -176,6 +176,12 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        X5WebView.getInstance(mContext).cleanCache();
+    }
+
     private void initView() {
         binding = DialogBankWithdrawalBankNewBinding.bind(findViewById(R.id.ll_bank_root));
         binding.ivwClose.setOnClickListener(v -> {
