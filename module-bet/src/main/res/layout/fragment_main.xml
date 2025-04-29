@@ -347,6 +347,16 @@
             android:layout_centerInParent="true"
             android:background="@mipmap/bt_icon_loading"
             android:visibility="gone" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lav_loading"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            app:lottie_fileName="loading_main.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+
     </RelativeLayout>
 
 </layout>
