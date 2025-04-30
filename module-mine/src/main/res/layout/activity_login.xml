@@ -6,8 +6,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_dialog_background_color"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:background="@color/clr_txt_02">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll_root"
@@ -25,7 +25,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- login 登录 -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/login_area"
                 android:layout_width="0dp"
@@ -33,18 +32,17 @@
                 android:layout_marginTop="60dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/loginSubHeader"
-                >
+                app:layout_constraintTop_toBottomOf="@id/loginSubHeader">
 
                 <TextView
                     android:id="@+id/me_login_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/me_login"
-                    android:textColor="@color/clr_txt_choose_account_item_off"
+                    android:textColor="@color/clr_main_start_w"
                     android:textSize="@dimen/me_text_sp20"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="30dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,11 +58,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/me_login_title">
 
                     <EditText
-                        android:id="@+id/edt_account"
+                        android:id="@+id/edtAccount"
                         style="@style/style_cm_edt_account"
                         android:background="@drawable/login_et_bg"
                         android:paddingStart="20dp"
-                        android:textColor="@color/clr_txt_choose_account_item_off"
+                        android:cursorVisible="false"
+                        android:focusable="true"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -75,11 +74,10 @@
                         android:layout_marginTop="12dp">
 
                         <EditText
-                            android:id="@+id/edt_pwd"
+                            android:id="@+id/edtPwd"
                             style="@style/style_cm_edt_pwd"
                             android:background="@drawable/login_et_bg"
                             android:paddingStart="20dp"
-                            android:textColor="@color/clr_txt_choose_account_item_off"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/ckb_eye"
                             app:layout_constraintStart_toStartOf="parent" />
@@ -87,9 +85,9 @@
                         <CheckBox
                             android:id="@+id/ckb_eye"
                             style="@style/style_cm_ckb_eye"
-                            app:layout_constraintBottom_toBottomOf="@+id/edt_pwd"
+                            app:layout_constraintBottom_toBottomOf="@+id/edtPwd"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/edt_pwd" />
+                            app:layout_constraintTop_toTopOf="@+id/edtPwd" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <LinearLayout
@@ -104,9 +102,7 @@
                             android:id="@+id/ckb_remember_pwd"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:buttonTint="@color/clr_txt_link"
                             android:text="@string/me_pwd_rember"
-                            android:textColor="@color/clr_txt_mouse4"
                             android:textSize="12sp"
                             android:theme="@style/style_cm_ckb_normal" />
 
@@ -119,9 +115,9 @@
                             android:id="@+id/tvw_forget_pwd"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/me_pwd_forget"
                             android:visibility="gone"
-                            android:textColor="@color/clr_txt_mouse4"
+                            android:text="@string/me_pwd_forget"
+                            android:textColor="@color/clr_login_txt_01"
                             android:textSize="@dimen/me_test_size" />
                     </LinearLayout>
 
@@ -136,12 +132,11 @@
                             android:id="@+id/ckb_agreement"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:buttonTint="@color/clr_txt_link"
                             android:checked="true"
                             android:text="@string/me_agreement_hint"
-                            android:textColor="@color/clr_txt_link"
                             android:textSize="12sp"
-                            android:theme="@style/style_cm_ckb_normal" />
+                            android:theme="@style/style_cm_ckb_normal"
+                            android:textColor="@color/clr_main_login_txt"/>
 
                         <TextView
                             android:id="@+id/tvw_agreement"
@@ -149,18 +144,18 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="@string/me_agreement_content"
-                            android:textColor="@color/clr_txt_link"
+                            android:textColor="@color/clr_main_login_txt"
                             android:textSize="@dimen/me_text_size_sp12sp"
-                            android:textStyle="normal" />
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <Button
-                        android:id="@+id/btn_login"
+                        android:id="@+id/btnLogin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:background="@drawable/bg_btn_selector"
+                        android:background="@drawable/bg_btn_long_selector"
                         android:text="@string/me_login"
                         android:textColor="@color/white" />
 
@@ -178,7 +173,7 @@
                             android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
                             android:text="@string/me_go_round"
-                            android:textColor="@color/clr_txt_link"
+                            android:textColor="@color/clr_main_login_txt"
                             android:textSize="@dimen/me_text_size_sp12sp"
                             android:textStyle="bold" />
 
@@ -189,69 +184,20 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:text="@string/me_online_service"
-                            android:textColor="@color/clr_txt_link"
+                            android:textColor="@color/clr_main_login_txt"
                             android:textSize="@dimen/me_text_size_sp12sp"
-                            android:textStyle="bold"
-                            android:visibility="gone" />
+                            android:textStyle="bold" />
 
                     </RelativeLayout>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/tv1"
-                style="@style/login_tv_style"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:drawableTop="@mipmap/login_bottom1"
-                android:text="英超"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_area"
-                app:layout_constraintVertical_bias="0.7" />
 
-            <TextView
-                android:id="@+id/tv2"
-                style="@style/login_tv_style"
-                android:drawableTop="@mipmap/login_bottom2"
-                android:text="德甲"
-                app:layout_constraintEnd_toStartOf="@+id/tv3"
-                app:layout_constraintStart_toEndOf="@+id/tv1"
-                app:layout_constraintTop_toTopOf="@+id/tv1" />
 
-            <TextView
-                android:id="@+id/tv3"
-                style="@style/login_tv_style"
-                android:drawableTop="@mipmap/login_bottom3"
-                android:text="意甲"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv1" />
-
-            <TextView
-                android:id="@+id/tv4"
-                style="@style/login_tv_style"
-                android:drawableTop="@mipmap/login_bottom4"
-                android:text="法甲"
-                app:layout_constraintEnd_toStartOf="@+id/tv5"
-                app:layout_constraintStart_toEndOf="@+id/tv3"
-                app:layout_constraintTop_toTopOf="@+id/tv1" />
-
-            <TextView
-                android:id="@+id/tv5"
-                style="@style/login_tv_style"
-                android:layout_marginEnd="40dp"
-                android:drawableTop="@mipmap/login_bottom5"
-                android:text="西甲"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv1" />
-
-            <!-- 注册-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="160dp"
+                android:layout_marginTop="320dp"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -261,10 +207,10 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/me_register_area"
                     android:layout_width="0dp"
-                    android:layout_height="360dp"
+                    android:layout_height="320dp"
                     android:layout_weight="11"
                     android:visibility="gone"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                     <TextView
                         android:id="@+id/me_register_title"
@@ -272,7 +218,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="18dp"
                         android:text="@string/me_register"
-                        android:textColor="@color/clr_txt_choose_account_item_off"
                         android:textSize="@dimen/me_text_sp20"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -293,13 +238,12 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/login_et_bg"
+                            android:background="@mipmap/me_input_bg"
                             android:orientation="horizontal">
 
                             <EditText
                                 android:id="@+id/edt_acc_reg"
                                 style="@style/style_cm_edt_account"
-                                android:background="@null"
                                 android:hint="@string/txt_user_name_should_6_12" />
 
                         </LinearLayout>
@@ -308,12 +252,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:background="@drawable/login_et_bg">
+                            android:background="@mipmap/me_input_bg">
 
                             <EditText
                                 android:id="@+id/edt_pwd1"
                                 style="@style/style_cm_edt_pwd"
-                                android:background="@null"
                                 android:hint="@string/txt_reset_password_length_error" />
 
                             <CheckBox
@@ -325,12 +268,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:background="@drawable/login_et_bg">
+                            android:background="@mipmap/me_input_bg">
 
                             <EditText
                                 android:id="@+id/edt_pwd2"
                                 style="@style/style_cm_edt_pwd"
-                                android:background="@null"
                                 android:hint="@string/txt_enter_pwd_again" />
 
                             <CheckBox
@@ -352,7 +294,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginTop="2dp"
-                                android:buttonTint="@color/clr_txt_link"
                                 android:checked="true" />
 
                             <TextView
@@ -361,7 +302,6 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="2dp"
                                 android:text="@string/me_agreement_hint"
-                                android:textColor="@color/clr_txt_link"
                                 android:textSize="@dimen/me_text_size_sp12sp"
                                 android:textStyle="bold" />
 
@@ -371,7 +311,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:text="@string/me_agreement_content"
-                                android:textColor="@color/clr_txt_link"
+                                android:textColor="@color/me_text_agreement"
                                 android:textSize="@dimen/me_text_size_sp12sp"
                                 android:textStyle="bold" />
 
@@ -382,21 +322,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:background="@drawable/bg_btn_selector"
+                            android:background="@drawable/bt_bg_setting_switch"
                             android:text="@string/me_register"
                             android:textColor="@color/white" />
-
-                        <TextView
-                            android:id="@+id/tv_go_login"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_marginTop="6dp"
-                            android:layout_marginEnd="10dp"
-                            android:text="返回注册" />
-
                     </LinearLayout>
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>

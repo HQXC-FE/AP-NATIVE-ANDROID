@@ -5,6 +5,9 @@ import static com.xtree.base.vo.EventConstant.EVENT_TOP_SPEED_FINISH;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -13,6 +16,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -66,6 +70,42 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
     private BasePopupView showChangeLoginPSWPopView;
     private TopSpeedDomainFloatingWindows mTopSpeedDomainFloatingWindows;
 
+    private boolean isAccount = false ;
+    private boolean isPwd = false ;
+
+    private static final int LOGIN_BTN_FOCUSED = 1;
+    private static final int LOGIN_BTN_REMOVE_FOCUSED = 2;
+
+
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            switch (msg.what) {
+                case LOGIN_BTN_FOCUSED:
+                    if (isPwd && isAccount){
+                        setLoginBtnFocused(true);
+                    }else {
+                        setLoginBtnFocused(false);
+                    }
+
+                    break;
+                case LOGIN_BTN_REMOVE_FOCUSED:
+                    setLoginBtnFocused(false);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+    private void  setLoginBtnFocused(boolean focused){
+        if (focused){
+            binding.btnLogin.setBackgroundResource(R.mipmap.cm_btn_long_press);
+        }else {
+            binding.btnLogin.setBackgroundResource(R.mipmap.cm_btn_long_disable);
+        }
+    }
+
+
     @Override
     public int initContentView(Bundle savedInstanceState) {
         return R.layout.activity_login;
@@ -111,10 +151,9 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         int viewType = intent.getIntExtra(ENTER_TYPE, LOGIN_TYPE);
         if (viewType == LOGIN_TYPE) {
             binding.loginArea.setVisibility(View.VISIBLE);
-            binding.meRegisterArea.setVisibility(View.GONE);
         }
         if (viewType == REGISTER_TYPE) {
-            binding.meRegisterArea.setVisibility(View.VISIBLE);
+
             binding.loginArea.setVisibility(View.GONE);
         }
 
@@ -134,8 +173,7 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         }
 
         binding.ckbEye.setOnCheckedChangeListener((buttonView, isChecked) -> setEdtPwd(isChecked, binding.edtPwd));
-        binding.ckbPwd1.setOnCheckedChangeListener((buttonView, isChecked) -> setEdtPwd(isChecked, binding.edtPwd1));
-        binding.ckbPwd2.setOnCheckedChangeListener((buttonView, isChecked) -> setEdtPwd(isChecked, binding.edtPwd2));
+
 
         binding.tvwForgetPwd.setOnClickListener(v -> goForgetPassword());
 
@@ -164,110 +202,51 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         binding.tvwAgreement.setOnClickListener(v -> {
             showAgreementDialog();
         });
-        binding.tvwAgreementRegister.setOnClickListener(v -> {
-            showAgreementDialog();
-        });
 
-        binding.edtAccReg.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                if (charSequence.toString().length() < 6 || charSequence.toString().length() > 12) {
-                    //ToastUtils.showLong(R.string.txt_user_name_should_6_12);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
-        binding.edtPwd1.addTextChangedListener(new TextWatcher() {
+        binding.edtAccount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                if (charSequence.toString().length() < 6 || charSequence.toString().length() > 12) {
-                    //ToastUtils.showLong(R.string.txt_pwd_should_6_12);
-                    //binding.edtPwd1.setError(getString(R.string.txt_pwd_should_6_12));
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if ( binding.edtAccount.getText().toString().length() == 0) {
+                    isAccount = false;
+                    mHandler.sendEmptyMessage(LOGIN_BTN_REMOVE_FOCUSED);
+                } else {
+                    isAccount = true;
+                    mHandler.sendEmptyMessage(LOGIN_BTN_FOCUSED);
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable s) {
 
             }
         });
 
-        binding.edtPwd2.addTextChangedListener(new TextWatcher() {
+        binding.edtPwd.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                if (charSequence.length() < 6 || charSequence.length() > 12) {
-                    //ToastUtils.showLong(R.string.txt_pwd_should_6_12);
-                    //binding.edtPwd2.setError(getString(R.string.txt_pwd_should_6_12));
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if ( binding.edtPwd.getText().toString().length() == 0) {
+                    isPwd = false;
+                    mHandler.sendEmptyMessage(LOGIN_BTN_REMOVE_FOCUSED);
+                } else {
+                    isPwd = true;
+                    mHandler.sendEmptyMessage(LOGIN_BTN_FOCUSED);
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void afterTextChanged(Editable s) {
 
             }
-        });
-
-        binding.btnRegister.setOnClickListener(view -> {
-
-            String account = binding.edtAccReg.getText().toString().trim();
-            String pwd1 = binding.edtPwd1.getText().toString();
-            String pwd2 = binding.edtPwd2.getText().toString();
-            if (!binding.registerAgreementCheckbox.isChecked()) {
-                ToastUtils.showLong(getResources().getString(R.string.me_agree_hint));
-                return;
-            }
-            if (TextUtils.isEmpty(account)) {
-                ToastUtils.showLong(getResources().getString(R.string.me_account_hint));
-                binding.edtAccReg.performClick();
-                return;
-            }
-
-            if (account.length() < 6 || account.length() > 12) {
-                ToastUtils.showLong(getResources().getString(R.string.txt_user_name_should_6_12));
-                return;
-            }
-
-            if (TextUtils.isEmpty(pwd1)) {
-                ToastUtils.showLong(getResources().getString(R.string.me_pwd_hint));
-                return;
-            }
-
-            if (pwd1.length() < 6 || pwd1.length() > 12) {
-                ToastUtils.showLong(getResources().getString(R.string.txt_pwd_should_6_12));
-                return;
-            }
-
-            if (TextUtils.isEmpty(pwd2)) {
-                ToastUtils.showLong(R.string.txt_enter_pwd_again);
-                return;
-            }
-
-            if (!pwd2.equals(pwd1)) {
-                ToastUtils.showLong(R.string.txt_pwd_should_same);
-                return;
-            }
-
-            //验证输入参数
-            viewModel.register(account, pwd1);
-
         });
 
     }
@@ -380,7 +359,7 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
                     .asCustom(ChangeLoginPSWDialog.newInstance(this, this, new ChangeLoginPSWDialog.IChangeLoginPSWCallBack() {
                         @Override
                         public void changeLoginPSWSucc() {
-                            binding.edtPwd.setText("");
+                          //  binding.edtPwd.setText("");
                             SPUtil.get(getApplication()).clear(Spkey.PWD);
                             showChangeLoginPSWPopView.dismiss();
                         }

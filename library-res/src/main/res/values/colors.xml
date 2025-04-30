@@ -59,9 +59,9 @@
     <color name="clr_main_start60">#9940A5F2</color>
     <color name="clr_main_end60">#9933E8E2</color>
     <!-- 辅-渐变色 -->
-    <color name="clr_main_21">#2D2D2D</color>
+    <color name="clr_main_21">#313637</color>
     <color name="clr_main_22">#49453F</color>
-    <color name="clr_main_25">#363B48</color>
+    <color name="clr_main_25">#313637</color>
     <!-- 辅色 -->
     <color name="clr_main_23">#AA927A</color>
     <!-- 背景色 -->
@@ -143,8 +143,8 @@
     <color name="clr_bg_frame_32">#FFFFFF</color>
 
     <!-- 背景框 背景 暗色系列 -->
-    <color name="clr_bg_frame_dark_start">@color/clr_bg_frame_32</color>
-    <color name="clr_bg_frame_dark_end">@color/clr_bg_frame_32</color>
+    <color name="clr_bg_frame_dark_start">#4EED90</color>
+    <color name="clr_bg_frame_dark_end">#A0E87D</color>
     <!-- 背景框 绿 -->
     <color name="clr_bg_frame_41">#056A31</color>
     <color name="clr_bg_frame_42">#03872A</color>
@@ -162,7 +162,6 @@
 
     <color name="me_text_color">#FCE5DE</color>
     <color name="me_level_color">#D5D7DB</color>
-    <color name="me_progress_bar_bg">#3E414B</color>
     <color name="me_more_service_color">#534C5B</color>
     <color name="me_text_forget_pwd">#E3C3A2</color>
     <color name="me_text_agreement">#E3C3A2</color>
@@ -654,4 +653,103 @@
     <color name="clr_awards_bt_end">#FFFFFF</color>
     <color name="clr_awards_bt_start">#ECE6F9</color>
     <color name="clr_text_black">#000000</color>
+
+
+
+    <!--最新的颜色 模板 需要使用这里的模板颜色-->
+    <!--    主题色-->
+    <color name="primaryColor">#FFBC6E</color>
+    <color name="primaryVariant">#FF6B7E</color>
+    <color name="secondaryColor">#F96C54</color>
+    <color name="tertiaryColor">#518FD8</color>
+    <!--    主题色-->
+
+    <!--   状态-->
+    <color name="successColor">#70FF75</color>
+    <color name="errorColor">#EE5A5A</color>
+    <color name="warningColor">#FBB516</color>
+    <color name="winColor">#F35A4E</color>
+    <color name="loseColor">#FF70B3</color>
+    <color name="drawColor">#E9AF3E</color>
+    <color name="unsettleColor">#C8C8C8</color>
+    <color name="invalidColor">#BEBED0</color>
+    <color name="infoColor">#FF8979</color>
+    <!--   状态-->
+
+    <!--    文字-->
+    <color name="textDescriptionColor">#9A96A4</color>
+    <color name="textPrimaryColor">#3A3230</color>
+    <color name="textSecondaryColor">#5A4F4D</color>
+    <color name="textTertiaryColor">#A49A98</color>
+    <color name="textQuaternaryColor">#DFDBDA</color>
+    <color name="textQuinaryColor">#FCF3F0</color>
+    <color name="textSenaryColor">#FBFBFB</color>
+    <color name="textForgotColor">#518FD8</color>
+    <!--    文字-->
+
+    <!--    渐变-->
+    <color name="closeGradient1Color">#FF7E7B</color>
+    <color name="closeGradient2Color">#FFB470</color>
+
+    <color name="titleGradient1Color">#FF6A7D</color>
+    <color name="titleGradient2Color">#FFD4A1</color>
+
+    <color name="betGradient1Color">#FFF5EB</color>
+    <color name="betGradient2Color">#FFF0F0</color>
+
+    <color name="lotteryLabelGradient1Color">#FFF4F3</color>
+    <color name="lotteryLabelGradient2Color">#FFDFE0</color>
+
+    <color name="lotteryTitleGradient1Color">#FFEDE5</color>
+    <color name="lotteryTitleGradient2Color">#FFFFFF</color>
+
+    <color name="moneyGradient1Color">#FFFFFF</color>
+    <color name="moneyGradient2Color">#FFC3B2</color>
+    <color name="moneyGradient3Color">#00F2EFFF</color>
+
+    <color name="moneyDefaultGradient1Color">#FFF5EB</color>
+    <color name="moneyDefaultGradient2Color">#FFF0F0</color>
+
+    <!--    渐变-->
+
+    <!--    其他-->
+    <color name="dividerColor">#F5F2F2</color>
+    <color name="dividerColor2">#38D9D9D9</color>
+    <color name="buttonText">#E0DDFF</color>
+    <color name="buttonShadowColor">#1A8869E6</color>
+    <color name="dialogBackgroundShadowColor">#0D724E7F</color>
+    <color name="strokeColor">#9179E7</color>
+    <color name="strokeDialogColor">#DFDFDF</color>
+    <color name="parlayLabelColor">#95845A</color>
+    <color name="parlayBackgroundColor">#33C8A54E</color>
+    <color name="channelTextSelectColor">#F96C54</color>
+    <color name="channelTextColor">#C4B2FF</color>
+    <!--    其他-->
+    <color name="textForgetPwdColor">#2199DC</color>
+    <color name="textAgreementColor">#518FD8</color>
+    <color name="textErrorMessageColor">#E66AA6</color>
+    <color name="textHomeTextColor">#393152</color>
+    <!--其他  测速远点颜色-->
+    <color name="textSpeedTestColor">#F5BF56</color>
+    <!--底部Bar文字选中-->
+    <color name="textMainSelectorColor">#A8BEC1</color>
+    <!--底部Bar文字未选中-->
+    <color name="mainActivityBackgroupColor">#A8BEC1</color>
+    <color name="mainListAcBackgroupColor">#F3F3F3</color>
+
+    <color name="meForgetPsWordBgColor">#CCFFFFFF</color>
+    <color name="warningFeedbackColor">#FB6156</color>
+
+    <color name="meLevelProgressbarStart">#FFA3CF</color>
+    <color name="meLevelProgressbarEnd">#9384F1</color>
+
+    <color name="customQAColor">#99FFFFFF</color>
+
+    <color name="me_progress_bar_bg">#BCB2D6</color>>
+    <color name="offerLineColor">#FFD7C8</color>
+
+    <color name="offerGetExpiredEnd">#ECFFFFFF</color>
+    <color name="editStart">#1E2121</color>
+    <color name="editStroke">#4EED90</color>
+    <color name="editEnd">#3A4142</color>
 </resources>
