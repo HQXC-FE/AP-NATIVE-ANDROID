@@ -166,18 +166,18 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
             binding.btnAddMatch.setVisibility(View.VISIBLE);
             binding.ivCgType.setBackgroundResource(R.mipmap.bt_icon_cg);
             binding.llKeyboard.addView(keyboardView);
-            binding.ivBt.setBackgroundResource(R.mipmap.bt_ic_bt_dan);
+//            binding.ivBt.setBackgroundResource(R.mipmap.bt_ic_bt_dan);
         } else { // 单关
             binding.btnAddMatch.setVisibility(View.GONE);
             binding.ivCgType.setBackgroundResource(R.mipmap.bt_icon_dan);
             binding.llKeyboardDan.addView(keyboardView);
             showOrHideKeyBoard(true);
-            binding.ivBt.setBackgroundResource(R.mipmap.bt_ic_bt_cg);
+//            binding.ivBt.setBackgroundResource(R.mipmap.bt_ic_bt_cg);
         }
 
         binding.tvPlatform.setText(SPUtils.getInstance().getString(KEY_PLATFORM_NAME));
 
-        binding.ivBt.setOnClickListener(this);
+//        binding.ivBt.setOnClickListener(this);
         binding.ivDelete.setOnClickListener(this);
         binding.btnAddMatch.setOnClickListener(this);
         binding.ivReflesh.setOnClickListener(this);
@@ -273,11 +273,11 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
             if (hasCloseOption) {
                 binding.ivConfirm.setEnabled(false);
                 binding.ivBtBg.setEnabled(false);
-                binding.ivBt.setEnabled(false);
+//                binding.ivBt.setEnabled(false);
             } else {
                 binding.ivConfirm.setEnabled(true);
                 binding.ivBtBg.setEnabled(true);
-                binding.ivBt.setEnabled(true);
+//                binding.ivBt.setEnabled(true);
             }
 
             if (betConfirmOptionAdapter == null) {
