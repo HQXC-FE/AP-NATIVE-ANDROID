@@ -294,14 +294,14 @@
                             android:background="@mipmap/bt_ic_confirmation_arrow" />
                     </RelativeLayout>
 
-                    <ImageView
-                        android:id="@+id/iv_bt"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@mipmap/bt_ic_bt_dan" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/iv_bt"-->
+<!--                        android:layout_width="40dp"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:layout_alignParentRight="true"-->
+<!--                        android:layout_marginStart="15dp"-->
+<!--                        android:layout_marginEnd="10dp"-->
+<!--                        android:background="@mipmap/bt_ic_bt_dan" />-->
                 </RelativeLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
