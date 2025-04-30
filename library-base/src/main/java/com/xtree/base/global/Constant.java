@@ -24,6 +24,7 @@ public class Constant {
     public static final String BIND_EMAIL = "bind_email"; // 绑定邮箱
     public static final String BIND_CARD = "bindcard"; // 绑定银行卡
     public static final String BIND_USDT = "bindusdt"; // 绑定usdt
+    public static final String BIND_USDC = "bindusdc"; // 绑定usdc
     public static final String BIND_EBPAY = "bindebpay"; // 绑定ebpay
     public static final String BIND_TOPAY = "bindtopay"; // 绑定topay
     public static final String BIND_HIWALLET = "bindhiwallet"; // 绑定hiwallet

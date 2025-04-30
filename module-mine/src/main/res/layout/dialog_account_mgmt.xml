@@ -85,6 +85,11 @@
 
             <TextView
                 style="@style/style_choose_account"
+                android:tag="bindusdc"
+                android:text="@string/txt_bind_usdc" />
+
+            <TextView
+                style="@style/style_choose_account"
                 android:tag="bindebpay"
                 android:text="@string/txt_bind_ebpay" />
 

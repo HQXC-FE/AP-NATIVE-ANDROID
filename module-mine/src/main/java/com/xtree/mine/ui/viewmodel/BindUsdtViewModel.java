@@ -1,6 +1,7 @@
 package com.xtree.mine.ui.viewmodel;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -31,6 +32,7 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
     public SingleLiveData<UserUsdtTypeVo> liveDataTypeList = new SingleLiveData<>();
     public SingleLiveData<UserUsdtConfirmVo> liveDataBindCardCheck = new SingleLiveData<>(); // 绑定卡确认
     public SingleLiveData<UserUsdtConfirmVo> liveDataBindCardResult = new SingleLiveData<>(); // 绑定卡结果
+    public SingleLiveData<Object> syncAddress = new SingleLiveData<>(); // 同步usdt/usdt其他地址
     public SingleLiveData<UserUsdtConfirmVo> liveDataRebindCard01 = new SingleLiveData<>(); // 重新绑定
     public SingleLiveData<UserUsdtConfirmVo> liveDataRebindCard02 = new SingleLiveData<>(); // 重新绑定
     public SingleLiveData<UserUsdtConfirmVo> liveDataRebindCard03 = new SingleLiveData<>(); // 重新绑定
@@ -49,7 +51,7 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
                 .subscribeWith(new HttpCallBack<UserBindBaseVo<UsdtVo>>() {
                     @Override
                     public void onResult(UserBindBaseVo<UsdtVo> vo) {
-                       // CfLog.e("************************************************ vo.banklist.get(0).lockbankoprate =" +vo.banklist.get(0).isLockbankoprate());
+                        // CfLog.e("************************************************ vo.banklist.get(0).lockbankoprate =" +vo.banklist.get(0).isLockbankoprate());
 
                         if (vo.msg_type == 1 || vo.msg_type == 2) {
                             ToastUtils.showLong(vo.message); // 异常 2-用户无此访问权限
@@ -111,7 +113,7 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onResult(UserUsdtConfirmVo vo) {
                         CfLog.d("******");
-                        if (vo.msg_type == 1 || vo.msg_type == 2) {
+                        if (vo.msg_type == 1 || vo.msg_type == 2 || !TextUtils.isEmpty(vo.message)) {
                             ToastUtils.showLong(vo.message); // 异常
                         } else {
                             liveDataBindCardCheck.setValue(vo);
@@ -136,11 +138,15 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onResult(UserUsdtConfirmVo vo) {
                         CfLog.d("******");
-                        if (vo.msg_type == 1 || vo.msg_type == 2) {
-                            ToastUtils.showLong(vo.message); // 异常
-                        } else if (vo.msg_type == 3) {
+                        if (vo.msg_type == 3 || vo.isCopy) {
                             ToastUtils.showLong(vo.message); // "绑定成功！温馨提示：新绑定卡需0小时后才能提现"
-                            liveDataBindCardResult.setValue(vo);
+                            if (vo.isCopy) {
+                                syncAddress.setValue(new Object());
+                            } else {
+                                liveDataBindCardResult.setValue(vo);
+                            }
+                        } else {
+                            ToastUtils.showLong(vo.message); // 异常
                         }
                     }
 

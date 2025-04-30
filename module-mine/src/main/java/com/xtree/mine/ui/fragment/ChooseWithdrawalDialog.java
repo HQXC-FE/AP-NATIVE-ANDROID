@@ -500,7 +500,7 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
         } else if (TextUtils.equals("19", selectorVo.type)) {
             //USDC提款
             errorMessage = String.format(format, getContext().getResources().getString(R.string.txt_bind_usdc_tip));
-            bindType = getContext().getString(R.string.txt_bind_usdt_type);
+            bindType = getContext().getString(R.string.txt_bind_usdc_type);
         } else if (TextUtils.equals("4", selectorVo.type)) {
             //EBpay提款
             errorMessage = String.format(formatOtherType, selectorVo.title);

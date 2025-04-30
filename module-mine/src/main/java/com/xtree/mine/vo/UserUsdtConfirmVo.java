@@ -5,6 +5,7 @@ public class UserUsdtConfirmVo extends UserBindBaseVo {
     public String usdt_card; // 0xERC666dflSLK6K2374klks66fk32497j929hr983
     public Object usdt_type; // ERC20_USDT
     public String flag; // confirm
+    public boolean isCopy; // confirm
 
     //public String ur_here; // "重新绑定检查", 接口-1
     public String account; // "******r983",
