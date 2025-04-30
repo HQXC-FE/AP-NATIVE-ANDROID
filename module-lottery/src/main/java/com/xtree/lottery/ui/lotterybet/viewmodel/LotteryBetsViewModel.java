@@ -2,6 +2,7 @@ package com.xtree.lottery.ui.lotterybet.viewmodel;
 
 import android.app.Application;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.View;
 import android.widget.PopupMenu;
 
@@ -522,14 +523,32 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             return;
         }
 
-        for (UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroupDTO : prizeGroup) {
+        int selectedIndex = 0; // 默认选中“选项1”
+        CharSequence currentTitle = "";
+        if (prizeData.getValue() != null && !TextUtils.isEmpty(prizeData.getValue().getLabel())) {
+            currentTitle = prizeData.getValue().getLabel();
+        }
+        for (int i = 0; i < prizeGroup.size(); i++) {
+            UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroupDTO = prizeGroup.get(i);
             popupMenu.getMenu().add(prizeGroupDTO.getLabel());
+            if (Objects.equals(currentTitle, prizeGroupDTO.getLabel())) {
+                selectedIndex = i;
+            }
         }
 
         // 设置菜单项点击事件
         popupMenu.setOnMenuItemClickListener(item -> {
             CharSequence title = item.getTitle();
             if (title != null) {
+                Menu menu = popupMenu.getMenu();
+                for (int i = 0; i < menu.size(); i++) {
+                    // 更新选中
+                    if (Objects.equals(menu.getItem(i).getTitle(), title)) {
+                        menu.getItem(i).setCheckable(true).setChecked(true);
+                    } else {
+                        menu.getItem(i).setCheckable(true).setChecked(false);
+                    }
+                }
                 for (UserMethodsResponse.DataDTO.PrizeGroupDTO prizeGroupDTO : currentBetModel.getValue().getUserMethodData().getPrizeGroup()) {
                     if (prizeGroupDTO.getLabel().contentEquals(title)) {
                         prizeData.setValue(prizeGroupDTO);
@@ -541,6 +560,9 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             }
             return true;
         });
+
+        // 设置默认选中项
+        popupMenu.getMenu().getItem(selectedIndex).setCheckable(true).setChecked(true);
 
         // 显示 PopupMenu
         popupMenu.show();
