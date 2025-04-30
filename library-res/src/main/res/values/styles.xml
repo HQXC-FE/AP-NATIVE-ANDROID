@@ -896,7 +896,7 @@
         <item name="android:hint">@string/txt_enter_login_name</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:lines">1</item>
-        <item name="android:textColor">@color/clr_black</item>
+        <item name="android:textColor">@color/ic_launcher_background</item>
         <item name="android:textColorHint">@color/clr_txt_grey_05</item>
     </style>
     <!-- 登录页 密码输入框 -->
@@ -918,8 +918,8 @@
 
     <!-- 登录页 复选框 -->
     <style name="style_cm_ckb_normal">
-        <item name="colorAccent">@color/clr_txt_link</item>
-        <item name="colorControlNormal">@color/clr_txt_link</item>
+        <item name="colorAccent">@color/clr_txt_color_hint</item>
+        <item name="colorControlNormal">@color/clr_txt_color_hint</item>
     </style>
 
     <!-- 我的-账户管理-绑定-新增页 标题 -->
