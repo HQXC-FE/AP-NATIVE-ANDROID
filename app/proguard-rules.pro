@@ -341,4 +341,4 @@
 -keep public class com.xtree.bet.BetModuleInit { *; }
 -keep public class com.xtree.home.HomeModuleInit { *; }
 -keep public class com.xtree.main.MainModuleInit { *; }
--keep public class com.xtree.main.MainModuleInit { *; }
+-keep public class com.xtree.lottery.LotteryModuleInit { *; }

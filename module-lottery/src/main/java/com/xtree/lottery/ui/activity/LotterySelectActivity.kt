@@ -13,6 +13,7 @@ import com.xtree.base.vo.ProfileVo
 import com.xtree.base.vo.UserMethodsResponse
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
+import com.xtree.lottery.data.LotteryDataManager
 import com.xtree.lottery.data.LotteryDataManager.dynamicUserMethods
 import com.xtree.lottery.data.config.lotteries
 import com.xtree.lottery.databinding.ActivityMainLtBinding
@@ -48,9 +49,11 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
         dynamicUserMethods = Gson().fromJson(json, UserMethodsResponse::class.java)
 
         val adapter = LotteryAdapter(lotteries) {
-            val intent = Intent(this, LotteryActivity::class.java)
-            intent.putExtra("Lottery", it)
-            startActivity(intent)
+            if(LotteryDataManager.staticLotteryMethodsData!=null){
+                val intent = Intent(this, LotteryActivity::class.java)
+                intent.putExtra("Lottery", it)
+                startActivity(intent)
+            }
         }
         binding.rvLottery.adapter = adapter
     }

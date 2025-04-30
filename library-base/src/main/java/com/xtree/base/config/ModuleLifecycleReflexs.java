@@ -15,5 +15,8 @@ public class ModuleLifecycleReflexs {
     //首页业务模块
     private static final String HomeInit = "com.xtree.home.HomeModuleInit";
 
-    public static String[] initModuleNames = {BaseInit, MainInit, HomeInit};
+    private static final String LotteryInit = "com.xtree.lottery.LotteryModuleInit";
+
+    //彩票业务模块
+    public static String[] initModuleNames = {BaseInit, MainInit, HomeInit, LotteryInit};
 }

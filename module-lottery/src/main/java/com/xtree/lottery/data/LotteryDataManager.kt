@@ -1,9 +1,11 @@
 package com.xtree.lottery.data
 
 import android.annotation.SuppressLint
+import android.app.Application
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
+import com.xtree.base.utils.CfLog
 import com.xtree.base.vo.UserMethodsResponse
 import com.xtree.lottery.data.source.vo.MenuMethodsData
 import io.reactivex.rxjava3.core.Single
@@ -11,35 +13,30 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import me.xtree.mvvmhabit.base.BaseApplication
 
 
-/**
- *Created by KAKA on 2024/12/24.
- *Describe: 彩票玩法数据管理
- */
-@SuppressLint("CheckResult")
 object LotteryDataManager {
 
     var staticLotteryMethodsData: HashMap<String, MenuMethodsData>? = null
     var dynamicUserMethods: UserMethodsResponse? = null
 
-    init {
-        Single.create { emitter ->
-            try {
-                val json = BaseApplication.getInstance().assets.open("methods.json").bufferedReader().use { it.readText() }
-                val jsonObject = JsonParser.parseString(json).asJsonObject
-                val cleanedJson = jsonObject.toString()
-                val methods = Gson().fromJson<HashMap<String, MenuMethodsData>>(
-                    cleanedJson,
-                    object : TypeToken<HashMap<String, MenuMethodsData>>() {}.type
-                )
-                emitter.onSuccess(methods)
-            } catch (e: Exception) {
-                emitter.onError(e)
-            }
-        } .subscribeOn(Schedulers.single())
-            .observeOn(Schedulers.single())
+    fun init(application: Application) {
+        CfLog.e("玩法json加载开始 @ ${System.currentTimeMillis() / 1000}")
+        Single.fromCallable {
+            val json = application.assets.open("methods.json")
+                .bufferedReader().use { it.readText() }
+
+            Gson().fromJson<HashMap<String, MenuMethodsData>>(
+                json,
+                object : TypeToken<HashMap<String, MenuMethodsData>>() {}.type
+            )
+        }
+            .subscribeOn(Schedulers.io()) // 更适合 IO 操作
+            .observeOn(Schedulers.computation()) // 解析完成后再处理到逻辑线程
             .subscribe(
-                { data -> staticLotteryMethodsData = data },
-                { error -> println("Error: ${error.message}") }
+                { data ->
+                    staticLotteryMethodsData = data
+                    CfLog.e("玩法json加载完成 @ ${System.currentTimeMillis() / 1000}")
+                },
+                { error -> CfLog.e("玩法json加载失败: ${error.message}") }
             )
     }
 }
