@@ -579,7 +579,9 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 LotteryOrderModel lotteryOrderModel = new LotteryOrderModel();
                 UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
                 LotteryMoneyData money = moneyLiveData.getValue();
-                orderData.setOmodel(prize.getValue());
+                if (prize != null) {
+                    orderData.setOmodel(prize.getValue());
+                }
                 orderData.setMoneyName(money.getMoneyModel().getName());
                 if (lotteryLiveData.getValue() != null && "lhc".equals(lotteryLiveData.getValue().getLinkType())) {
                     orderData.setMode(5);//六合彩写死mode
@@ -590,7 +592,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                 }
 
                 lotteryOrderModel.setBetOrderData(orderData);
-                if (!TextUtils.isEmpty(prize.getLabel())) {
+                if (prize != null && !TextUtils.isEmpty(prize.getLabel())) {
                     lotteryOrderModel.setPrizeLabel(processPrize(prize.getLabel()));
                 }
                 lotteryOrderModel.setMoneyData(money);
@@ -627,7 +629,9 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
             for (LotteryBetRequest.BetOrderData orderData : betLiveData.getValue()) {
                 UserMethodsResponse.DataDTO.PrizeGroupDTO prize = prizeData.getValue();
                 LotteryMoneyData money = moneyLiveData.getValue();
-                orderData.setOmodel(prize.getValue());
+                if (prize != null) {
+                    orderData.setOmodel(prize.getValue());
+                }
                 orderData.setMoneyName(money.getMoneyModel().getName());
                 if (lotteryLiveData.getValue() != null && "lhc".equals(lotteryLiveData.getValue().getLinkType())) {
                     orderData.setMode(5);
@@ -697,6 +701,8 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     prizeData.setValue(prizeGroupDTO);
                 }
             }
+        } else {
+            prizeData.setValue(null);
         }
 
         currentBetModel.setValue(lotteryBetsModel);
@@ -811,9 +817,13 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         rulesEntryData.setCurrentCategory(currentCategoryDTO);
 
         betDTO.setMethodid(currentl2.getMethodid());
-        betDTO.setPrize(prizeData.getValue().getValue());
+        if (prizeData.getValue() != null) {
+            betDTO.setPrize(prizeData.getValue().getValue());
+        }
         RulesEntryData.BetDTO.DisplayDTO displayDTO = new RulesEntryData.BetDTO.DisplayDTO();
-        displayDTO.setPrize(String.valueOf(prizeData.getValue().getLabel()));
+        if (prizeData.getValue() != null) {
+            displayDTO.setPrize(String.valueOf(prizeData.getValue().getLabel()));
+        }
         displayDTO.setPrizeLevel(userMethodData.getPrizeLevel());
         displayDTO.setPrizeGroup(userMethodData.getPrizeGroup());
         displayDTO.setMoneyModes(currentl2.getMoneyModes());

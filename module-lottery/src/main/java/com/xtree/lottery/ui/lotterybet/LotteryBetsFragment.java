@@ -113,8 +113,9 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
                     int factor = binding.lotteryBetsMoneyView.getMoneyData().getFactor();
                     betOrderData.setMode(moneyModel.getModelId());
                     betOrderData.setTimes(factor);
-                    betOrderData.setOmodel(viewModel.prizeData.getValue().getValue());
-
+                    if (viewModel.prizeData.getValue() != null) {
+                        betOrderData.setOmodel(viewModel.prizeData.getValue().getValue());
+                    }
                     RulesEntryData.BetDTO betDTO = new RulesEntryData.BetDTO();
                     RulesEntryData.BetDTO.ModeDTO modeDTO = new RulesEntryData.BetDTO.ModeDTO();
                     modeDTO.setModeid(moneyModel.getModelId());
