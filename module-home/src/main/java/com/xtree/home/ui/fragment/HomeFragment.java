@@ -347,7 +347,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                                     .mapToDouble(PrizeEntry::getPrize) // 使用 mapToDouble 映射到 double 类型
                                     .max()
                                     .orElse(0);  // 默认值 0
-                            return new PrizeRange(value, minPrize, maxPrize);
+                            return new PrizeRange(maxPrize, minPrize, value);
                         })
                         .sorted((a, b) -> Float.compare(b.value, a.value)) // 按 value 值降序排序
                         .collect(Collectors.toList());
@@ -358,8 +358,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 if (minMaxValues.size() >= 2) {
                     PrizeRange r1 = minMaxValues.get(0);
                     PrizeRange r2 = minMaxValues.get(1);
-                    areaPrize.add(new UserMethodsResponse.DataDTO.PrizeGroupDTO(1, String.format("奖金 %.0f~%.0f %.0f%%", r1.min, r1.max, r1.value)));
-                    areaPrize.add(new UserMethodsResponse.DataDTO.PrizeGroupDTO(2, String.format("奖金 %.0f~%.0f %.1f%%", r2.min, r2.max, r2.value)));
+                    areaPrize.add(new UserMethodsResponse.DataDTO.PrizeGroupDTO(1, String.format("奖金 %s~%s %s%%", r1.min, r1.max, r1.value)));
+                    areaPrize.add(new UserMethodsResponse.DataDTO.PrizeGroupDTO(2, String.format("奖金 %s~%s %s%%", r2.min, r2.max, r2.value)));
                 }
 
                 // 更新 prize_group
