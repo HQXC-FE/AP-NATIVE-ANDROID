@@ -1,19 +1,25 @@
 package com.xtree.lottery.ui.view;
 
+import static com.xtree.lottery.rule.betting.Matchers.jssmAlias;
 import static com.xtree.lottery.rule.betting.Matchers.k3Alias;
+import static com.xtree.lottery.rule.betting.Matchers.lhcAlias;
+import static com.xtree.lottery.rule.betting.Matchers.pk10Alias;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.Observable;
-import androidx.databinding.ObservableField;
 
 import com.xtree.base.mvvm.ExKt;
 import com.xtree.base.utils.CfLog;
@@ -23,8 +29,9 @@ import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.databinding.LayoutLotteryDrawBinding;
 import com.xtree.lottery.ui.view.viewmodel.LotteryDrawViewModel;
 import com.xtree.lottery.utils.DiceCutter;
+import com.xtree.lottery.utils.LhcHelper;
+import com.xtree.lottery.utils.PK10Helper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,16 +73,39 @@ public class LotteryDrawView extends LinearLayout {
                     binding.lotteryDrawGroup.removeAllViews();
                     String alias = binding.getModel().alias.get();
                     for (String numb : numbs) {
-                        View view = null;
+                        TextView view = new TextView(getContext());
                         if (!TextUtils.isEmpty(alias) && ExKt.includes(k3Alias, alias)) {
-                            view = new ImageView(getContext());
                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ConvertUtils.dp2px(30), ConvertUtils.dp2px(35));
                             params.rightMargin = ConvertUtils.dp2px(6);
                             view.setLayoutParams(params);
-                            ((ImageView) view).setImageBitmap(DiceCutter.diceResult(binding.getRoot().getResources(), Integer.parseInt(numb)));
+                            view.setBackground(new BitmapDrawable(view.getResources(), DiceCutter.diceResult(binding.getRoot().getResources(), Integer.parseInt(numb))));
+                        } else if (!TextUtils.isEmpty(alias) && ExKt.includes(pk10Alias, alias) || ExKt.includes(jssmAlias, alias)) {
+                            GradientDrawable bitmapDrawable1 = PK10Helper.INSTANCE.getBallBackground(alias, numb);
+                            LayoutParams params = new LinearLayout.LayoutParams(ConvertUtils.dp2px(18f), ConvertUtils.dp2px(30f));
+                            params.rightMargin = ConvertUtils.dp2px(1.5f);
+                            view.setLayoutParams(params);
+                            view.setBackground(bitmapDrawable1);
+                            view.setTextSize(14f);
+                            view.setGravity(Gravity.CENTER);
+                            view.setTypeface(null, Typeface.NORMAL);
+                            view.setText(numb);
+                        } else if (!TextUtils.isEmpty(alias) && ExKt.includes(lhcAlias, alias)) {
+                            LayoutParams params = new LinearLayout.LayoutParams(ConvertUtils.dp2px(25f), ConvertUtils.dp2px(25f));
+                            params.rightMargin = ConvertUtils.dp2px(2f);
+                            view.setLayoutParams(params);
+                            view.setBackgroundResource(LhcHelper.INSTANCE.getNumberColor(numb));
+                            view.setGravity(Gravity.CENTER);
+                            view.setTextSize(14f);
+                            if (numb.equals("——")) {
+                                view.setTextColor(ContextCompat.getColor(getContext(), R.color.lt_color_text18));
+                            } else {
+                                view.setTypeface(null, Typeface.NORMAL);
+                                view.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                            }
+                            view.setText(numb);
                         } else {
-                            view = LayoutInflater.from(getContext()).inflate(R.layout.view_lottery_draw_ball, null);
-                            ((TextView) view).setText(numb);
+                            view = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.view_lottery_draw_ball, null);
+                            view.setText(numb);
                         }
                         binding.lotteryDrawGroup.addView(view);
                     }
@@ -85,8 +115,13 @@ public class LotteryDrawView extends LinearLayout {
     }
 
     public void setDrawCode(RecentLotteryVo bonusNumber) {
-        binding.getModel().drawDate.set(bonusNumber.getIssue() + "期：");
-        binding.getModel().drawCode.set(bonusNumber.getSplit_code());
+        binding.getModel().drawDate.set(bonusNumber.getIssue());
+        String alias = binding.getModel().alias.get();
+        if (!TextUtils.isEmpty(alias) && ExKt.includes(lhcAlias, alias)) {
+            binding.getModel().drawCode.set(LhcHelper.INSTANCE.makeLhcIssue2(bonusNumber.getCode()));
+        } else {
+            binding.getModel().drawCode.set(bonusNumber.getSplit_code());
+        }
     }
 
     public void setDrawCode(String number) {

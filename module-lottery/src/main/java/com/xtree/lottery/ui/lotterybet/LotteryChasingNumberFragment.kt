@@ -14,6 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
+import com.xtree.base.widget.MsgDialog
+import com.xtree.base.widget.TipDialog
 import com.xtree.lottery.R
 import com.xtree.lottery.data.LotteryDetailManager
 import com.xtree.lottery.data.source.request.LotteryBetRequest
@@ -33,7 +37,6 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.math.BigDecimal
 import java.math.RoundingMode
-import kotlin.math.floor
 import kotlin.math.pow
 
 
@@ -48,6 +51,7 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
     private lateinit var chasingAdapter: ChasingAdapter
     private var checkPosition = 0
     private var allMoney = BigDecimal.ZERO
+    private var pop: BasePopupView? = null
 
     override fun initView() {
         binding.ivClose.setOnClickListener { dismissAllowingStateLoss() }
@@ -120,7 +124,7 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
 
 
                     // 计算中奖金额总和
-                    var sumPrize =  BigDecimal.ZERO
+                    var sumPrize = BigDecimal.ZERO
                     for (order in orders) {
                         // 计算每个订单的中奖金额，并保留两位小数
                         val prize = BigDecimal(order.display.minPrize)
@@ -152,7 +156,8 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                         //(中奖金额*currentTimes)/(投资金额*(前面已选倍数的总和+currentTimes))<=(1+最低利润率/100)
                         // 计算是否满足利润条件
                         while ((sumPrize.multiply(BigDecimal(currentTimes))) / (money.multiply(sumTimes.add(BigDecimal(currentTimes))))
-                            <= BigDecimal(1).add(BigDecimal(profit).divide(BigDecimal(100)))) {
+                            <= BigDecimal(1).add(BigDecimal(profit).divide(BigDecimal(100)))
+                        ) {
                             currentTimes++
                         }
 
@@ -249,6 +254,11 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
             val gson = Gson()
             val type = object : TypeToken<List<BetOrderData?>?>() {}.getType()
             orders = gson.fromJson(jsonString, type)
+
+            if (orders.size > 1) {
+                showTipDialog("多注单追号倍率需默认为1倍，已默认设置倍率为1")
+            }
+
             val issues = if (LotteryDetailManager.mIssues.size < LotteryDetailManager.mIndex + 200) {
                 LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIndex + 200)
             } else {
@@ -377,6 +387,25 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
+    }
+
+
+    /**
+     * 提示弹窗
+     */
+    open fun showTipDialog(msg: String) {
+        val dialog = MsgDialog(requireContext(), requireContext().getString(R.string.txt_kind_tips), msg, true, object : TipDialog.ICallBack {
+            override fun onClickLeft() {}
+            override fun onClickRight() {
+                if (pop != null) {
+                    pop?.dismiss()
+                }
+            }
+        })
+        pop = XPopup.Builder(context)
+            .dismissOnTouchOutside(true)
+            .dismissOnBackPressed(true)
+            .asCustom(dialog).show()
     }
 
 }
