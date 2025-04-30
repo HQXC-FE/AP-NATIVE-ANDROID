@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.NumberUtils;
@@ -228,16 +230,11 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
     @Override
     public void onResume() {
         super.onResume();
-        viewModel.addSubscribe(Observable.interval(6, 6, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        Observable.interval(6, 6, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread()).as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(aLong -> {
-                    //if(index == 0) {
-                    batchBetMatchMarketOfJumpLine();
-                    //}
-                    //index ++;
-                })
-        );
+            batchBetMatchMarketOfJumpLine();
+        });
     }
 
     @Override
