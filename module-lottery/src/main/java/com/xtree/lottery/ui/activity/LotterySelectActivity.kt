@@ -49,7 +49,7 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
         dynamicUserMethods = Gson().fromJson(json, UserMethodsResponse::class.java)
 
         val adapter = LotteryAdapter(lotteries) {
-            if(LotteryDataManager.staticLotteryMethodsData!=null){
+            if (LotteryDataManager.staticLotteryMethodsData != null) {
                 val intent = Intent(this, LotteryActivity::class.java)
                 intent.putExtra("Lottery", it)
                 startActivity(intent)

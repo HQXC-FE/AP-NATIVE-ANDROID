@@ -79,7 +79,7 @@ public class LotteryDrawView extends LinearLayout {
                             params.rightMargin = ConvertUtils.dp2px(6);
                             view.setLayoutParams(params);
                             view.setBackground(new BitmapDrawable(view.getResources(), DiceCutter.diceResult(binding.getRoot().getResources(), Integer.parseInt(numb))));
-                        } else if (!TextUtils.isEmpty(alias) && ExKt.includes(pk10Alias, alias) || ExKt.includes(jssmAlias, alias)) {
+                        } else if (!TextUtils.isEmpty(alias) && (ExKt.includes(pk10Alias, alias) || ExKt.includes(jssmAlias, alias))) {
                             GradientDrawable bitmapDrawable1 = PK10Helper.INSTANCE.getBallBackground(alias, numb);
                             LayoutParams params = new LinearLayout.LayoutParams(ConvertUtils.dp2px(18f), ConvertUtils.dp2px(30f));
                             params.rightMargin = ConvertUtils.dp2px(1.5f);
