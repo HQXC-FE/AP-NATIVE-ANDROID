@@ -27,7 +27,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@mipmap/ic_app" />
+                tools:src="@mipmap/dice_01" />
 
             <!-- 下方的左侧 ImageView -->
             <ImageView
@@ -41,7 +41,7 @@
                 app:layout_constraintEnd_toStartOf="@id/iv3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv1"
-                tools:src="@mipmap/ic_app" />
+                tools:src="@mipmap/dice_01" />
 
             <!-- 下方的右侧 ImageView -->
             <ImageView
@@ -54,7 +54,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv2"
                 app:layout_constraintTop_toBottomOf="@id/iv1"
-                tools:src="@mipmap/ic_app" />
+                tools:src="@mipmap/dice_01" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

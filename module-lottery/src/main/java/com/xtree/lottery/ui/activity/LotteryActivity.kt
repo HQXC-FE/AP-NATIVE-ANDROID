@@ -77,9 +77,34 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setCustomDensity()
         EventBus.getDefault().register(this)
         FastestTopDomainUtil.instance.start()
         ChangeH5LineUtil.instance.start()
+    }
+
+    private fun setCustomDensity() {
+        // 获取当前屏幕的 DisplayMetrics
+        val metrics = resources.displayMetrics
+
+        // 设计稿的宽度和高度 (例如 812dp 宽, 375dp 高)
+//        float designWidthDp = 812f;
+        val designWidthDp = 375f
+
+        // 计算 density，使用屏幕的宽度
+//        float heightRatio = metrics.heightPixels / designHeightDp;
+        val widthRatio = metrics.widthPixels / designWidthDp
+        // 取宽高比例中较小的值进行适配
+//        float targetDensity = (widthRatio < heightRatio) ? widthRatio : heightRatio;
+        val targetDensity = widthRatio
+
+        // 计算 scaledDensity
+        val calculatedScaledDensity = targetDensity * (metrics.scaledDensity / metrics.density)
+
+        // 应用新的 density 和 scaledDensity
+        metrics.density = targetDensity
+        metrics.scaledDensity = calculatedScaledDensity
+        metrics.densityDpi = (targetDensity * 160).toInt() // 通常使用 160 作为基准 dpi
     }
 
     override fun initView() {
@@ -312,6 +337,7 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
 
     override fun onResume() {
         super.onResume()
+        setCustomDensity()
 //        refreshRechargeFloatingWindows()
     }
 
