@@ -448,4 +448,7 @@
         \n\n 9. 贵使用者新绑定银行卡，为了账户资金安全，需等待6小时后才可提现。</string>
 
     <string name="customer_service_text_hint">遇到问题?点击反馈问题</string>
+    <string name="activityEditProTopTip">编辑个人资料</string>
+    <string name="activityEditProTopNote">注意：为防止钓鱼网站骗取您的钱财，请务必填写此信息</string>
+    <string name="activityEditBirthdayTip">设置生日</string>
 </resources>

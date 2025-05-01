@@ -34,7 +34,7 @@
             <ImageView
                 android:id="@+id/ivw_back"
                 style="@style/style_ic_title_back"
-                android:src="@mipmap/cm_ic_back"
+                android:src="@mipmap/back"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

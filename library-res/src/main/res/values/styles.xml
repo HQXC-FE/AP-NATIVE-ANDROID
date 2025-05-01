@@ -92,7 +92,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/layout_margin</item>
         <item name="android:layout_marginTop">@dimen/layout_margin</item>
-        <item name="android:textColor">@color/clr_withdrawal_text_bank_tip</item>
+        <item name="android:textColor">@color/clr_fund_psw_center</item>
         <item name="android:textSize">18sp</item>
     </style>
 
