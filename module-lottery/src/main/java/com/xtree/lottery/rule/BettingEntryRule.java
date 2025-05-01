@@ -1,5 +1,7 @@
 package com.xtree.lottery.rule;
 
+import android.util.Log;
+
 import com.xtree.base.vo.UserMethodsResponse;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
 import com.xtree.lottery.rule.betting.AfterRules;
@@ -23,6 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import me.xtree.mvvmhabit.utils.KLog;
 
 public class BettingEntryRule {
     private static BettingEntryRule INSTANCE;
@@ -259,6 +263,10 @@ public class BettingEntryRule {
         }
         if (display.get("rate") != null) {
             displayDTO.setRate(display.get("rate").toString());
+        }
+
+        if (display.get("currentBonus") != null) {
+            displayDTO.setCurrentBonus(display.get("currentBonus").toString());
         }
 //        if (display.get("prize_level") instanceof List) {
 //            displayDTO.setPrizeLevel((List<String>) display.get("prize_level"));
