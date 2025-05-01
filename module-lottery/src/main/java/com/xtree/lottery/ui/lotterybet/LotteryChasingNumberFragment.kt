@@ -133,11 +133,11 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                         if (order.display.rate == null) {
                             break
                         }
-                        // 计算每个订单的中奖金额，并保留两位小数
+                        // 计算每个订单的中奖金额，并保留3位小数
                         val prize = BigDecimal(order.display.minPrize)
                             .multiply(BigDecimal(order.display.rate))
                             .multiply(BigDecimal(100))  // 乘以100
-                            .setScale(2, RoundingMode.FLOOR)  // 向下保留两位小数
+                            .setScale(3, RoundingMode.FLOOR)  // 向下保留3位小数
 
                         sumPrize = sumPrize.add(prize)  // 累加中奖金额
 

@@ -35,12 +35,14 @@ class ChasingAdapter(list: MutableList<IssueVo>, val money: BigDecimal, val chan
                 if (isChecked) {
                     tvMultiple.text = "1"
                     tvMoney.text = "¥".plus(money.toPlainString())
+                    item.amountBigDecimal = money
                     changeNumber()
                 }
             }
             if (!isChecked) {
                 tvMultiple.text = "0"
                 tvMoney.text = "¥0.0"
+                item.amountBigDecimal = BigDecimal.ZERO
                 changeNumber()
             }
             item.isCheck = isChecked
