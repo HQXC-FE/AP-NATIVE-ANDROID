@@ -122,6 +122,10 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                         return@setOnClickListener
                     }
 
+                    if (!checkProfit()) {
+                        ToastUtils.showLong("多玩法和浮动奖金无法使用利润率追号")
+                        return@setOnClickListener
+                    }
 
                     // 计算中奖金额总和
                     var sumPrize = BigDecimal.ZERO
@@ -207,37 +211,40 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
 
     }
 
-    //fun checkProfit(): Boolean {
-    //    var result = true
-    //
-    //    // 1. 检查是否存在浮动奖金（currentBonus 为字符串）
-    //    for (order in orders) {
-    //        val bonus = order.display.currentBonus
-    //        if (bonus is String) {
-    //            result = false
-    //            break
-    //        }
-    //    }
-    //
-    //    // 2. 检查是否为单一玩法（按 menuid 去重后个数必须是 1）
-    //    val menuidSet = mutableSetOf<Int>()
-    //    for (order in orders) {
-    //        menuidSet.add(order.submit.menuid)
-    //    }
-    //    if (menuidSet.size != 1) {
-    //        result = false
-    //    }
-    //
-    //    // 3. 检查是否有 display 中的项没有 minPrize
-    //    loop@ for (order in orders) {
-    //        if (order.display.minPrize == null) {
-    //            result = false
-    //            break@loop
-    //        }
-    //    }
-    //
-    //    return result
-    //}
+    fun checkProfit(): Boolean {
+        var result = true
+
+        // 检查是否有浮动奖金组（currentBonus 为 String）
+        for (order in orders) {
+            if (order.display.currentBonus is String) {
+                result = false
+                break
+            }
+        }
+
+        // 检查是否是单一玩法（menuid 是否唯一）
+        val menuIdSet = mutableSetOf<String>()
+        for (order in orders) {
+            menuIdSet.add(order.menuid)
+        }
+        if (menuIdSet.size != 1) {
+            result = false
+        }
+
+        // 检查是否有 minPrize 为 null 的情况
+        var hasMissingMinPrize = false
+        for (order in orders) {
+            if (order.display.minPrize == null) {
+                hasMissingMinPrize = true
+                break
+            }
+        }
+        if (hasMissingMinPrize) {
+            result = false
+        }
+
+        return result
+    }
 
 
     private fun changeResultText(plus2: Int) {
