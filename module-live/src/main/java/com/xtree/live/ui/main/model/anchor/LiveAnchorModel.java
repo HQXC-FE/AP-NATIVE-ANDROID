@@ -17,15 +17,12 @@ import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.mvvm.recyclerview.BaseDatabindingAdapter;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.router.RouterActivityPath;
-import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.live.R;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.fb.Constants;
 import com.xtree.live.data.source.response.fb.Match;
 import com.xtree.live.ui.main.activity.LiveDetailActivity;
-import com.xtree.live.ui.main.bet.LiveMatchDetailActivity;
 import com.xtree.live.ui.main.listener.FetchListener;
-import com.xtree.live.ui.main.model.hot.LiveHotItemModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,12 +62,12 @@ public class LiveAnchorModel extends BindModel implements BackPressed {
             //判断当前是否是登录状态
             String token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
             boolean isLogin = !TextUtils.isEmpty(token);
-            if(isLogin){
-                String  matchID = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getMatchId();
+            if (isLogin) {
+                String matchID = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getMatchId();
                 int uid = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getUid();
                 String vid = ((LiveAnchorItemModel) bindModels.get(modelPosition)).getVid();
-                LiveDetailActivity.forward(context, uid,vid,matchID);
-            }else{
+                LiveDetailActivity.forward(context, uid, vid, matchID);
+            } else {
                 goLogin();
             }
         }
