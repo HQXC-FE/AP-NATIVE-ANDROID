@@ -298,10 +298,10 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
 
             if (hasCloseOption) {
                 binding.btBet.setEnabled(false);
-                binding.ivBt.setEnabled(false);
+//                binding.ivBt.setEnabled(false);
             } else {
                 binding.btBet.setEnabled(true);
-                binding.ivBt.setEnabled(true);
+//                binding.ivBt.setEnabled(true);
             }
 
             if (betConfirmOptionAdapter == null) {
