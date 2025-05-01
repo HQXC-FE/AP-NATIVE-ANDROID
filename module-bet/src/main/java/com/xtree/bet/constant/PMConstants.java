@@ -193,6 +193,7 @@ public class PMConstants {
     public static int getHotLeagueIcon(String code) {
         if (mapHotLeagueIconTop.isEmpty()) {
             mapHotLeagueIconTop.put("allleague", R.drawable.bt_hot_league_item_epl_selector);
+            mapHotLeagueIconTop.put("WCB", R.drawable.bt_hot_league_item_wcb_selector);
             mapHotLeagueIconTop.put("EURO", R.drawable.bt_hot_league_item_euro_selector);
             mapHotLeagueIconTop.put("CONMEBOL", R.drawable.bt_hot_league_item_conmebol_selector);
             mapHotLeagueIconTop.put("UCL", R.drawable.bt_hot_league_item_ucl_selector);
@@ -216,6 +217,7 @@ public class PMConstants {
         if (hotFootBallLeagueTopList.isEmpty()) {
             Gson gson = new Gson();
             hotFootBallLeagueTopList.add(gson.fromJson("{ leagueid: [], code: \"allleague\", name: \"全部\"}", HotLeague.class));
+            hotFootBallLeagueTopList.add(gson.fromJson("{ leagueid: [36514], code: \"WCB\", name: \"世俱杯\"}", HotLeague.class));
             //hotFootBallLeagueTopList.add(gson.fromJson("{ leagueid: [33163,1196925222286433163], code: \"EURO\", name: \"欧洲杯\"}", HotLeague.class));
             //hotFootBallLeagueTopList.add(gson.fromJson("{ leagueid: [151,10011000151], code: \"CONMEBOL\", name: \"美洲杯\"}", HotLeague.class));
             hotFootBallLeagueTopList.add(gson.fromJson("{ leagueid: [2,6408,352541568130764801], code: \"UCL\", name: \"欧冠\"}", HotLeague.class));

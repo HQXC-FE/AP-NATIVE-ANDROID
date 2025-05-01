@@ -12,7 +12,7 @@ import java.util.List;
 @SuppressLint("ParcelCreator")
 public class LeagueItem implements BaseBean {
 
-    private String[] leagueNameList = new String[]{"全部", "欧冠", "英超", "意甲", "西甲", "德甲", "法甲", "中超"};
+    private String[] leagueNameList = new String[]{"全部","世俱杯", "欧冠", "英超", "意甲", "西甲", "德甲", "法甲", "中超"};
     private String[] imgList;
 
     private String name;
