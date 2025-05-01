@@ -753,22 +753,22 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         if (ppw != null && ppw.isShow()) {
             return;
         }
-//        AppUpdateDialog dialog = new AppUpdateDialog(getContext(), isWeakUpdate, vo, new AppUpdateDialog.IAppUpdateCallBack() {
-//            @Override
-//            public void onUpdateCancel() {
-//                updateView.dismiss();
-//            }
-//
-//            @Override
-//            public void onUpdateForce() {
-//            }
-//        });
-//
-//        updateView = new XPopup.Builder(getContext())
-//                .dismissOnBackPressed(false)
-//                .dismissOnTouchOutside(false)
-//                .asCustom(dialog);
-//        updateView.show();
+        AppUpdateDialog dialog = new AppUpdateDialog(getContext(), isWeakUpdate, vo, new AppUpdateDialog.IAppUpdateCallBack() {
+            @Override
+            public void onUpdateCancel() {
+                updateView.dismiss();
+            }
+
+            @Override
+            public void onUpdateForce() {
+            }
+        });
+
+        updateView = new XPopup.Builder(getContext())
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .asCustom(dialog);
+        updateView.show();
     }
 
     private void smoothToPositionTop(int position) {
