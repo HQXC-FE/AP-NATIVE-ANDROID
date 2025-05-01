@@ -121,14 +121,14 @@
   },
   {
     "cid": 4,
-    "name": "AG娱乐",
+    "name": "PA娱乐",
     "alias": "AG",
     "key": "ag",
     "forward": {
       "slot": {
         "route": "GameFrame",
         "params": {
-          "name": "AG电子",
+          "name": "PA电子",
           "playURL": "aggame/electronicplay?autoThrad",
           "cateId": 46
         }
@@ -136,7 +136,7 @@
       "casino": {
         "route": "GameFrame",
         "params": {
-          "name": "AG真人",
+          "name": "PA真人",
           "playURL": "aggame/hallplay?autoThrad"
         }
       }
@@ -259,14 +259,14 @@
   },
   {
     "cid": 4,
-    "name": "AG娱乐",
+    "name": "PA娱乐",
     "alias": "AG",
     "key": "ag",
     "forward": {
       "slot": {
         "route": "GameFrame",
         "params": {
-          "name": "AG电子",
+          "name": "PA电子",
           "playURL": "aggame/electronicplay?autoThrad",
           "cateId": 46
         }
@@ -274,7 +274,7 @@
       "casino": {
         "route": "GameFrame",
         "params": {
-          "name": "AG真人",
+          "name": "PA真人",
           "playURL": "aggame/hallplay?autoThrad"
         }
       }
@@ -286,14 +286,14 @@
   },
   {
     "cid": 4,
-    "name": "AG街机",
+    "name": "PA街机",
     "alias": "AGARCADE",
     "key": "ag",
     "forward": {
       "slot": {
         "route": "GameFrame",
         "params": {
-          "name": "AG街机",
+          "name": "PA街机",
           "playURL": "aggame/yoplay?autoThrad"
         }
       }
@@ -305,7 +305,7 @@
   },
   {
     "cid": 4,
-    "name": "AG街机捕鱼",
+    "name": "PA街机捕鱼",
     "alias": "AG",
     "key": "ag",
     "needTransfer": true,
@@ -313,7 +313,7 @@
       "fishing": {
         "route": "GameFrame",
         "params": {
-          "name": "AG捕鱼",
+          "name": "PA捕鱼",
           "playURL": "aggame/fishplay?autoThrad"
         }
       }
