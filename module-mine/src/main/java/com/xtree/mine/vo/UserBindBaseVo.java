@@ -1,5 +1,7 @@
 package com.xtree.mine.vo;
 
+import com.xtree.base.utils.CfLog;
+
 import java.util.List;
 
 public class UserBindBaseVo<T> {
@@ -51,4 +53,43 @@ public class UserBindBaseVo<T> {
     //之前绑定银行卡、支付宝、微信绑定的姓名
     public String accountname;
 
+    private boolean lockbankoprate ;
+
+    public void setLockbankoprate(boolean lockbankoprate) {
+        this.lockbankoprate = lockbankoprate;
+        CfLog.e("setLockbankoprate ----->" + this.lockbankoprate);
+    }
+
+    public boolean isLockbankoprate() {
+        return lockbankoprate;
+    }
+
+
+    /*   public List<UsdtVo> banklist; // [*/
+
+    @Override
+    public String toString() {
+        return "UserBindBaseVo{" +
+                "sSystemImagesAndCssPath='" + sSystemImagesAndCssPath + '\'' +
+                ", customer_service_link='" + customer_service_link + '\'' +
+                ", pt_download_pc='" + pt_download_pc + '\'' +
+                ", ur_here='" + ur_here + '\'' +
+                ", check='" + check + '\'' +
+                ", has_phone='" + has_phone + '\'' +
+                ", phone_number='" + phone_number + '\'' +
+                ", judgeRes='" + judgeRes + '\'' +
+                ", smstype='" + smstype + '\'' +
+                ", banklist=" + banklist +
+                ", num='" + num + '\'' +
+                ", isDisabled='" + isDisabled + '\'' +
+                ", binded='" + binded + '\'' +
+                ", msg_type=" + msg_type +
+                ", message='" + message + '\'' +
+                ", status=" + status +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                ", accountname='" + accountname + '\'' +
+                ", lockbankoprate=" + lockbankoprate +
+                '}';
+    }
 }

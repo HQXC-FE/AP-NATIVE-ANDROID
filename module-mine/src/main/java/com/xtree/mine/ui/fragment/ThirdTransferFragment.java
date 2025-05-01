@@ -151,6 +151,8 @@ public class ThirdTransferFragment extends BaseFragment<FragmentReportBinding, R
         listType.add(new OrderTypeVo("obgqp", getString(R.string.txt_venue_obgqp)));
         listType.add(new OrderTypeVo("obgdj", getString(R.string.txt_venue_obgdj)));
         listType.add(new OrderTypeVo("yy", getString(R.string.txt_venue_yy)));
+        listType.add(new OrderTypeVo("wali", getString(R.string.txt_venue_wali)));
+        listType.add(new OrderTypeVo("ad", getString(R.string.txt_venue_ad)));
 
         listType2.addAll(listType);
 

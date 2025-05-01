@@ -49,7 +49,8 @@ public class BindUsdtViewModel extends BaseViewModel<MineRepository> {
                 .subscribeWith(new HttpCallBack<UserBindBaseVo<UsdtVo>>() {
                     @Override
                     public void onResult(UserBindBaseVo<UsdtVo> vo) {
-                        CfLog.d("******");
+                       // CfLog.e("************************************************ vo.banklist.get(0).lockbankoprate =" +vo.banklist.get(0).isLockbankoprate());
+
                         if (vo.msg_type == 1 || vo.msg_type == 2) {
                             ToastUtils.showLong(vo.message); // 异常 2-用户无此访问权限
                             finish();

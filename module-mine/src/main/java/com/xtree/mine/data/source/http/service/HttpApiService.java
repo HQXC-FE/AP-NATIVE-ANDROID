@@ -3,6 +3,8 @@ package com.xtree.mine.data.source.http.service;
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.BalanceVo;
 import com.xtree.base.vo.FBService;
+import com.xtree.base.vo.MsgPersonInfoVo;
+import com.xtree.base.vo.MsgPersonListVo;
 import com.xtree.base.vo.PMService;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.vo.PromotionCodeVo;
@@ -14,8 +16,10 @@ import com.xtree.mine.vo.BankCardVo;
 import com.xtree.mine.vo.BtDetailVo;
 import com.xtree.mine.vo.BtPlatformVo;
 import com.xtree.mine.vo.BtReportVo;
+import com.xtree.mine.vo.CancelGame;
 import com.xtree.mine.vo.ChooseInfoVo;
 import com.xtree.mine.vo.CookieVo;
+import com.xtree.mine.vo.DeleteInterMessage;
 import com.xtree.mine.vo.ForgetPasswordCheckInfoVo;
 import com.xtree.mine.vo.ForgetPasswordTimeoutVo;
 import com.xtree.mine.vo.ForgetPasswordVerifyVo;
@@ -27,8 +31,7 @@ import com.xtree.mine.vo.LotteryDetailVo;
 import com.xtree.mine.vo.LotteryReportVo;
 import com.xtree.mine.vo.MsgInfoVo;
 import com.xtree.mine.vo.MsgListVo;
-import com.xtree.mine.vo.MsgPersonInfoVo;
-import com.xtree.mine.vo.MsgPersonListVo;
+import com.xtree.mine.vo.OfferVo;
 import com.xtree.mine.vo.OtherWebWithdrawVo;
 import com.xtree.mine.vo.PlatWithdrawConfirmVo;
 import com.xtree.mine.vo.PlatWithdrawVo;
@@ -36,6 +39,7 @@ import com.xtree.mine.vo.ProfitLossReportVo;
 import com.xtree.mine.vo.QuestionVo;
 import com.xtree.mine.vo.RebateReportVo;
 import com.xtree.mine.vo.RechargeReportVo;
+import com.xtree.mine.vo.RegisterVerificationCodeVo;
 import com.xtree.mine.vo.RewardVo;
 import com.xtree.mine.vo.SettingsVo;
 import com.xtree.mine.vo.SpiltDetailVo;
@@ -50,9 +54,9 @@ import com.xtree.mine.vo.UserBankProvinceVo;
 import com.xtree.mine.vo.UserBindBaseVo;
 import com.xtree.mine.vo.UserUsdtConfirmVo;
 import com.xtree.mine.vo.UserUsdtTypeVo;
-import com.xtree.mine.vo.RegisterVerificationCodeVo;
 import com.xtree.mine.vo.VerificationCodeVo;
 import com.xtree.mine.vo.VerifyVo;
+import com.xtree.mine.vo.VipInfoVo;
 import com.xtree.mine.vo.VipUpgradeInfoVo;
 import com.xtree.mine.vo.VirtualCashVo;
 import com.xtree.mine.vo.VirtualConfirmVo;
@@ -72,14 +76,14 @@ import java.util.Map;
 import io.reactivex.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.BaseResponse2;
-import me.xtree.mvvmhabit.http.BaseResponse3;
+import me.xtree.mvvmhabit.http.BaseResponse;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -102,6 +106,7 @@ public interface HttpApiService {
 
     /**
      * 验证码登录
+     *
      * @param map
      * @return
      */
@@ -109,12 +114,21 @@ public interface HttpApiService {
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<LoginResultVo>> loginAndVer(@Body Map<String, String> map);
 
+    /*  */
 
-    @POST("/api/register/kygprka")
-    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<LoginResultVo>> register(@Body Map<String, String> map);
     /**
-    *获取注册验证码
+     * 绑定
+     * client=m&controller=security&action=adduserusdt
+     *//*
+  @POST("/user/user{key}info?")
+  @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+  Flowable<UserUsdtConfirmVo> doBindUsdt(@Path("key") String key, @QueryMap Map<String, String> queryMap, @Body Map<String, String> map);*/
+    @POST("/api/register/{key}")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<LoginResultVo>> register(@Path("key") String key, @Body Map<String, Object> map);
+
+    /**
+     * 获取注册验证码
      */
     @GET("/api/captcha")
     Flowable<BaseResponse<RegisterVerificationCodeVo>> getCaptcha();
@@ -144,10 +158,7 @@ public interface HttpApiService {
      * 发送 短信/邮箱 验证码 (首次绑)
      */
     @GET("/api/verify/singlesend")
-    Flowable<BaseResponse<VerificationCodeVo>> singleSend(
-            @Query("flag") String flag,
-            @Query("sendtype") String sendtype,
-            @Query("num") String num);
+    Flowable<BaseResponse<VerificationCodeVo>> singleSend(@Query("flag") String flag, @Query("sendtype") String sendtype, @Query("num") String num);
 
     /**
      * 验证 短信/邮箱 验证码 (首次绑)
@@ -422,20 +433,6 @@ public interface HttpApiService {
     Flowable<LotteryDetailVo> getBtCpOrderDetail(@Path("id") String id);
 
     /**
-     * 获取 FB体育请求服务地址
-     */
-    @POST("/api/sports/fb/getToken")
-    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<FBService>> getFBGameTokenApi();
-
-    /**
-     * 获取 PM体育请求服务地址
-     */
-    @POST("/api/sports/obg/getToken")
-    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<PMService>> getPMGameTokenApi();
-
-    /**
      * 获取 用户手机与信箱
      */
     @POST("/api/account/newforgetpassword")
@@ -579,13 +576,13 @@ public interface HttpApiService {
      */
     @POST("/?controller=user&action=messages&tag=deleteselect&client=m")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse2> deletePartPersonInfo(@Body Map<String, Object> map);
+    Flowable<DeleteInterMessage> deletePartPersonInfo(@Body Map<String, Object> map);
 
     /**
      * 删除所有站内信
      */
     @GET("/user/messages?tag=deleteall&client=m")
-    Flowable<BaseResponse2> deleteAllPersonInfo();
+    Flowable<DeleteInterMessage> deleteAllPersonInfo();
 
     /**
      * other提款 微信支付宝
@@ -609,7 +606,7 @@ public interface HttpApiService {
      * 彩票撤单
      */
     @GET("/?controller=gameinfo&action=cancelgame&client=m")
-    Flowable<BaseResponse2> cancelGame(@QueryMap Map<String, String> map);
+    Flowable<CancelGame> cancelGame(@QueryMap Map<String, String> map);
 
     @GET("https://ap3sport.oxldkm.com/report/getsplitlists?")
     Flowable<BaseResponse<SpiltDetailVo>> getWithdrawDetails(@QueryMap Map<String, String> map);
@@ -618,38 +615,56 @@ public interface HttpApiService {
      * 提款获取可用额度
      */
     @GET("/api/withdrawal/quota")
-    Flowable<BaseResponse3<WithdrawalQuotaVo>> getWithdrawalQuota();
+    Flowable<BaseResponse<WithdrawalQuotaVo>> getWithdrawalQuota();
 
     /**
      * 获取可提现渠道列表
      */
     @GET("/api/withdrawal/list")
-    Flowable<BaseResponse3<ArrayList<WithdrawalListVo>>> getWithdrawalList();
+    Flowable<BaseResponse<ArrayList<WithdrawalListVo>>> getWithdrawalList();
 
     /**
      * 获取当前渠道详情
      * /api/withdrawal/info?wtype=ebpay
      */
     @GET("/api/withdrawal/info/{key}")
-    Flowable<BaseResponse3<WithdrawalInfoVo>> getWithdrawalInfo(@Path("key") String key);
+    Flowable<BaseResponse<WithdrawalInfoVo>> getWithdrawalInfo(@Path("key") String key);
 
     /**
      * 银行卡提现获取当前渠道详情
      */
     @GET("/api/withdrawal/info/{key}")
-    Flowable<BaseResponse3<WithdrawalBankInfoVo>> getWithdrawalBankInfo(@Path("key") String key);
+    Flowable<BaseResponse<WithdrawalBankInfoVo>> getWithdrawalBankInfo(@Path("key") String key);
 
     /**
      * 验证当前渠道信息
      */
     @POST("/api/withdrawal/verify")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse3<WithdrawalVerifyVo>> postWithdrawalVerify(@Body Map<String, Object> map);
+    Flowable<BaseResponse<WithdrawalVerifyVo>> postWithdrawalVerify(@Body Map<String, Object> map);
 
     /**
      * 提款提交
      */
     @POST("/api/withdrawal/submit")
     @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse3<WithdrawalSubmitVo>> postWithdrawalSubmit(@Body Map<String, Object> map);
+    Flowable<BaseResponse<WithdrawalSubmitVo>> postWithdrawalSubmit(@Body Map<String, Object> map);
+
+    /**
+     * 优惠中心列表
+     */
+    @GET("/api/activity/reward?")
+    Flowable<BaseResponse<OfferVo>> getOfferList(@QueryMap Map<String, String> map);
+
+    /**
+     * 取得优惠
+     */
+    @PUT("/api/activity/reward/{key}")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<Object>> getOffer(@Path("key") String key, @Body Map<String, String> map);
+    /**
+     * 获取 VIP信息
+     */
+    @GET("/api/account/vipinfo")
+    Flowable<BaseResponse<VipInfoVo>> getVipInfo();
 }

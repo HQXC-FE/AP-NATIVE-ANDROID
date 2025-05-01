@@ -70,6 +70,7 @@ public class RouterFragmentPath {
         public static final String PAGER_QUESTION = MINE + "/QUESTION"; // 网页资讯
         public static final String PAGER_CHOOSE = MINE + "/ChooseWithdraw"; // 提款
         public static final String PAGER_MY_WALLET = MINE + "/wallet";
+        public static final String PAGER_OFFER = MINE + "/offer";
     }
 
     public static class Wallet {
@@ -149,6 +150,7 @@ public class RouterFragmentPath {
         public static final String PAGER_BET_TUTORIAL = BET + "/tutorial";
         public static final String PAGER_BET_ANNOUNCEMENT = BET + "/announcement";
         public static final String PAGER_BET_AT = BET + "/at";
+        public static final String PAGER_BET_RESULT = BET + "/result";
     }
 
     /**

@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class LoginResultVo implements Parcelable {
+
+    public int frozentype;
     public String captcha;//后台组织的验证码
     public String token; // "eyJ0eXAi***E2NTY1Ng",
 
@@ -16,6 +18,7 @@ public class LoginResultVo implements Parcelable {
     public ContactsVo contacts; // { } 异地登录 验证
     public String userName; // 登录名, 自己加的
     public String userpass;
+    public Object inviteCodeSourceMsg ;//null 不显示弹窗，有数据就显示
 
     public static class ContactsVo implements Parcelable {
         public String phone; // "132****1233",

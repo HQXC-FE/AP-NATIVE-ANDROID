@@ -11,11 +11,17 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.Constant;
+import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.router.RouterActivityPath;
+import com.xtree.base.widget.CustomerServiceDialogActivity;
 
 import me.xtree.mvvmhabit.base.AppManager;
 import me.xtree.mvvmhabit.utils.SPUtils;
+
 
 public class AppUtil {
 
@@ -26,8 +32,103 @@ public class AppUtil {
      */
     public static void goCustomerService(Context ctx) {
 
-        goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);
+        ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_CUSTOMER_SERVICE).navigation();
+      /* BasePopupView basePopupView = new XPopup.Builder(ctx).dismissOnBackPressed(true)
+                .dismissOnTouchOutside(false)
+                .asCustom(CustomerServiceDialog.newInstance(ctx, "登录密码总是不正确"));
+        basePopupView.show();*/
+       /* String serviceLink ;
+
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
+            serviceLink =SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK) ;
+        }else {
+            serviceLink =Constant.URL_CUSTOMER_SERVICE ;
+        }
+        *//*CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
+
+        CfLog.e("goCustomerService  ---- sDomainUtil.getH5Domain2()" +DomainUtil.getH5Domain2() + serviceLink);*//*
+      *//*  goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);*//*
+        goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink);*/
     }
+
+    /**
+     * 跳转Dialog形式客服
+     * @param ctx
+     */
+    public static void goCustomerServiceDialog(Context ctx) {
+       BasePopupView basePopupView = new XPopup.Builder(ctx).dismissOnBackPressed(true)
+                .dismissOnTouchOutside(false)
+                .asCustom( CustomerServiceDialogActivity.newInstance(ctx));
+        basePopupView.show();
+       /* String serviceLink ;
+
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
+            serviceLink =SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK) ;
+        }else {
+            serviceLink =Constant.URL_CUSTOMER_SERVICE ;
+        }
+        *//*CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
+
+        CfLog.e("goCustomerService  ---- sDomainUtil.getH5Domain2()" +DomainUtil.getH5Domain2() + serviceLink);*//*
+         *//*  goBrowser(ctx, DomainUtil.getH5Domain2() + Constant.URL_CUSTOMER_SERVICE);*//*
+        goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink);*/
+    }
+
+
+    /**
+     * 跳转到客服
+     *
+     * @param ctx Context
+     */
+    public static void goCustomerServiceWeb(Context ctx) {
+        StringBuffer serviceLink = new StringBuffer() ;
+        /**
+         * 已登录用户，嗨客服拼接用户信息
+         *
+         * 用户账号：
+         * &sid=username
+         *
+         * 注册来源推广码，profile接口register_promotion_code字段
+         * &remark=encodeURIComponent(JSON.stringify({promo: register_promotion_code}))
+         *
+         *
+         * 未登录用户
+         * 推广码传递注册用的推广码
+         * &remark=encodeURIComponent(JSON.stringify({promo: 推广码}))
+         */
+        if (!TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK))){
+            serviceLink.append(SPUtils.getInstance().getString(SPKeyGlobal.APP_SERVICE_LINK));
+            String username = SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME );
+            if (TextUtils.isEmpty(username) || username == null){
+                serviceLink.append("&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}");
+            }else
+            {
+                //登录 没有推广码
+                https://ap3sport.oxldkm.com/im/chat?platformCode=THRB&channelLink=OKGV5vPNGc&sid=zfqd2008
+                if (TextUtils.isEmpty(SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)) || SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE) == null){
+                    serviceLink.append("&sid="+SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME));
+                }else{
+                    serviceLink.append("&sid="+SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME)+"&remark={\"promo\"%3A\""+SPUtils.getInstance().getString(SPKeyGlobal.APP_REGISTER_CODE)+"\"}");
+                }
+            }
+        }else {
+            serviceLink.append(Constant.URL_CUSTOMER_SERVICE);
+        }
+        CfLog.e("goCustomerService  ---- serviceLink ==" +serviceLink);
+        if (DomainUtil.getH5Domain2().startsWith("https://")){
+            goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink.toString());
+        }else{
+            FastestTopDomainUtil.getInstance().start();
+            if (DomainUtil.getH5Domain2().startsWith("https://")){
+                goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink.toString());
+            }else {
+                CfLog.e("goCustomerServiceWeb ----未获取Https 域名");
+                goBrowser(ctx, DomainUtil.getH5Domain2() + serviceLink.toString());
+            }
+        }
+
+    }
+
 
     public static void goBrowser(Context ctx, String url) {
         if (ctx == null || url == null || url.isEmpty()) {
@@ -123,7 +224,26 @@ public class AppUtil {
      * @return true:是 false:否
      */
     public static boolean isMultiSegmentEmail(String num){
-        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$ "; // 多段邮箱
+        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$"; // 多段邮箱
+        return num.matches(regex);
+    }
+
+    /**
+     * 是否是微信号
+     * @return
+     */
+    public static boolean isWechatAccount(String num){
+        String regex = "^[a-zA-Z_-][a-zA-Z0-9_-]{5,19}$"; //
+        return num.matches(regex);
+    }
+
+    /**
+     *是否是支付宝账号,和微信号同样
+     * @param ctx
+     * @param tvw
+     */
+    public static boolean isAlipayAccount(String num){
+        String regex = "^[a-zA-Z_-][a-zA-Z0-9_-]{5,19}$"; //
         return num.matches(regex);
     }
 
@@ -145,6 +265,33 @@ public class AppUtil {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             return "";
+        }
+    }
+
+    public static String getSysName(Context context) {
+        if (isHarmonyServiceInstalled(context)) {
+            return "HarmonyOS";
+        } else {
+            return "Android";
+        }
+    }
+
+    private static boolean isHarmonyServiceInstalled(Context context) {
+        try {
+            context.getPackageManager().getPackageInfo("com.huawei.harmonyos", 0);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static String getDeviceName() {
+        try {
+            String productName = System.getProperty("ro.product.name");
+            return productName != null ? productName : "Unknown";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unknown";
         }
     }
 

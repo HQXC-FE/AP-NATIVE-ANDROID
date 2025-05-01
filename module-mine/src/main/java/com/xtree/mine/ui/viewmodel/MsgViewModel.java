@@ -10,11 +10,12 @@ import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.UuidUtil;
+import com.xtree.base.vo.MsgPersonInfoVo;
+import com.xtree.base.vo.MsgPersonListVo;
 import com.xtree.mine.data.MineRepository;
+import com.xtree.mine.vo.DeleteInterMessage;
 import com.xtree.mine.vo.MsgInfoVo;
 import com.xtree.mine.vo.MsgListVo;
-import com.xtree.mine.vo.MsgPersonInfoVo;
-import com.xtree.mine.vo.MsgPersonListVo;
 import com.xtree.mine.vo.MsgPersonVo;
 import com.xtree.mine.vo.MsgVo;
 
@@ -25,7 +26,6 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.http.BaseResponse2;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -50,7 +50,6 @@ public class MsgViewModel extends BaseViewModel<MineRepository> {
         map.put("page", page);
         map.put("per_page", "10");
         map.put("sort", "-istop,-sendtime");
-
         Disposable disposable = (Disposable) model.getApiService().getMessageList(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
@@ -104,9 +103,10 @@ public class MsgViewModel extends BaseViewModel<MineRepository> {
         addSubscribe(disposable);
     }
 
-    public void getMessagePersonList(String page) {
+    public void getMessagePersonList(String page, String category) {
         HashMap<String, String> map = new HashMap<>();
         map.put("page", page);
+//        map.put("category", category);
 
         Disposable disposable = (Disposable) model.getApiService().getMessagePersonList(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
@@ -169,9 +169,9 @@ public class MsgViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().deletePartPersonInfo(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<BaseResponse2>() {
+                .subscribeWith(new HttpCallBack<DeleteInterMessage>() {
                     @Override
-                    public void onResult(BaseResponse2 vo) {
+                    public void onResult(DeleteInterMessage vo) {
                         ToastUtils.showLong(vo.message);
                         if (vo.msg_type == 1 || vo.msg_type == 2) {
                             return;
@@ -194,9 +194,9 @@ public class MsgViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().deleteAllPersonInfo()
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<BaseResponse2>() {
+                .subscribeWith(new HttpCallBack<DeleteInterMessage>() {
                     @Override
-                    public void onResult(BaseResponse2 vo) {
+                    public void onResult(DeleteInterMessage vo) {
                         ToastUtils.showLong(vo.message);
                         if (vo.msg_type == 1 || vo.msg_type == 2) {
                             return;

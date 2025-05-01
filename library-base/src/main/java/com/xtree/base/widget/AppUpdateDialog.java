@@ -21,6 +21,7 @@ import com.xtree.base.databinding.DialogUpdateBinding;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.StringUtils;
 import com.xtree.base.vo.AppUpdateVo;
 
 import java.io.File;
@@ -64,6 +65,8 @@ public class AppUpdateDialog extends CenterPopupView {
         void onUpdateCancel();
 
         void onUpdateForce(); //强制更新
+
+        //void onDownloadError(final String downUrl);//下载失败 外跳URL
     }
 
     public AppUpdateDialog(@NonNull Context context) {
@@ -103,7 +106,7 @@ public class AppUpdateDialog extends CenterPopupView {
 
     @Override
     protected int getMaxHeight() {
-        return (XPopupUtils.getScreenHeight(getContext()) * 8 / 10);
+        return (XPopupUtils.getScreenHeight(getContext())* 9 / 10);
     }
 
     private void initView() throws IOException {
@@ -114,16 +117,17 @@ public class AppUpdateDialog extends CenterPopupView {
         if (!vo.download_url.startsWith("http")) {
             vo.download_url = DomainUtil.getH5Domain2() + vo.download_url;
         }
-        CfLog.i("download_url: " + vo.download_url);
+        CfLog.e("2--------------------》download_url: " + vo.download_url);
 
         CfLog.i("apkFile: " + apkFile.getAbsolutePath());
         binding = DialogUpdateBinding.bind(findViewById(R.id.ll_root_update));
+        binding.tvwUserVersion.setText(getContext().getString(R.string.txt_user_version)  +StringUtils.getVersionName(getContext()));
         if (!isWeakUpdate) {
             //强更新
             binding.dialogUpdateCancel.setVisibility(View.GONE);
         }
 
-        binding.tvwUpdateVersion.setText(getContext().getString(R.string.txt_update) + " " + vo.version_name);
+        binding.tvwUpdateVersion.setText(getContext().getString(R.string.txt_update_version_tip)  + vo.version_name);
         binding.tvwUpgradeTips.setText(vo.content);
         binding.dialogUpdateCancel.setOnClickListener(v -> {
             mCallBack.onUpdateCancel();
@@ -135,6 +139,7 @@ public class AppUpdateDialog extends CenterPopupView {
             CfLog.e("initView downLoadUrl = " + downLoadUrl);
             binding.tvwTitle.setText(getContext().getString(R.string.txt_update_tip));
             binding.tvwUpdateVersion.setVisibility(View.INVISIBLE);
+            binding.tvwUserVersion.setVisibility(View.INVISIBLE);
             binding.dialogUpdateConfirm.setVisibility(View.INVISIBLE);
 
             binding.linearLayout.setVisibility(View.INVISIBLE);
@@ -149,6 +154,10 @@ public class AppUpdateDialog extends CenterPopupView {
             binding.dialogUpdateTip.setOnClickListener(v1 -> {
                 if (!TextUtils.isEmpty(vo.download_url)) {
                     AppUtil.goBrowser(getContext(), vo.download_url);
+                    if(isWeakUpdate){
+                        //弱更 外挑之后 取消弹窗
+                        dismiss();
+                    }
                 } else {
                     CfLog.e("****************  download url is null *********** ");
                 }
@@ -167,6 +176,7 @@ public class AppUpdateDialog extends CenterPopupView {
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case DOWN_START:
+                   // mCallBack.onDownloadError(vo.download_url);
                     downloadApk();
                     break;
                 case DOWN_UPDATE:
@@ -183,7 +193,9 @@ public class AppUpdateDialog extends CenterPopupView {
                     break;
                 case DOWN_FAIL:
                     ToastUtils.showSuccess(getContext().getString(R.string.txt_update_down_fail_tip));
-                    dismiss();
+                    //mCallBack.onDownloadError(vo.download_url);
+
+                    //dismiss();
                     break;
                 default:
                     break;
@@ -281,6 +293,10 @@ public class AppUpdateDialog extends CenterPopupView {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         context.startActivity(intent);
+        if (isWeakUpdate){
+            dismiss();
+        }
+
         //修复 HQAP2-4223 待验证
         //android.os.Process.killProcess(android.os.Process.myPid());
 

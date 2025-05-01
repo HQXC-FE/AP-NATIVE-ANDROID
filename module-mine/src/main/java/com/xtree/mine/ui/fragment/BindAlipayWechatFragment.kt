@@ -65,14 +65,15 @@ class BindAlipayWechatFragment : BaseFragment<FragmentBindAwBinding, BindCardVie
                     when (mark) {
                         getString(R.string.txt_bind_zfb_type) -> {
                             binding2.tvwUserName.text = vo.user_id
+                            //wxzfb_id
                             binding2.tvDefaultAlipayPayCode.setText(R.string.txt_alipay_phone)
                             binding2.tvDefaultAlipayName.setText(R.string.txt_alipay_name_1)
 
                             binding2.ivBankIcon.setImageResource(R.mipmap.mine_default_alipay)
 
-                           /* binding2.tvName.setText(R.string.txt_alipay_name)
-                            binding2.tvNickname.setText(R.string.txt_alipay_nickname)
-                            binding2.tvCode.setText(R.string.txt_alipay_code)*/
+//                            binding2.tvName.setText(R.string.txt_alipay_name)
+                            binding2.tvDefaultAlipayNickName.setText(R.string.txt_alipay_nickname)
+//                            binding2.tvCode.setText(R.string.txt_alipay_code)
                         }
 
                         getString(R.string.txt_bind_wechat_type) -> {
@@ -81,18 +82,19 @@ class BindAlipayWechatFragment : BaseFragment<FragmentBindAwBinding, BindCardVie
                             binding2.tvDefaultAlipayPayCode.setText(R.string.txt_wechat_code)
                             binding2.tvDefaultAlipayName.setText(R.string.txt_wechat_name_1)
                             binding2.ivBankIcon.setImageResource(R.mipmap.mine_default_wechat)
-                            /*binding2.tvName.setText(R.string.txt_wechat_name)
-                            binding2.tvNickname.setText(R.string.txt_wechat_nickname)
-                            binding2.tvCode.setText(R.string.txt_wechat_code)*/
+//                            binding2.tvName.setText(R.string.txt_wechat_name)
+                            binding2.tvDefaultAlipayNickName.setText(R.string.txt_wechat_nickname)
+//                            binding2.tvCode.setText(R.string.txt_wechat_code)
                         }
                     }
-
+                    binding2.tvwUserName.text = vo.wxzfb_id
                     binding2.tvName.text = vo.wxzfb_username
                     binding2.tvNicknameContent.text = vo.nickname
                     binding2.tvwBindTime.text = vo.utime
-                    binding2.tvwRebind.setOnClickListener {
+                    //HQAP2-5517 需求隐藏 重新绑定按钮
+                    /*binding2.tvwRebind.setOnClickListener {
                         showRebindDialog()
-                    }
+                    }*/
                     binding2.ivCode.setOnClickListener {
                         XPopup.Builder(context)
                             .asCustom(ImageDialog(requireContext(), DomainUtil.getH5Domain2() + vo.qrcode_url,needToken = true))

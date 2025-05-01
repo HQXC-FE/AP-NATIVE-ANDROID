@@ -1,5 +1,7 @@
 package com.xtree.mine.ui.viewmodel;
 
+import static com.xtree.base.utils.EventConstant.EVENT_LOG_OUT;
+
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -16,6 +18,7 @@ import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.RetrofitClient;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.mine.R;
 import com.xtree.mine.data.MineRepository;
@@ -24,6 +27,8 @@ import com.xtree.mine.vo.LoginResultVo;
 import com.xtree.mine.vo.UserUsdtJumpVo;
 import com.xtree.mine.vo.VerificationCodeVo;
 import com.xtree.mine.vo.VerifyVo;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
 
@@ -414,7 +419,7 @@ public class VerifyViewModel extends BaseViewModel<MineRepository> {
         SPUtils.getInstance().remove(SPKeyGlobal.USER_NAME);
         SPUtils.getInstance().remove(SPKeyGlobal.MSG_PERSON_INFO);
         RetrofitClient.init();
-
+        EventBus.getDefault().post(new EventVo(EVENT_LOG_OUT, ""));
     }
 
     public void goOthers(Activity ctx, String type, VerifyVo vo) {
@@ -476,6 +481,11 @@ public class VerifyViewModel extends BaseViewModel<MineRepository> {
                 title = ctx.getString(R.string.txt_bind_okpay); //"绑定OKPAY";
                 remind = ctx.getString(R.string.txt_remind_okpay);
                 //url = DomainUtil.getDomain2() + "/user/userokpayinfo?check=" + vo.tokenSign + "&mark=" + vo.mark;
+                break;
+            case Constant.BIND_BOBI:
+                title = ctx.getString(R.string.txt_bind_bobi); //"绑定BOBI";
+                remind = ctx.getString(R.string.txt_remind_bobi);
+                //url = DomainUtil.getDomain2() + "/user/userbobiinfo?check=" + vo.tokenSign + "&mark=" + vo.mark;
                 break;
             case Constant.BIND_ALIPAY:
             case Constant.BIND_WECHAT:

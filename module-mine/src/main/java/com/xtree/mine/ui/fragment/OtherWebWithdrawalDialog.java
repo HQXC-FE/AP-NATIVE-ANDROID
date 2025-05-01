@@ -1,5 +1,7 @@
 package com.xtree.mine.ui.fragment;
 
+import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH;
+
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,6 +10,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -31,7 +35,9 @@ import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.StringUtils;
+import com.xtree.base.vo.EventVo;
 import com.xtree.base.widget.GlideEngine;
 import com.xtree.base.widget.ImageFileCompressEngine;
 import com.xtree.base.widget.LoadingDialog;
@@ -47,6 +53,10 @@ import com.xtree.mine.vo.WithdrawVo.WithdrawalInfoVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalListVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalSubmitVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalVerifyVo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -114,11 +124,20 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
     @Override
     protected void onCreate() {
         super.onCreate();
+        EventBus.getDefault().register(this);
+        FightFanZhaUtils.init();
         initView();
         initData();
         initViewObservable();
         requestData();
 
+    }
+
+    @Override
+    public void onDestroy() {
+        FightFanZhaUtils.reset();
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void initView() {
@@ -217,8 +236,20 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
     private void initOtherWebView(final WithdrawalInfoVo vo) {
         //成功状态
         String url = vo.fast_iframe_url;
-        if (!StringUtils.isStartHttp(url)) {
-            url = DomainUtil.getH5Domain2() + url;
+//        if (!StringUtils.isStartHttp(url)) {
+//            url = DomainUtil.getH5Domain2() + url;
+//        }
+        if (!TextUtils.isEmpty(url)&&!url.startsWith("http")) {
+            String separator;
+            if (DomainUtil.getH5Domain2().endsWith("/") && url.startsWith("/")) {
+                url = url.substring(1);
+                separator = "";
+            } else if (DomainUtil.getH5Domain2().endsWith("/") || url.startsWith("/")) {
+                separator = "";
+            } else {
+                separator = File.separator;
+            }
+            url = DomainUtil.getH5Domain2() + separator + url;
         }
         jumpUrl = url;
 
@@ -230,6 +261,26 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
         binding.nsH5View.loadUrl(url, getHeader());
         this.initWebView(binding.nsH5View);
         binding.nsH5View.setWebViewClient(new WebViewClient() {
+
+
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
+                if(FightFanZhaUtils.checkRequest(getContext(),webResourceRequest,false,jumpUrl)){
+                    return FightFanZhaUtils.replaceLoadingHtml(false);
+                }
+                return super.shouldInterceptRequest(webView, webResourceRequest);
+            }
+
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                if(FightFanZhaUtils.checkRequest(getContext(),request,false,jumpUrl)){
+                    return false;
+                }
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // LoadingDialog.show(getContext());
@@ -252,6 +303,13 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
 
         // 上传文件
         binding.nsH5View.setWebChromeClient(new WebChromeClient() {
+
+            @Override
+            public void onReceivedTitle(WebView webView, String s) {
+                super.onReceivedTitle(webView, s);
+                FightFanZhaUtils.checkHeadTitle(webView,s,false,jumpUrl);
+            }
+
 
             /**
              * For Android >= 4.1
@@ -289,6 +347,27 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
         });
 
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventVo event) {
+        switch (event.getEvent()) {
+            case EVENT_CHANGE_URL_FANZHA_FINSH:
+                //只有自己的h5域名站作更换域名，重新Load
+                String newBaseUrl = DomainUtil.getH5Domain2();
+                if(TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(jumpUrl)){
+                    return;
+                }
+                String oldBaseUrl = FightFanZhaUtils.getDomain(jumpUrl);
+                if(!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)){
+                    return;
+                }
+                String goUrl = jumpUrl.replace(oldBaseUrl,newBaseUrl);
+                CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
+                binding.nsH5View.loadUrl(goUrl, getHeader());
+                break;
+        }
+    }
+
 
     /**
      * 图片选择

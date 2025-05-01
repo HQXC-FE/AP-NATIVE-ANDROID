@@ -16,6 +16,7 @@ public class FBListReq {
     private int orderBy;
     private boolean isPC = true;
     private int oddType = 1;
+    private String _accessToken;
 
     public String getSportId() {
         return sportId;
@@ -113,6 +114,14 @@ public class FBListReq {
         this.oddType = oddType;
     }
 
+    public String getToken() {
+        return this._accessToken;
+    }
+
+    public void setToken(String token) {
+        this._accessToken = token;
+    }
+
     @Override
     public String toString() {
         return "FBListReq{" +
@@ -129,6 +138,7 @@ public class FBListReq {
                 ", orderBy=" + orderBy +
                 ", isPC=" + isPC +
                 ", oddType=" + oddType +
+                ", _accessToken=" + _accessToken +
                 '}';
     }
 }

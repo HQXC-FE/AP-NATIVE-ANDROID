@@ -1,5 +1,8 @@
 package com.xtree.bet.ui.viewmodel;
 
+import com.xtree.bet.constant.SportTypeItem;
+
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -48,22 +51,26 @@ public interface MainViewModel {
     void getOnSaleLeagues(int sportId, int type);
 
     /**
+     * 获取赛果配置参数
+     */
+    void postMerchant();
+
+    /**
+     * 获取赛事赛果列表
+     */
+    void matchResultPage(String beginTime, String endTime, int playMethodPos, String sportId) ;
+
+    /**
      * 获取玩法类型列表
      * @return
      */
     String[] getPlayMethodTypes();
 
     /**
-     * 获取体育赛事类型ID，如足球，篮球等
+     * 获取体育彩种所有数据
      * @return
      */
-    String[] getSportId(int playMethodType);
-
-    /**
-     * 获取体育赛事类型名称，如足球，篮球等
-     * @return
-     */
-    String[] getSportName(int playMethodType);
+    HashMap<Integer, SportTypeItem> getMatchGames();
 
     /**
      * 获取用户余额

@@ -2,6 +2,7 @@ package com.xtree.home.data.source;
 
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.FBService;
+import com.xtree.base.vo.MsgPersonListVo;
 import com.xtree.base.vo.PMService;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.home.vo.AugVo;
@@ -10,7 +11,6 @@ import com.xtree.home.vo.CookieVo;
 import com.xtree.home.vo.DataVo;
 import com.xtree.home.vo.EleVo;
 import com.xtree.home.vo.GameStatusVo;
-import com.xtree.home.vo.LoginResultVo;
 import com.xtree.home.vo.NoticeVo;
 import com.xtree.home.vo.PaymentDataVo;
 import com.xtree.home.vo.PublicDialogVo;
@@ -26,8 +26,6 @@ import java.util.Map;
 import io.reactivex.Flowable;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -36,10 +34,6 @@ import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 public interface HomeApiService {
-
-    @FormUrlEncoded
-    @POST("/api/auth/login")
-    Flowable<BaseResponse<Object>> login(@Field("username") String username, @Field("password") String password);
 
     /**
      * 获取 banner列表
@@ -85,13 +79,6 @@ public interface HomeApiService {
     Flowable<BaseResponse<SettingsVo>> getSettings(@QueryMap(encoded = true) Map<String, String> filters);
 
     /**
-     * 登录
-     */
-    @POST("/api/auth/login")
-    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<LoginResultVo>> login(@Body Map<String, String> map);
-
-    /**
      * 获取 cookie,session
      */
     @GET("/api/auth/sessid?client_id=10000005")
@@ -102,6 +89,12 @@ public interface HomeApiService {
      */
     @GET("/api/account/profile")
     Flowable<BaseResponse<ProfileVo>> getProfile();
+
+    /**
+     * 获取 个人消息未读数
+     */
+    @GET("/api/message/list?page=1&per_page=100&is_unread=1")
+    Flowable<BaseResponse<MsgPersonListVo>> getMessagePersonList();
 
     /**
      * 获取 VIP信息
@@ -185,5 +178,13 @@ public interface HomeApiService {
      */
     @GET("/api/deposit/payments?")
     Flowable<BaseResponse<PaymentDataVo.RechargeVo>> getPayment(@Query("bid") String bid);
+
+    /**
+     * 异常日志上报
+     * @return
+     */
+    @POST("/api/sports/excaption")
+    @Headers({"Content-Type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<String>> uploadExcetion(@Body Map<String, String> map);
 
 }

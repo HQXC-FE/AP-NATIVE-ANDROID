@@ -346,6 +346,7 @@
                         android:text="登录TOKEN：" />
                 </LinearLayout>
 
+
                 <TextView
                     android:id="@+id/tvw_token"
                     style="@style/style_item_report_value"
@@ -355,6 +356,18 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     tools:text="Demo" />
+
+                <LinearLayout style="@style/style_item_ll_row_0">
+
+                    <TextView
+                        style="@style/style_item_report_title"
+                        android:id="@+id/tv_statFz"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_weight="0"
+                        android:textStyle="bold"
+                        android:text="反诈模拟/长按是dialog/点按是activity" />
+                </LinearLayout>
+
 
                 <LinearLayout style="@style/style_item_ll_row_0">
 
@@ -438,6 +451,36 @@
                         android:layout_marginStart="@dimen/layout_margin"
                         android:layout_marginEnd="@dimen/layout_margin"
                         android:hint="请输入域名"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="https://apptest.oxldkm.com" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/style_item_ll_row_0">
+
+                    <CheckBox
+                        android:id="@+id/tvw_fastest_monitor_timeout"
+                        style="@style/style_item_report_value"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:layout_weight="2"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="配置测速超时上传时间"
+                        android:textColor="@color/clr_blue_03" />
+
+                    <EditText
+                        android:id="@+id/edt_fastest_monitor_timeout"
+                        style="@style/style_item_report_value"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:inputType="number"
+                        android:maxEms="14"
+                        android:hint="请输入时间(ms)"
                         android:paddingTop="6dp"
                         android:paddingBottom="6dp"
                         android:text="https://apptest.oxldkm.com" />

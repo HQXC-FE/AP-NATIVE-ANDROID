@@ -59,16 +59,36 @@ public class MsgFragment extends BaseFragment<FragmentMsgBinding, MsgViewModel> 
 
         MsgListFragment bindMsgFragment = new MsgListFragment();
         MsgPersonListFragment bindMsgPersonFragment = new MsgPersonListFragment();
+        MsgPersonListFragment bindMsgSysFragment = new MsgPersonListFragment();
+
+        //代表, 1:通知公告 2:推广活动 3:系统讯息 (站内信UI先暂时改回之前的，后面可能会优化回来)
+        Bundle argPerson = new Bundle();
+        argPerson.putInt("category", 2);
+        bindMsgPersonFragment.setArguments(argPerson);
+
+        Bundle argSys = new Bundle();
+        argSys.putInt("category", 3);
+        bindMsgSysFragment.setArguments(argSys);
 
         String txtMsg = getString(R.string.txt_msg_message);
         String txtMsgPerson = getString(R.string.txt_msg_message_person);
+        String txtMsgPromote = getString(R.string.txt_msg_message_promote);
+        String txtMsgSys = getString(R.string.txt_msg_message_sys);
 
         fragmentList.add(bindMsgFragment);
-        fragmentList.add(bindMsgPersonFragment);
+//        fragmentList.add(bindMsgPersonFragment);
+        fragmentList.add(bindMsgSysFragment);
         tabList.add(txtMsg);
+//        tabList.add(txtMsgPromote);
         tabList.add(txtMsgPerson);
 
         mAdapter.notifyDataSetChanged();
+        int isMsgPerson = getArguments().getInt("isMsgPerson", 0);
+        if (isMsgPerson == 1) {
+            binding.vpMain.setCurrentItem(1);
+        } else if (isMsgPerson == 2) {
+            binding.vpMain.setCurrentItem(2);
+        }
     }
 
     @Override

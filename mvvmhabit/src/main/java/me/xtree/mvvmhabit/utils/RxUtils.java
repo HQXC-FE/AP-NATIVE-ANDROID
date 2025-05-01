@@ -1,18 +1,12 @@
 package me.xtree.mvvmhabit.utils;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 
 import com.trello.rxlifecycle4.LifecycleProvider;
 import com.trello.rxlifecycle4.LifecycleTransformer;
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.reactivestreams.Publisher;
 
@@ -24,13 +18,12 @@ import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
 import me.xtree.mvvmhabit.http.BaseResponse;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.http.ExceptionHandle;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
 
 /**
  * Created by goldze on 2017/6/19.
@@ -161,7 +154,7 @@ public class RxUtils {
                             if (response.isOk()) {
                                 return Flowable.just(response.getData());
                             } else {
-                                return Flowable.error(new ResponseThrowable(response.getCode(), response.getMessage()));
+                                return Flowable.error(new BusinessException(response.getCode(), response.getMessage()));
                             }
                         }).onErrorResumeNext(new HttpResponseFunc<>());
     }

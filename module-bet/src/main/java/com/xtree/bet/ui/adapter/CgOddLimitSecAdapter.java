@@ -19,6 +19,7 @@ import com.xtree.bet.weight.CgOddLimitView;
 import com.xtree.bet.weight.KeyboardView;
 
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -69,7 +70,8 @@ public class CgOddLimitSecAdapter extends CgOddLimitView.Adapter<CgOddLimit> {
             itemView.findViewById(R.id.csl_cg_dan).setVisibility(View.GONE);
             itemView.findViewById(R.id.csl_cg_cc).setVisibility(View.VISIBLE);
             EditText etAmount = itemView.findViewById(R.id.et_bt_amount_cc);
-            etAmount.setHint("限制" + cgOddLimit.getCMin() + "-" + cgOddLimit.getCMax());
+            String max = BigDecimal.valueOf(cgOddLimit.getCMax()).toPlainString();
+            etAmount.setHint("限制" + cgOddLimit.getCMin() + "-" + max);
             etAmount.setEnabled(cgOddLimit.getCMin() > 0 && cgOddLimit.getCMax() > 0);
             if (sizeChange) {
                 itemView.findViewById(R.id.csl_win_cc).setVisibility(View.GONE);
@@ -99,7 +101,6 @@ public class CgOddLimitSecAdapter extends CgOddLimitView.Adapter<CgOddLimit> {
                 public void afterTextChanged(Editable editable) {
                     textChanged(etAmount, etAmount.getText(), cgOddLimit, cgOddLimit.getCMin(), cgOddLimit.getCMax(), cgOddLimit.getCOdd(),
                             R.string.bt_bt_win, R.string.bt_bt_pay, itemView.findViewById(R.id.tv_win_cc), itemView.findViewById(R.id.tv_pay_cc), itemView.findViewById(R.id.csl_win_cc));
-                    etAmount.setSelection(TextUtils.isEmpty(etAmount.getText()) ? 0 : etAmount.getText().toString().length());
                 }
             });
             disableShowInput(etAmount);
@@ -130,7 +131,8 @@ public class CgOddLimitSecAdapter extends CgOddLimitView.Adapter<CgOddLimit> {
             itemView.findViewById(R.id.csl_cg_dan).setVisibility(View.VISIBLE);
             itemView.findViewById(R.id.csl_cg_cc).setVisibility(View.GONE);
             EditText etAmount = itemView.findViewById(R.id.et_bt_amount_dan);
-            etAmount.setHint("限制" + cgOddLimit.getDMin() + "-" + cgOddLimit.getDMax());
+            String max = BigDecimal.valueOf(cgOddLimit.getDMax()).toPlainString();
+            etAmount.setHint("限制" + cgOddLimit.getDMin() + "-" + max);
             etAmount.setEnabled(cgOddLimit.getDMin() > 0 || cgOddLimit.getDMax() > 0);
 
             etAmount.addTextChangedListener(new TextWatcher() {
@@ -148,7 +150,6 @@ public class CgOddLimitSecAdapter extends CgOddLimitView.Adapter<CgOddLimit> {
                 public void afterTextChanged(Editable editable) {
                     textChanged(etAmount, etAmount.getText(), cgOddLimit, cgOddLimit.getDMin(), cgOddLimit.getDMax(), cgOddLimit.getDOdd(),
                             R.string.bt_bt_win, R.string.bt_bt_pay_1, itemView.findViewById(R.id.tv_win_dan), itemView.findViewById(R.id.tv_pay_dan), itemView.findViewById(R.id.csl_win_dan));
-                    etAmount.setSelection(TextUtils.isEmpty(etAmount.getText()) ? 0 : etAmount.getText().toString().length());
                 }
             });
             disableShowInput(etAmount);
@@ -213,7 +214,6 @@ public class CgOddLimitSecAdapter extends CgOddLimitView.Adapter<CgOddLimit> {
                         }
                         ((BaseActivity) mContext).runOnUiThread(() -> {
                             etAmount.setText(NumberUtils.format(minValue, 0));
-                            //etAmount.setSelection(String.valueOf(minValue).length());
 
                             tvWin.setText(mContext.getResources().getString(winResStringId, NumberUtils.format(odd * minValue - amount, 2)));
                             tvPay.setText(mContext.getResources().getString(payResStringId, NumberUtils.format(minValue * cgOddLimit.getBtCount(), 2)));
@@ -227,7 +227,6 @@ public class CgOddLimitSecAdapter extends CgOddLimitView.Adapter<CgOddLimit> {
 
             } else if (amount > maxValue) {
                 etAmount.setText(NumberUtils.format(maxValue, 0));
-                //etAmount.setSelection(String.valueOf(maxValue).length());
                 tvWin.setText(mContext.getResources().getString(winResStringId, NumberUtils.format(odd * maxValue - maxValue, 2)));
                 tvPay.setText(mContext.getResources().getString(payResStringId, NumberUtils.format(maxValue * cgOddLimit.getBtCount(), 2)));
             } else {

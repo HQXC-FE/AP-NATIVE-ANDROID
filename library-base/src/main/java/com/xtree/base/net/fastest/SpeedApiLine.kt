@@ -16,7 +16,7 @@ object SpeedApiLine : ChangeLine() {
             "event_change_api_line_successed",
             "切换API线路成功"
         )
-        runMain { ToastUtils.showShort("切换线路成功") }
+        //runMain { ToastUtils.showShort("切换线路成功") }
     }
 
     override fun onFailed() {

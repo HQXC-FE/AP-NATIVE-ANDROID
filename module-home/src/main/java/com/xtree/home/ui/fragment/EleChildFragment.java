@@ -106,13 +106,13 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
                     if (ClickUtil.isFastClick()) {
                         return;
                     }
-                    if (gameVo.cid == 43) {
-                        viewModel.getPlayUrl("addz", vo1.getCode(), vo1.getName());
+                    if (gameVo.cid == 52) {
+                        viewModel.getPlayUrl("odin", String.valueOf(vo1.getId()), vo1.getName());
                     } else {
                         CfLog.i(vo1.toString());
                         String eventName = gameVo.name != null && gameVo.name.length() > 2 ? gameVo.name.substring(0, 2) : "gm2";
                         TagUtils.tagEvent(getContext(), eventName, vo1.getId()); // 打点
-                        BrowserActivity.start(getContext(), gameVo.name, DomainUtil.getH5Domain() + gameVo.playURL + vo1.getId(), false, true);
+                        BrowserActivity.start(getContext(), gameVo.name, vo1.getName(), DomainUtil.getH5Domain() + gameVo.playURL + vo1.getId(), false, true);
                     }
                 });
             }
@@ -145,7 +145,7 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
             String name = Objects.requireNonNull(map.get("name")).toString();
             // 跳转到游戏H5
             CfLog.i("URL: " + url);
-            BrowserActivity.start(getContext(), name, url, false, true);
+            BrowserActivity.startThirdDomain(getContext(), name, url, gameVo.name);
         });
     }
 

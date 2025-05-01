@@ -1,12 +1,13 @@
 package com.xtree.base.widget;
 
+import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FAILED;
 import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FINISH;
+import static com.xtree.base.utils.EventConstant.EVENT_UPLOAD_EXCEPTION;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
@@ -18,10 +19,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,23 +41,27 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.just.agentweb.AgentWeb;
+import com.just.agentweb.AgentWebConfig;
 import com.just.agentweb.WebChromeClient;
 import com.just.agentweb.WebViewClient;
 import com.luck.picture.lib.basic.PictureSelector;
 import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
+import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.EventVo;
-import com.xtree.weight.TopSpeedDomainFloatingWindows;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -77,13 +86,15 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 @Route(path = RouterActivityPath.Widget.PAGER_BROWSER)
 public class BrowserActivity extends AppCompatActivity {
     public static final String ARG_TITLE = "title";
+    public static final String ARG_PARENT_TITLE = "parentTitle";
     public static final String ARG_URL = "url";
     public static final String ARG_IS_CONTAIN_TITLE = "isContainTitle";
     public static final String ARG_IS_SHOW_LOADING = "isShowLoading";
     public static final String ARG_IS_GAME = "isGame";
+    public static final String ARG_IS_THIRD = "isThirdDomain";
     public static final String ARG_IS_LOTTERY = "isLottery";
-    public static final String ARG_IS_3RD_LINK = "is3rdLink";
     public static final String ARG_IS_HIDE_TITLE = "isHideTitle";
+    public static final String ARG_IS_FB = "isFB";
     public static final String ARG_SEARCH_DNS_URL = "https://dns.alidns.com/dns-query";
 
     View vTitle;
@@ -99,18 +110,17 @@ public class BrowserActivity extends AppCompatActivity {
     ImageView ivwJump;
     View layoutRight;
 
-    int sslErrorCount = 0;
-
     boolean isLottery = false; // 是否彩票, 彩票需要header,需要注入IOS标题头样式
     boolean isShowLoading = false; // 展示loading弹窗
     boolean isHideTitle = false; // 是否隐藏标题
 
     String title = "";
+    String parentTitle = "";
     String url = "";
     boolean isContainTitle = false; // 网页自身是否包含标题(少数情况下会包含)
     boolean isGame = false; // 三方游戏, 不需要header和token
-    boolean is3rdLink = false; // 是否跳转到三方链接(如果是,就不用带header和cookie了)
-    boolean isFirstLoad = true; // 是否头一次打开当前网页,加载cookie时用
+    boolean isThirdDomain = false; // 是否是三方域名的三方游戏
+    boolean isFB = false; // 是否是FB普通版
     boolean isFirstOpenBrowser = true; // 是否第一次打开webView组件(解决第一次打开webView时传递header/cookie/token失效)
     String token; // token
 
@@ -121,19 +131,28 @@ public class BrowserActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        title = getIntent().getStringExtra(ARG_TITLE);
+        //BBIN电子和JDB电子需要横竖屏切换，因为有横屏游戏
+        if (TextUtils.equals(title, "BBIN电子") || TextUtils.equals(title, "JDB电子")) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
 
         EventBus.getDefault().register(this);
-
+        FightFanZhaUtils.init();
         initView();
-        title = getIntent().getStringExtra(ARG_TITLE);
+
         isContainTitle = getIntent().getBooleanExtra(ARG_IS_CONTAIN_TITLE, false);
         isShowLoading = getIntent().getBooleanExtra(ARG_IS_SHOW_LOADING, false);
         isGame = getIntent().getBooleanExtra(ARG_IS_GAME, false);
+        isThirdDomain = getIntent().getBooleanExtra(ARG_IS_THIRD, false);
+        parentTitle = getIntent().getStringExtra(ARG_PARENT_TITLE);
         isLottery = getIntent().getBooleanExtra(ARG_IS_LOTTERY, false);
-        is3rdLink = getIntent().getBooleanExtra(ARG_IS_3RD_LINK, false);
         isHideTitle = getIntent().getBooleanExtra(ARG_IS_HIDE_TITLE, false);
+        isFB = getIntent().getBooleanExtra(ARG_IS_FB, false);
         token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
         isFirstOpenBrowser = SPUtils.getInstance().getBoolean(SPKeyGlobal.IS_FIRST_OPEN_BROWSER, true);
 
@@ -177,12 +196,12 @@ public class BrowserActivity extends AppCompatActivity {
             header.put("Cache-Control", "no-cache");
             header.put("Pragme", "no-cache");
         }
-//        header.put("Content-Type", "application/vnd.sc-api.v1.json");
-//        header.put("App-RNID", "87jumkljo"); //
+        //header.put("Content-Type", "application/vnd.sc-api.v1.json");
+        //header.put("App-RNID", "87jumkljo"); //
 
         //header.put("Source", "8");
         //header.put("UUID", TagUtils.getDeviceId(Utils.getContext()));
-        if (isGame || is3rdLink) {
+        if (isGame) {
             CfLog.d("not need header.");
             header.clear(); // 游戏 header和cookie只带其中一个即可; FB只能带cookie
         }
@@ -226,6 +245,11 @@ public class BrowserActivity extends AppCompatActivity {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_loading);
         animation.setRepeatMode(Animation.RESTART);
         animation.setDuration(20 * 1000);
+
+        //todo test
+        if (BuildConfig.DEBUG && FightFanZhaUtils.isOpenTest) {
+            FightFanZhaUtils.mockJumpFanZha(agentWeb.getWebCreator().getWebView(), url);
+        }
     }
 
     private void initView() {
@@ -257,6 +281,11 @@ public class BrowserActivity extends AppCompatActivity {
         cookieManager.setCookie(url, "auth=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN) + ";" + "_sessionHandler=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID));
         cookieManager.flush();
 
+        // debug模式
+        if (BuildConfig.DEBUG) {
+            AgentWebConfig.debug();
+        }
+
         agentWeb = AgentWeb.with(this)
                 .setAgentWebParent(findViewById(R.id.wv_main), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
                 .useDefaultIndicator() // 使用默认的加载进度条
@@ -264,6 +293,13 @@ public class BrowserActivity extends AppCompatActivity {
                 .setWebViewClient(new CustomWebViewClient()) // 设置 WebViewClient
                 .addJavascriptInterface("android", new WebAppInterface(this, ivwBack, getCallBack()))
                 .setWebChromeClient(new WebChromeClient() {
+
+                    @Override
+                    public void onReceivedTitle(WebView webView, String s) {
+                        super.onReceivedTitle(webView, s);
+                        FightFanZhaUtils.checkHeadTitle(webView, s, isGame, url);
+                    }
+
                     @Override
                     public void onProgressChanged(WebView view, int newProgress) {
                         super.onProgressChanged(view, newProgress);
@@ -271,6 +307,15 @@ public class BrowserActivity extends AppCompatActivity {
                         if (newProgress > 75) {
                             LoadingDialog.finish();
                         }
+                    }
+
+                    // debug模式
+                    @Override
+                    public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                        CfLog.d("AgentWeb", consoleMessage.message() + " -- From line "
+                                + consoleMessage.lineNumber() + " of "
+                                + consoleMessage.sourceId());
+                        return true;
                     }
 
                     /**
@@ -302,6 +347,11 @@ public class BrowserActivity extends AppCompatActivity {
                 .ready()
                 .go(url); // 加载网页
 
+        WebView webView = agentWeb.getWebCreator().getWebView();
+        WebSettings webSettings = webView.getSettings();
+        if (!isFB) {
+            webSettings.setUserAgentString(WebSettings.getDefaultUserAgent(this) + " Chrome/100.0.4896.127 Mobile Safari/537.36");
+        }
     }
 
     /**
@@ -396,22 +446,6 @@ public class BrowserActivity extends AppCompatActivity {
         LoadingDialog.finish();
     }
 
-    private void tipSsl(WebView view, SslErrorHandler handler) {
-        Activity activity = (Activity) view.getContext();
-        activity.runOnUiThread(() -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            builder.setMessage(R.string.ssl_failed_will_u_continue); // SSL认证失败，是否继续访问？
-            builder.setPositiveButton(R.string.ok, (dialog, which) -> handler.proceed()); // 接受https所有网站的证书
-
-            builder.setNegativeButton(R.string.cancel, (dialog, which) -> handler.cancel());
-
-            AlertDialog dialog = builder.create();
-            if (!isFinishing()) {
-                dialog.show();
-            }
-        });
-    }
-
     /**
      * 图片选择
      */
@@ -450,31 +484,6 @@ public class BrowserActivity extends AppCompatActivity {
 
                     }
                 });
-    }
-
-    private void setCookie(String cookie, String url) {
-        CookieSyncManager.createInstance(this);
-        CookieManager cm = CookieManager.getInstance();
-        cm.removeSessionCookies(null);
-        cm.removeAllCookies(null);
-        cm.flush();
-        //cm.removeSessionCookie();
-        //CookieSyncManager.getInstance().sync();
-        cm.setAcceptCookie(true);
-        cm.setCookie(url, cookie);
-    }
-
-    private void setWebCookie() {
-        CfLog.i("******");
-        if (isLottery) {
-            setLotteryCookieInside();
-        } else if (is3rdLink) {
-            CfLog.d("not need cookie.");
-        } else {
-            if (!TextUtils.isEmpty(token)) {
-                setCookieInside();
-            }
-        }
     }
 
     private void setCookieInside() {
@@ -577,19 +586,11 @@ public class BrowserActivity extends AppCompatActivity {
         ctx.startActivity(it);
     }
 
-    public static void start(Context ctx, String title, String url) {
+    public static void start(Context ctx, String parentTitle, String title, String url, boolean isContainTitle, boolean isGame) {
         CfLog.i(title + ", isContainTitle: " + false + ", url: " + url);
         Intent it = new Intent(ctx, BrowserActivity.class);
         it.putExtra(ARG_TITLE, title);
-        it.putExtra(ARG_URL, url);
-        it.putExtra(ARG_IS_CONTAIN_TITLE, false);
-        ctx.startActivity(it);
-    }
-
-    public static void start(Context ctx, String title, String url, boolean isContainTitle, boolean isGame) {
-        CfLog.i(title + ", isContainTitle: " + false + ", url: " + url);
-        Intent it = new Intent(ctx, BrowserActivity.class);
-        it.putExtra(ARG_TITLE, title);
+        it.putExtra(ARG_PARENT_TITLE, parentTitle);
         it.putExtra(ARG_URL, url);
         it.putExtra(ARG_IS_CONTAIN_TITLE, isContainTitle);
         it.putExtra(ARG_IS_GAME, isGame);
@@ -616,6 +617,38 @@ public class BrowserActivity extends AppCompatActivity {
         ctx.startActivity(it);
     }
 
+    public static void startThirdDomain(Context ctx, String title, String playUrl) {
+        CfLog.i("URL: " + playUrl);
+        Intent it = new Intent(ctx, BrowserActivity.class);
+        it.putExtra(ARG_URL, playUrl);
+        it.putExtra(ARG_TITLE, title);
+        it.putExtra(ARG_IS_THIRD, true);
+        it.putExtra(BrowserActivity.ARG_IS_GAME, true);
+        ctx.startActivity(it);
+    }
+
+    public static void startThirdDomain(Context ctx, String title, String playUrl, String parentTitle) {
+        CfLog.i("URL: " + playUrl);
+        Intent it = new Intent(ctx, BrowserActivity.class);
+        it.putExtra(ARG_URL, playUrl);
+        it.putExtra(ARG_TITLE, title);
+        it.putExtra(ARG_PARENT_TITLE, parentTitle);
+        it.putExtra(ARG_IS_THIRD, true);
+        it.putExtra(BrowserActivity.ARG_IS_GAME, true);
+        ctx.startActivity(it);
+    }
+
+    public static void startThirdDomain(Context ctx, String title, String playUrl, boolean isFB) {
+        CfLog.i("URL: " + playUrl);
+        Intent it = new Intent(ctx, BrowserActivity.class);
+        it.putExtra(ARG_URL, playUrl);
+        it.putExtra(ARG_TITLE, title);
+        it.putExtra(ARG_IS_THIRD, true);
+        it.putExtra(ARG_IS_FB, isFB);
+        it.putExtra(BrowserActivity.ARG_IS_GAME, true);
+        ctx.startActivity(it);
+    }
+
     @Override
     protected void onDestroy() {
         // 销毁 AgentWeb
@@ -624,6 +657,7 @@ public class BrowserActivity extends AppCompatActivity {
         }
         super.onDestroy();
 
+        FightFanZhaUtils.reset();
         EventBus.getDefault().unregister(this);
 
         if (mTopSpeedDomainFloatingWindows != null) {
@@ -640,40 +674,58 @@ public class BrowserActivity extends AppCompatActivity {
             case EVENT_TOP_SPEED_FAILED:
                 mTopSpeedDomainFloatingWindows.onError();
                 break;
+            case EVENT_CHANGE_URL_FANZHA_FINSH:
+                if (!isGame) {
+                    //只有自己的h5域名站作更换域名，重新Load
+                    String newBaseUrl = DomainUtil.getH5Domain2();
+                    if (TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(url)) {
+                        return;
+                    }
+                    String oldBaseUrl = FightFanZhaUtils.getDomain(url);
+                    if (!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)) {
+                        return;
+                    }
+                    String goUrl = url.replace(oldBaseUrl, newBaseUrl);
+                    CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
+                    agentWeb.getUrlLoader().loadUrl(goUrl);
+                }
+                break;
         }
     }
 
     public class CustomWebViewClient extends WebViewClient {
-//        private OkHttpClient client;
-//
-//        public CustomWebViewClient() throws UnknownHostException {
-//            // 初始化 OkHttpClient 并配置自定义的 DNS 解析
-//            client = new OkHttpClient.Builder()
-//                    .dns(new DnsOverHttps.Builder()
-//                            .client(new OkHttpClient())
-//                            .url(HttpUrl.get(ARG_SEARCH_DNS_URL))
-//                            .bootstrapDnsHosts(InetAddress.getByName("8.8.8.8"), InetAddress.getByName("114.114.114.114"))
-//                            .build())
-//                    .build();
-//        }
-//
-//        @Override
-//        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-//            String url = request.getUrl().toString();
-//            Request httpRequest = new Request.Builder().url(url).build();
-//
-//            try {
-//                Response response = client.newCall(httpRequest).execute();
-//                return new WebResourceResponse(
-//                        response.header("content-type"),
-//                        response.header("content-encoding"),
-//                        response.body().byteStream()
-//                );
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return super.shouldInterceptRequest(view, request);
-//            }
-//        }
+        private final String initialUrl = url; // 替换为你的初始 URL
+        private String mUrl;
+        //        private OkHttpClient client;
+        //
+        //        public CustomWebViewClient() throws UnknownHostException {
+        //            // 初始化 OkHttpClient 并配置自定义的 DNS 解析
+        //            client = new OkHttpClient.Builder()
+        //                    .dns(new DnsOverHttps.Builder()
+        //                            .client(new OkHttpClient())
+        //                            .url(HttpUrl.get(ARG_SEARCH_DNS_URL))
+        //                            .bootstrapDnsHosts(InetAddress.getByName("8.8.8.8"), InetAddress.getByName("114.114.114.114"))
+        //                            .build())
+        //                    .build();
+        //        }
+        //
+        //        @Override
+        //        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+        //            String url = request.getUrl().toString();
+        //            Request httpRequest = new Request.Builder().url(url).build();
+        //
+        //            try {
+        //                Response response = client.newCall(httpRequest).execute();
+        //                return new WebResourceResponse(
+        //                        response.header("content-type"),
+        //                        response.header("content-encoding"),
+        //                        response.body().byteStream()
+        //                );
+        //            } catch (IOException e) {
+        //                e.printStackTrace();
+        //                return super.shouldInterceptRequest(view, request);
+        //            }
+        //        }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -681,8 +733,6 @@ public class BrowserActivity extends AppCompatActivity {
             //Log.d("---", "onPageStarted url:  " + url);
             if (isLottery) {
                 setLotteryCookieInside();
-            } else if (is3rdLink) {
-                CfLog.d("not need cookie.");
             } else {
                 if (!SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN).isEmpty()) {
                     setCookieInside();
@@ -694,26 +744,113 @@ public class BrowserActivity extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             CfLog.d("onPageFinished url: " + url);
             //Log.d("---", "onPageFinished url: " + url);
+            mUrl = url;
             hideLoading();
         }
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            //handler.proceed();
+            handler.proceed();
+        }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            super.onReceivedError(view, request, error);
+
             hideLoading();
-            if (sslErrorCount < 4) {
-                sslErrorCount++;
-                tipSsl(view, handler);
-            } else {
-                handler.proceed();
+            Toast.makeText(getBaseContext(), R.string.network_failed, Toast.LENGTH_SHORT).show();
+            // 仅处理初始 URL 的加载错误
+            if (TextUtils.equals(request.getUrl().toString(), initialUrl)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    int errorCode = error.getErrorCode();
+                    String description = error.getDescription().toString();
+                    String failingUrl = request.getUrl().toString();
+
+                    //ERROR_AUTHENTICATION (-4): 用户身份验证失败，例如身份验证凭据不正确。
+                    //ERROR_BAD_URL (-12): URL 格式无效。
+                    //ERROR_CONNECT (-6): 连接到服务器失败。
+                    //ERROR_FAILED_SSL_HANDSHAKE (-11): SSL 握手失败。
+                    //ERROR_FILE (-13): 常规文件错误。
+                    //ERROR_FILE_NOT_FOUND (-14): 文件未找到。
+                    //ERROR_HOST_LOOKUP (-2): 主机名无法解析，通常是 DNS 错误。
+                    //ERROR_IO (-7): 读写错误。
+                    //ERROR_PROXY_AUTHENTICATION (-5): 代理服务器需要身份验证。
+                    //ERROR_REDIRECT_LOOP (-9): 遇到重定向循环。
+                    //ERROR_TIMEOUT (-8): 连接超时。
+                    //ERROR_TOO_MANY_REQUESTS (-15): 请求数量过多。
+                    //ERROR_UNKNOWN (-1): 未知错误。
+                    //ERROR_UNSUPPORTED_AUTH_SCHEME (-3): 不支持的身份验证方案。
+                    //ERROR_UNSUPPORTED_SCHEME (-10): 不支持的 URI 方案。
+                    String msg = "errorCode: " + errorCode + ", description: " + description + ", failingUrl: " + failingUrl;
+                    CfLog.e(msg);
+                    // 处理非 HTTP 错误，例如网络错误或 DNS 解析错误
+                    uploadH5Error(msg, failingUrl);
+                }
             }
         }
 
         @Override
-        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            CfLog.e("errorCode: " + errorCode + ", description: " + description + ", failingUrl: " + failingUrl);
-            hideLoading();
-            Toast.makeText(getBaseContext(), R.string.network_failed, Toast.LENGTH_SHORT).show();
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            super.onReceivedHttpError(view, request, errorResponse);
+
+            int statusCode = errorResponse.getStatusCode(); // 获取状态码
+            String errorUrl = request.getUrl().toString(); // 获取请求的 URL   这个url不对，返回和初始url不一致
+
+            CfLog.d("HTTP Error:  " + "errorUrl:" + errorUrl + ",   initialUrl:" + initialUrl + ",   URL: " + mUrl + ",   Status Code: " + statusCode);
+            // 仅处理初始 URL 的 HTTP 错误
+            if ((TextUtils.equals(mUrl, initialUrl) || TextUtils.equals(mUrl, null) || TextUtils.equals(mUrl, errorUrl)) && !isFirstOpenBrowser) {
+                String msg = "状态码:" + statusCode + "；加载链接：" + initialUrl;
+                //处理403 404 500 502等错误
+                uploadH5Error(msg, initialUrl);
+            }
         }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
+            if (FightFanZhaUtils.checkRequest(getBaseContext(), webResourceRequest, isGame, url)) {
+                return FightFanZhaUtils.replaceLoadingHtml(isGame);
+            }
+            return super.shouldInterceptRequest(webView, webResourceRequest);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
+            if (FightFanZhaUtils.checkRequest(getBaseContext(), webResourceRequest, isGame, url)) {
+                return false;
+            }
+            return super.shouldOverrideUrlLoading(webView, webResourceRequest);
+        }
+
+    }
+
+    private void uploadH5Error(String msg, String url) {
+        if (isGame) {
+            UploadExcetionReq req = new UploadExcetionReq();
+            if (isThirdDomain) {
+                req.setLogTag("thirdgame_domain_block");
+                if (parentTitle == null) {
+                    req.setLogType("三方域名：" + title + "打开失败");
+                } else {
+                    req.setLogType("三方域名：" + parentTitle + "-" + title + "打开失败");
+                }
+            } else {
+                req.setLogTag("thirdgame_domain_exception");
+                if (parentTitle == null) {
+                    req.setLogType("公司域名：" + title + "打开失败");
+                } else {
+                    req.setLogType("公司域名：" + parentTitle + "-" + title + "打开失败");
+                }
+            }
+
+            req.setApiUrl(url);
+            req.setMsg(msg);
+
+            EventBus.getDefault().post(new EventVo(EVENT_UPLOAD_EXCEPTION, req));
+        }
+
+    }
+
+    public boolean isGame() {
+        return isGame;
     }
 }

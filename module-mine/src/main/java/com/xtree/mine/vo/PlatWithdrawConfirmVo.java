@@ -1,11 +1,9 @@
 package com.xtree.mine.vo;
 
-import me.xtree.mvvmhabit.http.BaseResponse2;
-
 /**
  * 银行卡提款确认提交后返回的Model
  */
-public class PlatWithdrawConfirmVo extends BaseResponse2 {
+public class PlatWithdrawConfirmVo {
     public User user;
   /*  public String msg_detail;//"账户提款申请成功" "请刷新后重试！
     public int msg_type;//2 账户提款申请成功*/

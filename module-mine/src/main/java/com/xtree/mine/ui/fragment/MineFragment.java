@@ -60,6 +60,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
     BasePopupView ppw;
     private AppUpdateVo updateVo;
     private BasePopupView updateView;
+    private BasePopupView showUpdateErrorView;
 
     /**
      * 使用hide和show后，可见不可见切换时，不再执行fragment生命周期方法，
@@ -174,7 +175,8 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         });
         binding.tvwDcCentre.setOnClickListener(v -> {
             CfLog.i("****** ");
-            BrowserActivity.start(getContext(), DomainUtil.getH5Domain2() + Constant.URL_DC_CENTER); // 优惠中心
+//            BrowserActivity.start(getContext(), DomainUtil.getH5Domain2() + Constant.URL_DC_CENTER); // 优惠中心
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_OFFER); // 优惠中心
         });
 
         binding.tvwInviteFriend.setOnClickListener(v -> {
@@ -282,7 +284,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
     private void goWebView(View v, String path, boolean isContainTitle) {
         String title = ((TextView) v).getText().toString();
         String url = DomainUtil.getH5Domain2() + path;
-        BrowserActivity.start(getContext(), title, url, isContainTitle);
+        BrowserActivity.start(getContext(), url);
     }
 
     @Override
@@ -337,6 +339,9 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         mProfileVo = new Gson().fromJson(json, ProfileVo.class);
         json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_VIP_INFO);
         mVipInfoVo = new Gson().fromJson(json, VipInfoVo.class);
+        if (mVipInfoVo == null) {
+            viewModel.getVipInfo();
+        }
         viewModel.getVipUpgradeInfo();
     }
 
@@ -453,11 +458,13 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         });
 
         viewModel.liveDataVipUpgrade.observe(this, vo -> {
-           /* if (mVipInfoVo == null) {
+            // 之前这段是注解掉，但由于尚未取得完mVipInfoVo资料，会导致崩溃
+            if (mVipInfoVo == null) {
                 //binding.tvwLevelHint.setVisibility(View.INVISIBLE);
+                viewModel.getVipInfo();
                 binding.pbrLevel.setProgress(0);
                 return;
-            }*/
+            }
             if (vo.sp.equals("1")) {
                 if (vo.level < vo.vip_upgrade.size() - 1) {
                     int point = vo.vip_upgrade.get(vo.level + 1).display_active - mVipInfoVo.current_activity;
@@ -534,6 +541,22 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             binding.tvwDcCentre.setSelected(vo.result);
             EventBus.getDefault().post(new EventVo(EVENT_RED_POINT, vo.result));
         });
+        //用户VIP信息
+        viewModel.liveVipInfoVo.observe(this, vo -> {
+            mVipInfoVo = vo;
+            if (mVipInfoVo != null) {
+                binding.ivwVip.setImageLevel(mVipInfoVo.display_level);
+                binding.ivwLevel.setImageLevel(mVipInfoVo.display_level);
+                if (mVipInfoVo.display_level >= 10) {
+                    binding.ivwLevel.setVisibility(View.INVISIBLE);
+                    //binding.ivwLevel10.setVisibility(View.VISIBLE);
+                    binding.middleArea.setBackgroundResource(R.mipmap.me_bg_top_10);
+                    binding.ivwVip10.setVisibility(View.VISIBLE);
+                    binding.ivwVip10.setOnClickListener(v -> binding.ivwLevel.performClick());
+                }
+                viewModel.getVipUpgradeInfo();
+            }
+        });
     }
 
     /**
@@ -555,6 +578,12 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             @Override
             public void onUpdateForce() {
             }
+
+          /*  @Override
+            public void onDownloadError(String downUrl) {
+               *//* showUpdateErrorDialog(isWeakUpdate , downUrl);
+                updateView.dismiss();*//*
+            }*/
         });
 
         updateView = new XPopup.Builder(getContext())
@@ -563,6 +592,44 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
                 .asCustom(dialog);
         updateView.show();
     }
+    /*private void  showUpdateErrorDialog(final boolean isWeakUpdate , final String downUrl){
+        showUpdateErrorView = null ;
+        AppUpdateErrorDialog updateErrorDialog = null ;
+        if (isWeakUpdate){
+            //弱更
+            updateErrorDialog = new AppUpdateErrorDialog(getContext(), downUrl, false, new AppUpdateErrorDialog.ICallBack() {
+                @Override
+                public void onClickLeft() {
+                    showUpdateErrorView.dismiss();
+                }
+
+                @Override
+                public void onClickRight() {
+                    showUpdateErrorView.dismiss();
+                }
+            });
+
+        }else{
+            //刚更
+            updateErrorDialog = new AppUpdateErrorDialog(getContext(), downUrl, true, new AppUpdateErrorDialog.ICallBack() {
+                @Override
+                public void onClickLeft() {
+                    showUpdateErrorView.dismiss();
+                }
+
+                @Override
+                public void onClickRight() {
+                    showUpdateErrorView.dismiss();
+                }
+            });
+        }
+
+        showUpdateErrorView = new XPopup.Builder(getContext())
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .asCustom(updateErrorDialog);
+        showUpdateErrorView.show();
+    }*/
 
     /**
      * 判断用户是否登陆

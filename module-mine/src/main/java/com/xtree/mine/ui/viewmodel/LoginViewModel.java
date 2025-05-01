@@ -18,11 +18,10 @@ import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.vo.PromotionCodeVo;
 import com.xtree.mine.data.MineRepository;
 import com.xtree.mine.vo.LoginResultVo;
-import com.xtree.mine.vo.SettingsVo;
 import com.xtree.mine.vo.RegisterVerificationCodeVo;
+import com.xtree.mine.vo.SettingsVo;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
@@ -124,17 +123,19 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
                         }
 
                     }
+
                 });
         addSubscribe(disposable);
     }
 
     /**
      * 验证码注册后 调用此方法完成登录
+     *
      * @param userName
      * @param pwd
      * @param captcha
      */
-    public void  loginAndVerAuto(String userName, String pwd ,final String captcha){
+    public void loginAndVerAuto(String userName, String pwd, final String captcha) {
         String password = MD5Util.generateMd5("") + MD5Util.generateMd5(pwd);
         //KLog.i("password: " + password);
 
@@ -211,14 +212,16 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
                 });
         addSubscribe(disposable);
     }
+
     /**
      * 使用验证码登录
+     *
      * @param userName
      * @param pwd
      * @param key
      * @param validcode
      */
-    public void loginAndVer(String userName, String pwd ,final String key , final String validcode){
+    public void loginAndVer(String userName, String pwd, final String key, final String validcode) {
         String password = MD5Util.generateMd5("") + MD5Util.generateMd5(pwd);
         //KLog.i("password: " + password);
 
@@ -292,6 +295,7 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
                         }
 
                     }
+
                 });
         addSubscribe(disposable);
     }
@@ -304,6 +308,10 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
         SPUtils.getInstance().put(SPKeyGlobal.USER_NAME, vo.userName); // 用户名
         // 解决登录后,首页显示为未登录,过2秒才显示登录名和金额的问题
         SPUtils.getInstance().put(SPKeyGlobal.HOME_PROFILE, new Gson().toJson(new ProfileVo(vo.userName, "***")));
+        //存储新注册用户弹窗信息
+        if (vo.inviteCodeSourceMsg instanceof String){
+            SPUtils.getInstance().put(SPKeyGlobal.USER_CODE_MSG, vo.inviteCodeSourceMsg.toString());
+        }
         RetrofitClient.init();
     }
 
@@ -313,8 +321,8 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
      * @param code
      * @param validcode
      */
-    public void register(String userName, String pwd, String code, final String key,final String validcode) {
-        HashMap<String, String> map = new HashMap();
+    public void register(String userName, String pwd, String code, final String key,final String validcode ,final int inviteCodeSource) {
+        HashMap<String, Object> map = new HashMap();
         map.put("carryAuth", "false");
 
      /*   if (code == null) {
@@ -327,6 +335,8 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
         }*/
         map.put("code", code);
         map.put("id", code);//
+        //inviteCodeSource 1:系统默认；3：IP获取（接口获取）；4：剪切板
+        map.put("inviteCodeSource",inviteCodeSource);
 
         map.put("nonce", UuidUtil.getID16());
         map.put("username", userName);
@@ -335,7 +345,8 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
         map.put("needCaptcha","1");
 
         CfLog.e("*********** register  code1=" + map);
-        Disposable disposable = (Disposable) model.getApiService().register(map)
+
+        Disposable disposable = (Disposable) model.getApiService().register(code,map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<LoginResultVo>() {
@@ -390,12 +401,12 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
     }
 
     public void getSettings() {
+
         HashMap<String, String> map = new HashMap();
         /*map.put("fields", "customer_service_url,public_key,barrage_api_url," +
                 "x9_customer_service_url," + "promption_code,default_promption_code");*/
         map.put("fields", "customer_service_url,public_key,barrage_api_url," +
-                "x9_customer_service_url," + "promption_code,default_promption_code"+",register_captcha_switch");
-
+                "x9_customer_service_url," + "promption_code,default_promption_code,register_captcha_switch,ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time,app_response_speed_calculation");
         CfLog.e("**************** MAP = " + map);
         Disposable disposable = (Disposable) model.getApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
@@ -412,7 +423,7 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
 
                         SPUtils.getInstance().put(SPKeyGlobal.PUBLIC_KEY, public_key);
                         SPUtils.getInstance().put("customer_service_url", vo.customer_service_url);
-                        SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
+                        //SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
 
                         liveDataSettings.setValue(vo);
                     }
@@ -436,7 +447,7 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
 
                     @Override
                     public void onResult(PromotionCodeVo promotionCodeVo) {
-                        SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, promotionCodeVo.domian);//推广code
+                        SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE_REG, promotionCodeVo.domain);//推广code
                         promotionCodeVoMutableLiveData.setValue(promotionCodeVo);
                     }
 

@@ -62,6 +62,8 @@ public class BtCarReq {
          */
         private int sportId;
 
+        private String chpid;
+
         public long getMatchInfoId() {
             return matchInfoId;
         }
@@ -124,6 +126,14 @@ public class BtCarReq {
 
         public void setSportId(int sportId) {
             this.sportId = sportId;
+        }
+
+        public String getChpid() {
+            return chpid;
+        }
+
+        public void setChpid(String chpid) {
+            this.chpid = chpid;
         }
     }
 }

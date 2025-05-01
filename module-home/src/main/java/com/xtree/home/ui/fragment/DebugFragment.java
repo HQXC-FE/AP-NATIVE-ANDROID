@@ -19,22 +19,26 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.lxj.xpopup.XPopup;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.net.fastest.FastestMonitorCache;
 import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.TopSpeedDomain;
+import com.xtree.base.widget.BrowserDialog;
 import com.xtree.home.BR;
 import com.xtree.home.BuildConfig;
 import com.xtree.home.R;
 import com.xtree.home.databinding.FragmentDebugBinding;
 import com.xtree.home.ui.viewmodel.HomeViewModel;
 import com.xtree.home.ui.viewmodel.factory.AppViewModelFactory;
-import com.xtree.weight.TopSpeedDomainFloatingWindows;
+import com.xtree.base.net.fastest.TopSpeedDomainFloatingWindows;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -107,9 +111,13 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
         binding.tvwTag.setText(TagUtils.isTag() + "");
         binding.tvwApiList.setText(getString(R.string.domain_api_list).replace(";", "\n").trim());
         binding.tvwH5List.setText(getString(R.string.domain_url_list).replace(";", "\n").trim());
+        binding.edtFastestMonitorTimeout.setText(String.valueOf(FastestMonitorCache.INSTANCE.getMAX_UPLOAD_TIME()));
 
         String debugUrl = SPUtils.getInstance().getString(SPKeyGlobal.DEBUG_APPLY_DOMAIN);
         binding.tvwVfGlobe.setChecked(!TextUtils.isEmpty(debugUrl));
+
+        int fastest_monitor_timeout = SPUtils.getInstance().getInt(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT);
+        binding.tvwFastestMonitorTimeout.setChecked(fastest_monitor_timeout > 0);
     }
     @Override
     public void initView() {
@@ -139,6 +147,42 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
                 }
             }
         });
+
+        binding.tvwFastestMonitorTimeout.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    String timeout = binding.edtFastestMonitorTimeout.getText().toString().trim();
+                    int i = Integer.parseInt(timeout);
+                    SPUtils.getInstance().put(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT, i);
+                    FastestMonitorCache.INSTANCE.setMAX_UPLOAD_TIME(i);
+                } else {
+                    SPUtils.getInstance().remove(SPKeyGlobal.DEBUG_APPLY_FASTEST_MONITOR_TIMEOUT);
+                    FastestMonitorCache.INSTANCE.setMAX_UPLOAD_TIME(FastestMonitorCache.TIME_OUT);
+                }
+            }
+        });
+
+        binding.tvStatFz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FightFanZhaUtils.startMockFanZha(getActivity());
+            }
+        });
+
+        binding.tvStatFz.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                FightFanZhaUtils.isOpenTest = true;
+                new XPopup.Builder(getActivity()).moveUpToKeyboard(false)
+                        .isViewMode(true)
+                        .asCustom(BrowserDialog.newInstance(getActivity(),
+                                DomainUtil.getH5Domain2() + "/webapp/?isNative=1#/activity/298")).show();
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -165,6 +209,7 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
         if (mTopSpeedDomainFloatingWindows != null) {
             mTopSpeedDomainFloatingWindows.removeView();
         }
+        FightFanZhaUtils.isOpenTest = false ;
     }
 
     @Override

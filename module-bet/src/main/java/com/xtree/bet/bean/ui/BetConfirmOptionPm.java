@@ -3,7 +3,6 @@ package com.xtree.bet.bean.ui;
 import android.os.Parcel;
 import android.text.TextUtils;
 
-import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.bean.response.pm.BtConfirmInfo;
 import com.xtree.bet.bean.response.pm.OptionInfo;
@@ -95,11 +94,13 @@ public class BetConfirmOptionPm implements BetConfirmOption {
 
     @Override
     public String getOptionName() {
-        if(!TextUtils.isEmpty(getOption().getSortName())){
+        if (getOption() == null) {
+            return "";
+        } else if (!TextUtils.isEmpty(getOption().getSortName())) {
             return getOption().getSortName();
-        }else if(btConfirmInfo != null && !TextUtils.isEmpty(btConfirmInfo.marketValue)){
+        } else if (btConfirmInfo != null && !TextUtils.isEmpty(btConfirmInfo.marketValue)) {
             return btConfirmInfo.marketValue;
-        }else {
+        } else {
             return mOption.isBtHome() ? match.getTeamMain() : match.getTeamVistor();
         }
     }
@@ -117,7 +118,7 @@ public class BetConfirmOptionPm implements BetConfirmOption {
 
     @Override
     public Option getOption() {
-        if(btConfirmInfo != null && btConfirmInfo.marketOddsList != null && !btConfirmInfo.marketOddsList.isEmpty()){
+        if (btConfirmInfo != null && btConfirmInfo.marketOddsList != null && !btConfirmInfo.marketOddsList.isEmpty() && mOption != null) {
             OptionInfo optionInfo = new OptionInfo();
             optionInfo.oid = btConfirmInfo.marketOddsList.get(0).id;
             optionInfo.onb = TextUtils.isEmpty(mOption.getSortName()) ? mOption.isBtHome() ? btConfirmInfo.home : btConfirmInfo.away : mOption.getSortName();

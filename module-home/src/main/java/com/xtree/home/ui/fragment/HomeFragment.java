@@ -5,9 +5,13 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_TO_ACT;
+import static com.xtree.base.utils.EventConstant.EVENT_UPLOAD_EXCEPTION;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +34,7 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
@@ -42,6 +47,7 @@ import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.widget.AppUpdateDialog;
+import com.xtree.base.widget.AppUpdateErrorDialog;
 import com.xtree.base.widget.BrowserActivity;
 import com.xtree.base.widget.ImageDialog;
 import com.xtree.base.widget.LoadingDialog;
@@ -63,6 +69,8 @@ import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +92,12 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private ProfileVo mProfileVo; //最新的用戶信息
     private BasePopupView ppw = null; // 底部弹窗
     private BasePopupView ppw2 = null; // 底部弹窗
+    private BasePopupView closePpw = null; // 禁止该用户玩当前游戏的弹窗
+    private BasePopupView freezePpw = null; // 冻结弹窗
     private BasePopupView updateView = null;
+    private BasePopupView showUpdateErrorView;//显示下载失败
+
+    private BasePopupView showNewRegPopView = null;//显示新注册用户window
     boolean isBinding = false; // 是否正在跳转到其它页面绑定手机/YHK (跳转后回来刷新用)
     private boolean needScroll;
     private int position;
@@ -96,6 +109,23 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private AppUpdateVo updateVo;//更新
     private boolean isSelectedGame = false;
     private int gameGroup = -1;
+
+    private static final int MSG_REFRESH_NOTICE = 1001;//刷新公告
+    //刷新公共Handler
+    Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            //super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_REFRESH_NOTICE:
+                    viewModel.getNotices(); // 获取公告
+                    break;
+                default:
+                    CfLog.i("****** default");
+                    break;
+            }
+        }
+    };
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -125,9 +155,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         checkUpdate(); // 检查更新
         if (!TextUtils.isEmpty(token)) {
             CfLog.i("******");
-            viewModel.getProfile();
+            viewModel.getProfile();//获取更人信息
             //viewModel.getRedPocket(); // VIP有没有红包 (小红点)
             viewModel.getRewardRed(); // 主页 我的按钮小红点
+            viewModel.getMessagePersonList();//获取站内信未读数量
         }
     }
 
@@ -207,6 +238,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 if (isLogin) {
                     viewModel.getECLink();
                 }
+                String showRegMsg = SPUtils.getInstance().getString(SPKeyGlobal.USER_CODE_MSG);
+                if (showRegMsg != null && !TextUtils.isEmpty(showRegMsg)) {
+                    //显示注册弹窗
+                    showRegPop(showRegMsg);
+                }
                 return;
             }
 
@@ -237,11 +273,15 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     .asCustom(new ECAnimDialog(requireContext(), getString(url)));
             ppw.show();
         });
-
+        //获取首页公告
         viewModel.liveDataNotice.observe(getViewLifecycleOwner(), list -> {
             if (list.isEmpty()) {
                 binding.llNotice.setVisibility(View.GONE);
                 binding.ivwNotice.setVisibility(View.GONE);
+                //发送重试Message
+                Message msg2 = new Message();
+                msg2.what = MSG_REFRESH_NOTICE;
+                mHandler.sendMessage(msg2);
             } else {
                 StringBuffer sb = new StringBuffer();
                 for (NoticeVo vo : list) {
@@ -257,29 +297,25 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             if (list == null || list.size() == 0) {
                 return;
             }
-            //KLog.d(list.get(0));
-            GameVo twoVo = null;
-            for (GameVo vo : list) {
-                if (vo.cid == 42) {//杏彩体育旗舰
-                    twoVo = vo;
-                }
-            }
-            list.remove(twoVo);
-            list.get(0).twoVo = twoVo;
             gameAdapter.clear();
             gameAdapter.addAll(list);
-            //RadioButton rBtn = (RadioButton) binding.rgpType.getChildAt(gameGroup);
-            //rBtn.setChecked(true);
-            //smoothToPosition(gameGroup);
         });
 
         viewModel.liveDataPlayUrl.observe(getViewLifecycleOwner(), map -> {
             CfLog.d("*** " + new Gson().toJson(map));
             // 跳转到游戏H5
-            gameAdapter.playGame(map.get("url").toString(), Objects.requireNonNull(map.get("name")).toString());
+            if (Objects.requireNonNull(map.get("name")).toString().equals("FB体育")) {
+                BrowserActivity.startThirdDomain(requireContext(), Objects.requireNonNull(map.get("name")).toString(), map.get("url").toString(), true);
+            } else {
+                BrowserActivity.startThirdDomain(requireContext(), Objects.requireNonNull(map.get("name")).toString(), map.get("url").toString());
+            }
         });
         viewModel.liveDataProfile.observe(getViewLifecycleOwner(), vo -> {
             CfLog.d("*** " + new Gson().toJson(vo));
+            if (vo.isFrozen != 0) {
+                showFreezePpw();
+            }
+
             mProfileVo = vo;
             binding.clLoginNot.setVisibility(View.GONE);
             binding.clLoginYet.setVisibility(View.VISIBLE);
@@ -342,6 +378,17 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member, 0, 0);
             }
         });
+        viewModel.liveDataFail41011.observe(getViewLifecycleOwner(), vo -> {
+            showClosePpw();
+        });
+        viewModel.liveDataMsgUnread.observe(getViewLifecycleOwner(), vo -> {
+            if (vo == 0) {
+                binding.tvNoticeNum.setVisibility(View.GONE);
+            } else {
+                binding.tvNoticeNum.setVisibility(View.VISIBLE);
+                binding.tvNoticeNum.setText("+" + vo);
+            }
+        });
     }
 
     public void initView() {
@@ -353,11 +400,15 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         binding.bnrTop.setIndicator(new CircleIndicator(getContext())); // 增加小圆点
         //binding.bnrTop.setBannerGalleryEffect(20, 12, 0.8f);// 画廊效果
         //binding.bnrTop.setBannerRound2(20);
-        binding.bnrTop.setAdapter(new BannerImageAdapter<BannersVo>(new ArrayList<>()) {
+        ArrayList list = new ArrayList<>();
+        list.add(new BannersVo("default"));
+        list.add(new BannersVo("default"));
+        binding.bnrTop.setAdapter(new BannerImageAdapter<BannersVo>(list) {
             @Override
             public void onBindView(BannerImageHolder holder, BannersVo data, int position, int size) {
                 holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                Glide.with(getContext()).load(data.picture).placeholder(R.mipmap.hm_bnr_01).into(holder.imageView);
+                Glide.with(getContext()).load(data.picture)
+                        .placeholder(R.mipmap.hm_bnr_01).into(holder.imageView);
             }
         });
 
@@ -474,7 +525,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     startContainerFragment(RouterFragmentPath.Home.AUG);
                     return;
                 }
-                if (vo.cid == 19 || vo.cid == 34 || vo.cid == 1|| vo.cid == 43) {
+                if (vo.cid == 19 || vo.cid == 34 || vo.cid == 1 || vo.cid == 52) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("vo", vo);
                     startContainerFragment(RouterFragmentPath.Home.ELE, bundle);
@@ -506,6 +557,15 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     viewModel.getPMGameTokenApi(false);
                     return;
                 }
+            }
+
+            @Override
+            public boolean getIsFrozen() {
+                if (mProfileVo != null && mProfileVo.isFrozen != 0) {
+                    showFreezePpw();
+                    return true;
+                }
+                return false;
             }
         };
 
@@ -565,7 +625,58 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 smoothToPosition(pid);
             });
         }
+        binding.ivNotice.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt("isMsgPerson", 1);
+            startContainerFragment(RouterFragmentPath.Mine.PAGER_MSG, bundle);
+        });
 
+    }
+
+    /**
+     * 禁止该用户玩当前游戏的弹窗
+     */
+    private void showClosePpw() {
+        if (closePpw == null) {
+            MsgDialog dialog = new MsgDialog(requireContext(), "温馨提示", "该场馆已被关闭，请切换至其它场馆进行游玩。感谢您的支持。", true, new MsgDialog.ICallBack() {
+                @Override
+                public void onClickLeft() {
+                }
+
+                @Override
+                public void onClickRight() {
+                    closePpw.dismiss();
+                }
+            });
+            closePpw = new XPopup.Builder(requireContext())
+                    .dismissOnTouchOutside(true)
+                    .dismissOnBackPressed(true)
+                    .asCustom(dialog);
+        }
+        closePpw.show();
+    }
+
+    /**
+     * 冻结弹窗
+     */
+    private void showFreezePpw() {
+        if (freezePpw == null) {
+            MsgDialog dialog = new MsgDialog(requireContext(), "温馨提示", "账户无法操作, 请联系平台客服\n\n", true, new MsgDialog.ICallBack() {
+                @Override
+                public void onClickLeft() {
+                }
+
+                @Override
+                public void onClickRight() {
+                    freezePpw.dismiss();
+                }
+            });
+            freezePpw = new XPopup.Builder(requireContext())
+                    .dismissOnTouchOutside(true)
+                    .dismissOnBackPressed(true)
+                    .asCustom(dialog);
+        }
+        freezePpw.show();
     }
 
     @Override
@@ -750,25 +861,70 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
      * @param vo           UpdateVo
      */
     private void showUpdate(final boolean isWeakUpdate, final AppUpdateVo vo) {
-        if (ppw != null && ppw.isShow()) {
+        if (updateView != null && updateView.isShow()) {
             return;
         }
-//        AppUpdateDialog dialog = new AppUpdateDialog(getContext(), isWeakUpdate, vo, new AppUpdateDialog.IAppUpdateCallBack() {
-//            @Override
-//            public void onUpdateCancel() {
-//                updateView.dismiss();
-//            }
-//
-//            @Override
-//            public void onUpdateForce() {
-//            }
-//        });
-//
-//        updateView = new XPopup.Builder(getContext())
-//                .dismissOnBackPressed(false)
-//                .dismissOnTouchOutside(false)
-//                .asCustom(dialog);
-//        updateView.show();
+        AppUpdateDialog dialog = new AppUpdateDialog(getContext(), isWeakUpdate, vo, new AppUpdateDialog.IAppUpdateCallBack() {
+            @Override
+            public void onUpdateCancel() {
+                updateView.dismiss();
+            }
+
+            @Override
+            public void onUpdateForce() {
+            }
+
+          /*  @Override
+            public void onDownloadError(String downUrl) {
+                showUpdateErrorDialog(isWeakUpdate , downUrl);
+                updateView.dismiss();
+            }*/
+        });
+
+        updateView = new XPopup.Builder(getContext())
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .asCustom(dialog);
+        updateView.show();
+    }
+
+    private void showUpdateErrorDialog(final boolean isWeakUpdate, final String downUrl) {
+        showUpdateErrorView = null;
+        AppUpdateErrorDialog updateErrorDialog = null;
+        if (isWeakUpdate) {
+            //弱更
+            updateErrorDialog = new AppUpdateErrorDialog(getContext(), downUrl, false, new AppUpdateErrorDialog.ICallBack() {
+                @Override
+                public void onClickLeft() {
+                    showUpdateErrorView.dismiss();
+                }
+
+                @Override
+                public void onClickRight() {
+                    showUpdateErrorView.dismiss();
+                }
+            });
+
+        } else {
+            //刚更
+            updateErrorDialog = new AppUpdateErrorDialog(getContext(), downUrl, true, new AppUpdateErrorDialog.ICallBack() {
+                @Override
+                public void onClickLeft() {
+                    showUpdateErrorView.dismiss();
+                }
+
+                @Override
+                public void onClickRight() {
+                    showUpdateErrorView.dismiss();
+                }
+            });
+        }
+
+        showUpdateErrorView = new XPopup.Builder(getContext())
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .asCustom(updateErrorDialog);
+        showUpdateErrorView.show();
     }
 
     private void smoothToPositionTop(int position) {
@@ -794,6 +950,57 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         int diff = position - manager.findFirstVisibleItemPosition();
         if (diff >= 0 && diff < binding.rcvList.getChildCount()) {
             binding.rcvList.smoothScrollBy(0, binding.rcvList.getChildAt(diff).getTop());
+        }
+    }
+
+    /**
+     * 显示注册弹窗
+     *
+     * @param message
+     */
+    private void showRegPop(final String message) {
+        String title = getString(R.string.txt_kind_tips);
+        MsgDialog dialog = new MsgDialog(getContext(), title, message, true, new MsgDialog.ICallBack() {
+            @Override
+            public void onClickLeft() {
+            }
+
+            @Override
+            public void onClickRight() {
+                showNewRegPopView.dismiss();
+            }
+        });
+        showNewRegPopView = new XPopup.Builder(getContext())
+                .dismissOnTouchOutside(false)
+                .dismissOnBackPressed(false)
+                .asCustom(dialog);
+        showNewRegPopView.show();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // 注册 EventBus
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // 注销 EventBus
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventVo event) {
+        switch (event.getEvent()) {
+            case EVENT_UPLOAD_EXCEPTION://上传三方场馆H5链接加载失败日志
+                viewModel.uploadException((UploadExcetionReq) event.getMsg());
+                break;
         }
     }
 

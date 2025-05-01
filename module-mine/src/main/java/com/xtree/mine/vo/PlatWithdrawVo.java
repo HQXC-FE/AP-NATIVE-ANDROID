@@ -1,11 +1,9 @@
 package com.xtree.mine.vo;
 
-import me.xtree.mvvmhabit.http.BaseResponse2;
-
 /**
  * 提款返回model
  */
-public class PlatWithdrawVo extends BaseResponse2 {
+public class PlatWithdrawVo {
     public String channel_typenum;
     public String channel_child;
     //public String message ;
@@ -75,21 +73,21 @@ public class PlatWithdrawVo extends BaseResponse2 {
         public int fee_ratio;
 
         /**
-         "money":100,
-         "user_regtime":"2023-12-19 13:52:12",
-         "bankname":"民生银行",
-         "province":"内蒙古",
-         "bankcity":"乌兰察布盟",
-         "truename":"马总",
-         "bankno":"************4010",
-         "cardid":"1283196",
-         "user_bindbanktime":"2024-01-20 13:43:36",
-         "drawal_type":"1",
-         "channel_typenum":1,
-         "earnest_money":0,
-         "arrive":100,
-         "handing_fee":"0.00",
-         "fee_ratio":0
+         * "money":100,
+         * "user_regtime":"2023-12-19 13:52:12",
+         * "bankname":"民生银行",
+         * "province":"内蒙古",
+         * "bankcity":"乌兰察布盟",
+         * "truename":"马总",
+         * "bankno":"************4010",
+         * "cardid":"1283196",
+         * "user_bindbanktime":"2024-01-20 13:43:36",
+         * "drawal_type":"1",
+         * "channel_typenum":1,
+         * "earnest_money":0,
+         * "arrive":100,
+         * "handing_fee":"0.00",
+         * "fee_ratio":0
          */
         @Override
         public String toString() {

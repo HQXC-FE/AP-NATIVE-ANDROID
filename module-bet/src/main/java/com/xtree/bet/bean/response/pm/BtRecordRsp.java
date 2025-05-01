@@ -20,6 +20,7 @@ public class BtRecordRsp implements BaseBean {
     public boolean hasNext;
     public boolean hasPrevious;
     public boolean optimizeCountSql;
+    public long ts;
     /**
      * 总页数
      */
@@ -191,7 +192,7 @@ public class BtRecordRsp implements BaseBean {
             public String playName;
             public String playOptionsId;
             /**
-             * 基准比分
+             * 基准比分  下注时比分
              */
             public String scoreBenchmark;
             /**
@@ -207,6 +208,9 @@ public class BtRecordRsp implements BaseBean {
              */
             public String sportName;
             public String tournamentId;
+
+
+            public Double preBetAmount;
 
             @Override
             public int describeContents() {

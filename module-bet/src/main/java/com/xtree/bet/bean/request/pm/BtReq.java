@@ -32,6 +32,8 @@ public class BtReq {
      * 是否自动接受赔率变化 1：自动接收更好的赔率 2：自动接受任何赔率变动 3：不自动接受赔率变动
      */
     private int acceptOdds = 2;
+
+    private String chpid;
     /**
      * 是否开启 多单关投注模式，1：是，非1（0或者其他）：否
      */
@@ -67,6 +69,14 @@ public class BtReq {
 
     public void setSeriesOrders(List<SeriesOrder> seriesOrders) {
         this.seriesOrders = seriesOrders;
+    }
+
+    public String getChpid() {
+        return chpid;
+    }
+
+    public void setChpid(String chpid) {
+        this.chpid = chpid;
     }
 
     public int getAcceptOdds() {

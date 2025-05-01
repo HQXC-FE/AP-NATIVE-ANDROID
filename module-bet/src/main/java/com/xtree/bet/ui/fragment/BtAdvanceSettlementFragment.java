@@ -161,7 +161,9 @@ public class BtAdvanceSettlementFragment extends BaseDialogFragment<BtDialogAdva
             }else {
                 ToastUtils.showShort("提前兑现失败，请稍等重试");
             }
-            mOnClickListener.onDismiss(getDialog());
+            if(mOnClickListener != null){
+                mOnClickListener.onDismiss(getDialog());
+            }
             dismiss();
             if (timerDisposable != null) {
                 viewModel.removeSubscribe(timerDisposable);

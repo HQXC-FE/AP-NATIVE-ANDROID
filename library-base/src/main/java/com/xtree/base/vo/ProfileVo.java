@@ -80,11 +80,12 @@ public class ProfileVo {
     public String email_selfupdate; // "1"
     public String onepayzfb_count; // "1"
     public String onepaywx_count; // "1"
+    public String register_promotion_code ;//
 
     @Override
     public String toString() {
         return "ProfileVo{" +
-                "userid=" + userid +
+                "userid='" + userid + '\'' +
                 ", username='" + username + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", agency_model=" + agency_model +
@@ -120,6 +121,9 @@ public class ProfileVo {
                 ", ratio='" + ratio + '\'' +
                 ", phone_selfupdate=" + phone_selfupdate +
                 ", email_selfupdate='" + email_selfupdate + '\'' +
+                ", onepayzfb_count='" + onepayzfb_count + '\'' +
+                ", onepaywx_count='" + onepaywx_count + '\'' +
+                ", register_promotion_code='" + register_promotion_code + '\'' +
                 '}';
     }
 

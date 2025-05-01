@@ -63,6 +63,11 @@ public abstract class FloatingWindows extends RelativeLayout {
 
     public void show() {
         if (!isShow) {
+            if (floatView.getParent() != null) {
+                CfLog.i("View is already added to the WindowManager.");
+                return;
+            }
+
             CfLog.i("Show floatView");
             mWindowManager.addView(floatView, floatLp);
             isShow = true;

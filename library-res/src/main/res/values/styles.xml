@@ -91,7 +91,7 @@
     <style name="style_hm_game_type">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginTop">6dp</item>
         <item name="android:button">@drawable/hm_game_type_selector</item>
     </style>
 
@@ -115,8 +115,8 @@
     <style name="style_hm_recharge">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">12dp</item>
-        <item name="android:drawablePadding">2dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:drawablePadding">0dp</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">4dp</item>
         <item name="android:textColor">@color/clr_hm_txt_grey_01</item>
@@ -1542,6 +1542,14 @@
         <item name="android:minEms">4</item>
         <item name="android:textColor">@color/clr_grey_80</item>
         <item name="android:textSize">14sp</item>
+    </style>
+    <!-- 在线客服 常见问题  -->
+    <style name="style_qa_txt" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/clr_tutorial</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <!-- 分享弹窗 复制按钮样式 -->

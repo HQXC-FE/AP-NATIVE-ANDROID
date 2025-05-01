@@ -90,6 +90,10 @@ public class PlayTypeInfo implements BaseBean, Comparable {
      */
     public long mid;
     /**
+     * topKey
+     */
+    public String topKey;
+    /**
      * 盘口集合
      */
     public List<OptionDataListInfo> hl;
@@ -125,6 +129,8 @@ public class PlayTypeInfo implements BaseBean, Comparable {
         dest.writeString(this.hshow);
         dest.writeString(this.hsw);
         dest.writeString(this.hton);
+        dest.writeString(this.topKey);
+
         dest.writeLong(this.mid);
         dest.writeTypedList(this.hl);
         dest.writeTypedList(this.ol);
@@ -149,6 +155,7 @@ public class PlayTypeInfo implements BaseBean, Comparable {
         this.hshow = source.readString();
         this.hsw = source.readString();
         this.hton = source.readString();
+        this.topKey = source.readString();
         this.mid = source.readLong();
         this.hl = source.createTypedArrayList(OptionDataListInfo.CREATOR);
         this.ol = source.createTypedArrayList(OptionInfo.CREATOR);
@@ -176,6 +183,7 @@ public class PlayTypeInfo implements BaseBean, Comparable {
         this.hshow = in.readString();
         this.hsw = in.readString();
         this.hton = in.readString();
+        this.topKey = in.readString();
         this.mid = in.readLong();
         this.hl = in.createTypedArrayList(OptionDataListInfo.CREATOR);
         this.ol = in.createTypedArrayList(OptionInfo.CREATOR);

@@ -9,6 +9,8 @@ public class VideoInfo implements BaseBean {
     public String flvUrl;
     public String muUrl;
 
+    public String videoType;
+
     @Override
     public int describeContents() {
         return 0;

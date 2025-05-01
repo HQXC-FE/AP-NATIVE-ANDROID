@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -18,9 +18,26 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <ImageView
-            style="@style/style_rc_exp_bank_top"
-            android:src="@mipmap/rc_exp_bank_step_1" />
+<!--        <ImageView-->
+<!--            style="@style/style_rc_exp_bank_top"-->
+<!--            android:src="@mipmap/rc_exp_bank_step_1" />-->
+        <com.xtree.recharge.ui.widget.StepProgressView
+            android:id="@+id/stepProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            app:activeColor="#A17DF5"
+            app:activeDrawable="@drawable/rc_step_progress_circle"
+            app:circleRadius="6dp"
+            app:currentStep="1"
+            app:defaultColor="#C6C6C6"
+            app:horizontalPadding="40dp"
+            app:lineWidth="2dp"
+            app:stepCount="3"
+            app:stepTexts="@array/step_texts"
+            app:textSize="14sp" />
 
         <TextView
             style="@style/style_rc_exp_bank_status"
@@ -84,7 +101,7 @@
             style="@style/style_btn_long"
             android:text="取消等待"
             android:onClick="@{() -> model.cancleWait()}"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
     </LinearLayout>
 </layout>

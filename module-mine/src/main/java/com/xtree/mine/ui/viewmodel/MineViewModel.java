@@ -1,5 +1,7 @@
 package com.xtree.mine.ui.viewmodel;
 
+import static com.xtree.base.utils.EventConstant.EVENT_LOG_OUT;
+
 import android.app.Application;
 import android.text.TextUtils;
 
@@ -14,17 +16,25 @@ import com.xtree.base.net.RetrofitClient;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.AppUpdateVo;
+import com.xtree.base.vo.BalanceVo;
+import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.mine.data.MineRepository;
-import com.xtree.base.vo.BalanceVo;
+import com.xtree.mine.vo.OfferVo;
 import com.xtree.mine.vo.QuestionVo;
 import com.xtree.mine.vo.RewardVo;
 import com.xtree.mine.vo.VipInfoVo;
 import com.xtree.mine.vo.VipUpgradeInfoVo;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
+
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import me.xtree.mvvmhabit.http.BaseResponse;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -41,8 +51,10 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
     public SingleLiveData<VipInfoVo> liveDataVipInfo = new SingleLiveData<>(); // Vip个人资讯
     public SingleLiveData<String> liveDataQuestionWeb = new SingleLiveData<>(); // 常见问题
     public SingleLiveData<RewardVo> liveDataReward = new SingleLiveData<>(); // 是否有优惠
+    public MutableLiveData<OfferVo> offerVoMutableLiveData = new MutableLiveData<>(); // 优惠中心列表
 
     public MutableLiveData<AppUpdateVo> liveDataUpdate = new MutableLiveData<>();//更新
+    public MutableLiveData<VipInfoVo> liveVipInfoVo = new MutableLiveData<>(); // VIP
 
     public MineViewModel(@NonNull Application application, MineRepository repository) {
         super(application, repository);
@@ -61,7 +73,12 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
         SPUtils.getInstance().remove(SPKeyGlobal.FB_TOKEN);
         SPUtils.getInstance().remove(SPKeyGlobal.PM_TOKEN);
         SPUtils.getInstance().remove(SPKeyGlobal.IS_FIRST_OPEN_BROWSER);
+        SPUtils.getInstance().remove(SPKeyGlobal.USER_CODE_MSG);
+        SPUtils.getInstance().remove(SPKeyGlobal.PROMOTION_CODE);
+        SPUtils.getInstance().remove(SPKeyGlobal.PROMOTION_CODE_REG);
+        SPUtils.getInstance().remove(SPKeyGlobal.APP_REGISTER_CODE);//清空【嗨客服】域名拼接推广Code
         RetrofitClient.init();
+        EventBus.getDefault().post(new EventVo(EVENT_LOG_OUT, ""));
         liveDataLogout.setValue(true);
     }
 
@@ -281,6 +298,100 @@ public class MineViewModel extends BaseViewModel<MineRepository> {
                     public void onError(Throwable t) {
                         super.onError(t);
                         CfLog.e("error, " + t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+
+    /**
+     * 优惠中心列表
+     *
+     * @param map
+     */
+    public void getOfferList(HashMap<String, String> map) {
+        Disposable disposable = (Disposable) model.getApiService().getOfferList(map)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<OfferVo>() {
+                    @Override
+                    public void onResult(OfferVo vo, BusinessException exception) {
+                        if (vo == null) {
+                            onFail(exception);
+                            return;
+                        }
+                        offerVoMutableLiveData.setValue(vo);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        super.onFail(t);
+                    }
+
+                });
+        addSubscribe(disposable);
+    }
+
+    /**
+     * 取得优惠
+     *
+     * @param key
+     * @param map
+     */
+    public void getOffer(String key, HashMap<String, String> map, HashMap<String, String> offerListMap) {
+        Disposable disposable = (Disposable) model.getApiService().getOffer(key, map)
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<BaseResponse>() {
+                    @Override
+                    public void onResult(BaseResponse response) {
+
+                    }
+
+                    @Override
+                    public void onResult(BaseResponse baseResponse, BusinessException ex) {
+                        ToastUtils.showSuccess(ex.message);
+                        getOfferList(offerListMap);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("onError message =  " + t.toString());
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        CfLog.e("onError message =  " + t.toString());
+                        ToastUtils.showError(t.getMessage());
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    /**
+     * 获取用户等级
+     */
+    public void getVipInfo() {
+        Disposable disposable = (Disposable) model.getApiService().getVipInfo()
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<VipInfoVo>() {
+                    @Override
+                    public void onResult(VipInfoVo vo) {
+                        CfLog.i(vo.toString());
+                        SPUtils.getInstance().put(SPKeyGlobal.HOME_VIP_INFO, new Gson().toJson(vo));
+                        liveVipInfoVo.setValue(vo);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        //super.onError(t);
                     }
                 });
         addSubscribe(disposable);
