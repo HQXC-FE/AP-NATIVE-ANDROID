@@ -10,7 +10,7 @@ import com.xtree.lottery.data.source.vo.IssueVo
 import java.math.BigDecimal
 
 
-class ChasingAdapter(list: MutableList<IssueVo>, public val money: BigDecimal, val changeNumber: () -> Unit) :
+class ChasingAdapter(list: MutableList<IssueVo>, val money: BigDecimal, val changeNumber: () -> Unit) :
     BaseQuickAdapter<IssueVo, BaseViewHolder>(R.layout.item_chasing_number, list) {
     public var checkedPosition = -1
     override fun convert(holder: BaseViewHolder, item: IssueVo) {

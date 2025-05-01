@@ -130,6 +130,9 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                     // 计算中奖金额总和
                     var sumPrize = BigDecimal.ZERO
                     for (order in orders) {
+                        if (order.display.rate == null) {
+                            break
+                        }
                         // 计算每个订单的中奖金额，并保留两位小数
                         val prize = BigDecimal(order.display.minPrize)
                             .multiply(BigDecimal(order.display.rate))
@@ -211,7 +214,7 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
 
     }
 
-    fun checkProfit(): Boolean {
+    private fun checkProfit(): Boolean {
         var result = true
 
         // 检查是否有浮动奖金组（currentBonus 为 String）
@@ -285,6 +288,16 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
             binding.rvChasingNumber.adapter = chasingAdapter
 
             binding.tvSavePlan.setOnClickListener {
+                var haveIsCheck = false
+                for (i in chasingAdapter.data) {
+                    if (i.isCheck) {
+                        haveIsCheck = true
+                    }
+                }
+                if(!haveIsCheck){
+                    ToastUtils.showLong("请先选择要追号的奖期")
+                    return@setOnClickListener
+                }
                 val hashMap = HashMap<String, Int>()
                 for (i in chasingAdapter.data) {
                     if (i.isCheck) {
