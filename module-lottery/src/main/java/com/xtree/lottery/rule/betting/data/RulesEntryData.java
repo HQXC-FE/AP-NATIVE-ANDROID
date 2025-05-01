@@ -972,6 +972,11 @@ public class RulesEntryData {
             @SerializedName("rate")
             private String rate;
             /**
+             * currentBonus
+             */
+            @SerializedName("currentBonus")
+            private String currentBonus;
+            /**
              * times
              */
             @SerializedName("times")
@@ -1063,6 +1068,14 @@ public class RulesEntryData {
 
             public void setRate(String rate) {
                 this.rate = rate;
+            }
+
+            public String getCurrentBonus() {
+                return currentBonus;
+            }
+
+            public void setCurrentBonus(String currentBonus) {
+                this.currentBonus = currentBonus;
             }
 
             public String getTimes() {
