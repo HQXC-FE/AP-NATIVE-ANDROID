@@ -451,4 +451,10 @@
     <string name="activityEditProTopTip">编辑个人资料</string>
     <string name="activityEditProTopNote">注意：为防止钓鱼网站骗取您的钱财，请务必填写此信息</string>
     <string name="activityEditBirthdayTip">设置生日</string>
+    <string name="activityEditProUserBirthday">用户生日</string>
+    <string name="activityEditProSetUserBirthday">设置生日</string>
+    <string name="activityEditProSetUserBirthdayWaring">请注意设置完成后不允许更改，部分活动将依据此信息发放奖励</string>
+    <string name="activityEditProUserAvatar">个人头像</string>
+    <string name="activityEditProBirthday">出生日期</string>
+    <string name="activityEditProBirthdayTip">添加日期，确保您已满18周岁</string>
 </resources>
