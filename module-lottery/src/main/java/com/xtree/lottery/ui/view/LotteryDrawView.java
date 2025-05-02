@@ -105,6 +105,9 @@ public class LotteryDrawView extends LinearLayout {
                             view.setText(numb);
                         } else {
                             view = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.view_lottery_draw_ball, null);
+                            LayoutParams params = new LinearLayout.LayoutParams(ConvertUtils.dp2px(28f), ConvertUtils.dp2px(28f));
+                            params.rightMargin = ConvertUtils.dp2px(6f);
+                            view.setLayoutParams(params);
                             view.setText(numb);
                         }
                         binding.lotteryDrawGroup.addView(view);
