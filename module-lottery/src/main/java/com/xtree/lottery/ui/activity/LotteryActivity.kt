@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -34,10 +35,14 @@ import com.xtree.lottery.ui.fragment.RecentLotteryFragment
 import com.xtree.lottery.ui.lotterybet.LotteryBetsFragment
 import com.xtree.lottery.ui.lotterybet.LotteryHandicapFragment
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetConfirmViewModel
+import com.xtree.lottery.ui.view.PrizeInfo
+import com.xtree.lottery.ui.view.PrizeNoticeView
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
 import com.xtree.lottery.utils.LotteryEventConstant
 import com.xtree.lottery.utils.LotteryEventVo
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import me.xtree.mvvmhabit.base.BaseActivity
 import me.xtree.mvvmhabit.utils.KLog
 import me.xtree.mvvmhabit.utils.SPUtils
@@ -51,7 +56,6 @@ import org.greenrobot.eventbus.ThreadMode
  */
 class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>(),
     ParentChildCommunication {
-    private var isTab0Enabled = false
     private var currentIssue: IssueVo? = null
     private lateinit var lotteryBetsFragment: LotteryBetsFragment
     private var methodMenus: MethodMenus? = null
@@ -81,6 +85,13 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         EventBus.getDefault().register(this)
         FastestTopDomainUtil.instance.start()
         ChangeH5LineUtil.instance.start()
+        val prizeNotice = PrizeNoticeView(binding.layout1)
+        prizeNotice.showPrize(
+            PrizeInfo(
+                bonus = "288",
+                issue = "20240501"
+            )
+        )
     }
 
     private fun setCustomDensity() {
@@ -292,7 +303,7 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
             val countdown =
                 viewModel.dateToStamp(saleend) - System.currentTimeMillis()
             KLog.i("countdown", countdown)
-
+            timer?.cancel()
             timer = object : CountDownTimer(countdown, 1000L) {
 
                 override fun onTick(millisUntilFinished: Long) {
