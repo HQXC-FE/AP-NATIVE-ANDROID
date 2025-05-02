@@ -2,12 +2,22 @@ package com.xtree.bet.bean.request.im;
 
 import java.util.List;
 
-public class SportCountReq {
+public class AllSportCountReq {
 
+    private String api;
+    private String method;
+    private String format;
     private String timeStamp;
     private String languageCode = "CMN";
     private boolean isCombo;
     private List<Integer> filterType;
+
+    public AllSportCountReq() {
+        this.api = "GetAllSportCount";
+        this.method = "post";
+        this.format = "json";
+        this.languageCode = "chz";
+    }
 
     public String getTimeStamp() {
         return timeStamp;

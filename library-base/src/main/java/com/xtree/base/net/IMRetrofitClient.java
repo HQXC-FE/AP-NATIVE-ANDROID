@@ -84,11 +84,11 @@ public class IMRetrofitClient {
         okHttpClient = new OkHttpClient.Builder()
                 .cookieJar(new CookieJarImpl(new PersistentCookieStore(mContext)))
 //                .cache(cache)
-                .addInterceptor(new PMHeaderInterceptor())
+                .addInterceptor(new IMHeaderInterceptor())
                 .addInterceptor(new CacheInterceptor(mContext))
                 .addInterceptor(new BtUrlModifyingInterceptor())
                 .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
-                .addInterceptor(new PMDecryptInterceptor())
+                .addInterceptor(new IMDecryptInterceptor())
                 .addInterceptor(new HttpLoggingInterceptor(message -> KLog.d(message)).setLevel(HttpLoggingInterceptor.Level.BODY))
                 /*.addInterceptor(new LoggingInterceptor
                         .Builder()//构建者模式

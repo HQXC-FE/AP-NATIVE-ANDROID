@@ -8,7 +8,7 @@ import com.xtree.bet.bean.request.im.EventInfoMbtReq;
 import com.xtree.bet.bean.request.im.GetBetListReq;
 import com.xtree.bet.bean.request.im.OutrightEventsReq;
 import com.xtree.bet.bean.request.im.SelectedEventInfoReq;
-import com.xtree.bet.bean.request.im.SportCountReq;
+import com.xtree.bet.bean.request.im.AllSportCountReq;
 import com.xtree.bet.bean.request.im.StatementReq;
 import com.xtree.bet.bean.request.pm.BtCashOutBetReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
@@ -56,7 +56,7 @@ public interface IMApiService {
      *
      * @return
      */
-    @POST("/yewu11/v1/m/getAnnouncement")
+    @POST("/api/sports/imsb/forward")
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Flowable<BaseResponse<GetAnnouncementRsp>> getAnnouncement(@Body AnnouncementReq announcementReq);
 
@@ -66,9 +66,9 @@ public interface IMApiService {
      *
      * @return
      */
-    @POST("/yewu11/v1/m/getAllSportCount")
+    @POST("/api/sports/imsb/forward")
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<SportCountRsp>> getAllSportCount(@Body SportCountReq sportCountReq);
+    Flowable<BaseResponse<SportCountRsp>> getAllSportCount(@Body AllSportCountReq sportCountReq);
 
     /**
      * 索取所有竞赛计数
