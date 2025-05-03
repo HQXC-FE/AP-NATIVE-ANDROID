@@ -55,6 +55,10 @@ public class PlayTypePm implements PlayType{
         }
     }
 
+    public PlayTypeInfo getPlayTypeInfo(){
+        return playTypeInfo;
+    }
+
     @Override
     public String setPlayTypeName(String playTypeName) {
         return playTypeInfo.hpn = playTypeName;

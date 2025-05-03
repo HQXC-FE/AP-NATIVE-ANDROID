@@ -69,4 +69,14 @@ public class StatisticalInfo implements BaseBean {
             return new StatisticalInfo[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "BaseResponse{" +
+                "tc=" + tc +
+                ", ht='" + ht + '\'' +
+                ", sl=" + sl +
+                ", hls=" + hls +
+                '}';
+    }
 }

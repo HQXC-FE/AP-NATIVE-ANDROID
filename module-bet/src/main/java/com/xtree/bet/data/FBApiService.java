@@ -18,6 +18,8 @@ import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.fb.LeagueInfo;
 import com.xtree.bet.bean.response.fb.MatchInfo;
 import com.xtree.bet.bean.response.fb.MatchListRsp;
+import com.xtree.bet.bean.response.fb.MatchResultBean;
+import com.xtree.bet.bean.response.fb.ResultBean;
 import com.xtree.bet.bean.response.fb.StatisticalInfo;
 import com.xtree.bet.bean.request.fb.BtCarReq;
 import com.xtree.bet.bean.request.fb.FBListReq;
@@ -47,7 +49,7 @@ public interface FBApiService {
     Flowable<BaseResponse<MatchListRsp>> getFBList(@Body FBListReq FBListReq);
 
     /**
-     * 按运动、分类类型统计可投注的赛事个数
+     * 获取彩种个数
      * @return
      */
     @POST("/v1/match/statistical")
@@ -55,7 +57,7 @@ public interface FBApiService {
     Flowable<BaseResponse<StatisticalInfo>> statistical(@Body Map<String, String> map);
 
     /**
-     * 按运动、分类类型统计可投注的赛事个数
+     * 获取最新投注数据，投注前查询指定玩法赔率
      * @return
      */
     @POST("/v1/order/batchBetMatchMarketOfJumpLine")
@@ -69,6 +71,15 @@ public interface FBApiService {
     @POST("/v1/match/getMatchDetail")
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Flowable<BaseResponse<MatchInfo>> getMatchDetail(@Body Map<String, String> map);
+
+    /**
+     * 按运动、分类类型获取单个赛果详情及玩法
+     * @return
+     */
+    @POST("/v1/match/matchResultInfo")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<MatchInfo>> getMatchDetailResult(@Body Map<String, String> map);
+
     /**
      * 单关投注
      * @return
@@ -140,5 +151,20 @@ public interface FBApiService {
     @POST("/v1/bulletin/listPage")
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Flowable<BaseResponse<FBAnnouncementInfo>> getListPage(@Body Map<String, String> map);
+
+
+    /**
+     * 获取赛果配置参数
+     */
+    @POST("/v1/merchant/detail")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<ResultBean>> postMerchant(@Body Map<String, String> map);
+
+    /**
+     * 获取赛事赛果列表
+     */
+    @POST("/v1/match/matchResultPage")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Flowable<BaseResponse<MatchListRsp>> matchResultPage(@Body Map<String, String> map);
 
 }

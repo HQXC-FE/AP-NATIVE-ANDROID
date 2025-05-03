@@ -25,9 +25,26 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <ImageView
-            style="@style/style_rc_exp_bank_top"
-            android:src="@mipmap/rc_exp_bank_step_3" />
+        <!--        <ImageView-->
+        <!--            style="@style/style_rc_exp_bank_top"-->
+        <!--            android:src="@mipmap/rc_exp_bank_step_3" />-->
+        <com.xtree.recharge.ui.widget.StepProgressView
+            android:id="@+id/stepProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            app:activeColor="#A17DF5"
+            app:activeDrawable="@drawable/rc_step_progress_circle"
+            app:circleRadius="6dp"
+            app:currentStep="3"
+            app:defaultColor="#C6C6C6"
+            app:horizontalPadding="40dp"
+            app:lineWidth="2dp"
+            app:stepCount="3"
+            app:stepTexts="@array/step_texts"
+            app:textSize="14sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_iv1"
@@ -76,8 +93,8 @@
             android:id="@+id/cl_main"
             android:layout_width="match_parent"
             android:layout_height="118dp"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
@@ -88,14 +105,14 @@
                 android:layout_width="118dp"
                 android:layout_height="118dp"
                 android:scaleType="center"
-                tools:src="@mipmap/rc_exp_receipt"
+                app:layout_constraintBottom_toBottomOf="parent"
 
 
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0"/>
+                tools:src="@mipmap/rc_exp_receipt" />
 
             <TextView
                 android:id="@+id/tvw_21"
@@ -104,12 +121,12 @@
                 android:layout_marginTop="0dp"
                 android:text="*"
                 android:textColor="@color/clr_red_01"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toEndOf="@id/ivw_pic"
                 app:layout_constraintTop_toTopOf="@id/ivw_pic"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0"
-                app:layout_constraintHorizontal_bias="0"/>
+                app:layout_constraintVertical_bias="0" />
 
             <TextView
                 android:id="@+id/tvw_21a"
@@ -126,30 +143,30 @@
                 style="@style/style_cm_tip_small_orange"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
                 android:layout_marginStart="0dp"
+                android:layout_marginTop="6dp"
                 android:text="需含银行戳章、交易时间与金额、收/付款人姓名、完整卡号(卡号***要点开完整显示)"
                 android:textColor="@color/clr_red_19"
                 android:textSize="12sp"
                 app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@id/tvw_23"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@+id/tvw_21"
                 app:layout_constraintTop_toBottomOf="@id/tvw_21"
-                app:layout_constraintBottom_toTopOf="@id/tvw_23"
-                app:layout_constraintVertical_bias="0"
-                app:layout_constraintHorizontal_bias="0"/>
+                app:layout_constraintVertical_bias="0" />
 
             <TextView
                 android:id="@+id/tvw_23"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
                 android:background="@drawable/bg_btn_main_c10"
                 android:elevation="2dp"
                 android:paddingStart="8dp"
                 android:paddingTop="2dp"
                 android:paddingEnd="8dp"
                 android:paddingBottom="2dp"
-                android:layout_marginBottom="2dp"
                 android:text="回执单示例"
                 android:textColor="@color/clr_white"
                 android:textSize="12sp"
@@ -162,12 +179,12 @@
             style="@style/style_cm_tip_small_grey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="@dimen/layout_margin"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="20dp"
-            android:textSize="12sp"
-            android:text="*仅支持图片格式为png、jpg、jpeg，且大小不超过15MB" />
+            android:layout_marginBottom="@dimen/layout_margin"
+            android:text="*仅支持图片格式为png、jpg、jpeg，且大小不超过15MB"
+            android:textSize="12sp" />
 
         <LinearLayout
             android:id="@+id/ll_bank"
@@ -185,11 +202,10 @@
             <TextView
                 android:id="@+id/tvw_bank_card"
                 style="@style/style_cm_edit"
-                android:text="中国银行"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="@dimen/layout_margin"
                 android:drawableEnd="@mipmap/cm_ic_expand"
-                />
+                android:text="中国银行" />
         </LinearLayout>
 
         <LinearLayout
@@ -208,11 +224,11 @@
             <EditText
                 android:id="@+id/tvw_bank_acc"
                 style="@style/style_cm_edit"
-                android:text="1234 5678 9000 1234"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="@dimen/layout_margin"
-                android:maxLength="19"
                 android:inputType="number"
+                android:maxLength="19"
+                android:text="1234 5678 9000 1234"
                 tools:text="1234 5678 9000 1234" />
         </LinearLayout>
 
@@ -226,8 +242,7 @@
             <TextView
                 android:id="@+id/tvw_left"
                 style="@style/style_btn_short_cancel"
-                android:text="上一步"
-               />
+                android:text="上一步" />
 
             <View
                 android:layout_width="36dp"
@@ -236,8 +251,7 @@
             <TextView
                 android:id="@+id/tvw_right"
                 style="@style/style_btn_short"
-                android:text="确认提交"
-                />
+                android:text="确认提交" />
         </LinearLayout>
 
 

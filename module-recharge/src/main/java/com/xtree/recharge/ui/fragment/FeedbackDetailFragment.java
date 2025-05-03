@@ -46,7 +46,8 @@ public class FeedbackDetailFragment extends BaseFragment<FragmentFeedbackDetailB
     public void initView() {
         binding.ivwBack.setOnClickListener(v -> getActivity().finish());
         //我的客服
-        binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
+        binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerServiceDialog(getContext()));
+
         //消息中心
         binding.ivwMsg.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_MSG);

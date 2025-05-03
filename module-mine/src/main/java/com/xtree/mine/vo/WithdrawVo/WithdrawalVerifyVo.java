@@ -1,13 +1,18 @@
 package com.xtree.mine.vo.WithdrawVo;
 
-import java.util.ArrayList;
-
-import me.xtree.mvvmhabit.http.BaseResponse2;
-
 /**
  * 验证当前渠道
  */
 public class WithdrawalVerifyVo {
+    public boolean is_digital;
+    public String money;
+    public String money_real;
+    public String fee;
+    public String quota;
+    public boolean quota_need_deduct;
+    public String balance;
+    public UserBankInfo user_bank_info;//当前渠道绑定的提款地址
+
     @Override
     public String toString() {
         return "WithdrawalVerifyVo{" +
@@ -21,16 +26,6 @@ public class WithdrawalVerifyVo {
                 ", user_bank_info=" + user_bank_info +
                 '}';
     }
-
-    public boolean is_digital;
-    public String money;
-    public String money_real;
-    public String fee;
-
-    public String quota;
-    public boolean quota_need_deduct;
-    public String balance;
-    public UserBankInfo user_bank_info;//当前渠道绑定的提款地址
 
     public class UserBankInfo {
         public String id;

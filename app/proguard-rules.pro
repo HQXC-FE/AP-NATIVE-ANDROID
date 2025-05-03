@@ -50,7 +50,9 @@
 
 -keep class me.xtree.mvvmhabit.http.BaseResponse { *; }
 -keep class me.xtree.mvvmhabit.http.BaseResponse2 { *; }
+-keep class me.xtree.mvvmhabit.http.BaseResponse3 { *; }
 -keep class me.xtree.mvvmhabit.http.PMBaseResponse { *; }
+-keep class me.xtree.mvvmhabit.http.ValidateResponse { *; }
 
 -keep class com.xtree.base.vo.**{*;}
 -keep class com.xtree.activity.vo.**{*;}
@@ -306,6 +308,12 @@
 -keepclassmembers class * extends android.webkit.WebViewClient {
     public void *(android.webkit.WebView, java.lang.String);
 }
+
+-keep class com.just.agentweb.** {
+    *;
+}
+-dontwarn com.just.agentweb.**
+
 #----------------------------------------------------------------------------
 
 #---------------------------------ARouter------------------------------------
@@ -329,3 +337,29 @@
 -keep public class com.xtree.home.HomeModuleInit { *; }
 -keep public class com.xtree.main.MainModuleInit { *; }
 -keep public class com.xtree.main.MainModuleInit { *; }
+
+#---------------------------------gsyvideoplayer------------------------------------
+-keep class com.shuyu.gsyvideoplayer.video.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.video.**
+-keep class com.shuyu.gsyvideoplayer.video.base.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.video.base.**
+-keep class com.shuyu.gsyvideoplayer.utils.** { *; }
+-dontwarn com.shuyu.gsyvideoplayer.utils.**
+-keep class com.shuyu.gsyvideoplayer.player.** {*;}
+-dontwarn com.shuyu.gsyvideoplayer.player.**
+-keep class tv.danmaku.ijk.** { *; }
+-dontwarn tv.danmaku.ijk.**
+-keep class androidx.media3.** {*;}
+-keep interface androidx.media3.**
+
+-keep class com.shuyu.alipay.** {*;}
+-keep interface com.shuyu.alipay.**
+
+-keep public class * extends android.view.View{
+    *** get*();
+    void set*(***);
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, java.lang.Boolean);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}

@@ -58,6 +58,7 @@ public class RechargeVo {
     public boolean op_thiriframe_status; // false,
     public String op_thiriframe_msg; // "",
     public String op_thiriframe_url; // "",
+    public boolean op_disable_bank_status; // "",
     public boolean recharge_json_channel; // false,
     //public int recharge_json_count_once; // 5,
     //public int recharge_json_day_notsucc; // 3,
@@ -67,6 +68,7 @@ public class RechargeVo {
     public int tips_recommended; // 0,
     public String bankcardstatus_onepaywx; // false 时需要弹窗提示绑定WX, 默认为null
     public String bankcardstatus_onepayzfb; // false 时需要弹窗提示绑定ZFB, 默认为null
+    public String onepay_customer_service_link; // op客服链接
 
     /**
      * opBankList
@@ -131,6 +133,7 @@ public class RechargeVo {
                 ", op_thiriframe_status=" + op_thiriframe_status +
                 ", op_thiriframe_msg='" + op_thiriframe_msg + '\'' +
                 ", op_thiriframe_url='" + op_thiriframe_url + '\'' +
+                ", op_disable_bank_status='" + op_disable_bank_status + '\'' +
                 ", recharge_json_channel=" + recharge_json_channel +
                 ", isrecharge_additional=" + isrecharge_additional +
                 ", low_rate_hint='" + low_rate_hint + '\'' +
@@ -248,6 +251,12 @@ public class RechargeVo {
             @SerializedName("bank_name")
             private String bankName;
 
+            /**
+             * type
+             */
+            @SerializedName("type") //type0和2是不需要用户填写确认付款账号
+            private String type;
+
             public String getBankCode() {
                 return bankCode;
             }
@@ -262,6 +271,14 @@ public class RechargeVo {
 
             public void setBankName(String bankName) {
                 this.bankName = bankName;
+            }
+
+            public String getType() {
+                return type;
+            }
+
+            public void setType(String type) {
+                this.type = type;
             }
         }
     }

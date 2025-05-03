@@ -87,9 +87,9 @@ public class BtSettingDialogFragment extends BaseDialogFragment<BtDialogSettingB
         });
 
         binding.ivGoSportRegular.setOnClickListener(v -> {
-            if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
+            if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                 goWebView(getString(R.string.txt_sport_official), Constant.URL_SPORT_RULES_OFFICIAL, false);
-            } else if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+            } else if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
                 goWebView(getString(R.string.txt_sport_inter), Constant.URL_SPORT_RULES_INTER, false);
             }
         });
@@ -165,6 +165,9 @@ public class BtSettingDialogFragment extends BaseDialogFragment<BtDialogSettingB
             dismiss();
             if (getActivity() instanceof MainActivity) {
                 MainActivity activity = (MainActivity) getActivity();
+                if (activity.getSportId() == -1) {
+                    return;
+                }
                 BtLeagueDialogFragment btLeagueDialogFragment = BtLeagueDialogFragment.getInstance(activity.getSettingLeagueList(), activity.getSportId(), activity.getPlayMethodType(), mLeagueIdList);
                 btLeagueDialogFragment.show(getParentFragmentManager(), "BtLeagueDialogFragment");
             }

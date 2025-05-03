@@ -12,15 +12,16 @@ import androidx.annotation.NonNull;
 
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.NumberUtils;
 import com.xtree.base.utils.SystemUtil;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.BalanceVo;
 import com.xtree.base.vo.FBService;
 import com.xtree.base.vo.PMService;
-import com.xtree.bet.bean.request.UploadExcetionReq;
 import com.xtree.bet.data.BetRepository;
 
 import java.util.HashMap;
@@ -43,6 +44,7 @@ public class BaseBtViewModel extends BaseViewModel<BetRepository> {
     public SingleLiveData<String> userBalanceData = new SingleLiveData<>();
     public SingleLiveData<Void> tokenInvalidEvent = new SingleLiveData<>();
     public SingleLiveData<Map> liveDataPlayUrl = new SingleLiveData<>();
+
     public BaseBtViewModel(@NonNull Application application, BetRepository model) {
         super(application, model);
     }
@@ -78,7 +80,10 @@ public class BaseBtViewModel extends BaseViewModel<BetRepository> {
         }
     }
 
-    public void getFBGameTokenApi() {
+    public synchronized void getFBGameTokenApi() {
+        if (ClickUtil.doNotRepeatRequests()) {
+            return;
+        }
         Flowable<BaseResponse<FBService>> flowable;
         String mPlatform = SPUtils.getInstance().getString(KEY_PLATFORM);
         if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
@@ -94,12 +99,14 @@ public class BaseBtViewModel extends BaseViewModel<BetRepository> {
                     public void onResult(FBService fbService) {
                         if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
                             SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, fbService.getToken());
+                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_DISABLED, fbService.isDisabled);
                             SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
                             BtDomainUtil.setDefaultFbxcDomainUrl(fbService.getForward().getApiServerAddress());
                             BtDomainUtil.addFbxcDomainUrl(fbService.getForward().getApiServerAddress());
                             BtDomainUtil.setFbxcDomainUrl(fbService.getDomains());
                         } else {
                             SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, fbService.getToken());
+                            SPUtils.getInstance().put(SPKeyGlobal.FB_DISABLED, fbService.isDisabled);
                             SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
                             BtDomainUtil.setDefaultFbDomainUrl(fbService.getForward().getApiServerAddress());
                             BtDomainUtil.addFbDomainUrl(fbService.getForward().getApiServerAddress());
@@ -134,12 +141,14 @@ public class BaseBtViewModel extends BaseViewModel<BetRepository> {
 
                         if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                             SPUtils.getInstance().put(SPKeyGlobal.PMXC_TOKEN, pmService.getToken());
+                            SPUtils.getInstance().put(SPKeyGlobal.PMXC_DISABLED, pmService.isDisabled);
                             SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, pmService.getApiDomain());
                             SPUtils.getInstance().put(SPKeyGlobal.PMXC_IMG_SERVICE_URL, pmService.getImgDomain());
                             SPUtils.getInstance().put(SPKeyGlobal.PMXC_USER_ID, pmService.getUserId());
                             BtDomainUtil.setDefaultPmxcDomainUrl(pmService.getApiDomain());
                         } else {
                             SPUtils.getInstance().put(SPKeyGlobal.PM_TOKEN, pmService.getToken());
+                            SPUtils.getInstance().put(SPKeyGlobal.PM_DISABLED, pmService.isDisabled);
                             SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, pmService.getApiDomain());
                             SPUtils.getInstance().put(SPKeyGlobal.PM_IMG_SERVICE_URL, pmService.getImgDomain());
                             SPUtils.getInstance().put(SPKeyGlobal.PM_USER_ID, pmService.getUserId());
@@ -200,11 +209,9 @@ public class BaseBtViewModel extends BaseViewModel<BetRepository> {
                     public void onResult(Map<String, Object> vo) {
                         // "url": "https://user-h5-bw3.d91a21f.com?token=7c9c***039a"
                         // "url": { "launch_url": "https://cdn-ali.***.com/h5V01/h5.html?sn=dy12&xxx" }
-                        CfLog.i("111111111"+vo.toString());
                         if (!vo.containsKey("url")) {
                             return;
                         }
-                        CfLog.i("111111112"+vo.toString());
                         liveDataPlayUrl.setValue(vo);
                     }
 

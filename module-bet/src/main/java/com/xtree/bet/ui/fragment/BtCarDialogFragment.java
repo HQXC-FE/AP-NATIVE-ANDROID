@@ -27,6 +27,7 @@ import com.xtree.base.utils.NumberUtils;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.bet.R;
+import com.xtree.bet.bean.response.pm.BtConfirmInfo;
 import com.xtree.bet.bean.ui.BetConfirmOption;
 import com.xtree.bet.bean.ui.BetConfirmOptionUtil;
 import com.xtree.bet.bean.ui.CgOddLimit;
@@ -49,7 +50,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import me.xtree.mvvmhabit.base.BaseDialogFragment;
 import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.utils.ConvertUtils;
@@ -82,6 +82,8 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
     private BasePopupView ppw;
 
     private String mBanlance = "-1";
+    private long lastBetClickTime;
+    private boolean haveRealData = false;//是否已经获取过一次投注赔率数据
 
     private KeyBoardListener mKeyBoardListener = new KeyBoardListener() {
         @Override
@@ -136,10 +138,14 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
         keyboardView.setParent(binding.nsvOption);
         mBanlance = SPUtils.getInstance().getString(SPKeyGlobal.WLT_CENTRAL_BLC, "-1");
         binding.tvBalance.setText(NumberUtils.formatDown(Double.valueOf(mBanlance), 2));
-        binding.ivConfirm.setCallBack(() -> {
+        binding.btBet.setOnClickListener(v -> {
             int acceptOdds = binding.cbAccept.isChecked() ? 1 : 2;
             if (TextUtils.equals(mBanlance, "-1")) {
                 ToastUtils.showLong("正在获取余额信息，请稍候");
+                return;
+            }
+            if (!haveRealData) {
+                ToastUtils.showLong("正在获取最新赔率数据，请稍候");
                 return;
             }
             double betAmount = 0;
@@ -151,7 +157,15 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
                 return;
             }
             //viewModel.showLoading(requireContext());
-            viewModel.bet(betConfirmOptionList, cgOddLimitList, acceptOdds);
+            synchronized (this) {
+                long curClickTime = System.currentTimeMillis();
+                //当前投注Dialog没有消失前，7秒内禁止重复投注，防止弱网情况重复投注
+                if (Math.abs((curClickTime - lastBetClickTime)) < 7000) {
+                    return;
+                }
+                lastBetClickTime = curClickTime;
+                viewModel.bet(betConfirmOptionList, cgOddLimitList, acceptOdds);
+            }
         });
         binding.llRoot.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             if (BtCarManager.isCg()) {
@@ -193,6 +207,10 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
         if (BtCarManager.isCg()) {
             betConfirmOptionList = BtCarManager.getBtCarList();
         } else {
+            if (getArguments() == null) {
+                dismissAllowingStateLoss();
+                return;
+            }
             BetConfirmOption betConfirmOption = getArguments().getParcelable(KEY_BT_OPTION);
             betConfirmOptionList.add(betConfirmOption);
         }
@@ -225,16 +243,14 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
         }
     }
 
-    int index = 0;
-
     @Override
     public void onResume() {
         super.onResume();
         Observable.interval(6, 6, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread()).as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(aLong -> {
-            batchBetMatchMarketOfJumpLine();
-        });
+                    batchBetMatchMarketOfJumpLine();
+                });
     }
 
     @Override
@@ -250,30 +266,41 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
     @Override
     public void initViewObservable() {
         viewModel.btConfirmInfoDate.observe(this, betConfirmOptions -> {
+            if (betConfirmOptions == null || betConfirmOptions.isEmpty()) {
+                ToastUtils.showShort("比赛投注信息变更，请重新投注");
+                dismiss();
+                return;
+            }
             hasCloseOption = false;
             for (int i = 0; i < betConfirmOptionList.size(); i++) {
-                if (!hasCloseOption) {
-                    hasCloseOption = betConfirmOptionList.get(i).isClose();
-                }
                 if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {
                     betConfirmOptionList.get(i).setRealData(betConfirmOptions.get(i).getRealData());
                 } else {
                     for (BetConfirmOption option : betConfirmOptions) {
                         if (TextUtils.equals(((BetConfirmOption) betConfirmOptionList.get(i)).getMatchId(), ((BetConfirmOption) option).getMatchId())) {
+                            BtConfirmInfo btConfirmInfo = ((BtConfirmInfo) option.getRealData());
+                            if (!TextUtils.equals(betConfirmOptionList.get(i).getPlayType().getId(), btConfirmInfo.playId + "")) {
+                                //盘口已关闭
+                                ToastUtils.showLong("盘口玩法已关闭" + i);
+                                btConfirmInfo.matchHandicapStatus = 2;
+                            }
                             betConfirmOptionList.get(i).setRealData(option.getRealData());
                             break;
                         }
                     }
                 }
+                if (!hasCloseOption) {
+                    hasCloseOption = betConfirmOptionList.get(i).isClose();
+                }
+
             }
+            haveRealData = true;
 
             if (hasCloseOption) {
-                binding.ivConfirm.setEnabled(false);
-                binding.ivBtBg.setEnabled(false);
+                binding.btBet.setEnabled(false);
 //                binding.ivBt.setEnabled(false);
             } else {
-                binding.ivConfirm.setEnabled(true);
-                binding.ivBtBg.setEnabled(true);
+                binding.btBet.setEnabled(true);
 //                binding.ivBt.setEnabled(true);
             }
 

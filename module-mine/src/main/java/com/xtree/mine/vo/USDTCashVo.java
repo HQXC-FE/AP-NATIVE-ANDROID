@@ -2,12 +2,10 @@ package com.xtree.mine.vo;
 
 import java.util.ArrayList;
 
-import me.xtree.mvvmhabit.http.BaseResponse2;
-
 /**
  * USDT 提款请求返回体
  */
-public class USDTCashVo extends BaseResponse2 {
+public class USDTCashVo {
 
     public String count;//今日提款次数
     public String rest;//今日提款额度
@@ -75,6 +73,31 @@ public class USDTCashVo extends BaseResponse2 {
      * 提款地址
      */
     public class USDTInfo {
+        public String id;
+        public String user_name;
+        public String usdt_type;
+        public String userid;
+        public String usdt_card;
+        public String status;
+        public String atime;
+        public String utime;
+        public String user_quota;
+        public String restrictions_quota;
+        public String restrictions_teamquota;
+        public String userlimitswitch;
+        public String teamlinitswitch;
+        public String uinuout_uptime;
+        public String effective_quota;
+        public String effective_data;
+        public String cnybank_backblance;
+        public String card_type;
+        public String vip_virtual_currency_quota;
+        public String vvcq_updated_at;
+        public String username;
+        public String min_money;
+        public String max_money;
+        public String quota;//虚拟币提款余额
+
         @Override
         public String toString() {
             return "USDTInfo{" +
@@ -104,31 +127,6 @@ public class USDTCashVo extends BaseResponse2 {
                     ", quota='" + quota + '\'' +
                     '}';
         }
-
-        public String id;
-        public String user_name;
-        public String usdt_type;
-        public String userid;
-        public String usdt_card;
-        public String status;
-        public String atime;
-        public String utime;
-        public String user_quota;
-        public String restrictions_quota;
-        public String restrictions_teamquota;
-        public String userlimitswitch;
-        public String teamlinitswitch;
-        public String uinuout_uptime;
-        public String effective_quota;
-        public String effective_data;
-        public String cnybank_backblance;
-        public String card_type;
-        public String vip_virtual_currency_quota;
-        public String vvcq_updated_at;
-        public String username;
-        public String min_money;
-        public String max_money;
-        public String quota;//虚拟币提款余额
 
         /*"id": "3212",
                 "user_name": "tst033@as",

@@ -1,7 +1,5 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
@@ -12,11 +10,12 @@ import androidx.annotation.NonNull;
 
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
-import com.xtree.base.net.PMHttpCallBack;
+import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.vo.PMService;
 import com.xtree.bet.bean.response.pm.MatchInfo;
 import com.xtree.bet.bean.response.pm.PlayTypeInfo;
 import com.xtree.bet.bean.response.pm.VideoAnimationInfo;
+import com.xtree.bet.bean.response.pm.VideoInfo;
 import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.CategoryPm;
 import com.xtree.bet.bean.ui.Match;
@@ -27,18 +26,20 @@ import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.bean.ui.PlayTypePm;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
-import com.xtree.base.utils.BtDomainUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -52,9 +53,12 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
     private Map<String, Category> mTmpCategoryMap = new HashMap<>();
     private boolean isFirst = true;
     private List<PlayType> mPlayTypeList;
-    private MatchInfo mMatchInfo;
+    private MatchInfo mMatchResultInfo;
     private long mMatchId;
     private String mSportId;
+    private List<VideoInfo> mVideoUrlVOList;
+    private String mReferUrl;
+    private String mAnimationUrl;
 
     public PmBtDetailViewModel(@NonNull Application application, BetRepository repository) {
         super(application, repository);
@@ -68,24 +72,81 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().getMatchDetail(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<MatchInfo>() {
+                .subscribeWith(new HttpCallBack<MatchInfo>() {
                     @Override
                     public void onResult(MatchInfo matchInfo) {
-                        if(matchInfo == null){
+                        if (matchInfo == null) {
                             return;
                         }
-                        mMatchInfo = matchInfo;
-                        if(mMatchInfo.mid != null) {
-                            videoAnimationUrlPB(Long.valueOf(mMatchInfo.mid), "Video");
+                        //第一次赋值
+                        if (mMatch == null && matchInfo.mid != null) {
+                            videoAnimationUrlPB(Long.valueOf(matchInfo.mid), "Video");
+                            videoAnimationUrlPB(Long.valueOf(matchInfo.mid), "Animation");
+                            ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+                            scheduler.schedule(() -> {
+                                setMatch(matchInfo);
+                            }, 1, TimeUnit.SECONDS);  // 延迟 1 秒
+                            scheduler.shutdown();  // 关闭调度器
                         }
+                        setMatch(matchInfo);
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        ResponseThrowable error = (ResponseThrowable) t;
-                        if (error.code == CODE_401026 || error.code == CODE_401013) {
+                        BusinessException error = (BusinessException) t;
+                        if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
                             getGameTokenApi();
-                        }else {
+                        } else {
+                            ToastUtils.showShort(error.message);
+                        }
+                    }
+                });
+        addSubscribe(disposable);
+
+    }
+
+    private void setMatch(MatchInfo matchInfo) {
+        // 执行延时后的操作
+        if (mVideoUrlVOList != null) {
+            matchInfo.vs = mVideoUrlVOList;
+        }
+
+        if (!TextUtils.isEmpty(mAnimationUrl)) {
+            matchInfo.as.clear();
+            matchInfo.as.add(mAnimationUrl);
+        }
+        Match match = new MatchPm(matchInfo);
+        mMatch = match;
+        mMatch.setReferUrl(mReferUrl);
+        matchData.postValue(match);
+    }
+
+    public void getMatchDetailResult(long matchId) {
+        mMatchId = matchId;
+        Map<String, String> map = new HashMap<>();
+        map.put("mid", String.valueOf(matchId));
+        map.put("type", String.valueOf(1));
+
+        Disposable disposable = (Disposable) model.getPMApiService().getMatchDetailResult(map)
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<MatchInfo>() {
+                    @Override
+                    public void onResult(MatchInfo matchInfo) {
+                        if (matchInfo == null) {
+                            return;
+                        }
+                        mMatchResultInfo = matchInfo;
+                        MatchPm match = new MatchPm(mMatchResultInfo);
+                        matchDataResult.postValue(match);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        BusinessException error = (BusinessException) t;
+                        if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
+                            getGameTokenApi();
+                        } else {
                             ToastUtils.showShort(error.message);
                         }
                     }
@@ -106,40 +167,63 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().videoAnimationUrlPB(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<VideoAnimationInfo>() {
+                .subscribeWith(new HttpCallBack<VideoAnimationInfo>() {
                     @Override
                     public void onResult(VideoAnimationInfo videoAnimationInfo) {
-                        if(mMatchInfo != null && mMatchInfo.mid != null) {
-                            if (TextUtils.equals(type, "Video")) {
-                                if(videoAnimationInfo.videoUrlVOList != null) {
-                                    mMatchInfo.vs = videoAnimationInfo.videoUrlVOList;
-                                }
-                                videoAnimationUrlPB(Long.valueOf(mMatchInfo.mid), "Animation");
+
+                        if (TextUtils.equals(type, "Video")) {
+                            if (videoAnimationInfo.videoUrlVOList != null) {
+                                mVideoUrlVOList = videoAnimationInfo.videoUrlVOList;
                             }
-                            if (TextUtils.equals(type, "Animation")) {
-                                if(!TextUtils.isEmpty(videoAnimationInfo.animationUrl)) {
-                                    mMatchInfo.as.clear();
-                                    mMatchInfo.as.add(videoAnimationInfo.animationUrl);
-                                }
-                                Match match = new MatchPm(mMatchInfo);
-                                mMatch = match;
-                                mMatch.setReferUrl(videoAnimationInfo.referUrl);
-                                matchData.postValue(match);
+                            mReferUrl = videoAnimationInfo.referUrl;
+                        } else if (TextUtils.equals(type, "Animation")) {
+                            if (!TextUtils.isEmpty(videoAnimationInfo.animationUrl)) {
+                                mAnimationUrl = videoAnimationInfo.animationUrl;
                             }
+
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        if(mMatchInfo != null) {
-                            Match match = new MatchPm(mMatchInfo);
-                            mMatch = match;
-                            matchData.postValue(match);
+
+                    }
+                });
+
+        addSubscribe(disposable);
+
+    }
+
+    public void getCategoryListResult(String matchId, String sportId) {
+        mSportId = sportId;
+        Map<String, String> map = new HashMap<>();
+        map.put("mid", matchId);
+
+        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
+        if (TextUtils.equals(platform, PLATFORM_PMXC)) {
+            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
+        } else {
+            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PM_USER_ID));
+        }
+        Disposable disposable = (Disposable) model.getPMApiService().getMatchResultPB(map)
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<List<PlayTypeInfo>>() {
+                    @Override
+                    public void onResult(List<PlayTypeInfo> categoryPms) {
+                        List<PlayType> list = new ArrayList<>();
+                        for (PlayTypeInfo playTypeInfo : categoryPms) {
+                            list.add(new PlayTypePm(playTypeInfo));
                         }
+                        categoryResultListData.postValue(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
                     }
                 });
         addSubscribe(disposable);
-
     }
 
     @Override
@@ -152,7 +236,7 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
         Disposable disposable = (Disposable) model.getPMApiService().getCategoryList(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<CategoryPm>>() {
+                .subscribeWith(new HttpCallBack<List<CategoryPm>>() {
                     @Override
                     public void onResult(List<CategoryPm> categoryPms) {
                         Map<String, Category> categoryMap = new HashMap<>();
@@ -161,7 +245,7 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
                             categoryList.add(category);
                             categoryMap.put(category.getId(), category);
                         }
-                        if(mCategoryMap.isEmpty()) {
+                        if (mCategoryMap.isEmpty()) {
                             mCategoryMap = categoryMap;
                             mCategoryList = categoryList;
                         } else {
@@ -186,18 +270,18 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
         map.put("mid", mid);
         map.put("mcid", mcid);
         map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PM_USER_ID));
-        if(TextUtils.equals(platform, PLATFORM_PMXC)){
+        if (TextUtils.equals(platform, PLATFORM_PMXC)) {
             map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
         }
 
         Disposable disposable = (Disposable) model.getPMApiService().getMatchOddsInfoPB(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new PMHttpCallBack<List<PlayTypeInfo>>() {
+                .subscribeWith(new HttpCallBack<List<PlayTypeInfo>>() {
                     @Override
                     public void onResult(List<PlayTypeInfo> playTypeList) {
 
-                        if(playTypeList == null || playTypeList.isEmpty()){
+                        if (playTypeList == null || playTypeList.isEmpty()) {
                             mCategoryList.clear();
                             mCategoryMap.clear();
                             isFirst = false;
@@ -213,31 +297,31 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
                         }
 
                         if (isFirst) {
-                            for(Category category : mCategoryList){
+                            for (Category category : mCategoryList) {
                                 for (PlayType playType : playTypes) {
                                     CategoryPm categoryPm = (CategoryPm) category;
-                                    if(categoryPm.getPlays().contains(Integer.valueOf(playType.getId()))){
+                                    if (categoryPm.getPlays().contains(Integer.valueOf(playType.getId()))) {
                                         category.addPlayTypeList(playType);
                                     }
                                 }
                             }
-                        }else {
+                        } else {
                             // 设置赔率变化
                             setOptionOddChange(mid, playTypes);
-                            for(Category category : mTmpCategoryList){
+                            for (Category category : mTmpCategoryList) {
                                 for (PlayType playType : playTypes) {
                                     CategoryPm categoryPm = (CategoryPm) category;
-                                    if(categoryPm.getPlays().contains(Integer.valueOf(playType.getId()))){
+                                    if (categoryPm.getPlays().contains(Integer.valueOf(playType.getId()))) {
                                         category.addPlayTypeList(playType);
                                     }
                                 }
                             }
-                            if(mTmpCategoryList.size() <= mCategoryMap.size()) {
+                            if (mTmpCategoryList.size() <= mCategoryMap.size()) {
                                 for (String key : mCategoryMap.keySet()) {
                                     Category oldCategory = mCategoryMap.get(key);
                                     int index = mCategoryList.indexOf(oldCategory);
                                     Category newCategory = mTmpCategoryMap.get(key);
-                                    if(index > -1) {
+                                    if (index > -1) {
                                         mCategoryList.set(index, newCategory);
                                         mCategoryMap.put(key, newCategory);
                                     }
@@ -340,19 +424,21 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
 
                         if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                             SPUtils.getInstance().put(SPKeyGlobal.PMXC_TOKEN, pmService.getToken());
+                            SPUtils.getInstance().put(SPKeyGlobal.PMXC_DISABLED, pmService.isDisabled);
                             SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, pmService.getApiDomain());
                             SPUtils.getInstance().put(SPKeyGlobal.PMXC_IMG_SERVICE_URL, pmService.getImgDomain());
                             SPUtils.getInstance().put(SPKeyGlobal.PMXC_USER_ID, pmService.getUserId());
                             BtDomainUtil.setDefaultPmxcDomainUrl(pmService.getApiDomain());
                         } else {
                             SPUtils.getInstance().put(SPKeyGlobal.PM_TOKEN, pmService.getToken());
+                            SPUtils.getInstance().put(SPKeyGlobal.PM_DISABLED, pmService.isDisabled);
                             SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, pmService.getApiDomain());
                             SPUtils.getInstance().put(SPKeyGlobal.PM_IMG_SERVICE_URL, pmService.getImgDomain());
                             SPUtils.getInstance().put(SPKeyGlobal.PM_USER_ID, pmService.getUserId());
                             BtDomainUtil.setDefaultPmDomainUrl(pmService.getApiDomain());
                         }
                         getMatchDetail(mMatchId);
-                        if(TextUtils.isEmpty(mSportId)) {
+                        if (TextUtils.isEmpty(mSportId)) {
                             getCategoryList(String.valueOf(mMatchId), mSportId);
                         }
                     }

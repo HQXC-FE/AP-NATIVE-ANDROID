@@ -8,12 +8,14 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.widget.LoadingDialog;
 import com.xtree.mine.R;
 import com.xtree.mine.data.MineRepository;
 import com.xtree.mine.vo.AccountChangeVo;
 import com.xtree.mine.vo.BtDetailVo;
 import com.xtree.mine.vo.BtPlatformVo;
 import com.xtree.mine.vo.BtReportVo;
+import com.xtree.mine.vo.CancelGame;
 import com.xtree.mine.vo.GameChangeVo;
 import com.xtree.mine.vo.LotteryDetailVo;
 import com.xtree.mine.vo.LotteryOrderVo;
@@ -32,7 +34,6 @@ import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.http.BaseResponse2;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -78,7 +79,7 @@ public class ReportViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onError(Throwable t) {
                         CfLog.e("error, " + t.toString());
-                        super.onError(t);
+                        LoadingDialog.finish();
                         liveDataAccountChange.setValue(null);
                     }
                 });
@@ -345,7 +346,7 @@ public class ReportViewModel extends BaseViewModel<MineRepository> {
                     @Override
                     public void onError(Throwable t) {
                         CfLog.e("error, " + t.toString());
-                        super.onError(t);
+                        LoadingDialog.finish();
                         liveDataGameChange.setValue(null);
                     }
                 });
@@ -356,9 +357,9 @@ public class ReportViewModel extends BaseViewModel<MineRepository> {
         Disposable disposable = (Disposable) model.getApiService().cancelGame(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<BaseResponse2>() {
+                .subscribeWith(new HttpCallBack<CancelGame>() {
                     @Override
-                    public void onResult(BaseResponse2 vo) {
+                    public void onResult(CancelGame vo) {
                         CfLog.d("******");
                         liveDataDeleteCp.setValue(vo.message);
                     }

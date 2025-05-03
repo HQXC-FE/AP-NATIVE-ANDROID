@@ -35,11 +35,28 @@ public class ExReceiptUploadRequest {
      */
     @SerializedName("payBankCode")
     private String payBankCode;
+
+    /**
+     * receipt_id
+     */
+    @SerializedName("receiptId")
+    private String receiptId;
+
+
+    public String getReceiptId() {
+        return receiptId;
+    }
+
+    public void setReceiptId(String receiptId) {
+        this.receiptId = receiptId;
+    }
+
     /**
      * payName
      */
     @SerializedName("payName")
     private String payName;
+
     /**
      * nonce
      */

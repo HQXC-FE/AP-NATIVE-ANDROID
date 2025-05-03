@@ -21,65 +21,124 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <ImageView
-            style="@style/style_rc_exp_bank_top"
-            android:src="@mipmap/rc_exp_bank_step_2" />
+        <!--        <ImageView-->
+        <!--            style="@style/style_rc_exp_bank_top"-->
+        <!--            android:src="@mipmap/rc_exp_bank_step_2" />-->
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
+        <com.xtree.recharge.ui.widget.StepProgressView
+            android:id="@+id/stepProgress"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/layout_margin"
-            android:layout_marginBottom="@dimen/layout_margin"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            app:activeColor="#A17DF5"
+            app:activeDrawable="@drawable/rc_step_progress_circle"
+            app:circleRadius="6dp"
+            app:currentStep="2"
+            app:defaultColor="#C6C6C6"
+            app:horizontalPadding="40dp"
+            app:lineWidth="2dp"
+            app:stepCount="3"
+            app:stepTexts="@array/step_texts"
+            app:textSize="14sp" />
 
-            <ImageView
-                android:id="@+id/ivw_01"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@mipmap/rc_exp_bank_rst_2"
-                android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="parent" />
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/lav_icon"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@mipmap/rc_exp_bank_rst_2"
-                app:layout_constraintBottom_toBottomOf="@id/ivw_01"
-                app:layout_constraintEnd_toEndOf="@id/ivw_01"
-                app:layout_constraintStart_toStartOf="@id/ivw_01"
-                app:layout_constraintTop_toTopOf="@id/ivw_01"
-                app:lottie_autoPlay="true"
-                app:lottie_imageAssetsFolder="images_ld"
-                app:lottie_loop="true"
-                app:lottie_rawRes="@raw/loudou" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/layout_margin"
+                    android:layout_marginBottom="@dimen/layout_margin"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tvw_time_left"
-                style="@style/style_rc_exp_bank_status2"
-                android:text="@{model.leftTimeData}"
-                tools:text="剩余支付时间：29:25"
-                app:layout_constraintBottom_toTopOf="@+id/tvw_time_end"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/ivw_01"
-                app:layout_constraintTop_toTopOf="@id/ivw_01" />
+                    <ImageView
+                        android:id="@+id/ivw_01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/rc_exp_bank_rst_2"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/tvw_time_end"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:gravity="center"
-                android:text="@{model.deadlinesData}"
-                android:textColor="@color/clr_grey_09"
-                app:layout_constraintBottom_toBottomOf="@+id/ivw_01"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tvw_time_left"
-                app:layout_constraintTop_toBottomOf="@id/tvw_time_left"
-                tools:text="请于 2024-01-23  10:19:21 内完成支付" />
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lav_icon"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@mipmap/rc_exp_bank_rst_2"
+                        app:layout_constraintBottom_toBottomOf="@id/ivw_01"
+                        app:layout_constraintEnd_toEndOf="@id/ivw_01"
+                        app:layout_constraintStart_toStartOf="@id/ivw_01"
+                        app:layout_constraintTop_toTopOf="@id/ivw_01"
+                        app:lottie_autoPlay="true"
+                        app:lottie_imageAssetsFolder="images_ld"
+                        app:lottie_loop="true"
+                        app:lottie_rawRes="@raw/loudou" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/tvw_time_left"
+                        style="@style/style_rc_exp_bank_status2"
+                        android:text="@{model.leftTimeData}"
+                        tools:text="剩余支付时间：29:25"
+                        app:layout_constraintBottom_toTopOf="@+id/tvw_time_end"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivw_01"
+                        app:layout_constraintTop_toTopOf="@id/ivw_01" />
+
+                    <TextView
+                        android:id="@+id/tvw_time_end"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:text="@{model.deadlinesData}"
+                        android:textColor="@color/clr_grey_09"
+                        app:layout_constraintBottom_toBottomOf="@+id/ivw_01"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tvw_time_left"
+                        app:layout_constraintTop_toBottomOf="@id/tvw_time_left"
+                        tools:text="请于 2024-01-23  10:19:21 内完成支付" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="@dimen/layout_margin"-->
+<!--            android:layout_marginBottom="@dimen/layout_margin"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/ivw_01"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:src="@mipmap/rc_exp_bank_rst_3"-->
+<!--                app:layout_constraintStart_toStartOf="parent" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvw_time_left"-->
+<!--                style="@style/style_rc_exp_bank_status2"-->
+<!--                android:text="@{model.leftTimeData}"-->
+<!--                app:layout_constraintBottom_toTopOf="@+id/tvw_time_end"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toEndOf="@id/ivw_01"-->
+<!--                app:layout_constraintTop_toTopOf="@id/ivw_01"-->
+<!--                tools:text="剩余支付时间：29:59" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvw_time_end"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="2dp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@{model.deadlinesData}"-->
+<!--                android:textColor="@color/clr_grey_09"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/ivw_01"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/tvw_time_left"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/tvw_time_left"-->
+<!--                tools:text="请于 2024-01-23  10:19:21 内完成支付" />-->
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         <View style="@style/style_dividing_line" />
 
@@ -90,16 +149,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginBottom="12dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp "
+            android:layout_marginBottom="12dp"
             android:background="@drawable/shape_solid_clrmain34_c8"
+            android:gravity="center"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             android:text="@{model.tip1}"
             android:textColor="@color/clr_filter_txt_gray"
-            android:textSize="12sp"
-            android:gravity="center"/>
+            android:textSize="12sp" />
 
         <LinearLayout style="@style/style_rc_dlg_ll">
 
@@ -109,14 +168,14 @@
 
             <TextView
                 style="@style/style_rc_dlg_value"
-                android:textColor="@color/clr_black"
                 android:text="@{model.bankInfoData.merchantOrder}"
+                android:textColor="@color/clr_black"
                 tools:text="PAY00123456789" />
 
             <TextView
                 style="@style/style_rc_dlg_copy"
-                android:text="@string/txt_copy"
-                android:onClick="@{() -> StringUtils.copy(model.bankInfoData.merchantOrder)}"/>
+                android:onClick="@{() -> StringUtils.copy(model.bankInfoData.merchantOrder)}"
+                android:text="@string/txt_copy" />
 
         </LinearLayout>
 
@@ -135,8 +194,8 @@
             <TextView
                 android:id="@+id/tvw_copy_bank_name"
                 style="@style/style_rc_dlg_copy"
-                android:text="@string/txt_copy"
-                android:onClick="@{() -> StringUtils.copy(model.bankInfoData.bankName)}"/>
+                android:onClick="@{() -> StringUtils.copy(model.bankInfoData.bankName)}"
+                android:text="@string/txt_copy" />
         </LinearLayout>
 
         <LinearLayout style="@style/style_rc_dlg_ll">
@@ -154,8 +213,8 @@
             <TextView
                 android:id="@+id/tvw_copy_branch"
                 style="@style/style_rc_dlg_copy"
-                android:text="@string/txt_copy"
-                android:onClick="@{() -> StringUtils.copy(model.bankInfoData.bankArea)}"/>
+                android:onClick="@{() -> StringUtils.copy(model.bankInfoData.bankArea)}"
+                android:text="@string/txt_copy" />
         </LinearLayout>
 
         <LinearLayout style="@style/style_rc_dlg_ll">
@@ -173,8 +232,8 @@
             <TextView
                 android:id="@+id/tvw_copy_acc_name"
                 style="@style/style_rc_dlg_copy"
-                android:text="@string/txt_copy"
-                android:onClick="@{() -> StringUtils.copy(model.bankInfoData.bankAccountName)}"/>
+                android:onClick="@{() -> StringUtils.copy(model.bankInfoData.bankAccountName)}"
+                android:text="@string/txt_copy" />
         </LinearLayout>
 
         <LinearLayout style="@style/style_rc_dlg_ll">
@@ -192,8 +251,8 @@
             <TextView
                 android:id="@+id/tvw_copy_acc_num"
                 style="@style/style_rc_dlg_copy"
-                android:text="@string/txt_copy"
-                android:onClick="@{() -> StringUtils.copy(model.bankInfoData.bankAccount)}"/>
+                android:onClick="@{() -> StringUtils.copy(model.bankInfoData.bankAccount)}"
+                android:text="@string/txt_copy" />
         </LinearLayout>
 
         <LinearLayout style="@style/style_rc_dlg_ll">
@@ -211,8 +270,8 @@
             <TextView
                 android:id="@+id/tvw_copy_money2"
                 style="@style/style_rc_dlg_copy"
-                android:text="@string/txt_copy"
-                android:onClick="@{() -> StringUtils.copy(model.bankInfoData.payAmount)}"/>
+                android:onClick="@{() -> StringUtils.copy(model.bankInfoData.payAmount)}"
+                android:text="@string/txt_copy" />
         </LinearLayout>
 
         <TextView
@@ -231,34 +290,38 @@
             <TextView
                 android:id="@+id/tvw_left"
                 style="@style/style_btn_short_cancel"
-                android:text="@string/txt_cancel"
+                android:background="@drawable/bg_btn_rc_exp_short_cancel_selector"
+                android:enabled="@{model.cancleOrderStatus}"
                 android:onClick="@{() -> model.cancleOrder()}"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/txt_cancel"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvw_right"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tvw_right"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/tvw_right"
                 style="@style/style_btn_short"
-                android:text="上传凭证"
+                android:text=""
+                android:layout_width="wrap_content"
                 android:onClick="@{() -> model.toVoucher()}"
-                app:layout_constraintTop_toTopOf="parent"
+                android:src="@mipmap/cm_btn_mdium"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tvw_left"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             style="@style/style_cm_tip_small_grey"
             android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:drawableStart="@mipmap/cm_ic_hint_purple"
             android:drawablePadding="4dp"
-            android:text="@{model.tip2}"
-            android:textSize="12sp"
             android:gravity="center"
-            android:layout_gravity="center"/>
+            android:text="@{model.tip2}"
+            android:textSize="12sp" />
     </LinearLayout>
 </layout>

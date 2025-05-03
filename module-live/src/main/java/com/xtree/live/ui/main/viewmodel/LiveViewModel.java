@@ -1,12 +1,10 @@
 package com.xtree.live.ui.main.viewmodel;
 
-import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
-import static com.xtree.bet.constant.FBConstants.SPORT_NAMES;
-import static com.xtree.bet.constant.FBConstants.SPORT_NAMES_TODAY_CG;
 
 import android.app.Application;
 import android.text.TextUtils;
@@ -18,23 +16,18 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.JsonObject;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.mvvm.recyclerview.BindModel;
-import com.xtree.base.net.FBHttpCallBack;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
-import com.xtree.bet.bean.request.UploadExcetionReq;
 import com.xtree.bet.bean.request.fb.FBListReq;
 import com.xtree.bet.bean.response.HotLeagueInfo;
 import com.xtree.bet.bean.response.fb.MatchListRsp;
 import com.xtree.live.LiveConfig;
 import com.xtree.live.R;
-import com.xtree.live.SPKey;
-import com.xtree.live.chat.RequestUtils;
 import com.xtree.live.data.LiveRepository;
 import com.xtree.live.data.source.httpnew.LiveRep;
 import com.xtree.live.data.source.request.AnchorSortRequest;
@@ -69,13 +62,11 @@ import java.util.Map;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.sentry.Sentry;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
@@ -93,7 +84,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
         LiveHotModel liveHotModel = new LiveHotModel(FrontLivesType.HOT.getLabel());
         liveHotModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.HOT.getValue(), page, limit, success, error);
-        liveHotModel.matchListResponseFetchListener = (page, limit, params, success, error) -> getHotLeague(PLATFORM_FBXC,success, error);
+        liveHotModel.matchListResponseFetchListener = (page, limit, params, success, error) -> getHotLeague(PLATFORM_FBXC, success, error);
         liveHotModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
         liveHotModel.setItemType(1);
 
@@ -105,7 +96,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
 
         LiveHotModel liveBasketBallModel = new LiveHotModel(FrontLivesType.BASKETBALL.getLabel());
         liveBasketBallModel.frontLivesResponseFetchListener = (page, limit, params, success, error) -> getFrontLives(FrontLivesType.HOT.getValue(), page, limit, success, error);
-       // liveBasketBallModel.matchListResponseFetchListener = (page, limit, params, success, error) -> getLeagueList(0, "2", 1, hotLeagueList, matchids, 6, 0, 1, false, false,success,error);
+        // liveBasketBallModel.matchListResponseFetchListener = (page, limit, params, success, error) -> getLeagueList(0, "2", 1, hotLeagueList, matchids, 6, 0, 1, false, false,success,error);
         liveBasketBallModel.matchInfoResponseFetchListener = (page, limit, params, success, error) -> getMatchDetail(params.get("matchId").toString(), success, error);
         liveBasketBallModel.setItemType(3);
 
@@ -381,7 +372,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
             @Override
             public void onError(Throwable t) {
                 super.onError(t);
-                if ((t instanceof ResponseThrowable) && ((ResponseThrowable) t).code == CODE_14010) {
+                if ((t instanceof BusinessException) && ((BusinessException) t).code == CODE_14010) {
                     getGameTokenApi(matchId, success, error);
                 } else {
                     error.onChanged(t);
@@ -557,26 +548,28 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
                         CfLog.d("=============== @@@ LiveViewModel hotLeagueInfo ================" + hotLeagueInfo);
                         CfLog.d("=============== @@@ LiveViewModel fbxc_popular_leagues ================" + hotLeagueInfo.fbxc_popular_leagues);
                         List<String> hotLeagues = !TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC) ? hotLeagueInfo.fbxc_popular_leagues : hotLeagueInfo.obg_popular_leagues;
-                        if(hotLeagues != null){
+                        if (hotLeagues != null) {
                             for (String leagueId : hotLeagues) {
                                 hotLeagueList.add(Long.valueOf(leagueId));
                             }
                         }
                         CfLog.d("=============== onResult hotLeagues ================" + hotLeagueList.size());
                         //List<Long> matchids = new ArrayList();
-                        getLeagueList(0, "0", 1, hotLeagueList,success,error);
+                        getLeagueList(0, "0", 1, hotLeagueList, success, error);
 
                     }
 
                     @Override
                     public void onError(Throwable t) {
                         //super.onError(t);
-                        getHotLeague(platform,success,error);
+                        getHotLeague(platform, success, error);
                     }
                 });
         addSubscribe(disposable);
     }
     //FBListReq{sportId='1', languageType='CMN', leagueIds=[], type=3, beginTime='null', endTime='null', matchIds=[1187565, 1190209], sportIds=null, current=1, size=50, orderBy=1, isPC=true, oddType=1}
+
+    // Todo 这个还需调整
     /**
      * 获取赛事列表
      *
@@ -588,43 +581,42 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
      * @param searchDatePos  查询时间列表中的位置
      * @param oddType        盘口类型
      */
-    public void getLeagueList(int sportPos, String sportId, int orderBy, List<Long> leagueIds,Observer<MatchListRsp> success, Observer<Object> error) {
-
-        FBListReq fBListReq = new FBListReq();
-        fBListReq.setSportId(sportId);
-        fBListReq.setType(3);
-        fBListReq.setOrderBy(orderBy);
-        fBListReq.setLeagueIds(leagueIds);
-        fBListReq.setMatchIds(null);
-        fBListReq.setCurrent(1);
-        fBListReq.setSize(50);
-        //fBListReq.setCurrent(mCurrentPage);
-        fBListReq.setOddType(1);
-        SPORT_NAMES = SPORT_NAMES_TODAY_CG;
-        if (sportPos == -1 || TextUtils.equals(SPORT_NAMES[sportPos], "热门")) {
-            fBListReq.setSportId(null);
-        }
-
-//        CfLog.d("============== getLeagueList fBListReq ===========" + fBListReq);
-        Disposable disposable = (Disposable) model.getFBList(fBListReq)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FBHttpCallBack<MatchListRsp>() {
-
-                    @Override
-                    public void onResult(MatchListRsp data) {
-                        CfLog.d("============== getLeagueList onResult matchListRsp ===========" + data.toString());
-                        success.onChanged(data);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.d("============== getLeagueList onError ===========");
-                        CfLog.e(t.toString());
-                    }
-                });
-        addSubscribe(disposable);
+    public void getLeagueList(int sportPos, String sportId, int orderBy, List<Long> leagueIds, Observer<MatchListRsp> success, Observer<Object> error) {
+//
+//        FBListReq fBListReq = new FBListReq();
+//        fBListReq.setSportId(sportId);
+//        fBListReq.setType(3);
+//        fBListReq.setOrderBy(orderBy);
+//        fBListReq.setLeagueIds(leagueIds);
+//        fBListReq.setMatchIds(null);
+//        fBListReq.setCurrent(1);
+//        fBListReq.setSize(50);
+//        //fBListReq.setCurrent(mCurrentPage);
+//        fBListReq.setOddType(1);
+//        SPORT_NAMES = SPORT_NAMES_TODAY_CG;
+//        if (sportPos == -1 || TextUtils.equals(SPORT_NAMES[sportPos], "热门")) {
+//            fBListReq.setSportId(null);
+//        }
+//
+////        CfLog.d("============== getLeagueList fBListReq ===========" + fBListReq);
+//        Disposable disposable = (Disposable) model.getFBList(fBListReq)
+//                .compose(RxUtils.schedulersTransformer()) //线程调度
+//                .compose(RxUtils.exceptionTransformer())
+//                .subscribeWith(new HttpCallBack() {
+//
+//                    @Override
+//                    public void onResult(MatchListRsp data) {
+//                        CfLog.d("============== getLeagueList onResult matchListRsp ===========" + data.toString());
+//                        success.onChanged(data);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//                        CfLog.d("============== getLeagueList onError ===========");
+//                        CfLog.e(t.toString());
+//                    }
+//                });
+//        addSubscribe(disposable);
     }
-
 }
 

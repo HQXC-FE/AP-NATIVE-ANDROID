@@ -58,6 +58,10 @@ public class MainDomainAdapter extends BaseAdapter<TopSpeedDomain> {
         } else {
             binding.tvAgentName.setText("线路" + NumberUtils.int2chineseNum(position + 1));
         }
+
+        //显示的测速时间，比较真实时间和优化时间取最短
+        long speedTime = Math.min(domain.speedScore, domain.speedSec);
+
         if(mChecking){
             binding.tvAgentChange.setVisibility(View.INVISIBLE);
             binding.tvSpeed.setText("");
@@ -71,14 +75,14 @@ public class MainDomainAdapter extends BaseAdapter<TopSpeedDomain> {
         } else {
             binding.tvAgentChange.setVisibility(!TextUtils.equals(domain.url, DomainUtil.getApiUrl()) ? View.VISIBLE : View.INVISIBLE);
             binding.tvRecomment.setText("推荐");
-            binding.tvSpeed.setText(domain.speedSec + "ms");
+            binding.tvSpeed.setText(speedTime + "ms");
 
-            if (domain.speedSec < 200) {
+            if (speedTime < 200) {
                 binding.tvAgentChange.setTextColor(mContext.getResources().getColor(R.color.clr_green_03));
                 binding.tvAgentChange.setBackground(mContext.getResources().getDrawable(R.drawable.bg_stroke_green));
                 binding.ivRedPoint.setBackground(mContext.getResources().getDrawable(R.drawable.ic_green_point));
                 binding.tvRecomment.setVisibility(View.VISIBLE);
-            } else if (domain.speedSec > 200 && domain.speedSec < 500) {
+            } else if (speedTime > 200 && speedTime < 500) {
                 binding.tvAgentChange.setTextColor(mContext.getResources().getColor(R.color.clr_orange_02));
                 binding.tvAgentChange.setBackground(mContext.getResources().getDrawable(R.drawable.bg_stroke_orange));
                 binding.ivRedPoint.setBackground(mContext.getResources().getDrawable(R.drawable.ic_orange_point));

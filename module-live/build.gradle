@@ -21,8 +21,6 @@ dependencies {
     api project(':library-base')
     api project(':library-res')
     implementation project(':library-service')
-    implementation project(':gsyVideoPlayer-java')
-    implementation project(":gsyVideoPlayer")
     implementation project(':module-bet')
 
     implementation project(':emoji')

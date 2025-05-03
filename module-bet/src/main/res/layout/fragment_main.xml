@@ -5,390 +5,348 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/bt_page_bg">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/bt_page_bg">
+            android:layout_above="@+id/pager_bottom_tab"
+            android:background="@color/bt_page_bg"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/rl_play_method"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/pager_bottom_tab"
-                android:background="@color/bt_page_bg"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:background="@color/bt_page_up_bg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <RelativeLayout
-                    android:id="@+id/rl_play_method"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/bt_page_up_bg"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/iv_back"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:padding="5dp"
-                        android:src="@mipmap/cm_icon_back" />
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tab_play_method"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_toLeftOf="@+id/iv_web"
-                        android:layout_toRightOf="@+id/iv_back"
-                        android:textSize="18sp"
-                        app:tabIndicatorHeight="0dp"
-                        app:tabMaxWidth="80dp"
-                        app:tabMinWidth="20dp"
-                        app:tabMode="scrollable"
-                        app:tabPaddingEnd="5dp"
-                        app:tabPaddingStart="5dp"
-                        app:tabRippleColor="@android:color/transparent" />
-
-                    <ImageView
-                        android:id="@+id/iv_web"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="3dp"
-                        android:visibility="gone"
-                        android:layout_toLeftOf="@+id/tv_balance"
-                        android:adjustViewBounds="true"
-                        android:src="@mipmap/bt_web" />
-
-                    <TextView
-                        android:id="@+id/tv_balance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/bt_bg_shape_cornor_alpha"
-                        android:drawableStart="@mipmap/cm_icon_balance"
-                        android:drawablePadding="3dp"
-                        android:gravity="center"
-                        android:padding="2dp"
-                        android:text="0.00"
-                        android:textColor="@color/bt_text_color_primary" />
-
-                </RelativeLayout>
-
+                    android:layout_centerVertical="true"
+                    android:padding="5dp"
+                    android:src="@mipmap/cm_icon_back" />
+                <!-- 今日/滚球/早盘/串关/冠军-->
                 <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_search_date"
+                    android:id="@+id/tab_play_method"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:background="@color/bt_page_up_bg"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:textSize="10sp"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@+id/rl_play_method"
+                    android:layout_toLeftOf="@+id/iv_web"
+                    android:layout_toRightOf="@+id/iv_back"
+                    android:textSize="18sp"
                     app:tabIndicatorHeight="0dp"
-                    app:tabMaxWidth="60dp"
+                    app:tabMaxWidth="80dp"
                     app:tabMinWidth="20dp"
-                    app:tabMode="scrollable"
-                    app:tabPaddingEnd="5dp"
-                    app:tabPaddingStart="5dp"
-                    app:tabRippleColor="@android:color/transparent"
-                    app:tabSelectedTextColor="@color/bt_tab_textcolor_selected"
-                    app:tabTextColor="@color/bt_text_color_primary" />
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_sport_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/bt_page_up_bg"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="10dp"
-                    android:textSize="10sp"
-                    app:layout_constraintTop_toBottomOf="@+id/rl_play_method"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabMaxWidth="100dp"
-                    app:tabMinWidth="60dp"
                     app:tabMode="scrollable"
                     app:tabPaddingEnd="5dp"
                     app:tabPaddingStart="5dp"
                     app:tabRippleColor="@android:color/transparent" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_tab"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/bt_page_up_bg"
-                    app:layout_constraintTop_toBottomOf="@+id/tab_sport_type">
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tab_fb_league"
-                        android:layout_width="0dp"
-                        android:layout_height="30dp"
-                        android:background="@color/bt_page_up_bg"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:textSize="10sp"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toStartOf="@id/ivw_game_search"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tabIndicatorHeight="0dp"
-                        app:tabMaxWidth="80dp"
-                        app:tabMinWidth="50dp"
-                        app:tabMode="scrollable"
-                        app:tabPaddingEnd="5dp"
-                        app:tabPaddingStart="5dp"
-                        app:tabRippleColor="@android:color/transparent" />
-
-                    <ImageView
-                        android:id="@+id/ivw_game_search"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:paddingEnd="4dp"
-                        android:src="@mipmap/ic_game_search"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_game_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:background="@color/bt_page_up_bg"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@+id/rl_play_method">
-
-                    <EditText
-                        android:id="@+id/edt_game_search"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_margin="3dp"
-                        android:background="@drawable/bg_game_search"
-                        android:drawableStart="@mipmap/ic_game_search"
-                        android:drawablePadding="6dp"
-                        android:hint="@string/txt_game_search"
-                        android:paddingStart="6dp"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/tvw_cancel"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvw_cancel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="8dp"
-                        android:gravity="center"
-                        android:text="@string/txt_cancel"
-                        android:textColor="@color/clr_grey_13"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:id="@+id/ll_notice"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|bottom"
-                        android:layout_marginEnd="@dimen/page_margin"
-                        android:background="@mipmap/hm_bg_msg"
-                        android:gravity="center_vertical"
-                        android:visibility="gone"
-                        tools:visibility="visible">
-
-                        <com.xtree.base.widget.MarqueeTextView
-                            android:id="@+id/tvw_notice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_weight="1"
-                            android:drawableStart="@mipmap/hm_notice"
-                            android:drawablePadding="6dp"
-                            android:ellipsize="marquee"
-                            android:focusable="true"
-                            android:marqueeRepeatLimit="marquee_forever"
-                            android:singleLine="true"
-                            android:text=""
-                            android:textColor="@color/clr_hm_txt_grey_03"
-                            tools:text="Demo" />
-
-                        <ImageView
-                            android:id="@+id/ivw_close"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="24dp"
-                            android:layout_marginEnd="12dp"
-                            android:drawablePadding="6dp"
-                            android:padding="4dp"
-                            android:src="@mipmap/hm_close" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/ivw_notice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:src="@mipmap/hm_btn_notice"
-                        android:visibility="gone"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:visibility="visible" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.core.widget.NestedScrollView
-                    android:id="@+id/nsv_league"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fillViewport="true">
-
-                    <com.scwang.smart.refresh.layout.SmartRefreshLayout
-                        android:id="@+id/srl_league"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        app:layout_constraintTop_toBottomOf="@+id/tab_fb_league">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <com.xtree.bet.weight.AnimatedExpandableListViewMax
-                                android:id="@+id/rv_league"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginStart="2dp"
-                                android:layout_marginEnd="2dp"
-                                android:background="@android:color/transparent"
-                                android:childIndicator="@null"
-                                android:defaultFocusHighlightEnabled="false"
-                                android:divider="@android:color/transparent"
-                                android:dividerHeight="0dp"
-                                android:groupIndicator="@null"
-                                android:listSelector="@android:color/transparent"
-                                android:scrollbars="none" />
-
-                            <RelativeLayout
-                                android:id="@+id/rl_league"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="2dp"
-                                android:layout_marginEnd="2dp"
-                                android:background="@drawable/bt_bg_league_top"
-                                android:visibility="gone"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <ImageView
-                                    android:id="@+id/iv_icon"
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginStart="10dp" />
-
-                                <TextView
-                                    android:id="@+id/tv_league_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toRightOf="@+id/iv_icon"
-                                    android:padding="5dp"
-                                    android:textColor="@color/bt_text_color_primary_1"
-                                    android:textSize="@dimen/bt_text_15sp"
-                                    android:textStyle="bold"
-                                    tools:text="墨西哥甲级联赛" />
-
-                                <ImageView
-                                    android:id="@+id/group_indicator"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginEnd="10dp" />
-
-                            </RelativeLayout>
-                        </RelativeLayout>
-
-                    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-                </androidx.core.widget.NestedScrollView>
-
-                <include
-                    android:id="@+id/ll_empty"
-                    layout="@layout/bt_layout_match_list_empty" />
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_cg"
-                android:layout_width="74dp"
-                android:layout_height="74dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="17dp"
-                android:layout_marginBottom="94dp"
-                android:visibility="gone">
-
                 <ImageView
-                    android:id="@+id/iv_bt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@mipmap/bt_ic_chuan_suspend" />
+                    android:id="@+id/iv_web"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="3dp"
+                    android:layout_toLeftOf="@+id/tv_balance"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/bt_web"
+                    android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/tv_cg_count"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentTop="true"
+                    android:id="@+id/tv_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="4dp"
-                    android:background="@mipmap/bt_bg_text_cg"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bt_bg_shape_cornor_alpha"
+                    android:drawableStart="@mipmap/cm_icon_balance"
+                    android:drawablePadding="3dp"
                     android:gravity="center"
-                    android:text="2"
-                    android:textColor="@color/bt_color_under_bg_primary_text"
-                    android:textSize="12sp" />
+                    android:padding="2dp"
+                    android:text="0.00"
+                    android:textColor="@color/bt_text_color_primary" />
+
             </RelativeLayout>
 
-            <me.majiajie.pagerbottomtabstrip.PageNavigationView
-                android:id="@+id/pager_bottom_tab"
+            <!-- 日期-->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_search_date"
                 android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/bt_bg_main_menu" />
+                android:layout_height="30dp"
+                android:background="@color/bt_page_up_bg"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textSize="10sp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/rl_play_method"
+                app:tabIndicatorHeight="0dp"
+                app:tabMaxWidth="60dp"
+                app:tabMinWidth="20dp"
+                app:tabMode="scrollable"
+                app:tabPaddingEnd="5dp"
+                app:tabPaddingStart="5dp"
+                app:tabRippleColor="@android:color/transparent"
+                app:tabSelectedTextColor="@color/bt_tab_textcolor_selected"
+                app:tabTextColor="@color/bt_text_color_primary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tab_sport_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bt_page_up_bg" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bt_page_up_bg"
+                app:layout_constraintTop_toBottomOf="@+id/tab_sport_type">
+                <!-- 比赛-->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_fb_league"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:background="@color/bt_page_up_bg"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textSize="10sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@id/ivw_game_search"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabMaxWidth="80dp"
+                    app:tabMinWidth="50dp"
+                    app:tabMode="scrollable"
+                    app:tabPaddingEnd="5dp"
+                    app:tabPaddingStart="5dp"
+                    app:tabRippleColor="@android:color/transparent" />
+
+                <ImageView
+                    android:id="@+id/ivw_game_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:paddingEnd="4dp"
+                    android:src="@mipmap/ic_game_search"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_game_search"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/bt_page_up_bg"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/rl_play_method">
+
+                <EditText
+                    android:id="@+id/edt_game_search"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/bg_game_search"
+                    android:drawableStart="@mipmap/ic_game_search"
+                    android:drawablePadding="6dp"
+                    android:hint="@string/txt_game_search"
+                    android:paddingStart="6dp"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tvw_cancel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvw_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center"
+                    android:text="@string/txt_cancel"
+                    android:textColor="@color/clr_grey_13"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ll_notice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|bottom"
+                    android:layout_marginEnd="@dimen/page_margin"
+                    android:background="@mipmap/hm_bg_msg"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/ivw_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="12dp"
+                    android:drawablePadding="6dp"
+                    android:padding="4dp"
+                    android:src="@mipmap/hm_close"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/ll_notice"
+                    app:layout_constraintEnd_toEndOf="@+id/ll_notice"
+                    app:layout_constraintTop_toTopOf="@+id/ll_notice"
+                    tools:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/iv_notice_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:src="@mipmap/hm_notice"
+                    app:layout_constraintBottom_toBottomOf="@+id/ll_notice"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/ll_notice"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+                <com.xtree.base.widget.MarqueeTextView
+                    android:id="@+id/tvw_notice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/clr_hm_txt_grey_03"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/ll_notice"
+                    app:layout_constraintEnd_toStartOf="@+id/ivw_close"
+                    app:layout_constraintStart_toEndOf="@+id/iv_notice_left"
+                    app:layout_constraintTop_toTopOf="@+id/ll_notice"
+                    tools:text="Demo"
+                    tools:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/ivw_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:src="@mipmap/hm_btn_notice"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nsv_league"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                    android:id="@+id/srl_league"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tab_fb_league">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.xtree.bet.weight.AnimatedExpandableListViewMax
+                            android:id="@+id/rv_league"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="@android:color/transparent"
+                            android:childIndicator="@null"
+                            android:defaultFocusHighlightEnabled="false"
+                            android:divider="@android:color/transparent"
+                            android:dividerHeight="0dp"
+                            android:groupIndicator="@null"
+                            android:listSelector="@android:color/transparent"
+                            android:scrollbars="none" />
+
+                    </RelativeLayout>
+
+                </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <include
+                android:id="@+id/ll_empty"
+                layout="@layout/bt_layout_match_list_empty" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_cg"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="17dp"
+            android:layout_marginBottom="94dp"
+            android:visibility="gone">
 
             <ImageView
-                android:id="@+id/iv_loading"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerInParent="true"
-                android:background="@mipmap/bt_icon_loading"
-                android:visibility="gone" />
+                android:id="@+id/iv_bt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@mipmap/bt_ic_chuan_suspend" />
+
+            <TextView
+                android:id="@+id/tv_cg_count"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="4dp"
+                android:background="@mipmap/bt_bg_text_cg"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/bt_color_under_bg_primary_text"
+                android:textSize="12sp" />
         </RelativeLayout>
 
-        <!--<ImageView-->
-        <!--    android:id="@+id/iv_change_domain"-->
-        <!--    android:layout_width="54dp"-->
-        <!--    android:layout_height="54dp"-->
-        <!--    android:layout_alignParentRight="true"-->
-        <!--    android:layout_alignParentBottom="true"-->
-        <!--    android:layout_marginEnd="14dp"-->
-        <!--    android:layout_marginBottom="255dp"-->
-        <!--    android:src="@drawable/bt_change_domain_selector" />-->
+        <me.majiajie.pagerbottomtabstrip.PageNavigationView
+            android:id="@+id/pager_bottom_tab"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bt_bg_main_menu" />
+
+        <ImageView
+            android:id="@+id/iv_loading"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="@mipmap/bt_icon_loading"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </layout>

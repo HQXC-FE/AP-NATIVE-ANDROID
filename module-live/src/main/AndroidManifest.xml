@@ -7,10 +7,6 @@
     <uses-permission android:name="android.permission.REORDER_TASKS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <application>
-        <activity
-            android:name="com.xtree.live.ui.main.bet.LiveMatchDetailActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|uiMode"
-            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.xtree.live.ui.main.floatingwindow.FloatingWindowActivity"

@@ -42,16 +42,17 @@ public class PushClient implements IWebSocket {
 
             @Override
             public void onOpen(@NonNull WebSocket webSocket, @NonNull Response response) {
-                messageCenter.startThread(webSocket, checkInterval);
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (messageCenter != null) {
-                            messageCenter.sendHeart();
+                if (messageCenter != null) {
+                    messageCenter.startThread(webSocket, checkInterval);
+                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (messageCenter != null) {
+                                messageCenter.sendHeart();
+                            }
                         }
-                    }
-                }, 2000);
-
+                    }, 2000);
+                }
             }
 
             @Override
@@ -92,13 +93,17 @@ public class PushClient implements IWebSocket {
 
             @Override
             public void onClosed(@NonNull WebSocket webSocket, int code, @NonNull String reason) {
-                messageCenter.stopThread(true);
+                if (messageCenter != null) {
+                    messageCenter.stopThread(true);
+                }
                 CfLog.i(String.format("服务器关闭%s", reason));
             }
 
             @Override
             public void onFailure(@NonNull WebSocket webSocket, @NonNull Throwable t, @Nullable Response response) {
-                messageCenter.stopThread(false);
+                if (messageCenter != null) {
+                    messageCenter.stopThread(false);
+                }
                 CfLog.i(String.format("服务失败%s,%s", t, response));
             }
         });

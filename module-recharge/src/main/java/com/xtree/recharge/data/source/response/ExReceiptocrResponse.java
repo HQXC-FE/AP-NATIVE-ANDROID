@@ -19,6 +19,21 @@ public class ExReceiptocrResponse {
      */
     @SerializedName("pay_account")
     private String payAccount;
+
+    /**
+     * payName
+     */
+    @SerializedName("receipt_id")
+    private String  receiptId;
+
+    public String getReceiptId() {
+        return receiptId;
+    }
+
+    public void setReceiptId(String receiptId) {
+        this.receiptId = receiptId;
+    }
+
     /**
      * payName
      */

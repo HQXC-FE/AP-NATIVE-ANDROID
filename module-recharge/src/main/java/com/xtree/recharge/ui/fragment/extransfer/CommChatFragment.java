@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -24,6 +25,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.comm100.livechat.core.VisitorClientCore;
 import com.comm100.livechat.view.ChatWindowWebView;
 import com.comm100.livechat.view.VisitorClientCustomJS;
+import com.just.agentweb.WebChromeClient;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.widget.LoadingDialog;
@@ -96,6 +98,22 @@ public class CommChatFragment extends BaseFragment<FragmentCommChatBinding, ExTr
                 LoadingDialog.finish();
             }
         });
+        // 设置 WebChromeClient，监听 window.close()
+        mChatWindow.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onCloseWindow(WebView window) {
+                super.onCloseWindow(window);
+                // 当 window.close() 被调用时，关闭 Activity
+                getActivity().finish(); // 结束当前 Activity
+            }
+        });
+
+        //清除历史记录
+        mChatWindow.clearHistory();
+
+        WebSettings settings = mChatWindow.getSettings();
+
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         binding.webgroup.addView(mChatWindow);
         this.mChatWindow.loadUrl(VisitorClientCore.getInstance().getChatUrl());

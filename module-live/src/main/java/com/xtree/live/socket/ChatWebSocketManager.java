@@ -9,10 +9,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.NetworkUtils;
 import com.google.gson.JsonObject;
-import com.shuyu.gsyvideoplayer.utils.NetworkUtils;
 import com.xtree.base.net.live.X9LiveInfo;
 import com.xtree.live.BuildConfig;
 import com.xtree.live.LiveConfig;
@@ -22,19 +21,8 @@ import com.xtree.live.message.MessageMsg;
 import com.xtree.live.message.RoomType;
 import com.xtree.live.uitl.BackoffUtil;
 import com.xtree.live.uitl.JsonUtil;
-import com.xtree.service.WebSocketManager;
-import com.xtree.service.WebSocketService;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-
-import me.xtree.mvvmhabit.utils.Utils;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
-import okio.ByteString;
 
 public class ChatWebSocketManager {
     private static final int FLAG_GET_TOKEN = Integer.MAX_VALUE - 1;
@@ -205,7 +193,7 @@ public class ChatWebSocketManager {
     private int mPastAttemptCount = 1;
 
     private void getChatTokenDelay() {
-        if(!TextUtils.isEmpty(LiveConfig.getLiveToken())) {
+        if (!TextUtils.isEmpty(LiveConfig.getLiveToken())) {
             Log.d(TAG, "getChatTokenDelay");
             long backoff = BackoffUtil.exponentialBackoff(mPastAttemptCount++, 30000);
             Log.d(TAG, "backoff :" + backoff);
@@ -226,7 +214,7 @@ public class ChatWebSocketManager {
 
     private void getChatToken() {
         mHandler.removeCallbacksAndMessages(null);
-        if (!NetworkUtils.isConnected(Utils.getContext())) {
+        if (!NetworkUtils.isConnected()) {
             getChatTokenDelay();
             return;
         }

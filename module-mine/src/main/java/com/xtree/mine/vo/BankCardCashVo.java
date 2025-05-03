@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import me.xtree.mvvmhabit.http.BaseResponse2;
-
 /**
  * 银行卡取现
  */
-public class BankCardCashVo extends BaseResponse2 {
+public class BankCardCashVo {
 
     public String exchangerate;
     public String withdraw_rand_on;
@@ -99,6 +97,26 @@ public class BankCardCashVo extends BaseResponse2 {
      * 提款银行卡信息
      */
     public static class ChanneBankVo {
+        public String id;
+        public String nickname;
+        public String user_id;
+        public String email;
+        public String bank_id;
+        public String bank_name;
+        public String province_id;
+        public String province;
+        public String city;
+        public String branch;
+        public String account_name;
+        public String account;
+        public String status;
+        public String utime;
+        public String atime;
+        public String is_difname;
+        public String lavewdrawnum;
+        public String min_money;
+        public String max_money;
+
         @Override
         public String toString() {
             return "ChanneBankVo{" +
@@ -123,26 +141,6 @@ public class BankCardCashVo extends BaseResponse2 {
                     ", max_money='" + max_money + '\'' +
                     '}';
         }
-
-        public String id;
-        public String nickname;
-        public String user_id;
-        public String email;
-        public String bank_id;
-        public String bank_name;
-        public String province_id;
-        public String province;
-        public String city;
-        public String branch;
-        public String account_name;
-        public String account;
-        public String status;
-        public String utime;
-        public String atime;
-        public String is_difname;
-        public String lavewdrawnum;
-        public String min_money;
-        public String max_money;
         /*
         "id":"1283067",
             "nickname":"",
@@ -201,6 +199,10 @@ public class BankCardCashVo extends BaseResponse2 {
         public int max_money;
 //        public String recommend;
 
+        public ChannelVo() {
+
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -233,10 +235,6 @@ public class BankCardCashVo extends BaseResponse2 {
                     ", min_money=" + min_money +
                     ", max_money=" + max_money +
                     '}';
-        }
-
-        public ChannelVo() {
-
         }
 
         /*

@@ -6,7 +6,11 @@
     <string name="txt_custom_center">客服中心</string>
     <string name="txt_contact_custom">联系客服</string>
     <string name="txt_recharge_tutorial">充值教程</string>
+    <string name="txt_transfer_tutorial">回执单示例</string>
+    <string name="txt_transfer_receipt">回单验证教程</string>
     <string name="txt_msg_center">消息中心</string>
+    <string name="txt_customer_service">我的客服</string>
+    <string name="txt_offer">优惠中心</string>
     <string name="txt_kind_tips">温馨提示</string>
 
     <string name="txt_bind_card_type">bindcard</string>
@@ -18,6 +22,7 @@
     <string name="txt_bind_gobao_type">bindgobao</string>
     <string name="txt_bind_gopay_type">bindgopay</string>
     <string name="txt_bind_okpay_type">bindokpay</string>
+    <string name="txt_bind_bobi_type">bindbobi</string>
     <!--HQAP2-2769增加绑定微信支付宝-->
     <string name="txt_bind_wechat_type">bindcardwx</string>
     <string name="txt_bind_zfb_type">bindcardzfb</string>
@@ -36,6 +41,7 @@
     <string name="txt_bind_gobao">管理GOBAO</string>
     <string name="txt_bind_gopay">管理GOPAY</string>
     <string name="txt_bind_okpay">管理OKPAY</string>
+    <string name="txt_bind_bobi">管理波币</string>
     <string name="txt_bind_alipay">管理支付宝</string>
     <string name="txt_bind_alipay1">绑定支付宝</string>
     <string name="txt_bind_wechat">管理微信支付</string>
@@ -46,8 +52,9 @@
     <string name="txt_wechat">微信</string>
 
     <string name="txt_remind_card">请认真校对银行卡号，卡号错误资金将无法到账</string>
-    <string name="txt_remind_usdt_trc20">TRC20_USDT地址以T开头的数字和字母组成的34位</string>
-    <string name="txt_remind_usdt_erc20">ERC20_USDT地址以0x开头的数字和字母组成的42位</string>
+    <string name="txt_remind_usdt_trc20">Tron(TRC20)地址以T开头的数字和字母组成的34位</string>
+    <string name="txt_remind_usdt_erc20">Ethereum(ERC20)地址以0x开头的数字和字母组成的42位</string>
+    <string name="txt_remind_usdt_arbitrum">Arbitrum地址以0x开头的数字和字母组成的42位</string>
     <string name="txt_remind_ebpay">EBPAY地址以eb开头的数字和字母组成的34位</string>
     <string name="txt_remind_topay">TOPAY地址以tp开头的18位 或字母开头的16位</string>
     <string name="txt_remind_gcnyt">地址以CNYT开头的20位英文或数字</string>
@@ -55,6 +62,8 @@
     <string name="txt_remind_gobao">地址以24位字母数字组成</string>
     <string name="txt_remind_gopay">地址以16位字母数字组成</string>
     <string name="txt_remind_okpay">地址以16位字母数字组成</string>
+    <string name="txt_remind_solana">Solana地址以44位字母数字组成</string>
+    <string name="txt_remind_bobi">地址以B开头的33位英文或数字组成</string>
 
     <string name="txt_enter_login_name">请输入账号</string>
     <string name="txt_enter_login_pwd">请输入密码</string>
@@ -128,6 +137,8 @@
     <string name="txt_venue_obgqp">DB棋牌</string>
     <string name="txt_venue_obgdj">DB电竞</string>
     <string name="txt_venue_yy">云游棋牌</string>
+    <string name="txt_venue_wali">瓦力真人&amp;棋牌</string>
+    <string name="txt_venue_ad">奥丁棋牌</string>
     <string name="txt_venue_aug">AUG棋牌</string>
 
     <string name="txt_query_type">查询类型</string>
@@ -215,6 +226,8 @@
     <string name="txt_rc_hi_down">下载嗨钱包</string>
 
     <string name="txt_update">版本更新</string>
+    <string name="txt_update_version_tip">更新版本:</string>
+    <string name="txt_user_version">当前版本：</string>
     <string name="txt_update_tip">更新中，请稍候...</string>
     <string name="txt_update_down_over_tip">下载完成</string>
     <string name="txt_update_down_fail_tip">下载失败，请稍候重试</string>
@@ -259,7 +272,7 @@
     <string name="txt_no_withdrawal_address_for_this_withdrawal_type">暂时没有该提款类型的提款地址</string>
     <string name="txt_no_withdrawal_address_for_trc20_type">暂时没有该提款类型的提款地址</string>
 
-    <string name="txt_sport_official">杏彩体育官方版</string>
+    <string name="txt_sport_official">杏彩体育</string>
     <string name="txt_sport_inter">杏彩体育旗舰版</string>
 
     <string name="txt_bind_tip">您还未绑定%1$s,是否前往绑定?</string>
@@ -267,6 +280,7 @@
     <string name="txt_bind_error_sys_tip">您尚未绑定</string>
     <string name="txt_bind_bank_tip">银行卡</string>
     <string name="txt_bind_usdt_tip">USDT提款</string>
+    <string name="txt_bind_usdc_tip">USDC提款</string>
     <string name="txt_withdrawal_usdt_tip">USDT介绍及提款教程</string>
     <string name="txt_single_withdrawal_range">单笔取款范围 %1$s-%2$s 元</string>
     <string name="txt_withdraw_input_error_tip">请输入提款金额</string>
@@ -288,6 +302,8 @@
     <string name="txt_otp_not_four_number">请输入4位数字的验证码</string>
     <string name="txt_verification_is_empty">验证码不能为空</string>
     <!--充值引导  -->
+    <string name="txt_recharge_bind_card">查看到您绑定工商银行卡，目前对应工行的渠道正在维护，请前往绑定其他银行卡或使用其他充值渠道</string>
+    <string name="txt_recharge_one_pay_next">公司银行卡不定期更换，每次充值请依据提交订单，生成的银行卡转账，切勿直接转账至之前转入的银行卡，并且不要使用微信进行转账存款，否则无法到账，概不负责！</string>
     <string name="txt_recharge_bank">请选择付款银行卡</string>
     <string name="txt_recharge_name">充值姓名需要和您绑定提款银行卡 \n时的姓名一致</string>
     <string name="txt_recharge_money">请输入充值金额，建议使用下方快捷金额按钮</string>
@@ -313,6 +329,23 @@
     <string name="txt_mine_alipay_nick_name">支付宝昵称</string>
     <string name="txt_alipay_code">支付宝收款码：</string>
 
+    <string name="txt_offer_wait_money">全部待领取 (元)</string>
+    <string name="txt_offer_all_money">累计领取(元)</string>
+    <string name="txt_offer_all_status">全部状态</string>
+    <string name="txt_offer_all">全部</string>
+    <string name="txt_offer_receive">待领取</string>
+    <string name="txt_offer_received">已领取</string>
+    <string name="txt_offer_expired">已过期</string>
+    <string name="txt_offer_time">发放时间区间</string>
+    <string name="txt_offer_today">今天</string>
+    <string name="txt_offer_yesterday">昨天</string>
+    <string name="txt_offer_7_day">近7天</string>
+    <string name="txt_offer_30_day">近30天</string>
+    <string name="txt_offer_setting">自定义</string>
+    <string name="txt_offer_reset">重置</string>
+    <string name="txt_offer_ok">确定</string>
+    <string name="txt_offer_receiving">立即领取</string>
+    <string name="txt_offer_no_data">暂无优惠</string>
     <string name="txt_live_chat_square">广场</string>
     <string name="txt_live_chat_betting">投注</string>
     <string name="txt_live_chat_private">主播私聊</string>
@@ -320,6 +353,39 @@
 
     <!--测速浮窗-->
     <string name="txt_fastest_tip">当前线路网络速度较慢，是否切换</string>
+    <string name="txt_qa_digital_teaching">数字货币操作流程教学</string>
+    <string name="txt_qa_digital_teaching_detail">推荐您使用数字货币进行充值，若是您想要更清楚链接数据货币，请您点击下方导航栏【我的】>【教程】即可了解CNYT教程、TOPAY教程哦</string>
+    <string name="txt_qa_bind_bank_card">如何绑定银行卡</string>
+    <string name="txt_qa_bind_bank_card_detail">请您点击下方导航栏【我的】>【账户管理】选择【银行卡】，验证通过后，即可输入对应信息新增绑定银行卡</string>
+    <string name="txt_qa_forget_login_password">忘记登录密码操作方式</string>
+    <string name="txt_qa_forget_login_password_detail">若您忘记登录密码，有绑定手机号，可在登录页面下可以点击【忘记密码】，然后通过已绑定的手机，收取验证码进行修改并登录</string>
+    <string name="txt_qa_forget_login_password_tip">※提醒您，如未绑定手机号，要重置登录密码，请您点击人工客服咨询。</string>
+    <string name="txt_qa_down_app">玩家下载APP操作</string>
+    <string name="txt_qa_down_app_detail">您好，请先下载二维码扫描器，应在以下位置找到手机客户端二维码进行下载。\n\n
+        1.登录页面右上角【APP下载】,点击立即下载后跳转到有二维码的页面 \n
+        2.登录前/后,都可在页面右方【手机端】看到下载二维码 \n
+        3.登录前/后,页面往下滑也可直接看到【下载APP】手机二维码</string>
+    <string name="txt_qa_login_password">登录密码总是不正确</string>
+    <string name="txt_qa_login_password_detail">请您输入登录密码时候，优先确认密码及输入字母的大小写是否正确。密码设定规则为6-16英数混合的字符，例如:abc666</string>
+    <string name="txt_qa_login_password_tip">※若忘记登录密码，请点击常见问题的忘记密码操作方式即可。</string>
+    <string name="txt_qa_add_usdt">新增USDT或其他虚拟币</string>
+    <string name="txt_qa_add_usdt_detail">请您点击下方导航栏【我的】>【账户管理】选择【虚拟币账户】，验证通过后，即可输入对应信息新增绑定钱包。</string>
+    <string name="me_agree_hint">请授权同意</string>
+    <string name="me_agreement_text">请贵使用者确认以下事项：
+        \n\n 1. 贵使用者用以本网站注册之个人基本资料均与实际情况相符，且无冒用他人资料或伪造变造之情事。
+        \n\n 2. 贵使用者于使用本网站提供之服务时，目前所在国家/地区并非香港、澳门、或台湾。 贵使用者兹确认登录本网站及使用本网站提供服务，并不违反目前所在之国家/地区之法令。
+        \n\n 3. 贵使用者并未使用虚拟私人网路（VPN）或者其他任何不当手法连结至本网站，以致本网站无法确认使用者之真实目前所在国家/地区。
+        \n\n 4. 贵使用者亦已知悉，如目前所在国家/地区禁止类似于本网站所提供服务时，本网站将拒绝提供服务；贵使用者并明确知悉使用违反前项规定所可能导致之法律制裁或其他风险。
+        \n\n 5. 贵使用者兹确认不会藉本网站所提供服务用以从事任何违法活动。
+        \n\n 6. 贵使用者了解及同意如本网站发现或知悉 贵使用者于本网站有任何违法或违反使用者条款之行为，本网站将立即停止一切服务，视情节将账号停权。必要时将通报相关司法或警察机关。
+        \n\n 7. 请使用者注意网络环境安全，注意防护个人信息泄露，本网站不会以致电、短信、三方平台添加好友等形式与您做私密沟通。
+        \n\n 8. 请勿将个人账户、密码泄露他人，还请防范陌生人假借提供的代充、代传方式，实际以实施诈骗行为。
+        \n\n 9. 贵使用者新绑定银行卡，为了账户资金安全，需等待6小时后才可提现。</string>
+
+    <string name="me_agreement_hint">我已阅读并同意</string>
+    <string name="me_agreement_content">《游戏网站使用者条款》</string>
+    <string name="app_update_until_next_time">下次再说</string>
+    <string name="app_update_now">立即更新</string>
     <!--直播相关字体-->
     <string name="txt_assistant_send_msg">发送</string>
     <string name="txt_assistant_send_msg_hint">请输入信息</string>

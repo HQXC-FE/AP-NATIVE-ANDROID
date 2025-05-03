@@ -15,6 +15,7 @@ import com.xtree.bet.bean.response.pm.PlayTypeInfo;
 import com.xtree.bet.bean.response.pm.VideoInfo;
 import com.xtree.bet.constant.PMConstants;
 import com.xtree.bet.constant.PMMatchPeriod;
+import com.xtree.bet.manager.SportEntityManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class MatchPm implements Match {
     private boolean isHead;
     private boolean isExpand;
 
-    public MatchPm(){
+    public MatchPm() {
         this.className = getClass().getSimpleName();
     }
 
@@ -116,6 +117,7 @@ public class MatchPm implements Match {
 
     /**
      * 是否足球比赛下半场
+     *
      * @return
      */
     @Override
@@ -136,7 +138,7 @@ public class MatchPm implements Match {
             } else {
                 return "";
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return "";
         }
 
@@ -144,13 +146,14 @@ public class MatchPm implements Match {
 
     /**
      * 获取走表时间秒
+     *
      * @return
      */
     @Override
     public int getTimeS() {
-        if(matchInfo != null && matchInfo.mst != null) {
+        if (matchInfo != null && matchInfo.mst != null) {
             return Integer.valueOf(matchInfo.mst);
-        }else {
+        } else {
             return 0;
         }
     }
@@ -164,17 +167,19 @@ public class MatchPm implements Match {
     @Override
     public List<Integer> getScore(String... type) {
         List<Integer> sc = new ArrayList<>();
-        for (String str : matchInfo.msc) {
-            if (str.contains(type[0] + "|") && matchInfo.msc != null && !matchInfo.msc.isEmpty()) {
-                String score = str;
-                if (!TextUtils.isEmpty(score) && score.contains("|")) {
-                    score = score.substring(score.indexOf("|") + 1, score.length());
-                    if (!TextUtils.isEmpty(score) && score.contains(":") && score.split(":").length > 1) {
-                        sc.add(Double.valueOf(score.split(":")[0]).intValue()); // 修复小数转换整数异常
-                        sc.add(Double.valueOf(score.split(":")[1]).intValue());
+        if (matchInfo.msc != null) {
+            for (String str : matchInfo.msc) {
+                if (str.contains(type[0] + "|") && matchInfo.msc != null && !matchInfo.msc.isEmpty()) {
+                    String score = str;
+                    if (!TextUtils.isEmpty(score) && score.contains("|")) {
+                        score = score.substring(score.indexOf("|") + 1, score.length());
+                        if (!TextUtils.isEmpty(score) && score.contains(":") && score.split(":").length > 1) {
+                            sc.add(Double.valueOf(score.split(":")[0]).intValue()); // 修复小数转换整数异常
+                            sc.add(Double.valueOf(score.split(":")[1]).intValue());
+                        }
                     }
+                    return sc;
                 }
-                return sc;
             }
         }
         sc.add(0);
@@ -184,6 +189,7 @@ public class MatchPm implements Match {
 
     /**
      * 获取上半场比分信息
+     *
      * @return
      */
     @Override
@@ -198,15 +204,18 @@ public class MatchPm implements Match {
      * @return
      */
     @Override
-    public List<Score> getScoreList(String... type) {
+    public List<Score> getScoreList(String... type) {//["S19","S20","S21","S22","S7"]
 
         List<Score> scoreInfos = new ArrayList<>();
-        if(type == null){
+        if (type == null) {
             return scoreInfos;
         }
+        //matchInfo.msc 在列表接口和详情接口返回的数据顺序不同  改为统一使用type的顺序
+        //列表["S3|23:24","S20|16:12","S22|15:10","S21|8:14","S1088|0.0:0.0","S108|0:0","S10607|0:0","S10904|0:0","S109|0:0","S10606|0:0","S10903|0:0","S106|0:0","S10902|0:0","S107|0:0","S10604|0:0","S10901|0:0","S10603|0:0","S10602|0:0","S10601|0:0","S191|0:0","S190|0:0","S111|0.0:0.0","S19|8:18","S110|0:0","S1111|47:54","S1|47:54","S1235|0.0:0.0","S2|24:30"]
+        //详情["S1|55:60","S2|24:30","S3|31:30","S19|8:18","S20|16:12","S21|8:14","S22|23:16","S106|0:0","S107|0:0","S108|0:0","S109|0:0","S110|0:0","S111|0.0:0.0","S190|0:0","S191|0:0","S1088|0.0:0.0","S1111|55:60","S1235|0.0:0.0","S10601|0:0","S10602|0:0","S10603|0:0","S10604|0:0","S10606|0:0","S10607|0:0","S10901|0:0","S10902|0:0","S10903|0:0","S10904|0:0"]
         if (matchInfo.msc != null && !matchInfo.msc.isEmpty()) {
-            for (String strScore : matchInfo.msc) {
-                for (int i = 0; i < type.length; i++) {
+            for (int i = 0; i < type.length; i++) {//改为按type的顺序排序
+                for (String strScore : matchInfo.msc) {
 
                     List<Integer> sc = new ArrayList<>();
                     if (!TextUtils.isEmpty(strScore) && strScore.contains("|") && strScore.startsWith(type[i] + "|")) {
@@ -266,6 +275,14 @@ public class MatchPm implements Match {
     @Override
     public boolean isVideoStart() {
         return matchInfo.mms == 2 || matchInfo.mms == 1;
+    }
+
+    @Override
+    public String getVideoType() {
+        if (matchInfo != null && matchInfo.vs != null) {
+            return matchInfo.vs.get(0).videoType;
+        }
+        return null;
     }
 
     /**
@@ -418,6 +435,7 @@ public class MatchPm implements Match {
     public String getSportId() {
         return matchInfo.csid;
     }
+
     /**
      * 获取赛种名称，如足球，篮球
      */
@@ -459,11 +477,12 @@ public class MatchPm implements Match {
      */
     @Override
     public boolean isNeutrality() {
-        return matchInfo.mng == 1;
+        return TextUtils.equals(matchInfo.mng, "1");
     }
 
     /**
      * 获取赛制
+     *
      * @return
      */
     @Override
@@ -478,6 +497,7 @@ public class MatchPm implements Match {
 
     /**
      * 是否需要显示发球方图标
+     *
      * @return
      */
     @Override
@@ -491,14 +511,34 @@ public class MatchPm implements Match {
                 || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_BQ)
                 || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_MSZQ);
     }
+    /**
+     * 开始结束状态 1：start，0：stop（此字段只适用于特定事件编码），篮球暂停事件编码：time_start
+     */
+    @Override
+    public int getMess() {
+        return matchInfo.mess;
+    }
+
+
+    @Override
+    public String getMct() {;
+        try {
+            int num = (int) Float.parseFloat(matchInfo.mct); // 直接转换会截断小数部分
+            return SportEntityManager.getChineseFrameName(num);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return "未知";
+        }
+    }
 
     /**
      * 是否篮球上下半场赛节配置
+     *
      * @return
      */
     @Override
     public boolean isBasketBallDouble() {
-        if(matchInfo == null){
+        if (matchInfo == null) {
             return false;
         }
         return matchInfo.mle == 17;

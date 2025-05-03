@@ -16,6 +16,7 @@ import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.QrcodeUtil;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.DialogRcOrderWebBinding;
@@ -30,10 +31,6 @@ public class RechargeOrderWebDialog extends BottomPopupView {
     BasePopupView ppw;
     BasePopupView ppw2;
     ICallBack mCallBack;
-
-    interface ICallBack {
-        void onCallBack();
-    }
 
     public RechargeOrderWebDialog(@NonNull Context context) {
         super(context);
@@ -54,6 +51,9 @@ public class RechargeOrderWebDialog extends BottomPopupView {
 
     private void initView() {
         binding = DialogRcOrderWebBinding.bind(findViewById(R.id.ll_root));
+        if (mRechargePayVo.paycode.toLowerCase().contains("ebpay")) {
+            binding.tvw01.setText("需先下载EBPAY钱包才可进行支付，进入充值页面下载。\n" + getResources().getString(R.string.txt_rc_browser_continue));
+        }
         binding.ivwClose.setOnClickListener(v -> dismiss());
         binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
         binding.tvwTitle.setText(mRechargePayVo.payname + getResources().getString(R.string.txt_recharge));
@@ -69,6 +69,7 @@ public class RechargeOrderWebDialog extends BottomPopupView {
         binding.tvwMaxExpireTime.setText(HtmlCompat.fromHtml(txt, HtmlCompat.FROM_HTML_MODE_LEGACY));
 
         binding.tvwCopyMoney.setOnClickListener(v -> copy(mRechargePayVo.money));
+        binding.tvwCopy.setOnClickListener(v -> copy(mRechargePayVo.qrcodeurl));
         binding.tvwOk.setOnClickListener(v -> dismiss());
         binding.tvwShowPay.setOnClickListener(v -> showTipDialog());
 
@@ -81,6 +82,7 @@ public class RechargeOrderWebDialog extends BottomPopupView {
             binding.tvwQrcodeTitle.setVisibility(View.VISIBLE);
             binding.llQrcodeUrl.setVisibility(View.VISIBLE);
             binding.ivwQrcode.setVisibility(View.VISIBLE);
+            binding.ivwQrcode.setImageBitmap(QrcodeUtil.getQrcode(mRechargePayVo.qrcodeurl));
             binding.tvwOk.setVisibility(View.VISIBLE);
             binding.tvwShowPay.setVisibility(View.GONE); // 隐藏
             binding.tvwTipChannel.setVisibility(View.INVISIBLE);
@@ -175,6 +177,10 @@ public class RechargeOrderWebDialog extends BottomPopupView {
     protected int getMaxHeight() {
         //return super.getMaxHeight();
         return (XPopupUtils.getScreenHeight(getContext()) * 75 / 100);
+    }
+
+    interface ICallBack {
+        void onCallBack();
     }
 
 }

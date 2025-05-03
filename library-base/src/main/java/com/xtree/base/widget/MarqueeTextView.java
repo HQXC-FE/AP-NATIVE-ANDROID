@@ -20,12 +20,6 @@ public class MarqueeTextView extends androidx.appcompat.widget.AppCompatTextView
         super(context, attrs, defStyleAttr);
     }
 
-    private void initView(Context context) {
-        this.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        this.setSingleLine(true);
-        this.setMarqueeRepeatLimit(-1);
-    }
-
     public boolean isFocused() {
         return true;
     }

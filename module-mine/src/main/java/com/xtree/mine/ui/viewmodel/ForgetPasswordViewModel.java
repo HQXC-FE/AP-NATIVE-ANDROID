@@ -19,6 +19,7 @@ import java.util.HashMap;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
@@ -30,6 +31,10 @@ public class ForgetPasswordViewModel extends BaseViewModel<MineRepository> {
     public SingleLiveData<Integer> liveDataCheckSendMessageSuccess = new SingleLiveData<>(); // OTP确认是否正常
     public SingleLiveData<Boolean> liveDataToken = new SingleLiveData<>(); // OTP码正确
     public SingleLiveData<Boolean> liveDataCheckPasswordSuccess = new SingleLiveData<>(); // 密码正常变更
+
+    public SingleLiveData<String> liveDataError = new SingleLiveData<>(); //异常信息
+
+
 
     public ForgetPasswordViewModel(@NonNull Application application, MineRepository model) {
         super(application, model);
@@ -51,6 +56,13 @@ public class ForgetPasswordViewModel extends BaseViewModel<MineRepository> {
                     public void onResult(ForgetPasswordCheckInfoVo vo) {
                         CfLog.i(vo.toString());
                         liveDataUserInfo.setValue(vo);
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        if (t !=null && !TextUtils.isEmpty(t.message)){
+                            liveDataError.setValue(t.message);
+                        }
                     }
 
                     @Override
@@ -83,7 +95,12 @@ public class ForgetPasswordViewModel extends BaseViewModel<MineRepository> {
                             CfLog.i(vo.toString());
                             liveDataCheckSendMessageSuccess.setValue(vo.timeoutsec);
                         }
-
+                        @Override
+                        public void onFail(BusinessException t) {
+                            if (t !=null && !TextUtils.isEmpty(t.message)){
+                                liveDataError.setValue(t.message);
+                            }
+                        }
                         @Override
                         public void onError(Throwable t) {
                             CfLog.e("error, " + t.toString());
@@ -120,7 +137,12 @@ public class ForgetPasswordViewModel extends BaseViewModel<MineRepository> {
                             mToken = vo.token;
                             liveDataToken.setValue(true);
                         }
-
+                        @Override
+                        public void onFail(BusinessException t) {
+                            if (t !=null && !TextUtils.isEmpty(t.message)){
+                                liveDataError.setValue(t.message);
+                            }
+                        }
                         @Override
                         public void onError(Throwable t) {
                             CfLog.e("error, " + t.toString());
@@ -158,7 +180,12 @@ public class ForgetPasswordViewModel extends BaseViewModel<MineRepository> {
                             mSendtype = "";
                             mToken = "";
                         }
-
+                        @Override
+                        public void onFail(BusinessException t) {
+                            if (t !=null && !TextUtils.isEmpty(t.message)){
+                                liveDataError.setValue(t.message);
+                            }
+                        }
                         @Override
                         public void onError(Throwable t) {
                             CfLog.e("error, " + t.toString());

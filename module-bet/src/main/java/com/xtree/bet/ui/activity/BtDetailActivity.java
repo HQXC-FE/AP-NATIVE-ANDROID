@@ -1,6 +1,5 @@
 package com.xtree.bet.ui.activity;
 
-import static com.lxj.xpopup.XPopup.requestOverlayPermission;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
@@ -9,11 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.net.http.SslError;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -43,7 +38,6 @@ import com.xtree.bet.BR;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.Match;
-import com.xtree.bet.bean.ui.MatchFb;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.constant.Constants;
 import com.xtree.bet.contract.BetContract;
@@ -57,6 +51,7 @@ import com.xtree.bet.ui.viewmodel.fb.FbBtDetailViewModel;
 import com.xtree.bet.ui.viewmodel.pm.PmBtDetailViewModel;
 import com.xtree.bet.util.MatchDeserializer;
 import com.xtree.bet.weight.BaseDetailDataView;
+import com.xtree.bet.weight.pm.SnkDataView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,13 +63,10 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
+import me.xtree.mvvmhabit.utils.KLog;
 
-/**
- * Created by goldze on 2018/6/21
- */
 public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlayer> implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     private final static String KEY_MATCH = "KEY_MATCH_ID";
     private List<Category> mCategories = new ArrayList<>();
@@ -149,11 +141,12 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 binding.rlToolbarTime.setVisibility(View.GONE);
                 if (binding.videoPlayer.getVisibility() != View.VISIBLE && binding.wvAmin.getVisibility() != View.VISIBLE) {
                     binding.ctlToolbarLeague.setVisibility(View.VISIBLE);
+                    binding.llData.setVisibility(View.VISIBLE);
                 } else {
                     binding.ctlToolbarLeague.setVisibility(View.GONE);
+                    binding.llData.setVisibility(View.GONE);
                 }
                 binding.llLive.setVisibility(View.VISIBLE);
-                binding.llData.setVisibility(View.VISIBLE);
                 binding.toolbar.setBackgroundResource(android.R.color.transparent);
             } else {
                 binding.llLive.setVisibility(View.VISIBLE);
@@ -165,10 +158,10 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tabPos = tab.getPosition();
-                for(int i = 0; i < binding.tabCategoryType.getTabCount(); i ++){
-                    if(tabPos == i){
+                for (int i = 0; i < binding.tabCategoryType.getTabCount(); i++) {
+                    if (tabPos == i) {
                         binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(R.mipmap.bt_bg_category_tab_selected);
-                    }else {
+                    } else {
                         binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(R.drawable.bt_bg_category_tab);
                     }
                 }
@@ -338,7 +331,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
     private void updateOptionData() {
         if (fragment == null) {
             if (mCategories != null && !mCategories.isEmpty()) {
-                fragment = BtDetailOptionFragment.getInstance(mMatch, (ArrayList<PlayType>) mCategories.get(tabPos).getPlayTypeList());
+                fragment = BtDetailOptionFragment.getInstance(mMatch, (ArrayList<PlayType>) mCategories.get(tabPos).getPlayTypeList(), false);
                 FragmentTransaction trans = getSupportFragmentManager()
                         .beginTransaction();
                 trans.replace(R.id.fl_option, fragment);
@@ -347,16 +340,14 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         } else {
             if (mCategories != null && !mCategories.isEmpty()) {
                 if (tabPos < mCategories.size()) {
-                    RxBus.getDefault().post(new BetContract(BetContract.ACTION_OPTION_CHANGE, mCategories.get(tabPos).getPlayTypeList()));
+                    Category category = mCategories.get(tabPos);
+                    if (category == null) {
+                        return;
+                    }
+                    RxBus.getDefault().post(new BetContract(BetContract.ACTION_OPTION_CHANGE, category.getPlayTypeList()));
                 }
             }
         }
-        /*if (detailPlayTypeAdapter == null) {
-            detailPlayTypeAdapter = new MatchDetailAdapter(BtDetailActivity.this, mCategories.get(tabPos).getPlayTypeList());
-            //binding.aelOption.setAdapter(detailPlayTypeAdapter);
-        } else {
-            detailPlayTypeAdapter.setData(mCategories.get(tabPos).getPlayTypeList());
-        }*/
     }
 
     @Override
@@ -438,7 +429,13 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                     binding.llData.addView(mScoreDataView);
                 }
             } else {
-                mScoreDataView.setMatch(match, false);
+                if (mScoreDataView instanceof SnkDataView || mScoreDataView instanceof com.xtree.bet.weight.fb.SnkDataView) {
+                    mScoreDataView.setSnkMatch(match, false);
+                    mScoreDataView.addMatchListAdditional(match.getFormat() + " 总分");
+                } else {
+                    mScoreDataView.setMatch(match, false);
+                }
+
             }
 
         });
@@ -456,41 +453,41 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 binding.llEnd.llEmpty.setVisibility(View.GONE);
             }
             //if (mCategories.size() != categories.size()) {
-                mCategories = categories;
-                if(binding.tabCategoryType.getTabCount() == 0) {
-                    for (int i = 0; i < categories.size(); i++) {
-                        View view = LayoutInflater.from(this).inflate(R.layout.bt_layout_bet_catory_tab_item, null);
-                        TextView tvName = view.findViewById(R.id.tab_item_name);
-                        String name = categories.get(i) == null ? "" : categories.get(i).getName();
+            mCategories = categories;
+            if (binding.tabCategoryType.getTabCount() == 0) {
+                for (int i = 0; i < categories.size(); i++) {
+                    View view = LayoutInflater.from(this).inflate(R.layout.bt_layout_bet_catory_tab_item, null);
+                    TextView tvName = view.findViewById(R.id.tab_item_name);
+                    String name = categories.get(i) == null ? "" : categories.get(i).getName();
 
-                        tvName.setText(name);
-                        ColorStateList colorStateList = getResources().getColorStateList(R.color.bt_color_category_tab_text);
-                        tvName.setTextColor(colorStateList);
+                    tvName.setText(name);
+                    ColorStateList colorStateList = getResources().getColorStateList(R.color.bt_color_category_tab_text);
+                    tvName.setTextColor(colorStateList);
 
-                        binding.tabCategoryType.addTab(binding.tabCategoryType.newTab().setCustomView(view));
+                    binding.tabCategoryType.addTab(binding.tabCategoryType.newTab().setCustomView(view));
 
-                    }
-                }else{
-                    for (int i = 0; i < categories.size(); i++) {
-                        try {
-                            if (binding.tabCategoryType == null) {
-                                CfLog.e("=========binding.tabCategoryType == null=========");
-                            }
-                            if (categories.get(i) == null && binding.tabCategoryType != null && i < binding.tabCategoryType.getTabCount()) {
-                                binding.tabCategoryType.removeTabAt(i);
-                                if (binding.tabCategoryType.getTabCount() == 0) {
-                                    binding.rlPlayMethod.setVisibility(View.GONE);
-                                    binding.flOption.setVisibility(View.GONE);
-                                    binding.llEnd.llEmpty.setVisibility(View.VISIBLE);
-                                }
-                            }
-                        }catch (Exception e){
-                            CfLog.e("binding.tabCategoryType.getTabCount()-------" + binding.tabCategoryType.getTabCount() + "-----" + i);
-                            CfLog.e(e.getMessage());
-                        }
-                    }
-                    viewModel.updateCategoryData();
                 }
+            } else {
+                for (int i = 0; i < categories.size(); i++) {
+                    try {
+                        if (binding.tabCategoryType == null) {
+                            CfLog.e("=========binding.tabCategoryType == null=========");
+                        }
+                        if (categories.get(i) == null && binding.tabCategoryType != null && i < binding.tabCategoryType.getTabCount()) {
+                            binding.tabCategoryType.removeTabAt(i);
+                            if (binding.tabCategoryType.getTabCount() == 0) {
+                                binding.rlPlayMethod.setVisibility(View.GONE);
+                                binding.flOption.setVisibility(View.GONE);
+                                binding.llEnd.llEmpty.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    } catch (Exception e) {
+                        CfLog.e("binding.tabCategoryType.getTabCount()-------" + binding.tabCategoryType.getTabCount() + "-----" + i);
+                        CfLog.e(e.getMessage());
+                    }
+                }
+                viewModel.updateCategoryData();
+            }
             updateOptionData();
             /*} else {
                 mCategories = categories;
@@ -532,29 +529,37 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 ToastUtils.showLong(getText(R.string.bt_bt_must_have_two_match));
                 return;
             }
-            if(ClickUtil.isFastClick()){
+            if (ClickUtil.isFastClick()) {
                 return;
             }
             BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
             btCarDialogFragment.show(BtDetailActivity.this.getSupportFragmentManager(), "btCarDialogFragment");
         } else if (id == R.id.tv_live) {
-            binding.videoPlayer.setVisibility(View.VISIBLE);
+            if (!mMatch.isVideoStart()) {
+                ToastUtils.showLong(getText(R.string.bt_bt_match_not_runing));
+                return;
+            }
             binding.ctlToolbarLeague.setVisibility(View.GONE);
             binding.rlToolbarTime.setVisibility(View.GONE);
-            if (mMatch.isVideoStart()) {
-                initVideoBuilderMode();
+            binding.llData.setVisibility(View.GONE);
+            if (TextUtils.equals(mMatch.getVideoType(), "p")) {//是PM场馆H5播放页面
+                if (!mMatch.getVideoUrls().isEmpty()) {
+                    binding.wvAmin.setVisibility(View.VISIBLE);
+                    binding.wvAmin.loadUrl(mMatch.getVideoUrls().get(0));
+                }
             } else {
-                ToastUtils.showLong(getText(R.string.bt_bt_match_not_runing));
+                binding.videoPlayer.setVisibility(View.VISIBLE);
+                initVideoBuilderMode();
             }
 
         } else if (id == R.id.tv_animi) {
             if (mMatch.hasAs() && mMatch.isAnimationStart()) {
                 if (mMatch.getAnmiUrls() != null && !TextUtils.isEmpty(mMatch.getAnmiUrls().get(0))) {
-                    setWebView();
                     binding.wvAmin.setVisibility(View.VISIBLE);
                     binding.ctlToolbarLeague.setVisibility(View.GONE);
                     binding.rlToolbarTime.setVisibility(View.GONE);
                     binding.wvAmin.loadUrl(mMatch.getAnmiUrls().get(0));
+                    binding.llData.setVisibility(View.GONE);
                 } else {
                     ToastUtils.showLong(getText(R.string.bt_bt_match_not_runing));
                 }
@@ -565,7 +570,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 binding.videoPlayer.release();
                 binding.videoPlayer.setVisibility(View.GONE);
             } else if (binding.wvAmin.getVisibility() == View.VISIBLE) {
-                binding.wvAmin.destroy();
+                binding.wvAmin.loadUrl("about:blank");
                 binding.wvAmin.setVisibility(View.GONE);
             } else {
                 finish();
@@ -577,4 +582,10 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding.wvAmin.destroy();
+    }
 }

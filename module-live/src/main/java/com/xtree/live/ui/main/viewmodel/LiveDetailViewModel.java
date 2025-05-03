@@ -1,6 +1,6 @@
 package com.xtree.live.ui.main.viewmodel;
 
-import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
+import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 
@@ -14,7 +14,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.JsonObject;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
@@ -23,11 +22,8 @@ import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.FBService;
 import com.xtree.live.LiveConfig;
-import com.xtree.live.chat.RequestUtils;
 import com.xtree.live.data.LiveRepository;
-import com.xtree.live.data.source.httpnew.LiveRep;
 import com.xtree.live.data.source.request.FrontLivesRequest;
-import com.xtree.live.data.source.request.LiveTokenRequest;
 import com.xtree.live.data.source.request.MatchDetailRequest;
 import com.xtree.live.data.source.response.FrontLivesResponse;
 import com.xtree.live.data.source.response.LiveTokenResponse;
@@ -48,7 +44,6 @@ import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -87,7 +82,7 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
 //            json.addProperty("user_id", LiveConfig.getUserId());
 
             LiveThiredLoginRequest request = new LiveThiredLoginRequest(
-                    X9LiveInfo.INSTANCE.getOaid(),"android",LiveConfig.getUserId()
+                    X9LiveInfo.INSTANCE.getOaid(), "android", LiveConfig.getUserId()
             );
             LiveRepository.getInstance().getXLiveToken(request)
                     .compose(RxUtils.schedulersTransformer())
@@ -119,7 +114,7 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         CfLog.d("选中的" + tab.getText());
-        ToastUtils.showShort("================= 选中的\" + tab.getText() ==============="+ tab.getText());
+        ToastUtils.showShort("================= 选中的\" + tab.getText() ===============" + tab.getText());
         refresh(tab.getText().toString());
     }
 
@@ -240,7 +235,7 @@ public class LiveDetailViewModel extends BaseViewModel<LiveRepository> implement
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
-                        if ((t instanceof ResponseThrowable) && ((ResponseThrowable) t).code == CODE_14010) {
+                        if ((t instanceof BusinessException) && ((BusinessException) t).code == CODE_14010) {
                             getGameTokenApi(matchId, success, error);
                         } else {
                             error.onChanged(t);

@@ -12,7 +12,7 @@ import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.utils.CfLog;
 import com.xtree.mine.R;
 import com.xtree.mine.vo.MsgInfoVo;
-import com.xtree.mine.vo.MsgPersonInfoVo;
+import com.xtree.base.vo.MsgPersonInfoVo;
 
 public class ListMsgInfoDialog extends BottomPopupView {
     int maxHeight = 40; // 最大高度百分比 10-100

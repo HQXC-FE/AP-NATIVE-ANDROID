@@ -49,33 +49,30 @@ public class ExTransferSuccessFragment extends BaseFragment<FragmentExtransferSu
         binding.ivwBack.setOnClickListener(v -> viewModel.finish());
         binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
         serviceChatFlow = new Comm100ChatWindows(requireActivity());
-        serviceChatFlow.setOnClickListener(new Comm100ChatWindows.OnClickListener() {
-            @Override
-            public void onClick(View view, String url) {
+        serviceChatFlow.setOnClickListener((view, url, remark) -> {
 
-                String chatUrl = url;
-                if (viewModel != null && viewModel.payOrderData.getValue() != null) {
-                    String merchantOrder = viewModel.payOrderData.getValue().getMerchantOrder();
-                    if (!TextUtils.isEmpty(merchantOrder)) {
-                        chatUrl += merchantOrder;
-                    }
+            String chatUrl = url;
+            if (viewModel != null && viewModel.payOrderData.getValue() != null) {
+                String merchantOrder = viewModel.payOrderData.getValue().getMerchantOrder();
+                if (!TextUtils.isEmpty(merchantOrder)) {
+                    chatUrl = serviceChatFlow.getChatUrl(merchantOrder, chatUrl, remark);
                 }
-
-                VisitorClientInterface.setChatUrl(chatUrl);
-
-                Intent intent = new Intent(getContext(), ContainerActivity.class);
-                intent.putExtra(ContainerActivity.ROUTER_PATH, RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_CHAT);
-                requireActivity().startActivity(intent);
-
-                viewModel.close();
             }
+
+            VisitorClientInterface.setChatUrl(chatUrl);
+
+            Intent intent = new Intent(getContext(), ContainerActivity.class);
+            intent.putExtra(ContainerActivity.ROUTER_PATH, RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_CHAT);
+            requireActivity().startActivity(intent);
+
+            viewModel.close();
         });
         serviceChatFlow.show();
     }
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return R.layout.layout_rc_exp_bank_6;
+        return R.layout.fragment_extransfer_success;
     }
 
     @Override

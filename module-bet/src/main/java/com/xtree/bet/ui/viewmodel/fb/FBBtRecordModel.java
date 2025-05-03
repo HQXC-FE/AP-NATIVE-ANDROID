@@ -1,12 +1,11 @@
 package com.xtree.bet.ui.viewmodel.fb;
 
-import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.xtree.base.net.FBHttpCallBack;
+import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.request.fb.BtCashOutBetReq;
 import com.xtree.bet.bean.request.fb.BtCashOutPriceReq;
@@ -29,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.http.ResponseThrowable;
+import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 
 /**
@@ -45,7 +44,7 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
     }
 
     /**
-     * 投注前查询指定玩法赔率
+     * 投注记录接口
      */
     public void betRecord(boolean isSettled) {
         mIsSettled = isSettled;
@@ -59,7 +58,7 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
                 betRecord(btRecordReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FBHttpCallBack<BtRecordRsp>() {
+                .subscribeWith(new HttpCallBack<BtRecordRsp>() {
                     @Override
                     public void onResult(BtRecordRsp btRecordRsp) {
                         List<BtRecordTime> btRecordTimeList = new ArrayList<>();
@@ -88,9 +87,9 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == CODE_14010) {
+                        if (t instanceof BusinessException) {
+                            BusinessException error = (BusinessException) t;
+                            if (error.code == HttpCallBack.CodeRule.CODE_14010) {
                                 getGameTokenApi();
                             } else {
                                 super.onError(t);
@@ -112,15 +111,15 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
                 .cashOutPrice(btCashOutPriceReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FBHttpCallBack<BtCashOutPriceInfo>() {
+                .subscribeWith(new HttpCallBack<BtCashOutPriceInfo>() {
                     @Override
                     public void onResult(BtCashOutPriceInfo btCashOutPriceInfo) {
-                        if(mOrderMap.isEmpty()){
+                        if (mOrderMap.isEmpty()) {
                             return;
                         }
                         for (BtCashOutPriceOrderInfo btCashOutPriceOrderInfo : btCashOutPriceInfo.pr) {
                             BtResultInfo btResultInfo = mOrderMap.get(btCashOutPriceOrderInfo.oid);
-                            if(btResultInfo != null) {
+                            if (btResultInfo != null) {
                                 btResultInfo.pr = btCashOutPriceOrderInfo;
                             }
                         }
@@ -130,9 +129,9 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == CODE_14010) {
+                        if (t instanceof BusinessException) {
+                            BusinessException error = (BusinessException) t;
+                            if (error.code == HttpCallBack.CodeRule.CODE_14010) {
                                 getGameTokenApi();
                             } else {
                                 super.onError(t);
@@ -164,7 +163,7 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
                 .cashOutPriceBet(btCashOutBetReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FBHttpCallBack<BtCashOutBetInfo>() {
+                .subscribeWith(new HttpCallBack<BtCashOutBetInfo>() {
                     @Override
                     public void onResult(BtCashOutBetInfo btCashOutBetInfo) {
                         btUpdateCashOutBet.postValue(btCashOutBetInfo.id);
@@ -172,9 +171,9 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == CODE_14010) {
+                        if (t instanceof BusinessException) {
+                            BusinessException error = (BusinessException) t;
+                            if (error.code == HttpCallBack.CodeRule.CODE_14010) {
                                 getGameTokenApi();
                             } else {
                                 super.onError(t);
@@ -199,7 +198,7 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
                 .getCashOutsByIds(btCashOutPriceReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new FBHttpCallBack<List<BtCashOutStatusInfo>>() {
+                .subscribeWith(new HttpCallBack<List<BtCashOutStatusInfo>>() {
                     @Override
                     public void onResult(List<BtCashOutStatusInfo> btCashOutStatusInfos) {
                         if (!btCashOutStatusInfos.isEmpty()) {
@@ -214,9 +213,9 @@ public class FBBtRecordModel extends TemplateBtRecordModel {
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t instanceof ResponseThrowable) {
-                            ResponseThrowable error = (ResponseThrowable) t;
-                            if (error.code == CODE_14010) {
+                        if (t instanceof BusinessException) {
+                            BusinessException error = (BusinessException) t;
+                            if (error.code == HttpCallBack.CodeRule.CODE_14010) {
                                 getGameTokenApi();
                             } else {
                                 super.onError(t);

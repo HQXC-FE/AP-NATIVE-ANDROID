@@ -38,16 +38,15 @@ import java.util.List;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.ContainerActivity;
-import me.xtree.mvvmhabit.utils.ConvertUtils;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
 public class RechargeFloatingWindows extends FloatingWindows {
-    private CompositeDisposable mCompositeDisposable;
-    private boolean isSearch = true;
     RechargeReportAdapter rechargeReportAdapter;
     HomeApiService apiService = RetrofitClient.getInstance().create(HomeApiService.class);
     HttpDataSource httpDataSource = HttpDataSourceImpl.getInstance(apiService);
+    private CompositeDisposable mCompositeDisposable;
+    private boolean isSearch = true;
 
     public RechargeFloatingWindows(Context context) {
         super(context);

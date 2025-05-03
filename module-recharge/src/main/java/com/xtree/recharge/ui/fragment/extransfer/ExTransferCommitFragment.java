@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
@@ -51,26 +50,22 @@ public class ExTransferCommitFragment extends BaseFragment<FragmentExtransferCom
         binding.ivwBack.setOnClickListener(v -> viewModel.finish());
         binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
         serviceChatFlow = new Comm100ChatWindows(requireActivity());
-        serviceChatFlow.setOnClickListener(new Comm100ChatWindows.OnClickListener() {
-            @Override
-            public void onClick(View view, String url) {
+        serviceChatFlow.setOnClickListener((view, url, remark) -> {
 
-                String chatUrl = url;
-                if (viewModel != null && viewModel.payOrderData.getValue() != null) {
-                    String merchantOrder = viewModel.payOrderData.getValue().getMerchantOrder();
-                    if (!TextUtils.isEmpty(merchantOrder)) {
-                        chatUrl += merchantOrder;
-                    }
+            String chatUrl = url;
+            if (viewModel != null && viewModel.payOrderData.getValue() != null) {
+                String merchantOrder = viewModel.payOrderData.getValue().getMerchantOrder();
+                if (!TextUtils.isEmpty(merchantOrder)) {
+                    chatUrl = serviceChatFlow.getChatUrl(merchantOrder, chatUrl, remark);
                 }
-
-                VisitorClientInterface.setChatUrl(chatUrl);
-
-                Intent intent = new Intent(getContext(), ContainerActivity.class);
-                intent.putExtra(ContainerActivity.ROUTER_PATH, RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_CHAT);
-                requireActivity().startActivity(intent);
-
-                viewModel.close();
             }
+            VisitorClientInterface.setChatUrl(chatUrl);
+
+            Intent intent = new Intent(getContext(), ContainerActivity.class);
+            intent.putExtra(ContainerActivity.ROUTER_PATH, RouterFragmentPath.Transfer.PAGER_TRANSFER_EX_CHAT);
+            requireActivity().startActivity(intent);
+
+            viewModel.close();
         });
         serviceChatFlow.show();
     }
@@ -120,7 +115,7 @@ public class ExTransferCommitFragment extends BaseFragment<FragmentExtransferCom
         ExCreateOrderRequest createOrderInfo = RxBus.getDefault().getStickyEvent(ExCreateOrderRequest.class);
         if (createOrderInfo != null) {
             RxBus.getDefault().removeAllStickyEvents();
-            binding.getModel().initData(getActivity(),createOrderInfo);
+            binding.getModel().initData(getActivity(), createOrderInfo);
             binding.getModel().serviceChatTimeKeeping();
         }
     }

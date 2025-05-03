@@ -5,8 +5,8 @@ android {
         // 测试环境 测试用
         xingCai_pre {
             applicationId "com.${name.toLowerCase()}.app" //
-            versionName "1.3.3"
-            versionCode 133
+            versionName "1.5.0"
+            versionCode 150
             resValue "string", "app_name", "杏彩T${versionCode}"
             resValue "string", "domain_api", "https://ap3sport.oxldkm.com"
             resValue "string", "domain_url", "https://ap3sport.oxldkm.com"
@@ -22,92 +22,73 @@ android {
             multiDexEnabled true
             dimension "channelName"
         }
-        // 生产环境 测试用
-        /*xingCai_uat {
-            applicationId "com.${name.toLowerCase()}.app"
-            //applicationId "com.xcr01.app" // xcsport xcr01
-            versionName "1.2.0"
-            versionCode 120
-            resValue "string", "app_name", "杏彩R${versionCode}"
-            resValue "string", "domain_url", "https://www.weres.bar"
-            resValue "string", "channel_name", "xingcai"  // 渠道名称
-            resValue "string", "build_time", "${buildTime()}"
-            resValue "string", "mixpanel_token", "aeb0e83d57c9c765a9f0c1631f16e1d8"
-            resValue "bool", "is_tag", "false" // 是否开启统计
-            resValue "string", "ms_secret_key", "e429ce40-219f-4f59-8e45-1eb12bc433ed"
-            resValue "string", "domain_url_list", "https://www.weres.bar" +
-                    //"https://huidu.asbetgame688.com" + // 灰度测试用
-                    ";https://app.cpmuseumdimsum.com:16801" +
-                    ";https://app.zgntcpgxds.com:16801" +
-                    ";https://app.jyuelab.com:16801" +
-                    ";https://app.eyoumoban.com:16801"
-            multiDexEnabled true
-            dimension "channelName"
-        }*/
         // 生产环境 发布用
         xingCai_OL {
-            applicationId "com.sptxc.app" // xcsport
-            versionName "1.3.3"
-            versionCode 133
+            applicationId "com.xcspg.app" // xcsport
+            versionName "1.5.0"
+            versionCode 150
             resValue "string", "app_name", "XC Sports"
-            resValue "string", "domain_api", "https://app4.f4w3f2.com"
-            resValue "string", "domain_url", "https://h51.h2b4u5.com"
+            resValue "string", "domain_api", "http://101.32.73.228:16803"
+            resValue "string", "domain_url", "https://h61.saaen.com:16801"
             resValue "string", "channel_name", "xingcai"  // 渠道名称
             resValue "string", "build_time", "${buildTime()}"
             resValue "string", "mixpanel_token", "44c997f89ac52bdb676418f79a78cc6e"
             resValue "string", "ms_secret_key", "efa54723-d17f-40a5-ba10-95f6a4ec7832"
             resValue "string", "sentry_dsn", "https://78cf4cf46e69206c1ddc741b9ab7edca@o4507447554539520.ingest.us.sentry.io/4507456764706816"
             resValue "bool", "is_tag", "true" // 是否开启统计
-            resValue "string", "domain_api_list", "https://app1.g2z4l1.com:18443" +
-                    ";https://app1.b1a4q4.com:18443" +
-                    ";https://app1.n2j6i5.com:18443" +
-                    ";https://app1.g2z4l1.com:18443" +
-                    ";https://app2.r1p6b5.com" +
-                    ";https://app2.q7v2q9.com" +
-                    ";https://app2.j5t5z6.com" +
-                    ";https://app2.o7n5r1.com" +
-                    ";https://app3.e5a4y7.com" +
-                    ";https://app3.v8w7j2.com" +
-                    ";https://app3.d8l2c7.com" +
-                    ";https://app3.m3o6l7.com" +
-                    ";https://app4.u4a4a7.com" +
-                    ";https://app5.b7t6z1.com" +
-                    ";http://43.129.92.72:16804" +
-                    ";http://118.195.251.125:16803" +
-                    ";http://101.43.19.60:16803" +
-                    ";http://139.186.248.198:16803" +
-                    ";https://app.bdqnmanong.com:16801" +
-                    ";https://app.queyushengwu.com:16801" +
-                    ";https://app.yuechengbj.com:16801" +
-                    ";https://app.hstxdl.com:16801" +
-                    ";https://app.qiuchongyao.com:16801" +
-                    ";https://app.tiantianwangluo.com:16801"
-            resValue "string", "domain_url_list", "https://h11.l6h2rh.xyz" +
-                    ";https://h11.k6f7bm.xyz" +
-                    ";https://h11.w2i4ek.xyz" +
-                    ";https://h21.l6h2rh.xyz" +
-                    ";https://h21.k6f7bm.xyz" +
-                    ";https://h21.w2i4ek.xyz" +
-                    ";https://h31.i6j3ak.xyz" +
-                    ";https://h31.k8q5yr.xyz" +
-                    ";https://h31.a5g8ck.xyz" +
-                    ";https://h41.p2o6cl.xyz" +
-                    ";https://h51.c7o7zr.xyz" +
-                    ";https://h61.saaen.com:16801" +
-                    ";https://h61.caaau.com:16801" +
-                    ";https://h61.baafj.com:16801" +
-                    ";https://h61.aaagx.com:16801" +
-                    ";https://h61.xuanwujx.com:16801" +
-                    ";https://h61.yhlims.com:16801" +
-                    ";https://h61.bfangwang.com:16801"
-            resValue "string", "domain_url_list_third", "https://cn2app.e2f9f5.com/xc/app_config.json" +
-                    ";https://cn2app.q5o4v3.com/xc/app_config.json" +
-                    ";https://cn2app.e9f6s7.com/xc/app_config.json" +
-                    ";https://cn2app.v2a1c6.com/xc/app_config.json" +
-                    ";https://scdnapp.i2q9r4.com/xc/app_config.json" +
-                    ";https://scdnapp.o6j6r6.com/xc/app_config.json" +
-                    ";https://aliapp.v9u4a4.com/xc/app_config.json" +
-                    ";https://aliapp.l2r1l7.com/xc/app_config.json"
+            resValue "string", "domain_api_list", "https://app1.i7b4fu.vip;" +
+                    "https://app1.t3i8ra.vip;" +
+                    "https://app1.v1w5kv.vip;" +
+                    "https://app1.w7a3cl.vip;" +
+                    "https://app2.c8b7cy.vip;" +
+                    "https://app2.n9s9ky.vip;" +
+                    "https://app2.f5t2ou.vip;" +
+                    "https://app2.t7n5cp.vip;" +
+                    "https://app3.a8p3mp.vip;" +
+                    "https://app3.b1c6vl.vip;" +
+                    "https://app3.m8m5tt.vip;" +
+                    "https://app3.d5n6ap.vip;" +
+                    "https://app4.n4w6vx.vip;" +
+                    "https://app.zgymol.com;" +
+                    "https://app.xoiyhb.com;" +
+                    "https://app.bdqnmanong.com:16801;" +
+                    "https://app.queyushengwu.com:16801;" +
+                    "https://app.yuechengbj.com:16801;" +
+                    "https://app.hstxdl.com:16801;" +
+                    "https://app.qiuchongyao.com:16801;" +
+                    "https://app.tiantianwangluo.com:16801;" +
+                    "http://101.32.73.228:16803;" +
+                    "http://129.226.129.111:16803;" +
+                    "http://146.56.241.223:16803;" +
+                    "http://1.95.166.113:16803;" +
+                    "http://113.44.59.111:16803;" +
+                    "http://121.36.226.177:16803"
+            resValue "string", "domain_url_list", "https://h12.a4r8em.vip;" +
+                    "https://h12.m2a2zg.vip;" +
+                    "https://h12.t6v2sl.vip;" +
+                    "https://h22.r5i2va.vip;" +
+                    "https://h22.b9f3cv.vip;" +
+                    "https://h22.x3b5at.vip;" +
+                    "https://h32.r5n9zc.vip;" +
+                    "https://h32.u2d6yk.vip;" +
+                    "https://h32.t4k3my.vip;" +
+                    "https://h42.w2i1jo.vip;" +
+                    "https://h61.saaen.com:16801;" +
+                    "https://h61.caaau.com:16801;" +
+                    "https://h61.baafj.com:16801;" +
+                    "https://h61.aaagx.com:16801;" +
+                    "https://h62.xuanwujx.com:16801;" +
+                    "https://h61.yhlims.com:16801;" +
+                    "https://h61.bfangwang.com:16801;" +
+                    "https://www.y9v2hh.xyz:16800"
+            resValue "string", "domain_url_list_third", "https://cn2app.y4k6sj.xyz/xc/app_config.json" +
+                    ";https://cn2app.q4e9qn.xyz/xc/app_config.json" +
+                    ";https://cn2app.x1e5qk.xyz/xc/app_config.json" +
+                    ";https://cn2app.v1e9qj.xyz/xc/app_config.json" +
+                    ";https://scdnapp.n4h7ot.xyz/xc/app_config.json" +
+                    ";https://scdnapp.e3z6uo.xyz/xc/app_config.json" +
+                    ";https://aliapp.x8d8zi.xyz/xc/app_config.json" +
+                    ";https://aliapp.r2z5zy.xyz/xc/app_config.json"
             multiDexEnabled true
             dimension "channelName"
         }

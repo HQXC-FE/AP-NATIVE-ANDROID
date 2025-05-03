@@ -15,12 +15,17 @@ import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.RetrofitClient;
+import com.xtree.base.net.fastest.FastestMonitorCache;
+import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.SystemUtil;
+import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.FBService;
+import com.xtree.base.vo.MsgPersonListVo;
 import com.xtree.base.vo.PMService;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.widget.LoadingDialog;
@@ -48,7 +53,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +65,7 @@ import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.Utils;
 
 /**
  * Created by marquis on 2023/11/24.
@@ -71,9 +80,11 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     //public MutableLiveData<List<GameStatusVo>> liveDataGameStatus = new MutableLiveData<>();
     public MutableLiveData<List<GameVo>> liveDataGames = new MutableLiveData<>();
     public MutableLiveData<Map> liveDataPlayUrl = new MutableLiveData<>();
+    public MutableLiveData<String> liveDataFail41011 = new MutableLiveData<>();
     public MutableLiveData<CookieVo> liveDataCookie = new MutableLiveData<>();
     public MutableLiveData<ProfileVo> liveDataProfile = new MutableLiveData<>();
     public MutableLiveData<VipInfoVo> liveDataVipInfo = new MutableLiveData<>();
+    public MutableLiveData<Integer> liveDataMsgUnread = new MutableLiveData<>();
     public MutableLiveData<SettingsVo> liveDataSettings = new MutableLiveData<>();
     public MutableLiveData<HashMap<String, ArrayList<AugVo>>> liveDataAug = new MutableLiveData<>();
     public MutableLiveData<EleVo> liveDataEle = new MutableLiveData<>();
@@ -103,7 +114,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         } else if (list.size() == 1) {
                             list.add(new BannersVo("default"));
                         }
-                        SPUtils.getInstance().put(SPKeyGlobal.HOME_BANNER_LIST, new Gson().toJson(list));
+                        //SPUtils.getInstance().put(SPKeyGlobal.HOME_BANNER_LIST, new Gson().toJson(list));
                         liveDataBanner.setValue(list);
                     }
 
@@ -142,7 +153,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                 .subscribeWith(new HttpCallBack<List<PublicDialogVo>>() {
                     @Override
                     public void onResult(List<PublicDialogVo> list) {
-                        CfLog.i("publicLink        "+list);
+                        CfLog.i("publicLink        " + list);
                         liveDataPublicLink.setValue(list);
                     }
 
@@ -225,11 +236,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                     public void onResult(FBService fbService) {
                         CfLog.i("****** ");
                         SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, fbService.getToken());
+                        SPUtils.getInstance().put(SPKeyGlobal.FB_DISABLED, fbService.isDisabled);
                         SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
                         BtDomainUtil.setDefaultFbDomainUrl(fbService.getForward().getApiServerAddress());
                         BtDomainUtil.addFbDomainUrl(fbService.getForward().getApiServerAddress());
                         BtDomainUtil.setFbDomainUrl(fbService.getDomains());
-                        if(!isFirst){
+                        if (!isFirst) {
                             ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).
                                     withString("KEY_PLATFORM", BtDomainUtil.PLATFORM_FB).navigation();
                         }
@@ -255,11 +267,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                     @Override
                     public void onResult(FBService fbService) {
                         SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, fbService.getToken());
+                        SPUtils.getInstance().put(SPKeyGlobal.FBXC_DISABLED, fbService.isDisabled);
                         SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
                         BtDomainUtil.setDefaultFbxcDomainUrl(fbService.getForward().getApiServerAddress());
                         BtDomainUtil.addFbxcDomainUrl(fbService.getForward().getApiServerAddress());
                         BtDomainUtil.setFbxcDomainUrl(fbService.getDomains());
-                        if(!isFirst){
+                        if (!isFirst) {
                             ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).
                                     withString("KEY_PLATFORM", BtDomainUtil.PLATFORM_FBXC).navigation();
                         }
@@ -285,11 +298,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                     @Override
                     public void onResult(PMService pmService) {
                         SPUtils.getInstance().put(SPKeyGlobal.PM_TOKEN, pmService.getToken());
+                        SPUtils.getInstance().put(SPKeyGlobal.PM_DISABLED, pmService.isDisabled);
                         SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, pmService.getApiDomain());
                         SPUtils.getInstance().put(SPKeyGlobal.PM_IMG_SERVICE_URL, pmService.getImgDomain());
                         SPUtils.getInstance().put(SPKeyGlobal.PM_USER_ID, pmService.getUserId());
                         BtDomainUtil.setDefaultPmDomainUrl(pmService.getApiDomain());
-                        if(!isFirst){
+                        if (!isFirst) {
                             ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).
                                     withString("KEY_PLATFORM", BtDomainUtil.PLATFORM_PM).navigation();
                         }
@@ -315,11 +329,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                     @Override
                     public void onResult(PMService pmService) {
                         SPUtils.getInstance().put(SPKeyGlobal.PMXC_TOKEN, pmService.getToken());
+                        SPUtils.getInstance().put(SPKeyGlobal.PMXC_DISABLED, pmService.isDisabled);
                         SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, pmService.getApiDomain());
                         SPUtils.getInstance().put(SPKeyGlobal.PMXC_IMG_SERVICE_URL, pmService.getImgDomain());
                         SPUtils.getInstance().put(SPKeyGlobal.PMXC_USER_ID, pmService.getUserId());
                         BtDomainUtil.setDefaultPmxcDomainUrl(pmService.getApiDomain());
-                        if(!isFirst){
+                        if (!isFirst) {
                             ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).
                                     withString("KEY_PLATFORM", BtDomainUtil.PLATFORM_PMXC).navigation();
                         }
@@ -338,10 +353,10 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         for (GameVo vo : a) {
             for (GameStatusVo vo2 : b) {
                 if (vo.cid == vo2.cid) {
-                    // cid=3时,是"AG娱乐",包含 AG真人,AG电子,AG捕鱼,AG街机
-                    if (vo.cid != 3) {
-                        vo.name = vo2.name;
-                    }
+                    // cid=3时,是"AG娱乐",包含 AG真人,AG电子,AG捕鱼,AG街机.   cid=43时,包括瓦力真人、瓦力棋牌
+                    //if (vo.cid != 3 && vo.cid != 43) {
+                    //    vo.name = vo2.name;
+                    //}name改为取本地name
                     vo.alias = vo2.alias;
                     vo.status = vo2.status;
                     vo.maintenance_start = vo2.maintenance_start;
@@ -350,17 +365,8 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                 }
             }
 
-            if (vo.cid == 0 || TextUtils.isEmpty(vo.playURL)) {
-                // 原生的,或者需要请求接口的
-                CfLog.w("******: " + vo);
-            }
-            //杏彩官方和杏彩旗舰 status==2也依旧往下执行
-            if (vo.cid == 41 || vo.cid == 42) {
-                //if (vo.cid == 41) {
-                //    vo.status = 2;
-                //}
-            } else if (vo.status == 2 || vo.cid == 17 || vo.cid == 33) {
-                // 33:MG电子 17:CQ9娱乐
+            if (vo.status == 2 || vo.cid == 17 || vo.cid == 33 ) {
+                //17:CQ9娱乐 33：MG电子
                 // 已下架,不要加到列表里面了
                 CfLog.w("not show: " + vo);
                 continue;
@@ -375,7 +381,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void getPlayUrl(String gameAlias, String gameId, String name) {
         if (TextUtils.isEmpty(gameId)) {
-            gameId = "1";
+            //如果是瓦力棋牌，gameId为""
+            if (TextUtils.equals(gameAlias, "wali")) {
+                gameId = "";
+            } else {
+                gameId = "1";
+            }
         }
         int autoThrad = SPUtils.getInstance().getInt(SPKeyGlobal.USER_AUTO_THRAD_STATUS);
 
@@ -417,6 +428,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         CfLog.e("error, " + t.toString());
                         super.onError(t);
                     }
+
+                    @Override
+                    public void onFail41011(BusinessException t) {
+                        super.onFail41011(t);
+                        liveDataFail41011.setValue(t.message);
+                    }
                 });
         addSubscribe(disposable);
     }
@@ -424,14 +441,16 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public void getSettings() {
         HashMap<String, String> map = new HashMap();
         map.put("fields", "customer_service_url,public_key,barrage_api_url," +
-                "x9_customer_service_url," + "promption_code,default_promption_code");
+                "x9_customer_service_url," + "promption_code,default_promption_code," +
+                "ws_check_interval,ws_retry_number,ws_retry_waiting_time,ws_expire_time," +
+                "app_response_speed_calculation,app_response_speed_max,op_hichat_url_suffix,hichat_url_suffix,sport_match_cache");
         Disposable disposable = (Disposable) model.getApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer())
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<SettingsVo>() {
                     @Override
                     public void onResult(SettingsVo vo) {
-                        CfLog.i("****** ");
+                        CfLog.e("****** SettingsVo " + vo.toString());
                         public_key = vo.public_key
                                 .replace("\n", "")
                                 .replace("\t", " ")
@@ -440,7 +459,25 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
                         SPUtils.getInstance().put(SPKeyGlobal.PUBLIC_KEY, public_key);
                         SPUtils.getInstance().put("customer_service_url", vo.customer_service_url);
-                        SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
+                        SPUtils.getInstance().put(SPKeyGlobal.WS_CHECK_INTERVAL, vo.ws_check_interval);
+                        SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_NUMBER, vo.ws_retry_number);
+                        SPUtils.getInstance().put(SPKeyGlobal.WS_EXPIRE_TIME, vo.ws_expire_time);
+                        SPUtils.getInstance().put(SPKeyGlobal.WS_RETRY_WAITING_TIME, vo.ws_retry_waiting_time);
+                        SPUtils.getInstance().put(SPKeyGlobal.OP_HICHAT_URL_SUFFIX, new LinkedHashSet(vo.op_hichat_url_suffix==null? Collections.emptyList():Arrays.asList(vo.op_hichat_url_suffix)));
+                        //SPUtils.getInstance().put(SPKeyGlobal.PROMOTION_CODE, vo.promption_code);//推广code
+                        CfLog.e("**************** vo.sport_match_cache = " + vo.sport_match_cache);
+                        SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, new Gson().toJson(vo.sport_match_cache));
+                        SPUtils.getInstance().put(SPKeyGlobal.APP_RESPONSE_SPEED_CALCULATION, vo.app_response_speed_calculation);
+                        SPUtils.getInstance().put(SPKeyGlobal.APP_Response_Speed_Max, vo.app_response_speed_max);
+                        //本地存储最新客服链接
+                        if (vo.hichat_url_suffix !=null && vo.hichat_url_suffix.length > 0)
+                        {
+                            SPUtils.getInstance().put(SPKeyGlobal.APP_SERVICE_LINK, vo.hichat_url_suffix[0]);
+                        }
+                        //设置测速扣除百分比
+                        FastestMonitorCache.INSTANCE.setSPEED_CALCULATION(vo.app_response_speed_calculation);
+                        //设置测速显示上限
+                        FastestMonitorCache.INSTANCE.setApp_response_speed_max(vo.app_response_speed_max);
 
                         liveDataSettings.setValue(vo);
                     }
@@ -476,7 +513,9 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                 });
         addSubscribe(disposable);
     }
-
+    /**
+     * 获取 个人信息
+     */
     public void getProfile() {
         Disposable disposable = (Disposable) model.getApiService().getProfile()
                 .compose(RxUtils.schedulersTransformer())
@@ -484,11 +523,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                 .subscribeWith(new HttpCallBack<ProfileVo>() {
                     @Override
                     public void onResult(ProfileVo vo) {
-                        CfLog.i(vo.toString());
+                        CfLog.e("----ProfileVo ===" + vo.toString());
                         SPUtils.getInstance().put(SPKeyGlobal.USER_AUTO_THRAD_STATUS, vo.auto_thrad_status);
                         SPUtils.getInstance().put(SPKeyGlobal.HOME_PROFILE, new Gson().toJson(vo));
                         SPUtils.getInstance().put(SPKeyGlobal.USER_ID, vo.userid);
                         SPUtils.getInstance().put(SPKeyGlobal.USER_NAME, vo.username);
+                        SPUtils.getInstance().put(SPKeyGlobal.APP_REGISTER_CODE, vo.register_promotion_code);
                         liveDataProfile.setValue(vo);
                     }
 
@@ -496,6 +536,32 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                     public void onError(Throwable t) {
                         CfLog.e("error, " + t.toString());
                         //super.onError(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    public void getMessagePersonList() {
+        Disposable disposable = (Disposable) model.getApiService().getMessagePersonList()
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<MsgPersonListVo>() {
+                    @Override
+                    public void onResult(MsgPersonListVo vo) {
+                        liveDataMsgUnread.setValue(vo.unread);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        liveDataMsgUnread.setValue(0);
+                        super.onError(t);
+                    }
+
+                    @Override
+                    public void onFail(BusinessException t) {
+                        liveDataMsgUnread.setValue(0);
+                        super.onFail(t);
                     }
                 });
         addSubscribe(disposable);
@@ -630,19 +696,19 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public void readCache() {
         CfLog.i("******");
         Gson gson = new Gson();
-        String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_BANNER_LIST, "[]");
-        List list = gson.fromJson(json, new TypeToken<List<BannersVo>>() {
-        }.getType());
-        if (list.isEmpty()) {
-            // 没有数据时,banner会占满手机屏幕/白屏;加2条数据显示默认图片
-            list.add(new BannersVo("default"));
-            list.add(new BannersVo("default"));
-        } else if (list.size() == 1) {
-            list.add(new BannersVo("default"));
-        }
-        liveDataBanner.setValue(list);
+        //String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_BANNER_LIST, "[]");
+        //List list = gson.fromJson(json, new TypeToken<List<BannersVo>>() {
+        //}.getType());
+        //if (list.isEmpty()) {
+        //    // 没有数据时,banner会占满手机屏幕/白屏;加2条数据显示默认图片
+        //    list.add(new BannersVo("default"));
+        //    list.add(new BannersVo("default"));
+        //} else if (list.size() == 1) {
+        //    list.add(new BannersVo("default"));
+        //}
+        //liveDataBanner.setValue(list);
 
-        json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_NOTICE_LIST, "[]");
+        String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_NOTICE_LIST, "[]");
         List list2 = gson.fromJson(json, new TypeToken<List<NoticeVo>>() {
         }.getType());
         liveDataNotice.setValue(list2);
@@ -793,6 +859,32 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         }
 
         return sb.toString();
+    }
+
+    public void uploadException(UploadExcetionReq uploadExcetionReq) {
+        Map<String, String> map = new HashMap<>();
+        map.put("log_tag", uploadExcetionReq.getLogTag());
+        map.put("api_url", uploadExcetionReq.getApiUrl());
+        map.put("device_no", "android-app-" + TagUtils.getDeviceId(Utils.getContext()));
+        //map.put("device_no2", "log_tag");
+        map.put("log_type", uploadExcetionReq.getLogType());
+        map.put("device_type", "9");
+        map.put("device_detail", SystemUtil.getDeviceBrand() + " " + SystemUtil.getDeviceModel() + " " + "Android " + SystemUtil.getSystemVersion());
+        map.put("msg", uploadExcetionReq.getMsg());
+        Disposable disposable = (Disposable) model.getApiService().uploadExcetion(map)
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<String>() {
+                    @Override
+                    public void onResult(String result) {
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+                });
+        addSubscribe(disposable);
     }
 
 }

@@ -18,9 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
-
 import com.xtree.live.R;
-import com.xtree.live.ui.main.bet.LiveMatchDetailActivity;
 
 /**
  * @author 几圈年轮
@@ -44,6 +42,7 @@ public class FloatingWindowActivity extends AppCompatActivity implements View.On
         Intent intent = new Intent(context, FloatingWindowActivity.class);
         context.startActivity(intent);
     }
+
     /**
      * 判断是否开启悬浮窗口权限，否则，跳转开启页
      */
