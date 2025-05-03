@@ -29,6 +29,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.tabs.TabLayout;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
@@ -296,18 +298,14 @@ public class BtRecordDialogFragment extends BaseDialogFragment<BtDialogBtRecordB
     }
 
     private void initTimer() {
-        if (timerDisposable == null) {
-            timerDisposable = Observable.interval(0, 5, TimeUnit.SECONDS)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(aLong -> {
-                        if(!isSettled) {
-                            viewModel.cashOutPrice();
-                            CfLog.e("===========viewModel.cashOutPrice();==================");
-                        }
-                    });
-            viewModel.addSubscribe(timerDisposable);
-        }
+        Observable.interval(0, 5, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this))).subscribe(aLong -> {
+                    if(!isSettled) {
+                        viewModel.cashOutPrice();
+                        CfLog.e("===========viewModel.cashOutPrice();==================");
+                    }
+                });
     }
 
     @Override

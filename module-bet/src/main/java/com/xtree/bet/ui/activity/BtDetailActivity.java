@@ -33,6 +33,8 @@ import com.google.gson.GsonBuilder;
 import com.gyf.immersionbar.ImmersionBar;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.TimeUtils;
@@ -207,23 +209,19 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
     @Override
     protected void onResume() {
         super.onResume();
-        viewModel.addSubscribe(Observable.interval(5, 5, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(aLong -> {
-            viewModel.getMatchDetail(mMatch.getId());
-            viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
-                    /*if (!mCategories.isEmpty() && mCategories.size() > tabPos) {
-                        viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
-                    }*/
-        }));
+        Observable.interval(5, 5, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this))).subscribe(aLong -> {
+                    viewModel.getMatchDetail(mMatch.getId());
+                    viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
+                });
 
-        if (sportsTimerDisposable != null) {
-            viewModel.removeSubscribe(sportsTimerDisposable);
-        }
-        sportsTimerDisposable = Observable.interval(1, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(aLong -> {
-            secoend = secoend + 1;
-            updateMatchTime(mMatch);
-        });
-        viewModel.addSubscribe(sportsTimerDisposable);
-
+        Observable.interval(1, 1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this))).subscribe(aLong -> {
+                    secoend = secoend + 1;
+                    updateMatchTime(mMatch);
+                });
 
     }
 

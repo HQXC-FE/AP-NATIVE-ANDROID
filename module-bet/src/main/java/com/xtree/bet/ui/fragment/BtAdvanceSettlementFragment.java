@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.gyf.immersionbar.ImmersionBar;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.xtree.base.utils.NumberUtils;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.BtResult;
@@ -93,7 +95,7 @@ public class BtAdvanceSettlementFragment extends BaseDialogFragment<BtDialogAdva
         return instance;
     }
 
-    public void setOnDismissListener (DialogInterface.OnDismissListener listener) {
+    public void setOnDismissListener(DialogInterface.OnDismissListener listener) {
         //设置关闭弹框的回调
         mOnClickListener = listener;
     }
@@ -101,7 +103,7 @@ public class BtAdvanceSettlementFragment extends BaseDialogFragment<BtDialogAdva
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v =  super.onCreateView(inflater, container, savedInstanceState);
+        View v = super.onCreateView(inflater, container, savedInstanceState);
         getDialog().setCanceledOnTouchOutside(false);
         return v;
     }
@@ -141,7 +143,7 @@ public class BtAdvanceSettlementFragment extends BaseDialogFragment<BtDialogAdva
         binding.tvBack.setText(getString(R.string.bt_txt_btn_statement_amount, NumberUtils.format(mBackAmount, 2)));
     }
 
-    public void updatePrice(BtResult btResult){
+    public void updatePrice(BtResult btResult) {
         mCaptialAmount = btResult.getBtAmount();
         mBackAmount = btResult.getAdvanceSettleAmount();
         mUnitCashOutPayoutStake = btResult.getUnitCashOutPayoutStake();
@@ -156,12 +158,12 @@ public class BtAdvanceSettlementFragment extends BaseDialogFragment<BtDialogAdva
             binding.getRoot().post(() -> initTimer(id));
         });
         viewModel.btUpdateCashOutStatus.observe(this, isSecucess -> {
-            if(isSecucess){
+            if (isSecucess) {
                 ToastUtils.showShort("提前兑现成功");
-            }else {
+            } else {
                 ToastUtils.showShort("提前兑现失败，请稍等重试");
             }
-            if(mOnClickListener != null){
+            if (mOnClickListener != null) {
                 mOnClickListener.onDismiss(getDialog());
             }
             dismiss();
@@ -172,22 +174,17 @@ public class BtAdvanceSettlementFragment extends BaseDialogFragment<BtDialogAdva
     }
 
     private void initTimer(String id) {
-        if (timerDisposable != null) {
-            viewModel.removeSubscribe(timerDisposable);
-        }
-        timerDisposable = Observable.interval(1, 2, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
+        Observable.interval(1, 2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
+                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this))).subscribe(aLong -> {
                     viewModel.getCashOutsByIds(id);
                 });
-        viewModel.addSubscribe(timerDisposable);
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id == R.id.tv_confirm){
+        if (id == R.id.tv_confirm) {
             binding.tvConfirm.setText("兑现中......");
             binding.tvCancel.setEnabled(false);
             viewModel.cashOutPricebBet(mOrderId, mCaptialAmount, mUnitCashOutPayoutStake, mAcceptoddschange, mParlay);
