@@ -24,6 +24,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,6 +40,8 @@ import android.widget.ExpandableListView;
 import androidx.annotation.Nullable;
 import androidx.core.view.NestedScrollingChild;
 import androidx.core.view.NestedScrollingChildHelper;
+
+import com.xtree.base.utils.TagUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -262,39 +265,50 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
      * @return Returns true if the group was expanded. False if the group was
      * already expanded.
      */
-    @SuppressLint("NewApi")
     public boolean expandGroupWithAnimation(int groupPos) {
-        boolean lastGroup = groupPos == adapter.getGroupCount() - 1;
-        if (lastGroup && Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            return expandGroup(groupPos, true);
+        if (adapter == null) {
+            Log.e("ExpandableListView", "Adapter is null!");
+            return false;
         }
 
-        int groupFlatPos = getFlatListPosition(getPackedPositionForGroup(groupPos));
-        if (groupFlatPos != -1) {
-            int childIndex = groupFlatPos - getFirstVisiblePosition();
-            if (childIndex < getChildCount()) {
-                // Get the view for the group is it is on screen...
-                View v = getChildAt(childIndex);
-                if (v.getBottom() >= getBottom()) {
-                    // If the user is not going to be able to see the animation
-                    // we just expand the group without an animation.
-                    // This resolves the case where getChildView will not be
-                    // called if the children of the group is not on screen
+        if (groupPos < 0 || groupPos >= adapter.getGroupCount()) {
+            Log.e("ExpandableListView", "Invalid groupPos: " + groupPos);
+            return false;
+        }
 
-                    // We need to notify the adapter that the group was expanded
-                    // without it's knowledge
+        try {
+            boolean lastGroup = groupPos == adapter.getGroupCount() - 1;
+            if (lastGroup && Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                return expandGroup(groupPos, true);
+            }
+
+            int groupFlatPos = getFlatListPosition(getPackedPositionForGroup(groupPos));
+            if (groupFlatPos == -1) {
+                Log.e("ExpandableListView", "Group position not found in flat list.");
+                return expandGroup(groupPos); // 直接展开
+            }
+
+            int childIndex = groupFlatPos - getFirstVisiblePosition();
+            if (childIndex >= 0 && childIndex < getChildCount()) {
+                View v = getChildAt(childIndex);
+                if (v != null && v.getBottom() >= getBottom()) {
                     adapter.notifyGroupExpanded(groupPos);
                     return expandGroup(groupPos);
                 }
             }
-        }
 
-        // Let the adapter know that we are starting the animation...
-        adapter.startExpandAnimation(groupPos, 0);
-        // Finally call expandGroup (note that expandGroup will call
-        // notifyDataSetChanged so we don't need to)
-        return expandGroup(groupPos);
+            adapter.startExpandAnimation(groupPos, 0);
+            boolean result = expandGroup(groupPos);
+
+            // 直接使用 View.post()， 确保数据更新
+            post(adapter::notifyDataSetChanged);
+            return result;
+        }catch (Exception e){
+            TagUtils.tagEvent(getContext(),e.toString());
+        }
+        return false;
     }
+
 
     /**
      * Collapses the given group with an animation.
@@ -303,46 +317,27 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
      * @return Returns true if the group was collapsed. False if the group was
      * already collapsed.
      */
-    public boolean collapseGroupWithAnimation(int groupPos) {
-        int groupFlatPos = getFlatListPosition(getPackedPositionForGroup(groupPos));
-        if (groupFlatPos != -1) {
-            int childIndex = groupFlatPos - getFirstVisiblePosition();
-            if (childIndex >= 0 && childIndex < getChildCount()) {
-                // Get the view for the group is it is on screen...
-                View v = getChildAt(childIndex);
-                if (v.getBottom() >= getBottom()) {
-                    // If the user is not going to be able to see the animation
-                    // we just collapse the group without an animation.
-                    // This resolves the case where getChildView will not be
-                    // called if the children of the group is not on screen
-                    return collapseGroup(groupPos);
-                }
-            } else {
-                // If the group is offscreen, we can just collapse it without an
-                // animation...
-                return collapseGroup(groupPos);
-            }
+    public void collapseGroupWithAnimation(int groupPos) {
+        if (adapter == null) {
+            Log.e("ExpandableListView", "Adapter is null!");
+            return;
         }
 
-        // Get the position of the firstChild visible from the top of the screen
-        long packedPos = getExpandableListPosition(getFirstVisiblePosition());
-        int firstChildPos = getPackedPositionChild(packedPos);
-        int firstGroupPos = getPackedPositionGroup(packedPos);
+        if (groupPos < 0 || groupPos >= adapter.getGroupCount()) {
+            Log.e("ExpandableListView", "Invalid groupPos: " + groupPos);
+            return;
+        }
 
-        // If the first visible view on the screen is a child view AND it's a
-        // child of the group we are trying to collapse, then set that
-        // as the first child position of the group... see
-        // {@link #startCollapseAnimation(int, int)} for why this is necessary
-        firstChildPos = firstChildPos == -1 || firstGroupPos != groupPos ? 0 : firstChildPos;
-
-        // Let the adapter know that we are going to start animating the
-        // collapse animation.
-        adapter.startCollapseAnimation(groupPos, firstChildPos);
-
-        // Force the listview to refresh it's views
-        adapter.safeNotifyDataSetChanged();
-        return isGroupExpanded(groupPos);
+        try{
+            adapter.startCollapseAnimation(groupPos, 0);
+            collapseGroup(groupPos);
+        } catch (Exception e){
+            TagUtils.tagEvent(getContext(),e.toString());
+        }
+        // 直接使用 View.post()， 确保数据更新
+        post(adapter::notifyDataSetChanged);
     }
+
 
     private int getAnimationDuration() {
         return ANIMATION_DURATION;
@@ -796,27 +791,28 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
     public boolean dispatchTouchEvent(MotionEvent ev) {
         int x = (int) ev.getX();
         int y = (int) ev.getY();
+
         switch (ev.getAction()) {
             case MotionEvent.ACTION_UP:
                 if (mHeader != null && y > mHeader.getTop() && y < mHeader.getBottom()) {
                     if (mOnHeaderClick != null) {
                         mOnHeaderClick.onHeaderClick();
                     } else {
-                        /*int packedPositionGroup = getPackedPositionGroup(getExpandableListPosition(pointToPosition(x, y)));
-                        if (isGroupExpanded(packedPositionGroup)) {
-                            collapseGroup(packedPositionGroup);
-                        } else {
-                            expandGroup(packedPositionGroup);
-                        }*/
-                        // 例如，通过 Handler 或 runOnUiThread 来更新数据并通知适配器
-                        new Handler(Looper.getMainLooper()).post(() -> {
-                            // 执行数据修改和通知适配器更新
-                            int packedPositionGroup = getPackedPositionGroup(getExpandableListPosition(pointToPosition(x, y)));
-                            if (isGroupExpanded(packedPositionGroup)) {
-                                collapseGroupWithAnimation(packedPositionGroup);
+                        int packedPosition = (int) getExpandableListPosition(pointToPosition(x, y));
+                        int groupPos = getPackedPositionGroup(packedPosition);
+
+                        if (groupPos == -1) {
+                            Log.e("ExpandableListView", "Invalid groupPos: " + groupPos);
+                            return false;
+                        }
+
+                        post(() -> {
+                            if (isGroupExpanded(groupPos)) {
+                                collapseGroupWithAnimation(groupPos);
                             } else {
-                                expandGroupWithAnimation(packedPositionGroup);
+                                expandGroupWithAnimation(groupPos);
                             }
+                            adapter.notifyDataSetChanged();  // **确保 UI 组件更新**
                         });
                     }
                     return true;
@@ -825,6 +821,7 @@ public class AnimatedExpandableListViewMax extends ExpandableListView implements
         }
         return super.dispatchTouchEvent(ev);
     }
+
 
     private OnHeaderClick mOnHeaderClick;
 

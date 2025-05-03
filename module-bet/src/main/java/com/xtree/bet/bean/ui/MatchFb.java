@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.response.fb.MatchInfo;
 import com.xtree.bet.bean.response.fb.PlayTypeInfo;
@@ -12,6 +13,7 @@ import com.xtree.bet.bean.response.fb.ScoreInfo;
 import com.xtree.bet.constant.FBConstants;
 import com.xtree.bet.constant.FBMatchPeriod;
 import com.xtree.bet.constant.FBSportName;
+import com.xtree.bet.manager.SportEntityManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +23,15 @@ import java.util.Objects;
  * 赛事列表UI显示需要用的比赛信息结构
  */
 public class MatchFb implements Match{
+
     private String className;
-    private static final String[] CHINESE_DIGITS = {"0", "一", "二", "三", "四", "五", "六", "七", "八", "九"};
+
+    private static final String[] CHINESE_DIGITS = {"0", "一", "二", "三", "四", "五", "六", "七", "八", "九","十",
+    "十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","二十一","二十二","二十三","二十四","二十五","二十六",
+            "二十七","二十八","二十九","三十","三十一","三十二","三十三","三十四","三十五"};
+
+
+
     MatchInfo matchInfo;
 
     private boolean isHead; //
@@ -435,6 +444,27 @@ public class MatchFb implements Match{
                 || matchInfo.sid == Integer.valueOf(FBConstants.SPORT_ID_SNK)
                 || matchInfo.sid == Integer.valueOf(FBConstants.SPORT_ID_BQ)
                 || matchInfo.sid == Integer.valueOf(FBConstants.SPORT_ID_MSZQ);
+    }
+
+    //目前只针对斯诺克表示当前第几局，如果其它赛种使用需要写扩展逻辑
+    @Override
+    public int getMess() {
+        if(matchInfo.mc.r){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+    @Override
+    public String getMct() {
+        CfLog.d("=============== FB matchInfo.mc.pe =============="+matchInfo.mc.pe);
+        SportEntity sportEntity = SportEntityManager.getSportEntityById(matchInfo.mc.pe);
+        if(sportEntity == null){
+           return "未知";
+        }else{
+            return sportEntity.getName();
+        }
     }
 
     @Override

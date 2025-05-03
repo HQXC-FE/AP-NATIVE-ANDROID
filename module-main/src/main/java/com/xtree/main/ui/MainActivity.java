@@ -20,7 +20,6 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -156,29 +155,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
 
     private void initFragment() {
         boolean isLogin = getIntent().getBooleanExtra("isLogin", false);
-        FragmentManager fragmentManager = getSupportFragmentManager();
         //ARouter拿到多Fragment(这里需要通过ARouter获取，不能直接new,因为在组件独立运行时，宿主app是没有依赖其他组件，所以new不到其他组件的Fragment)
-        Fragment homeFragment = fragmentManager.findFragmentByTag("HomeFragment");
-        Fragment activityFragment = fragmentManager.findFragmentByTag("ActivityFragment");
-        Fragment adFragment = fragmentManager.findFragmentByTag("AdFragment");
-        Fragment rechargeFragment = fragmentManager.findFragmentByTag("RechargeFragment");
-        Fragment mineFragment = fragmentManager.findFragmentByTag("MineFragment");
-
-        if (homeFragment == null) {
-            homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).withBoolean("isLogin", isLogin).navigation();
-        }
-        if (activityFragment == null) {
-            activityFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Activity.PAGER_ACTIVITY).navigation();
-        }
-        if (adFragment == null) {
-            adFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.AD).navigation();
-        }
-        if (rechargeFragment == null) {
-            rechargeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Recharge.PAGER_RECHARGE).navigation();
-        }
-        if (mineFragment == null) {
-            mineFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Mine.PAGER_MINE).navigation();
-        }
+        Fragment homeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.PAGER_HOME).withBoolean("isLogin", isLogin).navigation();
+        Fragment activityFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Activity.PAGER_ACTIVITY).navigation();
+        Fragment adFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Home.AD).navigation();
+        Fragment rechargeFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Recharge.PAGER_RECHARGE).navigation();
+        Fragment mineFragment = (Fragment) ARouter.getInstance().build(RouterFragmentPath.Mine.PAGER_MINE).navigation();
 
         mFragments = new ArrayList<>();
         mFragments.add(homeFragment);
@@ -189,9 +171,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         showFragment = mFragments.get(0);
         if (showFragment != null) {
             //默认选中第一个
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.frameLayout, homeFragment, "HomeFragment");
-            transaction.commit();
+            try {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frameLayout, showFragment);
+                transaction.commitNow();
+            } catch (Exception e) {
+                Sentry.captureException(e);
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -239,8 +227,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
                 if (currentFragment != null) {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     // 避免重复添加 Fragment
-                    if (!currentFragment.isAdded() && getSupportFragmentManager().findFragmentByTag(currentFragment.getClass().getSimpleName()) == null) {
-                        transaction.add(R.id.frameLayout, currentFragment, currentFragment.getClass().getSimpleName());
+                    if (!currentFragment.isAdded()) {
+                        transaction.add(R.id.frameLayout, currentFragment);
                     }
                     //使用hide和show后，不再执行fragment生命周期方法
                     //需要刷新时，使用onHiddenChanged代替
@@ -265,9 +253,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.hide(showFragment).show(mFragments.get(1));
                 showFragment = mFragments.get(1);
-                if (!isFinishing() && !isDestroyed()) {
-                    transaction.commit();
-                }
+                transaction.commitAllowingStateLoss();
                 break;
             case EVENT_RED_POINT:
                 CfLog.i("open red");

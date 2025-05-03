@@ -304,7 +304,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         viewModel.liveDataPlayUrl.observe(getViewLifecycleOwner(), map -> {
             CfLog.d("*** " + new Gson().toJson(map));
             // 跳转到游戏H5
-            BrowserActivityX5.startThirdDomain(requireContext(), Objects.requireNonNull(map.get("name")).toString(), map.get("url").toString());
+            if (Objects.requireNonNull(map.get("name")).toString().equals("FB体育")) {
+                BrowserActivityX5.startThirdDomain(requireContext(), Objects.requireNonNull(map.get("name")).toString(), map.get("url").toString(), true);
+            } else {
+                BrowserActivityX5.startThirdDomain(requireContext(), Objects.requireNonNull(map.get("name")).toString(), map.get("url").toString());
+            }
         });
         viewModel.liveDataProfile.observe(getViewLifecycleOwner(), vo -> {
             CfLog.d("*** " + new Gson().toJson(vo));

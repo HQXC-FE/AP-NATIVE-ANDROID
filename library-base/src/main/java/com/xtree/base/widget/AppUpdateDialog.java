@@ -21,6 +21,7 @@ import com.xtree.base.databinding.DialogUpdateBinding;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
+import com.xtree.base.utils.StringUtils;
 import com.xtree.base.vo.AppUpdateVo;
 
 import java.io.File;
@@ -120,12 +121,13 @@ public class AppUpdateDialog extends CenterPopupView {
 
         CfLog.i("apkFile: " + apkFile.getAbsolutePath());
         binding = DialogUpdateBinding.bind(findViewById(R.id.ll_root_update));
+        binding.tvwUserVersion.setText(getContext().getString(R.string.txt_user_version)  +StringUtils.getVersionName(getContext()));
         if (!isWeakUpdate) {
             //强更新
             binding.dialogUpdateCancel.setVisibility(View.GONE);
         }
 
-        binding.tvwUpdateVersion.setText(getContext().getString(R.string.txt_update) + " " + vo.version_name);
+        binding.tvwUpdateVersion.setText(getContext().getString(R.string.txt_update_version_tip)  + vo.version_name);
         binding.tvwUpgradeTips.setText(vo.content);
         binding.dialogUpdateCancel.setOnClickListener(v -> {
             mCallBack.onUpdateCancel();
@@ -137,6 +139,7 @@ public class AppUpdateDialog extends CenterPopupView {
             CfLog.e("initView downLoadUrl = " + downLoadUrl);
             binding.tvwTitle.setText(getContext().getString(R.string.txt_update_tip));
             binding.tvwUpdateVersion.setVisibility(View.INVISIBLE);
+            binding.tvwUserVersion.setVisibility(View.INVISIBLE);
             binding.dialogUpdateConfirm.setVisibility(View.INVISIBLE);
 
             binding.linearLayout.setVisibility(View.INVISIBLE);

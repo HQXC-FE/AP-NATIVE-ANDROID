@@ -32,10 +32,6 @@ public class RechargeOrderWebDialog extends BottomPopupView {
     BasePopupView ppw2;
     ICallBack mCallBack;
 
-    interface ICallBack {
-        void onCallBack();
-    }
-
     public RechargeOrderWebDialog(@NonNull Context context) {
         super(context);
     }
@@ -55,6 +51,9 @@ public class RechargeOrderWebDialog extends BottomPopupView {
 
     private void initView() {
         binding = DialogRcOrderWebBinding.bind(findViewById(R.id.ll_root));
+        if (mRechargePayVo.paycode.toLowerCase().contains("ebpay")) {
+            binding.tvw01.setText("需先下载EBPAY钱包才可进行支付，进入充值页面下载。\n" + getResources().getString(R.string.txt_rc_browser_continue));
+        }
         binding.ivwClose.setOnClickListener(v -> dismiss());
         binding.ivwCs.setOnClickListener(v -> AppUtil.goCustomerService(getContext()));
         binding.tvwTitle.setText(mRechargePayVo.payname + getResources().getString(R.string.txt_recharge));
@@ -178,6 +177,10 @@ public class RechargeOrderWebDialog extends BottomPopupView {
     protected int getMaxHeight() {
         //return super.getMaxHeight();
         return (XPopupUtils.getScreenHeight(getContext()) * 75 / 100);
+    }
+
+    interface ICallBack {
+        void onCallBack();
     }
 
 }

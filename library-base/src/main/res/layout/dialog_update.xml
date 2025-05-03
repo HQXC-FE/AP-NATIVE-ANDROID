@@ -61,6 +61,7 @@
             android:id="@+id/linearLayoutS"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="36dp"
             android:layout_marginEnd="36dp"
             android:layout_marginBottom="46dp"
@@ -75,23 +76,34 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tvw_update_version"
+                    android:id="@+id/tvwUpdateVersion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/txt_update"
+                    android:text="@string/txt_update_version_tip"
                     android:textColor="@color/bt_color_car_dialog_hight_line2"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvwUserVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvwUpdateVersion"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/clr_grey_13"
+                    android:text="@string/txt_user_version"
+                    />
 
                 <TextView
                     android:id="@+id/tvw_upgrade_tips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvw_update_version"
+                    android:layout_below="@id/tvwUserVersion"
                     android:layout_marginTop="10dp"
-                    android:textColor="@color/clr_withdrawal_text_bg"
+                    android:textColor="@color/bt_text_color_primary_2"
                     android:textSize="12sp"
                     android:visibility="visible"
+
                     tools:text="iOS自5.0.9版本开始，正式包具有强制升级功能；所有版本正式包均有升级提醒功能。
                     新打包的客户端默认都在无需升级版本里，
                     可将需要升级的版本移动至对应的提示升级版本框和强制升级版本框中。" />
@@ -103,7 +115,7 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:visibility="gone"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -138,30 +150,28 @@
 
             </RelativeLayout>
         </LinearLayout>
-
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginEnd="36dp"
             android:layout_marginBottom="46dp"
             android:gravity="center"
+            android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toBottomOf="@id/ivw_bg"
             app:layout_constraintEnd_toEndOf="@id/ivw_bg"
             app:layout_constraintStart_toStartOf="@id/ivw_bg">
 
             <TextView
                 android:id="@+id/dialog_update_cancel"
-                style="@style/style_btn_back"
-                android:text="@string/txt_cancel"
+                style="@style/style_btn_short_cancel"
+                android:text="@string/app_update_until_next_time"
                 android:textColor="@color/clr_txt_grey_04"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/dialog_update_confirm"
-                style="@style/style_btn"
-                android:text="@string/txt_confirm"
+                style="@style/style_btn_short"
+                android:text="@string/app_update_now"
                 android:textSize="14sp" />
         </LinearLayout>
         <TextView

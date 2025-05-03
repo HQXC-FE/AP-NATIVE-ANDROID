@@ -7,6 +7,7 @@ import static com.xtree.base.utils.EventConstant.EVENT_UPLOAD_EXCEPTION;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -71,6 +72,7 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
 @Route(path = RouterActivityPath.Widget.PAGER_BROWSER_X5)
 public class BrowserActivityX5 extends AppCompatActivity {
     public static final String ARG_TITLE = "title";
+    public static final String ARG_PARENT_TITLE = "parentTitle";
     public static final String ARG_URL = "url";
     public static final String ARG_IS_CONTAIN_TITLE = "isContainTitle";
     public static final String ARG_IS_SHOW_LOADING = "isShowLoading";
@@ -78,6 +80,8 @@ public class BrowserActivityX5 extends AppCompatActivity {
     public static final String ARG_IS_THIRD = "isThirdDomain";
     public static final String ARG_IS_LOTTERY = "isLottery";
     public static final String ARG_IS_HIDE_TITLE = "isHideTitle";
+    public static final String ARG_IS_FB = "isFB";
+    public static final String ARG_SEARCH_DNS_URL = "https://dns.alidns.com/dns-query";
 
     private View vTitle;
     private View clTitle;
@@ -92,12 +96,14 @@ public class BrowserActivityX5 extends AppCompatActivity {
     private TopSpeedDomainFloatingWindows mTopSpeedDomainFloatingWindows;
 
     private String title = "";
+    private String parentTitle = "";
     private String url = "";
     private String token; // token
     private boolean isLottery = false; // 是否彩票, 彩票需要header,需要注入IOS标题头样式
     private boolean isGame = false; // 三方游戏, 不需要header和token
     private boolean isThirdDomain = false; // 是否是三方域名的三方游戏
     private X5WebView x5WebView;
+    boolean isFB = false; // 是否是FB普通版
     boolean isFirstOpenBrowser = true; // 是否第一次打开webView组件(解决第一次打开webView时传递header/cookie/token失效)
     boolean isShowLoading = false; // 展示loading弹窗
     boolean isHideTitle = false; // 是否隐藏标题
@@ -107,6 +113,13 @@ public class BrowserActivityX5 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        title = getIntent().getStringExtra(ARG_TITLE);
+        //BBIN电子和JDB电子需要横竖屏切换，因为有横屏游戏
+        if (TextUtils.equals(title, "BBIN电子") || TextUtils.equals(title, "JDB电子")) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser_x5);
 
@@ -114,13 +127,15 @@ public class BrowserActivityX5 extends AppCompatActivity {
         FightFanZhaUtils.init();
         x5WebView = X5WebView.getInstance(this);
         initView();
-        title = getIntent().getStringExtra(ARG_TITLE);
+
         isContainTitle = getIntent().getBooleanExtra(ARG_IS_CONTAIN_TITLE, false);
         isShowLoading = getIntent().getBooleanExtra(ARG_IS_SHOW_LOADING, false);
         isGame = getIntent().getBooleanExtra(ARG_IS_GAME, false);
         isThirdDomain = getIntent().getBooleanExtra(ARG_IS_THIRD, false);
+        parentTitle = getIntent().getStringExtra(ARG_PARENT_TITLE);
         isLottery = getIntent().getBooleanExtra(ARG_IS_LOTTERY, false);
         isHideTitle = getIntent().getBooleanExtra(ARG_IS_HIDE_TITLE, false);
+        isFB = getIntent().getBooleanExtra(ARG_IS_FB, false);
         token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
         isFirstOpenBrowser = SPUtils.getInstance().getBoolean(SPKeyGlobal.IS_FIRST_OPEN_BROWSER, true);
 
@@ -367,10 +382,11 @@ public class BrowserActivityX5 extends AppCompatActivity {
         ctx.startActivity(it);
     }
 
-    public static void start(Context ctx, String title, String url, boolean isContainTitle, boolean isGame) {
+    public static void start(Context ctx, String parentTitle, String title, String url, boolean isContainTitle, boolean isGame) {
         CfLog.i(title + ", isContainTitle: " + false + ", url: " + url);
         Intent it = new Intent(ctx, BrowserActivityX5.class);
         it.putExtra(ARG_TITLE, title);
+        it.putExtra(ARG_PARENT_TITLE, parentTitle);
         it.putExtra(ARG_URL, url);
         it.putExtra(ARG_IS_CONTAIN_TITLE, isContainTitle);
         it.putExtra(ARG_IS_GAME, isGame);
@@ -402,6 +418,28 @@ public class BrowserActivityX5 extends AppCompatActivity {
         it.putExtra(ARG_URL, playUrl);
         it.putExtra(ARG_TITLE, title);
         it.putExtra(ARG_IS_THIRD, true);
+        it.putExtra(BrowserActivityX5.ARG_IS_GAME, true);
+        ctx.startActivity(it);
+    }
+
+    public static void startThirdDomain(Context ctx, String title, String playUrl, String parentTitle) {
+        CfLog.i("URL: " + playUrl);
+        Intent it = new Intent(ctx, BrowserActivityX5.class);
+        it.putExtra(ARG_URL, playUrl);
+        it.putExtra(ARG_TITLE, title);
+        it.putExtra(ARG_PARENT_TITLE, parentTitle);
+        it.putExtra(ARG_IS_THIRD, true);
+        it.putExtra(BrowserActivityX5.ARG_IS_GAME, true);
+        ctx.startActivity(it);
+    }
+
+    public static void startThirdDomain(Context ctx, String title, String playUrl, boolean isFB) {
+        CfLog.i("URL: " + playUrl);
+        Intent it = new Intent(ctx, BrowserActivityX5.class);
+        it.putExtra(ARG_URL, playUrl);
+        it.putExtra(ARG_TITLE, title);
+        it.putExtra(ARG_IS_THIRD, true);
+        it.putExtra(ARG_IS_FB, isFB);
         it.putExtra(BrowserActivityX5.ARG_IS_GAME, true);
         ctx.startActivity(it);
     }
@@ -452,10 +490,18 @@ public class BrowserActivityX5 extends AppCompatActivity {
             UploadExcetionReq req = new UploadExcetionReq();
             if (isThirdDomain) {
                 req.setLogTag("thirdgame_domain_block");
-                req.setLogType("三方域名：" + title + "打开失败");
+                if (parentTitle == null) {
+                    req.setLogType("三方域名：" + title + "打开失败");
+                } else {
+                    req.setLogType("三方域名：" + parentTitle + "-" + title + "打开失败");
+                }
             } else {
                 req.setLogTag("thirdgame_domain_exception");
-                req.setLogType("公司域名：" + title + "打开失败");
+                if (parentTitle == null) {
+                    req.setLogType("公司域名：" + title + "打开失败");
+                } else {
+                    req.setLogType("公司域名：" + parentTitle + "-" + title + "打开失败");
+                }
             }
 
             req.setApiUrl(url);
@@ -463,6 +509,7 @@ public class BrowserActivityX5 extends AppCompatActivity {
 
             EventBus.getDefault().post(new EventVo(EVENT_UPLOAD_EXCEPTION, req));
         }
+
     }
 
     private void setJs() {
@@ -561,7 +608,6 @@ public class BrowserActivityX5 extends AppCompatActivity {
         public void onReceivedSslError(WebView webView, SslErrorHandler sslErrorHandler, com.tencent.smtt.export.external.interfaces.SslError sslError) {
             super.onReceivedSslError(webView, sslErrorHandler, sslError);
         }
-
 
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {

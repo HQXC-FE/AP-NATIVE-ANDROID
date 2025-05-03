@@ -103,6 +103,9 @@ public class WalletRoomAdapter extends CachedAutoRefreshAdapter<GameBalanceVo> {
             case 7:
                 binding.ivwLogo.setImageResource(R.mipmap.me_ic_wlt_wali);
                 break;
+            case 8:
+                binding.ivwLogo.setImageResource(R.mipmap.me_ic_wlt_ad);
+                break;
             default:
                 binding.ivwLogo.setImageResource(R.mipmap.me_ic_wlt_center);
                 break;

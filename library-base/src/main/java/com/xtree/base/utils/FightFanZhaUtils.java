@@ -339,7 +339,7 @@ public class FightFanZhaUtils {
     public static void startMockFanZha(Context context) {
         isOpenTest = true;
         CfLog.d("fanzha-test startMockFanZha url: " + DomainUtil.getH5Domain2());
-        BrowserActivityX5.start(context, "反诈", DomainUtil.getH5Domain2(), false, true);
+        BrowserActivityX5.start(context, "反诈", DomainUtil.getH5Domain2(), false, true, false);
     }
 
     public static boolean mockJumpFanZha(WebView webView, String url) {
