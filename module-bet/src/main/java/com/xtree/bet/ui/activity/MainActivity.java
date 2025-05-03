@@ -386,16 +386,25 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
     @Override
     public void showDialog(String title) {
-        if (binding.ivLoading.getVisibility() == View.GONE && mIsShowLoading) {
-            binding.ivLoading.setVisibility(View.VISIBLE);
-            ObjectAnimator.ofFloat(binding.ivLoading, "rotation", 0f, 360f).setDuration(700).start();
-        }
+
+//        // 设置图像文件夹路径
+//        binding.lavLoading.setImageAssetsFolder("images_p/");
+//        // 从 assets 文件夹中加载 JSON 文件
+//        binding.lavLoading.setAnimation("loading_main.json");
+        binding.lavLoading.playAnimation();
+
+//        if (binding.ivLoading.getVisibility() == View.GONE && mIsShowLoading) {
+//            binding.ivLoading.setVisibility(View.VISIBLE);
+//            ObjectAnimator.ofFloat(binding.ivLoading, "rotation", 0f, 360f).setDuration(700).start();
+//        }
     }
 
     @Override
     public void dismissDialog() {
-        binding.ivLoading.clearAnimation();
-        binding.ivLoading.setVisibility(View.GONE);
+//        binding.ivLoading.clearAnimation();
+//        binding.ivLoading.setVisibility(View.GONE);
+        binding.lavLoading.cancelAnimation();
+        binding.lavLoading.setVisibility(View.GONE);
     }
 
     @Override
