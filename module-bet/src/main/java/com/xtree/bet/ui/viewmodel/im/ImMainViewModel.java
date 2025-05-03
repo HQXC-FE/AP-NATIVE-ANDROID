@@ -14,6 +14,9 @@ import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.TimeUtils;
+import com.xtree.bet.bean.request.im.AllSportCountReq;
+import com.xtree.bet.bean.request.im.AnnouncementReq;
+import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.SportsCacheSwitchInfo;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
@@ -26,6 +29,7 @@ import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.LeaguePm;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.MatchPm;
+import com.xtree.bet.constant.IMConstants;
 import com.xtree.bet.constant.PMConstants;
 import com.xtree.bet.constant.SportTypeItem;
 import com.xtree.bet.data.BetRepository;
@@ -373,9 +377,9 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         if ((type == 1 && needSecondStep) // 获取今日中的全部滚球赛事列表
                 || isTimerRefresh) { // 定时刷新赔率变更
-            createPMListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, flowable);
+            //createPMListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, flowable);
         } else {
-            createPMLeagueListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, finalType, isStepSecond, flowable);
+            //createPMLeagueListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, finalType, isStepSecond, flowable);
         }
     }
 
@@ -433,14 +437,15 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      * 获取赛事统计数据
      */
     public void statistical(int playMethodType) {
-        Map<String, String> map = new HashMap<>();
-        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
-        map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PM_USER_ID));
-        if (TextUtils.equals(platform, PLATFORM_PMXC)) {
-            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
-        }
-        map.put("sys", "7");
-        Disposable disposable = (Disposable) model.getPMApiService().initPB(map)
+//        Map<String, String> map = new HashMap<>();
+//        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
+//        map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PM_USER_ID));
+//        if (TextUtils.equals(platform, PLATFORM_PMXC)) {
+//            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
+//        }
+//        map.put("sys", "7");
+        AllSportCountReq allSportCountReq = new AllSportCountReq();
+        Disposable disposable = (Disposable) model.getIMApiService().getAllSportCount(allSportCountReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<List<MenuInfo>>() {
@@ -543,20 +548,21 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      * 获取赛果信息赛事列表
      */
     public void matchResultPage(String beginTime, String endTime, int playMethodPos, String sportId) {
-        Map<String, String> map = new HashMap<>();
-        map.put("euid", sportId);
-        map.put("type", "28");
-        map.put("sort", "2");
-        map.put("device", "v2_h5_st");
-        map.put("tid", "");
-        map.put("md", beginTime);
-        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
-        if (TextUtils.equals(platform, PLATFORM_PMXC)) {
-            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
-        } else {
-            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PM_USER_ID));
-        }
-        Disposable disposable = (Disposable) model.getPMApiService().matcheResultPB(map)
+//        Map<String, String> map = new HashMap<>();
+//        map.put("euid", sportId);
+//        map.put("type", "28");
+//        map.put("sort", "2");
+//        map.put("device", "v2_h5_st");
+//        map.put("tid", "");
+//        map.put("md", beginTime);
+//        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
+//        if (TextUtils.equals(platform, PLATFORM_PMXC)) {
+//            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
+//        } else {
+//            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PM_USER_ID));
+//        }
+        BtReq btReq = new BtReq();
+        Disposable disposable = (Disposable) model.getIMApiService().getLiveResults(btReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<List<MatchInfo>>() {
@@ -600,7 +606,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     @Override
     public String[] getPlayMethodTypes() {
-        return PMConstants.PLAY_METHOD_TYPES;
+        return IMConstants.PLAY_METHOD_TYPES;
     }
 
     @Override
@@ -628,7 +634,8 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      * 公告列表集合
      */
     public void getAnnouncement() {
-        Disposable disposable = (Disposable) model.getPMApiService().frontListPB()
+        AnnouncementReq  announcementReq = new AnnouncementReq();
+        Disposable disposable = (Disposable) model.getIMApiService().getAnnouncement(announcementReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<FrontListInfo>() {
@@ -661,184 +668,24 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     }
 
     private Flowable getFlowableMatchesPagePB(PMListReq pmListReq) {
-        Flowable flowable;
-        if (isUseCacheApiService()) {
-            if (getSportCacheType().equals(SportCacheType.PM)) {
-                pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN));
-                flowable = model.getBaseApiService().pmMatchesPagePB(pmListReq);
-            } else {
-                pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN));
-                flowable = model.getBaseApiService().pmxcMatchesPagePB(pmListReq);
-            }
-        } else {
-            flowable = model.getPMApiService().matchesPagePB(pmListReq);
-        }
-
+        Flowable flowable = model.getPMApiService().matchesPagePB(pmListReq);
         return flowable;
     }
 
     private Flowable getFlowableLiveMatchesPB(PMListReq pmListReq) {
-        Flowable flowable;
-        if (isUseCacheApiService()) {
-            if (getSportCacheType().equals(SportCacheType.PM)) {
-                pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN));
-                flowable = model.getBaseApiService().pmLiveMatchesPB(pmListReq);
-            } else {
-                pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN));
-                flowable = model.getBaseApiService().pmxcLiveMatchesPB(pmListReq);
-            }
-        } else {
-            flowable = model.getPMApiService().liveMatchesPB(pmListReq);
-        }
-
+        Flowable flowable = model.getPMApiService().liveMatchesPB(pmListReq);
         return flowable;
     }
 
     private Flowable getFlowableNoLiveMatchesPagePB(PMListReq pmListReq) {
-        Flowable flowable;
-        if (isUseCacheApiService()) {
-            if (getSportCacheType().equals(SportCacheType.PM)) {
-                pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN));
-                flowable = model.getBaseApiService().pmNoLiveMatchesPagePB(pmListReq);
-            } else {
-                pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN));
-                flowable = model.getBaseApiService().pmxcNoLiveMatchesPagePB(pmListReq);
-            }
-        } else {
-            flowable = model.getPMApiService().noLiveMatchesPagePB(pmListReq);
-        }
-
+        Flowable flowable = model.getPMApiService().noLiveMatchesPagePB(pmListReq);
         return flowable;
     }
 
     private Flowable getFlowableMatchBaseInfoByMidsPB(PMListReq pmListReq) {
-        Flowable flowable;
-        if (isUseCacheApiService()) {
-            if (getSportCacheType().equals(SportCacheType.PM)) {
-                pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN));
-                flowable = model.getBaseApiService().pmGetMatchBaseInfoByMidsPB(pmListReq);
-            } else {
-                pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN));
-                flowable = model.getBaseApiService().pmxcGetMatchBaseInfoByMidsPB(pmListReq);
-            }
-        } else {
-            flowable = model.getPMApiService().getMatchBaseInfoByMidsPB(pmListReq);
-        }
-
+        Flowable flowable = model.getPMApiService().getMatchBaseInfoByMidsPB(pmListReq);
         return flowable;
     }
 
-    private boolean isUseCacheApiService() {
-        SportCacheType sportCacheType = getSportCacheType();
-        if (sportCacheType.equals(SportCacheType.PM) || sportCacheType.equals(SportCacheType.PMXC)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    //根据返回的类型判断是走缓存请求，还是直连三方请求
-    private SportCacheType getSportCacheType() {
-        // 获取平台和缓存数据
-        String platform = SPUtils.getInstance().getString("KEY_PLATFORM", "");
-        String json = SPUtils.getInstance().getString(SPKeyGlobal.SPORT_MATCH_CACHE, "");
-
-        // 如果平台或数据为空，直接返回 NONE
-        if (TextUtils.isEmpty(platform) || TextUtils.isEmpty(json)) {
-            return SportCacheType.NONE;
-        }
-
-        // 解析缓存数据
-        Type typeToken = new TypeToken<SportsCacheSwitchInfo>() {
-        }.getType();
-        SportsCacheSwitchInfo sportCacheSwitchInfo = new Gson().fromJson(json, typeToken);
-
-        // 如果解析结果为空，返回 NONE
-        if (sportCacheSwitchInfo == null) {
-            return SportCacheType.NONE;
-        }
-
-        // 获取用户 ID 和对应的 sportCacheList
-        String userID = SPUtils.getInstance().getString(SPKeyGlobal.USER_ID);
-        List<Integer> sportCacheList = getSportCacheListByPlatform(platform, sportCacheSwitchInfo);
-
-        // 如果用户列表为空，表示面向全部用户，进行相关检查
-        if (sportCacheSwitchInfo.getUsers().isEmpty()) {
-            //场馆数据为空
-            if (sportCacheList.isEmpty()) {
-                return SportCacheType.NONE;
-            }
-        } else {
-            // 如果用户列表不为空，检查当前用户是否在用户列表内
-            if (!sportCacheSwitchInfo.getUsers().contains(userID)) {
-                return SportCacheType.NONE;
-            }
-        }
-
-        // 最终检查缓存数据并返回 SportCacheType
-        return getSportCacheTypeForPlatform(platform, sportCacheList);
-    }
-
-    // 根据平台获取对应的 sportCacheList
-    private List<Integer> getSportCacheListByPlatform(String platform, SportsCacheSwitchInfo sportCacheSwitchInfo) {
-        if (TextUtils.equals(platform, PLATFORM_PM)) {
-            return sportCacheSwitchInfo.getObg();
-        } else {
-            return sportCacheSwitchInfo.getObgzy();
-        }
-    }
-
-    // 根据平台返回相应的 SportCacheType
-    private SportCacheType getSportCacheTypeForPlatform(String platform, List<Integer> sportCacheList) {
-        if (sportCacheList.contains(9)) {
-            // 如果缓存数据包含 9，根据平台返回对应的 SportCacheType
-            if (TextUtils.equals(platform, PLATFORM_PM)) {
-                return SportCacheType.PM;
-            } else {
-                return SportCacheType.PMXC;
-            }
-        }
-        return SportCacheType.NONE;
-    }
-
-    // 根据条件设置 HttpCallBack 类型的对象
-    public void createPMListCallback(boolean isTimerRefresh, boolean isRefresh, int sportPos, String sportId, int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchidList, Flowable flowable) {
-        // 根据是否使用缓存选择回调类型
-//        Object callback = isUseCacheApiService()
-//                ? new PMListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType,
-//                sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList)
-//                : new PMListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType,
-//                sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList);
-//
-//        // 统一处理 Flowable 的线程调度和异常处理
-//        Disposable disposable = createDisposable(flowable, callback);
-//        // 添加订阅管理
-//        addSubscribe(disposable);
-    }
-
-    // 根据条件返回 HttpCallBack 类型的对象
-    public void createPMLeagueListCallback(boolean isTimerRefresh, boolean isRefresh,
-                                           int sportPos, String sportId, int orderBy, List<Long> leagueIds,
-                                           int searchDatePos, int oddType, List<Long> matchidList, int finalType, boolean isStepSecond, Flowable flowable) {
-//        mPmLeagueCallBack = new PMLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage,
-//                mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType,
-//                matchidList, finalType, isStepSecond);
-//        mPmCacheLeagueCallBack = new PMLeagueListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage,
-//                mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType,
-//                matchidList, finalType, isStepSecond);
-//        // 根据是否使用缓存选择回调
-//        Object callback = isUseCacheApiService()
-//                ? mPmCacheLeagueCallBack
-//                : mPmLeagueCallBack;
-//        // 统一处理 Flowable 的线程调度和异常处理
-//        Disposable disposable = createDisposable(flowable, callback);
-//        // 添加订阅管理
-//        addSubscribe(disposable);
-    }
-
-    private Disposable createDisposable(Flowable flowable, Object callBack) {
-        return (Disposable) flowable.compose(RxUtils.schedulersTransformer()) // 线程调度
-                .compose(RxUtils.exceptionTransformer()) // 异常处理
-                .subscribeWith((Subscriber) callBack); // 订阅并返回 Disposable
-    }
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.xtree.bet.data.BetRepository;
+import com.xtree.bet.data.IMInjection;
 import com.xtree.bet.data.PMInjection;
 
 import java.lang.reflect.Constructor;
@@ -29,7 +30,7 @@ public class IMAppViewModelFactory extends ViewModelProvider.NewInstanceFactory 
         if (INSTANCE == null) {
             synchronized (IMAppViewModelFactory.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new IMAppViewModelFactory(application, PMInjection.provideHomeRepository(false));
+                    INSTANCE = new IMAppViewModelFactory(application, IMInjection.provideHomeRepository(false));
                 }
             }
         }
@@ -48,7 +49,7 @@ public class IMAppViewModelFactory extends ViewModelProvider.NewInstanceFactory 
 
     public static void init() {
         synchronized (IMAppViewModelFactory.class) {
-            INSTANCE = new IMAppViewModelFactory(mApplication, PMInjection.provideHomeRepository(true));
+            INSTANCE = new IMAppViewModelFactory(mApplication, IMInjection.provideHomeRepository(true));
         }
     }
 

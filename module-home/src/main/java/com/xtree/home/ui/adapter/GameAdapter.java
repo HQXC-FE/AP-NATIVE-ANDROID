@@ -310,7 +310,7 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
             //IM
             ARouter.getInstance().build(RouterActivityPath.Bet.PAGER_BET_HOME).
                     withString("KEY_PLATFORM", vo.alias).navigation();
-            return;
+            //return;
         } {
             //熊猫体育
             cgToken = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);

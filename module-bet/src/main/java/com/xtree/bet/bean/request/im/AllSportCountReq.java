@@ -16,7 +16,7 @@ public class AllSportCountReq {
         this.api = "GetAllSportCount";
         this.method = "post";
         this.format = "json";
-        this.languageCode = "chz";
+        this.languageCode = "chs";
     }
 
     public String getTimeStamp() {
