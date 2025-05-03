@@ -95,6 +95,8 @@ dependencies {
 
     api rootProject.ext.dependencies["jsoup"]
 
+    api rootProject.ext.dependencies["tbs"]
+
     configurations.all {
         resolutionStrategy {
             force 'org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10',

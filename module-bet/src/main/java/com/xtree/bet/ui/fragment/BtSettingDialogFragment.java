@@ -20,7 +20,7 @@ import com.xtree.base.global.Constant;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.bet.R;
 import com.xtree.bet.constant.SPKey;
 import com.xtree.bet.contract.BetContract;
@@ -187,6 +187,6 @@ public class BtSettingDialogFragment extends BaseDialogFragment<BtDialogSettingB
 
     private void goWebView(String title, String path, boolean isContainTitle) {
         String url = DomainUtil.getH5Domain2() + path;
-        BrowserActivity.start(getContext(), title, url, isContainTitle);
+        BrowserActivityX5.start(getContext(), title, url, isContainTitle);
     }
 }

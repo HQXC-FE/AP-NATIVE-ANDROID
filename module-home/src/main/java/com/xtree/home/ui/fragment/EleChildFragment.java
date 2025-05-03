@@ -19,7 +19,7 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.home.BR;
 import com.xtree.home.R;
@@ -112,7 +112,7 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
                         CfLog.i(vo1.toString());
                         String eventName = gameVo.name != null && gameVo.name.length() > 2 ? gameVo.name.substring(0, 2) : "gm2";
                         TagUtils.tagEvent(getContext(), eventName, vo1.getId()); // 打点
-                        BrowserActivity.start(getContext(), gameVo.name, vo1.getName(), DomainUtil.getH5Domain() + gameVo.playURL + vo1.getId(), false, true);
+                        BrowserActivityX5.start(getContext(), gameVo.name, vo1.getName(), DomainUtil.getH5Domain() + gameVo.playURL + vo1.getId(), false, true);
                     }
                 });
             }
@@ -145,7 +145,7 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
             String name = Objects.requireNonNull(map.get("name")).toString();
             // 跳转到游戏H5
             CfLog.i("URL: " + url);
-            BrowserActivity.startThirdDomain(getContext(), name, url, gameVo.name);
+            BrowserActivityX5.startThirdDomain(getContext(), name, url, gameVo.name);
         });
     }
 

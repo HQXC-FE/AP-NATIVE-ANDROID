@@ -10,24 +10,12 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.webkit.ConsoleMessage;
-import android.webkit.CookieManager;
-import android.webkit.SslErrorHandler;
-import android.webkit.ValueCallback;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,14 +28,19 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.just.agentweb.AgentWeb;
-import com.just.agentweb.AgentWebConfig;
-import com.just.agentweb.WebChromeClient;
-import com.just.agentweb.WebViewClient;
 import com.luck.picture.lib.basic.PictureSelector;
 import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
+import com.tencent.smtt.export.external.interfaces.ConsoleMessage;
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
+import com.tencent.smtt.export.external.interfaces.WebResourceError;
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.global.Constant;
@@ -71,20 +64,13 @@ import java.io.File;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import me.xtree.mvvmhabit.base.ContainerActivity;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
-/**
- * 浏览器页面 <p/>
- * 默认: (活动,邀请好友/VIP/...) 带header和token; <br/>
- * 彩票: 带header, 隐藏标题头;
- * 三方链接: (三方游戏/H5充值) 不带header和token;
- */
-@Route(path = RouterActivityPath.Widget.PAGER_BROWSER)
-public class BrowserActivity extends AppCompatActivity {
+@Route(path = RouterActivityPath.Widget.PAGER_BROWSER_X5)
+public class BrowserActivityX5 extends AppCompatActivity {
     public static final String ARG_TITLE = "title";
     public static final String ARG_PARENT_TITLE = "parentTitle";
     public static final String ARG_URL = "url";
@@ -97,37 +83,33 @@ public class BrowserActivity extends AppCompatActivity {
     public static final String ARG_IS_FB = "isFB";
     public static final String ARG_SEARCH_DNS_URL = "https://dns.alidns.com/dns-query";
 
-    View vTitle;
-    View clTitle;
-    TextView tvwTitle;
-    ImageView ivwBack;
-    AgentWeb agentWeb;
-    ViewGroup mWebView;
-    //ImageView ivwLaunch;
-    ImageView ivwCs;
-    ImageView ivwMsg;
-    ImageView ivwRecharge;
-    ImageView ivwJump;
-    View layoutRight;
+    private View vTitle;
+    private View clTitle;
+    private TextView tvwTitle;
+    private ImageView ivwBack;
+    private ViewGroup viewGroup;
+    private ImageView ivwCs;
+    private ImageView ivwMsg;
+    private ImageView ivwRecharge;
+    private ImageView ivwJump;
+    private View layoutRight;
+    private TopSpeedDomainFloatingWindows mTopSpeedDomainFloatingWindows;
 
-    boolean isLottery = false; // 是否彩票, 彩票需要header,需要注入IOS标题头样式
-    boolean isShowLoading = false; // 展示loading弹窗
-    boolean isHideTitle = false; // 是否隐藏标题
-
-    String title = "";
-    String parentTitle = "";
-    String url = "";
-    boolean isContainTitle = false; // 网页自身是否包含标题(少数情况下会包含)
-    boolean isGame = false; // 三方游戏, 不需要header和token
-    boolean isThirdDomain = false; // 是否是三方域名的三方游戏
+    private String title = "";
+    private String parentTitle = "";
+    private String url = "";
+    private String token; // token
+    private boolean isLottery = false; // 是否彩票, 彩票需要header,需要注入IOS标题头样式
+    private boolean isGame = false; // 三方游戏, 不需要header和token
+    private boolean isThirdDomain = false; // 是否是三方域名的三方游戏
+    private X5WebView x5WebView;
     boolean isFB = false; // 是否是FB普通版
     boolean isFirstOpenBrowser = true; // 是否第一次打开webView组件(解决第一次打开webView时传递header/cookie/token失效)
-    String token; // token
-
+    boolean isShowLoading = false; // 展示loading弹窗
+    boolean isHideTitle = false; // 是否隐藏标题
+    boolean isContainTitle = false; // 网页自身是否包含标题(少数情况下会包含)
     ValueCallback<Uri> mUploadCallbackBelow;
     ValueCallback<Uri[]> mUploadCallbackAboveL;
-
-    private TopSpeedDomainFloatingWindows mTopSpeedDomainFloatingWindows;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,10 +121,11 @@ public class BrowserActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_browser);
+        setContentView(R.layout.activity_browser_x5);
 
         EventBus.getDefault().register(this);
         FightFanZhaUtils.init();
+        x5WebView = X5WebView.getInstance(this);
         initView();
 
         isContainTitle = getIntent().getBooleanExtra(ARG_IS_CONTAIN_TITLE, false);
@@ -163,7 +146,6 @@ public class BrowserActivity extends AppCompatActivity {
             tvwTitle.setText(title);
         }
         if (isContainTitle) {
-            //vTitle.setVisibility(View.GONE);
             // 创建一个 ConstraintLayout 对象
             ConstraintLayout constraintLayout = findViewById(R.id.cl_root);
             // 创建一个 ConstraintSet 对象
@@ -179,49 +161,13 @@ public class BrowserActivity extends AppCompatActivity {
             });
         }
 
-        String cookie = "auth=" + token
-                + ";" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_COOKIE_NAME)
-                + "=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID)
-                + ";";
-
-        String auth = "bearer " + token;
-
-        CfLog.d("Cookie: " + cookie);
-        CfLog.d("Authorization: " + auth);
-
-        Map<String, String> header = new HashMap<>();
-        if (!TextUtils.isEmpty(token)) {
-            header.put("Cookie", cookie);
-            header.put("Authorization", auth);
-            header.put("Cache-Control", "no-cache");
-            header.put("Pragme", "no-cache");
-        }
-        //header.put("Content-Type", "application/vnd.sc-api.v1.json");
-        //header.put("App-RNID", "87jumkljo"); //
-
-        //header.put("Source", "8");
-        //header.put("UUID", TagUtils.getDeviceId(Utils.getContext()));
-        if (isGame) {
-            CfLog.d("not need header.");
-            header.clear(); // 游戏 header和cookie只带其中一个即可; FB只能带cookie
-        }
-        header.put("App-RNID", "87jumkljo"); //
-        CfLog.d("header: " + header); // new Gson().toJson(header)
         url = getIntent().getStringExtra("url");
 
-        if (isFirstOpenBrowser && !TextUtils.isEmpty(token)) {
-            String urlBase64 = Base64.encodeToString(url.getBytes(), Base64.DEFAULT);
-            url = DomainUtil.getH5Domain2() + "/static/sessionkeeper.html?token=" + token
-                    + "&tokenExpires=3600&url=" + urlBase64;
-            SPUtils.getInstance().put(SPKeyGlobal.IS_FIRST_OPEN_BROWSER, false);
-        }
-
-        //setWebCookie();
-        //setCookie(cookie, url); // 设置 cookie
         Uri uri = getIntent().getData();
         if (uri != null && TextUtils.isEmpty(url)) {
             url = uri.toString();
         }
+
         CfLog.i("url: " + url);
         if (TextUtils.isEmpty(url)) {
             finish();
@@ -229,9 +175,8 @@ public class BrowserActivity extends AppCompatActivity {
             if (isShowLoading) {
                 LoadingDialog.show2(this);
             }
-            //mWebView.loadUrl(url, header);
             try {
-                initAgentWeb(url, header);
+                initX5WebView(url);
             } catch (UnknownHostException e) {
                 throw new RuntimeException(e);
             }
@@ -242,13 +187,9 @@ public class BrowserActivity extends AppCompatActivity {
             initRight();
         }
 
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim_loading);
-        animation.setRepeatMode(Animation.RESTART);
-        animation.setDuration(20 * 1000);
-
-        //todo test
+        // 测试
         if (BuildConfig.DEBUG && FightFanZhaUtils.isOpenTest) {
-            FightFanZhaUtils.mockJumpFanZha(agentWeb.getWebCreator().getWebView(), url);
+            FightFanZhaUtils.mockJumpFanZha(X5WebView.getInstance(this).getWebView(), url);
         }
     }
 
@@ -257,8 +198,7 @@ public class BrowserActivity extends AppCompatActivity {
         clTitle = findViewById(R.id.cl_title);
         tvwTitle = findViewById(R.id.tvw_title);
         ivwBack = findViewById(R.id.ivw_back);
-        mWebView = findViewById(R.id.wv_main);
-        //ivwLaunch = findViewById(R.id.ivw_launch);
+        viewGroup = findViewById(R.id.wv_main);
         ivwCs = findViewById(R.id.ivw_cs);
         ivwMsg = findViewById(R.id.ivw_msg);
         ivwRecharge = findViewById(R.id.ivw_recharge);
@@ -267,99 +207,41 @@ public class BrowserActivity extends AppCompatActivity {
 
         ivwBack.setOnClickListener(v -> finish());
 
-        mWebView.setFitsSystemWindows(true);
-        //setWebView(mWebView);
+        viewGroup.setFitsSystemWindows(true);
 
         mTopSpeedDomainFloatingWindows = new TopSpeedDomainFloatingWindows(this);
         mTopSpeedDomainFloatingWindows.show();
     }
 
-    private void initAgentWeb(String url, Map<String, String> header) throws UnknownHostException {
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.setAcceptCookie(true);
-        cookieManager.setAcceptThirdPartyCookies(new WebView(this), true);
-        cookieManager.setCookie(url, "auth=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN) + ";" + "_sessionHandler=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID));
-        cookieManager.flush();
-
+    private void initX5WebView(String url) throws UnknownHostException {
         // debug模式
         if (BuildConfig.DEBUG) {
-            AgentWebConfig.debug();
+            x5WebView.setDebug();
         }
 
-        agentWeb = AgentWeb.with(this)
-                .setAgentWebParent(findViewById(R.id.wv_main), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-                .useDefaultIndicator() // 使用默认的加载进度条
-                .additionalHttpHeader(url, header)
-                .setWebViewClient(new CustomWebViewClient()) // 设置 WebViewClient
-                .addJavascriptInterface("android", new WebAppInterface(this, ivwBack, getCallBack()))
-                .setWebChromeClient(new WebChromeClient() {
-
-                    @Override
-                    public void onReceivedTitle(WebView webView, String s) {
-                        super.onReceivedTitle(webView, s);
-                        FightFanZhaUtils.checkHeadTitle(webView, s, isGame, url);
-                    }
-
-                    @Override
-                    public void onProgressChanged(WebView view, int newProgress) {
-                        super.onProgressChanged(view, newProgress);
-                        // 网页加载进度
-                        if (newProgress > 75) {
-                            LoadingDialog.finish();
-                        }
-                    }
-
-                    // debug模式
-                    @Override
-                    public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                        CfLog.d("AgentWeb", consoleMessage.message() + " -- From line "
-                                + consoleMessage.lineNumber() + " of "
-                                + consoleMessage.sourceId());
-                        return true;
-                    }
-
-                    /**
-                     * For Android >= 4.1
-                     * 16(Android 4.1.2) <= API <= 20(Android 4.4W.2)回调此方法
-                     */
-                    public void openFileChooser(ValueCallback<Uri> valueCallback, String acceptType, String capture) {
-                        CfLog.i("*********");
-                        mUploadCallbackBelow = valueCallback;
-                        //openImageChooserActivity();
-                        gotoSelectMedia();
-                    }
-
-                    /**
-                     * For Android >= 5.0
-                     * API >= 21(Android 5.0.1)回调此方法
-                     */
-                    public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-                        CfLog.i("*********");
-                        // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
-                        mUploadCallbackAboveL = filePathCallback;
-                        //openImageChooserActivity();
-                        gotoSelectMedia();
-                        return true;
-                    }
-
-                }) // 设置 WebChromeClient
-                .createAgentWeb() // 创建 AgentWeb
-                .ready()
-                .go(url); // 加载网页
-
-        WebView webView = agentWeb.getWebCreator().getWebView();
-        WebSettings webSettings = webView.getSettings();
-        if (!isFB) {
-            webSettings.setUserAgentString(WebSettings.getDefaultUserAgent(this) + " Chrome/100.0.4896.127 Mobile Safari/537.36");
+        // 設定 WebView 行為模式（選填）
+        if (isLottery) {
+            x5WebView.setMode(X5WebView.WebViewMode.LOTTERY);
+        } else if (isGame) {
+            x5WebView.setMode(X5WebView.WebViewMode.GAME);
+        } else {
+            x5WebView.setMode(X5WebView.WebViewMode.DEFAULT);
         }
+
+        // 設定 WebViewClient
+        x5WebView.setWebViewClient(new CustomWebViewClient());
+        // 設定 WebChromeClient
+        x5WebView.setWebChromeClient(new CustomWebChromeClient());
+        // 設定 JS Bridge（注意這裡 "android" 是 JS 調用的名稱）
+        x5WebView.addJavascriptInterface(new WebAppInterface(this, ivwBack, getCallBack()));
+        // 將 WebView 加入容器
+        x5WebView.bindToContainer(viewGroup);
+        // 加载
+        x5WebView.loadUrl(url);
     }
 
-    /**
-     * 重新加载网页
-     */
     public void reload() {
-        //mWebView.reload();
-        agentWeb.getUrlLoader().reload();
+        x5WebView.reload();
     }
 
     public WebAppInterface.ICallBack getCallBack() {
@@ -442,7 +324,6 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
     private void hideLoading() {
-        //ivwLaunch.setVisibility(View.GONE);
         LoadingDialog.finish();
     }
 
@@ -486,91 +367,6 @@ public class BrowserActivity extends AppCompatActivity {
                 });
     }
 
-    private void setCookieInside() {
-        // auth, _sessionHandler 是验证类业务用的,比如绑USDT/绑YHK
-        // AUTH, USER-PROFILE 是给VIP中心/报表 用的
-
-        String sessid = SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID);
-
-        String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
-        HashMap mProfileVo = new Gson().fromJson(json, new TypeToken<HashMap>() {
-        }.getType());
-
-        long expires = System.currentTimeMillis() + 24 * 60 * 60 * 1000;
-        HashMap map = new HashMap<>();
-        map.put("data", mProfileVo);
-        map.put("expires", expires);
-        String userProfile = new Gson().toJson(map);
-
-        map.clear();
-        map.put("data", token);
-        map.put("expires", expires);
-        String auth = new Gson().toJson(map);
-
-        String js = "";
-        js += "(function() {" + "\n";
-        js += "const d = new Date();" + "\n";
-        js += "d.setTime(d.getTime() + (24*60*60*1000));" + "\n";
-        js += "let expires = \"expires=\"+ d.toUTCString();" + "\n";
-        js += "document.cookie = \"auth=" + token + ";\" + expires + \";path=/\";" + "\n";
-        js += "document.cookie = \"_sessionHandler=" + sessid + ";\" + expires + \";path=/\";" + "\n";
-        js += "localStorage.setItem('USER-PROFILE', '" + userProfile + "');" + "\n";
-        js += "localStorage.setItem('AUTH', '" + auth + "');" + "\n";
-        js += "})()" + "\n";
-
-        CfLog.i(js.replace("\n", " \t"));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            agentWeb.getWebCreator().getWebView().evaluateJavascript(js, null);
-        } else {
-            agentWeb.getWebCreator().getWebView().loadUrl("javascript:" + js);
-        }
-    }
-
-    private void setLotteryCookieInside() {
-        // auth, _sessionHandler 是验证类业务用的,比如绑USDT/绑YHK
-        // AUTH, USER-PROFILE 是给VIP中心/报表 用的
-
-        String sessid = SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID);
-
-        String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
-        HashMap mProfileVo = new Gson().fromJson(json, new TypeToken<HashMap>() {
-        }.getType());
-
-        long expires = System.currentTimeMillis() + 24 * 60 * 60 * 1000;
-        HashMap map = new HashMap<>();
-        map.put("data", mProfileVo);
-        map.put("expires", expires);
-        String userProfile = new Gson().toJson(map);
-
-        map.clear();
-        map.put("data", token);
-        map.put("expires", expires);
-        String auth = new Gson().toJson(map);
-
-        String js = "";
-        js += "(function() {" + "\n";
-        js += "const d = new Date();" + "\n";
-        js += "const style = document.createElement('style');" + "\n";
-        js += "style.type = 'text/css';" + "\n";
-        js += "style.id = 'iOS_inject';" + "\n";
-        js += "document.head.appendChild(style);" + "\n";
-        js += "document.querySelector('#iOS_inject').innerHTML = '.headerH5{display: none !important;} .all-lottery-all{ margin-top: 0 !important;} .msg{ display: none !important;} .menu{ display: none !important;} .countdown{ margin-right: .8rem;}';" + "\n";
-        js += "d.setTime(d.getTime() + (24*60*60*1000));" + "\n";
-        js += "let expires = \"expires=\"+ d.toUTCString();" + "\n";
-        js += "document.cookie = \"auth=" + token + ";\" + expires + \";path=/\";" + "\n";
-        js += "document.cookie = \"_sessionHandler=" + sessid + ";\" + expires + \";path=/\";" + "\n";
-        js += "localStorage.setItem('USER-PROFILE', '" + userProfile + "');" + "\n";
-        js += "localStorage.setItem('AUTH', '" + auth + "');" + "\n";
-        js += "})()" + "\n";
-
-        CfLog.i(js.replace("\n", " \t"));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            agentWeb.getWebCreator().getWebView().evaluateJavascript(js, null);
-        } else {
-            agentWeb.getWebCreator().getWebView().loadUrl("javascript:" + js);
-        }
-    }
-
     /**
      * @param ctx            上下文
      * @param title          标题
@@ -579,7 +375,7 @@ public class BrowserActivity extends AppCompatActivity {
      */
     public static void start(Context ctx, String title, String url, boolean isContainTitle) {
         CfLog.i(title + ", isContainTitle: " + isContainTitle + ", url: " + url);
-        Intent it = new Intent(ctx, BrowserActivity.class);
+        Intent it = new Intent(ctx, BrowserActivityX5.class);
         it.putExtra(ARG_TITLE, title);
         it.putExtra(ARG_URL, url);
         it.putExtra(ARG_IS_CONTAIN_TITLE, isContainTitle);
@@ -588,7 +384,7 @@ public class BrowserActivity extends AppCompatActivity {
 
     public static void start(Context ctx, String parentTitle, String title, String url, boolean isContainTitle, boolean isGame) {
         CfLog.i(title + ", isContainTitle: " + false + ", url: " + url);
-        Intent it = new Intent(ctx, BrowserActivity.class);
+        Intent it = new Intent(ctx, BrowserActivityX5.class);
         it.putExtra(ARG_TITLE, title);
         it.putExtra(ARG_PARENT_TITLE, parentTitle);
         it.putExtra(ARG_URL, url);
@@ -599,7 +395,7 @@ public class BrowserActivity extends AppCompatActivity {
 
     public static void start(Context ctx, String title, String url, boolean isContainTitle, boolean isGame, boolean isShowLoading) {
         CfLog.i(title + ", isContainTitle: " + false + ", url: " + url);
-        Intent it = new Intent(ctx, BrowserActivity.class);
+        Intent it = new Intent(ctx, BrowserActivityX5.class);
         it.putExtra(ARG_TITLE, title);
         it.putExtra(ARG_URL, url);
         it.putExtra(ARG_IS_CONTAIN_TITLE, isContainTitle);
@@ -610,52 +406,48 @@ public class BrowserActivity extends AppCompatActivity {
 
     public static void start(Context ctx, String url) {
         CfLog.i("url: " + url);
-        Intent it = new Intent(ctx, BrowserActivity.class);
+        Intent it = new Intent(ctx, BrowserActivityX5.class);
         it.putExtra(ARG_URL, url);
         it.putExtra(ARG_IS_HIDE_TITLE, true);
-        //it.putExtra(ARG_IS_SHOW_LOADING, true);
         ctx.startActivity(it);
     }
 
     public static void startThirdDomain(Context ctx, String title, String playUrl) {
         CfLog.i("URL: " + playUrl);
-        Intent it = new Intent(ctx, BrowserActivity.class);
+        Intent it = new Intent(ctx, BrowserActivityX5.class);
         it.putExtra(ARG_URL, playUrl);
         it.putExtra(ARG_TITLE, title);
         it.putExtra(ARG_IS_THIRD, true);
-        it.putExtra(BrowserActivity.ARG_IS_GAME, true);
+        it.putExtra(BrowserActivityX5.ARG_IS_GAME, true);
         ctx.startActivity(it);
     }
 
     public static void startThirdDomain(Context ctx, String title, String playUrl, String parentTitle) {
         CfLog.i("URL: " + playUrl);
-        Intent it = new Intent(ctx, BrowserActivity.class);
+        Intent it = new Intent(ctx, BrowserActivityX5.class);
         it.putExtra(ARG_URL, playUrl);
         it.putExtra(ARG_TITLE, title);
         it.putExtra(ARG_PARENT_TITLE, parentTitle);
         it.putExtra(ARG_IS_THIRD, true);
-        it.putExtra(BrowserActivity.ARG_IS_GAME, true);
+        it.putExtra(BrowserActivityX5.ARG_IS_GAME, true);
         ctx.startActivity(it);
     }
 
     public static void startThirdDomain(Context ctx, String title, String playUrl, boolean isFB) {
         CfLog.i("URL: " + playUrl);
-        Intent it = new Intent(ctx, BrowserActivity.class);
+        Intent it = new Intent(ctx, BrowserActivityX5.class);
         it.putExtra(ARG_URL, playUrl);
         it.putExtra(ARG_TITLE, title);
         it.putExtra(ARG_IS_THIRD, true);
         it.putExtra(ARG_IS_FB, isFB);
-        it.putExtra(BrowserActivity.ARG_IS_GAME, true);
+        it.putExtra(BrowserActivityX5.ARG_IS_GAME, true);
         ctx.startActivity(it);
     }
 
     @Override
     protected void onDestroy() {
-        // 销毁 AgentWeb
-        if (agentWeb != null) {
-            agentWeb.destroy();
-        }
         super.onDestroy();
+        X5WebView.getInstance(this).cleanCache();
 
         FightFanZhaUtils.reset();
         EventBus.getDefault().unregister(this);
@@ -687,70 +479,134 @@ public class BrowserActivity extends AppCompatActivity {
                     }
                     String goUrl = url.replace(oldBaseUrl, newBaseUrl);
                     CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
-                    agentWeb.getUrlLoader().loadUrl(goUrl);
+                    X5WebView.getInstance(this).getWebView().loadUrl(goUrl);
                 }
                 break;
         }
     }
 
+    private void uploadH5Error(String msg, String url) {
+        if (isGame) {
+            UploadExcetionReq req = new UploadExcetionReq();
+            if (isThirdDomain) {
+                req.setLogTag("thirdgame_domain_block");
+                if (parentTitle == null) {
+                    req.setLogType("三方域名：" + title + "打开失败");
+                } else {
+                    req.setLogType("三方域名：" + parentTitle + "-" + title + "打开失败");
+                }
+            } else {
+                req.setLogTag("thirdgame_domain_exception");
+                if (parentTitle == null) {
+                    req.setLogType("公司域名：" + title + "打开失败");
+                } else {
+                    req.setLogType("公司域名：" + parentTitle + "-" + title + "打开失败");
+                }
+            }
+
+            req.setApiUrl(url);
+            req.setMsg(msg);
+
+            EventBus.getDefault().post(new EventVo(EVENT_UPLOAD_EXCEPTION, req));
+        }
+
+    }
+
+    private void setJs() {
+        String token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
+        String sessid = SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID);
+        String json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_PROFILE);
+
+        HashMap mProfileVo = new Gson().fromJson(json, new TypeToken<HashMap>() {
+        }.getType());
+
+        long expires = System.currentTimeMillis() + 24 * 60 * 60 * 1000;
+        HashMap map = new HashMap<>();
+        map.put("data", mProfileVo);
+        map.put("expires", expires);
+        String userProfile = new Gson().toJson(map);
+
+        map.clear();
+        map.put("data", token);
+        map.put("expires", expires);
+        String auth = new Gson().toJson(map);
+
+        if (isLottery) {
+            setLotteryCookieInside(token, sessid, userProfile, auth);
+        } else {
+            if (!token.isEmpty()) {
+                setCookieInside(token, sessid, userProfile, auth);
+            }
+        }
+    }
+
+    private void setCookieInside(String token, String sessid, String userProfile, String auth) {
+        StringBuilder js = new StringBuilder();
+        js.append("(function() {\n")
+                .append("const d = new Date();\n")
+                .append("d.setTime(d.getTime() + (24*60*60*1000));\n")
+                .append("let expires = \"expires=\"+ d.toUTCString();\n")
+                .append("document.cookie = \"auth=").append(token).append(";\" + expires + \";path=/\";\n")
+                .append("document.cookie = \"_sessionHandler=").append(sessid).append(";\" + expires + \";path=/\";\n")
+                .append("localStorage.setItem('USER-PROFILE', '").append(userProfile).append("');\n")
+                .append("localStorage.setItem('AUTH', '").append(auth).append("');\n")
+                .append("})()");
+
+        CfLog.i(js.toString().replace("\n", " \t"));
+        X5WebView.getInstance(this).getWebView().evaluateJavascript(js.toString(), null);
+
+    }
+
+    private void setLotteryCookieInside(String token, String sessid, String userProfile, String auth) {
+        StringBuilder js = new StringBuilder();
+        js.append("(function() {\n")
+                .append("const d = new Date();\n")
+                .append("const style = document.createElement('style');\n")
+                .append("style.type = 'text/css';\n")
+                .append("style.id = 'iOS_inject';\n")
+                .append("document.head.appendChild(style);\n")
+                .append("document.querySelector('#iOS_inject').innerHTML = ")
+                .append("'.headerH5{display: none !important;} ")
+                .append(".all-lottery-all{ margin-top: 0 !important;} ")
+                .append(".msg{ display: none !important;} ")
+                .append(".menu{ display: none !important;} ")
+                .append(".countdown{ margin-right: .8rem;}';\n")
+                .append("d.setTime(d.getTime() + (24*60*60*1000));\n")
+                .append("let expires = \"expires=\"+ d.toUTCString();\n")
+                .append("document.cookie = \"auth=").append(token).append(";\" + expires + \";path=/\";\n")
+                .append("document.cookie = \"_sessionHandler=").append(sessid).append(";\" + expires + \";path=/\";\n")
+                .append("localStorage.setItem('USER-PROFILE', '").append(userProfile).append("');\n")
+                .append("localStorage.setItem('AUTH', '").append(auth).append("');\n")
+                .append("})()");
+
+        CfLog.i(js.toString().replace("\n", " \t"));
+        X5WebView.getInstance(this).getWebView().evaluateJavascript(js.toString(), null);
+    }
+
+    public boolean isGame() {
+        return isGame;
+    }
+
     public class CustomWebViewClient extends WebViewClient {
         private final String initialUrl = url; // 替换为你的初始 URL
         private String mUrl;
-        //        private OkHttpClient client;
-        //
-        //        public CustomWebViewClient() throws UnknownHostException {
-        //            // 初始化 OkHttpClient 并配置自定义的 DNS 解析
-        //            client = new OkHttpClient.Builder()
-        //                    .dns(new DnsOverHttps.Builder()
-        //                            .client(new OkHttpClient())
-        //                            .url(HttpUrl.get(ARG_SEARCH_DNS_URL))
-        //                            .bootstrapDnsHosts(InetAddress.getByName("8.8.8.8"), InetAddress.getByName("114.114.114.114"))
-        //                            .build())
-        //                    .build();
-        //        }
-        //
-        //        @Override
-        //        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-        //            String url = request.getUrl().toString();
-        //            Request httpRequest = new Request.Builder().url(url).build();
-        //
-        //            try {
-        //                Response response = client.newCall(httpRequest).execute();
-        //                return new WebResourceResponse(
-        //                        response.header("content-type"),
-        //                        response.header("content-encoding"),
-        //                        response.body().byteStream()
-        //                );
-        //            } catch (IOException e) {
-        //                e.printStackTrace();
-        //                return super.shouldInterceptRequest(view, request);
-        //            }
-        //        }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             CfLog.d("onPageStarted url:  " + url);
-            //Log.d("---", "onPageStarted url:  " + url);
-            if (isLottery) {
-                setLotteryCookieInside();
-            } else {
-                if (!SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN).isEmpty()) {
-                    setCookieInside();
-                }
-            }
+            setJs();
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             CfLog.d("onPageFinished url: " + url);
-            //Log.d("---", "onPageFinished url: " + url);
             mUrl = url;
             hideLoading();
         }
 
         @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-            handler.proceed();
+        public void onReceivedSslError(WebView webView, SslErrorHandler sslErrorHandler, com.tencent.smtt.export.external.interfaces.SslError sslError) {
+            super.onReceivedSslError(webView, sslErrorHandler, sslError);
         }
 
         @Override
@@ -820,37 +676,53 @@ public class BrowserActivity extends AppCompatActivity {
             }
             return super.shouldOverrideUrlLoading(webView, webResourceRequest);
         }
-
     }
 
-    private void uploadH5Error(String msg, String url) {
-        if (isGame) {
-            UploadExcetionReq req = new UploadExcetionReq();
-            if (isThirdDomain) {
-                req.setLogTag("thirdgame_domain_block");
-                if (parentTitle == null) {
-                    req.setLogType("三方域名：" + title + "打开失败");
-                } else {
-                    req.setLogType("三方域名：" + parentTitle + "-" + title + "打开失败");
-                }
-            } else {
-                req.setLogTag("thirdgame_domain_exception");
-                if (parentTitle == null) {
-                    req.setLogType("公司域名：" + title + "打开失败");
-                } else {
-                    req.setLogType("公司域名：" + parentTitle + "-" + title + "打开失败");
-                }
-            }
-
-            req.setApiUrl(url);
-            req.setMsg(msg);
-
-            EventBus.getDefault().post(new EventVo(EVENT_UPLOAD_EXCEPTION, req));
+    public class CustomWebChromeClient extends WebChromeClient {
+        @Override
+        public void onReceivedTitle(WebView webView, String s) {
+            super.onReceivedTitle(webView, s);
+            FightFanZhaUtils.checkHeadTitle(webView, s, isGame, url);
         }
 
-    }
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+            // 网页加载进度
+            if (newProgress > 75) {
+                LoadingDialog.finish();
+            }
+        }
 
-    public boolean isGame() {
-        return isGame;
+        // debug模式
+        @Override
+        public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+            CfLog.d("WebView", consoleMessage.message() + " -- From line "
+                    + consoleMessage.lineNumber() + " of "
+                    + consoleMessage.sourceId());
+            return true;
+        }
+
+        /**
+         * For Android >= 4.1
+         * 16(Android 4.1.2) <= API <= 20(Android 4.4W.2)回调此方法
+         */
+        public void openFileChooser(ValueCallback<Uri> valueCallback, String acceptType, String capture) {
+            CfLog.i("*********");
+            mUploadCallbackBelow = valueCallback;
+            gotoSelectMedia();
+        }
+
+        /**
+         * For Android >= 5.0
+         * API >= 21(Android 5.0.1)回调此方法
+         */
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+            CfLog.i("*********");
+            // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
+            mUploadCallbackAboveL = filePathCallback;
+            gotoSelectMedia();
+            return true;
+        }
     }
 }

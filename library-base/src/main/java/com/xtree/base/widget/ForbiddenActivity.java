@@ -11,7 +11,7 @@ import com.xtree.base.utils.CfLog;
  * xxx/error/ap/403.html
  */
 @Route(path = RouterActivityPath.Widget.PAGER_FORBIDDEN)
-public class ForbiddenActivity extends BrowserActivity {
+public class ForbiddenActivity extends BrowserActivityX5 {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -61,7 +61,7 @@ public class RouterActivityPath {
      */
     public static class Widget {
         private static final String WIDGET = "/widget";
-        public static final String PAGER_BROWSER = WIDGET + "/browser";
+        public static final String PAGER_BROWSER_X5 = WIDGET + "/browser_x5";
         public static final String PAGER_FORBIDDEN = WIDGET + "/forbidden"; // 403页面
     }
 

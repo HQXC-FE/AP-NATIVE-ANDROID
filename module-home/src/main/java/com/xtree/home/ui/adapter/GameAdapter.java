@@ -21,7 +21,7 @@ import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.base.widget.TipGameDialog;
 import com.xtree.home.R;
 import com.xtree.home.databinding.HmItemGameBinding;
@@ -309,11 +309,20 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
 
     public void playGame(String playUrl, String title, Boolean isLottery) {
         CfLog.i("URL: " + playUrl);
-        Intent it = new Intent(ctx, BrowserActivity.class);
+        Intent it = new Intent(ctx, BrowserActivityX5.class);
         it.putExtra("url", playUrl);
         it.putExtra("isLottery", isLottery);
         it.putExtra("title", title);
-        it.putExtra(BrowserActivity.ARG_IS_GAME, true);
+        it.putExtra(BrowserActivityX5.ARG_IS_GAME, true);
+        ctx.startActivity(it);
+    }
+
+    public void playGame(String playUrl, String title) {
+        CfLog.i("URL: " + playUrl);
+        Intent it = new Intent(ctx, BrowserActivityX5.class);
+        it.putExtra("url", playUrl);
+        it.putExtra("title", title);
+        it.putExtra(BrowserActivityX5.ARG_IS_GAME, true);
         ctx.startActivity(it);
     }
 

@@ -5,17 +5,17 @@ import static com.xtree.base.utils.EventConstant.EVENT_UPLOAD_EXCEPTION;
 import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebView;
 
 import com.google.gson.Gson;
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
+import com.tencent.smtt.sdk.WebView;
 import com.xtree.base.BuildConfig;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.fastest.ChangeH5LineUtil;
 import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.vo.EventVo;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -101,7 +101,7 @@ public class FightFanZhaUtils {
                     if (solveingFanZhaHack) {
                         return true;
                     }
-                    solveAfterCheck(webView, isThird, businessUrl,webView.getContext());
+                    solveAfterCheck(webView, isThird, businessUrl, webView.getContext());
                     return true;
                 }
             }
@@ -110,33 +110,33 @@ public class FightFanZhaUtils {
     }
 
     //判断webResourceRequest
-    public static Boolean checkRequest(Context context,WebResourceRequest webResourceRequest, boolean isThird, String businessUrl) {
+    public static Boolean checkRequest(Context context, WebResourceRequest webResourceRequest, boolean isThird, String businessUrl) {
         if (checkRequestDetail(webResourceRequest)) {
             if (solveingFanZhaHack) {
                 return true;
             }
-            solveAfterCheck(null, isThird, businessUrl,context);
+            solveAfterCheck(null, isThird, businessUrl, context);
             return true;
         }
         return false;
     }
 
 
-    private static Boolean checkRequestDetail(WebResourceRequest webResourceRequest){
-        if(webResourceRequest == null){
+    private static Boolean checkRequestDetail(WebResourceRequest webResourceRequest) {
+        if (webResourceRequest == null) {
             return false;
         }
 
-        if(webResourceRequest.getUrl() == null){
+        if (webResourceRequest.getUrl() == null) {
             return false;
         }
 
-        if(TextUtils.isEmpty(webResourceRequest.getUrl().toString())){
+        if (TextUtils.isEmpty(webResourceRequest.getUrl().toString())) {
             return false;
         }
 
         String url = webResourceRequest.getUrl().toString();
-        if(BuildConfig.DEBUG && isOpenTest){
+        if (BuildConfig.DEBUG && isOpenTest) {
             CfLog.d("fanzha-check ShouldInterceptRequest url: " + url + " header data :" +
                     new Gson().toJson(webResourceRequest.getRequestHeaders()));
         }
@@ -153,11 +153,9 @@ public class FightFanZhaUtils {
     }
 
 
-
-
     public static WebResourceResponse replaceLoadingHtml(boolean isGame) {
         String html = loadingHtml;
-        if(isGame){
+        if (isGame) {
             html = tipsHtml;
         }
         InputStream inputStream = new ByteArrayInputStream(html.getBytes(StandardCharsets.UTF_8));
@@ -165,7 +163,7 @@ public class FightFanZhaUtils {
     }
 
 
-    private static void solveAfterCheck(WebView webView, boolean isThird, String businessUrl,Context context) {
+    private static void solveAfterCheck(WebView webView, boolean isThird, String businessUrl, Context context) {
 
         if (!solveingFanZhaHack) {
             solveingFanZhaHack = true;
@@ -200,11 +198,11 @@ public class FightFanZhaUtils {
 
             //异步重测速，方法内已过滤缓存的劫持域名
             //测速完成后，solveingFanZhaHack 重置
-            if(retryCount < 5){ //如果重新测速5次  当前重刷的webview还是被劫持，就不测速去换了，只填充一个默认ui
+            if (retryCount < 5) { //如果重新测速5次  当前重刷的webview还是被劫持，就不测速去换了，只填充一个默认ui
                 ChangeH5LineUtil.getInstance().start(true);
             }
 
-            retryCount ++;
+            retryCount++;
 
         } else {
 
@@ -215,7 +213,7 @@ public class FightFanZhaUtils {
             TagUtils.tagEvent(Utils.getContext(), "event_hijacked", businessUrl);
 
             if (context != null) {
-                AppUtil.goBrowser(context,DomainUtil.getH5Domain2());
+                AppUtil.goBrowser(context, DomainUtil.getH5Domain2());
             }
 
             //上传到三方异常的接口
@@ -241,7 +239,7 @@ public class FightFanZhaUtils {
         backH5Urls.addAll(h5fromCloud);
 
         //需要缓存三方配置中的所有h5域名
-        CacheManager.get().put(SPKeyGlobal.KEY_H5_URL_ALL,(Serializable) h5fromCloud);
+        CacheManager.get().put(SPKeyGlobal.KEY_H5_URL_ALL, (Serializable) h5fromCloud);
 
         HashSet<String> cacheDomains = (HashSet<String>) CacheManager.get()
                 .getAsObject(SPKeyGlobal.KEY_H5_URL_RECORD_BY_FANZHA);
@@ -341,7 +339,7 @@ public class FightFanZhaUtils {
     public static void startMockFanZha(Context context) {
         isOpenTest = true;
         CfLog.d("fanzha-test startMockFanZha url: " + DomainUtil.getH5Domain2());
-        BrowserActivity.start(context, "反诈", DomainUtil.getH5Domain2(), false, true, false);
+        BrowserActivityX5.start(context, "反诈", DomainUtil.getH5Domain2(), false, true, false);
     }
 
     public static boolean mockJumpFanZha(WebView webView, String url) {

@@ -10,7 +10,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TagUtils;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.base.widget.WebAppInterface;
 import com.xtree.mine.R;
 
@@ -20,7 +20,7 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
  * 全局验证页 (HQAP2-4516)
  */
 @Route(path = RouterActivityPath.Mine.PAGER_GLOBE_VERIFY)
-public class GlobeVerifyActivity extends BrowserActivity {
+public class GlobeVerifyActivity extends BrowserActivityX5 {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

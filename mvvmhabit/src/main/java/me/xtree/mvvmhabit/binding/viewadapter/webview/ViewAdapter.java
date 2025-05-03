@@ -1,9 +1,10 @@
 package me.xtree.mvvmhabit.binding.viewadapter.webview;
 
 import android.text.TextUtils;
-import android.webkit.WebView;
 
 import androidx.databinding.BindingAdapter;
+
+import com.tencent.smtt.sdk.WebView;
 
 /**
  * Created by goldze on 2017/6/18.

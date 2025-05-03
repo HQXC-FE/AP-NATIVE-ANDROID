@@ -28,7 +28,7 @@ import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.mine.R;
@@ -613,9 +613,9 @@ public class ChooseWithdrawalDialog extends BottomPopupView implements IWithdraw
 
             binding.tvChooseTutorial.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
             binding.tvChooseTutorial.setOnClickListener(v -> {
-                Intent intent = new Intent(getContext(), BrowserActivity.class);
-                intent.putExtra(BrowserActivity.ARG_TITLE, "USDT教程");
-                intent.putExtra(BrowserActivity.ARG_URL, DomainUtil.getH5Domain2() + "/static/usdt-description/as/usdt_m.html");
+                Intent intent = new Intent(getContext(), BrowserActivityX5.class);
+                intent.putExtra(BrowserActivityX5.ARG_TITLE, "USDT教程");
+                intent.putExtra(BrowserActivityX5.ARG_URL, DomainUtil.getH5Domain2() + "/static/usdt-description/as/usdt_m.html");
                 getContext().startActivity(intent);
             });
 

@@ -90,16 +90,14 @@ ext {
             "event-bus"                            : "org.greenrobot:eventbus:3.3.1",
             "brv"                                  : "com.github.liangjingkanji:BRV:1.5.8",
             "lottie"                               : "com.airbnb.android:lottie:6.4.0",
-            "agentweb-core"                        : "io.github.justson:agentweb-core:v5.1.1-androidx",
-            "agentweb-file"                        : "io.github.justson:agentweb-filechooser:v5.1.1-androidx",
-            "agentweb-download"                    : "com.github.Justson:Downloader:v5.0.4-androidx",
             // Kotlin反射库
             "kotlin-stdlib"                        : "org.jetbrains.kotlin:kotlin-stdlib:1.6.10",
             "kotlin-reflect"                       : "org.jetbrains.kotlin:kotlin-reflect:1.6.10",
             "BaseQuickAdapter"                     : "io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.14",
             //html解析
-            "jsoup"                                : "org.jsoup:jsoup:1.14.3"
-
+            "jsoup"                                : "org.jsoup:jsoup:1.14.3",
+            // 腾讯X5
+            "tbs"                                  : "com.tencent.tbs:tbssdk:44286"
     ]
 }
 

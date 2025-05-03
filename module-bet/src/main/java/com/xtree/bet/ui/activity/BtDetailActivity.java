@@ -8,15 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,9 +27,15 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.player.PlayerFactory;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
+import com.tencent.smtt.export.external.interfaces.SslError;
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.TimeUtils;
+import com.xtree.base.widget.X5WebView;
 import com.xtree.bet.BR;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.Category;
@@ -62,7 +63,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import me.xtree.mvvmhabit.bus.RxBus;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -82,6 +82,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
     private int tabPos;
 
     private String mPlatform = SPUtils.getInstance().getString(KEY_PLATFORM);
+    private X5WebView x5WebView;
 
     public Match getmMatch() {
         return mMatch;
@@ -130,6 +131,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
 
     @Override
     public void initView() {
+        x5WebView = X5WebView.getInstance(this);
         binding.appBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
             if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {// 收缩状态
                 binding.rlToolbarTime.setVisibility(View.VISIBLE);
@@ -158,10 +160,10 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tabPos = tab.getPosition();
-                for(int i = 0; i < binding.tabCategoryType.getTabCount(); i ++){
-                    if(tabPos == i){
+                for (int i = 0; i < binding.tabCategoryType.getTabCount(); i++) {
+                    if (tabPos == i) {
                         binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(R.mipmap.bt_bg_category_tab_selected);
-                    }else {
+                    } else {
                         binding.tabCategoryType.getTabAt(i).getCustomView().setBackgroundResource(R.drawable.bt_bg_category_tab);
                     }
                 }
@@ -235,9 +237,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
     }
 
     private void setWebView() {
-
-        WebView webView = binding.wvAmin;
-        WebSettings settings = webView.getSettings();
+        WebSettings settings = x5WebView.getWebView().getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
@@ -245,30 +245,9 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         settings.setLoadWithOverviewMode(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setLoadsImagesAutomatically(true);
-
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                CfLog.d("onPageStarted url:  " + url);
-                //Log.d("---", "onPageStarted url:  " + url);
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                CfLog.d("onPageFinished url: " + url);
-            }
-
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed();
-            }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                ToastUtils.showShort("");
-            }
-
-        });
+        x5WebView.setMode(X5WebView.WebViewMode.DEFAULT);
+        x5WebView.setWebViewClient(new CustomWebViewClient());
+        x5WebView.bindToContainer(binding.wvAmin);
     }
 
     @Override
@@ -333,7 +312,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
     private void updateOptionData() {
         if (fragment == null) {
             if (mCategories != null && !mCategories.isEmpty()) {
-                fragment = BtDetailOptionFragment.getInstance(mMatch, (ArrayList<PlayType>) mCategories.get(tabPos).getPlayTypeList(),false);
+                fragment = BtDetailOptionFragment.getInstance(mMatch, (ArrayList<PlayType>) mCategories.get(tabPos).getPlayTypeList(), false);
                 FragmentTransaction trans = getSupportFragmentManager()
                         .beginTransaction();
                 trans.replace(R.id.fl_option, fragment);
@@ -455,41 +434,41 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 binding.llEnd.llEmpty.setVisibility(View.GONE);
             }
             //if (mCategories.size() != categories.size()) {
-                mCategories = categories;
-                if(binding.tabCategoryType.getTabCount() == 0) {
-                    for (int i = 0; i < categories.size(); i++) {
-                        View view = LayoutInflater.from(this).inflate(R.layout.bt_layout_bet_catory_tab_item, null);
-                        TextView tvName = view.findViewById(R.id.tab_item_name);
-                        String name = categories.get(i) == null ? "" : categories.get(i).getName();
+            mCategories = categories;
+            if (binding.tabCategoryType.getTabCount() == 0) {
+                for (int i = 0; i < categories.size(); i++) {
+                    View view = LayoutInflater.from(this).inflate(R.layout.bt_layout_bet_catory_tab_item, null);
+                    TextView tvName = view.findViewById(R.id.tab_item_name);
+                    String name = categories.get(i) == null ? "" : categories.get(i).getName();
 
-                        tvName.setText(name);
-                        ColorStateList colorStateList = getResources().getColorStateList(R.color.bt_color_category_tab_text);
-                        tvName.setTextColor(colorStateList);
+                    tvName.setText(name);
+                    ColorStateList colorStateList = getResources().getColorStateList(R.color.bt_color_category_tab_text);
+                    tvName.setTextColor(colorStateList);
 
-                        binding.tabCategoryType.addTab(binding.tabCategoryType.newTab().setCustomView(view));
+                    binding.tabCategoryType.addTab(binding.tabCategoryType.newTab().setCustomView(view));
 
-                    }
-                }else{
-                    for (int i = 0; i < categories.size(); i++) {
-                        try {
-                            if (binding.tabCategoryType == null) {
-                                CfLog.e("=========binding.tabCategoryType == null=========");
-                            }
-                            if (categories.get(i) == null && binding.tabCategoryType != null && i < binding.tabCategoryType.getTabCount()) {
-                                binding.tabCategoryType.removeTabAt(i);
-                                if (binding.tabCategoryType.getTabCount() == 0) {
-                                    binding.rlPlayMethod.setVisibility(View.GONE);
-                                    binding.flOption.setVisibility(View.GONE);
-                                    binding.llEnd.llEmpty.setVisibility(View.VISIBLE);
-                                }
-                            }
-                        }catch (Exception e){
-                            CfLog.e("binding.tabCategoryType.getTabCount()-------" + binding.tabCategoryType.getTabCount() + "-----" + i);
-                            CfLog.e(e.getMessage());
-                        }
-                    }
-                    viewModel.updateCategoryData();
                 }
+            } else {
+                for (int i = 0; i < categories.size(); i++) {
+                    try {
+                        if (binding.tabCategoryType == null) {
+                            CfLog.e("=========binding.tabCategoryType == null=========");
+                        }
+                        if (categories.get(i) == null && binding.tabCategoryType != null && i < binding.tabCategoryType.getTabCount()) {
+                            binding.tabCategoryType.removeTabAt(i);
+                            if (binding.tabCategoryType.getTabCount() == 0) {
+                                binding.rlPlayMethod.setVisibility(View.GONE);
+                                binding.flOption.setVisibility(View.GONE);
+                                binding.llEnd.llEmpty.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    } catch (Exception e) {
+                        CfLog.e("binding.tabCategoryType.getTabCount()-------" + binding.tabCategoryType.getTabCount() + "-----" + i);
+                        CfLog.e(e.getMessage());
+                    }
+                }
+                viewModel.updateCategoryData();
+            }
             updateOptionData();
             /*} else {
                 mCategories = categories;
@@ -532,7 +511,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 ToastUtils.showLong(getText(R.string.bt_bt_must_have_two_match));
                 return;
             }
-            if(ClickUtil.isFastClick()){
+            if (ClickUtil.isFastClick()) {
                 return;
             }
             BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
@@ -548,7 +527,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             if (TextUtils.equals(mMatch.getVideoType(), "p")) {//是PM场馆H5播放页面
                 if (!mMatch.getVideoUrls().isEmpty()) {
                     binding.wvAmin.setVisibility(View.VISIBLE);
-                    binding.wvAmin.loadUrl(mMatch.getVideoUrls().get(0));
+                    x5WebView.getWebView().loadUrl(mMatch.getVideoUrls().get(0));
                 }
             } else {
                 binding.videoPlayer.setVisibility(View.VISIBLE);
@@ -561,7 +540,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                     binding.wvAmin.setVisibility(View.VISIBLE);
                     binding.ctlToolbarLeague.setVisibility(View.GONE);
                     binding.rlToolbarTime.setVisibility(View.GONE);
-                    binding.wvAmin.loadUrl(mMatch.getAnmiUrls().get(0));
+                    x5WebView.getWebView().loadUrl(mMatch.getAnmiUrls().get(0));
                     binding.llData.setVisibility(View.GONE);
                 } else {
                     ToastUtils.showLong(getText(R.string.bt_bt_match_not_runing));
@@ -573,7 +552,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 binding.videoPlayer.release();
                 binding.videoPlayer.setVisibility(View.GONE);
             } else if (binding.wvAmin.getVisibility() == View.VISIBLE) {
-                binding.wvAmin.loadUrl("about:blank");
+                x5WebView.getWebView().loadUrl("about:blank");
                 binding.wvAmin.setVisibility(View.GONE);
             } else {
                 finish();
@@ -585,10 +564,34 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         }
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        binding.wvAmin.destroy();
+        // 不可以摧毁单例模式
+        //x5WebView.getWebView().destroy();
+        x5WebView.cleanCache();
+    }
+
+    public class CustomWebViewClient extends WebViewClient {
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            CfLog.d("onPageStarted url:  " + url);
+            //Log.d("---", "onPageStarted url:  " + url);
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            CfLog.d("onPageFinished url: " + url);
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed();
+        }
+
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            ToastUtils.showShort("");
+        }
     }
 }

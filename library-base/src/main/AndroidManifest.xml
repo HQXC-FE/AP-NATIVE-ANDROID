@@ -34,7 +34,7 @@
 
     <application android:requestLegacyExternalStorage="true">
         <activity
-            android:name=".widget.BrowserActivity"
+            android:name=".widget.BrowserActivityX5"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="sensor"

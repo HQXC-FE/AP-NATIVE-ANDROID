@@ -6,14 +6,14 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.xtree.base.utils.AppUtil;
-import com.xtree.base.widget.BrowserDialog;
+import com.xtree.base.widget.BrowserDialogX5;
 import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.DialogRcBrowserBinding;
 
 /**
  * 充值浏览器弹窗
  */
-public class RechargeBrowserDialog extends BrowserDialog {
+public class RechargeBrowserDialog extends BrowserDialogX5 {
     boolean isShowBank = false; // 是否显示跳转到外部浏览器的按钮(充值跳转来的)
 
     DialogRcBrowserBinding binding;
@@ -38,7 +38,7 @@ public class RechargeBrowserDialog extends BrowserDialog {
         return R.layout.dialog_rc_browser;
     }
 
-    public BrowserDialog setShowBank(boolean isShowBank) {
+    public BrowserDialogX5 setShowBank(boolean isShowBank) {
         this.isShowBank = isShowBank;
         return this;
     }

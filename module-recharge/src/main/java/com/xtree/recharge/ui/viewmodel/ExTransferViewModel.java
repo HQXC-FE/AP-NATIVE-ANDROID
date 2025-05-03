@@ -34,7 +34,7 @@ import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.ImageUploadUtil;
-import com.xtree.base.widget.BrowserDialog;
+import com.xtree.base.widget.BrowserDialogX5;
 import com.xtree.base.widget.GlideEngine;
 import com.xtree.base.widget.ImageFileCompressEngine;
 import com.xtree.base.widget.LoadingDialog;
@@ -1131,7 +1131,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             return;
         }
         String url = DomainUtil.getH5Domain2() + Constant.URL_RC_TRANSFER_TUTORIAL;
-        new XPopup.Builder(mActivity.get()).asCustom(new BrowserDialog(mActivity.get(), mActivity.get().getString(R.string.txt_transfer_receipt), url)).show();
+        new XPopup.Builder(mActivity.get()).asCustom(new BrowserDialogX5(mActivity.get(), mActivity.get().getString(R.string.txt_transfer_receipt), url)).show();
     }
 
     /**

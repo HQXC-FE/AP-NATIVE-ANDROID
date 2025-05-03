@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/clr_transparent"
     android:orientation="vertical"
-    tools:context=".widget.BrowserDialog">
+    tools:context=".widget.BrowserDialogX5">
 
     <View
         android:id="@+id/v_title"

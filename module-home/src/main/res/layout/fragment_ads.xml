@@ -15,16 +15,16 @@
             android:layout_marginTop="1000dp"
             android:visibility="visible" />
 
-        <WebView
+        <FrameLayout
             android:id="@+id/wv_ads_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="invisible"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/ivw_ads_loading"

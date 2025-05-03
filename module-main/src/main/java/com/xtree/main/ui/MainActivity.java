@@ -38,9 +38,10 @@ import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.vo.MsgPersonInfoVo;
 import com.xtree.base.vo.WsToken;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.base.widget.MenuItemView;
 import com.xtree.base.widget.SpecialMenuItemView;
+import com.xtree.base.widget.X5WebView;
 import com.xtree.main.BR;
 import com.xtree.main.R;
 import com.xtree.main.databinding.ActivityMainBinding;
@@ -121,6 +122,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         initBottomTab();
         //初始化推送服务
         initPushService();
+        //初始化单立X5WebView
+        X5WebView.getInstance(this);
     }
 
     @Override
@@ -359,8 +362,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
         String message = data.getSubject();
         Activity currentActivity = AppManager.getAppManager().currentActivity();
         boolean isGame = false;
-        if (currentActivity instanceof BrowserActivity) {
-            isGame = ((BrowserActivity) currentActivity).isGame();
+        if (currentActivity instanceof BrowserActivityX5) {
+            isGame = ((BrowserActivityX5) currentActivity).isGame();
         }
         if (isGame) {//弹toast
             PopMessageUtils.showToastPop(currentActivity, message, view -> {

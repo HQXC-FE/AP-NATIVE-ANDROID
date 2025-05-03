@@ -45,7 +45,7 @@ import com.xtree.base.utils.TimeUtils;
 import com.xtree.base.utils.UuidUtil;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.vo.RechargeOrderVo;
-import com.xtree.base.widget.BrowserDialog;
+import com.xtree.base.widget.BrowserDialogX5;
 import com.xtree.base.widget.ListDialog;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
@@ -292,7 +292,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             // 充值教程
             //if (!TextUtils.isEmpty(tutorialUrl)) {
             //    String title = getString(R.string.txt_recharge_tutorial);
-            //    new XPopup.Builder(getContext()).asCustom(new BrowserDialog(getContext(), title, tutorialUrl)).show();
+            //    new XPopup.Builder(getContext()).asCustom(new BrowserDialogX5(getContext(), title, tutorialUrl)).show();
             //}
             showWebDialog(getString(R.string.txt_recharge_tutorial), Constant.URL_RC_CNYT_TUTORIAL);
         });
@@ -300,7 +300,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             // 防骗教程
             String title = getString(R.string.txt_rc_anti_fraud);
             String url = DomainUtil.getH5Domain2() + Constant.URL_ANTI_FRAUD;
-            new XPopup.Builder(getContext()).asCustom(new BrowserDialog(getContext(), title, url)).show();
+            new XPopup.Builder(getContext()).asCustom(new BrowserDialogX5(getContext(), title, url)).show();
         });
         binding.tvwDownload.setOnClickListener(v -> {
             // 下载嗨钱包
@@ -1298,7 +1298,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
                     @Override
                     public void onClickRight() {
-                        new XPopup.Builder(getContext()).moveUpToKeyboard(false).asCustom(BrowserDialog.newInstance(getContext(), hiWalletUrl)).show();
+                        new XPopup.Builder(getContext()).moveUpToKeyboard(false).asCustom(BrowserDialogX5.newInstance(getContext(), hiWalletUrl)).show();
                         ppw.dismiss();
                     }
                 }));
@@ -1933,7 +1933,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
      * 某些网页版的充值方式 需要加个外跳的按钮, 解决内部加载白屏的问题
      */
     private void showWebPayDialog(String title, String url, boolean isShowBank) {
-        BrowserDialog dialog = new RechargeBrowserDialog(getContext(), title, url).setShowBank(isShowBank).set3rdLink(true);
+        BrowserDialogX5 dialog = new RechargeBrowserDialog(getContext(), title, url).setShowBank(isShowBank).set3rdLink(true);
 
         new XPopup.Builder(getContext()).asCustom(dialog).show();
     }
@@ -1992,7 +1992,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                     .moveUpToKeyboard(true)
                     .dismissOnTouchOutside(false)
                     .dismissOnBackPressed(false)
-                    .asCustom(new BrowserDialog(getContext(), vo.payname, url))
+                    .asCustom(new BrowserDialogX5(getContext(), vo.payname, url))
                     .show();
         }
     }
@@ -2181,7 +2181,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
 
     private void showWebDialog(String title, String path) {
         String url = path.startsWith("/") ? DomainUtil.getH5Domain2() + path : path;
-        new XPopup.Builder(getContext()).asCustom(BrowserDialog.newInstance(getContext(), url)).show();
+        new XPopup.Builder(getContext()).asCustom(BrowserDialogX5.newInstance(getContext(), url)).show();
     }
 
     private List<String> getFastMoney(String loadMin, String loadMax) {

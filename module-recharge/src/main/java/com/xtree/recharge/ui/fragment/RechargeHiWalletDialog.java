@@ -9,7 +9,7 @@ import com.lxj.xpopup.core.CenterPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
 import com.xtree.base.global.Constant;
 import com.xtree.base.utils.AppUtil;
-import com.xtree.base.widget.BrowserDialog;
+import com.xtree.base.widget.BrowserDialogX5;
 import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.DialogHiwalletBinding;
 import com.xtree.recharge.vo.HiWalletVo;
@@ -64,7 +64,7 @@ public class RechargeHiWalletDialog extends CenterPopupView {
             dismiss();
         });
         binding.tvwReg.setOnClickListener(v -> {
-            new XPopup.Builder(getContext()).moveUpToKeyboard(false).asCustom(BrowserDialog.newInstance(getContext(), mHiWalletVo.login_url)).show();
+            new XPopup.Builder(getContext()).moveUpToKeyboard(false).asCustom(BrowserDialogX5.newInstance(getContext(), mHiWalletVo.login_url)).show();
             dismiss();
         });
         binding.tvwDownload.setOnClickListener(v -> {

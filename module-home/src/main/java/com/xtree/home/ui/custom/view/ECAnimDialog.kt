@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.util.XPopupUtils
-import com.xtree.base.widget.BrowserActivity
+import com.xtree.base.widget.BrowserActivityX5
 import com.xtree.home.R
 import me.xtree.mvvmhabit.utils.ConvertUtils
 import me.xtree.mvvmhabit.utils.KLog
@@ -34,17 +34,21 @@ class ECAnimDialog : BasePopupView {
         val ivBottom = findViewById<ImageView>(R.id.iv_bottom)
         ivClose.setOnClickListener { dismiss() }
         ivBottom.setOnClickListener {
-            BrowserActivity.start(context, url)
+            BrowserActivityX5.start(context, url)
             dismiss()
         }
 
-        val height1 = XPopupUtils.getScreenHeight(context) / 2f - ConvertUtils.dp2px((258 + 20 + 20 - 40).toFloat())
+        val height1 =
+            XPopupUtils.getScreenHeight(context) / 2f - ConvertUtils.dp2px((258 + 20 + 20 - 40).toFloat())
 
         val height2 =
             ConvertUtils.dp2px((103 + 20).toFloat()) - XPopupUtils.getScreenHeight(context) / 2f
 
         KLog.i(
-            "height", "$height1     $height2" + "      " + XPopupUtils.getScreenHeight(context) + "     " + XPopupUtils.getNavBarHeight(hostWindow) +
+            "height",
+            "$height1     $height2" + "      " + XPopupUtils.getScreenHeight(context) + "     " + XPopupUtils.getNavBarHeight(
+                hostWindow
+            ) +
                     "   " + getNavigationBarHeight(context)
         )
         val objectAnimatorX = ObjectAnimator.ofFloat(layoutTop, "translationY", height1)

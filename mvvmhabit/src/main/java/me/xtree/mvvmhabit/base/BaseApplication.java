@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.drake.brv.utils.BRV;
+import com.tencent.smtt.sdk.QbSdk;
 
 import me.xtree.mvvmhabit.BR;
 import me.xtree.mvvmhabit.utils.Utils;
@@ -22,6 +23,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         setApplication(this);
+        QbSdk.initX5Environment(getApplicationContext(), null);
 
         initBRV();
     }

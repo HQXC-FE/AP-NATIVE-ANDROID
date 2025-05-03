@@ -18,7 +18,7 @@ import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
-import com.xtree.base.widget.BrowserDialog;
+import com.xtree.base.widget.BrowserDialogX5;
 
 public class NewAdapter extends CachedAutoRefreshAdapter<NewVo> {
 
@@ -62,8 +62,8 @@ public class NewAdapter extends CachedAutoRefreshAdapter<NewVo> {
         }
         TagUtils.tagEvent(ctx, "dc", vo.id);
         String url = getString(vo);
-        //new XPopup.Builder(ctx).moveUpToKeyboard(false).asCustom(new BrowserDialog(ctx, vo.title, url, true, true)).show();
-        new XPopup.Builder(ctx).moveUpToKeyboard(false).isViewMode(true).asCustom(BrowserDialog.newInstance(ctx, url)).show();
+        //new XPopup.Builder(ctx).moveUpToKeyboard(false).asCustom(new BrowserDialogX5(ctx, vo.title, url, true, true)).show();
+        new XPopup.Builder(ctx).moveUpToKeyboard(false).isViewMode(true).asCustom(BrowserDialogX5.newInstance(ctx, url)).show();
 
         //Intent it = new Intent(ctx, BrowserActivity.class);
         //it.putExtra("url", url);

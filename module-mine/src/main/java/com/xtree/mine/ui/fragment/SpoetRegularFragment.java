@@ -11,7 +11,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.xtree.base.global.Constant;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.DomainUtil;
-import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.FragmentSportRegularBinding;
@@ -47,6 +47,6 @@ public class SpoetRegularFragment extends BaseFragment<FragmentSportRegularBindi
 
     private void goWebView(String title, String path, boolean isContainTitle) {
         String url = DomainUtil.getH5Domain2() + path;
-        BrowserActivity.start(getContext(), title, url, isContainTitle);
+        BrowserActivityX5.start(getContext(), title, url, isContainTitle);
     }
 }

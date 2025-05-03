@@ -5,17 +5,7 @@
     android:id="@+id/cl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".widget.BrowserActivity">
-
-    <!--<View
-        android:id="@+id/v_title"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/clr_transparent"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />-->
+    tools:context=".widget.BrowserActivityX5">
 
     <FrameLayout
         android:id="@+id/wv_main"

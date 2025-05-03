@@ -13,12 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -35,6 +29,12 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.xtree.base.adapter.CacheViewHolder;
 import com.xtree.base.adapter.CachedAutoRefreshAdapter;
 import com.xtree.base.global.SPKeyGlobal;
@@ -50,12 +50,12 @@ import com.xtree.base.widget.ListDialog;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.base.widget.TipDialog;
+import com.xtree.base.widget.X5WebView;
 import com.xtree.mine.R;
 import com.xtree.mine.data.Injection;
 import com.xtree.mine.databinding.DialogBankWithdrawalBankNewBinding;
 import com.xtree.mine.ui.viewmodel.ChooseWithdrawViewModel;
 import com.xtree.mine.vo.ChooseInfoVo;
-import com.xtree.mine.vo.PlatWithdrawConfirmVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalBankInfoVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalListVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalSubmitVo;
@@ -90,6 +90,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         void closeBankByNumber();
     }
 
+    private Context mContext;
     private CashWithdrawalPopWindow webPopWindow;//webView 提款外部跳转浮窗
     private String typenum;//上一级界面传递过来的typenum
     private Context context;
@@ -118,6 +119,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     private WithdrawalBankInfoVo.UserBankInfo selectUsdtInfo;//选中的提款银行卡
     private BankWithdrawalClose closeCallback;
     private BasePopupView errorPopView = null; // 底部弹窗
+    private X5WebView x5WebView;
 
     public static BankWithdrawalDialog newInstance(Context context,
                                                    LifecycleOwner owner,
@@ -137,6 +139,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
 
     public BankWithdrawalDialog(@NonNull Context context) {
         super(context);
+        this.mContext = context;
     }
 
     @Override
@@ -152,6 +155,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     @Override
     protected void onCreate() {
         super.onCreate();
+        x5WebView = X5WebView.getInstance(mContext);
         EventBus.getDefault().register(this);
         initData();
         initView();
@@ -170,6 +174,12 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         FightFanZhaUtils.reset();
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        X5WebView.getInstance(mContext).cleanCache();
     }
 
     private void initView() {
@@ -744,68 +754,17 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
                 }
                 jumpUrl = url; //设置外跳地址
 
-                binding.nsH5View.loadUrl(url, getHeader());
+                x5WebView.setMode(X5WebView.WebViewMode.DEFAULT);
+
                 initWebView();
-                binding.nsH5View.setWebViewClient(new WebViewClient() {
 
-                    @Override
-                    public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
-                        if(FightFanZhaUtils.checkRequest(getContext(),webResourceRequest,false,jumpUrl)){
-                            return FightFanZhaUtils.replaceLoadingHtml(false);
-                        }
-                        return super.shouldInterceptRequest(webView, webResourceRequest);
-                    }
+                x5WebView.setWebViewClient(new CustomWebViewClient());
 
+                x5WebView.setWebChromeClient(new WebChromeClient());
 
-                    @Override
-                    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                        // LoadingDialog.show(getContext());
+                x5WebView.bindToContainer(binding.nsH5View);
 
-                        view.loadUrl(url);
-                        return true;
-                    }
-
-                    @Override
-                    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                        if(FightFanZhaUtils.checkRequest(getContext(),request,false,jumpUrl)){
-                            return false;
-                        }
-                        return super.shouldOverrideUrlLoading(view, request);
-                    }
-
-                    @Override
-                    public void onPageStarted(WebView view, String url, Bitmap favicon) {
-
-                    }
-
-                    @Override
-                    public void onPageFinished(WebView view, String url) {
-                        super.onPageFinished(view, url);
-                        dismissLoading();
-                        binding.maskH5View.setVisibility(View.GONE);
-                    }
-                });
-
-                //显示进度条
-                binding.nsH5View.setWebChromeClient(new WebChromeClient() {
-
-                    @Override
-                    public void onReceivedTitle(WebView webView, String s) {
-                        super.onReceivedTitle(webView, s);
-                       FightFanZhaUtils.checkHeadTitle(webView,s,false,jumpUrl);
-                    }
-
-
-                    @Override
-                    public void onProgressChanged(WebView view, int progress) {
-                        //显示加载进度
-                        super.onProgressChanged(view, progress);
-                        binding.webProgress.setVisibility(View.VISIBLE);
-                        binding.webProgress.setProgress(progress);
-                        binding.webProgress.setVisibility((progress > 0 && progress < 100) ? View.VISIBLE : View.GONE);
-                    }
-
-                });
+                x5WebView.getWebView().loadUrl(url, getHeader());
 
             } else {
                 //非固额
@@ -943,25 +902,25 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
     public void onMessageEvent(EventVo event) {
         switch (event.getEvent()) {
             case EVENT_CHANGE_URL_FANZHA_FINSH:
-                    //只有自己的h5域名站作更换域名，重新Load
-                    String newBaseUrl = DomainUtil.getH5Domain2();
-                    if(TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(jumpUrl)){
-                        return;
-                    }
-                    String oldBaseUrl = FightFanZhaUtils.getDomain(jumpUrl);
-                    if(!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)){
-                        return;
-                    }
-                    String goUrl = jumpUrl.replace(oldBaseUrl,newBaseUrl);
-                    CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
-                    binding.nsH5View.loadUrl(goUrl, getHeader());
+                //只有自己的h5域名站作更换域名，重新Load
+                String newBaseUrl = DomainUtil.getH5Domain2();
+                if (TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(jumpUrl)) {
+                    return;
+                }
+                String oldBaseUrl = FightFanZhaUtils.getDomain(jumpUrl);
+                if (!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)) {
+                    return;
+                }
+                String goUrl = jumpUrl.replace(oldBaseUrl, newBaseUrl);
+                CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
+                x5WebView.getWebView().loadUrl(goUrl, getHeader());
                 break;
         }
     }
 
 
     private void initWebView() {
-        WebSettings settings = binding.nsH5View.getSettings();
+        WebSettings settings = x5WebView.getWebView().getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
@@ -1443,11 +1402,6 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         settings.setSupportZoom(true);
     }
 
-
-
-
-
-
     /*显示銀行卡提款loading */
     private void showMaskLoading() {
         if (ppw2 == null) {
@@ -1531,4 +1485,62 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
         ppwError.show();
     }
 
+    public class CustomWebViewClient extends WebViewClient {
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
+            if (FightFanZhaUtils.checkRequest(getContext(), webResourceRequest, false, jumpUrl)) {
+                return FightFanZhaUtils.replaceLoadingHtml(false);
+            }
+            return super.shouldInterceptRequest(webView, webResourceRequest);
+        }
+
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            // LoadingDialog.show(getContext());
+
+            view.loadUrl(url);
+            return true;
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            if (FightFanZhaUtils.checkRequest(getContext(), request, false, jumpUrl)) {
+                return false;
+            }
+            return super.shouldOverrideUrlLoading(view, request);
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            dismissLoading();
+            binding.maskH5View.setVisibility(View.GONE);
+        }
+    }
+
+    public class CustomWebChromeClient extends WebChromeClient {
+
+        @Override
+        public void onReceivedTitle(WebView webView, String s) {
+            super.onReceivedTitle(webView, s);
+            FightFanZhaUtils.checkHeadTitle(webView, s, false, jumpUrl);
+        }
+
+
+        @Override
+        public void onProgressChanged(WebView view, int progress) {
+            //显示加载进度
+            super.onProgressChanged(view, progress);
+            binding.webProgress.setVisibility(View.VISIBLE);
+            binding.webProgress.setProgress(progress);
+            binding.webProgress.setVisibility((progress > 0 && progress < 100) ? View.VISIBLE : View.GONE);
+        }
+    }
 }

@@ -3,11 +3,11 @@ package com.xtree.base.net;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.text.TextUtils;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebView;
-import com.just.agentweb.WebViewClient;
 
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 import com.xtree.base.utils.CfLog;
 
 import java.io.IOException;

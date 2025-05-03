@@ -506,7 +506,7 @@ public class VerifyViewModel extends BaseViewModel<MineRepository> {
         }
 
         startUsdt(ctx, type, title, remind, vo);
-        //new XPopup.Builder(ctx).asCustom(new BrowserDialog(ctx, title, url)).show();
+        //new XPopup.Builder(ctx).asCustom(new BrowserDialogX5(ctx, title, url)).show();
         /*Intent it = new Intent(ctx, BrowserActivity.class);
         it.putExtra("url", url);
         it.putExtra("title", title);

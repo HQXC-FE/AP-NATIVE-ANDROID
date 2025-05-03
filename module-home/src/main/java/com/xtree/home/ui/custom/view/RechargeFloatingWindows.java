@@ -22,7 +22,7 @@ import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.vo.RechargeOrderVo;
-import com.xtree.base.widget.BrowserDialog;
+import com.xtree.base.widget.BrowserDialogX5;
 import com.xtree.base.widget.FloatingWindows;
 import com.xtree.home.R;
 import com.xtree.home.data.source.HomeApiService;
@@ -73,11 +73,11 @@ public class RechargeFloatingWindows extends FloatingWindows {
             if (vo.sysParamPrefix.contains("onepayfix") && !TextUtils.isEmpty(vo.bankId)) {
                 goOrderDetail(vo); // 极速充值
             } else if (TextUtils.isEmpty(vo.orderurl)) {
-                //new XPopup.Builder(ctx).asCustom(new BrowserDialog(ctx, vo.payport_nickname, DomainUtil.getDomain2()
+                //new XPopup.Builder(ctx).asCustom(new BrowserDialogX5(ctx, vo.payport_nickname, DomainUtil.getDomain2()
                 // + "/webapp/#/depositetail/" + vo.id)).show();
                 goOrderDetail(vo);
             } else {
-                new XPopup.Builder(mContext).asCustom(new BrowserDialog(mContext, vo.payport_nickname, vo.orderurl)).show();
+                new XPopup.Builder(mContext).asCustom(new BrowserDialogX5(mContext, vo.payport_nickname, vo.orderurl)).show();
             }
         });
         rcvData.setAdapter(rechargeReportAdapter);
