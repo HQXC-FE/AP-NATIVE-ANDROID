@@ -46,6 +46,7 @@ ext {
             "glide-compiler"                       : "com.github.bumptech.glide:compiler:4.16.0",
             //json解析
             "gson"                                 : "com.google.code.gson:gson:2.10.1",
+            "GsonFactory"                          : "com.github.getActivity:GsonFactory:9.0",
             //material-dialogs
             "material-dialogs-core"                : "com.afollestad.material-dialogs:core:0.9.6.0",
             "material-dialogs-commons"             : "com.afollestad.material-dialogs:commons:0.9.6.0",
@@ -98,7 +99,10 @@ ext {
             "kotlin-reflect"                       : "org.jetbrains.kotlin:kotlin-reflect:1.6.10",
             "BaseQuickAdapter"                     : "io.github.cymchad:BaseRecyclerViewAdapterHelper:3.0.14",
             //html解析
-            "jsoup"                                : "org.jsoup:jsoup:1.14.3"
+            "jsoup"                                : "org.jsoup:jsoup:1.14.3",
+            "autodispose"                          : "com.uber.autodispose:autodispose-android-archcomponents:1.4.0",
+            "SVGAPlayer"                           : "com.github.yyued:SVGAPlayer-Android:2.6.1",
+            "recyclerview-flexibledivider"         : "com.yqritc:recyclerview-flexibledivider:1.4.0",
 
     ]
 }

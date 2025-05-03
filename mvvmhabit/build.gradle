@@ -94,6 +94,8 @@ dependencies {
     api rootProject.ext.dependencies["BaseQuickAdapter"]
 
     api rootProject.ext.dependencies["jsoup"]
+    api rootProject.ext.dependencies["GsonFactory"]
+    api rootProject.ext.dependencies["autodispose"]
 
     configurations.all {
         resolutionStrategy {

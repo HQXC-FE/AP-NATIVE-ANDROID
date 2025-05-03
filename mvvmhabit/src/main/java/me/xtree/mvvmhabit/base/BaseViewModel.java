@@ -16,10 +16,14 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.subscribers.DisposableSubscriber;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import me.xtree.mvvmhabit.http.BaseResponse;
+import me.xtree.mvvmhabit.utils.RxUtils;
 
 /**
  * Created by goldze on 2017/6/15.
@@ -291,5 +295,9 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
         public static String CLASS = "CLASS";
         public static String CANONICAL_NAME = "CANONICAL_NAME";
         public static String BUNDLE = "BUNDLE";
+    }
+
+    protected <T> void launchFlow(Flowable<BaseResponse<T>> flowable, DisposableSubscriber<T> subscriber) {
+        RxUtils.safeSubscribe(flowable, getmCompositeDisposable(), subscriber);
     }
 }
