@@ -229,7 +229,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             mPlatformName = getString(R.string.bt_platform_name_pmxc);
             isDisabled = SPUtils.getInstance().getBoolean(SPKeyGlobal.PMXC_DISABLED);
         } else if (TextUtils.equals(mPlatform, PLATFORM_IM)) {
-            mPlatformName = getString(R.string.bt_platform_name_pmxc);
+            mPlatformName = getString(R.string.bt_platform_name_imone);
             isDisabled = SPUtils.getInstance().getBoolean(SPKeyGlobal.IM_DISABLED);
         }
         if (isDisabled) {

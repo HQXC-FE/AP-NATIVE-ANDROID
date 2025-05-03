@@ -14,7 +14,7 @@ public class BtDomainUtil {
     public final static String PLATFORM_FB = "fb";
     public final static String PLATFORM_PM = "obg";
     public final static String PLATFORM_PMXC = "obgzy";
-    public final static String PLATFORM_IM = "im";
+    public final static String PLATFORM_IM = "imone";
     private static List<String> domainUrl = new ArrayList<>();
     private static List<String> fbDomainUrl = new ArrayList<>();
     private static List<String> fbxcDomainUrl = new ArrayList<>();
