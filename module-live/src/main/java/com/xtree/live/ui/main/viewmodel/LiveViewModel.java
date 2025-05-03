@@ -569,6 +569,7 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
     }
     //FBListReq{sportId='1', languageType='CMN', leagueIds=[], type=3, beginTime='null', endTime='null', matchIds=[1187565, 1190209], sportIds=null, current=1, size=50, orderBy=1, isPC=true, oddType=1}
 
+    // Todo 这个还需调整
     /**
      * 获取赛事列表
      *
@@ -581,42 +582,41 @@ public class LiveViewModel extends BaseViewModel<LiveRepository> implements TabL
      * @param oddType        盘口类型
      */
     public void getLeagueList(int sportPos, String sportId, int orderBy, List<Long> leagueIds, Observer<MatchListRsp> success, Observer<Object> error) {
-
-        FBListReq fBListReq = new FBListReq();
-        fBListReq.setSportId(sportId);
-        fBListReq.setType(3);
-        fBListReq.setOrderBy(orderBy);
-        fBListReq.setLeagueIds(leagueIds);
-        fBListReq.setMatchIds(null);
-        fBListReq.setCurrent(1);
-        fBListReq.setSize(50);
-        //fBListReq.setCurrent(mCurrentPage);
-        fBListReq.setOddType(1);
-        SPORT_NAMES = SPORT_NAMES_TODAY_CG;
-        if (sportPos == -1 || TextUtils.equals(SPORT_NAMES[sportPos], "热门")) {
-            fBListReq.setSportId(null);
-        }
-
-//        CfLog.d("============== getLeagueList fBListReq ===========" + fBListReq);
-        Disposable disposable = (Disposable) model.getFBList(fBListReq)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack() {
-
-                    @Override
-                    public void onResult(MatchListRsp data) {
-                        CfLog.d("============== getLeagueList onResult matchListRsp ===========" + data.toString());
-                        success.onChanged(data);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.d("============== getLeagueList onError ===========");
-                        CfLog.e(t.toString());
-                    }
-                });
-        addSubscribe(disposable);
+//
+//        FBListReq fBListReq = new FBListReq();
+//        fBListReq.setSportId(sportId);
+//        fBListReq.setType(3);
+//        fBListReq.setOrderBy(orderBy);
+//        fBListReq.setLeagueIds(leagueIds);
+//        fBListReq.setMatchIds(null);
+//        fBListReq.setCurrent(1);
+//        fBListReq.setSize(50);
+//        //fBListReq.setCurrent(mCurrentPage);
+//        fBListReq.setOddType(1);
+//        SPORT_NAMES = SPORT_NAMES_TODAY_CG;
+//        if (sportPos == -1 || TextUtils.equals(SPORT_NAMES[sportPos], "热门")) {
+//            fBListReq.setSportId(null);
+//        }
+//
+////        CfLog.d("============== getLeagueList fBListReq ===========" + fBListReq);
+//        Disposable disposable = (Disposable) model.getFBList(fBListReq)
+//                .compose(RxUtils.schedulersTransformer()) //线程调度
+//                .compose(RxUtils.exceptionTransformer())
+//                .subscribeWith(new HttpCallBack() {
+//
+//                    @Override
+//                    public void onResult(MatchListRsp data) {
+//                        CfLog.d("============== getLeagueList onResult matchListRsp ===========" + data.toString());
+//                        success.onChanged(data);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//                        CfLog.d("============== getLeagueList onError ===========");
+//                        CfLog.e(t.toString());
+//                    }
+//                });
+//        addSubscribe(disposable);
     }
-
 }
 
