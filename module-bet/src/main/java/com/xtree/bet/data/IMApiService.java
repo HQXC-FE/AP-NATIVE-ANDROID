@@ -57,7 +57,7 @@ public interface IMApiService {
      * @return
      */
     @POST("/api/sports/imsb/forward")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<GetAnnouncementRsp>> getAnnouncement(@Body AnnouncementReq announcementReq);
 
     /**
@@ -67,7 +67,7 @@ public interface IMApiService {
      * @return
      */
     @POST("/api/sports/imsb/forward")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<SportCountRsp>> getAllSportCount(@Body AllSportCountReq sportCountReq);
 
     /**
@@ -81,11 +81,10 @@ public interface IMApiService {
 
     /**
      * 索取赛事和主要玩法资料
-     *
-     * @return
+     * 获取赛事列表-->对应matchesPagePB接口
      */
-    @POST("/yewu11/v1/m/getEventInfoMbt")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @POST("/api/sports/imsb/forward")
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<EventListRsp>> getEventInfoMbt(@Body EventInfoMbtReq eventInfoMbtReq);
 
     /**

@@ -1,24 +1,18 @@
 package com.xtree.bet.ui.viewmodel.im;
 
-import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
-
 import android.app.Application;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
 import com.xtree.bet.bean.request.im.AnnouncementReq;
+import com.xtree.bet.bean.request.im.EventInfoMbtReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
-import com.xtree.bet.bean.response.SportsCacheSwitchInfo;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.pm.FrontListInfo;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
@@ -40,14 +34,6 @@ import com.xtree.bet.ui.viewmodel.callback.IMLeagueListCacheCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMLeagueListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMListCacheCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMListCallBack;
-import com.xtree.bet.ui.viewmodel.callback.PMChampionListCacheCallBack;
-import com.xtree.bet.ui.viewmodel.callback.PMChampionListCallBack;
-import com.xtree.bet.ui.viewmodel.callback.PMHotMatchCountCacheCallBack;
-import com.xtree.bet.ui.viewmodel.callback.PMHotMatchCountCallBack;
-import com.xtree.bet.ui.viewmodel.callback.PMLeagueListCacheCallBack;
-import com.xtree.bet.ui.viewmodel.callback.PMLeagueListCallBack;
-import com.xtree.bet.ui.viewmodel.callback.PMListCacheCallBack;
-import com.xtree.bet.ui.viewmodel.callback.PMListCallBack;
 
 import org.reactivestreams.Subscriber;
 
@@ -355,17 +341,36 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
             }
         }
 
+//        EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
+//        eventInfoMbtReq.setSportId(1);
+//        eventInfoMbtReq.setMarket(3);
+//        eventInfoMbtReq.setMatchDay(0);
+//        eventInfoMbtReq.setOddsType(3);
+//        eventInfoMbtReq.setPage(1);
+//        eventInfoMbtReq.setSeason(0);
+//        eventInfoMbtReq.setCombo(false);
+//        CfLog.d("==== ImMainViewModel getLeagueList ====");
+//        getFlowableLiveMatches(eventInfoMbtReq);
+
         Flowable flowable = getFlowableMatchesPagePB(pmListReq);
         if (isStepSecond) {
             flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
         }
-        pmListReq.setCps(mPageSize);
-        if (type == 1) {// 滚球
-            if (needSecondStep) {
-                pmListReq.setCps(mGoingOnPageSize);
-                flowable = getFlowableLiveMatchesPB(pmListReq);
-            }
-        }
+        CfLog.d("==== ImMainViewModel getLeagueList ====");
+//        if (type == 1) {// 滚球
+//            if (needSecondStep) {
+//                EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
+//                eventInfoMbtReq.setSportId(1);
+//                eventInfoMbtReq.setMarket(3);
+//                eventInfoMbtReq.setMatchDay(0);
+//                eventInfoMbtReq.setOddsType(3);
+//                eventInfoMbtReq.setPage(1);
+//                eventInfoMbtReq.setSeason(0);
+//                eventInfoMbtReq.setCombo(false);
+//                CfLog.d("==== ImMainViewModel getLeagueList ====");
+//                flowable = getFlowableLiveMatches(eventInfoMbtReq);
+//            }
+//        }
 
         if (isTimerRefresh) {
             flowable = getFlowableMatchBaseInfoByMidsPB(pmListReq);
@@ -444,6 +449,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
 //            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
 //        }
 //        map.put("sys", "7");
+        getFlowableLiveMatches();
         AllSportCountReq allSportCountReq = new AllSportCountReq();
         Disposable disposable = (Disposable) model.getIMApiService().getAllSportCount(allSportCountReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
@@ -489,6 +495,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                         }
 
                         statisticalData.postValue(sportCountMap);
+
                     }
 
                     @Override
@@ -548,21 +555,17 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      * 获取赛果信息赛事列表
      */
     public void matchResultPage(String beginTime, String endTime, int playMethodPos, String sportId) {
-//        Map<String, String> map = new HashMap<>();
-//        map.put("euid", sportId);
-//        map.put("type", "28");
-//        map.put("sort", "2");
-//        map.put("device", "v2_h5_st");
-//        map.put("tid", "");
-//        map.put("md", beginTime);
-//        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
-//        if (TextUtils.equals(platform, PLATFORM_PMXC)) {
-//            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
-//        } else {
-//            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PM_USER_ID));
-//        }
-        BtReq btReq = new BtReq();
-        Disposable disposable = (Disposable) model.getIMApiService().getLiveResults(btReq)
+        EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
+        eventInfoMbtReq.setSportId(1);
+        eventInfoMbtReq.setMarket(3);
+        eventInfoMbtReq.setMatchDay(0);
+        eventInfoMbtReq.setOddsType(3);
+        eventInfoMbtReq.setPage(1);
+        eventInfoMbtReq.setSeason(0);
+        eventInfoMbtReq.setCombo(false);
+        CfLog.d("==== ImMainViewModel getLeagueList ====");
+        getFlowableLiveMatches();
+        Disposable disposable = (Disposable) model.getIMApiService().getEventInfoMbt(eventInfoMbtReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<List<MatchInfo>>() {
@@ -635,31 +638,31 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      */
     public void getAnnouncement() {
         AnnouncementReq  announcementReq = new AnnouncementReq();
-        Disposable disposable = (Disposable) model.getIMApiService().getAnnouncement(announcementReq)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<FrontListInfo>() {
-                    @Override
-                    public void onResult(FrontListInfo info) {
-                        KLog.i("FrontListInfo     " + info);
-                        List<FBAnnouncementInfo.RecordsDTO> list2 = new ArrayList<>();
-                        for (FrontListInfo.NbDTO i : info.nb) {
-                            FBAnnouncementInfo.RecordsDTO dto = new FBAnnouncementInfo.RecordsDTO();
-                            dto.id = i.id;
-                            dto.ti = i.noticeTypeName;
-                            dto.co = i.context;
-                            dto.pt = i.sendTimeOther;
-                            list2.add(dto);
-                        }
-                        announcementData.postValue(list2);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                    }
-                });
-        addSubscribe(disposable);
+//        Disposable disposable = (Disposable) model.getIMApiService().getAnnouncement(announcementReq)
+//                .compose(RxUtils.schedulersTransformer()) //线程调度
+//                .compose(RxUtils.exceptionTransformer())
+//                .subscribeWith(new HttpCallBack<FrontListInfo>() {
+//                    @Override
+//                    public void onResult(FrontListInfo info) {
+//                        KLog.i("FrontListInfo     " + info);
+//                        List<FBAnnouncementInfo.RecordsDTO> list2 = new ArrayList<>();
+//                        for (FrontListInfo.NbDTO i : info.nb) {
+//                            FBAnnouncementInfo.RecordsDTO dto = new FBAnnouncementInfo.RecordsDTO();
+//                            dto.id = i.id;
+//                            dto.ti = i.noticeTypeName;
+//                            dto.co = i.context;
+//                            dto.pt = i.sendTimeOther;
+//                            list2.add(dto);
+//                        }
+//                        announcementData.postValue(list2);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//                        super.onError(t);
+//                    }
+//                });
+//        addSubscribe(disposable);
     }
 
     @Override
@@ -672,8 +675,17 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         return flowable;
     }
 
-    private Flowable getFlowableLiveMatchesPB(PMListReq pmListReq) {
-        Flowable flowable = model.getPMApiService().liveMatchesPB(pmListReq);
+    public Flowable getFlowableLiveMatches() {
+        EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
+        eventInfoMbtReq.setSportId(1);
+        eventInfoMbtReq.setMarket(3);
+        eventInfoMbtReq.setMatchDay(0);
+        eventInfoMbtReq.setOddsType(3);
+        eventInfoMbtReq.setPage(1);
+        eventInfoMbtReq.setSeason(0);
+        eventInfoMbtReq.setCombo(false);
+        CfLog.d("==== ImMainViewModel getLeagueList ====");
+        Flowable flowable = model.getIMApiService().getEventInfoMbt(eventInfoMbtReq);
         return flowable;
     }
 

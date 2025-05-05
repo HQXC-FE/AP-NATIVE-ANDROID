@@ -1,7 +1,5 @@
 package com.xtree.base.net;
 
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
-
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -25,20 +23,12 @@ public class IMHeaderInterceptor implements Interceptor {
         Request.Builder builder = chain.request()
                 .newBuilder();
 
-        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
-        String token;
-
-        if(TextUtils.equals(platform, PLATFORM_PMXC)) {
-            token = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN);
-        } else {
-            token = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
-        }
-
-        builder.addHeader("Content-Type", "application/json; charset=utf-8");
+        String token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
         if (!TextUtils.isEmpty(token)) {
-            builder.removeHeader("Authorization");
-            builder.addHeader("Authorization", "bearer " + token);
+            builder.removeHeader("authorization");
+            builder.addHeader("authorization", "bearer " + token);
         }
+        builder.addHeader("content-type", "application/vnd.sc-api.v1.json");
         builder.addHeader("App-RNID", "87jumkljo"); //
         builder.addHeader("lang", "zh"); //
         builder.addHeader("requestId", token);

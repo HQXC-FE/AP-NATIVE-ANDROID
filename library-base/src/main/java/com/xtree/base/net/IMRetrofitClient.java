@@ -6,6 +6,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.utils.CfLog;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -48,25 +49,13 @@ public class IMRetrofitClient {
     private Cache cache = null;
     private File httpCacheDirectory;
 
-    /*private static class SingletonHolder {
-        private static PMRetrofitClient INSTANCE = new PMRetrofitClient();
-    }*/
-
     public static IMRetrofitClient getInstance() {
         return new IMRetrofitClient();
     }
 
-    /*public static void init() {
-        SingletonHolder.INSTANCE = new PMRetrofitClient();
-    }*/
-
     private IMRetrofitClient() {
-        baseUrl = SPUtils.getInstance().getString(SPKeyGlobal.PM_API_SERVICE_URL);
-
-        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
-        if(TextUtils.equals(platform, PLATFORM_PMXC)) {
-            baseUrl = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_API_SERVICE_URL);
-        }
+        baseUrl = SPUtils.getInstance().getString(SPKeyGlobal.KEY_API_URL);
+        CfLog.d("=== IMRetrofitClient baseUrl ==="+baseUrl);
 
         if (httpCacheDirectory == null) {
             httpCacheDirectory = new File(mContext.getCacheDir(), "goldze_cache");
