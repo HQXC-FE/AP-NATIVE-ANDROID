@@ -14,6 +14,7 @@ import com.xtree.bet.bean.request.im.EventInfoMbtReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
+import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.response.pm.FrontListInfo;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
@@ -442,26 +443,41 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      * 获取赛事统计数据
      */
     public void statistical(int playMethodType) {
-//        Map<String, String> map = new HashMap<>();
-//        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
-//        map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PM_USER_ID));
-//        if (TextUtils.equals(platform, PLATFORM_PMXC)) {
-//            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
-//        }
-//        map.put("sys", "7");
         getFlowableLiveMatches();
         AllSportCountReq allSportCountReq = new AllSportCountReq();
         Disposable disposable = (Disposable) model.getIMApiService().getAllSportCount(allSportCountReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<MenuInfo>>() {
+                .subscribeWith(new HttpCallBack<SportCountRsp>() {
                     @Override
-                    public void onResult(List<MenuInfo> menuInfoList) {
-                        mMenuInfoList = menuInfoList;
-                        if (mMatchGames.isEmpty()) {
-                            mMatchGames = PMConstants.getMatchGames();
+                    public void onResult(SportCountRsp sportCountRsp) {
+                        List<SportCountRsp.CountItem> sportList = sportCountRsp.getSportCount();
+                        mMenuInfoList.clear();
+                        for (SportCountRsp.CountItem item : sportList) {
+                            System.out.println("SportId: " + item.sportId);
+                            for (String name : PLAY_METHOD_NAMES) {
+                                MenuInfo menuInfo = new MenuInfo();
+                                menuInfo.menuId = item.sportId;
+                                menuInfo.menuName = item.sportName;
+                                if(name.equals("今日")){
+                                    menuInfo.menuType = 3;
+                                }else if (name.equals("滚球")){
+                                    menuInfo.menuType = 1;
+                                }else if (name.equals("早盘")) {
+                                    menuInfo.menuType = 4;
+                                }else if (name.equals("串关")) {
+                                    menuInfo.menuType = 11;
+                                }else if (name.equals("冠军")) {
+                                    menuInfo.menuType = 100;
+                                }
+                                mMenuInfoList.add(menuInfo);
+                            }
                         }
-                        for (MenuInfo menuInfo : menuInfoList) {
+
+                        if (mMatchGames.isEmpty()) {
+                            mMatchGames = IMConstants.getMatchGames();
+                        }
+                        for (MenuInfo menuInfo : mMenuInfoList) {
                             //"3", "1", "4", "11", "100"; 只有"今日", "滚球", "早盘", "串关", "冠军"数据才添加，提升效率
                             if (menuInfo.menuType == 3 || menuInfo.menuType == 1 || menuInfo.menuType == 4 || menuInfo.menuType == 11
                                     || menuInfo.menuType == 100) {
