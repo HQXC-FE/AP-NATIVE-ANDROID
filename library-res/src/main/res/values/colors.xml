@@ -752,4 +752,6 @@
     <color name="editStart">#1E2121</color>
     <color name="editStroke">#4EED90</color>
     <color name="editEnd">#3A4142</color>
+    <color name="mineTotalTextColor">#B1BDC0</color>
+    <color name="mineLoginStorkeColor">#0DE4EAF0</color>
 </resources>
