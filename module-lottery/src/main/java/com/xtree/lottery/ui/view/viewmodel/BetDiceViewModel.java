@@ -141,7 +141,6 @@ public class BetDiceViewModel extends BindModel {
                 num0Datas.set(Arrays.asList(
                         new BetDiceModel("123"),
                         new BetDiceModel("234"),
-                        new BetDiceModel("333"),
                         new BetDiceModel("345"),
                         new BetDiceModel("456")));
             }

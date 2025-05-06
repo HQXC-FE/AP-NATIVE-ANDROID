@@ -1,5 +1,7 @@
 package com.xtree.lottery.ui.view.viewmodel;
 
+import static com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel.LAYOUT_NO_SPLIT;
+
 import androidx.databinding.Observable;
 import androidx.databinding.ObservableField;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -42,18 +44,32 @@ public class BetDxdsTagViewModel {
 
         for (MenuMethodsData.LabelsDTO.Labels1DTO.Labels2DTO.SelectareaDTO.LayoutDTO layoutDTO : model.getMenuMethodLabelData().getSelectarea().getLayout()) {
             //            [{code=5单0双, display=5单0双}, {code=4单1双, display=4单1双}, {code=3单2双, display=3单2双}, {code=2单3双, display=2单3双}, {code=1单4双, display=1单4双}, {code=0单5双, display=0单5双}]
-            Gson gson = new Gson();
-            List<Map<String, String>> split = gson.fromJson(layoutDTO.getNo(), new TypeToken<List<Map<String, String>>>() {
-            }.getType());
-            for (Map<String, String> item : split) {
-                BetDxdsTagModel dxdsTagModel = new BetDxdsTagModel(item.get("display"), item.get("code"));
-                dxdsTagModel.clicked.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-                    @Override
-                    public void onPropertyChanged(Observable sender, int propertyId) {
-                        codesData.set(formatCode());
-                    }
-                });
-                bindModels.add(dxdsTagModel);
+            if (layoutDTO.getNo().contains("|")) {
+                String[] split = layoutDTO.getNo().split(LAYOUT_NO_SPLIT);
+                for (int i = 0; i < split.length; i++) {
+                    BetDxdsTagModel dxdsTagModel = new BetDxdsTagModel(split[i]);
+                    dxdsTagModel.clicked.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+                        @Override
+                        public void onPropertyChanged(Observable sender, int propertyId) {
+                            codesData.set(formatCode());
+                        }
+                    });
+                    bindModels.add(dxdsTagModel);
+                }
+            } else {
+                Gson gson = new Gson();
+                List<Map<String, String>> split = gson.fromJson(layoutDTO.getNo(), new TypeToken<List<Map<String, String>>>() {
+                }.getType());
+                for (Map<String, String> item : split) {
+                    BetDxdsTagModel dxdsTagModel = new BetDxdsTagModel(item.get("display"), item.get("code"));
+                    dxdsTagModel.clicked.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+                        @Override
+                        public void onPropertyChanged(Observable sender, int propertyId) {
+                            codesData.set(formatCode());
+                        }
+                    });
+                    bindModels.add(dxdsTagModel);
+                }
             }
         }
 
