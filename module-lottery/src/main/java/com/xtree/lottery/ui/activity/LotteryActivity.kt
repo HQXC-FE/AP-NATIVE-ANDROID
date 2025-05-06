@@ -85,13 +85,13 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         EventBus.getDefault().register(this)
         FastestTopDomainUtil.instance.start()
         ChangeH5LineUtil.instance.start()
-        val prizeNotice = PrizeNoticeView(binding.layout1)
-        prizeNotice.showPrize(
-            PrizeInfo(
-                bonus = "288",
-                issue = "20240501"
-            )
-        )
+        //val prizeNotice = PrizeNoticeView(binding.layout1)
+        //prizeNotice.showPrize(
+        //    PrizeInfo(
+        //        bonus = "288",
+        //        issue = "20240501"
+        //    )
+        //)
     }
 
     private fun setCustomDensity() {
