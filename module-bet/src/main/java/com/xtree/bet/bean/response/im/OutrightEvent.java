@@ -2,6 +2,7 @@ package com.xtree.bet.bean.response.im;
 
 import android.os.Parcel;
 
+import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
 
 import java.util.List;
@@ -11,37 +12,43 @@ import java.util.List;
  */
 
 public class OutrightEvent implements BaseBean {
-
-    public String OutrightEventName;
-    public long EventId;
-    public int EventStatusId;
-    public int OrderNumber;
-    public String EventDate;
-    public SportCompetition Competition;
-    public List<SportMarketLine> MarketLines;
+    @SerializedName("OutrightEventName")
+    public String outrightEventName;
+    @SerializedName("EventId")
+    public long eventId;
+    @SerializedName("EventStatusId")
+    public int eventStatusId;
+    @SerializedName("OrderNumber")
+    public int orderNumber;
+    @SerializedName("EventDate")
+    public String eventDate;
+    @SerializedName("Competition")
+    public SportCompetition competition;
+    @SerializedName("MarketLines")
+    public List<SportMarketLine> marketLines;
 
     public OutrightEvent() {
     }
 
     protected OutrightEvent(Parcel in) {
-        OutrightEventName = in.readString();
-        EventId = in.readLong();
-        EventStatusId = in.readInt();
-        OrderNumber = in.readInt();
-        EventDate = in.readString();
-        Competition = in.readParcelable(SportCompetition.class.getClassLoader());
-        MarketLines = in.createTypedArrayList(SportMarketLine.CREATOR);
+        outrightEventName = in.readString();
+        eventId = in.readLong();
+        eventStatusId = in.readInt();
+        orderNumber = in.readInt();
+        eventDate = in.readString();
+        competition = in.readParcelable(SportCompetition.class.getClassLoader());
+        marketLines = in.createTypedArrayList(SportMarketLine.CREATOR);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(OutrightEventName);
-        dest.writeLong(EventId);
-        dest.writeInt(EventStatusId);
-        dest.writeInt(OrderNumber);
-        dest.writeString(EventDate);
-        dest.writeParcelable(Competition, flags);
-        dest.writeTypedList(MarketLines);
+        dest.writeString(outrightEventName);
+        dest.writeLong(eventId);
+        dest.writeInt(eventStatusId);
+        dest.writeInt(orderNumber);
+        dest.writeString(eventDate);
+        dest.writeParcelable(competition, flags);
+        dest.writeTypedList(marketLines);
     }
 
     @Override

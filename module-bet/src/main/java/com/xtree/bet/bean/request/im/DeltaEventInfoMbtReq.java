@@ -1,11 +1,10 @@
 package com.xtree.bet.bean.request.im;
 
-public class DeltaEventInfoMbtReq {
 
+public class DeltaEventInfoMbtReq {
 
     private int sportId;
     private int market;
-    private String timeStamp;
     private double delta;
 
     public int getSportId() {
@@ -24,14 +23,6 @@ public class DeltaEventInfoMbtReq {
         this.market = market;
     }
 
-    public String getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
     public double getDelta() {
         return delta;
     }
@@ -42,7 +33,7 @@ public class DeltaEventInfoMbtReq {
 
     @Override
     public String toString() {
-        return "DeltaCompetitionReq{" + "sportId=" + sportId + ", market=" + market + ", timeStamp='" + timeStamp + '\'' + ", delta=" + delta + '}';
+        return "DeltaCompetitionReq{" + "sportId=" + sportId + ", market=" + market + '\'' + ", delta=" + delta + '}';
     }
 
 

@@ -11,6 +11,7 @@ import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
 import com.xtree.bet.bean.request.im.AnnouncementReq;
 import com.xtree.bet.bean.request.im.EventInfoMbtReq;
+import com.xtree.bet.bean.request.im.OutrightEventsReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
@@ -158,36 +159,45 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         if (leagueIds.isEmpty()) {
             return;
         }
-        PMListReq pmListReq = new PMListReq();
-        pmListReq.setCuid();
-        pmListReq.setCpn(mCurrentPage);
-        pmListReq.setCps(mGoingOnPageSize);
-
-        String sportIds = "";
-        if (mMenuInfoList.isEmpty()) {
-            hotEmptyMatchCountData.postValue(0);
-            return;
-        } else {
-            for (MenuInfo menuInfo : mMenuInfoList) {
-                if (playMethodType == menuInfo.menuType) {
-                    for (MenuInfo subMenu : menuInfo.subList) {
-                        sportIds += subMenu.menuId + ",";
-                    }
-                }
-            }
-        }
-        pmListReq.setEuid(sportIds);
-        if (leagueIds != null && !leagueIds.isEmpty()) {
-            String leagueids = "";
-            for (Long leagueid : leagueIds) {
-                leagueids += leagueid + ",";
-            }
-            pmListReq.setTid(leagueids.substring(0, leagueids.length() - 1));
-        }
-
-        pmListReq.setType(3);
+//        PMListReq pmListReq = new PMListReq();
+//        pmListReq.setCuid();
+//        pmListReq.setCpn(mCurrentPage);
+//        pmListReq.setCps(mGoingOnPageSize);
+//
+//        String sportIds = "";
+//        if (mMenuInfoList.isEmpty()) {
+//            hotEmptyMatchCountData.postValue(0);
+//            return;
+//        } else {
+//            for (MenuInfo menuInfo : mMenuInfoList) {
+//                if (playMethodType == menuInfo.menuType) {
+//                    for (MenuInfo subMenu : menuInfo.subList) {
+//                        sportIds += subMenu.menuId + ",";
+//                    }
+//                }
+//            }
+//        }
+//        pmListReq.setEuid(sportIds);
+//        if (leagueIds != null && !leagueIds.isEmpty()) {
+//            String leagueids = "";
+//            for (Long leagueid : leagueIds) {
+//                leagueids += leagueid + ",";
+//            }
+//            pmListReq.setTid(leagueids.substring(0, leagueids.length() - 1));
+//        }
+//
+//        pmListReq.setType(3);
         // 获取 Flowable 对象
-        model.getIMApiService().matchesPagePB(pmListReq);
+        EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
+        eventInfoMbtReq.setSportId(1);
+        eventInfoMbtReq.setMarket(3);
+        eventInfoMbtReq.setMatchDay(0);
+        eventInfoMbtReq.setOddsType(3);
+        eventInfoMbtReq.setPage(1);
+        eventInfoMbtReq.setSeason(0);
+        eventInfoMbtReq.setCombo(false);
+        CfLog.d("==== ImMainViewModel getLeagueList ====");
+        model.getIMApiService().getEventInfoMbt(eventInfoMbtReq);
 
     }
 
@@ -344,20 +354,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
             flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
         }
         CfLog.d("==== ImMainViewModel getLeagueList ====");
-//        if (type == 1) {// 滚球
-//            if (needSecondStep) {
-//                EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
-//                eventInfoMbtReq.setSportId(1);
-//                eventInfoMbtReq.setMarket(3);
-//                eventInfoMbtReq.setMatchDay(0);
-//                eventInfoMbtReq.setOddsType(3);
-//                eventInfoMbtReq.setPage(1);
-//                eventInfoMbtReq.setSeason(0);
-//                eventInfoMbtReq.setCombo(false);
-//                CfLog.d("==== ImMainViewModel getLeagueList ====");
-//                flowable = getFlowableLiveMatches(eventInfoMbtReq);
-//            }
-//        }
 
         if (isTimerRefresh) {
             flowable = getFlowableMatchBaseInfoByMidsPB(pmListReq);
@@ -403,26 +399,32 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
             showChampionCache(sportId, playMethodType);
         }
 
-        PMListReq pmListReq = new PMListReq();
-        pmListReq.setCuid();
-        pmListReq.setType(playMethodType);
-        pmListReq.setSort(orderBy);
-        pmListReq.setCpn(mCurrentPage);
-        pmListReq.setCps(300);
+        OutrightEventsReq outrightEventsReq = new OutrightEventsReq();
 
-        if (mMenuInfoList.isEmpty()) {
-            pmListReq.setEuid(sportId);
-        } else {
-            pmListReq.setEuid(sportId);
-        }//再试试断网情况 和弱网情况
+        outrightEventsReq.setIsCombo(false);
+        outrightEventsReq.setMatchDay(0);
+        outrightEventsReq.setMemberCode("p02hill999");
+        outrightEventsReq.setOddsType("3");
+        outrightEventsReq.setOrderBy(2);
+        outrightEventsReq.setPage(0);
+        outrightEventsReq.setSeason(0);
+        outrightEventsReq.setSportId(1);
 
-//        Flowable flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
-//        Object callback = isUseCacheApiService()
-//                ? new PMChampionListCacheCallBack(this, sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh, mCurrentPage)
-//                : new PMChampionListCallBack(this, sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh, mCurrentPage);
-        // 1.创建 Disposable，2.并进行订阅
-//        Disposable disposable = createDisposable(flowable, callback);
-//        addSubscribe(disposable);
+        Disposable disposable = (Disposable) model.getIMApiService().getOutrightEvents(outrightEventsReq)
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<SportCountRsp>() {
+                    @Override
+                    public void onResult(SportCountRsp sportCountRsp) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
+                    }
+                });
+        addSubscribe(disposable);
     }
 
     /**

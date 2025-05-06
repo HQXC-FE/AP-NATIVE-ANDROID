@@ -4,7 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Size;
 
+import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
 
 import java.util.ArrayList;
@@ -92,54 +94,67 @@ public class SportCountRsp implements BaseBean {
         /**
          * 体育项目ID
          */
+        @SerializedName("SportId")
         public int sportId;
         /**
          * 体育项目名称
          */
+        @SerializedName("SportName")
         public String sportName;
         /**
          * 体育项目序号
          */
+        @SerializedName("OrderNumber")
         public int orderNumber;
         /**
          * 事组别类型清单
          */
+        @SerializedName("EventGroupTypes")
         public List<EventGroupType> eventGroupTypes;
         /**
          * 清单
          */
+        @SerializedName("ProgrammeList")
         public List<Object> programmeList;
         /**
          * 是否支持连串过关
          */
+        @SerializedName("OpenParlay")
         public boolean openParlay;
         /**
          * 目前是否提供滚球赛事
          */
+        @SerializedName("IsHasLive")
         public boolean isHasLive;
         /**
          * 早盘盘口的体育定时赛事计数
          */
+        @SerializedName("EarlyFECount")
         public int earlyFECount;
         /**
          * 今日盘口的体育定时赛事计数
          */
+        @SerializedName("TodayFECount")
         public int todayFECount;
         /**
          * 冠军赛事计数
          */
+        @SerializedName("ORCount")
         public int orCount;
         /**
          * 滚球盘口的体育定时赛事计数
          */
+        @SerializedName("RBFECount")
         public int rbFECount;
         /**
          * 赛事计数
          */
+        @SerializedName("Count")
         public int count;
         /**
          * 是否是串关
          */
+        @SerializedName("IsCombo")
         public boolean isCombo;
 
         public CountItem() {
@@ -200,30 +215,37 @@ public class SportCountRsp implements BaseBean {
             /**
              * 可选参数用于指出只返回特定赛事组别类型的赛果
              */
+            @SerializedName("EventGroupTypeId")
             public int eventGroupTypeId;
             /**
              * 竞赛赛事计数
              */
+            @SerializedName("Count")
             public int count;
             /**
              * 早盘盘口的体育定时赛事计数
              */
+            @SerializedName("EarlyFECount")
             public int earlyFECount;
             /**
              * 今日盘口的体育定时赛事计数
              */
+            @SerializedName("TodayFECount")
             public int todayFECount;
             /**
              * 滚球盘口的体育定时赛事计数
              */
+            @SerializedName("RBFECount")
             public int rbFECount;
             /**
              * 冠军赛事计数
              */
+            @SerializedName("ORCount")
             public int orCount;
             /**
              * 指出目前是否提供滚球赛事
              */
+            @SerializedName("IsHasLive")
             public boolean isHasLive;
 
             public EventGroupType() {

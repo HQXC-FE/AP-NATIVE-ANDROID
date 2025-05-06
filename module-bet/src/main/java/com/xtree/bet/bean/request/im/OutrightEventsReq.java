@@ -1,36 +1,38 @@
 package com.xtree.bet.bean.request.im;
 
+import com.google.gson.annotations.SerializedName;
+
 public class OutrightEventsReq {
 
-    private String timeStamp;
-    private String languageCode;
-    private String isCombo;
+    @SerializedName("IsCombo")
+    private boolean isCombo;
+
+    @SerializedName("SportId")
     private int sportId;
-    private String token;
+
+    @SerializedName("MatchDay")
+    private int matchDay;
+
+    @SerializedName("OddsType")
+    private String oddsType;
+
+    @SerializedName("OrderBy")
+    private int orderBy;
+
+    @SerializedName("Page")
+    private int page;
+
+    @SerializedName("Season")
+    private int season;
+
+    @SerializedName("MemberCode")
     private String memberCode;
-    private String programmeId;
 
-    public String getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    public String getLanguageCode() {
-        return languageCode;
-    }
-
-    public void setLanguageCode(String languageCode) {
-        this.languageCode = languageCode;
-    }
-
-    public String getIsCombo() {
+    public boolean getIsCombo() {
         return isCombo;
     }
 
-    public void setIsCombo(String isCombo) {
+    public void setIsCombo(boolean isCombo) {
         this.isCombo = isCombo;
     }
 
@@ -42,12 +44,44 @@ public class OutrightEventsReq {
         this.sportId = sportId;
     }
 
-    public String getToken() {
-        return token;
+    public int getMatchDay() {
+        return matchDay;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setMatchDay(int matchDay) {
+        this.matchDay = matchDay;
+    }
+
+    public String getOddsType() {
+        return oddsType;
+    }
+
+    public void setOddsType(String oddsType) {
+        this.oddsType = oddsType;
+    }
+
+    public int getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(int orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getSeason() {
+        return season;
+    }
+
+    public void setSeason(int season) {
+        this.season = season;
     }
 
     public String getMemberCode() {
@@ -58,17 +92,17 @@ public class OutrightEventsReq {
         this.memberCode = memberCode;
     }
 
-    public String getProgrammeId() {
-        return programmeId;
-    }
-
-    public void setProgrammeId(String programmeId) {
-        this.programmeId = programmeId;
-    }
-
     @Override
     public String toString() {
-        return "OutrightEventsReq{" + "timeStamp='" + timeStamp + '\'' + ", languageCode='" + languageCode + '\'' + ", isCombo='" + isCombo + '\'' + ", sportId=" + sportId + ", token='" + token + '\'' + ", memberCode='" + memberCode + '\'' + ", programmeId='" + programmeId + '\'' + '}';
+        return "OutrightEventsReq{" +
+                "isCombo=" + isCombo +
+                ", sportId=" + sportId +
+                ", matchDay=" + matchDay +
+                ", oddsType='" + oddsType + '\'' +
+                ", orderBy=" + orderBy +
+                ", page=" + page +
+                ", season=" + season +
+                ", memberCode='" + memberCode + '\'' +
+                '}';
     }
-
 }

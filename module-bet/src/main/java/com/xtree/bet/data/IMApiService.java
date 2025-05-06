@@ -92,7 +92,8 @@ public interface IMApiService {
     Flowable<BaseResponse<SportCompetitionCountRsp>> getAllCompetitionCount(@Body CometitionCountReq cometitionCountReq);
 
     /**
-     * 索取赛事和主要玩法资料
+     * 索取赛事和主要玩法资料,
+     * 这里是第一次获取，是获取全量赛事
      * 获取赛事列表-->对应matchesPagePB接口
      */
     @POST("/api/sports/imsb/forward")
@@ -101,11 +102,11 @@ public interface IMApiService {
 
     /**
      * 索取DELTA赛事和主要玩法详情
-     *
+     * 这里是刷新获取，获取的是增量赛事
      * @return
      */
-    @GET("/yewu11/pub/v1/m/getDeltaEventInfoMbt")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @GET("/api/sports/imsb/forward")
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<DeltaEventListRsp>> getDeltaEventInfoMbt(@Body DeltaEventInfoMbtReq evenDeltatInfoMbtReq);
 
     /**
