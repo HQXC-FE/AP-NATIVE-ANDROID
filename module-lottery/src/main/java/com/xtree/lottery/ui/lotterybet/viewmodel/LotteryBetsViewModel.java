@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.xtree.base.lottery.data.LotteryPublicData;
 import com.xtree.base.mvvm.ExKt;
 import com.xtree.base.mvvm.recyclerview.BindModel;
 import com.xtree.base.net.HttpCallBack;
@@ -238,7 +239,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         Map<String, MenuMethodsData> staticLotteryMethodsData = LotteryDataManager.INSTANCE.getStaticLotteryMethodsData();
         if (staticLotteryMethodsData != null) {
             MenuMethodsData menuMethodsData = staticLotteryMethodsData.get(lottery.getAlias());
-            UserMethodsResponse dynamicUserMethodsData = LotteryDataManager.INSTANCE.getDynamicUserMethods();
+            UserMethodsResponse dynamicUserMethodsData = LotteryPublicData.INSTANCE.getDynamicUserMethods();
 //            CfLog.e("耗时:" + System.currentTimeMillis() / 1000);
             //先使用本地数据初始化玩法
             if (menuMethodsData != null && dynamicUserMethodsData != null) {

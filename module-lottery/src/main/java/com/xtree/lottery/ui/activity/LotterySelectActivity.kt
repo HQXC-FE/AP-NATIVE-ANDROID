@@ -10,11 +10,9 @@ import com.xtree.base.global.SPKeyGlobal
 import com.xtree.base.net.RetrofitClient
 import com.xtree.base.router.RouterActivityPath
 import com.xtree.base.vo.ProfileVo
-import com.xtree.base.vo.UserMethodsResponse
 import com.xtree.lottery.BR
 import com.xtree.lottery.R
 import com.xtree.lottery.data.LotteryDataManager
-import com.xtree.lottery.data.LotteryDataManager.dynamicUserMethods
 import com.xtree.lottery.data.config.lotteries
 import com.xtree.lottery.databinding.ActivityMainLtBinding
 import com.xtree.lottery.ui.adapter.LotteryAdapter
@@ -44,10 +42,6 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
     }
 
     override fun initData() {
-
-        val json = SPUtils.getInstance().getString("dynamicLotteryUser")
-        dynamicUserMethods = Gson().fromJson(json, UserMethodsResponse::class.java)
-
         val adapter = LotteryAdapter(lotteries) {
             if (LotteryDataManager.staticLotteryMethodsData != null) {
                 val intent = Intent(this, LotteryActivity::class.java)

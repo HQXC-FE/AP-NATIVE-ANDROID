@@ -16,7 +16,6 @@ import me.xtree.mvvmhabit.base.BaseApplication
 object LotteryDataManager {
 
     var staticLotteryMethodsData: HashMap<String, MenuMethodsData>? = null
-    var dynamicUserMethods: UserMethodsResponse? = null
 
     fun init(application: Application) {
         CfLog.e("玩法json加载开始 @ ${System.currentTimeMillis() / 1000}")
