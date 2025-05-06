@@ -200,31 +200,31 @@ public class SportCountRsp implements BaseBean {
             /**
              * 可选参数用于指出只返回特定赛事组别类型的赛果
              */
-            private int eventGroupTypeId;
+            public int eventGroupTypeId;
             /**
              * 竞赛赛事计数
              */
-            private int count;
+            public int count;
             /**
              * 早盘盘口的体育定时赛事计数
              */
-            private int earlyFECount;
+            public int earlyFECount;
             /**
              * 今日盘口的体育定时赛事计数
              */
-            private int todayFECount;
+            public int todayFECount;
             /**
              * 滚球盘口的体育定时赛事计数
              */
-            private int rbFECount;
+            public int rbFECount;
             /**
              * 冠军赛事计数
              */
-            private int orCount;
+            public int orCount;
             /**
              * 指出目前是否提供滚球赛事
              */
-            private boolean isHasLive;
+            public boolean isHasLive;
 
             public EventGroupType() {
             }

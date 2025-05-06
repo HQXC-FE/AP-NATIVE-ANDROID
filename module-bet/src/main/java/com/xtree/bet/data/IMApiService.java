@@ -75,7 +75,7 @@ public interface IMApiService {
      *
      * @return
      */
-    @POST("/yewu11/v1/m/getAllCompetitionCount")
+    @POST("/api/sports/imsb/forward")
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Flowable<BaseResponse<SportCompetitionCountRsp>> getAllCompetitionCount(@Body CometitionCountReq cometitionCountReq);
 

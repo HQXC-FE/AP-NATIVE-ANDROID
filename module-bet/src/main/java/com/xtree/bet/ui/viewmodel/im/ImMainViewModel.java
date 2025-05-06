@@ -461,14 +461,29 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                                 menuInfo.menuName = item.sportName;
                                 if(name.equals("今日")){
                                     menuInfo.menuType = 3;
+                                    if(!item.eventGroupTypes.isEmpty()){
+                                        menuInfo.count = item.eventGroupTypes.get(0).todayFECount+item.eventGroupTypes.get(0).rbFECount;
+                                    }
                                 }else if (name.equals("滚球")){
                                     menuInfo.menuType = 1;
+                                    if(!item.eventGroupTypes.isEmpty()){
+                                        menuInfo.count = item.eventGroupTypes.get(0).rbFECount;
+                                    }
                                 }else if (name.equals("早盘")) {
                                     menuInfo.menuType = 4;
+                                    if(!item.eventGroupTypes.isEmpty()){
+                                        menuInfo.count = item.eventGroupTypes.get(0).earlyFECount;
+                                    }
                                 }else if (name.equals("串关")) {
                                     menuInfo.menuType = 11;
+                                    if(!item.eventGroupTypes.isEmpty()) {
+                                        menuInfo.count = item.eventGroupTypes.get(0).count;
+                                    }
                                 }else if (name.equals("冠军")) {
                                     menuInfo.menuType = 100;
+                                    if(!item.eventGroupTypes.isEmpty()) {
+                                        menuInfo.count = item.eventGroupTypes.get(0).orCount;
+                                    }
                                 }
                                 mMenuInfoList.add(menuInfo);
                             }
