@@ -132,6 +132,7 @@ public interface IMApiService {
      * @return
      */
     @POST(forwardPath)
+    @Headers({"Content-Type: application/json; charset=utf-8"})
     Flowable<BaseResponse<EventListRsp>> getSelectedEventInfo(@Body BaseIMRequest<SelectedEventInfoReq> selectedEventInfoReq);
 
     /**

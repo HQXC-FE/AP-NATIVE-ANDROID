@@ -12,14 +12,17 @@ public class Sport implements BaseBean {
 
     public int SportId;
     public String SportName;
-    public List<Event> Events;
+    public List<RecommendedEvent> Events;
+
+    public int OrderNumber;
 
     public Sport() {}
 
     protected Sport(Parcel in) {
         SportId = in.readInt();
         SportName = in.readString();
-        Events = in.createTypedArrayList(Event.CREATOR);
+        OrderNumber = in.readInt();
+        Events = in.createTypedArrayList(RecommendedEvent.CREATOR);
     }
 
     @Override
@@ -27,6 +30,7 @@ public class Sport implements BaseBean {
         dest.writeInt(SportId);
         dest.writeString(SportName);
         dest.writeTypedList(Events);
+        dest.writeInt(OrderNumber);
     }
 
     @Override

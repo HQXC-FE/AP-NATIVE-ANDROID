@@ -66,6 +66,7 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
             @Override
             public void onResult(EventListRsp eventListRsp) {
                 super.onResult(eventListRsp);
+
             }
         });
 
