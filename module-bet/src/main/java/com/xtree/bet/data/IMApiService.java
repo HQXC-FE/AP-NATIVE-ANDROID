@@ -1,14 +1,15 @@
 package com.xtree.bet.data;
 
 import com.xtree.bet.bean.request.im.AnnouncementReq;
+import com.xtree.bet.bean.request.im.BaseIMRequest;
 import com.xtree.bet.bean.request.im.CometitionCountReq;
 import com.xtree.bet.bean.request.im.DeltaOutrightEventsReq;
 import com.xtree.bet.bean.request.im.DeltaEventInfoMbtReq;
 import com.xtree.bet.bean.request.im.EventInfoMbtReq;
 import com.xtree.bet.bean.request.im.GetBetListReq;
 import com.xtree.bet.bean.request.im.OutrightEventsReq;
-import com.xtree.bet.bean.request.im.SelectedEventInfoReq;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
+import com.xtree.bet.bean.request.im.SelectedEventInfoReq;
 import com.xtree.bet.bean.request.im.StatementReq;
 import com.xtree.bet.bean.request.pm.BtCashOutBetReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
@@ -49,6 +50,9 @@ import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 
 public interface IMApiService {
+
+
+    String forward = "/api/sports/imsb/forward";
 
     /**
      * 获取获取公告
@@ -119,9 +123,8 @@ public interface IMApiService {
      *
      * @return
      */
-    @GET("/yewu11/v1/w/getSelectedEventInfo")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<EventListRsp>> getSelectedEventInfo(@Body SelectedEventInfoReq selectedEventInfoReq);
+    @POST(forward)
+    Flowable<BaseResponse<EventListRsp>> getSelectedEventInfo(@Body BaseIMRequest<SelectedEventInfoReq> selectedEventInfoReq);
 
     /**
      * 获取冠军赛事
