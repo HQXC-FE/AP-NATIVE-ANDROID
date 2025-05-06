@@ -13,18 +13,22 @@ import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.vo.FBService;
+import com.xtree.bet.bean.request.im.BaseIMRequest;
+import com.xtree.bet.bean.request.im.SelectedEventInfoReq;
 import com.xtree.bet.bean.response.fb.MatchInfo;
 import com.xtree.bet.bean.response.fb.PlayTypeInfo;
+import com.xtree.bet.bean.response.im.Event;
+import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.CategoryFb;
 import com.xtree.bet.bean.ui.Match;
-import com.xtree.bet.bean.ui.MatchFb;
 import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.OptionList;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.bean.ui.PlayTypeFb;
 import com.xtree.bet.constant.FBMarketTag;
 import com.xtree.bet.data.BetRepository;
+import com.xtree.bet.data.IMApiService;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
 
 import java.util.ArrayList;
@@ -33,10 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
-import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
@@ -52,33 +53,45 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
 
     public void getMatchDetail(long matchId) {
         mMatchId = matchId;
-        Map<String, String> map = new HashMap<>();
-        map.put("languageType", "CMN");
-        map.put("matchId", String.valueOf(matchId));
+//        Map<String, String> map = new HashMap<>();
+//        map.put("languageType", "CMN");
+//        map.put("matchId", String.valueOf(matchId));
 
-        Disposable disposable = (Disposable) model.getApiService().getMatchDetail(map)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<MatchInfo>() {
-                    @Override
-                    public void onResult(MatchInfo matchInfo) {
-                        Match match = new MatchFb(matchInfo);
-                        if (mMatch != null) {
-                            setOptionOddChange(match);
-                        }
-                        mMatch = match;
-                        matchData.postValue(match);
-                        categoryListData.postValue(getCategoryList(matchInfo));
-                    }
+        List<Long> eventsId = new ArrayList<>();
+        eventsId.add(3L);
+        SelectedEventInfoReq req = new SelectedEventInfoReq(matchId, eventsId, 1, false, true);
+        launchFlow(model.getIMApiService().getSelectedEventInfo(
+                new BaseIMRequest<>(IMApiService.GetSelectedEventInfo, req)),
+                new HttpCallBack<EventListRsp>() {
+            @Override
+            public void onResult(EventListRsp eventListRsp) {
+                super.onResult(eventListRsp);
+            }
+        });
 
-                    @Override
-                    public void onError(Throwable t) {
-                        if (((BusinessException) t).code == CodeRule.CODE_14010) {
-                            getGameTokenApi();
-                        }
-                    }
-                });
-        addSubscribe(disposable);
+//        Disposable disposable = (Disposable) model.getApiService().getMatchDetail(map)
+//                .compose(RxUtils.schedulersTransformer()) //线程调度
+//                .compose(RxUtils.exceptionTransformer())
+//                .subscribeWith(new HttpCallBack<MatchInfo>() {
+//                    @Override
+//                    public void onResult(MatchInfo matchInfo) {
+//                        Match match = new MatchFb(matchInfo);
+//                        if (mMatch != null) {
+//                            setOptionOddChange(match);
+//                        }
+//                        mMatch = match;
+//                        matchData.postValue(match);
+//                        categoryListData.postValue(getCategoryList(matchInfo));
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//                        if (((BusinessException) t).code == CodeRule.CODE_14010) {
+//                            getGameTokenApi();
+//                        }
+//                    }
+//                });
+//        addSubscribe(disposable);
 
     }
 
@@ -168,9 +181,7 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
 
         for (Option newOption : newOptonList) {
             for (Option oldOption : oldOptonList) {
-                if (oldOption != null && newOption != null
-                        && oldOption.getRealOdd() != newOption.getRealOdd()
-                        && TextUtils.equals(oldOption.getCode(), newOption.getCode())) {
+                if (oldOption != null && newOption != null && oldOption.getRealOdd() != newOption.getRealOdd() && TextUtils.equals(oldOption.getCode(), newOption.getCode())) {
                     newOption.setChange(oldOption.getRealOdd());
                     break;
                 }
@@ -220,37 +231,61 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
         } else {
             flowable = model.getBaseApiService().getFBGameTokenApi();
         }
-        Disposable disposable = (Disposable) flowable
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<FBService>() {
-                    @Override
-                    public void onResult(FBService fbService) {
-                        if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
-                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, fbService.getToken());
-                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_DISABLED, fbService.isDisabled);
-                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
-                            BtDomainUtil.setDefaultFbxcDomainUrl(fbService.getForward().getApiServerAddress());
-                            BtDomainUtil.addFbxcDomainUrl(fbService.getForward().getApiServerAddress());
-                            BtDomainUtil.setFbxcDomainUrl(fbService.getDomains());
-                        } else {
-                            SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, fbService.getToken());
-                            SPUtils.getInstance().put(SPKeyGlobal.FB_DISABLED, fbService.isDisabled);
-                            SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
-                            BtDomainUtil.setDefaultFbDomainUrl(fbService.getForward().getApiServerAddress());
-                            BtDomainUtil.addFbDomainUrl(fbService.getForward().getApiServerAddress());
-                            BtDomainUtil.setFbDomainUrl(fbService.getDomains());
-                        }
 
-                        getMatchDetail(mMatchId);
-                    }
+        launchFlow(flowable, new HttpCallBack<FBService>() {
+            @Override
+            public void onResult(FBService fbService) {
+                if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
+                    SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, fbService.getToken());
+                    SPUtils.getInstance().put(SPKeyGlobal.FBXC_DISABLED, fbService.isDisabled);
+                    SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
+                    BtDomainUtil.setDefaultFbxcDomainUrl(fbService.getForward().getApiServerAddress());
+                    BtDomainUtil.addFbxcDomainUrl(fbService.getForward().getApiServerAddress());
+                    BtDomainUtil.setFbxcDomainUrl(fbService.getDomains());
+                } else {
+                    SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, fbService.getToken());
+                    SPUtils.getInstance().put(SPKeyGlobal.FB_DISABLED, fbService.isDisabled);
+                    SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
+                    BtDomainUtil.setDefaultFbDomainUrl(fbService.getForward().getApiServerAddress());
+                    BtDomainUtil.addFbDomainUrl(fbService.getForward().getApiServerAddress());
+                    BtDomainUtil.setFbDomainUrl(fbService.getDomains());
+                }
 
-                    @Override
-                    public void onError(Throwable t) {
-                        //super.onError(t);
-                    }
-                });
-        addSubscribe(disposable);
+                getMatchDetail(mMatchId);
+            }
+        });
+
+//        Disposable disposable = (Disposable) flowable
+//                .compose(RxUtils.schedulersTransformer()) //线程调度
+//                .compose(RxUtils.exceptionTransformer())
+//                .subscribeWith(new HttpCallBack<FBService>() {
+//                    @Override
+//                    public void onResult(FBService fbService) {
+//                        if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
+//                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, fbService.getToken());
+//                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_DISABLED, fbService.isDisabled);
+//                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
+//                            BtDomainUtil.setDefaultFbxcDomainUrl(fbService.getForward().getApiServerAddress());
+//                            BtDomainUtil.addFbxcDomainUrl(fbService.getForward().getApiServerAddress());
+//                            BtDomainUtil.setFbxcDomainUrl(fbService.getDomains());
+//                        } else {
+//                            SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, fbService.getToken());
+//                            SPUtils.getInstance().put(SPKeyGlobal.FB_DISABLED, fbService.isDisabled);
+//                            SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
+//                            BtDomainUtil.setDefaultFbDomainUrl(fbService.getForward().getApiServerAddress());
+//                            BtDomainUtil.addFbDomainUrl(fbService.getForward().getApiServerAddress());
+//                            BtDomainUtil.setFbDomainUrl(fbService.getDomains());
+//                        }
+//
+//                        getMatchDetail(mMatchId);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//                        //super.onError(t);
+//                    }
+//                });
+//        addSubscribe(disposable);
     }
 
 }

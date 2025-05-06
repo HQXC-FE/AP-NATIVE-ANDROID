@@ -15,6 +15,7 @@ import com.xtree.bet.bean.request.pm.BtCashOutBetReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
+import com.xtree.bet.bean.response.fb.T;
 import com.xtree.bet.bean.response.im.BetInfo;
 import com.xtree.bet.bean.response.im.BetList;
 import com.xtree.bet.bean.response.im.DeltaEventListRsp;
@@ -51,8 +52,15 @@ import retrofit2.http.QueryMap;
 
 public interface IMApiService {
 
+    /**
+     * 通用转发请求接口
+     */
+    String forwardPath = "/api/sports/imsb/forward";
+    /**
+     * 索取赛事选项资料
+     */
+    String GetSelectedEventInfo = "GetSelectedEventInfo";
 
-    String forward = "/api/sports/imsb/forward";
 
     /**
      * 获取获取公告
@@ -60,7 +68,7 @@ public interface IMApiService {
      *
      * @return
      */
-    @POST("/api/sports/imsb/forward")
+    @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<GetAnnouncementRsp>> getAnnouncement(@Body AnnouncementReq announcementReq);
 
@@ -70,7 +78,7 @@ public interface IMApiService {
      *
      * @return
      */
-    @POST("/api/sports/imsb/forward")
+    @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<SportCountRsp>> getAllSportCount(@Body AllSportCountReq sportCountReq);
 
@@ -123,7 +131,7 @@ public interface IMApiService {
      *
      * @return
      */
-    @POST(forward)
+    @POST(forwardPath)
     Flowable<BaseResponse<EventListRsp>> getSelectedEventInfo(@Body BaseIMRequest<SelectedEventInfoReq> selectedEventInfoReq);
 
     /**
