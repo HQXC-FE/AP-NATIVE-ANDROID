@@ -6,14 +6,16 @@ import com.xtree.base.vo.BaseBean;
 
 import java.util.List;
 
+
 public class GetAnnouncementRsp implements BaseBean {
 
-    public List<Announcement> announcement;
-    public String serverTime;
-    public int statusCode;
-    public String statusDesc;
+    private List<Announcement> announcement;
+    private String serverTime;
+    private int statusCode;
+    private String statusDesc;
 
-    public GetAnnouncementRsp() {}
+    public GetAnnouncementRsp() {
+    }
 
     protected GetAnnouncementRsp(Parcel in) {
         this.announcement = in.createTypedArrayList(Announcement.CREATOR);
@@ -53,4 +55,41 @@ public class GetAnnouncementRsp implements BaseBean {
             return new GetAnnouncementRsp[size];
         }
     };
+
+    public List<Announcement> getAnnouncement() {
+        return announcement;
+    }
+
+    public void setAnnouncement(List<Announcement> announcement) {
+        this.announcement = announcement;
+    }
+
+    public String getServerTime() {
+        return serverTime;
+    }
+
+    public void setServerTime(String serverTime) {
+        this.serverTime = serverTime;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
+
+    @Override
+    public String toString() {
+        return "GetAnnouncementRsp{" + "announcement=" + announcement + ", serverTime='" + serverTime + '\'' + ", statusCode=" + statusCode + ", statusDesc='" + statusDesc + '\'' + '}';
+    }
 }

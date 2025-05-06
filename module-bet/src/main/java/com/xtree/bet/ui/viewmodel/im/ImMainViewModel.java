@@ -14,6 +14,8 @@ import com.xtree.bet.bean.request.im.EventInfoMbtReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
+import com.xtree.bet.bean.response.im.Announcement;
+import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
 import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.response.pm.FrontListInfo;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
@@ -185,15 +187,8 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         pmListReq.setType(3);
         // 获取 Flowable 对象
-        Flowable flowable = getFlowableMatchesPagePB(pmListReq);
-        // 根据是否使用缓存选择不同的回调
-//        Object callback = isUseCacheApiService()
-//                ? new PMHotMatchCountCacheCallBack(this)
-//                : new PMHotMatchCountCallBack(this);
+        model.getIMApiService().matchesPagePB(pmListReq);
 
-        // 1.创建 Disposable，2.并进行订阅
-//        Disposable disposable = createDisposable(flowable, callback);
-//        addSubscribe(disposable);
     }
 
     @Override
@@ -342,16 +337,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
             }
         }
 
-//        EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
-//        eventInfoMbtReq.setSportId(1);
-//        eventInfoMbtReq.setMarket(3);
-//        eventInfoMbtReq.setMatchDay(0);
-//        eventInfoMbtReq.setOddsType(3);
-//        eventInfoMbtReq.setPage(1);
-//        eventInfoMbtReq.setSeason(0);
-//        eventInfoMbtReq.setCombo(false);
-//        CfLog.d("==== ImMainViewModel getLeagueList ====");
-//        getFlowableLiveMatches(eventInfoMbtReq);
+
 
         Flowable flowable = getFlowableMatchesPagePB(pmListReq);
         if (isStepSecond) {
@@ -669,31 +655,31 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      */
     public void getAnnouncement() {
         AnnouncementReq  announcementReq = new AnnouncementReq();
-//        Disposable disposable = (Disposable) model.getIMApiService().getAnnouncement(announcementReq)
-//                .compose(RxUtils.schedulersTransformer()) //线程调度
-//                .compose(RxUtils.exceptionTransformer())
-//                .subscribeWith(new HttpCallBack<FrontListInfo>() {
-//                    @Override
-//                    public void onResult(FrontListInfo info) {
-//                        KLog.i("FrontListInfo     " + info);
-//                        List<FBAnnouncementInfo.RecordsDTO> list2 = new ArrayList<>();
-//                        for (FrontListInfo.NbDTO i : info.nb) {
-//                            FBAnnouncementInfo.RecordsDTO dto = new FBAnnouncementInfo.RecordsDTO();
-//                            dto.id = i.id;
-//                            dto.ti = i.noticeTypeName;
-//                            dto.co = i.context;
-//                            dto.pt = i.sendTimeOther;
-//                            list2.add(dto);
-//                        }
-//                        announcementData.postValue(list2);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable t) {
-//                        super.onError(t);
-//                    }
-//                });
-//        addSubscribe(disposable);
+        Disposable disposable = (Disposable) model.getIMApiService().getAnnouncement(announcementReq)
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<GetAnnouncementRsp>() {
+                    @Override
+                    public void onResult(GetAnnouncementRsp info) {
+                        KLog.i("GetAnnouncementRsp     " + info);
+                        List<FBAnnouncementInfo.RecordsDTO> list2 = new ArrayList<>();
+                        for (Announcement i : info.getAnnouncement()) {
+                            FBAnnouncementInfo.RecordsDTO dto = new FBAnnouncementInfo.RecordsDTO();
+                            dto.id = String.valueOf(i.announcementId);
+                            dto.ti = "";
+                            dto.co = i.announcementDetail.get(0).content;
+                            dto.pt = i.postingDate;
+                            list2.add(dto);
+                        }
+                        announcementData.postValue(list2);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
+                });
+        addSubscribe(disposable);
     }
 
     @Override
