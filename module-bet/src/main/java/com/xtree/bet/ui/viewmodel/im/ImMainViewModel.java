@@ -517,14 +517,13 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                         }
                         CfLog.d("====== ImMainViewModel sportCountMap size =====" + sportCountMap.size());
                         statisticalData.postValue(sportCountMap);
-
                     }
 
                     @Override
                     public void onError(Throwable t) {
                         CfLog.d("====== ImMainViewModel statistical onError =====");
-                        //开云json数据做为假数据验证功能
-                        //processSportCount(SportCountRspParser.getSportCountRsp());
+                        //接口不通,先临时用开云json数据做为假数据验证功能
+                        processSportCount(SportCountRspParser.getSportCountRsp());
                     }
                 });
         addSubscribe(disposable);

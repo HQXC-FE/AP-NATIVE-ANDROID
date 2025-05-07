@@ -373,7 +373,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             PMAppViewModelFactory factory = PMAppViewModelFactory.getInstance(getApplication());
             return new ViewModelProvider(this, factory).get(PMMainViewModel.class);
         } else {
-            CfLog.d("========== initViewModel IMAppViewModelFactory ===========");
             IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance(getApplication());
             return new ViewModelProvider(this, factory).get(ImMainViewModel.class);
         }
@@ -400,9 +399,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         binding.tvBalance.setOnClickListener(this);
         binding.ivwGameSearch.setOnClickListener(this);
         binding.tvwCancel.setOnClickListener(this);
-        CfLog.d("================== MainActivity initView ================");
-        CfLog.d("================== MainActivity initView viewModel.getMatchGames() ================" + viewModel.getMatchGames());
-        printMatchGames(viewModel.getMatchGames());
         tabSportAdapter = new TabSportAdapter(new ArrayList<>(), viewModel.getMatchGames());
         tabSportAdapter.setAnimationEnable(false);
         binding.tabSportType.setAdapter(tabSportAdapter);
@@ -482,13 +478,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 isFirstInto = true;
                 mLeagueIdList.clear();
                 showSearchDate();
-                CfLog.d("============== MainActivity tabSportAdapter.getItem(position).id ==============" + tabSportAdapter.getItem(position).id);
-                CfLog.d("============== MainActivity position==============" + position);
-                CfLog.d("============== MainActivity viewModel.getMatchGames().get(1) ==============" + viewModel.getMatchGames().get(1));
-                if (viewModel.getMatchGames().get(tabSportAdapter.getItem(position).id) != null) {
-                    mSportName = viewModel.getMatchGames().get(tabSportAdapter.getItem(position).id).name;
-                }
-                printMatchGames(viewModel.getMatchGames());
+                mSportName = viewModel.getMatchGames().get(tabSportAdapter.getItem(position).id).name;
                 viewModel.setHotLeagueList(mSportName);
                 mLeagueGoingOnList.clear();
                 mLeagueList.clear();
@@ -1354,10 +1344,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             if (mStatisticalData == null) {
                 return;
             }
-            CfLog.d("========== MainActivity mStatisticalData ==========" + mStatisticalData.toString());
-            CfLog.d("========== MainActivity mStatisticalData.get(String.valueOf(playMethodType) ==========" + mStatisticalData.get(String.valueOf(playMethodType)));
+            //CfLog.d("========== MainActivity mStatisticalData ==========" + mStatisticalData.toString());
+           //CfLog.d("========== MainActivity mStatisticalData.get(String.valueOf(playMethodType) ==========" + mStatisticalData.get(String.valueOf(playMethodType)));
             List<SportTypeItem> list = mStatisticalData.get(String.valueOf(playMethodType));
-            CfLog.d("========== MainActivity list size ==========" + list.size());
+            //CfLog.d("========== MainActivity list size ==========" + list.size());
             tabSportAdapter.setList(list);
             binding.tabSportType.scrollToPosition(0);
             final int selectPosition;
@@ -1366,9 +1356,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             } else {
                 selectPosition = 0;
             }
-            CfLog.d("========== MainActivity binding.tabSportType ==========" + binding.tabSportType);
-            CfLog.d("========== MainActivity selectPosition ==========" + selectPosition);
-            //binding.tabSportType.post(() -> autoClickItem(binding.tabSportType, selectPosition));
+            //CfLog.d("========== MainActivity binding.tabSportType ==========" + binding.tabSportType);
+            //CfLog.d("========== MainActivity selectPosition ==========" + selectPosition);
+            binding.tabSportType.post(() -> autoClickItem(binding.tabSportType, selectPosition));
         });
         viewModel.leagueItemData.observe(this, leagueItemList -> {
             mLeagueItemList = leagueItemList;
@@ -1900,21 +1890,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         if (!TextUtils.isEmpty(json)) {
             SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, "");
             mIsFirstLoadMatch = false;
-        }
-    }
-
-    public void printMatchGames(HashMap<Integer, SportTypeItem> matchGames) {
-        if (matchGames == null || matchGames.isEmpty()) {
-            System.out.println("matchGames is empty or null.");
-            return;
-        }
-        for (Map.Entry<Integer, SportTypeItem> entry : matchGames.entrySet()) {
-            Integer key = entry.getKey();
-            SportTypeItem item = entry.getValue();
-            System.out.println(" MainActivity Key: ====" + key
-                    + ", id: ====" + item.id
-                    + ", num: ====" + item.num
-                    + ", menuId: ====" + item.menuId);
         }
     }
 }
