@@ -25,6 +25,7 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.Constant;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.lottery.data.LotteryPublicData;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
@@ -95,7 +96,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private int gameGroup = -1;
     private BasePopupView updateView;
     private String nativeAppUpdate;//App本地强制更新标志为 0不存在强更
-    private UserMethodsResponse mLotteryUser;
     private boolean isFirstToLottery = true;
 
     @Override
@@ -174,6 +174,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             viewModel.getFBXCGameTokenApi();
             viewModel.getPMGameTokenApi();
             viewModel.getUserMethods();//获取彩票数据
+            viewModel.getPushSettings();//彩票轮询推流数据
         }
 
         HashMap<String, String> map = new HashMap<>();
@@ -352,7 +353,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                         .sorted((a, b) -> Float.compare(b.value, a.value)) // 按 value 值降序排序
                         .collect(Collectors.toList());
 
-
                 // 构建新的 prize_group
                 List<UserMethodsResponse.DataDTO.PrizeGroupDTO> areaPrize = new ArrayList<>();
                 if (minMaxValues.size() >= 2) {
@@ -377,8 +377,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 //                    })
 //                    .collect(Collectors.toList());
             vo.setData(dynamicMethods);
-            mLotteryUser = vo;
-            SPUtils.getInstance().put("dynamicLotteryUser", new Gson().toJson(mLotteryUser));
+            LotteryPublicData.INSTANCE.setDynamicUserMethods(vo);
         });
     }
 
@@ -532,13 +531,14 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 if (ClickUtil.isFastClick3000()) {
                     return;
                 }
-                if ((mLotteryUser == null || mLotteryUser.getData() == null || mLotteryUser.getData().isEmpty())
-                        && SPUtils.getInstance().getString("dynamicLotteryUser", "").isEmpty()) {
+                if (LotteryPublicData.INSTANCE.getDynamicUserMethods() == null
+                        || LotteryPublicData.INSTANCE.getDynamicUserMethods().getData() == null
+                        || LotteryPublicData.INSTANCE.getDynamicUserMethods().getData().isEmpty()) {
                     if (isFirstToLottery) {
                         isFirstToLottery = false;
                         binding.rcvList.postDelayed(() -> toLottery(), 3000);
                     } else {
-                        ToastUtils.showLong("彩种数据加载失败,请重启再试");
+                        ToastUtils.showLong("彩种数据加载失败,请稍后再试");
                     }
                     return;
                 }

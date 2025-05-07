@@ -10,6 +10,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.lottery.data.LotteryPublicData;
+import com.xtree.base.lottery.vo.SettingVo;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.RetrofitClient;
 import com.xtree.base.net.fastest.FastestMonitorCache;
@@ -46,7 +48,6 @@ import java.util.Map;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
-import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -600,6 +601,25 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                         //super.onError(t);
                         CfLog.e("error, " + t.toString());
                         //liveDataUpdate.setValue(null);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    public void getPushSettings() {
+        Disposable disposable = (Disposable) model.getApiService().settings()
+                .compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<SettingVo>() {
+                    @Override
+                    public void onResult(SettingVo vo) {
+                        LotteryPublicData.INSTANCE.setPushSetting(vo);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        CfLog.e("error, " + t.toString());
+                        super.onError(t);
                     }
                 });
         addSubscribe(disposable);

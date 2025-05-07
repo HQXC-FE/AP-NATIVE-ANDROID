@@ -1,5 +1,6 @@
 package com.xtree.home.data.source;
 
+import com.xtree.base.lottery.vo.SettingVo;
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.FBService;
 import com.xtree.base.vo.PMService;
@@ -151,5 +152,11 @@ public interface HomeApiService {
      */
     @GET("/api/lottery/user-methods")
     Flowable<UserMethodsResponse> getUserMethods();
+
+    /**
+     * 彩票轮询配置数据
+     */
+    @GET("/api/push/settings")
+    Flowable<SettingVo> settings();
 
 }
