@@ -111,9 +111,9 @@ public class LotteryBetConfirmViewModel extends BaseViewModel<LotteryRepository>
                 solo = true;
             }
         }
-        if (solo) {
-            containSolo.setValue(true);
-        }
+//        if (solo) {
+            containSolo.setValue(solo);
+//        }
 
         totalMoney.setValue(money.toPlainString());
     }
