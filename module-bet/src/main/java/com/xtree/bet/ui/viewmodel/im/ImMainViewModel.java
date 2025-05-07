@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
+import com.xtree.bet.SportCountRspParser;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
 import com.xtree.bet.bean.request.im.AnnouncementReq;
 import com.xtree.bet.bean.request.im.EventInfoMbtReq;
@@ -75,8 +76,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     private int mGoingOnPageSize = 300;
     private int mPageSize = 20;
     /**
-     *
-     *
      * @param sportId
      * @param orderBy
      * @param leagueIds
@@ -349,16 +348,15 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
 
-
-        Flowable flowable = getFlowableMatchesPagePB(pmListReq);
-        if (isStepSecond) {
-            flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
-        }
-        CfLog.d("==== ImMainViewModel getLeagueList ====");
-
-        if (isTimerRefresh) {
-            flowable = getFlowableMatchBaseInfoByMidsPB(pmListReq);
-        }
+//        Flowable flowable = getFlowableMatchesPagePB(pmListReq);
+//        if (isStepSecond) {
+//            flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
+//        }
+//        CfLog.d("==== ImMainViewModel getLeagueList ====");
+//
+//        if (isTimerRefresh) {
+//            flowable = getFlowableMatchBaseInfoByMidsPB(pmListReq);
+//        }
 
         if (isRefresh) {
             mNoLiveheaderLeague = null;
@@ -440,9 +438,9 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                 .subscribeWith(new HttpCallBack<SportCountRsp>() {
                     @Override
                     public void onResult(SportCountRsp sportCountRsp) {
-                        CfLog.d("====== ImMainViewModel statistical onResult ====="+sportCountRsp.toString());
+                        CfLog.d("====== ImMainViewModel statistical onResult =====" + sportCountRsp.toString());
                         List<SportCountRsp.CountItem> sportList = sportCountRsp.getSportCount();
-                        CfLog.d("====== ImMainViewModel sportList size ====="+sportList.size());
+                        CfLog.d("====== ImMainViewModel sportList size =====" + sportList.size());
                         mMenuInfoList.clear();
                         for (SportCountRsp.CountItem item : sportList) {
                             System.out.println("SportId: " + item.sportId);
@@ -450,29 +448,29 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                                 MenuInfo menuInfo = new MenuInfo();
                                 menuInfo.menuId = item.sportId;
                                 menuInfo.menuName = item.sportName;
-                                if(name.equals("今日")){
+                                if (name.equals("今日")) {
                                     menuInfo.menuType = 3;
-                                    if(!item.eventGroupTypes.isEmpty()){
-                                        menuInfo.count = item.eventGroupTypes.get(0).todayFECount+item.eventGroupTypes.get(0).rbFECount;
+                                    if (!item.eventGroupTypes.isEmpty()) {
+                                        menuInfo.count = item.eventGroupTypes.get(0).todayFECount + item.eventGroupTypes.get(0).rbFECount;
                                     }
-                                }else if (name.equals("滚球")){
+                                } else if (name.equals("滚球")) {
                                     menuInfo.menuType = 1;
-                                    if(!item.eventGroupTypes.isEmpty()){
+                                    if (!item.eventGroupTypes.isEmpty()) {
                                         menuInfo.count = item.eventGroupTypes.get(0).rbFECount;
                                     }
-                                }else if (name.equals("早盘")) {
+                                } else if (name.equals("早盘")) {
                                     menuInfo.menuType = 4;
-                                    if(!item.eventGroupTypes.isEmpty()){
+                                    if (!item.eventGroupTypes.isEmpty()) {
                                         menuInfo.count = item.eventGroupTypes.get(0).earlyFECount;
                                     }
-                                }else if (name.equals("串关")) {
+                                } else if (name.equals("串关")) {
                                     menuInfo.menuType = 11;
-                                    if(!item.eventGroupTypes.isEmpty()) {
+                                    if (!item.eventGroupTypes.isEmpty()) {
                                         menuInfo.count = item.eventGroupTypes.get(0).count;
                                     }
-                                }else if (name.equals("冠军")) {
+                                } else if (name.equals("冠军")) {
                                     menuInfo.menuType = 100;
-                                    if(!item.eventGroupTypes.isEmpty()) {
+                                    if (!item.eventGroupTypes.isEmpty()) {
                                         menuInfo.count = item.eventGroupTypes.get(0).orCount;
                                     }
                                 }
@@ -512,20 +510,21 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
 //                                        continue;
 //                                    }
 
-                                System.out.println("=========== ImMainViewModel menuInfo.menuName============="+menuInfo.menuName);
                                 sportCountMap.put(String.valueOf(menuInfo.menuType), sportTypeItemList);
 //                                }
 
                             }
                         }
-                        CfLog.d("====== ImMainViewModel sportCountMap size ====="+sportCountMap.size());
+                        CfLog.d("====== ImMainViewModel sportCountMap size =====" + sportCountMap.size());
                         statisticalData.postValue(sportCountMap);
 
                     }
 
                     @Override
                     public void onError(Throwable t) {
-
+                        CfLog.d("====== ImMainViewModel statistical onError =====");
+                        //开云json数据做为假数据验证功能
+                        //processSportCount(SportCountRspParser.getSportCountRsp());
                     }
                 });
         addSubscribe(disposable);
@@ -552,7 +551,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                     public void onResult(List<PMResultBean> list) {
                         List<SportTypeItem> list1 = new ArrayList<>();
                         for (PMResultBean i : list) {
-                            if (PMConstants.getMatchGames().get(i.getMenuType()) == null
+                            if (IMConstants.getMatchGames().get(i.getMenuType()) == null
                                     || i.getMenuType() == 3001 || i.getMenuType() == 3002 || i.getMenuType() == 3003) {
                                 //体育赛果隐藏英雄联盟、DOTA2、王者荣耀
                                 continue;
@@ -571,6 +570,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
+
                     }
                 });
         addSubscribe(disposable);
@@ -639,7 +639,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     @Override
     public HashMap<Integer, SportTypeItem> getMatchGames() {
-        return PMConstants.getMatchGames();
+        return IMConstants.getMatchGames();
     }
 
     /**
@@ -662,7 +662,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      * 公告列表集合
      */
     public void getAnnouncement() {
-        AnnouncementReq  announcementReq = new AnnouncementReq();
+        AnnouncementReq announcementReq = new AnnouncementReq();
         Disposable disposable = (Disposable) model.getIMApiService().getAnnouncement(announcementReq)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
@@ -695,10 +695,10 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         super.onDestroy();
     }
 
-    private Flowable getFlowableMatchesPagePB(PMListReq pmListReq) {
-        Flowable flowable = model.getPMApiService().matchesPagePB(pmListReq);
-        return flowable;
-    }
+//    private Flowable getFlowableMatchesPagePB(PMListReq pmListReq) {
+//        Flowable flowable = model.getIMApiService().matchesPagePB(pmListReq);
+//        return flowable;
+//    }
 
     public Flowable getFlowableLiveMatches() {
         EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
@@ -722,6 +722,124 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     private Flowable getFlowableMatchBaseInfoByMidsPB(PMListReq pmListReq) {
         Flowable flowable = model.getPMApiService().getMatchBaseInfoByMidsPB(pmListReq);
         return flowable;
+    }
+
+    private void processSportCount(SportCountRsp sportCountRsp) {
+        CfLog.d("====== ImMainViewModel statistical onResult =====" + sportCountRsp.toString());
+        List<SportCountRsp.CountItem> sportList = sportCountRsp.getSportCount();
+        CfLog.d("====== ImMainViewModel sportList size =====" + sportList.size());
+        //mMenuInfoList.clear();
+        for (String name : PLAY_METHOD_NAMES) {
+            if (name.equals("今日")) {
+                MenuInfo menuInfo = new MenuInfo();
+                menuInfo.menuId = 3;
+                menuInfo.menuName = "今日";
+                menuInfo.menuType = 3;
+                menuInfo.subList = generateMenuInfoListFromSportList(sportList);
+                mMenuInfoList.add(menuInfo);
+            } else if (name.equals("滚球")) {
+                MenuInfo menuInfo = new MenuInfo();
+                menuInfo.menuId = 1;
+                menuInfo.menuName = "滚球";
+                menuInfo.menuType = 1;
+                menuInfo.subList = generateMenuInfoListFromSportList(sportList);
+                mMenuInfoList.add(menuInfo);
+            } else if (name.equals("早盘")) {
+                MenuInfo menuInfo = new MenuInfo();
+                menuInfo.menuId = 4;
+                menuInfo.menuName = "早盘";
+                menuInfo.menuType = 4;
+                menuInfo.subList = generateMenuInfoListFromSportList(sportList);
+                mMenuInfoList.add(menuInfo);
+            } else if (name.equals("串关")) {
+                MenuInfo menuInfo = new MenuInfo();
+                menuInfo.menuId = 11;
+                menuInfo.menuName = "串关";
+                menuInfo.menuType = 11;
+                menuInfo.subList = generateMenuInfoListFromSportList(sportList);
+                mMenuInfoList.add(menuInfo);
+            } else if (name.equals("冠军")) {
+                MenuInfo menuInfo = new MenuInfo();
+                menuInfo.menuId = 100;
+                menuInfo.menuName = "冠军";
+                menuInfo.menuType = 100;
+                menuInfo.subList = generateMenuInfoListFromSportList(sportList);
+                mMenuInfoList.add(menuInfo);
+            }
+        }
+
+        if (mMatchGames.isEmpty()) {
+            mMatchGames = IMConstants.getMatchGames();
+        }
+
+        for (MenuInfo menuInfo : mMenuInfoList) {
+            //"3", "1", "4", "11", "100"; 只有"今日", "滚球", "早盘", "串关", "冠军"数据才添加，提升效率
+            if (menuInfo.menuType == 3 || menuInfo.menuType == 1 || menuInfo.menuType == 4 || menuInfo.menuType == 11
+                    || menuInfo.menuType == 100) {
+                ArrayList<SportTypeItem> sportTypeItemList = new ArrayList<>();
+                //Map<String, Integer> sslMap = new HashMap<>();
+                if (menuInfo.menuType == 3 || menuInfo.menuType == 11) {//今日 串关 加热门
+                    SportTypeItem item1 = new SportTypeItem();
+                    item1.id = 1111;
+                    item1.num = 0;
+                    sportTypeItemList.add(item1);
+                } else if (menuInfo.menuType == 1) {//滚球 加全部
+                    SportTypeItem item2 = new SportTypeItem();
+                    item2.id = 0;
+                    item2.num = menuInfo.count;
+                    sportTypeItemList.add(item2);
+                }
+                for (MenuInfo subMenu : menuInfo.subList) {
+                    if (subMenu.count <= 0 || mMatchGames.get(subMenu.menuType) == null) {
+                        continue;
+                    }
+
+                    SportTypeItem item = new SportTypeItem();
+                    CfLog.d("====== IM subMenu.menuType ======="+subMenu.menuType);
+                    item.id = subMenu.menuType;
+                    item.menuId = subMenu.menuId;
+                    item.num = subMenu.count;
+                    sportTypeItemList.add(item);
+                    sportCountMap.put(String.valueOf(menuInfo.menuType), sportTypeItemList);
+                }
+                System.out.println("=========== ImMainViewModel sportTypeItemList =============" + sportTypeItemList.size());
+            }
+        }
+        CfLog.d("============== mMenuInfoList size ===============" + mMenuInfoList.size());
+        for (Map.Entry<String, List<SportTypeItem>> entry : sportCountMap.entrySet()) {
+            String key = entry.getKey();
+            List<SportTypeItem> value = entry.getValue();
+            System.out.println("===== key: " + key);
+            for (SportTypeItem item : value) {
+                System.out.println("====== item: " + item.toString());
+            }
+        }
+
+        CfLog.d("====== ImMainViewModel sportCountMap size =====" + sportCountMap.size());
+        statisticalData.postValue(sportCountMap);
+    }
+
+    /**
+     * 将 SportCountRsp.CountItem 列表转换为 MenuInfo 列表
+     *
+     * @param sportList 原始的体育项列表
+     * @return MenuInfo 列表
+     */
+    public List<MenuInfo> generateMenuInfoListFromSportList(List<SportCountRsp.CountItem> sportList) {
+        List<MenuInfo> menuInfoList = new ArrayList<>();
+        if (sportList == null || sportList.isEmpty()) return menuInfoList;
+
+        for (SportCountRsp.CountItem item : sportList) {
+            System.out.println("SportId: " + item.sportId);
+            MenuInfo menuInfo = new MenuInfo();
+            menuInfo.menuId = item.sportId;
+            menuInfo.menuType = item.sportId;
+            menuInfo.menuName = item.sportName;
+            menuInfo.count = item.eventGroupTypes.get(0).todayFECount;
+            menuInfoList.add(menuInfo);
+        }
+
+        return menuInfoList;
     }
 
 

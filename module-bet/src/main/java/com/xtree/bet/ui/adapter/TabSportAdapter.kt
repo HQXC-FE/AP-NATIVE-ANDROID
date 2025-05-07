@@ -19,9 +19,9 @@ class TabSportAdapter(
         if (holder.layoutPosition == selectedPosition) {
             isSelected = true
         }
-        CfLog.d("=============== TabSportAdapter convert item.id ================"+item.id)
         val sportItem = matchGames[item.id]
         sportItem?.apply {
+            CfLog.d("=============== TabSportAdapter sportItem.name ================"+sportItem.name)
             holder.setText(R.id.tab_item_name, sportItem.name)
             holder.getView<TextView>(R.id.tab_item_name).isSelected = isSelected
             holder.setText(R.id.tv_match_count, item.num.toString())
@@ -29,7 +29,6 @@ class TabSportAdapter(
             holder.setBackgroundResource(R.id.iv_icon, sportItem.iconId)
             holder.getView<ImageView>(R.id.iv_icon).isSelected = isSelected
         }
-        CfLog.d("=============== TabSportAdapter convert sportItem.name ================"+sportItem!!.name)
     }
 
     fun setSelectedPosition(position: Int) {

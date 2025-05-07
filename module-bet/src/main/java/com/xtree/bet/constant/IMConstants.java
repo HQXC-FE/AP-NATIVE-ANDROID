@@ -51,6 +51,7 @@ public class IMConstants {
             MATCH_GAMES.put(177, new SportTypeItem(177, "e-football", "电子足球", 29, R.drawable.bt_match_item_dzzq_selector));
             MATCH_GAMES.put(178, new SportTypeItem(178, "e-basketball", "电子篮球", 30, R.drawable.bt_match_item_dzlq_selector));
         }
+        CfLog.d("============ getMatchGames MATCH_GAMES after ============"+MATCH_GAMES.size());
         return MATCH_GAMES;
     }
 

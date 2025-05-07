@@ -80,6 +80,7 @@ import com.xtree.bet.weight.BettingNetFloatingWindows;
 import com.xtree.bet.weight.PageHorizontalScrollView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -203,7 +204,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     @Override
     public void initParam() {
         mPlatform = getIntent().getStringExtra(KEY_PLATFORM);
-        CfLog.d("==== MainActivity mPlatform ===="+mPlatform);
+        CfLog.d("==== MainActivity mPlatform ====" + mPlatform);
         initPlatFormName();
         SPUtils.getInstance().put(KEY_PLATFORM, mPlatform);
         SPUtils.getInstance().put(KEY_PLATFORM_NAME, mPlatformName);
@@ -365,13 +366,14 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
     @Override
     public TemplateMainViewModel initViewModel() {
-        if (TextUtils.equals(mPlatform, PLATFORM_FB) && !TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
+        if (TextUtils.equals(mPlatform, PLATFORM_FB) || TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
             AppViewModelFactory factory = AppViewModelFactory.getInstance(getApplication());
             return new ViewModelProvider(this, factory).get(FBMainViewModel.class);
-        } else if(TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)){
+        } else if (TextUtils.equals(mPlatform, PLATFORM_PM) || TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
             PMAppViewModelFactory factory = PMAppViewModelFactory.getInstance(getApplication());
             return new ViewModelProvider(this, factory).get(PMMainViewModel.class);
-        }else{
+        } else {
+            CfLog.d("========== initViewModel IMAppViewModelFactory ===========");
             IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance(getApplication());
             return new ViewModelProvider(this, factory).get(ImMainViewModel.class);
         }
@@ -398,7 +400,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         binding.tvBalance.setOnClickListener(this);
         binding.ivwGameSearch.setOnClickListener(this);
         binding.tvwCancel.setOnClickListener(this);
-        CfLog.d("================== MainActivity initView================");
+        CfLog.d("================== MainActivity initView ================");
+        CfLog.d("================== MainActivity initView viewModel.getMatchGames() ================" + viewModel.getMatchGames());
+        printMatchGames(viewModel.getMatchGames());
         tabSportAdapter = new TabSportAdapter(new ArrayList<>(), viewModel.getMatchGames());
         tabSportAdapter.setAnimationEnable(false);
         binding.tabSportType.setAdapter(tabSportAdapter);
@@ -478,7 +482,13 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 isFirstInto = true;
                 mLeagueIdList.clear();
                 showSearchDate();
-                mSportName = viewModel.getMatchGames().get(tabSportAdapter.getItem(position).id).name;
+                CfLog.d("============== MainActivity tabSportAdapter.getItem(position).id ==============" + tabSportAdapter.getItem(position).id);
+                CfLog.d("============== MainActivity position==============" + position);
+                CfLog.d("============== MainActivity viewModel.getMatchGames().get(1) ==============" + viewModel.getMatchGames().get(1));
+                if (viewModel.getMatchGames().get(tabSportAdapter.getItem(position).id) != null) {
+                    mSportName = viewModel.getMatchGames().get(tabSportAdapter.getItem(position).id).name;
+                }
+                printMatchGames(viewModel.getMatchGames());
                 viewModel.setHotLeagueList(mSportName);
                 mLeagueGoingOnList.clear();
                 mLeagueList.clear();
@@ -489,7 +499,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 getMatchData(sportId, mOrderBy, mLeagueIdList, null,
                         playMethodType, searchDatePos, false, true);
                 if ((sportId == null || TextUtils.equals("1111", sportId)) && (playMethodPos == 0 || playMethodPos == 3)) {
-                    System.out.println("############## tabSportAdapter sportId ##############"+sportId);
+                    System.out.println("############## tabSportAdapter sportId ##############" + sportId);
                     viewModel.getHotMatchCount(playMethodType, viewModel.hotLeagueList);
                 }
             }
@@ -619,7 +629,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     private void autoClickItem(RecyclerView recyclerView, int position) {
         // 找到指定位置的ViewHolder
         RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(position);
-        if (viewHolder != null) {
+        if (viewHolder != null && viewHolder.itemView != null) {
             // 获取itemView并模拟点击
             viewHolder.itemView.performClick();
         } else {
@@ -645,7 +655,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     }
 
     private void initGoWeb() {
-        if (TextUtils.equals(mPlatform, PLATFORM_PM) || TextUtils.equals(mPlatform, PLATFORM_FB)) {
+        if (TextUtils.equals(mPlatform, PLATFORM_PM) || TextUtils.equals(mPlatform, PLATFORM_FB) || TextUtils.equals(mPlatform, PLATFORM_IM)) {
             binding.ivWeb.setVisibility(View.VISIBLE);
             binding.ivWeb.setOnClickListener(v -> {
                 if (ClickUtil.isFastClick()) {
@@ -1099,10 +1109,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
      * 更换线路后重置viewmodel
      */
     private void resetViewModel() {
-        if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+        if (TextUtils.equals(mPlatform, PLATFORM_FB) || TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
             AppViewModelFactory.init();
-        } else {
+        } else if(TextUtils.equals(mPlatform, PLATFORM_PM) || TextUtils.equals(mPlatform, PLATFORM_PMXC)){
             PMAppViewModelFactory.init();
+        } else {
+            IMAppViewModelFactory.init();
         }
         //解除Messenger注册
         Messenger.getDefault().unregister(viewModel);
@@ -1114,10 +1126,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         }
         viewModel = null;
         initViewDataBinding(mSavedInstanceState);
-        if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+        if (TextUtils.equals(mPlatform, PLATFORM_FB) || TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
             viewModel.setModel(AppViewModelFactory.getInstance(getApplication()).getRepository());
-        } else {
+        } else if (TextUtils.equals(mPlatform, PLATFORM_PM) || TextUtils.equals(mPlatform, PLATFORM_PMXC)){
             viewModel.setModel(PMAppViewModelFactory.getInstance(getApplication()).getRepository());
+        } else{
+            viewModel.setModel(IMAppViewModelFactory.getInstance(getApplication()).getRepository());
         }
         initView();
         //页面数据初始化方法
@@ -1157,14 +1171,14 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, DomainUtil.getApiUrl());
                 } else {
-                    System.out.println("########### MainActivity baseUrl 333333 ###########"+DomainUtil.getApiUrl());
+                    System.out.println("########### MainActivity baseUrl 333333 ###########" + DomainUtil.getApiUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, DomainUtil.getApiUrl());
                 }
             } else {
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, BtDomainUtil.getDefaultPmxcDomainUrl());
                 } else {
-                    System.out.println("########### MainActivity baseUrl 44444 ###########"+ BtDomainUtil.getDefaultPmDomainUrl());
+                    System.out.println("########### MainActivity baseUrl 44444 ###########" + BtDomainUtil.getDefaultPmDomainUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, BtDomainUtil.getDefaultPmDomainUrl());
                 }
             }
@@ -1266,10 +1280,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     @Override
     public void initViewObservable() {
         viewModel.reNewViewModel.observe(this, unused -> {
-            if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+            if (TextUtils.equals(mPlatform, PLATFORM_FB) || TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
                 AppViewModelFactory.init();
-            } else {
+            } else if (TextUtils.equals(mPlatform, PLATFORM_PM) || TextUtils.equals(mPlatform, PLATFORM_PMXC)){
                 PMAppViewModelFactory.init();
+            } else {
+                IMAppViewModelFactory.init();
             }
             //解除Messenger注册
             Messenger.getDefault().unregister(viewModel);
@@ -1281,10 +1297,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             }
             viewModel = null;
             initViewDataBinding(mSavedInstanceState);
-            if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+            if (TextUtils.equals(mPlatform, PLATFORM_FB) || TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
                 viewModel.setModel(AppViewModelFactory.getInstance(getApplication()).getRepository());
-            } else {
+            } else if(TextUtils.equals(mPlatform, PLATFORM_PM) || TextUtils.equals(mPlatform, PLATFORM_PMXC)){
                 viewModel.setModel(PMAppViewModelFactory.getInstance(getApplication()).getRepository());
+            } else {
+                viewModel.setModel(IMAppViewModelFactory.getInstance(getApplication()).getRepository());
             }
         });
         viewModel.itemClickEvent.observe(this, s -> ToastUtils.showShort(s));
@@ -1336,10 +1354,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             if (mStatisticalData == null) {
                 return;
             }
-            CfLog.d("========== MainActivity mStatisticalData =========="+mStatisticalData.toString());
-            CfLog.d("========== MainActivity mStatisticalData.get(String.valueOf(playMethodType) =========="+mStatisticalData.get(String.valueOf(playMethodType)));
+            CfLog.d("========== MainActivity mStatisticalData ==========" + mStatisticalData.toString());
+            CfLog.d("========== MainActivity mStatisticalData.get(String.valueOf(playMethodType) ==========" + mStatisticalData.get(String.valueOf(playMethodType)));
             List<SportTypeItem> list = mStatisticalData.get(String.valueOf(playMethodType));
-            CfLog.d("========== MainActivity list size =========="+list.size());
+            CfLog.d("========== MainActivity list size ==========" + list.size());
             tabSportAdapter.setList(list);
             binding.tabSportType.scrollToPosition(0);
             final int selectPosition;
@@ -1348,8 +1366,8 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             } else {
                 selectPosition = 0;
             }
-            CfLog.d("========== MainActivity binding.tabSportType =========="+binding.tabSportType);
-            CfLog.d("========== MainActivity selectPosition =========="+selectPosition);
+            CfLog.d("========== MainActivity binding.tabSportType ==========" + binding.tabSportType);
+            CfLog.d("========== MainActivity selectPosition ==========" + selectPosition);
             //binding.tabSportType.post(() -> autoClickItem(binding.tabSportType, selectPosition));
         });
         viewModel.leagueItemData.observe(this, leagueItemList -> {
@@ -1447,7 +1465,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         viewModel.statisticalData.observe(this, statisticalData -> {
             CfLog.i("mStatisticalData     " + new Gson().toJson(mStatisticalData));
             this.mStatisticalData = statisticalData;
-            CfLog.i("mStatisticalData observe ================   " + mStatisticalData);
+            //CfLog.i("mStatisticalData observe ================   " + mStatisticalData);
             updateStatisticalData();
         });
 
@@ -1706,7 +1724,15 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         if (mStatisticalData == null) {
             return;
         }
+        CfLog.d("============ updateStatisticalData mStatisticalData =================" + mStatisticalData);
         List<SportTypeItem> list = mStatisticalData.get(String.valueOf(playMethodType));
+        CfLog.d("============ updateStatisticalData list =================" + list.size());
+
+        for (SportTypeItem item : list) {
+            System.out.println("id: " + item.id + ", num: " + item.num + ", menuId: " + item.menuId);
+        }
+
+
         if (playMethodPos == 0 || playMethodPos == 3) {
             if (list != null && list.get(0) != null) {
                 list.get(0).num = mHotMatchCount;
@@ -1871,9 +1897,24 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     // 所以需要清理缓存接口调用变成直连三方数据
     private void clearSportCache() {
         String json = SPUtils.getInstance().getString(SPKeyGlobal.SPORT_MATCH_CACHE, "");
-        if(!TextUtils.isEmpty(json)){
+        if (!TextUtils.isEmpty(json)) {
             SPUtils.getInstance().put(SPKeyGlobal.SPORT_MATCH_CACHE, "");
             mIsFirstLoadMatch = false;
+        }
+    }
+
+    public void printMatchGames(HashMap<Integer, SportTypeItem> matchGames) {
+        if (matchGames == null || matchGames.isEmpty()) {
+            System.out.println("matchGames is empty or null.");
+            return;
+        }
+        for (Map.Entry<Integer, SportTypeItem> entry : matchGames.entrySet()) {
+            Integer key = entry.getKey();
+            SportTypeItem item = entry.getValue();
+            System.out.println(" MainActivity Key: ====" + key
+                    + ", id: ====" + item.id
+                    + ", num: ====" + item.num
+                    + ", menuId: ====" + item.menuId);
         }
     }
 }
