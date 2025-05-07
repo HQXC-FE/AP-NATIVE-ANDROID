@@ -398,7 +398,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         binding.tvBalance.setOnClickListener(this);
         binding.ivwGameSearch.setOnClickListener(this);
         binding.tvwCancel.setOnClickListener(this);
-
+        CfLog.d("================== MainActivity initView================");
         tabSportAdapter = new TabSportAdapter(new ArrayList<>(), viewModel.getMatchGames());
         tabSportAdapter.setAnimationEnable(false);
         binding.tabSportType.setAdapter(tabSportAdapter);
@@ -1336,8 +1336,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             if (mStatisticalData == null) {
                 return;
             }
-
+            CfLog.d("========== MainActivity mStatisticalData =========="+mStatisticalData.toString());
+            CfLog.d("========== MainActivity mStatisticalData.get(String.valueOf(playMethodType) =========="+mStatisticalData.get(String.valueOf(playMethodType)));
             List<SportTypeItem> list = mStatisticalData.get(String.valueOf(playMethodType));
+            CfLog.d("========== MainActivity list size =========="+list.size());
             tabSportAdapter.setList(list);
             binding.tabSportType.scrollToPosition(0);
             final int selectPosition;
@@ -1346,7 +1348,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             } else {
                 selectPosition = 0;
             }
-            binding.tabSportType.post(() -> autoClickItem(binding.tabSportType, selectPosition));
+            CfLog.d("========== MainActivity binding.tabSportType =========="+binding.tabSportType);
+            CfLog.d("========== MainActivity selectPosition =========="+selectPosition);
+            //binding.tabSportType.post(() -> autoClickItem(binding.tabSportType, selectPosition));
         });
         viewModel.leagueItemData.observe(this, leagueItemList -> {
             mLeagueItemList = leagueItemList;
@@ -1443,6 +1447,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         viewModel.statisticalData.observe(this, statisticalData -> {
             CfLog.i("mStatisticalData     " + new Gson().toJson(mStatisticalData));
             this.mStatisticalData = statisticalData;
+            CfLog.i("mStatisticalData observe ================   " + mStatisticalData);
             updateStatisticalData();
         });
 

@@ -247,6 +247,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      */
 
     public void getLeagueList(int sportPos, String sportId, int orderBy, List<Long> leagueIds, List<Long> matchidList, int playMethodType, int searchDatePos, int oddType, boolean isTimerRefresh, boolean isRefresh, boolean isStepSecond) {
+        CfLog.d("============ ImMainViewModel getLeagueList ============");
         int type;
         boolean flag = false;
         if (!isStepSecond) {
@@ -306,7 +307,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                     }
                     if (TextUtils.equals(sportId, "0") || TextUtils.equals(sportId, "1111")) {
                         isFound = true;
-                        pmListReq.setEuid(sportIds.substring(0, sportIds.length() - 1));
+                        //pmListReq.setEuid(sportIds.substring(0, sportIds.length() - 1));
                     }
                 }
                 if (isFound) {
@@ -439,7 +440,9 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                 .subscribeWith(new HttpCallBack<SportCountRsp>() {
                     @Override
                     public void onResult(SportCountRsp sportCountRsp) {
+                        CfLog.d("====== ImMainViewModel statistical onResult ====="+sportCountRsp.toString());
                         List<SportCountRsp.CountItem> sportList = sportCountRsp.getSportCount();
+                        CfLog.d("====== ImMainViewModel sportList size ====="+sportList.size());
                         mMenuInfoList.clear();
                         for (SportCountRsp.CountItem item : sportList) {
                             System.out.println("SportId: " + item.sportId);
@@ -481,6 +484,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                             mMatchGames = IMConstants.getMatchGames();
                         }
                         for (MenuInfo menuInfo : mMenuInfoList) {
+                            CfLog.d("============== menuInfo ===============" + menuInfo.toString());
                             //"3", "1", "4", "11", "100"; 只有"今日", "滚球", "早盘", "串关", "冠军"数据才添加，提升效率
                             if (menuInfo.menuType == 3 || menuInfo.menuType == 1 || menuInfo.menuType == 4 || menuInfo.menuType == 11
                                     || menuInfo.menuType == 100) {
@@ -496,23 +500,25 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                                     item2.id = 0;
                                     item2.num = menuInfo.count;
                                     sportTypeItemList.add(item2);
-                                }
-                                for (MenuInfo subMenu : menuInfo.subList) {
-                                    if (subMenu.count <= 0 || mMatchGames.get(subMenu.menuType) == null) {
-                                        continue;
-                                    }
-
+                                } else {
                                     SportTypeItem item = new SportTypeItem();
-                                    item.id = subMenu.menuType;
-                                    item.menuId = subMenu.menuId;
-                                    item.num = subMenu.count;
+                                    item.id = menuInfo.menuType;
+                                    item.menuId = menuInfo.menuId;
+                                    item.num = menuInfo.count;
                                     sportTypeItemList.add(item);
-                                    sportCountMap.put(String.valueOf(menuInfo.menuType), sportTypeItemList);
                                 }
+//                                for (MenuInfo subMenu : menuInfo.subList) {
+//                                    if (subMenu.count <= 0 || mMatchGames.get(subMenu.menuType) == null) {
+//                                        continue;
+//                                    }
+
+                                System.out.println("=========== ImMainViewModel menuInfo.menuName============="+menuInfo.menuName);
+                                sportCountMap.put(String.valueOf(menuInfo.menuType), sportTypeItemList);
+//                                }
 
                             }
                         }
-
+                        CfLog.d("====== ImMainViewModel sportCountMap size ====="+sportCountMap.size());
                         statisticalData.postValue(sportCountMap);
 
                     }

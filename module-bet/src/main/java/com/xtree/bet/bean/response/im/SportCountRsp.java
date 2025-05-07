@@ -17,20 +17,12 @@ import java.util.List;
  */
 public class SportCountRsp implements BaseBean {
 
+    @SerializedName("SportCount")
+    private List<CountItem> SportCount;
 
-    private String serverTime;
-    private int statusCode;
-    private String statusDesc;
-    private List<CountItem> sportCount;
-
-    public SportCountRsp() {
-    }
 
     protected SportCountRsp(Parcel in) {
-        serverTime = in.readString();
-        statusCode = in.readInt();
-        statusDesc = in.readString();
-        sportCount = in.createTypedArrayList(CountItem.CREATOR);
+        SportCount = in.createTypedArrayList(CountItem.CREATOR);
     }
 
     public static final Creator<SportCountRsp> CREATOR = new Creator<SportCountRsp>() {
@@ -45,44 +37,15 @@ public class SportCountRsp implements BaseBean {
         }
     };
 
-    public String getServerTime() {
-        return serverTime;
-    }
-
-    public void setServerTime(String serverTime) {
-        this.serverTime = serverTime;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
-
-    public String getStatusDesc() {
-        return statusDesc;
-    }
-
-    public void setStatusDesc(String statusDesc) {
-        this.statusDesc = statusDesc;
-    }
 
     public List<CountItem> getSportCount() {
-        return sportCount;
+        return SportCount;
     }
 
-    public void setSportCount(List<CountItem> sportCount) {
-        this.sportCount = sportCount;
-    }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(serverTime);
-        dest.writeInt(statusCode);
-        dest.writeString(statusDesc);
-        dest.writeTypedList(sportCount);
+        dest.writeTypedList(SportCount);
     }
 
     @Override
@@ -211,6 +174,26 @@ public class SportCountRsp implements BaseBean {
             return 0;
         }
 
+        @Override
+        public String toString() {
+            return "CountItem{" +
+                    "sportId=" + sportId +
+                    ", sportName='" + sportName + '\'' +
+                    ", orderNumber=" + orderNumber +
+                    ", eventGroupTypes=" + eventGroupTypes +
+                    ", programmeList=" + programmeList +
+                    ", openParlay=" + openParlay +
+                    ", isHasLive=" + isHasLive +
+                    ", earlyFECount=" + earlyFECount +
+                    ", todayFECount=" + todayFECount +
+                    ", orCount=" + orCount +
+                    ", rbFECount=" + rbFECount +
+                    ", count=" + count +
+                    ", isCombo=" + isCombo +
+                    '}';
+        }
+
+
         public static class EventGroupType implements Parcelable {
             /**
              * 可选参数用于指出只返回特定赛事组别类型的赛果
@@ -289,10 +272,28 @@ public class SportCountRsp implements BaseBean {
                 return 0;
             }
 
-            // Getters and setters can be added here as needed
-        }
+            @Override
+            public String toString() {
+                return "EventGroupType{" +
+                        "eventGroupTypeId=" + eventGroupTypeId +
+                        ", count=" + count +
+                        ", earlyFECount=" + earlyFECount +
+                        ", todayFECount=" + todayFECount +
+                        ", rbFECount=" + rbFECount +
+                        ", orCount=" + orCount +
+                        ", isHasLive=" + isHasLive +
+                        '}';
+            }
 
-        // Getters and setters for CountItem fields can be added here
+        }
     }
+
+    @Override
+    public String toString() {
+        return "SportCountRsp{" +
+                ", sportCount=" + SportCount +
+                '}';
+    }
+
 
 }

@@ -18,70 +18,43 @@ public class IMConstants {
         if (MATCH_GAMES.isEmpty()) {
             MATCH_GAMES.put(0, new SportTypeItem(0, "allleague", "全部", R.drawable.bt_match_item_live_all_selector));
             MATCH_GAMES.put(1111, new SportTypeItem(1111, "hot", "热门", R.drawable.bt_match_item_hot_selector));
-
-            MATCH_GAMES.put(5, new SportTypeItem(5, "soccer", "足球", 1, R.drawable.bt_match_item_zq_selector, 40203));
-            MATCH_GAMES.put(7, new SportTypeItem(7, "basketball", "篮球", 2, R.drawable.bt_match_item_lq_selector, 40204));
-            MATCH_GAMES.put(13, new SportTypeItem(13, "tennis", "网球", 3, R.drawable.bt_match_item_wq_selector, 40206));
-            MATCH_GAMES.put(14, new SportTypeItem(14, "snooker", "斯诺克", 4, R.drawable.bt_match_item_snk_selector, 40207));
-            MATCH_GAMES.put(19, new SportTypeItem(19, "baseball", "棒球", 5, R.drawable.bt_match_item_bq_selector, 40212));
-            MATCH_GAMES.put(17, new SportTypeItem(17, "volleyball", "排球", 6, R.drawable.bt_match_item_pq_selector, 40210));
-            MATCH_GAMES.put(15, new SportTypeItem(15, "badminton", "羽毛球", 7, R.drawable.bt_match_item_ymq_selector, 40208));
-            MATCH_GAMES.put(20, new SportTypeItem(20, "americanfootball", "美式足球", 8, R.drawable.bt_match_item_mszq_selector, 40213));
-            MATCH_GAMES.put(16, new SportTypeItem(16, "tabletennis", "乒乓球", 9, R.drawable.bt_match_item_bbq_selector, 40209));
-            MATCH_GAMES.put(18, new SportTypeItem(18, "icehockey", "冰球", 10, R.drawable.bt_match_item_iceq_selector, 40211));
-            MATCH_GAMES.put(22, new SportTypeItem(22, "rugby", "英式橄榄球", 20, R.drawable.bt_match_item_glq_selector, 40262));
-            MATCH_GAMES.put(43, new SportTypeItem(43, "handball", "手球", 11, R.drawable.bt_match_item_sq_selector, 40215));
-            MATCH_GAMES.put(52, new SportTypeItem(52, "golf", "高尔夫", 12, R.drawable.bt_match_item_golf_selector, 40254));
-            MATCH_GAMES.put(20037, new SportTypeItem(20037, "cricket", "板球", 13, R.drawable.bt_match_item_wbq_selector, 40260));
-            MATCH_GAMES.put(44, new SportTypeItem(44, "boxing", "拳击", 14, R.drawable.bt_match_item_qj_selector, 40216));
-            MATCH_GAMES.put(20038, new SportTypeItem(20038, "darts", "飞镖", 15, R.drawable.bt_match_item_darts_selector, 40258));
-            MATCH_GAMES.put(24, new SportTypeItem(24, "waterpolo", "水球", 41, R.drawable.bt_match_item_water_ball_selector));
-            MATCH_GAMES.put(51, new SportTypeItem(51, "cycling", "自行车", 16, R.drawable.bt_match_item_cycling_selector, 40265));
-            MATCH_GAMES.put(45, new SportTypeItem(45, "beachvolleyball", "沙滩排球", 18, R.drawable.bt_match_item_stpq_selector, 40211));
-            MATCH_GAMES.put(20033, new SportTypeItem(20033, "stockcarracing", "赛车", 17, R.drawable.bt_match_item_sc_selector, 40263));
-
-            MATCH_GAMES.put(20041, new SportTypeItem(20041, "rugby", "橄榄球", 42, R.drawable.bt_match_item_glq_selector));
-
-            MATCH_GAMES.put(3001, new SportTypeItem(3001, "dota2", "DOTA2", 42, R.drawable.bt_match_item_data_selector));
-            MATCH_GAMES.put(3002, new SportTypeItem(3002, "lol", "英雄联盟", 43, R.drawable.bt_match_item_lol_selector));
-            MATCH_GAMES.put(3003, new SportTypeItem(3003, "kog", "王者荣耀", 44, R.drawable.bt_match_item_yl_selector));
-            MATCH_GAMES.put(91, new SportTypeItem(91, "e-basketball", "电子篮球", 30, R.drawable.bt_match_item_dzlq_selector));
+            MATCH_GAMES.put(1, new SportTypeItem(1, "soccer", "足球", 1, R.drawable.bt_match_item_zq_selector));
+            MATCH_GAMES.put(2, new SportTypeItem(2, "basketball", "篮球", 2, R.drawable.bt_match_item_lq_selector));
+            MATCH_GAMES.put(3, new SportTypeItem(3, "tennis", "网球", 3, R.drawable.bt_match_item_wq_selector));
+            MATCH_GAMES.put(34, new SportTypeItem(34, "snooker", "斯诺克", 34, R.drawable.bt_match_item_snk_selector));
+            MATCH_GAMES.put(8, new SportTypeItem(8, "baseball", "棒球", 8, R.drawable.bt_match_item_bq_selector));
+            MATCH_GAMES.put(40, new SportTypeItem(40, "volleyball", "排球", 40, R.drawable.bt_match_item_pq_selector));
+            MATCH_GAMES.put(7, new SportTypeItem(7, "badminton", "羽毛球", 7, R.drawable.bt_match_item_ymq_selector));
+            MATCH_GAMES.put(19, new SportTypeItem(19, "americanfootball", "美式足球", 19, R.drawable.bt_match_item_mszq_selector));
+            MATCH_GAMES.put(36, new SportTypeItem(36, "tabletennis", "乒乓球", 36, R.drawable.bt_match_item_bbq_selector));
+            MATCH_GAMES.put(25, new SportTypeItem(25, "icehockey", "冰上曲棍球", 25, R.drawable.bt_match_item_iceq_selector));
+            MATCH_GAMES.put(4, new SportTypeItem(4, "rugby", "橄榄球", 4, R.drawable.bt_match_item_glq_selector));
+            MATCH_GAMES.put(8, new SportTypeItem(8, "handball", "手球", 12, R.drawable.bt_match_item_sq_selector));
+            MATCH_GAMES.put(10, new SportTypeItem(10, "floorball", "地板球", 24, R.drawable.bt_match_item_dbq_selector));
+            MATCH_GAMES.put(12, new SportTypeItem(12, "golf", "高尔夫", 17, R.drawable.bt_match_item_golf_selector));
+            MATCH_GAMES.put(14, new SportTypeItem(14, "cricket", "板球", 15, R.drawable.bt_match_item_wbq_selector));
+            MATCH_GAMES.put(17, new SportTypeItem(17, "futsal", "五人足球", 25, R.drawable.bt_match_item_wrzq_selector));
+            MATCH_GAMES.put(18, new SportTypeItem(18, "mixedmartialarts", "综合", 13, R.drawable.bt_match_item_zhgd_selector));
+            MATCH_GAMES.put(11, new SportTypeItem(11, "boxing", "拳击", 11, R.drawable.bt_match_item_qj_selector));
+            MATCH_GAMES.put(20, new SportTypeItem(15, "darts", "飞镖", 15, R.drawable.bt_match_item_darts_selector));
+            MATCH_GAMES.put(21, new SportTypeItem(21, "bowls", "草地滚球", 20, R.drawable.bt_match_item_cdgq_selector));
+            MATCH_GAMES.put(24, new SportTypeItem(24, "waterpolo", "水球", 16, R.drawable.bt_match_item_water_ball_selector));
+            MATCH_GAMES.put(25, new SportTypeItem(25, "cycling", "自行车", 17, R.drawable.bt_match_item_cycling_selector));
+            MATCH_GAMES.put(51, new SportTypeItem(51, "beachvolleyball", "沙滩排球", 18, R.drawable.bt_match_item_stpq_selector));
+            MATCH_GAMES.put(92, new SportTypeItem(92, "formula1", "F1赛车", 21, R.drawable.bt_match_item_f1_selector));
+            MATCH_GAMES.put(93, new SportTypeItem(93, "specials", "特殊投注", 22, R.drawable.bt_match_item_tstz_selector));
+            MATCH_GAMES.put(29, new SportTypeItem(29, "stockcarracing", "赛车", 29, R.drawable.bt_match_item_sc_selector));
+            MATCH_GAMES.put(100, new SportTypeItem(100, "olympic", "奥林匹克", 24, R.drawable.bt_match_item_olympic_selector));
+            MATCH_GAMES.put(64, new SportTypeItem(64, "dota2", "DOTA2", 64, R.drawable.bt_match_item_data_selector));
+            MATCH_GAMES.put(63, new SportTypeItem(63, "lol", "英雄联盟", 27, R.drawable.bt_match_item_lol_selector));
+            MATCH_GAMES.put(66, new SportTypeItem(66, "kog", "王者荣耀", 66, R.drawable.bt_match_item_yl_selector));
+            MATCH_GAMES.put(177, new SportTypeItem(177, "e-football", "电子足球", 29, R.drawable.bt_match_item_dzzq_selector));
+            MATCH_GAMES.put(178, new SportTypeItem(178, "e-basketball", "电子篮球", 30, R.drawable.bt_match_item_dzlq_selector));
         }
         return MATCH_GAMES;
     }
 
     private static Map<String, Integer> mapBgMatchDetailTop = new ArrayMap<>();
-
-    ///**
-    // * 默认体育分类ID，与sportNames一一对应
-    // */
-    //public static String[] SPORT_IDS;
-    //
-    ///**
-    // * 默认体育分类ID，与sportNames一一对应
-    // */
-    //public static String[] SPORT_IDS_DEFAULT = new String[]{"0", "40203", "40204", "40206", "40207", "40212", "40210", "40208", "40213", "40209", "40211", "40216", "40211", "40215"};
-    ///**
-    // * 默认冠军体育分类ID，与sportNames一一对应
-    // */
-    //public static String[] SPORT_IDS_CHAMPION_SPECAIL = new String[]{"40603", "40604", "40606", "40607", "40612", "40610", "40608", "40613", "40609", "40611", "40216", "40211", "40215"};
-    //public static Integer[] SPORT_TYPES_ADDITIONAL = new Integer[]{22, 52, 20037, 20038, 24, 51, 20033, 20018};
-
-    //public static String[] SPORT_NAMES;
-    //public static String[] SPORT_NAMES_NOMAL = new String[]{"足球", "篮球", "网球", "斯诺克", "棒球", "排球", "羽毛球", "美式足球", "乒乓球", "冰球", "拳击/格斗", "沙滩排球", "手球"};
-    //public static String[] SPORT_NAMES_LIVE = new String[]{"全部", "足球", "篮球", "网球", "斯诺克", "棒球", "排球", "羽毛球", "美式足球", "乒乓球", "冰球", "拳击/格斗", "沙滩排球", "手球"};
-    //public static String[] SPORT_NAMES_TODAY_CG = new String[]{"热门", "足球", "篮球", "网球", "斯诺克", "棒球", "排球", "羽毛球", "美式足球", "乒乓球", "冰球", "拳击/格斗", "沙滩排球", "手球"};
-    //
-    //public static int[] SPORT_ICON_ADDITIONAL = new int[]{
-    //        project.tqyb.com.library_res.R.drawable.bt_match_item_glq_selector,
-    //        project.tqyb.com.library_res.R.drawable.bt_match_item_golf_selector,
-    //        project.tqyb.com.library_res.R.drawable.bt_match_item_wbq_selector,
-    //        project.tqyb.com.library_res.R.drawable.bt_match_item_darts_selector,
-    //        project.tqyb.com.library_res.R.drawable.bt_match_item_water_ball_selector,
-    //        project.tqyb.com.library_res.R.drawable.bt_match_item_cycling_selector,
-    //        project.tqyb.com.library_res.R.drawable.bt_match_item_f1_selector,
-    //        project.tqyb.com.library_res.R.drawable.bt_match_item_yl_selector};
-
     /**
      * 玩法ID，与PLAY_METHOD_NAMES一一对应 "今日", "滚球", "早盘", "串关", "冠军"
      */

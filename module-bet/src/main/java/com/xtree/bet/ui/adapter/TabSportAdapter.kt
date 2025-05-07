@@ -4,6 +4,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.xtree.base.utils.CfLog
 import com.xtree.bet.R
 import com.xtree.bet.constant.SportTypeItem
 
@@ -18,6 +19,7 @@ class TabSportAdapter(
         if (holder.layoutPosition == selectedPosition) {
             isSelected = true
         }
+        CfLog.d("=============== TabSportAdapter convert item.id ================"+item.id)
         val sportItem = matchGames[item.id]
         sportItem?.apply {
             holder.setText(R.id.tab_item_name, sportItem.name)
@@ -27,6 +29,7 @@ class TabSportAdapter(
             holder.setBackgroundResource(R.id.iv_icon, sportItem.iconId)
             holder.getView<ImageView>(R.id.iv_icon).isSelected = isSelected
         }
+        CfLog.d("=============== TabSportAdapter convert sportItem.name ================"+sportItem!!.name)
     }
 
     fun setSelectedPosition(position: Int) {

@@ -111,4 +111,20 @@ public class MenuInfo implements BaseBean {
             return new MenuInfo[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "MenuInfo{" +
+                "count=" + count +
+                ", field1='" + field1 + '\'' +
+                ", field2='" + field2 + '\'' +
+                ", grade=" + grade +
+                ", menuId=" + menuId +
+                ", menuName='" + menuName + '\'' +
+                ", menuType=" + menuType +
+                ", parentId=" + parentId +
+                ", topMenuList=" + topMenuList +
+                ", subList=" + subList +
+                '}';
+    }
 }
