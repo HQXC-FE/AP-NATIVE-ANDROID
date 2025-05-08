@@ -6,98 +6,343 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:background="@color/bt_color_option_draw">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/clr_main_bg"
+            android:background="@color/bt_color_option_draw"
             android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/ivw_head"
-                    android:layout_width="wrap_content"
+                android:layout_height="160dp"
+                android:orientation="vertical"
+                android:background="@mipmap/bg_mine_top">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/me_icon_name" />
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="6dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tvw_name"
-                    android:layout_width="wrap_content"
+                    <ImageView
+                        android:id="@+id/ivw_head"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/me_icon_name" />
+
+                    <TextView
+                        android:id="@+id/tvw_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:text="@string/me_user_name_hint"
+                        android:textColor="@color/clr_blue_13"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvw_vip"
+                        android:layout_width="40dp"
+                        android:layout_height="15dp"
+                        android:layout_marginStart="4dp"
+                        android:background="@drawable/bg_home_vip"
+                        android:gravity="center"
+                        android:text="VIP 0"
+                        android:textColor="@color/clr_yellow"
+                        android:textSize="10sp"
+                        android:visibility="gone" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="16dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/ivw_msg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:src="@mipmap/me_icon_message" />
+
+                    <ImageView
+                        android:id="@+id/ivw_setting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:src="@mipmap/me_icon_setting"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llLoginBalance"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/layout_margin"
-                    android:text="@string/me_user_name_hint"
-                    android:textColor="@color/clr_blue_13"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tvw_vip"
-                    android:layout_width="40dp"
-                    android:layout_height="15dp"
-                    android:layout_marginStart="4dp"
-                    android:background="@drawable/bg_home_vip"
+                    android:layout_marginTop="@dimen/layout_margin"
+                    android:layout_marginEnd="@dimen/layout_margin"
+                    android:alpha="1"
                     android:gravity="center"
-                    android:text="VIP 0"
-                    android:textColor="@color/clr_yellow"
-                    android:textSize="10sp"
-                    android:visibility="gone" />
+                    android:orientation="vertical"
+                    android:padding="@dimen/layout_margin"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:id="@+id/ivMineRMB"
+                            android:src="@mipmap/cm_ic_rmb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            />
+                        <TextView
+                            android:id="@+id/ivMineTotalRMB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="总余额"
+                            android:textColor="@color/mineTotalTextColor"
+                            android:layout_marginStart="10dp"
+                            app:layout_constraintStart_toEndOf="@+id/ivMineRMB"
+                            app:layout_constraintTop_toTopOf="@+id/ivMineRMB"
+                            app:layout_constraintBottom_toBottomOf="@+id/ivMineRMB"
+                            />
+                        <CheckBox
+                            android:id="@+id/checkMine"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/layout_margin"
+                            android:button="@drawable/ic_eye_white_selector"
+                            android:checked="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="10dp"/>
+                        <TextView
+                            android:id="@+id/tvw_balance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/checkMine"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginEnd="4dp"
+                            android:textColor="@color/clr_main_start_w"
+                            android:textSize="14dp"
+                            android:textStyle="bold"
+                            tools:text="$8888888.00"
+                            />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="16dp"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/ivw_msg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:src="@mipmap/me_icon_message" />
-
-                <ImageView
-                    android:id="@+id/ivw_setting"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:src="@mipmap/me_icon_setting"
-                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_login"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/layout_margin"
-                android:layout_marginTop="@dimen/layout_margin"
-                android:layout_marginEnd="@dimen/layout_margin"
-                android:alpha="1"
-                android:background="@drawable/bg_me_r12"
-                android:gravity="center"
+                android:layout_height="160dp"
                 android:orientation="vertical"
-                android:padding="@dimen/layout_margin"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_me_r12"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                >
+               <androidx.constraintlayout.widget.ConstraintLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent">
+                   <LinearLayout
+                       android:id="@+id/llMineLogin"
+                       android:layout_width="180dp"
+                       android:layout_height="40dp"
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       android:background="@drawable/bg_mine_login"
+                       android:orientation="vertical"
+                       android:layout_marginTop="10dp"
+                       tools:visibility="gone"
+                       >
+                       <TextView
+                           android:id="@+id/tvMineLogin"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:text="登录"
+                           android:gravity="center"
+                           android:layout_gravity="center_vertical"
+                           android:textColor="@color/white"
+                           />
+                   </LinearLayout>
+                   <LinearLayout
+                       android:id="@+id/llMineMoney"
+                       android:layout_width="match_parent"
+                       android:layout_height="50dp"
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintTop_toTopOf="parent"
+                       app:layout_constraintEnd_toEndOf="parent"
 
-                <TextView
-                    android:id="@+id/tvw_login"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_btn_selector"
-                    android:paddingLeft="45dp"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="45dp"
-                    android:paddingBottom="5dp"
-                    android:text="@string/me_login_hint"
-                    android:textColor="@color/clr_black"
-                    android:textSize="14sp" />
+                       android:orientation="vertical">
+                       <androidx.constraintlayout.widget.ConstraintLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:layout_marginTop="10dp">
+                            <LinearLayout
+                                android:id="@+id/tvwTrans"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:background="@mipmap/mine_momey_bt_bg"
+                                android:orientation="vertical"
+                                app:layout_constraintHorizontal_weight="1">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="38dp">
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@mipmap/bg_mine_transfer"
+                                        android:focusableInTouchMode="true"
+                                        android:layout_centerHorizontal="true"
+                                        android:scaleType="fitCenter"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
+                           <LinearLayout
+                               android:id="@+id/tvwWallet"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               app:layout_constraintStart_toStartOf="parent"
+                               app:layout_constraintTop_toTopOf="parent"
+                               app:layout_constraintEnd_toStartOf="@+id/tvwTrans"
+                               android:background="@mipmap/mine_momey_bt_bg"
+                               android:orientation="vertical"
+                               app:layout_constraintHorizontal_weight="1">
+                               <androidx.constraintlayout.widget.ConstraintLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="38dp">
+                                   <ImageView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:src="@mipmap/bg_mine_deposit"
+                                       android:focusableInTouchMode="true"
+                                       android:layout_centerHorizontal="true"
+                                        android:scaleType="fitCenter"
+                                       app:layout_constraintStart_toStartOf="parent"
+                                       app:layout_constraintEnd_toEndOf="parent"
+                                       app:layout_constraintTop_toTopOf="parent"
+                                       app:layout_constraintBottom_toBottomOf="parent"
+                                       />
+
+                               </androidx.constraintlayout.widget.ConstraintLayout>
+
+                           </LinearLayout>
+
+                           <LinearLayout
+                               android:id="@+id/tvwTikuan"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               app:layout_constraintStart_toEndOf="@+id/tvwTrans"
+                               app:layout_constraintTop_toTopOf="parent"
+                               app:layout_constraintEnd_toEndOf="parent"
+                               android:background="@mipmap/mine_momey_bt_bg"
+                               android:orientation="vertical"
+                               app:layout_constraintHorizontal_weight="1">
+                               <androidx.constraintlayout.widget.ConstraintLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="38dp">
+                                   <ImageView
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:src="@mipmap/bg_mine_withdraw_money"
+                                       android:focusableInTouchMode="true"
+                                       android:layout_centerHorizontal="true"
+                                       android:scaleType="fitCenter"
+                                       app:layout_constraintStart_toStartOf="parent"
+                                       app:layout_constraintEnd_toEndOf="parent"
+                                       app:layout_constraintTop_toTopOf="parent"
+                                       app:layout_constraintBottom_toBottomOf="parent"
+                                       />
+
+                               </androidx.constraintlayout.widget.ConstraintLayout>
+                           </LinearLayout>
+
+                       </androidx.constraintlayout.widget.ConstraintLayout>
+                   </LinearLayout>
+                   <TextView
+                       android:id="@+id/tvw_bts"
+                       style="@style/style_menu_white"
+                       android:drawableLeft="@mipmap/me_per_betting"
+                       android:drawablePadding="10dp"
+                       android:text="@string/me_betting_record"
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintTop_toTopOf="parent"
+                       android:layout_marginTop="60dp"
+                       android:layout_marginStart="22dp"
+                       />
+
+                   <TextView
+                       android:id="@+id/tvw_trans_record"
+                       style="@style/style_menu_white"
+                       android:drawableLeft="@mipmap/me_per_bill_change"
+                       android:drawablePadding="10dp"
+                       android:text="@string/me_account_record"
+                       app:layout_constraintStart_toStartOf="@+id/tvw_bts"
+                       app:layout_constraintTop_toBottomOf="@+id/tvw_bts"
+                       android:layout_marginTop="10dp"
+                       />
+
+                   <TextView
+                       android:id="@+id/tvw_safe"
+                       style="@style/style_menu_white"
+                       android:drawableLeft="@mipmap/me_per_safe"
+                       android:text="@string/me_account_safety"
+                       android:drawablePadding="10dp"
+                       app:layout_constraintStart_toStartOf="@+id/tvw_trans_record"
+                       app:layout_constraintTop_toBottomOf="@+id/tvw_trans_record"
+                       android:layout_marginTop="10dp"
+                       />
+                   <ImageView
+                       android:id="@+id/iv_bts_arrow"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:background="@mipmap/bg_left_arrow"
+                       app:layout_constraintTop_toTopOf="@+id/tvw_bts"
+                       app:layout_constraintBottom_toBottomOf="@+id/tvw_bts"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       android:layout_marginEnd="26dp"
+                       />
+                   <ImageView
+                       android:id="@+id/tvw_trans_record_arrow"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:background="@mipmap/bg_left_arrow"
+                       app:layout_constraintTop_toTopOf="@+id/tvw_trans_record"
+                       app:layout_constraintBottom_toBottomOf="@+id/tvw_trans_record"
+                       app:layout_constraintStart_toStartOf="@+id/iv_bts_arrow"
+                       />
+                   <ImageView
+                       android:id="@+id/tvw_safe_arrow"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:background="@mipmap/bg_left_arrow"
+                       app:layout_constraintTop_toTopOf="@+id/tvw_safe"
+                       app:layout_constraintBottom_toBottomOf="@+id/tvw_safe"
+                       app:layout_constraintStart_toStartOf="@+id/iv_bts_arrow"
+
+                       />
+
+               </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -110,397 +355,207 @@
                 android:background="@drawable/bg_me_r12"
                 android:padding="@dimen/layout_margin"
                 android:visibility="visible">
+                <TextView
+                    android:id="@+id/tvw_profit_client"
+                    style="@style/style_menu_black"
+                    android:drawableLeft="@mipmap/me_gr_profit"
+                    android:text="@string/txt_profit"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="12dp"
+                    android:drawablePadding="10dp"
+                    />
 
                 <TextView
-                    android:id="@+id/tvw_money_hint"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/me_money_total"
-                    android:textColor="@color/clr_white"
-                    android:textSize="@dimen/mine_text_size"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvw_1k_recycle"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvw_1k_recycle" />
+                    android:id="@+id/tvw_3rd_trans_client"
+                    style="@style/style_menu_black"
+                    android:drawableLeft="@mipmap/me_gr_3rd"
+                    android:text="@string/txt_3rd_trans"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_profit_client"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_profit_client"
+                    android:drawablePadding="10dp"/>
 
                 <TextView
-                    android:id="@+id/tvw_1k_recycle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_me_r24"
-                    android:paddingStart="16dp"
-                    android:paddingTop="6dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="6dp"
-                    android:text="@string/me_get_all_money"
-                    android:textColor="@color/clr_white"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:id="@+id/tvw_rebate_contract_client"
+                    style="@style/style_menu_black"
+                    android:drawableLeft="@mipmap/me_gr_report"
+                    android:text="@string/txt_rebate_contract"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_3rd_trans_client"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_3rd_trans_client"
+                    android:drawablePadding="10dp"
+                    />
 
-                <CheckBox
-                    android:id="@+id/ckb_eye"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/layout_margin"
-                    android:button="@drawable/ic_eye_white_selector"
-                    android:checked="true"
-                    android:paddingEnd="@dimen/layout_margin"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvw_money_hint"
-                    app:layout_constraintStart_toEndOf="@+id/tvw_money_hint"
-                    app:layout_constraintTop_toTopOf="@+id/tvw_money_hint" />
 
-                <LinearLayout
-                    android:id="@+id/ll_balance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="@+id/tvw_money_hint"
-                    app:layout_constraintTop_toBottomOf="@+id/tvw_money_hint">
+                <TextView
+                    android:id="@+id/tvw_acc_mg_client"
+                    style="@style/style_menu_black"
+                    android:drawableLeft="@mipmap/me_gr_acc"
+                    android:text="@string/txt_acc_mg"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_rebate_contract_client"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_rebate_contract_client"
+                    android:drawablePadding="10dp"/>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="0dp"
-                        android:src="@mipmap/cm_ic_rmb" />
+                <TextView
+                    android:id="@+id/tvw_sport_regular_client"
+                    style="@style/style_menu_black"
+                    android:drawableLeft="@mipmap/me_gr_rule"
+                    android:text="@string/txt_sport_regular"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_acc_mg_client"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_acc_mg_client"
+                    android:drawablePadding="10dp"
+                    />
+                <TextView
+                    android:id="@+id/tvw_tutorial_client"
+                    style="@style/style_menu_black"
+                    android:drawableLeft="@mipmap/me_gr_usdt"
+                    android:text="@string/txt_usdt_tutorial_mine"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_sport_regular_client"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_sport_regular_client"
+                    android:drawablePadding="10dp"
+                    />
+                <TextView
+                    android:id="@+id/tvw_help_client"
+                    style="@style/style_menu_black"
+                    android:drawableLeft="@mipmap/me_gr_help"
+                    android:text="@string/txt_help"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_tutorial_client"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_tutorial_client"
+                    android:drawablePadding="10dp"
+                    />
 
-                    <TextView
-                        android:id="@+id/tvw_balance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="0.00"
-                        android:textColor="@color/clr_white"
-                        android:textSize="32sp"
-                        android:textStyle="bold"
-                        tools:text="1000,000.00" />
+                <TextView
+                    android:id="@+id/tvwQa"
+                    style="@style/style_menu_black"
+                    android:drawableLeft="@mipmap/me_gr_qa"
+                    android:text="@string/txt_question"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_help_client"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_help_client"
+                    android:drawablePadding="10dp"/>
 
-                    <ImageView
-                        android:id="@+id/ivw_refresh_blc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="2dp"
-                        android:padding="6dp"
-                        android:src="@mipmap/cm_ic_refresh" />
-                </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/ll_menu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/clr_transparent"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/layout_margin"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ll_balance">
-
-                    <TextView
-                        android:id="@+id/tvw_wallet"
-                        style="@style/style_menu_white"
-                        android:drawableTop="@mipmap/me_per_wallet"
-                        android:text="@string/me_my_pocket" />
-
-                    <TextView style="@style/style_wallet_space" />
-
-                    <TextView
-                        android:id="@+id/tvw_trans"
-                        style="@style/style_menu_white"
-                        android:drawableTop="@mipmap/me_per_transfer"
-                        android:text="@string/me_transfer" />
-
-                    <TextView style="@style/style_wallet_space" />
-
-                    <TextView
-                        android:id="@+id/tvw_bt"
-                        style="@style/style_menu_white"
-                        android:drawableTop="@mipmap/me_per_betting"
-                        android:text="@string/me_betting_record" />
-
-                    <TextView style="@style/style_wallet_space" />
-
-                    <TextView
-                        android:id="@+id/tvw_trans_record"
-                        style="@style/style_menu_white"
-                        android:drawableTop="@mipmap/me_per_bill_change"
-                        android:text="@string/me_account_record" />
-
-                    <TextView style="@style/style_wallet_space" />
-
-                    <TextView
-                        android:id="@+id/tvw_safe"
-                        style="@style/style_menu_white"
-                        android:drawableTop="@mipmap/me_per_safe"
-                        android:text="@string/me_account_safety" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/layout_margin"
-                android:layout_marginTop="@dimen/layout_margin"
-                android:layout_marginEnd="@dimen/layout_margin"
-                android:background="@color/clr_transparent"
-                android:visibility="visible">
+                <TextView
+                    android:id="@+id/tvw_upgrade_client"
+                    style="@style/style_menu_black"
+                    android:drawableLeft="@mipmap/me_gr_upgrade"
+                    android:text="@string/txt_upgrade"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="@+id/tvwQa"
+                    app:layout_constraintTop_toBottomOf="@+id/tvwQa"
+                    android:drawablePadding="10dp"
+                    />
 
                 <ImageView
-                    android:id="@+id/imv_menu_2"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tvw_profit_client_arrow"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@mipmap/bg_me_title"
-                    android:elevation="1dp"
+                    android:background="@mipmap/bg_left_arrow"
+                    app:layout_constraintTop_toTopOf="@+id/tvw_profit_client"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvw_profit_client"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:id="@+id/ll_menu_2"
-                    android:layout_width="match_parent"
+                    android:layout_marginEnd="16dp"
+                    />
+                <ImageView
+                    android:id="@+id/tvw_3rd_trans_client_arrow"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_me_main_frame"
-                    android:orientation="vertical"
-                    android:elevation="10dp"
-                    android:padding="@dimen/layout_margin"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imv_menu_2">
+                    android:background="@mipmap/bg_left_arrow"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_profit_client_arrow"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_profit_client_arrow"
+                    app:layout_constraintTop_toTopOf="@+id/tvw_3rd_trans_client"
+                    />
 
-                    <LinearLayout
-                        android:id="@+id/ll_menu_01"
-                        style="@style/style_ll_row_2">
-
-                        <TextView
-                            android:id="@+id/tvw_profit"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_profit"
-                            android:text="@string/txt_profit" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_team_mgmt"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_team"
-                            android:text="@string/txt_team_mgmt" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_3rd_trans"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_3rd"
-                            android:text="@string/txt_3rd_trans" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_rebate_contract"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_report"
-                            android:text="@string/txt_rebate_contract" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_menu_02"
-                        style="@style/style_ll_row_2">
-
-                        <TextView
-                            android:id="@+id/tvw_acc_mg"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_acc"
-                            android:text="@string/txt_acc_mg" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_qa"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_qa"
-                            android:text="@string/txt_question" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_sport_regular"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_rule"
-                            android:text="@string/txt_sport_regular" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_tutorial"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_usdt"
-                            android:text="@string/txt_usdt_tutorial_mine" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_menu_03"
-                        style="@style/style_ll_row_2">
-
-                        <TextView
-                            android:id="@+id/tvw_upgrade"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_upgrade"
-                            android:text="@string/txt_upgrade" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_help"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_help"
-                            android:text="@string/txt_help" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_reg_prom"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_reg"
-                            android:text="@string/txt_reg_prom" />
-
-                        <TextView
-                            android:id="@+id/tvw_black"
-                            style="@style/style_menu_black"
-                            android:visibility="gone" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:visibility="invisible"
-                            android:id="@+id/tvw_bonus"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_bonus"
-                            android:text="@string/txt_bonus" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_menu_3"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/tvw_rebate_contract_client_arrow"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_me_main_frame"
-                    android:orientation="vertical"
-                    android:padding="@dimen/layout_margin"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:background="@mipmap/bg_left_arrow"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_profit_client_arrow"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_profit_client_arrow"
+                    app:layout_constraintTop_toTopOf="@+id/tvw_rebate_contract_client"
+                    />
+                <ImageView
+                    android:id="@+id/tvw_acc_mg_client_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/bg_left_arrow"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_rebate_contract_client_arrow"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_rebate_contract_client_arrow"
+                    app:layout_constraintTop_toTopOf="@+id/tvw_acc_mg_client"
+                    />
+                <ImageView
+                    android:id="@+id/tvw_sport_regular_client_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/bg_left_arrow"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_acc_mg_client_arrow"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_acc_mg_client_arrow"
+                    app:layout_constraintTop_toTopOf="@+id/tvw_sport_regular_client"
+                    />
+                <ImageView
+                    android:id="@+id/tvw_tutorial_client_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/bg_left_arrow"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_sport_regular_client_arrow"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_sport_regular_client_arrow"
+                    app:layout_constraintTop_toTopOf="@+id/tvw_tutorial_client"
+                    />
+                <ImageView
+                    android:id="@+id/tvw_help_client_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/bg_left_arrow"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_tutorial_client_arrow"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_tutorial_client_arrow"
+                    app:layout_constraintTop_toTopOf="@+id/tvw_help_client"
+                    />
+                <ImageView
+                    android:id="@+id/tvw_qa_client_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/bg_left_arrow"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_help_client_arrow"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_help_client_arrow"
+                    app:layout_constraintTop_toTopOf="@+id/tvwQa"
+                    />
+                <ImageView
+                    android:id="@+id/tvwUpgradeClientArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/bg_left_arrow"
+                    app:layout_constraintStart_toStartOf="@+id/tvw_qa_client_arrow"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_qa_client_arrow"
+                    app:layout_constraintTop_toTopOf="@+id/tvw_upgrade_client"
+                    />
+                <TextView
+                    android:id="@+id/tvMineVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/clr_main_start_w"
+                    tools:text="v10.0"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@+id/tvwUpgradeClientArrow"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_qa_client_arrow"
+                    app:layout_constraintTop_toTopOf="@+id/tvw_upgrade_client"
+                    android:layout_marginEnd="6dp"
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvw_upgrade_client"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imv_menu_2">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
 
-                    <LinearLayout
-                        android:id="@+id/ll_menu_client_01"
-                        style="@style/style_ll_row_2">
-
-                        <TextView
-                            android:id="@+id/tvw_profit_client"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_profit"
-                            android:text="@string/txt_profit" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_3rd_trans_client"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_3rd"
-                            android:text="@string/txt_3rd_trans" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_acc_mg_client"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_acc"
-                            android:text="@string/txt_acc_mg" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_rebate_contract_client"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_report"
-                            android:text="@string/txt_rebate_contract" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_menu_client_02"
-                        style="@style/style_ll_row_2">
-
-                        <TextView
-                            android:id="@+id/tvw_help_client"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_help"
-                            android:text="@string/txt_help" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_sport_regular_client"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_rule"
-                            android:text="@string/txt_sport_regular" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_tutorial_client"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_usdt"
-                            android:text="@string/txt_usdt_tutorial_mine" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView
-                            android:id="@+id/tvw_upgrade_client"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_upgrade"
-                            android:text="@string/txt_upgrade" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ll_menu_client_03"
-                        style="@style/style_ll_row_2">
-
-                        <TextView
-                            android:id="@+id/tvw_qa_client"
-                            style="@style/style_menu_black"
-                            android:drawableTop="@mipmap/me_gr_qa"
-                            android:text="@string/txt_question" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView style="@style/style_menu_black" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView style="@style/style_menu_black" />
-
-                        <TextView style="@style/style_wallet_space" />
-
-                        <TextView style="@style/style_menu_black" />
-                    </LinearLayout>
-                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Button
-                android:id="@+id/btn_logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="36dp"
-                android:layout_marginTop="48dp"
-                android:layout_marginEnd="36dp"
-                android:layout_marginBottom="24dp"
-                android:background="@color/clr_transparent"
-                android:text="@string/me_logout_login"
-                android:textColor="@color/clr_txt_09"
-                android:textSize="@dimen/bt_text_16sp"
-                android:textStyle="bold" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -59,6 +59,67 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
     private AppUpdateVo updateVo;
     private BasePopupView updateView;
 
+
+    private  void  isClickable( boolean isClickable){
+        if (!isClickable){
+            binding.ivwSetting.setClickable(false);
+            binding.ivwMsg.setClickable(false);
+            binding.llLoginBalance.setVisibility(View.GONE);//顶部余额
+            binding.llMineMoney.setVisibility(View.GONE);//存款 转账 提款
+            binding.llMineLogin.setVisibility(View.VISIBLE); //登录
+            binding.tvwBts.setContextClickable(false);//投注记录
+            binding.tvwTransRecord.setClickable(false);//账变记录
+            binding.tvwSafe.setClickable(false);//账户安全
+
+            binding.tvwProfitClient.setClickable(false);//盈亏报表
+            binding.tvwProfitClientArrow.setClickable(false);
+            binding.tvw3rdTransClient.setClickable(false);//第三方转账
+            binding.tvw3rdTransClientArrow.setClickable(false);
+            binding.tvwRebateContractClient.setClickable(false);//返水锲约
+            binding.tvwRebateContractClientArrow.setClickable(false);
+            binding.tvwAccMgClient.setClickable(false);//账户管理
+            binding.tvwAccMgClientArrow.setClickable(false);
+            binding.tvwSportRegularClient.setClickable(false);//体育规则
+            binding.tvwSportRegularClientArrow.setClickable(false);
+            binding.tvwTutorialClient.setClickable(false);//USDT教程
+            binding.tvwTutorialClientArrow.setClickable(false);
+            binding.tvwHelpClient.setClickable(false);//帮助中心
+            binding.tvwHelpClientArrow.setClickable(false);
+            binding.tvwQa.setClickable(false);//常见问题
+            binding.tvwQaClientArrow.setClickable(false);
+            binding.tvwUpgradeClient.setClickable(false);//检查更新
+            binding.tvwUpgradeClientArrow.setClickable(false);
+        }else{
+            binding.ivwSetting.setClickable(true);
+            binding.ivwMsg.setClickable(true);
+            binding.llLoginBalance.setVisibility(View.VISIBLE);//顶部余额
+            binding.llMineMoney.setVisibility(View.VISIBLE);//存款 转账 提款
+            binding.llMineLogin.setVisibility(View.GONE); //登录
+            binding.tvwBts.setContextClickable(true);//投注记录
+            binding.tvwTransRecord.setClickable(true);//账变记录
+            binding.tvwSafe.setClickable(true);//账户安全
+
+            binding.tvwProfitClient.setClickable(true);//盈亏报表
+            binding.tvwProfitClientArrow.setClickable(true);
+            binding.tvw3rdTransClient.setClickable(true);//第三方转账
+            binding.tvw3rdTransClientArrow.setClickable(true);
+            binding.tvwRebateContractClient.setClickable(true);//返水锲约
+            binding.tvwRebateContractClientArrow.setClickable(true);
+            binding.tvwAccMgClient.setClickable(true);//账户管理
+            binding.tvwAccMgClientArrow.setClickable(true);
+            binding.tvwSportRegularClient.setClickable(true);//体育规则
+            binding.tvwSportRegularClientArrow.setClickable(true);
+            binding.tvwTutorialClient.setClickable(true);//USDT教程
+            binding.tvwTutorialClientArrow.setClickable(true);
+            binding.tvwHelpClient.setClickable(true);//帮助中心
+            binding.tvwHelpClientArrow.setClickable(true);
+            binding.tvwQa.setClickable(true);//常见问题
+            binding.tvwQaClientArrow.setClickable(true);
+            binding.tvwUpgradeClient.setClickable(true);//检查更新
+            binding.tvwUpgradeClientArrow.setClickable(true);
+        }
+    }
+
     /**
      * 使用hide和show后，可见不可见切换时，不再执行fragment生命周期方法，
      * 需要刷新时，使用onHiddenChanged代替
@@ -71,42 +132,9 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
 
     private void refresh() {
         if (TextUtils.isEmpty(token)) {
-            binding.ivwSetting.setClickable(false);
-            binding.ivwMsg.setClickable(false);
-            binding.tvwQa.setClickable(false);
-            binding.btnLogout.setVisibility(View.INVISIBLE);
-            setChildClickable(binding.llMenu, false);
-            setChildClickable(binding.llMenu01, false);
-            setChildClickable(binding.llMenu02, false);
-            setChildClickable(binding.llMenuClient01, false);
-            setChildClickable(binding.llMenuClient02, true);
-            setChildClickable(binding.llMenuClient03, true);
+            isClickable(false);
         } else {
-            binding.ivwSetting.setClickable(true);
-            binding.ivwMsg.setClickable(true);
-            binding.tvwQa.setClickable(true);
-            binding.btnLogout.setVisibility(View.VISIBLE);
-            setChildClickable(binding.llMenu, true);
-            setChildClickable(binding.llMenu01, true);
-            setChildClickable(binding.llMenu02, true);
-            setChildClickable(binding.llMenuClient01, true);
-            setChildClickable(binding.llMenuClient02, true);
-            setChildClickable(binding.llMenuClient03, true);
-            viewModel.readCache(); // 读取缓存
-
-            if (mProfileVo != null) {
-                //==1时，当前用户是代理，可以进行注册推广功能
-                if (mProfileVo.usertype == 1) {
-                    binding.llMenu2.setVisibility(View.VISIBLE);
-                    binding.llMenu3.setVisibility(View.GONE);
-                } else {
-                    binding.llMenu2.setVisibility(View.GONE);
-                    binding.llMenu3.setVisibility(View.VISIBLE);
-                }
-            } else {
-                binding.llMenu2.setVisibility(View.GONE);
-                binding.llMenu3.setVisibility(View.VISIBLE);
-            }
+            isClickable(true);
         }
     }
 
@@ -121,17 +149,12 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         }
     }
 
-    private void setChildClickable(ViewGroup vgp, boolean isClickable) {
-        for (int i = 0; i < vgp.getChildCount(); i++) {
-            vgp.getChildAt(i).setClickable(isClickable);
-        }
-    }
 
     @Override
     public void initView() {
-        binding.btnLogout.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+       /* binding.btnLogout.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        binding.btnLogout.setOnClickListener(v -> showLogoutDialog());
+        binding.btnLogout.setOnClickListener(v -> showLogoutDialog());*/
 
         binding.ivwSetting.setOnClickListener(view -> {
             showAccountMgmt();
@@ -141,11 +164,11 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             startContainerFragment(RouterFragmentPath.Mine.PAGER_MSG);
         });
 
-        binding.ckbEye.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        binding.checkMine.setOnCheckedChangeListener((buttonView, isChecked) -> {
             setBalance();
         });
 
-        binding.tvw1kRecycle.setOnClickListener(v -> {
+       /* binding.tvw1kRecycle.setOnClickListener(v -> {
             CfLog.i("****** ");
             String title = getString(R.string.txt_is_1k_recycle_all_title);
             String msg = getString(R.string.txt_is_1k_recycle_all);
@@ -169,7 +192,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             CfLog.i("****** ");
             LoadingDialog.show(getActivity());
             viewModel.getBalance();
-        });
+        });*/
 
         binding.tvwWallet.setOnClickListener(view -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_MY_WALLET);
@@ -179,9 +202,12 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             startContainerFragment(RouterFragmentPath.Wallet.PAGER_TRANSFER);
         });
         //投注记录
-        binding.tvwBt.setOnClickListener(v -> {
+        binding.tvwBts.setOnClickListener(v -> {
             CfLog.i("****** ");
-            startContainerFragment(RouterFragmentPath.Mine.PAGER_BT_REPORT); // 投注记录
+            if (mProfileVo !=null){
+                startContainerFragment(RouterFragmentPath.Mine.PAGER_BT_REPORT); // 投注记录
+            }
+
         });
         binding.tvwTransRecord.setOnClickListener(v -> {
             CfLog.i("****** ");
@@ -192,28 +218,19 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             startContainerFragment(RouterFragmentPath.Mine.PAGER_SECURITY_CENTER);
         });
 
-        binding.tvwTeamMgmt.setOnClickListener(v -> {
+        /*binding.tvwTeamMgmt.setOnClickListener(v -> {
             CfLog.i("****** ");
             startContainerFragment(RouterFragmentPath.Mine.PAGER_MEMBER_MANAGER);
-        });
+        });*/
 
-        //binding.tvwInviteFriend.setOnClickListener(v -> {
-        //    CfLog.i("****** ");
-        //    goWebView(v, Constant.URL_INVITE_FRIEND);
-        //});
-        //binding.tvwGuanfangheyin.setOnClickListener(v -> {
-        //    String title = ((TextView) v).getText().toString();
-        //    // URL 不需要拼装
-        //    BrowserActivity.start(getContext(), title, Constant.URL_PARTNER, true);
-        //});
-        binding.tvwProfit.setOnClickListener(v -> {
+        binding.tvwProfitClientArrow.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_PROFIT_LOSS); // 盈亏报表
         });
         binding.tvwProfitClient.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_PROFIT_LOSS); // 盈亏报表
         });
 
-        binding.tvw3rdTrans.setOnClickListener(v -> {
+        binding.tvw3rdTransClientArrow.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_THIRD_TRANSFER); // 三方转账
         });
         binding.tvw3rdTransClient.setOnClickListener(v -> {
@@ -225,55 +242,42 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         //    startContainerFragment(RouterFragmentPath.Mine.PAGER_SECURITY_CENTER);
         //});
         //返水契约
-        binding.tvwRebateContract.setOnClickListener(v -> {
+        binding.tvwRebateContractClientArrow.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_REBATE_AGREEMENT);
         });
         binding.tvwRebateContractClient.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_REBATE_AGREEMENT);
         });
-
-        binding.tvwAccMg.setOnClickListener(v -> {
-            showAccountMgmt();
-        });
+        //账户管理
         binding.tvwAccMgClient.setOnClickListener(v -> {
             showAccountMgmt();
         });
-
-        binding.tvwSportRegular.setOnClickListener(v -> {
+        binding.tvwAccMgClientArrow.setOnClickListener(v -> {
+            showAccountMgmt();
+        });
+        //体育规则
+        binding.tvwSportRegularClientArrow.setOnClickListener(v -> {
             goWebView(v, Constant.URL_SPORT_RULES, false);
         });
         binding.tvwSportRegularClient.setOnClickListener(v -> {
             goWebView(v, Constant.URL_SPORT_RULES, false);
         });
-
-        binding.tvwTutorial.setOnClickListener(v -> {
+        //USDT教程
+        binding.tvwTutorialClientArrow.setOnClickListener(v -> {
             goWebView(v, Constant.URL_USDT_RECHARGE_TURTIAL, false);
         });
         binding.tvwTutorialClient.setOnClickListener(v -> {
             goWebView(v, Constant.URL_USDT_RECHARGE_TURTIAL, false);
         });
-
-        //VIP中心
-        //binding.tvwVipZhongxin.setOnClickListener(v -> {
-        //    //startContainerFragment(RouterFragmentPath.Mine.PAGER_VIP_UPGRADE);
-        //    BrowserActivity.start(getContext(), getString(R.string.txt_vip_center), DomainUtil.getDomain2() + Constant.URL_VIP_CENTER, true, false, true);
-        //});
-        //VIP中心
-        //binding.ivwLevel.setOnClickListener(v -> {
-        //    //startContainerFragment(RouterFragmentPath.Mine.PAGER_VIP_UPGRADE);
-        //    BrowserActivity.start(getContext(), getString(R.string.txt_vip_center), DomainUtil.getDomain2() + Constant.URL_VIP_CENTER, true, false, true);
-        //});
-        //binding.tvwFanhuiBaobiao.setOnClickListener(v -> {
-        //    startContainerFragment(RouterFragmentPath.Mine.PAGER_REBATE_REPORT); // 返水报表
-        //});
+        //常见问题
         binding.tvwQa.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_QUESTION);
         });
-        binding.tvwQaClient.setOnClickListener(v -> {
+        binding.tvwQaClientArrow.setOnClickListener(v -> {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_QUESTION);
         });
-
-        binding.tvwHelp.setOnClickListener(v -> {
+        //帮助中心
+        binding.tvwHelpClientArrow.setOnClickListener(v -> {
             //BrowserActivity.start(getContext(), ((TextView) v).getText().toString(), DomainUtil.getDomain2() + Constant.URL_HELP, false, false, true, true);
             //startContainerFragment(RouterFragmentPath.Mine.PAGER_INFO);
             AppUtil.goBrowser(getContext(), DomainUtil.getDomain2() + Constant.URL_HELP);
@@ -284,7 +288,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             AppUtil.goBrowser(getContext(), DomainUtil.getDomain2() + Constant.URL_HELP);
         });
 
-        binding.tvwLogin.setOnClickListener(v -> {
+        binding.llMineLogin.setOnClickListener(v -> {
             Intent toLogin = new Intent(getContext(), LoginRegisterActivity.class);
             toLogin.putExtra(LoginRegisterActivity.ENTER_TYPE, LoginRegisterActivity.LOGIN_TYPE);
             startActivity(toLogin);
@@ -295,7 +299,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         //    startActivity(toRegister);
         //});
 
-        binding.llMenu.setOnClickListener(v -> {
+      /*  binding.llMenu.setOnClickListener(v -> {
             if (TextUtils.isEmpty(token)) {
                 binding.tvwLogin.performClick();
             }
@@ -309,9 +313,9 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             if (TextUtils.isEmpty(token)) {
                 binding.tvwLogin.performClick();
             }
-        });
+        });*/
         //检查更新
-        binding.tvwUpgrade.setOnClickListener(v -> {
+        binding.tvwUpgradeClientArrow.setOnClickListener(v -> {
             //LoadingDialog.show(getContext());
             HashMap<String, String> map = new HashMap<>();
             map.put("platform", "android");
@@ -326,13 +330,13 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             viewModel.getUpdate(map);
         });
 
-        binding.tvwRegProm.setOnClickListener(v -> {
+    /*    binding.tvwRegProm.setOnClickListener(v -> {
             //注册推广
             //防止切换登录时，mProfileVo数据更新不及时
             if (mProfileVo != null) {
                 startContainerFragment(RouterFragmentPath.Mine.PAGER_REGISTER_PROMOTION);
             }
-        });
+        });*/
 
         //binding.tvwBonus.setOnClickListener(v -> startContainerFragment(RouterFragmentPath.Mine.PAGER_BONUS_REPORT));
     }
@@ -380,14 +384,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
         super.onViewCreated(view, savedInstanceState);
 
         if (mProfileVo == null || TextUtils.isEmpty(token)) {
-            CfLog.i("****** not login");
-            binding.llLogin.setVisibility(View.VISIBLE);
-            binding.clAlreadyLogin.setVisibility(View.GONE);
-            //binding.llMenu.setVisibility(View.GONE);
-            //binding.llMenu2.setVisibility(View.GONE);
-            binding.btnLogout.setVisibility(View.GONE);
-            binding.ivwMsg.setVisibility(View.INVISIBLE);
-            binding.ivwSetting.setVisibility(View.INVISIBLE);
+           isClickable(false);
 
             // 未登录状态下,直接跳到登录页,并关闭当前页
             //ARouter.getInstance().build(RouterActivityPath.Mine.PAGER_LOGIN_REGISTER).navigation();
@@ -439,7 +436,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
     }
 
     private void setBalance() {
-        if (binding.ckbEye.isChecked()) {
+        if (binding.checkMine.isChecked()) {
             binding.tvwBalance.setText(mProfileVo.availablebalance);
         } else {
             binding.tvwBalance.setText("******");
@@ -492,7 +489,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
 
         viewModel.liveDataLogout.observe(this, isLogout -> {
             if (isLogout) {
-                binding.llLogin.setVisibility(View.VISIBLE);
+                binding.llMineLogin.setVisibility(View.GONE);
                 binding.clAlreadyLogin.setVisibility(View.INVISIBLE);
                 mProfileVo = null;
                 ARouter.getInstance().build(RouterActivityPath.Main.PAGER_MAIN)
