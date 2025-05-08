@@ -50,7 +50,7 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
         super(application, repository);
     }
 
-    public void getMatchDetail(long matchId) {
+    public void getMatchDetail(long matchId,String sportId) {
         mMatchId = matchId;
         Map<String, String> map = new HashMap<>();
         map.put("languageType", "CMN");

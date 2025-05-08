@@ -21,6 +21,7 @@ import com.xtree.bet.bean.response.im.Event;
 import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.CategoryFb;
+import com.xtree.bet.bean.ui.CategoryIm;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.OptionList;
@@ -46,26 +47,32 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 
 public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
     private long mMatchId;
+    private String mSportId;
 
     public IMBtDetailViewModel(@NonNull Application application, BetRepository repository) {
         super(application, repository);
     }
 
-    public void getMatchDetail(long matchId) {
+    public void getMatchDetail(long matchId,String sportId) {
         mMatchId = matchId;
+        mSportId = sportId;
+
 //        Map<String, String> map = new HashMap<>();
 //        map.put("languageType", "CMN");
 //        map.put("matchId", String.valueOf(matchId));
 
         List<Long> eventsId = new ArrayList<>();
-        eventsId.add(3L);
-        SelectedEventInfoReq req = new SelectedEventInfoReq(matchId, eventsId, 1, false, true);
+        eventsId.add(mMatchId);
+        SelectedEventInfoReq req = new SelectedEventInfoReq(Long.parseLong(sportId), eventsId, 2, false, true);
         launchFlow(model.getIMApiService().getSelectedEventInfo(
                 new BaseIMRequest<>(IMApiService.GetSelectedEventInfo, req)),
                 new HttpCallBack<EventListRsp>() {
             @Override
             public void onResult(EventListRsp eventListRsp) {
                 super.onResult(eventListRsp);
+
+                getCategoryList(eventListRsp);
+
 
             }
         });
@@ -134,7 +141,7 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
             return categoryList;
         }
 
-        CategoryFb categoryAll = new CategoryFb(FBMarketTag.getMarketTag("all"));
+        CategoryIm categoryAll = new CategoryIm(FBMarketTag.getMarketTag("all"));
         categoryMap.put("all", categoryAll);
         categoryList.add(categoryAll);
         for (PlayTypeInfo playTypeInfo : matchInfo.mg) {
@@ -252,7 +259,7 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
                     BtDomainUtil.setFbDomainUrl(fbService.getDomains());
                 }
 
-                getMatchDetail(mMatchId);
+                getMatchDetail(mMatchId,);
             }
         });
 

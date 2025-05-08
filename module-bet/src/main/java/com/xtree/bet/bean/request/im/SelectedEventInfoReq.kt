@@ -18,6 +18,11 @@ data class SelectedEventInfoReq @JvmOverloads constructor(
     @SerializedName("EventIds") val eventIds: List<Long>,
     /**
      * 赔率类型
+     * 1	Malay
+     * 2	Hong Kong
+     * 3	Euro
+     * 4	Indo
+     * 6	American
      */
     @SerializedName("OddsType") val oddsType: Int,
     /**

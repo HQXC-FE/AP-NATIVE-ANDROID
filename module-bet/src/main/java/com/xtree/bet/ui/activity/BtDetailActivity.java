@@ -193,7 +193,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         //mMatch = getIntent().getParcelableExtra(KEY_MATCH);
         Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
         mMatch = gson.fromJson(SPUtils.getInstance().getString(KEY_MATCH), Match.class);
-        viewModel.getMatchDetail(mMatch.getId());
+        viewModel.getMatchDetail(mMatch.getId(),mMatch.getSportId());
         viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
         viewModel.addSubscription();
         setCgBtCar();
@@ -205,7 +205,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         Observable.interval(5, 5, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this))).subscribe(aLong -> {
-                    viewModel.getMatchDetail(mMatch.getId());
+                    viewModel.getMatchDetail(mMatch.getId(),mMatch.getSportId());
                     viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
                 });
 
