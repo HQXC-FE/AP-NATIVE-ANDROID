@@ -13,7 +13,7 @@ import com.xtree.lottery.ui.view.model.LotteryMoneyModel;
  */
 public class LotteryMoneyViewModel {
 
-    public static final String FACTOR_SUFFIX  = "倍";
+    public static final String FACTOR_SUFFIX = "倍";
     public ObservableField<String> factorData = new ObservableField<>();
     public ObservableField<LotteryMoneyModel> unitData = new ObservableField<>();
 
@@ -41,21 +41,21 @@ public class LotteryMoneyViewModel {
         });
     }
 
-    public int getFactor() {
+    public long getFactor() {
         try {
             String s = factorData.get();
-            int f;
-            if (s==null) return 1;
+            long f;
+            if (s == null) return 1;
             if (s.contains(FACTOR_SUFFIX)) {
-                f = Integer.parseInt(s.replace(FACTOR_SUFFIX, ""));
+                f = Long.parseLong(s.replace(FACTOR_SUFFIX, ""));
             } else {
-                f = Integer.parseInt(s);
+                f = Long.parseLong(s);
             }
             return f;
-        }catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             // 处理转换失败的情况
             e.printStackTrace();
-            return 0;
+            return 1;
         }
     }
 
@@ -65,6 +65,10 @@ public class LotteryMoneyViewModel {
         factorData.set(f + FACTOR_SUFFIX);
     }
 
+    public void fixTimes(long times) {
+        factorData.set(times + FACTOR_SUFFIX);
+    }
+
     public void subtrac() {
         long f = getFactor();
         f--;
@@ -72,6 +76,11 @@ public class LotteryMoneyViewModel {
             f = 1;
         }
         factorData.set(f + FACTOR_SUFFIX);
+    }
+
+    public void concat(String number) {
+        long f = getFactor();
+        factorData.set(f + number + FACTOR_SUFFIX);
     }
 
     public float getMoney() {
@@ -84,7 +93,7 @@ public class LotteryMoneyViewModel {
     }
 
     public LotteryMoneyData getMoneyData() {
-        int f = getFactor();
+        long f = getFactor();
         LotteryMoneyModel lotteryMoneyModel = unitData.get();
         return new LotteryMoneyData(lotteryMoneyModel, f);
     }

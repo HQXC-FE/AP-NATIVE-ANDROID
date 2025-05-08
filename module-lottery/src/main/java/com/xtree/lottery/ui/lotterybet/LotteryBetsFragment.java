@@ -110,7 +110,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
             if (betOrderList != null && betOrderList.size() > 0) {
                 for (LotteryBetRequest.BetOrderData betOrderData : betOrderList) {
                     LotteryMoneyModel moneyModel = binding.lotteryBetsMoneyView.getMoneyData().getMoneyModel();
-                    int factor = binding.lotteryBetsMoneyView.getMoneyData().getFactor();
+                    long factor = binding.lotteryBetsMoneyView.getMoneyData().getFactor();
                     betOrderData.setMode(moneyModel.getModelId());
                     betOrderData.setTimes(factor);
                     if (viewModel.prizeData.getValue() != null) {
@@ -168,7 +168,7 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
             if (betOrderList != null && betOrderList.size() > 0) {
                 for (LotteryBetRequest.BetOrderData betOrderData : betOrderList) {
                     LotteryMoneyModel moneyModel = binding.lotteryBetsMoneyView.getMoneyData().getMoneyModel();
-                    int factor = binding.lotteryBetsMoneyView.getMoneyData().getFactor();
+                    long factor = binding.lotteryBetsMoneyView.getMoneyData().getFactor();
                     betOrderData.setMode(moneyModel.getModelId());
                     betOrderData.setTimes(factor);
 

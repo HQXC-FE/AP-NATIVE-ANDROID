@@ -827,7 +827,7 @@ public class RulesEntryData {
          * times
          */
         @SerializedName("times")
-        private int times;
+        private long times;
         /**
          * display
          */
@@ -873,11 +873,11 @@ public class RulesEntryData {
             this.prize = prize;
         }
 
-        public int getTimes() {
+        public long getTimes() {
             return times;
         }
 
-        public void setTimes(int times) {
+        public void setTimes(long times) {
             this.times = times;
         }
 
