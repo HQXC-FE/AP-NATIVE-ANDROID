@@ -96,7 +96,7 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
 
     @Override
     public void getMatchDetail(long matchId, String sportId) {
-
+            getMatchDetail(matchId);
     }
 
     public void getMatchDetailResult(long matchId) {
@@ -278,6 +278,7 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
 
                         Collections.sort(playTypeList);
 
+                        //
                         List<PlayType> playTypes = new ArrayList<>();
                         for (PlayTypeInfo playTypeInfo : playTypeList) {
                             playTypes.add(new PlayTypePm(playTypeInfo));

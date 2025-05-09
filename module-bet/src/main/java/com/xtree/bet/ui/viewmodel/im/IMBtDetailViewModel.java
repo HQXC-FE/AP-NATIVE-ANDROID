@@ -72,9 +72,9 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
             public void onResult(EventListRsp eventListRsp) {
                 super.onResult(eventListRsp);
                 MatchInfo matchInfo =  ImModelUtils.INSTANCE.convertImToCommonModel(eventListRsp);
-                getCategoryList(matchInfo);
+                List<Category> categoryList = getCategoryList(matchInfo);
 
-
+                categoryListData.postValue(categoryList);
             }
         });
 

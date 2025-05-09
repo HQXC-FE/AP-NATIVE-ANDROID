@@ -4,10 +4,11 @@ import android.os.Parcel;
 import android.text.TextUtils;
 
 import com.xtree.base.utils.TimeUtils;
-import com.xtree.bet.bean.response.pm.OptionDataListInfo;
-import com.xtree.bet.bean.response.pm.OptionInfo;
-import com.xtree.bet.bean.response.pm.PlayTypeInfo;
+import com.xtree.bet.bean.response.im.OptionDataListInfo;
+import com.xtree.bet.bean.response.im.OptionInfo;
+import com.xtree.bet.bean.response.im.PlayTypeInfo;
 import com.xtree.bet.constant.PMConstants;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class PlayTypeIm implements PlayType{
         List<OptionList> optionLists = new ArrayList<>();
         if(playTypeInfo != null && playTypeInfo.hl != null) {
             for (OptionDataListInfo optionDataListInfo : playTypeInfo.hl) {
-                optionLists.add(new OptionListPm(optionDataListInfo, playTypeInfo));
+//                optionLists.add(new OptionListIm(optionDataListInfo, playTypeInfo));
             }
         }
         return optionLists;
@@ -82,18 +83,18 @@ public class PlayTypeIm implements PlayType{
 
         if(playTypeInfo != null && playTypeInfo.hl != null && !playTypeInfo.hl.isEmpty()) {
             for (int i = 0; i < length; i++) {
-                OptionInfo optionInfo;
-                try{
-                    optionInfo = playTypeInfo.hl.get(0).ol.get(i);
-                }catch (Exception e){
-                    optionInfo = null;
-                }
-
-                if(optionInfo == null){
-                    optionList.add(null);
-                }else{
-                    optionList.add(new OptionPm(optionInfo, playTypeInfo.hl.get(0), playTypeInfo));
-                }
+//                OptionInfo optionInfo;
+//                try{
+//                    optionInfo = playTypeInfo.hl.get(0).ol.get(i);
+//                }catch (Exception e){
+//                    optionInfo = null;
+//                }
+//
+//                if(optionInfo == null){
+//                    optionList.add(null);
+//                }else{
+//                    optionList.add(new OptionPm(optionInfo, playTypeInfo.hl.get(0), playTypeInfo));
+//                }
             }
         }else{
             for (int i = 0; i < length; i++) {
@@ -110,20 +111,20 @@ public class PlayTypeIm implements PlayType{
     @Override
     public List<Option> getChampionOptionList() {
         List<Option> optionList = new ArrayList<>();
-        if(playTypeInfo != null && playTypeInfo.ol != null && !playTypeInfo.ol.isEmpty()) {
-            for (OptionInfo optionInfo : playTypeInfo.ol) {
-                OptionDataListInfo optionDataListInfo = new OptionDataListInfo();
-                optionDataListInfo.hs = playTypeInfo.hs;
-                optionDataListInfo.hmt = 3;
-                optionList.add(new OptionPm(optionInfo, optionDataListInfo, playTypeInfo));
-            }
-        }
+//        if(playTypeInfo != null && playTypeInfo.ol != null && !playTypeInfo.ol.isEmpty()) {
+//            for (OptionInfo optionInfo : playTypeInfo.ol) {
+//                OptionDataListInfo optionDataListInfo = new OptionDataListInfo();
+//                optionDataListInfo.hs = playTypeInfo.hs;
+//                optionDataListInfo.hmt = 3;
+//                optionList.add(new OptionIm(optionInfo, optionDataListInfo, playTypeInfo));
+//            }
+//        }
         return optionList;
     }
 
     @Override
     public int getPlayPeriod() {
-        return Integer.valueOf(playTypeInfo.hpid);
+        return Integer.parseInt(playTypeInfo.hpid);
     }
 
 
