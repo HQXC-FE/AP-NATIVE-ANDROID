@@ -67,7 +67,8 @@ public class SSCFinalMergeRule {
                                     .collect(Collectors.joining("|")));
                         } else {
                             forBet.put("codes", formatCodes.stream()
-                                    .map(item -> String.join("&", (String) item))
+                                    .filter(item -> item != null && !((String) item).isEmpty())
+                                    .map(String::valueOf)
                                     .collect(Collectors.joining("&")));
                         }
                     }
@@ -90,8 +91,6 @@ public class SSCFinalMergeRule {
             Map<String, Object> forDisplay = new HashMap<>();
             List<String> betCodes = new ArrayList<>();
             if (facts.get("formatCodes") instanceof List) {
-                List<Object> finalFormatCodes = formatCodes;
-
                 if (formatCodes.get(0) instanceof List<?>) {
                     betCodes = formatCodes.stream()
                             .map(item -> {
@@ -104,7 +103,9 @@ public class SSCFinalMergeRule {
                             }).collect(Collectors.toList());
                 } else if (formatCodes.get(0) instanceof String) {
                     for (Object item : formatCodes) {
-                        betCodes.add((String) item);
+                        if (!((String) item).isEmpty()) {
+                            betCodes.add((String) item);
+                        }
                     }
                 }
             }
