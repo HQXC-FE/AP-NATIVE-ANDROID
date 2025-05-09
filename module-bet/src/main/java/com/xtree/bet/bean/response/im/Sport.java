@@ -49,4 +49,15 @@ public class Sport implements BaseBean {
             return new Sport[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Sport{" +
+                "SportId=" + SportId +
+                ", SportName='" + SportName + '\'' +
+                ", OrderNumber=" + OrderNumber +
+                ", Events=" + (Events != null ? Events.size() + " events" : "null") +
+                '}';
+    }
+
 }

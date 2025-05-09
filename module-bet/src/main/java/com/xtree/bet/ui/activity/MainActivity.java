@@ -951,9 +951,11 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                     playMethodType, mOddType, isTimedRefresh, isRefresh);
         } else {
             if (sportTypePos == 0 && (playMethodPos == 0 || playMethodPos == 3)) {
+                CfLog.d("=========== MainActivity getMatchData viewModel.getLeagueList 1111 ===============");
                 viewModel.getLeagueList(sportTypePos, sportId, orderBy, viewModel.hotLeagueList, matchids,
                         playMethodType, searchDatePos, mOddType, isTimedRefresh, isRefresh);
             } else {//sportTypePos 这里有可能为-1
+                CfLog.d("=========== MainActivity getMatchData viewModel.getLeagueList 2222 ===============");
                 viewModel.getLeagueList(sportTypePos, sportId, orderBy, leagueIds, matchids,
                         playMethodType, searchDatePos, mOddType, isTimedRefresh, isRefresh);
             }

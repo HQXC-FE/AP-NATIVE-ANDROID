@@ -15,7 +15,10 @@ import com.xtree.bet.bean.request.im.OutrightEventsReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.im.Announcement;
+import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
+import com.xtree.bet.bean.response.im.RecommendedEvent;
+import com.xtree.bet.bean.response.im.Sport;
 import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
@@ -339,15 +342,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
 
-//        Flowable flowable = getFlowableMatchesPagePB(pmListReq);
-//        if (isStepSecond) {
-//            flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
-//        }
-//        CfLog.d("==== ImMainViewModel getLeagueList ====");
-//
-//        if (isTimerRefresh) {
-//            flowable = getFlowableMatchBaseInfoByMidsPB(pmListReq);
-//        }
+        matchResultPage(TimeUtils.parseTime(dateList.get(searchDatePos), TimeUtils.FORMAT_YY_MM_DD) + " 12:00:00", TimeUtils.parseTime(dateList.get(searchDatePos), TimeUtils.FORMAT_YY_MM_DD) + " 12:00:00", mPlayMethodType, sportId);
 
         if (isRefresh) {
             mNoLiveheaderLeague = null;
@@ -400,10 +395,8 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         outrightEventsReq.setSeason(0);
         outrightEventsReq.setSportId(1);
 
-        Disposable disposable = (Disposable) model.getIMApiService().getOutrightEvents(outrightEventsReq)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<SportCountRsp>() {
+        Disposable disposable = (Disposable) model.getIMApiService().getOutrightEvents(outrightEventsReq).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<SportCountRsp>() {
                     @Override
                     public void onResult(SportCountRsp sportCountRsp) {
 
@@ -423,10 +416,8 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     public void statistical(int playMethodType) {
         getFlowableLiveMatches();
         AllSportCountReq allSportCountReq = new AllSportCountReq();
-        Disposable disposable = (Disposable) model.getIMApiService().getAllSportCount(allSportCountReq)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<SportCountRsp>() {
+        Disposable disposable = (Disposable) model.getIMApiService().getAllSportCount(allSportCountReq).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<SportCountRsp>() {
                     @Override
                     public void onResult(SportCountRsp sportCountRsp) {
                         CfLog.d("====== ImMainViewModel statistical onResult =====" + sportCountRsp.toString());
@@ -457,16 +448,13 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     public void postMerchant() {
         Map<String, String> map = new HashMap<>();
         map.put("languageType", "CMN");
-        Disposable disposable = (Disposable) model.getPMApiService().resultMenuPB(map)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<PMResultBean>>() {
+        Disposable disposable = (Disposable) model.getPMApiService().resultMenuPB(map).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<PMResultBean>>() {
                     @Override
                     public void onResult(List<PMResultBean> list) {
                         List<SportTypeItem> list1 = new ArrayList<>();
                         for (PMResultBean i : list) {
-                            if (IMConstants.getMatchGames().get(i.getMenuType()) == null
-                                    || i.getMenuType() == 3001 || i.getMenuType() == 3002 || i.getMenuType() == 3003) {
+                            if (IMConstants.getMatchGames().get(i.getMenuType()) == null || i.getMenuType() == 3001 || i.getMenuType() == 3002 || i.getMenuType() == 3003) {
                                 //体育赛果隐藏英雄联盟、DOTA2、王者荣耀
                                 continue;
                             }
@@ -504,42 +492,60 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         eventInfoMbtReq.setCombo(false);
         CfLog.d("==== ImMainViewModel getLeagueList ====");
         getFlowableLiveMatches();
-        Disposable disposable = (Disposable) model.getIMApiService().getEventInfoMbt(eventInfoMbtReq)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<List<MatchInfo>>() {
+        Disposable disposable = (Disposable) model.getIMApiService().getEventInfoMbt(eventInfoMbtReq).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<EventListRsp>() {
                     @Override
-                    public void onResult(List<MatchInfo> data) {
-
+                    public void onResult(EventListRsp data) {
+                        CfLog.d("================== ImMainViewModel matchResultPage onResult ====");
                         ArrayList<League> leagues = new ArrayList<League>();
                         Map<String, League> mapLeague = new HashMap<>();
-                        for (MatchInfo matchInfo : data) {
-                            Match match = new MatchPm(matchInfo);
-                            League league = mapLeague.get(String.valueOf(matchInfo.tid));
-                            if (league == null) {
-                                LeagueInfo leagueInfo = new LeagueInfo();
-                                leagueInfo.picUrlthumb = matchInfo.lurl;
-                                leagueInfo.nameText = matchInfo.tn;
-                                leagueInfo.tournamentId = Long.parseLong(matchInfo.tid);
-                                league = new LeaguePm(leagueInfo);
-                                mapLeague.put(String.valueOf(matchInfo.tid), league);
-                                leagues.add(league);
-                            }
-                            league.getMatchList().add(match);
+                        List<Sport> matches =  data.getSports();
+                        if (matches != null) {
+                            for (Sport sport : matches) {
+                                System.out.println("SportId: " + sport.SportId + ", SportName: " + sport.SportName);
 
+                                List<RecommendedEvent> events = sport.Events;
+                                if (events != null) {
+                                    for (RecommendedEvent event : events) {
+                                        System.out.println("  EventId: " + event.EventId + ", HomeTeam: " + event.HomeTeam + ", AwayTeam: " + event.AwayTeam);
+                                    }
+                                } else {
+                                    System.out.println("  No events for this sport.");
+                                }
+                            }
+                        } else {
+                            System.out.println("No sports available.");
                         }
+
+//                        for (MatchInfo matchInfo : data) {
+//                            Match match = new MatchPm(matchInfo);
+//                            League league = mapLeague.get(String.valueOf(matchInfo.tid));
+//                            if (league == null) {
+//                                LeagueInfo leagueInfo = new LeagueInfo();
+//                                leagueInfo.picUrlthumb = matchInfo.lurl;
+//                                leagueInfo.nameText = matchInfo.tn;
+//                                leagueInfo.tournamentId = Long.parseLong(matchInfo.tid);
+//                                league = new LeaguePm(leagueInfo);
+//                                mapLeague.put(String.valueOf(matchInfo.tid), league);
+//                                leagues.add(league);
+//                            }
+//                            league.getMatchList().add(match);
+//
+//                        }
                         resultLeagueData.setValue(leagues);
                     }
 
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
+                        CfLog.d("================== ImMainViewModel matchResultPage onError ====");
                         resultErrorLeagueData.setValue("");
                     }
 
                     @Override
                     public void onFail(BusinessException t) {
                         super.onFail(t);
+                        CfLog.d("================== ImMainViewModel matchResultPage onFail ====");
                         resultErrorLeagueData.setValue("");
                     }
                 });
@@ -577,10 +583,8 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      */
     public void getAnnouncement() {
         AnnouncementReq announcementReq = new AnnouncementReq();
-        Disposable disposable = (Disposable) model.getIMApiService().getAnnouncement(announcementReq)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<GetAnnouncementRsp>() {
+        Disposable disposable = (Disposable) model.getIMApiService().getAnnouncement(announcementReq).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<GetAnnouncementRsp>() {
                     @Override
                     public void onResult(GetAnnouncementRsp info) {
                         KLog.i("GetAnnouncementRsp     " + info);
@@ -625,16 +629,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         eventInfoMbtReq.setCombo(false);
         CfLog.d("==== ImMainViewModel getLeagueList ====");
         Flowable flowable = model.getIMApiService().getEventInfoMbt(eventInfoMbtReq);
-        return flowable;
-    }
-
-    private Flowable getFlowableNoLiveMatchesPagePB(PMListReq pmListReq) {
-        Flowable flowable = model.getPMApiService().noLiveMatchesPagePB(pmListReq);
-        return flowable;
-    }
-
-    private Flowable getFlowableMatchBaseInfoByMidsPB(PMListReq pmListReq) {
-        Flowable flowable = model.getPMApiService().getMatchBaseInfoByMidsPB(pmListReq);
         return flowable;
     }
 
@@ -688,8 +682,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         for (MenuInfo menuInfo : mMenuInfoList) {
             //"3", "1", "4", "11", "100"; 只有"今日", "滚球", "早盘", "串关", "冠军"数据才添加，提升效率
-            if (menuInfo.menuType == 3 || menuInfo.menuType == 1 || menuInfo.menuType == 4 || menuInfo.menuType == 11
-                    || menuInfo.menuType == 100) {
+            if (menuInfo.menuType == 3 || menuInfo.menuType == 1 || menuInfo.menuType == 4 || menuInfo.menuType == 11 || menuInfo.menuType == 100) {
                 ArrayList<SportTypeItem> sportTypeItemList = new ArrayList<>();
                 //Map<String, Integer> sslMap = new HashMap<>();
                 if (menuInfo.menuType == 3 || menuInfo.menuType == 11) {//今日 串关 加热门
@@ -709,23 +702,14 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                     }
 
                     SportTypeItem item = new SportTypeItem();
-                    CfLog.d("====== IM subMenu.menuType ======="+subMenu.menuType);
+                    //CfLog.d("====== IM subMenu.menuType ======="+subMenu.menuType);
                     item.id = subMenu.menuType;
                     item.menuId = subMenu.menuId;
                     item.num = subMenu.count;
                     sportTypeItemList.add(item);
                     sportCountMap.put(String.valueOf(menuInfo.menuType), sportTypeItemList);
                 }
-                System.out.println("=========== ImMainViewModel sportTypeItemList =============" + sportTypeItemList.size());
-            }
-        }
-        CfLog.d("============== mMenuInfoList size ===============" + mMenuInfoList.size());
-        for (Map.Entry<String, List<SportTypeItem>> entry : sportCountMap.entrySet()) {
-            String key = entry.getKey();
-            List<SportTypeItem> value = entry.getValue();
-            System.out.println("===== key: " + key);
-            for (SportTypeItem item : value) {
-                System.out.println("====== item: " + item.toString());
+//                System.out.println("=========== ImMainViewModel sportTypeItemList =============" + sportTypeItemList.size());
             }
         }
 
@@ -744,7 +728,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         if (sportList == null || sportList.isEmpty()) return menuInfoList;
 
         for (SportCountRsp.CountItem item : sportList) {
-            System.out.println("========= generateMenuInfoListFromSportList SportId: " + item.sportId);
+            //System.out.println("========= generateMenuInfoListFromSportList SportId: " + item.sportId);
             MenuInfo menuInfo = new MenuInfo();
             menuInfo.menuId = item.sportId;
             menuInfo.menuType = item.sportId;

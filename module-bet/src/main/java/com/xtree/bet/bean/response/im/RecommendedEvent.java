@@ -173,4 +173,48 @@ public class RecommendedEvent implements BaseBean {
         }
     };
 
+    @Override
+    public String toString() {
+        return "RecommendedEvent{" +
+                "OpenParlay=" + OpenParlay +
+                ", IsLive=" + IsLive +
+                ", Market=" + Market +
+                ", HasVisualization=" + HasVisualization +
+                ", HasStatistic=" + HasStatistic +
+                ", BREventId=" + BREventId +
+                ", SourceId='" + SourceId + '\'' +
+                ", TotalMarketLineCount=" + TotalMarketLineCount +
+                ", IsPopular=" + IsPopular +
+                ", Season=" + Season +
+                ", MatchDay=" + MatchDay +
+                ", LiveStreaming=" + LiveStreaming +
+                ", IsFavourite=" + IsFavourite +
+                ", EventId=" + EventId +
+                ", EventStatusId=" + EventStatusId +
+                ", OrderNumber=" + OrderNumber +
+                ", EventDate='" + EventDate + '\'' +
+                ", GroundTypeId=" + GroundTypeId +
+                ", EventGroupId=" + EventGroupId +
+                ", EventGroupTypeId=" + EventGroupTypeId +
+                ", HomeTeamId=" + HomeTeamId +
+                ", HomeTeam='" + HomeTeam + '\'' +
+                ", AwayTeamId=" + AwayTeamId +
+                ", AwayTeam='" + AwayTeam + '\'' +
+                ", RBTime='" + RBTime + '\'' +
+                ", RBTimeStatus=" + RBTimeStatus +
+                ", HomeScore=" + HomeScore +
+                ", AwayScore=" + AwayScore +
+                ", HomeRedCard=" + HomeRedCard +
+                ", AwayRedCard=" + AwayRedCard +
+                ", IsBetTradeOpen=" + IsBetTradeOpen +
+                ", LiveStreamingUrl=" + LiveStreamingUrl +
+                ", RelatedScores=" + RelatedScores +
+                ", ExtraInfo='" + ExtraInfo + '\'' +
+                ", Competition=" + Competition +
+                ", Programme=" + Programme +
+                ", MarketLines=" + MarketLines +
+                '}';
+    }
+
+
 }
