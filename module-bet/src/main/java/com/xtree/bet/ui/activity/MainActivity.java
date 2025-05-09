@@ -1342,14 +1342,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             }
         });
         viewModel.sportItemData.observe(this, matchitemList -> {
+            CfLog.d("============= MainActivity sportItemData observe ==============");
             sportTypePos = -1;
             if (mStatisticalData == null) {
                 return;
             }
-            //CfLog.d("========== MainActivity mStatisticalData ==========" + mStatisticalData.toString());
-           //CfLog.d("========== MainActivity mStatisticalData.get(String.valueOf(playMethodType) ==========" + mStatisticalData.get(String.valueOf(playMethodType)));
             List<SportTypeItem> list = mStatisticalData.get(String.valueOf(playMethodType));
-            //CfLog.d("========== MainActivity list size ==========" + list.size());
             tabSportAdapter.setList(list);
             binding.tabSportType.scrollToPosition(0);
             final int selectPosition;
@@ -1358,11 +1356,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             } else {
                 selectPosition = 0;
             }
-            //CfLog.d("========== MainActivity binding.tabSportType ==========" + binding.tabSportType);
-            //CfLog.d("========== MainActivity selectPosition ==========" + selectPosition);
             binding.tabSportType.post(() -> autoClickItem(binding.tabSportType, selectPosition));
         });
         viewModel.leagueItemData.observe(this, leagueItemList -> {
+            CfLog.d("============= MainActivity leagueItemData observe ==============");
             mLeagueItemList = leagueItemList;
             if (leagueItemList == null) {
                 binding.tabFbLeague.setVisibility(View.GONE);
@@ -1389,6 +1386,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         });
 
         viewModel.leagueLiveListData.observe(this, leagueList -> {
+            CfLog.d("============= MainActivity leagueLiveListData observe ==============");
             if (playMethodType == 1) {
                 this.mLeagueList = leagueList;
                 updateData();
@@ -1396,26 +1394,31 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         });
 
         viewModel.leagueLiveTimerListData.observe(this, leagueList -> {
+            CfLog.d("============= MainActivity leagueLiveTimerListData observe ==============");
             this.mLeagueList = leagueList;
             updateData();
         });
 
         viewModel.leagueNoLiveListData.observe(this, leagueAdapters -> {
+            CfLog.d("============= MainActivity leagueNoLiveListData observe ==============");
             this.mLeagueList = leagueAdapters;
             updateData();
         });
 
         viewModel.leagueNoLiveTimerListData.observe(this, leagueAdapters -> {
+            CfLog.d("============= MainActivity leagueNoLiveTimerListData observe ==============");
             this.mLeagueList = leagueAdapters;
             updateData();
         });
 
         viewModel.championMatchTimerListData.observe(this, championMatcheList -> {
+            CfLog.d("============= MainActivity championMatchTimerListData observe ==============");
             mChampionMatchList = championMatcheList;
             updateData();
         });
 
         viewModel.championMatchListData.observe(this, championMatcheList -> {
+            CfLog.d("============= MainActivity championMatchListData observe ==============");
             mChampionMatchList = championMatcheList;
             updateData();
         });
@@ -1455,9 +1458,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
         });
         viewModel.statisticalData.observe(this, statisticalData -> {
-            CfLog.i("mStatisticalData     " + new Gson().toJson(mStatisticalData));
             this.mStatisticalData = statisticalData;
-            //CfLog.i("mStatisticalData observe ================   " + mStatisticalData);
             updateStatisticalData();
         });
 
@@ -1477,6 +1478,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         });
 
         viewModel.settingLeagueData.observe(this, leagueList -> {
+            CfLog.d("================= settingLeagueData ==============="+leagueList.size());
             settingLeagueList = leagueList;
         });
 

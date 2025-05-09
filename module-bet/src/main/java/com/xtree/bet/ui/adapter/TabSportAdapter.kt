@@ -21,7 +21,6 @@ class TabSportAdapter(
         }
         val sportItem = matchGames[item.id]
         sportItem?.apply {
-            CfLog.d("=============== TabSportAdapter sportItem.name ================"+sportItem.name)
             holder.setText(R.id.tab_item_name, sportItem.name)
             holder.getView<TextView>(R.id.tab_item_name).isSelected = isSelected
             holder.setText(R.id.tv_match_count, item.num.toString())

@@ -4,6 +4,7 @@ package com.xtree.bet.ui.viewmodel.callback;
 import android.text.TextUtils;
 
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
@@ -62,6 +63,7 @@ public class IMListCallBack extends HttpCallBack<List<MatchInfo>> {
     public IMListCallBack(ImMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
                           int playMethodType, int sportPos, String sportId, int orderBy, List<Long> leagueIds,
                           int searchDatePos, int oddType, List<Long> matchids/*, boolean isStepSecond*/) {
+        CfLog.d("================ IMListCallBack ===============");
         mViewModel = viewModel;
         mHasCache = hasCache;
         mIsTimerRefresh = isTimerRefresh;
@@ -102,6 +104,7 @@ public class IMListCallBack extends HttpCallBack<List<MatchInfo>> {
     }
 
     public void saveLeague() {
+        CfLog.d("================ IMListCallBack saveLeague ===============");
         mLiveMatchList = mViewModel.getLiveMatchList();
         if (!mIsRefresh) {
             mLeagueList = mViewModel.getLeagueList();
@@ -124,6 +127,7 @@ public class IMListCallBack extends HttpCallBack<List<MatchInfo>> {
 
     @Override
     public void onResult(List<MatchInfo> data) {
+        CfLog.d("============= IMListCallBack onResult =============");
         if (mIsTimerRefresh) { // 定时刷新赔率变更
             if (data.size() != mMatchids.size()) {
                 //List<Long> matchIdList = new ArrayList<>();

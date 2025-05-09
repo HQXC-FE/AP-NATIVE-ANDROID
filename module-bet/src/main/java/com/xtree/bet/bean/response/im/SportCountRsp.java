@@ -3,9 +3,6 @@ package com.xtree.bet.bean.response.im;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Size;
-
 import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
 

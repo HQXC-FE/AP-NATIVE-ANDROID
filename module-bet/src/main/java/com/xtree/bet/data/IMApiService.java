@@ -96,7 +96,7 @@ public interface IMApiService {
      * 这里是第一次获取，是获取全量赛事
      * 获取赛事列表-->对应matchesPagePB接口
      */
-    @POST("/api/sports/imsb/forward")
+    @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<EventListRsp>> getEventInfoMbt(@Body EventInfoMbtReq eventInfoMbtReq);
 

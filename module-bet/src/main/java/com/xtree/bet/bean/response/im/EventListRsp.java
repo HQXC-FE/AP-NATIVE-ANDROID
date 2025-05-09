@@ -1,26 +1,27 @@
 package com.xtree.bet.bean.response.im;
 
 import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
+
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 推荐赛事列表响应实体
+ */
 public class EventListRsp implements BaseBean {
-    private List<Sport> Sports;
-    private Long TempDelta;
-    private Long Delta;
-    private String ServerTime;
 
-    public EventListRsp() {}
+    @SerializedName("Sports")
+    private List<Sport> sports;
+
+    public EventListRsp() {
+    }
 
     protected EventListRsp(Parcel in) {
-        Sports = in.createTypedArrayList(Sport.CREATOR);
-        if (in.readByte() == 0) {
-            TempDelta = null;
-        } else {
-            TempDelta = in.readLong();
-        }
-        Delta = in.readLong();
-        ServerTime = in.readString();
+        sports = in.createTypedArrayList(Sport.CREATOR);
     }
 
     public static final Creator<EventListRsp> CREATOR = new Creator<EventListRsp>() {
@@ -35,17 +36,17 @@ public class EventListRsp implements BaseBean {
         }
     };
 
+    public List<Sport> getSports() {
+        return sports;
+    }
+
+    public void setSports(List<Sport> sports) {
+        this.sports = sports;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeTypedList(Sports);
-        if (TempDelta == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeLong(TempDelta);
-        }
-        dest.writeLong(Delta);
-        dest.writeString(ServerTime);
+        dest.writeTypedList(sports);
     }
 
     @Override
@@ -53,48 +54,105 @@ public class EventListRsp implements BaseBean {
         return 0;
     }
 
-    // Getter and Setter methods
-    public List<Sport> getSports() {
-        return Sports;
-    }
-
-    public void setSports(List<Sport> sports) {
-        this.Sports = sports;
-    }
-
-    public Long getTempDelta() {
-        return TempDelta;
-    }
-
-    public void setTempDelta(Long tempDelta) {
-        this.TempDelta = tempDelta;
-    }
-
-    public Long getDelta() {
-        return Delta;
-    }
-
-    public void setDelta(Long delta) {
-        this.Delta = delta;
-    }
-
-    public String getServerTime() {
-        return ServerTime;
-    }
-
-    public void setServerTime(String serverTime) {
-        this.ServerTime = serverTime;
-    }
-
-    // toString 方法
     @Override
     public String toString() {
         return "EventListRsp{" +
-                "Sports=" + (Sports != null ? Sports.size() + " sports" : "null") +
-                ", TempDelta=" + TempDelta +
-                ", Delta=" + Delta +
-                ", ServerTime='" + ServerTime + '\'' +
+                "sports=" + (sports != null ? sports.size() + " sports" : "null") +
                 '}';
     }
-}
 
+    /**
+     * 体育项目实体
+     */
+    public static class Sport implements BaseBean, Parcelable {
+
+        @SerializedName("SportId")
+        public int sportId;
+
+        @SerializedName("SportName")
+        public String sportName;
+
+        @SerializedName("Events")
+        public List<RecommendedEvent> events;
+
+        @SerializedName("OrderNumber")
+        public int orderNumber;
+
+        public Sport() {
+        }
+
+        protected Sport(Parcel in) {
+            sportId = in.readInt();
+            sportName = in.readString();
+            events = in.createTypedArrayList(RecommendedEvent.CREATOR);
+            orderNumber = in.readInt();
+        }
+
+        public static final Creator<Sport> CREATOR = new Creator<Sport>() {
+            @Override
+            public Sport createFromParcel(Parcel in) {
+                return new Sport(in);
+            }
+
+            @Override
+            public Sport[] newArray(int size) {
+                return new Sport[size];
+            }
+        };
+
+        public int getSportId() {
+            return sportId;
+        }
+
+        public void setSportId(int sportId) {
+            this.sportId = sportId;
+        }
+
+        public String getSportName() {
+            return sportName;
+        }
+
+        public void setSportName(String sportName) {
+            this.sportName = sportName;
+        }
+
+        public List<RecommendedEvent> getEvents() {
+            return events;
+        }
+
+        public void setEvents(List<RecommendedEvent> events) {
+            this.events = events;
+        }
+
+        public int getOrderNumber() {
+            return orderNumber;
+        }
+
+        public void setOrderNumber(int orderNumber) {
+            this.orderNumber = orderNumber;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(sportId);
+            dest.writeString(sportName);
+            dest.writeTypedList(events);
+            dest.writeInt(orderNumber);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public String toString() {
+            return "Sport{" +
+                    "sportId=" + sportId +
+                    ", sportName='" + sportName + '\'' +
+                    ", orderNumber=" + orderNumber +
+                    ", events=" + (events != null ? events.size() + " events" : "null") +
+                    '}';
+        }
+    }
+}

@@ -3,32 +3,54 @@ package com.xtree.bet.bean.response.im;
 import android.os.Parcel;
 
 
-
+import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
 
 import java.util.List;
 
 public class RecommendedEvent implements BaseBean {
 
+    @SerializedName("OpenParlay")
     public boolean OpenParlay;
+    @SerializedName("IsLive")
     public boolean IsLive;
+    @SerializedName("Market")
     public int Market;
-    public boolean HasVisualization;
-    public boolean HasStatistic;
-    public int BREventId;
-    public String SourceId;
-    public int TotalMarketLineCount;
-    public boolean IsPopular;
-    public int Season;
-    public int MatchDay;
-    public int LiveStreaming;
-    public boolean IsFavourite;
-    public int EventId;
+    @SerializedName("EventId")
+    public long EventId;
+    @SerializedName("EventName")
+    public String EventName;
+    @SerializedName("EventStatusId")
     public int EventStatusId;
+    @SerializedName("OrderNumber")
     public int OrderNumber;
+    @SerializedName("EventDate")
     public String EventDate;
+    @SerializedName("HasVisualization")
+    public boolean HasVisualization;
+    @SerializedName("HasStatistic")
+    public boolean HasStatistic;
+    @SerializedName("BREventId")
+    public int BREventId;
+    @SerializedName("SourceId")
+    public String SourceId;
+    @SerializedName("TotalMarketLineCount")
+    public int TotalMarketLineCount;
+    @SerializedName("IsPopular")
+    public boolean IsPopular;
+    @SerializedName("Season")
+    public int Season;
+    @SerializedName("MatchDay")
+    public int MatchDay;
+    @SerializedName("LiveStreaming")
+    public int LiveStreaming;
+    @SerializedName("IsFavourite")
+    public boolean IsFavourite;
+    @SerializedName("GroundTypeId")
     public int GroundTypeId;
+    @SerializedName("EventGroupId")
     public int EventGroupId;
+    @SerializedName("EventGroupTypeId")
     public int EventGroupTypeId;
     public int HomeTeamId;
     public String HomeTeam;
@@ -118,7 +140,7 @@ public class RecommendedEvent implements BaseBean {
         dest.writeInt(Season);
         dest.writeInt(MatchDay);
         dest.writeInt(LiveStreaming);
-        dest.writeInt(EventId);
+        dest.writeLong(EventId);
         dest.writeInt(EventStatusId);
         dest.writeInt(OrderNumber);
         dest.writeInt(GroundTypeId);
