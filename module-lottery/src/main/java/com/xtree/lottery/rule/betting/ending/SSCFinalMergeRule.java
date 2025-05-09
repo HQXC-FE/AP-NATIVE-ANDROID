@@ -136,31 +136,64 @@ public class SSCFinalMergeRule {
                 // 如果类型不是 "input" 或 "box"，按照 show_str 和数组进行对应
                 List<String> displayCodes = new ArrayList<>();
                 String showStr = (String) currentMethod.get("show_str");
-                List<String> showStrSplit = Arrays.asList(showStr.split(","));
-                int codeIndex = 0;
+                List<String> showStrSplit = new ArrayList<>(Arrays.asList(showStr.split(",")));
+                // 统计 showStr 中 X 的数量
+                long xCount = showStrSplit.stream().filter(s -> "X".equals(s)).count();
 
-                for (String item : showStrSplit) {
-                    if ("X".equals(item)) {
-                        if (codeIndex < betCodes.size()) {
-                            Object betCode = betCodes.get(codeIndex++);
-                            if (betCode instanceof String && !((String) betCode).isEmpty()) {
-                                // 如果是 String，直接添加
-                                displayCodes.add(((String) betCode).replace(",", "").replace(";", ","));
+                // 特殊情况：只有一个 X（表示：展示所有 betCodes，剩下的位置补 "-" 到固定长度）
+                if (xCount == 1 && showStrSplit.size() != 1) {
+                    int xIndex = showStrSplit.indexOf("X");
+
+                    // 前部分保留原顺序，替换 X 为多个 betCodes
+                    for (int i = 0; i < xIndex; i++) {
+                        displayCodes.add(showStrSplit.get(i));
+                    }
+
+                    // 替换 X 为多个 betCodes（去除 , ;）
+                    String endCode = String.join(" ", betCodes);
+
+                    displayCodes.add((endCode).replace(",", " ").replace(";", ","));
+
+                    for (int i = 0; i < 9; i++) {
+                        displayCodes.add("-");
+                    }
+                    // 根据 code_sp 拼接最终结果
+                    String codeSp = (String) currentMethod.getOrDefault("code_sp", ",");
+                    finalCodes = String.join(codeSp.isBlank() ? "," : codeSp, displayCodes);
+                } else {
+                    if (xCount == 1) {
+                        // 自动扩展 showStrSplit 如果 X 不够填入所有 betCodes
+                        if (xCount < betCodes.size()) {
+                            long extraNeeded = betCodes.size() - xCount;
+                            for (int i = 0; i < extraNeeded; i++) {
+                                showStrSplit.add("X");
+                            }
+                        }
+                    }
+
+                    // 正常情况：逐个处理 showStr 中的 X 和非 X
+                    int codeIndex = 0;
+
+                    for (String item : showStrSplit) {
+                        if ("X".equals(item)) {
+                            if (codeIndex < betCodes.size()) {
+                                Object betCode = betCodes.get(codeIndex++);
+                                if (betCode instanceof String && !((String) betCode).isEmpty()) {
+                                    displayCodes.add(((String) betCode).replace(",", "").replace(";", ","));
+                                } else {
+                                    displayCodes.add("-");
+                                }
                             } else {
                                 displayCodes.add("-");
                             }
                         } else {
-                            displayCodes.add("-");
+                            displayCodes.add(item);
                         }
-                    } else {
-                        // 非 "X" 字符直接添加到 displayCodes
-                        displayCodes.add(item);
                     }
+                    // 根据 code_sp 拼接最终结果
+                    String codeSp = (String) currentMethod.getOrDefault("code_sp", ",");
+                    finalCodes = String.join(codeSp.isBlank() ? "," : codeSp, displayCodes);
                 }
-
-                // 根据 code_sp 拼接最终结果
-                String codeSp = (String) currentMethod.getOrDefault("code_sp", ",");
-                finalCodes = String.join(codeSp.isBlank() ? "," : codeSp, displayCodes);
             }
 
             // 更新 forDisplay 的 codes 字段
