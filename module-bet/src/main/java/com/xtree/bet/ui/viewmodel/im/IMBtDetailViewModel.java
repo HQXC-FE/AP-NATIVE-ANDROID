@@ -28,6 +28,7 @@ import com.xtree.bet.bean.ui.OptionList;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.bean.ui.PlayTypeFb;
 import com.xtree.bet.constant.FBMarketTag;
+import com.xtree.bet.constant.IMMarketTag;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.data.IMApiService;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
@@ -70,8 +71,8 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
             @Override
             public void onResult(EventListRsp eventListRsp) {
                 super.onResult(eventListRsp);
-
-                getCategoryList(eventListRsp);
+                MatchInfo matchInfo =  ImModelUtils.INSTANCE.convertImToCommonModel(eventListRsp);
+                getCategoryList(matchInfo);
 
 
             }
@@ -141,7 +142,7 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
             return categoryList;
         }
 
-        CategoryIm categoryAll = new CategoryIm(FBMarketTag.getMarketTag("all"));
+        CategoryIm categoryAll = new CategoryIm(IMMarketTag.getMarketTag("all"));
         categoryMap.put("all", categoryAll);
         categoryList.add(categoryAll);
         for (PlayTypeInfo playTypeInfo : matchInfo.mg) {
@@ -171,9 +172,6 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
                     }
                 }
             }
-            /*if(!mCategoryList.isEmpty()) {
-                mCategoryList.set(mCategoryList.size() - 1, null);
-            }*/
         }
         return mCategoryList;
     }
@@ -259,7 +257,7 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
                     BtDomainUtil.setFbDomainUrl(fbService.getDomains());
                 }
 
-                getMatchDetail(mMatchId,);
+                getMatchDetail(mMatchId,mSportId);
             }
         });
 

@@ -50,7 +50,7 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
         super(application, repository);
     }
 
-    public void getMatchDetail(long matchId,String sportId) {
+    public void getMatchDetail(long matchId, String sportId) {
         mMatchId = matchId;
         Map<String, String> map = new HashMap<>();
         map.put("languageType", "CMN");
@@ -242,7 +242,7 @@ public class FbBtDetailViewModel extends TemplateBtDetailViewModel {
                             BtDomainUtil.setFbDomainUrl(fbService.getDomains());
                         }
 
-                        getMatchDetail(mMatchId);
+                        getMatchDetail(mMatchId, mMatch.getSportId());
                     }
 
                     @Override

@@ -1,9 +1,11 @@
 package com.xtree.bet.ui.viewmodel.im
 
+import com.xtree.bet.bean.response.fb.MatchInfo
+import com.xtree.bet.bean.response.im.EventListRsp
 import com.xtree.bet.bean.response.im.MarketLine
 
 
-class ImModelUtils {
+object ImModelUtils {
 
     // 定义各种投注类型分类
     //让球&大小
@@ -27,58 +29,67 @@ class ImModelUtils {
         33, 34, 47, 58, 59, 35, 19, 20, 26, 27, 24, 25, 159
     )
 
-    fun organizedMarkLinesWith(
-        imSport: IMSports,
-        imSportEvents: IMSportEvents,
-        organizedArray: MutableMap<String, MutableList<MarketLine>>
-    ) {
-        for (marketLine in imSportEvents.MarketLines) {
+//    fun organizedMarkLinesWith(
+//        imSport: IMSports,
+//        imSportEvents: IMSportEvents,
+//        organizedArray: MutableMap<String, MutableList<MarketLine>>
+//    ) {
+//        for (marketLine in imSportEvents.MarketLines) {
+//
+//            // 让球&大小
+//            if (marketLine.BetTypeId in ahou) {
+//                organizedArray.getOrPut("h") { mutableListOf() }.add(marketLine)
+//            }
+//
+//            // 波胆
+//            if (marketLine.BetTypeId in cs) {
+//                organizedArray.getOrPut("cs") { mutableListOf() }.add(marketLine)
+//            }
+//
+//            // 角球
+//            if ((marketLine.BetTypeId in corner && imSportEvents.EventGroupTypeId == 2)
+//                || marketLine.BetTypeName.lowercase().contains("corner")
+//                || marketLine.BetTypeName.contains("角球")
+//            ) {
+//                organizedArray.getOrPut("c") { mutableListOf() }.add(marketLine)
+//            }
+//
+//            // 获牌总数
+//            if (imSportEvents.EventGroupTypeId == 3 &&
+//                (marketLine.BetTypeName.lowercase().contains("booking") || marketLine.BetTypeName.contains("获牌"))
+//            ) {
+//                organizedArray.getOrPut("b") { mutableListOf() }.add(marketLine)
+//            }
+//
+//            // 进球
+//            if (marketLine.BetTypeId in goals) {
+//                organizedArray.getOrPut("s") { mutableListOf() }.add(marketLine)
+//            }
+//
+//            // 半场
+//            if (marketLine.PeriodId in halves) {
+//                organizedArray.getOrPut("f") { mutableListOf() }.add(marketLine)
+//            }
+//
+//            // 时段
+//            if (marketLine.BetTypeId in period) {
+//                organizedArray.getOrPut("period") { mutableListOf() }.add(marketLine)
+//            }
+//
+//            // 特殊投注
+//            if (marketLine.BetTypeId in specials) {
+//                organizedArray.getOrPut("i") { mutableListOf() }.add(marketLine)
+//            }
+//        }
+//    }
 
-            // 让球&大小
-            if (marketLine.BetTypeId in ahou) {
-                organizedArray.getOrPut("h") { mutableListOf() }.add(marketLine)
-            }
 
-            // 波胆
-            if (marketLine.BetTypeId in cs) {
-                organizedArray.getOrPut("cs") { mutableListOf() }.add(marketLine)
-            }
+    fun convertImToCommonModel(eventListRsp: EventListRsp): MatchInfo {
+        val matchInfo = MatchInfo()
 
-            // 角球
-            if ((marketLine.BetTypeId in corner && imSportEvents.EventGroupTypeId == 2)
-                || marketLine.BetTypeName.lowercase().contains("corner")
-                || marketLine.BetTypeName.contains("角球")
-            ) {
-                organizedArray.getOrPut("c") { mutableListOf() }.add(marketLine)
-            }
 
-            // 获牌总数
-            if (imSportEvents.EventGroupTypeId == 3 &&
-                (marketLine.BetTypeName.lowercase().contains("booking") || marketLine.BetTypeName.contains("获牌"))
-            ) {
-                organizedArray.getOrPut("b") { mutableListOf() }.add(marketLine)
-            }
+        return matchInfo
 
-            // 进球
-            if (marketLine.BetTypeId in goals) {
-                organizedArray.getOrPut("s") { mutableListOf() }.add(marketLine)
-            }
-
-            // 半场
-            if (marketLine.PeriodId in halves) {
-                organizedArray.getOrPut("f") { mutableListOf() }.add(marketLine)
-            }
-
-            // 时段
-            if (marketLine.BetTypeId in period) {
-                organizedArray.getOrPut("period") { mutableListOf() }.add(marketLine)
-            }
-
-            // 特殊投注
-            if (marketLine.BetTypeId in specials) {
-                organizedArray.getOrPut("i") { mutableListOf() }.add(marketLine)
-            }
-        }
     }
 
 }

@@ -17,6 +17,7 @@ public class CategoryIm implements Category{
      * 玩法集名称
      */
     private String marketName;
+
     /**
      * 排序编号
      */
@@ -29,6 +30,10 @@ public class CategoryIm implements Category{
      * 玩法id
      */
     private List<Integer> plays;
+
+    public CategoryIm(String marketName){
+        this.marketName = marketName;
+    }
 
     @Override
     public List<PlayType> getPlayTypeList() {

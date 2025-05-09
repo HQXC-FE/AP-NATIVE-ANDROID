@@ -37,7 +37,7 @@ public class PlayTypeIm implements PlayType{
      */
     @Override
     public int getPlayType() {
-        return Integer.valueOf(playTypeInfo.hpid);
+        return Integer.parseInt(playTypeInfo.hpid);
     }
     /**
      * 获取玩法名称
