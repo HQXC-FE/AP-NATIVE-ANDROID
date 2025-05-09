@@ -152,6 +152,8 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
 
     @Override
     public void initView() {
+
+        binding.tvMineVersion.setText(StringUtils.getVersionName(getContext()));
        /* binding.btnLogout.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
         binding.btnLogout.setOnClickListener(v -> showLogoutDialog());*/
