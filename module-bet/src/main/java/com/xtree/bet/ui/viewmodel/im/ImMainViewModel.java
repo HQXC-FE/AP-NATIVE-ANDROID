@@ -8,18 +8,15 @@ import androidx.annotation.NonNull;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
-import com.xtree.bet.SportCountRspParser;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
 import com.xtree.bet.bean.request.im.AnnouncementReq;
 import com.xtree.bet.bean.request.im.EventInfoMbtReq;
 import com.xtree.bet.bean.request.im.OutrightEventsReq;
-import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.im.Announcement;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
 import com.xtree.bet.bean.response.im.SportCountRsp;
-import com.xtree.bet.bean.response.pm.FrontListInfo;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
 import com.xtree.bet.bean.response.pm.MenuInfo;
@@ -29,20 +26,15 @@ import com.xtree.bet.bean.ui.LeaguePm;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.MatchPm;
 import com.xtree.bet.constant.IMConstants;
-import com.xtree.bet.constant.PMConstants;
 import com.xtree.bet.constant.SportTypeItem;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.MainViewModel;
-import com.xtree.bet.ui.viewmodel.SportCacheType;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
 import com.xtree.bet.ui.viewmodel.callback.IMLeagueListCacheCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMLeagueListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMListCacheCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMListCallBack;
 
-import org.reactivestreams.Subscriber;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +46,6 @@ import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.RxUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
  * Created by vickers
@@ -442,88 +433,12 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                         List<SportCountRsp.CountItem> sportList = sportCountRsp.getSportCount();
                         CfLog.d("====== ImMainViewModel sportList size =====" + sportList.size());
                         mMenuInfoList.clear();
-                        for (SportCountRsp.CountItem item : sportList) {
-                            System.out.println("SportId: " + item.sportId);
-                            for (String name : PLAY_METHOD_NAMES) {
-                                MenuInfo menuInfo = new MenuInfo();
-                                menuInfo.menuId = item.sportId;
-                                menuInfo.menuName = item.sportName;
-                                if (name.equals("今日")) {
-                                    menuInfo.menuType = 3;
-                                    if (!item.eventGroupTypes.isEmpty()) {
-                                        menuInfo.count = item.eventGroupTypes.get(0).todayFECount + item.eventGroupTypes.get(0).rbFECount;
-                                    }
-                                } else if (name.equals("滚球")) {
-                                    menuInfo.menuType = 1;
-                                    if (!item.eventGroupTypes.isEmpty()) {
-                                        menuInfo.count = item.eventGroupTypes.get(0).rbFECount;
-                                    }
-                                } else if (name.equals("早盘")) {
-                                    menuInfo.menuType = 4;
-                                    if (!item.eventGroupTypes.isEmpty()) {
-                                        menuInfo.count = item.eventGroupTypes.get(0).earlyFECount;
-                                    }
-                                } else if (name.equals("串关")) {
-                                    menuInfo.menuType = 11;
-                                    if (!item.eventGroupTypes.isEmpty()) {
-                                        menuInfo.count = item.eventGroupTypes.get(0).count;
-                                    }
-                                } else if (name.equals("冠军")) {
-                                    menuInfo.menuType = 100;
-                                    if (!item.eventGroupTypes.isEmpty()) {
-                                        menuInfo.count = item.eventGroupTypes.get(0).orCount;
-                                    }
-                                }
-                                mMenuInfoList.add(menuInfo);
-                            }
-                        }
-
-                        if (mMatchGames.isEmpty()) {
-                            mMatchGames = IMConstants.getMatchGames();
-                        }
-                        for (MenuInfo menuInfo : mMenuInfoList) {
-                            CfLog.d("============== menuInfo ===============" + menuInfo.toString());
-                            //"3", "1", "4", "11", "100"; 只有"今日", "滚球", "早盘", "串关", "冠军"数据才添加，提升效率
-                            if (menuInfo.menuType == 3 || menuInfo.menuType == 1 || menuInfo.menuType == 4 || menuInfo.menuType == 11
-                                    || menuInfo.menuType == 100) {
-                                ArrayList<SportTypeItem> sportTypeItemList = new ArrayList<>();
-                                //Map<String, Integer> sslMap = new HashMap<>();
-                                if (menuInfo.menuType == 3 || menuInfo.menuType == 11) {//今日 串关 加热门
-                                    SportTypeItem item1 = new SportTypeItem();
-                                    item1.id = 1111;
-                                    item1.num = 0;
-                                    sportTypeItemList.add(item1);
-                                } else if (menuInfo.menuType == 1) {//滚球 加全部
-                                    SportTypeItem item2 = new SportTypeItem();
-                                    item2.id = 0;
-                                    item2.num = menuInfo.count;
-                                    sportTypeItemList.add(item2);
-                                } else {
-                                    SportTypeItem item = new SportTypeItem();
-                                    item.id = menuInfo.menuType;
-                                    item.menuId = menuInfo.menuId;
-                                    item.num = menuInfo.count;
-                                    sportTypeItemList.add(item);
-                                }
-//                                for (MenuInfo subMenu : menuInfo.subList) {
-//                                    if (subMenu.count <= 0 || mMatchGames.get(subMenu.menuType) == null) {
-//                                        continue;
-//                                    }
-
-                                sportCountMap.put(String.valueOf(menuInfo.menuType), sportTypeItemList);
-//                                }
-
-                            }
-                        }
-                        CfLog.d("====== ImMainViewModel sportCountMap size =====" + sportCountMap.size());
-                        statisticalData.postValue(sportCountMap);
+                        processSportCount(sportCountRsp);
                     }
 
                     @Override
                     public void onError(Throwable t) {
                         CfLog.d("====== ImMainViewModel statistical onError =====");
-                        //接口不通,先临时用开云json数据做为假数据验证功能
-                        processSportCount(SportCountRspParser.getSportCountRsp());
                     }
                 });
         addSubscribe(disposable);
@@ -829,7 +744,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         if (sportList == null || sportList.isEmpty()) return menuInfoList;
 
         for (SportCountRsp.CountItem item : sportList) {
-            System.out.println("SportId: " + item.sportId);
+            System.out.println("========= generateMenuInfoListFromSportList SportId: " + item.sportId);
             MenuInfo menuInfo = new MenuInfo();
             menuInfo.menuId = item.sportId;
             menuInfo.menuType = item.sportId;

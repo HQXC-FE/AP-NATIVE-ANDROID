@@ -94,6 +94,11 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
 
     }
 
+    @Override
+    public void getMatchDetail(long matchId, String sportId) {
+
+    }
+
     public void getMatchDetailResult(long matchId) {
         mMatchId = matchId;
         Map<String, String> map = new HashMap<>();
