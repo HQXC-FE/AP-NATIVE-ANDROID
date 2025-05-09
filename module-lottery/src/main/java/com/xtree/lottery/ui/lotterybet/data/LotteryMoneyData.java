@@ -8,9 +8,9 @@ import com.xtree.lottery.ui.view.model.LotteryMoneyModel;
  */
 public class LotteryMoneyData {
     private LotteryMoneyModel moneyModel;
-    private int factor = 1;
+    private long factor = 1;
 
-    public LotteryMoneyData(LotteryMoneyModel moneyModel, int factor) {
+    public LotteryMoneyData(LotteryMoneyModel moneyModel, long factor) {
         this.moneyModel = moneyModel;
         this.factor = factor;
     }
@@ -23,7 +23,7 @@ public class LotteryMoneyData {
         this.moneyModel = moneyModel;
     }
 
-    public int getFactor() {
+    public long getFactor() {
         return factor;
     }
 

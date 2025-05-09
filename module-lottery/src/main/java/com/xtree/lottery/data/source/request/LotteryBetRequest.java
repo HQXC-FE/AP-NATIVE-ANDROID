@@ -145,7 +145,7 @@ public class LotteryBetRequest {
          * times
          */
         @SerializedName("times")
-        private int times;
+        private long times;
         /**
          * poschoose
          */
@@ -238,11 +238,11 @@ public class LotteryBetRequest {
             this.mode = mode;
         }
 
-        public int getTimes() {
+        public long getTimes() {
             return times;
         }
 
-        public void setTimes(int times) {
+        public void setTimes(long times) {
             this.times = times;
         }
 

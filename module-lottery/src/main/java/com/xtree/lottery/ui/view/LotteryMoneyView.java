@@ -1,6 +1,7 @@
 package com.xtree.lottery.ui.view;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.InputFilter;
 import android.util.AttributeSet;
@@ -12,10 +13,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
+import com.xtree.base.mvvm.ExKt;
 import com.xtree.lottery.R;
 import com.xtree.lottery.data.config.Lottery;
 import com.xtree.lottery.databinding.LayoutLotteryMoneyBinding;
+import com.xtree.lottery.ui.lotterybet.LotteryTimesKeyBoardDialogFragment;
 import com.xtree.lottery.ui.lotterybet.data.LotteryMoneyData;
 import com.xtree.lottery.ui.view.model.LotteryMoneyModel;
 import com.xtree.lottery.ui.view.viewmodel.LotteryMoneyViewModel;
@@ -32,12 +36,9 @@ import me.xtree.mvvmhabit.utils.SPUtils;
  */
 public class LotteryMoneyView extends LinearLayout {
 
-    private LayoutLotteryMoneyBinding binding;
+    private final LayoutLotteryMoneyBinding binding;
     // 设置 RadioGroup 的布局参数
-    private RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(
-            RadioGroup.LayoutParams.WRAP_CONTENT,
-            RadioGroup.LayoutParams.WRAP_CONTENT
-    );
+    private final RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.WRAP_CONTENT);
     private List<LotteryMoneyModel> moneyModels;
     private Lottery lottery;
 
@@ -112,6 +113,13 @@ public class LotteryMoneyView extends LinearLayout {
                     }
 
                 }
+            }
+        });
+
+        binding.lotteryMoneyFactorEdit.setOnClickListener((v) -> {
+            Activity activity = ExKt.getActivity(this);
+            if (activity != null && activity instanceof FragmentActivity) {
+                LotteryTimesKeyBoardDialogFragment.show((FragmentActivity) activity, lotteryMoneyViewModel);
             }
         });
     }

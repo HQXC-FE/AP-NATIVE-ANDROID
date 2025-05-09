@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.xtree.lottery.ui.view.viewmodel.TimesKeyBoardViewModel" />
+
+        <import type="com.xtree.lottery.R" />
+    </data>
+
+    <androidx.recyclerview.widget.RecyclerView
+        gridSpace="@{@dimen/grid_space5}"
+        itemData="@{model.datas}"
+        itemViewType="@{model.itemType}"
+        onBindListener="@{model.onBindListener}"
+        spanCount="@{3}"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/clr_main_05"
+        android:overScrollMode="never" />
+</layout>

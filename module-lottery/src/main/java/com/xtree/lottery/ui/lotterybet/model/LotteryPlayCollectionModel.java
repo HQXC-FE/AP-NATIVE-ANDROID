@@ -34,7 +34,6 @@ public class LotteryPlayCollectionModel extends BindModel {
     }
 
     public void putUserMethods(String key, UserMethodsResponse.DataDTO userMethod) {
-        Log.i("打印2：", key);
         this.userMethods.put(key, userMethod);
     }
 
