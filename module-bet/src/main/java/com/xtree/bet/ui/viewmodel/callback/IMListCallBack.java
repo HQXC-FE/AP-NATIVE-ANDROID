@@ -7,6 +7,9 @@ import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
+import com.xtree.bet.bean.response.im.EventListRsp;
+import com.xtree.bet.bean.response.im.RecommendedEvent;
+import com.xtree.bet.bean.response.im.Sport;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
 import com.xtree.bet.bean.ui.League;
@@ -29,7 +32,7 @@ import java.util.Map;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class IMListCallBack extends HttpCallBack<List<MatchInfo>> {
+public class IMListCallBack extends HttpCallBack<EventListRsp> {
 
     private ImMainViewModel mViewModel;
     private boolean mHasCache;
@@ -106,7 +109,7 @@ public class IMListCallBack extends HttpCallBack<List<MatchInfo>> {
     public void saveLeague() {
         CfLog.d("================ IMListCallBack saveLeague ===============");
         mLiveMatchList = mViewModel.getLiveMatchList();
-        if (!mIsRefresh) {
+        //if (!mIsRefresh) {
             mLeagueList = mViewModel.getLeagueList();
             mGoingOnLeagueList = mViewModel.getGoingOnLeagueList();
             mMapLeague = mViewModel.getMapLeague();
@@ -114,7 +117,7 @@ public class IMListCallBack extends HttpCallBack<List<MatchInfo>> {
             mMapMatch = mViewModel.getMapMatch();
             mMapSportType = mViewModel.getMapSportType();
             mNoliveMatchList = mViewModel.getNoliveMatchList();
-        }
+       // }
     }
 
     @Override
@@ -126,14 +129,16 @@ public class IMListCallBack extends HttpCallBack<List<MatchInfo>> {
     }
 
     @Override
-    public void onResult(List<MatchInfo> data) {
+    public void onResult(EventListRsp data) {
         CfLog.d("============= IMListCallBack onResult =============");
+        CfLog.d("============= IMListCallBack onResult mIsTimerRefresh ============="+mIsTimerRefresh);
+        List<MatchInfo> matchList = convertToMatchInfoList(data);
         if (mIsTimerRefresh) { // 定时刷新赔率变更
-            if (data.size() != mMatchids.size()) {
+            if (matchList.size() != mMatchids.size()) {
                 //List<Long> matchIdList = new ArrayList<>();
                 mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);
             } else {
-                setOptionOddChange(data);
+                setOptionOddChange(matchList);
                 mViewModel.leagueLiveTimerListData.postValue(mLeagueList);
             }
         } else {  // 获取今日中的全部滚球赛事列表
@@ -145,9 +150,9 @@ public class IMListCallBack extends HttpCallBack<List<MatchInfo>> {
             }
             mViewModel.firstNetworkFinishData.call();
             mIsStepSecond = true;
-            mLiveMatchList.addAll(data);
+            mLiveMatchList.addAll(matchList);
             if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
-                leagueGoingList(data);
+                leagueGoingList(matchList);
             }
             mViewModel.saveLeague(this);
             mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, 2, mSearchDatePos, mOddType, false, mIsRefresh, mIsStepSecond);
@@ -327,4 +332,31 @@ public class IMListCallBack extends HttpCallBack<List<MatchInfo>> {
             sportHeader.setMatchCount(1);
         }
     }
+
+    public List<MatchInfo> convertToMatchInfoList(EventListRsp data) {
+        List<MatchInfo> matchList = new ArrayList<>();
+        if (data == null || data.getSports() == null) return matchList;
+        CfLog.d("============== IMListCallBack convertToMatchInfoList ===============");
+        for (EventListRsp.Sport sport : data.getSports()) {
+            if (sport.events == null) continue;
+            for (RecommendedEvent event : sport.events) {
+                MatchInfo matchInfo = new MatchInfo();
+                matchInfo.csid = String.valueOf(sport.sportId);
+                matchInfo.csna = sport.sportName;
+                matchInfo.mid = String.valueOf(event.EventId);
+                matchInfo.mhid = String.valueOf(event.HomeTeamId);
+                matchInfo.mhn = event.HomeTeam;
+                matchInfo.mst = event.EventDate;
+                matchInfo.man = event.AwayTeam;
+                matchInfo.maid = String.valueOf(event.AwayTeamId);
+                matchInfo.tid = String.valueOf(event.EventGroupId);
+                matchList.add(matchInfo);
+                CfLog.d("============== IMListCallBack RecommendedEvent ==============="+event);
+            }
+        }
+        CfLog.d("============== IMListCallBack convertToMatchInfoList matchList ==============="+matchList);
+        CfLog.d("============== IMListCallBack convertToMatchInfoList matchList size ==============="+matchList.size());
+        return matchList;
+    }
+
 }

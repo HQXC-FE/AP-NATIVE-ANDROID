@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
@@ -136,6 +137,7 @@ public abstract class TemplateMainViewModel extends BaseBtViewModel implements M
     }
 
     public List<League> getLeagueList() {
+        CfLog.d("========== TemplateMainViewModel getLeagueList ============");
         return mLeagueList;
     }
 

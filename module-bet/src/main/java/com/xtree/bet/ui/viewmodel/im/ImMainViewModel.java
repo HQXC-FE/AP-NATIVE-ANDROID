@@ -1,15 +1,10 @@
 package com.xtree.bet.ui.viewmodel.im;
 
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
-
 import android.app.Application;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
@@ -18,7 +13,6 @@ import com.xtree.bet.bean.request.im.AnnouncementReq;
 import com.xtree.bet.bean.request.im.EventInfoMbtReq;
 import com.xtree.bet.bean.request.im.OutrightEventsReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
-import com.xtree.bet.bean.response.SportsCacheSwitchInfo;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.im.Announcement;
 import com.xtree.bet.bean.response.im.EventListRsp;
@@ -36,16 +30,12 @@ import com.xtree.bet.constant.IMConstants;
 import com.xtree.bet.constant.SportTypeItem;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.MainViewModel;
-import com.xtree.bet.ui.viewmodel.SportCacheType;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
-import com.xtree.bet.ui.viewmodel.callback.IMLeagueListCacheCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMLeagueListCallBack;
-import com.xtree.bet.ui.viewmodel.callback.IMListCacheCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMListCallBack;
 
 import org.reactivestreams.Subscriber;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +46,6 @@ import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.RxUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
  * Created by vickers
@@ -71,7 +60,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     private Map<String, List<SportTypeItem>> sportCountMap = new HashMap<>();
     private List<MenuInfo> mMenuInfoList = new ArrayList<>();
     private IMLeagueListCallBack mImLeagueCallBack;
-    private IMLeagueListCacheCallBack mImCacheLeagueCallBack; //后台的缓存接口回调
 
 
     private HashMap<Integer, SportTypeItem> mMatchGames = new HashMap<>();
@@ -114,24 +102,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         mMapMatch = imListCallBack.getMapMatch();
         mMapSportType = imListCallBack.getMapSportType();
         mNoLiveheaderLeague = imListCallBack.getNoLiveheaderLeague();
-    }
-
-    public void saveLeague(IMListCacheCallBack imListCallBack) {
-        mLeagueList = imListCallBack.getLeagueList();
-        mGoingOnLeagueList = imListCallBack.getGoingOnLeagueList();
-        mMapLeague = imListCallBack.getMapLeague();
-        mMatchList = imListCallBack.getMatchList();
-        mMapMatch = imListCallBack.getMapMatch();
-        mMapSportType = imListCallBack.getMapSportType();
-    }
-
-    public void saveLeague(IMLeagueListCacheCallBack imListCallBack) {
-        mLeagueList = imListCallBack.getLeagueList();
-        mGoingOnLeagueList = imListCallBack.getGoingOnLeagueList();
-        mMapLeague = imListCallBack.getMapLeague();
-        mMatchList = imListCallBack.getMatchList();
-        mMapMatch = imListCallBack.getMapMatch();
-        mMapSportType = imListCallBack.getMapSportType();
     }
 
     public Map<String, League> getMapLeague() {
@@ -210,8 +180,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         if (!isChampion) {
             if (mImLeagueCallBack != null) {
                 mImLeagueCallBack.searchMatch(searchWord);
-            } else if (mImCacheLeagueCallBack != null) {
-                mImCacheLeagueCallBack.searchMatch(searchWord);
             }
         } else {
             mChampionMatchList.clear();
@@ -350,7 +318,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
             }
         }
 
-        Flowable flowable = getFlowableMatchesPagePB(pmListReq);
+        Flowable flowable = getFlowableMatchesPage(pmListReq);
         if (isStepSecond) {
             flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
         }
@@ -358,7 +326,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         if (type == 1) {// 滚球
             if (needSecondStep) {
                 pmListReq.setCps(mGoingOnPageSize);
-                flowable = getFlowableLiveMatchesPB(pmListReq);
+                flowable = getFlowableLiveMatches(pmListReq);
             }
         }
 
@@ -441,9 +409,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                 .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<SportCountRsp>() {
                     @Override
                     public void onResult(SportCountRsp sportCountRsp) {
-                        CfLog.d("====== ImMainViewModel statistical onResult =====" + sportCountRsp.toString());
                         List<SportCountRsp.CountItem> sportList = sportCountRsp.getSportCount();
-                        CfLog.d("====== ImMainViewModel sportList size =====" + sportList.size());
                         mMenuInfoList.clear();
                         processSportCount(sportCountRsp);
                     }
@@ -533,6 +499,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                                         matchInfo.csna = sport.sportName;
                                         matchInfo.mid = String.valueOf(event.EventId);
                                         matchInfo.mhid = String.valueOf(event.HomeTeamId);
+                                        matchInfo.mhn = String.valueOf(event.HomeTeam);
                                         matchInfo.mst = event.EventDate;
                                         matchInfo.man = event.AwayTeam;
                                         matchInfo.maid = String.valueOf(event.AwayTeamId);
@@ -642,9 +609,9 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     }
 
     private void processSportCount(SportCountRsp sportCountRsp) {
-        CfLog.d("====== ImMainViewModel statistical onResult =====" + sportCountRsp.toString());
+        //CfLog.d("====== ImMainViewModel statistical onResult =====" + sportCountRsp.toString());
         List<SportCountRsp.CountItem> sportList = sportCountRsp.getSportCount();
-        CfLog.d("====== ImMainViewModel sportList size =====" + sportList.size());
+        //CfLog.d("====== ImMainViewModel sportList size =====" + sportList.size());
         for (String name : PLAY_METHOD_NAMES) {
             if (name.equals("今日")) {
                 MenuInfo menuInfo = new MenuInfo();
@@ -719,7 +686,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
             }
         }
 
-        CfLog.d("====== ImMainViewModel sportCountMap size =====" + sportCountMap.size());
         statisticalData.postValue(sportCountMap);
     }
 
@@ -745,7 +711,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         return menuInfoList;
     }
 
-    private Flowable getFlowableMatchesPagePB(PMListReq pmListReq) {
+    private Flowable getFlowableMatchesPage(PMListReq pmListReq) {
         EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
         eventInfoMbtReq.setSportId(1);
         eventInfoMbtReq.setMarket(3);
@@ -758,17 +724,8 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         return flowable;
     }
 
-    private Flowable getFlowableLiveMatchesPB(PMListReq pmListReq) {
+    private Flowable getFlowableLiveMatches(PMListReq pmListReq) {
         Flowable flowable;
-        if (isUseCacheApiService()) {
-            if (getSportCacheType().equals(SportCacheType.PM)) {
-                pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN));
-                flowable = model.getBaseApiService().pmLiveMatchesPB(pmListReq);
-            } else {
-                pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN));
-                flowable = model.getBaseApiService().pmxcLiveMatchesPB(pmListReq);
-            }
-        } else {
             //flowable = model.getIMApiService().liveMatchesPB(pmListReq);
             EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
             eventInfoMbtReq.setSportId(1);
@@ -779,8 +736,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
             eventInfoMbtReq.setSeason(0);
             eventInfoMbtReq.setCombo(false);
             flowable = model.getIMApiService().getEventInfoMbt(eventInfoMbtReq);
-        }
-
         return flowable;
     }
 
@@ -800,15 +755,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     private Flowable getFlowableMatchBaseInfoByMidsPB(PMListReq pmListReq) {
         Flowable flowable;
-        if (isUseCacheApiService()) {
-            if (getSportCacheType().equals(SportCacheType.PM)) {
-                pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN));
-                flowable = model.getBaseApiService().pmGetMatchBaseInfoByMidsPB(pmListReq);
-            } else {
-                pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN));
-                flowable = model.getBaseApiService().pmxcGetMatchBaseInfoByMidsPB(pmListReq);
-            }
-        } else {
             EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
             eventInfoMbtReq.setSportId(1);
             eventInfoMbtReq.setMarket(3);
@@ -818,86 +764,13 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
             eventInfoMbtReq.setSeason(0);
             eventInfoMbtReq.setCombo(false);
             flowable = model.getIMApiService().getEventInfoMbt(eventInfoMbtReq);
-        }
 
         return flowable;
     }
 
-    private boolean isUseCacheApiService() {
-        SportCacheType sportCacheType = getSportCacheType();
-        if (sportCacheType.equals(SportCacheType.PM) || sportCacheType.equals(SportCacheType.PMXC)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    //根据返回的类型判断是走缓存请求，还是直连三方请求
-    private SportCacheType getSportCacheType() {
-        // 获取平台和缓存数据
-        String platform = SPUtils.getInstance().getString("KEY_PLATFORM", "");
-        String json = SPUtils.getInstance().getString(SPKeyGlobal.SPORT_MATCH_CACHE, "");
-
-        // 如果平台或数据为空，直接返回 NONE
-        if (TextUtils.isEmpty(platform) || TextUtils.isEmpty(json)) {
-            return SportCacheType.NONE;
-        }
-
-        // 解析缓存数据
-        Type typeToken = new TypeToken<SportsCacheSwitchInfo>() {
-        }.getType();
-        SportsCacheSwitchInfo sportCacheSwitchInfo = new Gson().fromJson(json, typeToken);
-
-        // 如果解析结果为空，返回 NONE
-        if (sportCacheSwitchInfo == null) {
-            return SportCacheType.NONE;
-        }
-
-        // 获取用户 ID 和对应的 sportCacheList
-        String userID = SPUtils.getInstance().getString(SPKeyGlobal.USER_ID);
-        List<Integer> sportCacheList = getSportCacheListByPlatform(platform, sportCacheSwitchInfo);
-
-        // 如果用户列表为空，表示面向全部用户，进行相关检查
-        if (sportCacheSwitchInfo.getUsers().isEmpty()) {
-            //场馆数据为空
-            if (sportCacheList.isEmpty()) {
-                return SportCacheType.NONE;
-            }
-        } else {
-            // 如果用户列表不为空，检查当前用户是否在用户列表内
-            if (!sportCacheSwitchInfo.getUsers().contains(userID)) {
-                return SportCacheType.NONE;
-            }
-        }
-
-        // 最终检查缓存数据并返回 SportCacheType
-        return getSportCacheTypeForPlatform(platform, sportCacheList);
-    }
-
-    // 根据平台获取对应的 sportCacheList
-    private List<Integer> getSportCacheListByPlatform(String platform, SportsCacheSwitchInfo sportCacheSwitchInfo) {
-        if (TextUtils.equals(platform, PLATFORM_PM)) {
-            return sportCacheSwitchInfo.getObg();
-        } else {
-            return sportCacheSwitchInfo.getObgzy();
-        }
-    }
-
-    // 根据平台返回相应的 SportCacheType
-    private SportCacheType getSportCacheTypeForPlatform(String platform, List<Integer> sportCacheList) {
-        if (sportCacheList.contains(9)) {
-            // 如果缓存数据包含 9，根据平台返回对应的 SportCacheType
-            if (TextUtils.equals(platform, PLATFORM_PM)) {
-                return SportCacheType.PM;
-            } else {
-                return SportCacheType.PMXC;
-            }
-        }
-        return SportCacheType.NONE;
-    }
-
     // 根据条件设置 HttpCallBack 类型的对象
     public void createIMListCallback(boolean isTimerRefresh, boolean isRefresh, int sportPos, String sportId, int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchidList, Flowable flowable) {
+        CfLog.d("============== ImMainViewModel createIMListCallback ===============");
         // 根据是否使用缓存选择回调类型
         Object callback = new IMListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType,
                 sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList);
@@ -911,16 +784,11 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     public void createIMLeagueListCallback(boolean isTimerRefresh, boolean isRefresh,
                                            int sportPos, String sportId, int orderBy, List<Long> leagueIds,
                                            int searchDatePos, int oddType, List<Long> matchidList, int finalType, boolean isStepSecond, Flowable flowable) {
+        CfLog.d("============== ImMainViewModel createIMLeagueListCallback ===============");
         mImLeagueCallBack = new IMLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage,
                 mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType,
                 matchidList, finalType, isStepSecond);
-        mImCacheLeagueCallBack = new IMLeagueListCacheCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage,
-                mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType,
-                matchidList, finalType, isStepSecond);
-        // 根据是否使用缓存选择回调
-        Object callback = isUseCacheApiService()
-                ? mImCacheLeagueCallBack
-                : mImLeagueCallBack;
+        Object callback = mImLeagueCallBack;
         // 统一处理 Flowable 的线程调度和异常处理
         Disposable disposable = createDisposable(flowable, callback);
         // 添加订阅管理

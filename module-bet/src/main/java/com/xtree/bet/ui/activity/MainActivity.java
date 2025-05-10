@@ -1400,7 +1400,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         });
 
         viewModel.leagueNoLiveListData.observe(this, leagueAdapters -> {
-            CfLog.d("============= MainActivity leagueNoLiveListData observe ==============");
+            CfLog.d("============= MainActivity leagueNoLiveListData observe leagueAdapters =============="+leagueAdapters.size());
             this.mLeagueList = leagueAdapters;
             updateData();
         });
@@ -1718,9 +1718,9 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         if (mStatisticalData == null) {
             return;
         }
-        CfLog.d("============ updateStatisticalData mStatisticalData =================" + mStatisticalData);
+        //CfLog.d("============ updateStatisticalData mStatisticalData =================" + mStatisticalData);
         List<SportTypeItem> list = mStatisticalData.get(String.valueOf(playMethodType));
-        CfLog.d("============ updateStatisticalData list =================" + list.size());
+        //CfLog.d("============ updateStatisticalData list =================" + list.size());
 
         for (SportTypeItem item : list) {
             System.out.println("id: " + item.id + ", num: " + item.num + ", menuId: " + item.menuId);

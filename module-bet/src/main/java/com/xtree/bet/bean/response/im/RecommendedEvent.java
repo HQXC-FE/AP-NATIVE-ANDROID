@@ -52,7 +52,9 @@ public class RecommendedEvent implements BaseBean {
     public int EventGroupId;
     @SerializedName("EventGroupTypeId")
     public int EventGroupTypeId;
+    @SerializedName("HomeTeamId")
     public int HomeTeamId;
+    @SerializedName("HomeTeam")
     public String HomeTeam;
     public int AwayTeamId;
     public String AwayTeam;

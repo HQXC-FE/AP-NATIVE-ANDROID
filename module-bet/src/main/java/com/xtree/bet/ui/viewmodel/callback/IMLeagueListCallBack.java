@@ -11,8 +11,11 @@ import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.request.UploadExcetionReq;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
+import com.xtree.bet.bean.response.im.EventListRsp;
+import com.xtree.bet.bean.response.im.RecommendedEvent;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
 import com.xtree.bet.bean.response.pm.MatchListRsp;
@@ -32,7 +35,7 @@ import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class IMLeagueListCallBack extends HttpCallBack<MatchListRsp> {
+public class IMLeagueListCallBack extends HttpCallBack<EventListRsp> {
 
     private ImMainViewModel mViewModel;
     private boolean mHasCache;
@@ -116,8 +119,12 @@ public class IMLeagueListCallBack extends HttpCallBack<MatchListRsp> {
     }
 
     public void saveLeague() {
+        CfLog.d("================= IMLeagueListCallBack saveLeague ==================");
+        CfLog.d("================= IMLeagueListCallBack mIsRefresh =================="+mIsRefresh);
+        CfLog.d("================= IMLeagueListCallBack mIsRefresh =================="+mIsStepSecond);
         if (!mIsRefresh || mIsStepSecond) {
             mLeagueList = mViewModel.getLeagueList();
+            CfLog.d("================= IMLeagueListCallBack mLeagueList =================="+mLeagueList.size());
             mGoingOnLeagueList = mViewModel.getGoingOnLeagueList();
             mMapLeague = mViewModel.getMapLeague();
             mMatchList = mViewModel.getMatchList();
@@ -138,7 +145,9 @@ public class IMLeagueListCallBack extends HttpCallBack<MatchListRsp> {
     }
 
     @Override
-    public void onResult(MatchListRsp matchListRsp) {
+    public void onResult(EventListRsp matchListRsp) {
+        CfLog.d("================= IMLeagueListCallBack onResult ==================");
+        List<MatchInfo> matchInfoList = convertToMatchInfoList(matchListRsp);
         mViewModel.getUC().getDismissDialogEvent().call();
         if (mIsRefresh) {
             mNoliveMatchList.clear();
@@ -147,21 +156,21 @@ public class IMLeagueListCallBack extends HttpCallBack<MatchListRsp> {
                 mMapLeague.clear();
                 mMapSportType.clear();
             }
-            if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
-                mViewModel.loadMoreWithNoMoreData();
-            } else {
-                mViewModel.finishRefresh(true);
-            }
+//            if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
+//                mViewModel.loadMoreWithNoMoreData();
+//            } else {
+//                mViewModel.finishRefresh(true);
+//            }
         } else {
-            if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
-                mViewModel.loadMoreWithNoMoreData();
-            } else {
-                mViewModel.finishLoadMore(true);
-            }
+//            if (matchListRsp != null && mCurrentPage == matchListRsp.getPages()) {
+//                mViewModel.loadMoreWithNoMoreData();
+//            } else {
+//                mViewModel.finishLoadMore(true);
+//            }
         }
-        mNoliveMatchList.addAll(matchListRsp.data);
+        mNoliveMatchList.addAll(matchInfoList);
         if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
-            leagueAdapterList(matchListRsp.data);
+            leagueAdapterList(matchInfoList);
             if (mFinalType == 1) { // 滚球
                 mViewModel.leagueLiveListData.postValue(mLeagueList);
             } else {
@@ -340,6 +349,7 @@ public class IMLeagueListCallBack extends HttpCallBack<MatchListRsp> {
      * @return
      */
     public void leagueAdapterList(List<MatchInfo> matchInfoList) {
+        CfLog.d("============= IMLeagueListCallBack leagueAdapterList ==============="+matchInfoList.size());
         int noLiveMatchSize = matchInfoList == null ? 0 : matchInfoList.size();
         buildNoLiveHeaderLeague(new LeaguePm(), noLiveMatchSize);
 
@@ -429,6 +439,32 @@ public class IMLeagueListCallBack extends HttpCallBack<MatchListRsp> {
         } else {
             sportHeader.setMatchCount(1);
         }
+    }
+
+    public List<MatchInfo> convertToMatchInfoList(EventListRsp data) {
+        List<MatchInfo> matchList = new ArrayList<>();
+        if (data == null || data.getSports() == null) return matchList;
+        CfLog.d("============== IMListCallBack convertToMatchInfoList ===============");
+        for (EventListRsp.Sport sport : data.getSports()) {
+            if (sport.events == null) continue;
+            for (RecommendedEvent event : sport.events) {
+                MatchInfo matchInfo = new MatchInfo();
+                matchInfo.csid = String.valueOf(sport.sportId);
+                matchInfo.csna = sport.sportName;
+                matchInfo.mid = String.valueOf(event.EventId);
+                matchInfo.mhid = String.valueOf(event.HomeTeamId);
+                matchInfo.mhn = event.HomeTeam;
+                matchInfo.mst = event.EventDate;
+                matchInfo.man = event.AwayTeam;
+                matchInfo.maid = String.valueOf(event.AwayTeamId);
+                matchInfo.tid = String.valueOf(event.EventGroupId);
+                matchList.add(matchInfo);
+                CfLog.d("============== IMListCallBack RecommendedEvent ==============="+event);
+            }
+        }
+        CfLog.d("============== IMListCallBack convertToMatchInfoList matchList ==============="+matchList);
+        CfLog.d("============== IMListCallBack convertToMatchInfoList matchList size ==============="+matchList.size());
+        return matchList;
     }
 
 }

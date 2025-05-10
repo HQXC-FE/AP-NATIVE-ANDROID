@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

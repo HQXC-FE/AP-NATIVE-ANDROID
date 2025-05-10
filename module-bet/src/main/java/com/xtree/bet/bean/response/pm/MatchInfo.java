@@ -373,4 +373,32 @@ public class MatchInfo implements BaseBean {
             return new MatchInfo[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "MatchInfo{" +
+                "mcid='" + mcid + '\'' +
+                ", csna='" + csna + '\'' +
+                ", csid='" + csid + '\'' +
+                ", tid='" + tid + '\'' +
+                ", tn='" + tn + '\'' +
+                ", tlev=" + tlev +
+                ", mhid='" + mhid + '\'' +
+                ", mid='" + mid + '\'' +
+                ", mst='" + mst + '\'' +
+                ", mcg=" + mcg +
+                ", mmp='" + mmp + '\'' +
+                ", mms=" + mms +
+                ", mgt='" + mgt + '\'' +
+                ", man='" + man + '\'' +
+                ", maid='" + maid + '\'' +
+                ", mhn='" + mhn + '\'' +
+                ", mo=" + mo +
+                ", ms=" + ms +
+                ", mp=" + mp +
+                ", th=" + th +
+                ", mc=" + mc +
+                '}';
+    }
+
 }
