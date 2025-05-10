@@ -2,6 +2,7 @@ package com.xtree.bet.bean.response.im;
 
 import android.os.Parcel;
 
+import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
 
 import java.util.Date;
@@ -9,15 +10,34 @@ import java.util.List;
 
 public class WagerSelection implements BaseBean {
 
+    @SerializedName("WagerSelectionId")
     private long wagerSelectionId;
+
+    @SerializedName("SelectionId")
     private int selectionId;
+
+    @SerializedName("SelectionName")
     private String selectionName;
+
+    @SerializedName("Handicap")
     private double handicap;
+
+    @SerializedName("DisplayHandicap")
     private Date displayHandicap;
+
+    @SerializedName("Specifiers")
     private String specifiers;
+
+    @SerializedName("OddsType")
     private int oddsType;
+
+    @SerializedName("Odds")
     private double odds;
+
+    @SerializedName("PreBoostOdds")
     private String preBoostOdds;
+
+    @SerializedName("OddsList")
     private List<OddsList> oddsList;
 
     public WagerSelection() {
@@ -68,7 +88,8 @@ public class WagerSelection implements BaseBean {
         }
     };
 
-    // Getter & Setter
+    // Getter & Setter methods
+
     public long getWagerSelectionId() {
         return wagerSelectionId;
     }

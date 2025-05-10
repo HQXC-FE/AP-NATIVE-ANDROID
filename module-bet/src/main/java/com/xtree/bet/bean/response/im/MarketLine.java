@@ -2,20 +2,39 @@ package com.xtree.bet.bean.response.im;
 
 import android.os.Parcel;
 
+import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
 
 import java.util.List;
 
+
 public class MarketLine implements BaseBean {
 
+    @SerializedName("MarketlineId")
     private long marketlineId;
+
+    @SerializedName("BetTypeId")
     private int betTypeId;
+
+    @SerializedName("BetTypeName")
     private String betTypeName;
+
+    @SerializedName("PeriodId")
     private int periodId;
+
+    @SerializedName("PeriodName")
     private String periodName;
+
+    @SerializedName("MarketLineLevel")
     private int marketLineLevel;
+
+    @SerializedName("MarketlineStatusId")
     private int marketlineStatusId;
+
+    @SerializedName("IsLocked")
     private boolean isLocked;
+
+    @SerializedName("WagerSelections")
     private List<WagerSelection> wagerSelections;
 
     public MarketLine() {
@@ -63,7 +82,8 @@ public class MarketLine implements BaseBean {
         }
     };
 
-    // Getter & Setter
+    // Getter & Setter methods
+
     public long getMarketlineId() {
         return marketlineId;
     }
@@ -135,5 +155,6 @@ public class MarketLine implements BaseBean {
     public void setWagerSelections(List<WagerSelection> wagerSelections) {
         this.wagerSelections = wagerSelections;
     }
+
 }
 
