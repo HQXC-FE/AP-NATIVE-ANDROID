@@ -9,6 +9,7 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
@@ -189,6 +190,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         initFirstNetworkFinishTimer();
         initFirstNetworkExceptionTimer();
         mSavedInstanceState = savedInstanceState;
+        instance = this;
     }
 
     @Override
@@ -1718,14 +1720,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         if (mStatisticalData == null) {
             return;
         }
-        //CfLog.d("============ updateStatisticalData mStatisticalData =================" + mStatisticalData);
         List<SportTypeItem> list = mStatisticalData.get(String.valueOf(playMethodType));
-        //CfLog.d("============ updateStatisticalData list =================" + list.size());
-
-        for (SportTypeItem item : list) {
-            System.out.println("id: " + item.id + ", num: " + item.num + ", menuId: " + item.menuId);
-        }
-
 
         if (playMethodPos == 0 || playMethodPos == 3) {
             if (list != null && list.get(0) != null) {
@@ -1896,4 +1891,11 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             mIsFirstLoadMatch = false;
         }
     }
+
+    private static MainActivity instance;
+
+    public static Context getContext() {
+        return instance.getApplicationContext();
+    }
+
 }

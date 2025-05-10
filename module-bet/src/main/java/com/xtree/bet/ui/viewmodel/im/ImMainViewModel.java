@@ -8,16 +8,18 @@ import androidx.annotation.NonNull;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
+import com.xtree.bet.EventInfoByPageListParser;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
 import com.xtree.bet.bean.request.im.AnnouncementReq;
-import com.xtree.bet.bean.request.im.EventInfoMbtReq;
+import com.xtree.bet.bean.request.im.EventInfoByPageRsq;
 import com.xtree.bet.bean.request.im.OutrightEventsReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.im.Announcement;
-import com.xtree.bet.bean.response.im.EventListRsp;
+import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
-import com.xtree.bet.bean.response.im.RecommendedEvent;
+import com.xtree.bet.bean.response.im.MatchEvent;
+import com.xtree.bet.bean.response.im.Sport;
 import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 import com.xtree.bet.bean.response.pm.MatchInfo;
@@ -29,6 +31,7 @@ import com.xtree.bet.bean.ui.MatchPm;
 import com.xtree.bet.constant.IMConstants;
 import com.xtree.bet.constant.SportTypeItem;
 import com.xtree.bet.data.BetRepository;
+import com.xtree.bet.ui.activity.MainActivity;
 import com.xtree.bet.ui.viewmodel.MainViewModel;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
 import com.xtree.bet.ui.viewmodel.callback.IMLeagueListCallBack;
@@ -160,16 +163,27 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
 //
 //        pmListReq.setType(3);
         // 获取 Flowable 对象
-        EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
-        eventInfoMbtReq.setSportId(1);
-        eventInfoMbtReq.setMarket(3);
-        eventInfoMbtReq.setMatchDay(0);
-        eventInfoMbtReq.setOddsType(3);
-        eventInfoMbtReq.setPage(1);
-        eventInfoMbtReq.setSeason(0);
-        eventInfoMbtReq.setCombo(false);
-        CfLog.d("==== ImMainViewModel getLeagueList ====");
-        model.getIMApiService().getEventInfoMbt(eventInfoMbtReq);
+
+        EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
+        eventInfoByPageRsq.setSportId(1);
+        eventInfoByPageRsq.setMarket("2");
+        eventInfoByPageRsq.setMatchDay(0);
+        eventInfoByPageRsq.setOddsType(3);
+        eventInfoByPageRsq.setPage(1);
+        eventInfoByPageRsq.setSeason(0);
+        eventInfoByPageRsq.setIsCombo(false);
+        model.getIMApiService().getEventInfoByPage(eventInfoByPageRsq);
+
+//        EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
+//        eventInfoMbtReq.setSportId(1);
+//        eventInfoMbtReq.setMarket(3);
+//        eventInfoMbtReq.setMatchDay(0);
+//        eventInfoMbtReq.setOddsType(3);
+//        eventInfoMbtReq.setPage(1);
+//        eventInfoMbtReq.setSeason(0);
+//        eventInfoMbtReq.setCombo(false);
+//        CfLog.d("==== ImMainViewModel getLeagueList ====");
+//        model.getIMApiService().getEventInfoMbt(eventInfoMbtReq);
 
     }
 
@@ -217,7 +231,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      */
 
     public void getLeagueList(int sportPos, String sportId, int orderBy, List<Long> leagueIds, List<Long> matchidList, int playMethodType, int searchDatePos, int oddType, boolean isTimerRefresh, boolean isRefresh, boolean isStepSecond) {
-        CfLog.d("============ ImMainViewModel getLeagueList ============");
         int type;
         boolean flag = false;
         if (!isStepSecond) {
@@ -469,46 +482,26 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      * 获取赛果信息赛事列表
      */
     public void matchResultPage(String beginTime, String endTime, int playMethodPos, String sportId) {
-        EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
-        eventInfoMbtReq.setSportId(1);
-        eventInfoMbtReq.setMarket(3);
-        eventInfoMbtReq.setMatchDay(0);
-        eventInfoMbtReq.setOddsType(3);
-        eventInfoMbtReq.setPage(1);
-        eventInfoMbtReq.setSeason(0);
-        eventInfoMbtReq.setCombo(false);
-        CfLog.d("==== ImMainViewModel getLeagueList ====");
-        Disposable disposable = (Disposable) model.getIMApiService().getEventInfoMbt(eventInfoMbtReq).compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<EventListRsp>() {
+        EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
+        eventInfoByPageRsq.setSportId(1);
+        eventInfoByPageRsq.setMarket("2");
+        eventInfoByPageRsq.setMatchDay(0);
+        eventInfoByPageRsq.setOddsType(3);
+        eventInfoByPageRsq.setPage(1);
+        eventInfoByPageRsq.setSeason(0);
+        eventInfoByPageRsq.setIsCombo(false);
+        Disposable disposable = (Disposable) model.getIMApiService().getEventInfoByPage(eventInfoByPageRsq).compose(RxUtils.schedulersTransformer()) //线程调度
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<EventInfoByPageListRsp>() {
                     @Override
-                    public void onResult(EventListRsp data) {
+                    public void onResult(EventInfoByPageListRsp data) {
                         CfLog.d("================== ImMainViewModel matchResultPage onResult ====");
                         ArrayList<League> leagues = new ArrayList<>();
                         Map<String, League> mapLeague = new HashMap<>();
                         List<MatchInfo> matchList = new ArrayList<>();
-                        List<EventListRsp.Sport> matches =  data.getSports();
-                        CfLog.d("================== ImMainViewModel matchResultPage onResult matches size ===="+matches.size());
+                        data = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
+                        List<Sport> matches =  data.getSports();
                         if (matches != null) {
-                            for (EventListRsp.Sport sport : matches) {
-                                System.out.println("SportId: " + sport.sportId + ", SportName: " + sport.sportName);
-                                List<RecommendedEvent> events = sport.events;
-                                if (events != null) {
-                                    for (RecommendedEvent event : events) {
-                                        MatchInfo matchInfo = new MatchInfo();
-                                        matchInfo.csid = String.valueOf(sport.sportId);
-                                        matchInfo.csna = sport.sportName;
-                                        matchInfo.mid = String.valueOf(event.EventId);
-                                        matchInfo.mhid = String.valueOf(event.HomeTeamId);
-                                        matchInfo.mhn = String.valueOf(event.HomeTeam);
-                                        matchInfo.mst = event.EventDate;
-                                        matchInfo.man = event.AwayTeam;
-                                        matchInfo.maid = String.valueOf(event.AwayTeamId);
-                                        matchInfo.tid = String.valueOf(event.EventGroupId);
-                                        System.out.println("  EventId: " + event.EventId + ", HomeTeam: " + event.HomeTeam + ", AwayTeam: " + event.AwayTeam);
-                                        matchList.add(matchInfo);
-                                    }
-                                }
-                            }
+                            matchList = EventInfoByPageListParser.convertToMatchInfoList(data);
                         }
 
                         for (MatchInfo matchInfo : matchList) {
@@ -712,58 +705,58 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     }
 
     private Flowable getFlowableMatchesPage(PMListReq pmListReq) {
-        EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
-        eventInfoMbtReq.setSportId(1);
-        eventInfoMbtReq.setMarket(3);
-        eventInfoMbtReq.setMatchDay(0);
-        eventInfoMbtReq.setOddsType(3);
-        eventInfoMbtReq.setPage(1);
-        eventInfoMbtReq.setSeason(0);
-        eventInfoMbtReq.setCombo(false);
-        Flowable flowable = model.getIMApiService().getEventInfoMbt(eventInfoMbtReq);
+        EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
+        eventInfoByPageRsq.setSportId(1);
+        eventInfoByPageRsq.setMarket("2");
+        eventInfoByPageRsq.setMatchDay(0);
+        eventInfoByPageRsq.setOddsType(3);
+        eventInfoByPageRsq.setPage(1);
+        eventInfoByPageRsq.setSeason(0);
+        eventInfoByPageRsq.setIsCombo(false);
+        Flowable flowable = model.getIMApiService().getEventInfoByPage(eventInfoByPageRsq);
         return flowable;
     }
 
     private Flowable getFlowableLiveMatches(PMListReq pmListReq) {
         Flowable flowable;
             //flowable = model.getIMApiService().liveMatchesPB(pmListReq);
-            EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
-            eventInfoMbtReq.setSportId(1);
-            eventInfoMbtReq.setMarket(3);
-            eventInfoMbtReq.setMatchDay(0);
-            eventInfoMbtReq.setOddsType(3);
-            eventInfoMbtReq.setPage(1);
-            eventInfoMbtReq.setSeason(0);
-            eventInfoMbtReq.setCombo(false);
-            flowable = model.getIMApiService().getEventInfoMbt(eventInfoMbtReq);
+        EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
+        eventInfoByPageRsq.setSportId(1);
+        eventInfoByPageRsq.setMarket("2");
+        eventInfoByPageRsq.setMatchDay(0);
+        eventInfoByPageRsq.setOddsType(3);
+        eventInfoByPageRsq.setPage(1);
+        eventInfoByPageRsq.setSeason(0);
+        eventInfoByPageRsq.setIsCombo(false);
+        flowable = model.getIMApiService().getLiveEventInfo(eventInfoByPageRsq);
         return flowable;
     }
 
     private Flowable getFlowableNoLiveMatchesPagePB(PMListReq pmListReq) {
         //Flowable flowable = model.getIMApiService().noLiveMatchesPagePB(pmListReq);
-        EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
-        eventInfoMbtReq.setSportId(1);
-        eventInfoMbtReq.setMarket(3);
-        eventInfoMbtReq.setMatchDay(0);
-        eventInfoMbtReq.setOddsType(3);
-        eventInfoMbtReq.setPage(1);
-        eventInfoMbtReq.setSeason(0);
-        eventInfoMbtReq.setCombo(false);
-        Flowable flowable = model.getIMApiService().getEventInfoMbt(eventInfoMbtReq);
+        EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
+        eventInfoByPageRsq.setSportId(1);
+        eventInfoByPageRsq.setMarket("2");
+        eventInfoByPageRsq.setMatchDay(0);
+        eventInfoByPageRsq.setOddsType(3);
+        eventInfoByPageRsq.setPage(1);
+        eventInfoByPageRsq.setSeason(0);
+        eventInfoByPageRsq.setIsCombo(false);
+        Flowable flowable = model.getIMApiService().getEventInfoByPage(eventInfoByPageRsq);
         return flowable;
     }
 
     private Flowable getFlowableMatchBaseInfoByMidsPB(PMListReq pmListReq) {
         Flowable flowable;
-            EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
-            eventInfoMbtReq.setSportId(1);
-            eventInfoMbtReq.setMarket(3);
-            eventInfoMbtReq.setMatchDay(0);
-            eventInfoMbtReq.setOddsType(3);
-            eventInfoMbtReq.setPage(1);
-            eventInfoMbtReq.setSeason(0);
-            eventInfoMbtReq.setCombo(false);
-            flowable = model.getIMApiService().getEventInfoMbt(eventInfoMbtReq);
+        EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
+        eventInfoByPageRsq.setSportId(1);
+        eventInfoByPageRsq.setMarket("2");
+        eventInfoByPageRsq.setMatchDay(0);
+        eventInfoByPageRsq.setOddsType(3);
+        eventInfoByPageRsq.setPage(1);
+        eventInfoByPageRsq.setSeason(0);
+        eventInfoByPageRsq.setIsCombo(false);
+        flowable = model.getIMApiService().getEventInfoByPage(eventInfoByPageRsq);
 
         return flowable;
     }
