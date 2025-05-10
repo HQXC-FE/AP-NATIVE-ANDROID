@@ -41,8 +41,10 @@ import com.xtree.bet.databinding.BtDialogBtRecordBinding;
 import com.xtree.bet.ui.adapter.BtRecordAdapter;
 import com.xtree.bet.ui.viewmodel.TemplateBtRecordModel;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.bet.ui.viewmodel.factory.IMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FBBtRecordModel;
+import com.xtree.bet.ui.viewmodel.im.IMBtRecordModel;
 import com.xtree.bet.ui.viewmodel.pm.PMBtRecordModel;
 import com.xtree.bet.weight.AnimatedExpandableListViewMax;
 
@@ -54,7 +56,6 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import me.xtree.mvvmhabit.base.BaseDialogFragment;
 import me.xtree.mvvmhabit.utils.ConvertUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -320,10 +321,12 @@ public class BtRecordDialogFragment extends BaseDialogFragment<BtDialogBtRecordB
                 mPlatformName = getString(R.string.bt_platform_name_fbxc);
             } else if (TextUtils.equals(mPlatform, PLATFORM_FB)) {
                 mPlatformName = getString(R.string.bt_platform_name_fb);
-            } else if (TextUtils.equals(mPlatform, PLATFORM_PM)){
+            } else if (TextUtils.equals(mPlatform, PLATFORM_PM)) {
                 mPlatformName = getString(R.string.bt_platform_name_pm);
-            } else {
+            } else if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                 mPlatformName = getString(R.string.bt_platform_name_pmxc);
+            } else {
+                mPlatformName = getString(R.string.bt_platform_name_imone);
             }
             bundle.putString("typeName", mPlatformName);
             bundle.putInt("status", isSettled ? 1 : 2);
@@ -333,12 +336,15 @@ public class BtRecordDialogFragment extends BaseDialogFragment<BtDialogBtRecordB
 
     @Override
     public TemplateBtRecordModel initViewModel() {
-        if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+        if (TextUtils.equals(mPlatform, PLATFORM_PM) || TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+            PMAppViewModelFactory factory = PMAppViewModelFactory.getInstance((Application) Utils.getContext());
+            return new ViewModelProvider(this, factory).get(PMBtRecordModel.class);
+        } else if (TextUtils.equals(mPlatform, PLATFORM_FB) || TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
             AppViewModelFactory factory = AppViewModelFactory.getInstance((Application) Utils.getContext());
             return new ViewModelProvider(this, factory).get(FBBtRecordModel.class);
         } else {
-            PMAppViewModelFactory factory = PMAppViewModelFactory.getInstance((Application) Utils.getContext());
-            return new ViewModelProvider(this, factory).get(PMBtRecordModel.class);
+            IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance((Application) Utils.getContext());
+            return new ViewModelProvider(this, factory).get(IMBtRecordModel.class);
         }
     }
 }

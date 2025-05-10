@@ -7,6 +7,7 @@ import com.xtree.bet.bean.request.im.DeltaOutrightEventsReq;
 import com.xtree.bet.bean.request.im.DeltaEventInfoMbtReq;
 import com.xtree.bet.bean.request.im.EventInfoMbtReq;
 import com.xtree.bet.bean.request.im.GetBetListReq;
+import com.xtree.bet.bean.request.im.GetStatement;
 import com.xtree.bet.bean.request.im.OutrightEventsReq;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
 import com.xtree.bet.bean.request.im.SelectedEventInfoReq;
@@ -81,6 +82,20 @@ public interface IMApiService {
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<SportCountRsp>> getAllSportCount(@Body AllSportCountReq sportCountReq);
+
+    /**
+     * 索取投注明细，投注记录（未结算）
+     */
+    @POST(forwardPath)
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<List<Wager>>> getBetList(@Body GetBetListReq getBetListReq);
+
+    /**
+     * 投注记录（已结算）
+     */
+    @POST(forwardPath)
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<List<Wager>>> getStatement(@Body GetStatement getBetListReq);
 
     /**
      * 索取所有竞赛计数
@@ -208,24 +223,6 @@ public interface IMApiService {
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Flowable<BaseResponse<List<MatchInfo>>> logOut(@Body PMListReq pmListReq);
 
-    /**
-     * 索取投注明细
-     *
-     * @param btCashOutBetReq
-     * @return
-     */
-    @POST("/yewu13/v1/getBetList")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<WagerListRsp>> getBetList(@Body BtCashOutBetReq btCashOutBetReq);
-
-    /**
-     * 以页数索取投注明细
-     *
-     * @return
-     */
-    @GET("/yewu13/v1/getBetListByPage")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<List<BtCashOutStatusInfo>>> getBetListByPage();
 
     /**
      * 索取投注账目
@@ -324,17 +321,8 @@ public interface IMApiService {
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Single<BaseResponse<PlaceBet>> placeBet(@Body Map<String, String> map);
 
-
     /**
-     * 索取投注明细
-     */
-    @POST("/yewu11/v1/m/getBetList")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Single<BaseResponse<List<Wager>>> getBetList(@Body GetBetListReq getBetListReq);
-
-
-    /**
-     *以页数索取投注明细
+     *以页数索取投注明细，投注记录
      */
     @POST("/yewu11/v1/m/getBetListByPage")
     @Headers({"Content-Type: application/json; charset=utf-8"})
