@@ -41,9 +41,9 @@ public class IMBtRecordModel extends TemplateBtRecordModel {
         mIsSettled = isSettled;
         CfLog.i("betRecord     " + isSettled + "");
         if (isSettled) {
-            getBetList();
-        } else {
             getStatement();
+        } else {
+            getBetList();
         }
     }
 
