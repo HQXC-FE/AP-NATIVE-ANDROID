@@ -1,7 +1,6 @@
 package com.xtree.bet.bean.response.im;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.xtree.base.vo.BaseBean;
 

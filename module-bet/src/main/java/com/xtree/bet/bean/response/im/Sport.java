@@ -1,36 +1,40 @@
 package com.xtree.bet.bean.response.im;
 
-
 import android.os.Parcel;
-import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
+import com.xtree.bet.bean.ui.Match;
 
 import java.util.List;
 
 public class Sport implements BaseBean {
 
-    public int SportId;
-    public String SportName;
-    public List<RecommendedEvent> Events;
+    @SerializedName("SportId")
+    private int sportId;
+    @SerializedName("SportName")
+    private String sportName;
+    @SerializedName("OrderNumber")
+    private int orderNumber;
+    @SerializedName("Events")
+    private List<MatchEvent> events;
 
-    public int OrderNumber;
-
-    public Sport() {}
+    public Sport() {
+    }
 
     protected Sport(Parcel in) {
-        SportId = in.readInt();
-        SportName = in.readString();
-        OrderNumber = in.readInt();
-        Events = in.createTypedArrayList(RecommendedEvent.CREATOR);
+        sportId = in.readInt();
+        sportName = in.readString();
+        orderNumber = in.readInt();
+        events = in.createTypedArrayList(MatchEvent.CREATOR);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(SportId);
-        dest.writeString(SportName);
-        dest.writeTypedList(Events);
-        dest.writeInt(OrderNumber);
+        dest.writeInt(sportId);
+        dest.writeString(sportName);
+        dest.writeInt(orderNumber);
+        dest.writeTypedList(events);
     }
 
     @Override
@@ -50,14 +54,37 @@ public class Sport implements BaseBean {
         }
     };
 
-    @Override
-    public String toString() {
-        return "Sport{" +
-                "SportId=" + SportId +
-                ", SportName='" + SportName + '\'' +
-                ", OrderNumber=" + OrderNumber +
-                ", Events=" + (Events != null ? Events.size() + " events" : "null") +
-                '}';
+    public int getSportId() {
+        return sportId;
     }
 
+    public void setSportId(int sportId) {
+        sportId = sportId;
+    }
+
+    public String getSportName() {
+        return sportName;
+    }
+
+    public void setSportName(String sportName) {
+        sportName = sportName;
+    }
+
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        orderNumber = orderNumber;
+    }
+
+    public List<MatchEvent> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<MatchEvent> events) {
+        events = events;
+    }
 }
+
+

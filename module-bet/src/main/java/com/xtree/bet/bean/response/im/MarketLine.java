@@ -6,44 +6,44 @@ import com.xtree.base.vo.BaseBean;
 
 import java.util.List;
 
-
 public class MarketLine implements BaseBean {
 
-    public long MarketlineId;
-    public int BetTypeId;
-    public String BetTypeName;
-    public int PeriodId;
-    public String PeriodName;
-    public int MarketLineLevel;
-    public int MarketlineStatusId;
-    public boolean IsLocked;
-    public List<WagerSelection> WagerSelections;
+    private long marketlineId;
+    private int betTypeId;
+    private String betTypeName;
+    private int periodId;
+    private String periodName;
+    private int marketLineLevel;
+    private int marketlineStatusId;
+    private boolean isLocked;
+    private List<WagerSelection> wagerSelections;
 
-    public MarketLine() {}
+    public MarketLine() {
+    }
 
     protected MarketLine(Parcel in) {
-        MarketlineId = in.readLong();
-        BetTypeId = in.readInt();
-        BetTypeName = in.readString();
-        PeriodId = in.readInt();
-        PeriodName = in.readString();
-        MarketLineLevel = in.readInt();
-        MarketlineStatusId = in.readInt();
-        IsLocked = in.readByte() != 0;
-        WagerSelections = in.createTypedArrayList(WagerSelection.CREATOR);
+        marketlineId = in.readLong();
+        betTypeId = in.readInt();
+        betTypeName = in.readString();
+        periodId = in.readInt();
+        periodName = in.readString();
+        marketLineLevel = in.readInt();
+        marketlineStatusId = in.readInt();
+        isLocked = in.readByte() != 0;
+        wagerSelections = in.createTypedArrayList(WagerSelection.CREATOR);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(MarketlineId);
-        dest.writeInt(BetTypeId);
-        dest.writeString(BetTypeName);
-        dest.writeInt(PeriodId);
-        dest.writeString(PeriodName);
-        dest.writeInt(MarketLineLevel);
-        dest.writeInt(MarketlineStatusId);
-        dest.writeByte((byte) (IsLocked ? 1 : 0));
-        dest.writeTypedList(WagerSelections);
+        dest.writeLong(marketlineId);
+        dest.writeInt(betTypeId);
+        dest.writeString(betTypeName);
+        dest.writeInt(periodId);
+        dest.writeString(periodName);
+        dest.writeInt(marketLineLevel);
+        dest.writeInt(marketlineStatusId);
+        dest.writeByte((byte) (isLocked ? 1 : 0));
+        dest.writeTypedList(wagerSelections);
     }
 
     @Override
@@ -62,4 +62,78 @@ public class MarketLine implements BaseBean {
             return new MarketLine[size];
         }
     };
+
+    // Getter & Setter
+    public long getMarketlineId() {
+        return marketlineId;
+    }
+
+    public void setMarketlineId(long marketlineId) {
+        this.marketlineId = marketlineId;
+    }
+
+    public int getBetTypeId() {
+        return betTypeId;
+    }
+
+    public void setBetTypeId(int betTypeId) {
+        this.betTypeId = betTypeId;
+    }
+
+    public String getBetTypeName() {
+        return betTypeName;
+    }
+
+    public void setBetTypeName(String betTypeName) {
+        this.betTypeName = betTypeName;
+    }
+
+    public int getPeriodId() {
+        return periodId;
+    }
+
+    public void setPeriodId(int periodId) {
+        this.periodId = periodId;
+    }
+
+    public String getPeriodName() {
+        return periodName;
+    }
+
+    public void setPeriodName(String periodName) {
+        this.periodName = periodName;
+    }
+
+    public int getMarketLineLevel() {
+        return marketLineLevel;
+    }
+
+    public void setMarketLineLevel(int marketLineLevel) {
+        this.marketLineLevel = marketLineLevel;
+    }
+
+    public int getMarketlineStatusId() {
+        return marketlineStatusId;
+    }
+
+    public void setMarketlineStatusId(int marketlineStatusId) {
+        this.marketlineStatusId = marketlineStatusId;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
+
+    public List<WagerSelection> getWagerSelections() {
+        return wagerSelections;
+    }
+
+    public void setWagerSelections(List<WagerSelection> wagerSelections) {
+        this.wagerSelections = wagerSelections;
+    }
 }
+

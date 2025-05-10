@@ -5,6 +5,7 @@ import com.xtree.bet.bean.request.im.BaseIMRequest;
 import com.xtree.bet.bean.request.im.CometitionCountReq;
 import com.xtree.bet.bean.request.im.DeltaOutrightEventsReq;
 import com.xtree.bet.bean.request.im.DeltaEventInfoMbtReq;
+import com.xtree.bet.bean.request.im.EventInfoByPageRsq;
 import com.xtree.bet.bean.request.im.EventInfoMbtReq;
 import com.xtree.bet.bean.request.im.GetBetListReq;
 import com.xtree.bet.bean.request.im.OutrightEventsReq;
@@ -19,6 +20,7 @@ import com.xtree.bet.bean.response.fb.T;
 import com.xtree.bet.bean.response.im.BetInfo;
 import com.xtree.bet.bean.response.im.BetList;
 import com.xtree.bet.bean.response.im.DeltaEventListRsp;
+import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
 import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
 import com.xtree.bet.bean.response.im.OutrightEventRsp;
@@ -99,6 +101,24 @@ public interface IMApiService {
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<EventListRsp>> getEventInfoMbt(@Body EventInfoMbtReq eventInfoMbtReq);
+
+    /**
+     * 索取赛事和主要玩法资料,
+     * 这里是第一次获取，是获取全量赛事
+     * 获取赛事列表-->对应matchesPagePB接口
+     */
+    @POST(forwardPath)
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<EventInfoByPageListRsp>> getLiveEventInfo(@Body EventInfoByPageRsq eventInfoMbtReq);
+
+    /**
+     * 索取赛事和主要玩法资料,
+     * 这里是第一次获取，是获取全量赛事
+     * 获取赛事列表-->对应matchesPagePB接口
+     */
+    @POST(forwardPath)
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<EventInfoByPageListRsp>> getEventInfoByPage(@Body EventInfoByPageRsq eventInfoMbtReq);
 
     /**
      * 索取DELTA赛事和主要玩法详情
