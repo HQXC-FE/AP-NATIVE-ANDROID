@@ -4,7 +4,6 @@ import android.os.Parcel;
 
 import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
-import com.xtree.bet.bean.ui.Match;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class Sport implements BaseBean {
     @SerializedName("OrderNumber")
     private int orderNumber;
     @SerializedName("Events")
-    private List<MatchEvent> events;
+    private List<MatchInfo> events;
 
     public Sport() {
     }
@@ -26,7 +25,7 @@ public class Sport implements BaseBean {
         sportId = in.readInt();
         sportName = in.readString();
         orderNumber = in.readInt();
-        events = in.createTypedArrayList(MatchEvent.CREATOR);
+        events = in.createTypedArrayList(MatchInfo.CREATOR);
     }
 
     @Override
@@ -78,7 +77,7 @@ public class Sport implements BaseBean {
         orderNumber = orderNumber;
     }
 
-    public List<MatchEvent> getEvents() {
+    public List<MatchInfo> getEvents() {
         return events;
     }
 

@@ -9,7 +9,7 @@ import android.os.Parcel;
 import android.text.TextUtils;
 
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.bet.bean.response.pm.LeagueInfo;
+import com.xtree.bet.bean.response.im.LeagueInfo;
 
 import java.util.ArrayList;
 import java.util.List;

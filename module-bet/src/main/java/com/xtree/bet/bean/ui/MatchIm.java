@@ -1,25 +1,20 @@
 package com.xtree.bet.bean.ui;
 
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
 import android.os.Parcel;
 import android.text.TextUtils;
 
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.TimeUtils;
-import com.xtree.bet.bean.response.pm.LeagueInfo;
-import com.xtree.bet.bean.response.pm.MatchInfo;
-import com.xtree.bet.bean.response.pm.PlayTypeInfo;
-import com.xtree.bet.bean.response.pm.VideoInfo;
-import com.xtree.bet.constant.PMConstants;
-import com.xtree.bet.constant.PMMatchPeriod;
+import com.xtree.bet.bean.response.im.LeagueInfo;
+import com.xtree.bet.bean.response.im.MarketLine;
+import com.xtree.bet.bean.response.im.MatchInfo;
+import com.xtree.bet.constant.IMConstants;
+import com.xtree.bet.constant.IMMatchPeriod;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
  * 赛事列表UI显示需要用的比赛信息结构
@@ -29,7 +24,7 @@ public class MatchIm implements Match {
 
     MatchInfo matchInfo;
 
-    LeaguePm mLeague;
+    LeagueIm mLeague;
     /**
      * 播放器请求头
      */
@@ -72,7 +67,7 @@ public class MatchIm implements Match {
      * @return
      */
     public long getId() {
-        return Long.valueOf(matchInfo.mid);
+        return Long.valueOf(matchInfo.eventId);
     }
 
     /**
@@ -82,7 +77,7 @@ public class MatchIm implements Match {
      */
     @Override
     public String getChampionMatchName() {
-        return matchInfo.tn;
+        return matchInfo.competition.getCompetitionName();
     }
 
     /**
@@ -92,7 +87,7 @@ public class MatchIm implements Match {
      */
     @Override
     public String getTeamMain() {
-        return matchInfo.mhn;
+        return matchInfo.homeTeam;
     }
 
     /**
@@ -102,7 +97,7 @@ public class MatchIm implements Match {
      */
     @Override
     public String getTeamVistor() {
-        return matchInfo.man;
+        return matchInfo.awayTeam;
     }
 
     /**
@@ -112,7 +107,9 @@ public class MatchIm implements Match {
      */
     @Override
     public String getStage() {
-        return PMMatchPeriod.getMatchPeriod(String.valueOf(matchInfo.mmp));
+        String state = matchInfo.rbTime;
+        String period = state.split(" ")[0];
+        return IMMatchPeriod.getMatchPeriod(String.valueOf(period));
     }
 
     /**
@@ -122,7 +119,7 @@ public class MatchIm implements Match {
      */
     @Override
     public boolean isFootBallSecondHalf() {
-        return TextUtils.equals(matchInfo.mmp, "7") || TextUtils.equals(matchInfo.mmp, "31");
+        return TextUtils.equals(matchInfo.rbTime, "7") || TextUtils.equals(matchInfo.rbTime, "31");
     }
 
     /**
@@ -133,8 +130,10 @@ public class MatchIm implements Match {
     @Override
     public String getTime() {
         try {
-            if (matchInfo != null && matchInfo.mst != null) {
-                return TimeUtils.sToMs(Integer.valueOf(matchInfo.mst));
+            String state = matchInfo.rbTime;
+            String time = state.split(" ")[1];
+            if (matchInfo != null && time != null) {
+                return TimeUtils.sToMs(Integer.valueOf(time));
             } else {
                 return "";
             }
@@ -151,8 +150,10 @@ public class MatchIm implements Match {
      */
     @Override
     public int getTimeS() {
-        if (matchInfo != null && matchInfo.mst != null) {
-            return Integer.valueOf(matchInfo.mst);
+        String state = matchInfo.rbTime;
+        String time = state.split(" ")[1];
+        if (matchInfo != null && time != null) {
+            return Integer.valueOf(time);
         } else {
             return 0;
         }
@@ -167,12 +168,15 @@ public class MatchIm implements Match {
     @Override
     public List<Integer> getScore(String... type) {
         List<Integer> sc = new ArrayList<>();
-        if (matchInfo.msc != null) {
-            for (String str : matchInfo.msc) {
-                if (str.contains(type[0] + "|") && matchInfo.msc != null && !matchInfo.msc.isEmpty()) {
-                    String score = str;
-                    if (!TextUtils.isEmpty(score) && score.contains("|")) {
-                        score = score.substring(score.indexOf("|") + 1, score.length());
+
+        if (matchInfo.rbTime != null) {
+            String state = matchInfo.rbTime;
+            //String score = state.split(" ")[1];
+            for (String str : state.split(" ")) {
+                if (state.split(" ")[1] != null && !state.split(" ")[1].isEmpty()) {
+                    String score = state.split(" ")[1];
+                    if (!TextUtils.isEmpty(score) && score.contains(" ")) {
+                        score = score.substring(score.indexOf(" ") + 1, score.length());
                         if (!TextUtils.isEmpty(score) && score.contains(":") && score.split(":").length > 1) {
                             sc.add(Double.valueOf(score.split(":")[0]).intValue()); // 修复小数转换整数异常
                             sc.add(Double.valueOf(score.split(":")[1]).intValue());
@@ -194,7 +198,7 @@ public class MatchIm implements Match {
      */
     @Override
     public List<Integer> getFirstHalfScore() {
-        return getScore(new String[]{String.valueOf(PMConstants.SCORE_TYPE_SCORE_SECOND_HALF)});
+        return getScore(new String[]{String.valueOf(IMConstants.SCORE_TYPE_SCORE_SECOND_HALF)});
     }
 
     /**
@@ -213,9 +217,10 @@ public class MatchIm implements Match {
         //matchInfo.msc 在列表接口和详情接口返回的数据顺序不同  改为统一使用type的顺序
         //列表["S3|23:24","S20|16:12","S22|15:10","S21|8:14","S1088|0.0:0.0","S108|0:0","S10607|0:0","S10904|0:0","S109|0:0","S10606|0:0","S10903|0:0","S106|0:0","S10902|0:0","S107|0:0","S10604|0:0","S10901|0:0","S10603|0:0","S10602|0:0","S10601|0:0","S191|0:0","S190|0:0","S111|0.0:0.0","S19|8:18","S110|0:0","S1111|47:54","S1|47:54","S1235|0.0:0.0","S2|24:30"]
         //详情["S1|55:60","S2|24:30","S3|31:30","S19|8:18","S20|16:12","S21|8:14","S22|23:16","S106|0:0","S107|0:0","S108|0:0","S109|0:0","S110|0:0","S111|0.0:0.0","S190|0:0","S191|0:0","S1088|0.0:0.0","S1111|55:60","S1235|0.0:0.0","S10601|0:0","S10602|0:0","S10603|0:0","S10604|0:0","S10606|0:0","S10607|0:0","S10901|0:0","S10902|0:0","S10903|0:0","S10904|0:0"]
-        if (matchInfo.msc != null && !matchInfo.msc.isEmpty()) {
+        String state = matchInfo.rbTime;
+        if (matchInfo.rbTime != null && !matchInfo.rbTime.isEmpty()) {
             for (int i = 0; i < type.length; i++) {//改为按type的顺序排序
-                for (String strScore : matchInfo.msc) {
+                for (String strScore : matchInfo.rbTime.split(" ")) {
 
                     List<Integer> sc = new ArrayList<>();
                     if (!TextUtils.isEmpty(strScore) && strScore.contains("|") && strScore.startsWith(type[i] + "|")) {
@@ -245,7 +250,7 @@ public class MatchIm implements Match {
      */
     @Override
     public int getPlayTypeCount() {
-        return matchInfo.mc;
+        return matchInfo.totalMarketLineCount;
     }
 
     /**
@@ -255,9 +260,9 @@ public class MatchIm implements Match {
      */
     public List<PlayType> getPlayTypeList() {
         List<PlayType> playTypeList = new ArrayList<>();
-        for (PlayTypeInfo playTypeInfo : matchInfo.hps) {
-            PlayTypePm playTypePm = new PlayTypePm(playTypeInfo);
-            playTypeList.add(playTypePm);
+        for (MarketLine marketLine : matchInfo.marketLines) {
+            //PlayTypeIm playTypeIm = new PlayTypeIm(playTypeInfo);
+            //playTypeList.add(playTypePm);
         }
         return playTypeList;
     }
@@ -269,12 +274,14 @@ public class MatchIm implements Match {
      */
     @Override
     public boolean hasVideo() {
-        return matchInfo.mms != -1 && !getVideoUrls().isEmpty();
+        //if(matchInfo.liveStreamingUrl.size() > 0)
+        return (matchInfo.liveStreamingUrl.size() > 0);
     }
 
     @Override
     public boolean isVideoStart() {
-        return matchInfo.mms == 2 || matchInfo.mms == 1;
+        //return matchInfo.mms == 2 || matchInfo.mms == 1;
+        return (matchInfo.liveStreamingUrl.size() > 0);
     }
 
     /**
@@ -284,23 +291,23 @@ public class MatchIm implements Match {
      */
     @Override
     public boolean hasAs() {
-        return matchInfo.mvs != -1 && !getAnmiUrls().isEmpty();
+        //return matchInfo.mvs != -1 && !getAnmiUrls().isEmpty(); 没找到动画对应字段
+        return false;
     }
 
     @Override
     public boolean isAnimationStart() {
-        return matchInfo.mvs == 2 || matchInfo.mvs == 1;
+        //return matchInfo.mvs == 2 || matchInfo.mvs == 1;
+        return false;
     }
 
     @Override
     public List<String> getVideoUrls() {
         List<String> urls = new ArrayList<>();
-        if (matchInfo != null && matchInfo.vs != null) {
-            for (VideoInfo videoInfo : matchInfo.vs) {
-                if (!TextUtils.isEmpty(videoInfo.flvUrl)) {
-                    urls.add(videoInfo.flvUrl);
-                } else if (!TextUtils.isEmpty(videoInfo.muUrl)) {
-                    urls.add(videoInfo.muUrl);
+        if (matchInfo != null && matchInfo.liveStreamingUrl != null) {
+            for (String videoInfo : matchInfo.liveStreamingUrl) {
+                if (!TextUtils.isEmpty(videoInfo)) {
+                    urls.add(videoInfo);
                 }
             }
         }
@@ -314,7 +321,8 @@ public class MatchIm implements Match {
      */
     @Override
     public List<String> getAnmiUrls() {
-        return matchInfo.as;
+        return matchInfo.liveStreamingUrl;
+        //return matchInfo.as;
     }
 
     /**
@@ -327,14 +335,14 @@ public class MatchIm implements Match {
         LeagueInfo leagueInfo;
         if (mLeague == null) {
             leagueInfo = new LeagueInfo();
-            mLeague = new LeaguePm(leagueInfo);
+            mLeague = new LeagueIm(leagueInfo);
         } else {
             leagueInfo = mLeague.getLeagueInfo();
         }
-        leagueInfo.picUrlthumb = matchInfo.lurl;
-        leagueInfo.nameText = matchInfo.tn;
-        if (!TextUtils.isEmpty(matchInfo.tid)) {
-            leagueInfo.tournamentId = Long.valueOf(matchInfo.tid);
+        //leagueInfo.picUrlthumb = matchInfo.lurl;
+        leagueInfo.nameText = matchInfo.competition.getCompetitionName();
+        if (!TextUtils.isEmpty(String.valueOf(matchInfo.competition.getCompetitionId()))) {
+            leagueInfo.tournamentId = Long.valueOf(String.valueOf(matchInfo.competition.getCompetitionId()));
         }
         return mLeague;
     }
@@ -346,22 +354,23 @@ public class MatchIm implements Match {
      */
     @Override
     public String getIconMain() {
-        if (matchInfo == null || matchInfo.mhlu == null || matchInfo.mhlu.isEmpty() || TextUtils.isEmpty(matchInfo.mhlu.get(0))) {
-            return "";
-        }
-        String logoUrl = matchInfo.mhlu.get(0);
-        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
-        String domain = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_IMG_SERVICE_URL);
-        if (TextUtils.equals(platform, PLATFORM_PM) || TextUtils.equals(platform, PLATFORM_PMXC)) {
-            domain = SPUtils.getInstance().getString(SPKeyGlobal.PM_IMG_SERVICE_URL);
-        }
-        if (domain.endsWith("/") && logoUrl.startsWith("/")) {
-            return domain.substring(domain.indexOf("/")) + logoUrl;
-        } else if (!domain.endsWith("/") && !logoUrl.startsWith("/")) {
-            return domain + "/" + logoUrl;
-        } else {
-            return domain + logoUrl;
-        }
+//        if (matchInfo == null || matchInfo.mhlu == null || matchInfo.mhlu.isEmpty() || TextUtils.isEmpty(matchInfo.mhlu.get(0))) {
+//            return "";
+//        }
+//        String logoUrl = matchInfo.mhlu.get(0);
+//        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
+//        String domain = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_IMG_SERVICE_URL);
+//        if (TextUtils.equals(platform, PLATFORM_PM) || TextUtils.equals(platform, PLATFORM_PMXC)) {
+//            domain = SPUtils.getInstance().getString(SPKeyGlobal.PM_IMG_SERVICE_URL);
+//        }
+//        if (domain.endsWith("/") && logoUrl.startsWith("/")) {
+//            return domain.substring(domain.indexOf("/")) + logoUrl;
+//        } else if (!domain.endsWith("/") && !logoUrl.startsWith("/")) {
+//            return domain + "/" + logoUrl;
+//        } else {
+//            return domain + logoUrl;
+//        }
+        return ""; //暂时没有球队图标
     }
 
     /**
@@ -371,22 +380,23 @@ public class MatchIm implements Match {
      */
     @Override
     public String getIconVisitor() {
-        if (matchInfo == null || matchInfo.malu == null || matchInfo.malu.isEmpty() || TextUtils.isEmpty(matchInfo.malu.get(0))) {
-            return "";
-        }
-        String logoUrl = matchInfo.malu.get(0);
-        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
-        String domain = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_IMG_SERVICE_URL);
-        if (TextUtils.equals(platform, PLATFORM_PM) || TextUtils.equals(platform, PLATFORM_PMXC)) {
-            domain = SPUtils.getInstance().getString(SPKeyGlobal.PM_IMG_SERVICE_URL);
-        }
-        if (domain.endsWith("/") && logoUrl.startsWith("/")) {
-            return domain.substring(domain.indexOf("/")) + logoUrl;
-        } else if (!domain.endsWith("/") && !logoUrl.startsWith("/")) {
-            return domain + "/" + logoUrl;
-        } else {
-            return domain + logoUrl;
-        }
+//        if (matchInfo == null || matchInfo.malu == null || matchInfo.malu.isEmpty() || TextUtils.isEmpty(matchInfo.malu.get(0))) {
+//            return "";
+//        }
+//        String logoUrl = matchInfo.malu.get(0);
+//        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
+//        String domain = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_IMG_SERVICE_URL);
+//        if (TextUtils.equals(platform, PLATFORM_PM) || TextUtils.equals(platform, PLATFORM_PMXC)) {
+//            domain = SPUtils.getInstance().getString(SPKeyGlobal.PM_IMG_SERVICE_URL);
+//        }
+//        if (domain.endsWith("/") && logoUrl.startsWith("/")) {
+//            return domain.substring(domain.indexOf("/")) + logoUrl;
+//        } else if (!domain.endsWith("/") && !logoUrl.startsWith("/")) {
+//            return domain + "/" + logoUrl;
+//        } else {
+//            return domain + logoUrl;
+//        }
+        return ""; //暂时没有球队图标
     }
 
     /**
@@ -396,8 +406,13 @@ public class MatchIm implements Match {
      */
     @Override
     public boolean isGoingon() {
-        return !TextUtils.equals(matchInfo.mmp, "0") && !TextUtils.equals(matchInfo.mmp, "90")
-                && !TextUtils.equals(matchInfo.mmp, "999") && !TextUtils.equals(matchInfo.mmp, "61");
+        String state = matchInfo.rbTime;
+        String period = state.split(" ")[0];
+        if (String.valueOf(period).equals("!Live") || String.valueOf(period).equals("HT") || String.valueOf(period).equals("FT")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -407,7 +422,7 @@ public class MatchIm implements Match {
      */
     @Override
     public long getMatchTime() {
-        return Long.valueOf(matchInfo.mgt);
+        return Long.valueOf(String.valueOf(matchInfo.eventDate));
     }
 
     /**
@@ -417,7 +432,11 @@ public class MatchIm implements Match {
      */
     @Override
     public boolean isChampion() {
-        return this.matchInfo.mcg == 100;
+        if(matchInfo.eventGroupTypeId != 1){
+             return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -425,7 +444,7 @@ public class MatchIm implements Match {
      */
     @Override
     public String getSportId() {
-        return matchInfo.csid;
+        return String.valueOf(matchInfo.sportId);
     }
 
     /**
@@ -433,7 +452,7 @@ public class MatchIm implements Match {
      */
     @Override
     public String getSportName() {
-        return matchInfo.csna;
+        return matchInfo.getSportName();
     }
 
     @Override
@@ -458,7 +477,7 @@ public class MatchIm implements Match {
      */
     @Override
     public boolean hasCornor() {
-        List<Integer> cornor = getScore(PMConstants.SCORE_TYPE_CORNER);
+        List<Integer> cornor = getScore(IMConstants.SCORE_TYPE_CORNER);
         return cornor.get(0) > 0 || cornor.get(1) > 0;
     }
 
@@ -469,7 +488,8 @@ public class MatchIm implements Match {
      */
     @Override
     public boolean isNeutrality() {
-        return TextUtils.equals(matchInfo.mng, "1");
+        //return TextUtils.equals(matchInfo.mng, "1"); //未找到对应字段
+        return false;
     }
 
     /**
@@ -479,12 +499,15 @@ public class MatchIm implements Match {
      */
     @Override
     public String getFormat() {
-        return matchInfo.mfo;
+        //return matchInfo.mfo;  未找到对应字段
+        return "";
     }
 
     @Override
     public boolean isHomeSide() {
-        return TextUtils.equals(matchInfo.mat, "home");
+        //return TextUtils.equals(matchInfo.mat, "home"); 未找到对应字段
+        return false;
+
     }
 
     /**
@@ -494,14 +517,14 @@ public class MatchIm implements Match {
      */
     @Override
     public boolean needCheckHomeSide() {
-        return TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_WQ)
-                || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_PQ)
-                || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_STPQ)
-                || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_YMQ)
-                || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_BBQ)
-                || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_SNK)
-                || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_BQ)
-                || TextUtils.equals(matchInfo.csid, PMConstants.SPORT_ID_MSZQ);
+        return TextUtils.equals(String.valueOf(matchInfo.rSportId), IMConstants.SPORT_ID_WQ)
+                || TextUtils.equals(String.valueOf(matchInfo.rSportId), IMConstants.SPORT_ID_PQ)
+                || TextUtils.equals(String.valueOf(matchInfo.rSportId), IMConstants.SPORT_ID_STPQ)
+                || TextUtils.equals(String.valueOf(matchInfo.rSportId), IMConstants.SPORT_ID_YMQ)
+                || TextUtils.equals(String.valueOf(matchInfo.rSportId), IMConstants.SPORT_ID_BBQ)
+                || TextUtils.equals(String.valueOf(matchInfo.rSportId), IMConstants.SPORT_ID_SNK)
+                || TextUtils.equals(String.valueOf(matchInfo.rSportId), IMConstants.SPORT_ID_BQ)
+                || TextUtils.equals(String.valueOf(matchInfo.rSportId), IMConstants.SPORT_ID_MSZQ);
     }
 
     /**
@@ -514,7 +537,8 @@ public class MatchIm implements Match {
         if (matchInfo == null) {
             return false;
         }
-        return matchInfo.mle == 17;
+        //return matchInfo.mle == 17; //未找到对应字段
+        return false;
     }
 
     @Override

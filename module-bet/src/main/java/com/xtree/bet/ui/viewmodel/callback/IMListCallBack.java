@@ -10,23 +10,22 @@ import com.xtree.bet.EventInfoByPageListParser;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
 import com.xtree.bet.bean.response.im.EventListRsp;
+import com.xtree.bet.bean.response.im.LeagueInfo;
 import com.xtree.bet.bean.response.im.MatchEvent;
+import com.xtree.bet.bean.response.im.MatchInfo;
 import com.xtree.bet.bean.response.im.RecommendedEvent;
 import com.xtree.bet.bean.response.im.Sport;
-import com.xtree.bet.bean.response.pm.LeagueInfo;
-import com.xtree.bet.bean.response.pm.MatchInfo;
 import com.xtree.bet.bean.ui.League;
-import com.xtree.bet.bean.ui.LeaguePm;
+import com.xtree.bet.bean.ui.LeagueIm;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.MatchIm;
-import com.xtree.bet.bean.ui.MatchPm;
 import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.PlayGroup;
 import com.xtree.bet.bean.ui.PlayGroupPm;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.ui.activity.MainActivity;
 import com.xtree.bet.ui.viewmodel.im.ImMainViewModel;
-import com.xtree.bet.ui.viewmodel.pm.PMMainViewModel;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -137,7 +136,7 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
         CfLog.d("============= IMListCallBack onResult =============");
         CfLog.d("============= IMListCallBack onResult mIsTimerRefresh ============="+mIsTimerRefresh);
         EventInfoByPageListRsp matchListRsp = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
-        List<MatchInfo> matchList = convertToMatchInfoList(matchListRsp);
+        List<MatchInfo> matchList = data.getSports().get(0).getEvents();
         if (mIsTimerRefresh) { // 定时刷新赔率变更
             if (matchList.size() != mMatchids.size()) {
                 //List<Long> matchIdList = new ArrayList<>();
@@ -243,24 +242,24 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
             return;
         }
 
-        League liveHeaderLeague = new LeaguePm();
+        League liveHeaderLeague = new LeagueIm();
         buildLiveHeaderLeague(liveHeaderLeague);
 
         Map<String, League> mapLeague = new HashMap<>();
         Map<String, League> mapSportType = new HashMap<>();
         for (MatchInfo matchInfo : matchInfoList) {
-            Match match = new MatchPm(matchInfo);
+            Match match = new MatchIm(matchInfo);
 
-            buildLiveSportHeader(mapSportType, match, new LeaguePm());
+            buildLiveSportHeader(mapSportType, match, new LeagueIm());
 
-            League league = mapLeague.get(String.valueOf(matchInfo.tid));
+            League league = mapLeague.get(String.valueOf(matchInfo.competition.getCompetitionId()));
             if (league == null) {
                 LeagueInfo leagueInfo = new LeagueInfo();
-                leagueInfo.picUrlthumb = matchInfo.lurl;
-                leagueInfo.nameText = matchInfo.tn;
-                leagueInfo.tournamentId = Long.valueOf(matchInfo.tid);
-                league = new LeaguePm(leagueInfo);
-                mapLeague.put(String.valueOf(matchInfo.tid), league);
+                //leagueInfo.picUrlthumb = matchInfo.lurl;
+                leagueInfo.nameText = matchInfo.competition.getCompetitionName();
+                leagueInfo.tournamentId = Long.valueOf(matchInfo.competition.getCompetitionId());
+                league = new LeagueIm(leagueInfo);
+                mapLeague.put(String.valueOf(matchInfo.competition.getCompetitionId()), league);
 
                 mGoingOnLeagueList.add(league);
                 //mMapGoingOnLeague.put(String.valueOf(matchInfo.lg.id), league);
@@ -336,14 +335,6 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
         } else {
             sportHeader.setMatchCount(1);
         }
-    }
-
-    public List<MatchInfo> convertToMatchInfoList(EventInfoByPageListRsp data) {
-        List<MatchInfo> matchList = new ArrayList<>();
-        if (data == null || data.getSports() == null) return matchList;
-        CfLog.d("============== IMListCallBack convertToMatchInfoList ===============");
-        matchList = EventInfoByPageListParser.convertToMatchInfoList(data);
-        return matchList;
     }
 
 }

@@ -17,19 +17,18 @@ import com.xtree.bet.EventInfoByPageListParser;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
 import com.xtree.bet.bean.response.im.EventListRsp;
+import com.xtree.bet.bean.response.im.LeagueInfo;
 import com.xtree.bet.bean.response.im.MatchEvent;
+import com.xtree.bet.bean.response.im.MatchInfo;
 import com.xtree.bet.bean.response.im.RecommendedEvent;
 import com.xtree.bet.bean.response.im.Sport;
-import com.xtree.bet.bean.response.pm.LeagueInfo;
-import com.xtree.bet.bean.response.pm.MatchInfo;
-import com.xtree.bet.bean.response.pm.MatchListRsp;
 import com.xtree.bet.bean.ui.League;
+import com.xtree.bet.bean.ui.LeagueIm;
 import com.xtree.bet.bean.ui.LeaguePm;
 import com.xtree.bet.bean.ui.Match;
-import com.xtree.bet.bean.ui.MatchPm;
+import com.xtree.bet.bean.ui.MatchIm;
 import com.xtree.bet.ui.activity.MainActivity;
 import com.xtree.bet.ui.viewmodel.im.ImMainViewModel;
-import com.xtree.bet.ui.viewmodel.pm.PMMainViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -153,7 +152,7 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     public void onResult(EventInfoByPageListRsp matchListRsp) {
         CfLog.d("================= IMLeagueListCallBack onResult ==================");
         matchListRsp = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
-        List<MatchInfo> matchInfoList = convertToMatchInfoList(matchListRsp);
+        List<MatchInfo> matchInfoList = matchListRsp.getSports().get(0).getEvents();
         mViewModel.getUC().getDismissDialogEvent().call();
         if (mIsRefresh) {
             mNoliveMatchList.clear();
@@ -237,8 +236,8 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
             if (!mLiveMatchList.isEmpty()) {
                 List<MatchInfo> matchInfoList = new ArrayList<>();
                 for (BaseBean matchInfo : mLiveMatchList) {
-                    MatchPm matchPm = new MatchPm((MatchInfo) matchInfo);
-                    if (matchPm.getLeague().getLeagueName().contains(searchWord) || matchPm.getTeamMain().contains(searchWord) || matchPm.getTeamVistor().contains(searchWord)) {
+                    MatchIm matchIm = new MatchIm((com.xtree.bet.bean.response.im.MatchInfo) matchInfo);
+                    if (matchIm.getLeague().getLeagueName().contains(searchWord) || matchIm.getTeamMain().contains(searchWord) || matchIm.getTeamVistor().contains(searchWord)) {
                         matchInfoList.add((MatchInfo) matchInfo);
                     }
                 }
@@ -247,7 +246,7 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
             if (!mNoliveMatchList.isEmpty()) {
                 List<MatchInfo> matchInfoList = new ArrayList<>();
                 for (BaseBean matchInfo : mNoliveMatchList) {
-                    MatchPm matchFb = new MatchPm((MatchInfo) matchInfo);
+                    MatchIm matchFb = new MatchIm((MatchInfo) matchInfo);
                     if (matchFb.getLeague().getLeagueName().contains(searchWord) || matchFb.getTeamMain().contains(searchWord) || matchFb.getTeamVistor().contains(searchWord)) {
                         matchInfoList.add((MatchInfo) matchInfo);
                     }
@@ -318,18 +317,18 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
         Map<String, League> mapLeague = new HashMap<>();
         Map<String, League> mapSportType = new HashMap<>();
         for (MatchInfo matchInfo : matchInfoList) {
-            Match match = new MatchPm(matchInfo);
+            Match match = new MatchIm(matchInfo);
 
             buildLiveSportHeader(mapSportType, match, new LeaguePm());
 
-            League league = mapLeague.get(String.valueOf(matchInfo.tid));
+            League league = mapLeague.get(String.valueOf(matchInfo.competition.getCompetitionId()));
             if (league == null) {
                 LeagueInfo leagueInfo = new LeagueInfo();
-                leagueInfo.picUrlthumb = matchInfo.lurl;
-                leagueInfo.nameText = matchInfo.tn;
-                leagueInfo.tournamentId = Long.valueOf(matchInfo.tid);
-                league = new LeaguePm(leagueInfo);
-                mapLeague.put(String.valueOf(matchInfo.tid), league);
+                //leagueInfo.picUrlthumb = matchInfo.lurl;
+                leagueInfo.nameText = matchInfo.competition.getCompetitionName();
+                leagueInfo.tournamentId = Long.valueOf(matchInfo.competition.getCompetitionId());
+                league = new LeagueIm(leagueInfo);
+                mapLeague.put(String.valueOf(matchInfo.competition.getCompetitionId()), league);
 
                 mGoingOnLeagueList.add(league);
                 //mMapGoingOnLeague.put(String.valueOf(matchInfo.lg.id), league);
@@ -361,20 +360,20 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
 
         Map<String, League> mapLeague = new HashMap<>();
         for (MatchInfo matchInfo : matchInfoList) {
-            Match match = new MatchPm(matchInfo);
+            Match match = new MatchIm(matchInfo);
             buildNoLiveSportHeader(match, new LeaguePm());
 
-            League league = mMapLeague.get(String.valueOf(matchInfo.tid));
+            League league = mMapLeague.get(String.valueOf(matchInfo.competition.getCompetitionId()));
             if (league == null) {
                 LeagueInfo leagueInfo = new LeagueInfo();
-                leagueInfo.picUrlthumb = matchInfo.lurl;
-                leagueInfo.nameText = matchInfo.tn;
-                leagueInfo.tournamentId = Long.valueOf(matchInfo.tid);
-                league = new LeaguePm(leagueInfo);
-                mapLeague.put(String.valueOf(matchInfo.tid), league);
+                //leagueInfo.picUrlthumb = matchInfo.lurl;
+                leagueInfo.nameText = matchInfo.competition.getCompetitionName();
+                leagueInfo.tournamentId = Long.valueOf(matchInfo.competition.getCompetitionId());
+                league = new LeagueIm(leagueInfo);
+                mapLeague.put(String.valueOf(matchInfo.competition.getCompetitionId()), league);
 
                 mLeagueList.add(league);
-                mMapLeague.put(String.valueOf(matchInfo.tid), league);
+                mMapLeague.put(String.valueOf(matchInfo.competition.getCompetitionId()), league);
             }
             league.getMatchList().add(match);
 
@@ -446,13 +445,4 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
             sportHeader.setMatchCount(1);
         }
     }
-
-    public List<MatchInfo> convertToMatchInfoList(EventInfoByPageListRsp data) {
-        List<MatchInfo> matchList = new ArrayList<>();
-        if (data == null || data.getSports() == null) return matchList;
-        CfLog.d("============== IMListCallBack convertToMatchInfoList ===============");
-        matchList = EventInfoByPageListParser.convertToMatchInfoList(data);
-        return matchList;
-    }
-
 }

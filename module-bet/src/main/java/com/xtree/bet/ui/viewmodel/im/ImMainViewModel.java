@@ -18,16 +18,16 @@ import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.im.Announcement;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
-import com.xtree.bet.bean.response.im.MatchEvent;
+import com.xtree.bet.bean.response.im.LeagueInfo;
+import com.xtree.bet.bean.response.im.MatchInfo;
+import com.xtree.bet.bean.response.im.MenuInfo;
 import com.xtree.bet.bean.response.im.Sport;
 import com.xtree.bet.bean.response.im.SportCountRsp;
-import com.xtree.bet.bean.response.pm.LeagueInfo;
-import com.xtree.bet.bean.response.pm.MatchInfo;
-import com.xtree.bet.bean.response.pm.MenuInfo;
 import com.xtree.bet.bean.ui.League;
+import com.xtree.bet.bean.ui.LeagueIm;
 import com.xtree.bet.bean.ui.LeaguePm;
 import com.xtree.bet.bean.ui.Match;
-import com.xtree.bet.bean.ui.MatchPm;
+import com.xtree.bet.bean.ui.MatchIm;
 import com.xtree.bet.constant.IMConstants;
 import com.xtree.bet.constant.SportTypeItem;
 import com.xtree.bet.data.BetRepository;
@@ -200,8 +200,8 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
             if (!TextUtils.isEmpty(searchWord)) {
                 List<MatchInfo> matchInfoList = new ArrayList<>();
                 for (MatchInfo matchInfo : mChampionMatchInfoList) {
-                    MatchPm matchPm = new MatchPm(matchInfo);
-                    if (matchPm.getLeague().getLeagueName().contains(searchWord)) {
+                    MatchIm matchIm = new MatchIm(matchInfo);
+                    if (matchIm.getLeague().getLeagueName().contains(searchWord)) {
                         matchInfoList.add(matchInfo);
                     }
                 }
@@ -333,7 +333,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
 
         Flowable flowable = getFlowableMatchesPage(pmListReq);
         if (isStepSecond) {
-            flowable = getFlowableNoLiveMatchesPagePB(pmListReq);
+            flowable = getFlowableNoLiveMatchesPage(pmListReq);
         }
         pmListReq.setCps(mPageSize);
         if (type == 1) {// 滚球
@@ -501,19 +501,19 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                         data = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
                         List<Sport> matches =  data.getSports();
                         if (matches != null) {
-                            matchList = EventInfoByPageListParser.convertToMatchInfoList(data);
+                            matchList = data.getSports().get(0).getEvents();
                         }
 
                         for (MatchInfo matchInfo : matchList) {
-                            Match match = new MatchPm(matchInfo);
-                            League league = mapLeague.get(String.valueOf(matchInfo.tid));
+                            Match match = new MatchIm(matchInfo);
+                            League league = mapLeague.get(String.valueOf(matchInfo.competition.getCompetitionId()));
                             if (league == null) {
                                 LeagueInfo leagueInfo = new LeagueInfo();
-                                leagueInfo.picUrlthumb = matchInfo.lurl;
-                                leagueInfo.nameText = matchInfo.tn;
-                                leagueInfo.tournamentId = Long.parseLong(matchInfo.tid);
-                                league = new LeaguePm(leagueInfo);
-                                mapLeague.put(String.valueOf(matchInfo.tid), league);
+                                //leagueInfo.picUrlthumb = matchInfo.lurl; //暂时没有联赛图标,需要通过FTP获取
+                                leagueInfo.nameText = matchInfo.competition.getCompetitionName();
+                                leagueInfo.tournamentId = matchInfo.competition.getCompetitionId();
+                                league = new LeagueIm(leagueInfo);
+                                mapLeague.put(String.valueOf(matchInfo.competition.getCompetitionId()), league);
                                 leagues.add(league);
                             }
                             league.getMatchList().add(match);
@@ -556,11 +556,11 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      */
     private void championLeagueList(List<MatchInfo> matchInfoList) {
         if (!matchInfoList.isEmpty()) {
-            Match header = new MatchPm();
+            Match header = new MatchIm();
             header.setHead(true);
             mChampionMatchList.add(header);
             for (MatchInfo matchInfo : matchInfoList) {
-                Match match = new MatchPm(matchInfo);
+                Match match = new MatchIm(matchInfo);
                 mChampionMatchList.add(match);
             }
         }
@@ -718,7 +718,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     }
 
     private Flowable getFlowableLiveMatches(PMListReq pmListReq) {
-        Flowable flowable;
             //flowable = model.getIMApiService().liveMatchesPB(pmListReq);
         EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
         eventInfoByPageRsq.setSportId(1);
@@ -728,11 +727,11 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         eventInfoByPageRsq.setPage(1);
         eventInfoByPageRsq.setSeason(0);
         eventInfoByPageRsq.setIsCombo(false);
-        flowable = model.getIMApiService().getLiveEventInfo(eventInfoByPageRsq);
+        Flowable flowable = model.getIMApiService().getLiveEventInfo(eventInfoByPageRsq);
         return flowable;
     }
 
-    private Flowable getFlowableNoLiveMatchesPagePB(PMListReq pmListReq) {
+    private Flowable getFlowableNoLiveMatchesPage(PMListReq pmListReq) {
         //Flowable flowable = model.getIMApiService().noLiveMatchesPagePB(pmListReq);
         EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
         eventInfoByPageRsq.setSportId(1);

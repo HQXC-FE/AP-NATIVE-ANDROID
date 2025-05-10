@@ -6,8 +6,8 @@ import com.google.gson.Gson;
 import com.xtree.base.utils.CfLog;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
 import com.xtree.bet.bean.response.im.MatchEvent;
+import com.xtree.bet.bean.response.im.MatchInfo;
 import com.xtree.bet.bean.response.im.Sport;
-import com.xtree.bet.bean.response.pm.MatchInfo;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,30 +40,31 @@ public class EventInfoByPageListParser {
         return json;
     }
 
-    public static List<MatchInfo> convertToMatchInfoList(EventInfoByPageListRsp data) {
-        List<MatchInfo> matchList = new ArrayList<>();
-        if (data == null || data.getSports() == null) return matchList;
-        CfLog.d("============== IMListCallBack convertToMatchInfoList ===============");
-        for (Sport sport : data.getSports()) {
-            if (sport.getEvents() == null) continue;
-            for (MatchEvent event : sport.getEvents()) {
-                MatchInfo matchInfo = new MatchInfo();
-                matchInfo.csid = String.valueOf(sport.getSportId());
-                matchInfo.csna = sport.getSportName();
-                matchInfo.mid = String.valueOf(event.eventId);
-                matchInfo.tn = event.competition.getCompetitionName();
-                matchInfo.mhid = String.valueOf(event.homeTeamId);
-                matchInfo.mhn = event.homeTeam;
-                matchInfo.mst = String.valueOf(event.eventDate);
-                matchInfo.man = event.awayTeam;
-                matchInfo.maid = String.valueOf(event.awayTeamId);
-                matchInfo.tid = String.valueOf(event.eventGroupId);
-                matchList.add(matchInfo);
-                CfLog.d("============== IMListCallBack matchInfo ==============="+matchInfo);
-            }
-        }
-        CfLog.d("============== IMListCallBack convertToMatchInfoList matchList ==============="+matchList);
-        CfLog.d("============== IMListCallBack convertToMatchInfoList matchList size ==============="+matchList.size());
-        return matchList;
-    }
+//    public static List<MatchInfo> convertToMatchInfoList(EventInfoByPageListRsp data) {
+//        List<MatchInfo> matchList = new ArrayList<>();
+//        if (data == null || data.getSports() == null) return matchList;
+//        CfLog.d("============== IMListCallBack convertToMatchInfoList ===============");
+//        for (Sport sport : data.getSports()) {
+//            if (sport.getEvents() == null) continue;
+//            for (MatchEvent event : sport.getEvents()) {
+////                MatchInfo matchInfo = new MatchInfo();
+////                matchInfo.csid = String.valueOf(sport.getSportId());
+////                matchInfo.csna = sport.getSportName();
+////                matchInfo.mid = String.valueOf(event.eventId);
+////                matchInfo.tn = event.competition.getCompetitionName();
+////                matchInfo.mhid = String.valueOf(event.homeTeamId);
+////                matchInfo.mhn = event.homeTeam;
+////                matchInfo.mst = String.valueOf(event.eventDate);
+////                matchInfo.man = event.awayTeam;
+////                matchInfo.maid = String.valueOf(event.awayTeamId);
+////                matchInfo.tid = String.valueOf(event.eventGroupId);
+////                matchInfo.mgt = event.rbTime;
+////                matchList.add(matchInfo);
+////                CfLog.d("============== IMListCallBack matchInfo ==============="+matchInfo);
+//            }
+//        }
+//        CfLog.d("============== IMListCallBack convertToMatchInfoList matchList ==============="+matchList);
+//        CfLog.d("============== IMListCallBack convertToMatchInfoList matchList size ==============="+matchList.size());
+//        return matchList;
+//    }
 }
