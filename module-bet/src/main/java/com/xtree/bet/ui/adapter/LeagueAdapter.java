@@ -1,6 +1,8 @@
 package com.xtree.bet.ui.adapter;
 
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FB;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
@@ -25,6 +27,7 @@ import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.OptionList;
 import com.xtree.bet.bean.ui.PlayGroup;
 import com.xtree.bet.bean.ui.PlayGroupFb;
+import com.xtree.bet.bean.ui.PlayGroupIm;
 import com.xtree.bet.bean.ui.PlayGroupPm;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.constant.Constants;
@@ -358,11 +361,14 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
         PlayGroup playGroup;
 
-        if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {
+        if (TextUtils.equals(platform, PLATFORM_FB) && TextUtils.equals(platform, PLATFORM_FBXC)) {
             playGroup = new PlayGroupFb(match.getPlayTypeList());
-        } else {
+        } else if(TextUtils.equals(platform, PLATFORM_PM) && TextUtils.equals(platform, PLATFORM_PMXC)) {
             playGroup = new PlayGroupPm(match.getPlayTypeList());
+        }else{
+            playGroup = new PlayGroupIm(match.getPlayTypeList());
         }
+
         List<PlayGroup> playGroupList = playGroup.getPlayGroupList(match.getSportId());
 
         if (!playGroupList.isEmpty()) {

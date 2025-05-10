@@ -9,12 +9,9 @@ import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.EventInfoByPageListParser;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
-import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.LeagueInfo;
-import com.xtree.bet.bean.response.im.MatchEvent;
 import com.xtree.bet.bean.response.im.MatchInfo;
-import com.xtree.bet.bean.response.im.RecommendedEvent;
-import com.xtree.bet.bean.response.im.Sport;
+
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.LeagueIm;
 import com.xtree.bet.bean.ui.Match;
@@ -110,9 +107,9 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     }
 
     public void saveLeague() {
-        CfLog.d("================ IMListCallBack saveLeague ===============");
+        CfLog.d("================ IMListCallBack saveLeague mIsRefresh ==============="+mIsRefresh);
         mLiveMatchList = mViewModel.getLiveMatchList();
-        //if (!mIsRefresh) {
+        if (!mIsRefresh) {
             mLeagueList = mViewModel.getLeagueList();
             mGoingOnLeagueList = mViewModel.getGoingOnLeagueList();
             mMapLeague = mViewModel.getMapLeague();
@@ -120,7 +117,7 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
             mMapMatch = mViewModel.getMapMatch();
             mMapSportType = mViewModel.getMapSportType();
             mNoliveMatchList = mViewModel.getNoliveMatchList();
-       // }
+       }
     }
 
     @Override
@@ -135,9 +132,9 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     public void onResult(EventInfoByPageListRsp data) {
         CfLog.d("============= IMListCallBack onResult =============");
         CfLog.d("============= IMListCallBack onResult mIsTimerRefresh ============="+mIsTimerRefresh);
-        EventInfoByPageListRsp matchListRsp = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
+        data = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
         List<MatchInfo> matchList = data.getSports().get(0).getEvents();
-        if (mIsTimerRefresh) { // 定时刷新赔率变更
+        if (mIsTimerRefresh) { //定时刷新赔率变更
             if (matchList.size() != mMatchids.size()) {
                 //List<Long> matchIdList = new ArrayList<>();
                 mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);

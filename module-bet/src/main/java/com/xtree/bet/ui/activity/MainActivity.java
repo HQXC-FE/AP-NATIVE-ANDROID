@@ -1632,6 +1632,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
      * 更新联赛数据
      */
     private void updateLeagueData() {
+        CfLog.d("================ MainActivity updateLeagueData ===============");
         if (mLeagueAdapter == null) {
             mLeagueAdapter = new LeagueAdapter(MainActivity.this, mLeagueList);
             initLeagueListView();

@@ -13,8 +13,12 @@ import com.xtree.bet.bean.response.im.MatchInfo;
 import com.xtree.bet.constant.IMConstants;
 import com.xtree.bet.constant.IMMatchPeriod;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 赛事列表UI显示需要用的比赛信息结构
@@ -260,10 +264,10 @@ public class MatchIm implements Match {
      */
     public List<PlayType> getPlayTypeList() {
         List<PlayType> playTypeList = new ArrayList<>();
-        for (MarketLine marketLine : matchInfo.marketLines) {
-            //PlayTypeIm playTypeIm = new PlayTypeIm(playTypeInfo);
-            //playTypeList.add(playTypePm);
-        }
+//        for (MarketLine marketLine : matchInfo.marketLines) {
+//            PlayTypeIm playTypeIm = new PlayTypeIm(playTypeInfo);
+//            playTypeList.add(playTypePm);
+//        }
         return playTypeList;
     }
 
@@ -407,12 +411,18 @@ public class MatchIm implements Match {
     @Override
     public boolean isGoingon() {
         String state = matchInfo.rbTime;
-        String period = state.split(" ")[0];
-        if (String.valueOf(period).equals("!Live") || String.valueOf(period).equals("HT") || String.valueOf(period).equals("FT")) {
-            return true;
-        } else {
-            return false;
+        if (state != null && !state.trim().isEmpty()) {
+            String[] parts = state.trim().split("\\s+");
+            if (parts.length > 0) {
+                String period = state.split(" ")[0];
+                if (String.valueOf(period).equals("!Live") || String.valueOf(period).equals("HT") || String.valueOf(period).equals("FT")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
+        return false;
     }
 
     /**
@@ -422,7 +432,16 @@ public class MatchIm implements Match {
      */
     @Override
     public long getMatchTime() {
-        return Long.valueOf(String.valueOf(matchInfo.eventDate));
+        String dateStr = matchInfo.eventDate;
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        try {
+            Date date = sdf.parse(dateStr);
+            long timestamp = date.getTime();
+            return timestamp;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0L;
     }
 
     /**

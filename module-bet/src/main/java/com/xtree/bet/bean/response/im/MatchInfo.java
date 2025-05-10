@@ -102,7 +102,7 @@ public class MatchInfo implements BaseBean {
     public int orderNumber;
 
     @SerializedName("EventDate")
-    public Date eventDate;
+    public String eventDate;
 
     @SerializedName("GroundTypeId")
     public int groundTypeId;
@@ -208,8 +208,8 @@ public class MatchInfo implements BaseBean {
         eventId = in.readLong();
         eventStatusId = in.readInt();
         orderNumber = in.readInt();
-        long eventDateLong = in.readLong();
-        eventDate = eventDateLong != -1 ? new Date(eventDateLong) : null;
+        //long eventDateLong = in.readLong();
+        eventDate = in.readString();
         groundTypeId = in.readInt();
         eventGroupId = in.readLong();
         eventGroupTypeId = in.readInt();
@@ -260,7 +260,8 @@ public class MatchInfo implements BaseBean {
         dest.writeLong(eventId);
         dest.writeInt(eventStatusId);
         dest.writeInt(orderNumber);
-        dest.writeLong(eventDate != null ? eventDate.getTime() : -1);
+        //dest.writeLong(eventDate != null ? eventDate.getTime() : -1);
+        dest.writeString(eventDate);
         dest.writeInt(groundTypeId);
         dest.writeLong(eventGroupId);
         dest.writeInt(eventGroupTypeId);

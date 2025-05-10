@@ -25,7 +25,6 @@ import com.xtree.bet.bean.response.im.Sport;
 import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.LeagueIm;
-import com.xtree.bet.bean.ui.LeaguePm;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.MatchIm;
 import com.xtree.bet.constant.IMConstants;
@@ -244,7 +243,9 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         if (mCurrentPage == 1 && !isTimerRefresh && !isStepSecond) {
-            showCache(sportId, mPlayMethodType, searchDatePos);
+            CfLog.d("============ ImMainViewModel getLeagueList mPlayMethodType =============="+mPlayMethodType);
+            CfLog.d("============ ImMainViewModel getLeagueList searchDatePos =============="+searchDatePos);
+            //showCache(sportId, mPlayMethodType, searchDatePos);
         }
 
         PMListReq pmListReq = new PMListReq();
@@ -319,7 +320,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
             pmListReq.setTid(leagueids.substring(0, leagueids.length() - 1));
         }
         pmListReq.setCpn(mCurrentPage);
-        pmListReq.setDevice("v2_h5_st");
+        //pmListReq.setDevice("v2_h5_st");
 
         if (!dateList.isEmpty()) {
             if (searchDatePos == dateList.size() - 1) {
@@ -350,7 +351,10 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         if (isRefresh) {
             mNoLiveheaderLeague = null;
         }
-
+        CfLog.d("================ getLeagueList type ================="+type);
+        CfLog.d("================ getLeagueList needSecondStep ================="+needSecondStep);
+        CfLog.d("================ getLeagueList isTimerRefresh ================="+isTimerRefresh);
+        Thread.dumpStack();
         if ((type == 1 && needSecondStep) // 获取今日中的全部滚球赛事列表
                 || isTimerRefresh) { // 定时刷新赔率变更
             createIMListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, flowable);
@@ -526,14 +530,12 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
-                        CfLog.d("================== ImMainViewModel matchResultPage onError ====");
                         resultErrorLeagueData.setValue("");
                     }
 
                     @Override
                     public void onFail(BusinessException t) {
                         super.onFail(t);
-                        CfLog.d("================== ImMainViewModel matchResultPage onFail ====");
                         resultErrorLeagueData.setValue("");
                     }
                 });
@@ -602,9 +604,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     }
 
     private void processSportCount(SportCountRsp sportCountRsp) {
-        //CfLog.d("====== ImMainViewModel statistical onResult =====" + sportCountRsp.toString());
         List<SportCountRsp.CountItem> sportList = sportCountRsp.getSportCount();
-        //CfLog.d("====== ImMainViewModel sportList size =====" + sportList.size());
         for (String name : PLAY_METHOD_NAMES) {
             if (name.equals("今日")) {
                 MenuInfo menuInfo = new MenuInfo();

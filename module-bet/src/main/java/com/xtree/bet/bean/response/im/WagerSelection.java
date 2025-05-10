@@ -23,7 +23,7 @@ public class WagerSelection implements BaseBean {
     private double handicap;
 
     @SerializedName("DisplayHandicap")
-    private Date displayHandicap;
+    private String displayHandicap;
 
     @SerializedName("Specifiers")
     private String specifiers;
@@ -48,8 +48,8 @@ public class WagerSelection implements BaseBean {
         selectionId = in.readInt();
         selectionName = in.readString();
         handicap = in.readDouble();
-        long displayTime = in.readLong();
-        displayHandicap = displayTime == -1 ? null : new Date(displayTime);
+        //long displayTime = in.readLong();
+        displayHandicap = in.readString();
         specifiers = in.readString();
         oddsType = in.readInt();
         odds = in.readDouble();
@@ -63,7 +63,7 @@ public class WagerSelection implements BaseBean {
         dest.writeInt(selectionId);
         dest.writeString(selectionName);
         dest.writeDouble(handicap);
-        dest.writeLong(displayHandicap != null ? displayHandicap.getTime() : -1);
+        dest.writeString(displayHandicap);
         dest.writeString(specifiers);
         dest.writeInt(oddsType);
         dest.writeDouble(odds);
@@ -122,11 +122,11 @@ public class WagerSelection implements BaseBean {
         this.handicap = handicap;
     }
 
-    public Date getDisplayHandicap() {
+    public String getDisplayHandicap() {
         return displayHandicap;
     }
 
-    public void setDisplayHandicap(Date displayHandicap) {
+    public void setDisplayHandicap(String displayHandicap) {
         this.displayHandicap = displayHandicap;
     }
 

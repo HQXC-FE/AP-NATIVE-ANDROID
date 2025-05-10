@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.MatchFb;
+import com.xtree.bet.bean.ui.MatchIm;
 import com.xtree.bet.bean.ui.MatchPm;
 
 import java.lang.reflect.Type;
@@ -20,6 +21,7 @@ public class MatchDeserializer implements JsonDeserializer<Match> {
     public MatchDeserializer(){
         sonsType.put("MatchFb", MatchFb.class);
         sonsType.put("MatchPm", MatchPm.class);
+        sonsType.put("MatchIm", MatchIm.class);
     }
     @Override
     public Match deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
