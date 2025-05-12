@@ -60,7 +60,8 @@
             android:id="@+id/scrLogin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="visible"
+            tools:visibility="visible">
             <LinearLayout
                 android:id="@+id/llLogin"
                 android:layout_width="match_parent"
@@ -207,7 +208,8 @@
             android:id="@+id/scrProfilePic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
             <LinearLayout
                 android:id="@+id/llEditLogin"
                 android:layout_width="match_parent"
@@ -226,7 +228,7 @@
                             android:id="@+id/tvEditProfilePic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="用户昵称"
+                            android:text="@string/me_user_nickname"
                             android:textSize="12sp"
                             android:textColor="@color/white"
                             android:layout_gravity="center_vertical"
@@ -248,7 +250,7 @@
                             android:id="@+id/tvProfilePicTip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="由2-6个字符组成"
+                            android:text="@string/activityEditProUserNameHint"
                             android:textSize="12sp"
                             android:textColor="@color/clr_txt_warn_dark"
                             android:layout_gravity="center_vertical"
@@ -271,7 +273,7 @@
                             android:id="@+id/tvReserveInfo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="预留信息："
+                            android:text="@string/activityEditProReserveInf"
                             android:textSize="12sp"
                             android:textColor="@color/white"
                             android:layout_gravity="center_vertical"
@@ -293,7 +295,7 @@
                             android:id="@+id/tvReserveInfoTip"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="由2-6个字符组成"
+                            android:text="@string/activityEditProUserNameHint"
                             android:textSize="12sp"
                             android:textColor="@color/clr_txt_warn_dark"
                             android:layout_gravity="center_vertical"
@@ -320,7 +322,7 @@
                         android:layout_height="40dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
-                        android:text="修改"
+                        android:text="@string/txt_edit"
                         android:gravity="center"
                         android:textSize="12sp"
                         android:textColor="@color/white"
@@ -331,7 +333,7 @@
                     <TextView
                         android:id="@+id/tvRest"
                         android:layout_width="wrap_content"
-                        android:text="重置"
+                        android:text="@string/txt_reset"
                         android:gravity="center"
                         android:layout_height="40dp"
                         android:layout_marginStart="20dp"

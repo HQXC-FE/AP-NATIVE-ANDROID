@@ -457,4 +457,7 @@
     <string name="activityEditProUserAvatar">个人头像</string>
     <string name="activityEditProBirthday">出生日期</string>
     <string name="activityEditProBirthdayTip">添加日期，确保您已满18周岁</string>
+    <string name="activityEditProUserNameHint">由2-6个字符组成</string>
+    <string name="activityEditProReserveInfoHint">由1-6个汉字组成</string>
+    <string name="activityEditProReserveInf">预留信息：</string>
 </resources>
