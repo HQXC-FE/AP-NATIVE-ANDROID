@@ -128,7 +128,9 @@ public class SumPlusRule {
             List<?> list = (List<?>) formatCodesObject;
             if (!list.isEmpty() && list.get(0) instanceof String) {
                 // 如果是 List<String>，转为 List<List<String>>
-                return Collections.singletonList((List<String>) list);
+                return Collections.singletonList(((List<String>) list).stream()
+                        .filter(s -> !s.isEmpty())
+                        .collect(Collectors.toList()));
             } else if (!list.isEmpty() && list.get(0) instanceof List) {
                 // 如果是 List<List<String>>，直接返回
                 return (List<List<String>>) list;
