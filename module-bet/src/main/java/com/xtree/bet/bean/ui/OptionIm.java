@@ -3,6 +3,7 @@ package com.xtree.bet.bean.ui;
 import android.os.Parcel;
 
 import com.xtree.bet.bean.response.im.MarketLine;
+import com.xtree.bet.bean.response.im.OddsListItem;
 import com.xtree.bet.bean.response.im.OptionDataListInfo;
 import com.xtree.bet.bean.response.im.OptionInfo;
 import com.xtree.bet.bean.response.im.WagerSelection;
@@ -17,20 +18,21 @@ public class OptionIm implements Option {
     private String className;
     private int change;
     private WagerSelection mOptionInfo;
-    private MarketLine marketLine;
 
     private String code;
 
+    private MarketLine marketLine;
     private OptionDataListInfo optionList;
+
 
     public OptionIm(WagerSelection optionInfo) {
         this.mOptionInfo = optionInfo;
         this.className = getClass().getSimpleName();
     }
 
-    public OptionIm(WagerSelection optionInfo, OptionDataListInfo optionList) {
+    public OptionIm(WagerSelection optionInfo, MarketLine optionList) {
         this.mOptionInfo = optionInfo;
-        this.optionList = optionList;
+        this.marketLine = optionList;
         this.className = getClass().getSimpleName();
     }
 
@@ -43,7 +45,7 @@ public class OptionIm implements Option {
 
     @Override
     public String getId() {
-        return String.valueOf(mOptionInfo.wagerSelectionId);
+        return "";
     }
 
     /**
@@ -60,7 +62,7 @@ public class OptionIm implements Option {
      * 选项简称(全名or简名，订单相关为全名，否则为简名)， 赔率列表一般都用简称展示
      */
     public String getSortName() {
-        return mOptionInfo.selectionName;
+        return mOptionInfo.getSelectionName();
     }
 
     /**
@@ -77,22 +79,22 @@ public class OptionIm implements Option {
      */
     public double getUiShowOdd() {
         if (isHongKongMarket()) {
-            BigDecimal bg = new BigDecimal(mOptionInfo.odds - 1);
+            BigDecimal bg = BigDecimal.valueOf(mOptionInfo.getOdds() - 1);
             return bg.setScale(2, RoundingMode.HALF_UP).doubleValue();
         }
-        return mOptionInfo.odds;
+        return mOptionInfo.getOdds();
     }
 
     @Override
     public double getRealOdd() {
-        return mOptionInfo.odds;
+        return mOptionInfo.getOdds();
     }
 
     /**
      * 赔率
      */
     public double getBodd() {
-        return mOptionInfo.odds;
+        return mOptionInfo.getOdds();
     }
 
     /**
@@ -122,14 +124,12 @@ public class OptionIm implements Option {
      * 选项结算结果，仅虚拟体育展示
      */
     public int getSettlementResult() {
-        //return mOptionInfo.otcm;
         return 0;
     }
 
     @Override
     public boolean setSelected(boolean isSelected) {
-        //return mOptionInfo.isSelected = isSelected;
-        return false;
+        return mOptionInfo.isSelected = isSelected;
     }
 
     /**
@@ -139,8 +139,7 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isSelected() {
-        //return mOptionInfo.isSelected;
-        return false;
+        return mOptionInfo.isSelected;
     }
 
     /**
@@ -150,7 +149,6 @@ public class OptionIm implements Option {
      */
     @Override
     public String getLine() {
-        //return mOptionInfo.li;
         return "";
     }
 
@@ -183,7 +181,7 @@ public class OptionIm implements Option {
     public void setChange(double oldOdd) {
         change = oldOdd < getRealOdd() ? 1 : oldOdd > getRealOdd() ? -1 : 0;
         //Log.e("test", "===========" + change);
-        //mOptionInfo.change = change;
+        mOptionInfo.change = change;
     }
 
     /**
@@ -193,8 +191,7 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isUp() {
-        //return mOptionInfo.change == 1;
-        return false;
+        return mOptionInfo.change == 1;
     }
 
     /**
@@ -204,13 +201,12 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isDown() {
-        //return mOptionInfo.change == -1;
-        return false;
+        return mOptionInfo.change == -1;
     }
 
     @Override
     public void reset() {
-       // mOptionInfo.change = 0;
+        mOptionInfo.change = 0;
     }
 
     /**
@@ -220,10 +216,10 @@ public class OptionIm implements Option {
      */
     @Override
     public OptionList getOptionList() {
-        if (optionList == null) {
+        if (mOptionInfo == null) {
             return null;
         }
-        return new OptionListIm(optionList);
+        return new OptionListIm(mOptionInfo, marketLine);
     }
 
     @Override
@@ -231,22 +227,6 @@ public class OptionIm implements Option {
         return false;
     }
 
-    /*@Override
-    public boolean equals(@Nullable Object obj) {
-        if(this == obj){
-            return true;
-        }
-        if(obj.getClass() != OptionFb.class){
-            return false;
-        }
-        OptionFb optionFb = (OptionFb) obj;
-        return getCode() == optionFb.getCode();
-    }
-
-    @Override
-    public int hashCode() {
-        return getCode().hashCode();
-    }*/
 
     @Override
     public int describeContents() {
@@ -259,7 +239,7 @@ public class OptionIm implements Option {
         dest.writeInt(this.change);
         dest.writeParcelable(this.mOptionInfo, flags);
         dest.writeString(this.code);
-        dest.writeParcelable(this.optionList, flags);
+        dest.writeParcelable(this.marketLine, flags);
     }
 
     public void readFromParcel(Parcel source) {
@@ -267,7 +247,7 @@ public class OptionIm implements Option {
         this.change = source.readInt();
         this.mOptionInfo = source.readParcelable(OptionInfo.class.getClassLoader());
         this.code = source.readString();
-        this.optionList = source.readParcelable(OptionDataListInfo.class.getClassLoader());
+        this.marketLine = source.readParcelable(MarketLine.class.getClassLoader());
     }
 
     protected OptionIm(Parcel in) {
@@ -275,7 +255,7 @@ public class OptionIm implements Option {
         this.change = in.readInt();
         this.mOptionInfo = in.readParcelable(OptionInfo.class.getClassLoader());
         this.code = in.readString();
-        this.optionList = in.readParcelable(OptionDataListInfo.class.getClassLoader());
+        this.marketLine = in.readParcelable(MarketLine.class.getClassLoader());
     }
 
     public static final Creator<OptionIm> CREATOR = new Creator<OptionIm>() {
