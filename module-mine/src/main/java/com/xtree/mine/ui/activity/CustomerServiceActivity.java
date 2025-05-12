@@ -24,9 +24,9 @@ import com.xtree.mine.ui.fragment.AgreementDialog;
 import com.xtree.mine.ui.viewmodel.ChooseWithdrawViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
-import me.xtree.mvvmhabit.base.BaseActivity;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseActivity;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 /**
  *我的客服 Activity

@@ -24,7 +24,7 @@ import com.xtree.mine.vo.SplitVo;
 import java.util.HashMap;
 import java.util.List;
 
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.utils.Utils;
 
 public class SplitDetailDialog extends BottomPopupView {
     int maxHeight = 80; // 最大高度百分比 10-100

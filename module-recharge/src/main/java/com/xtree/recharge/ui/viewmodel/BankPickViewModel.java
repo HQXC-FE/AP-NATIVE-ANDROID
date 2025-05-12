@@ -26,7 +26,7 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
-import me.xtree.mvvmhabit.base.BaseViewModel;
+import com.xtree.base.base.BaseViewModel;
 
 /**
  * Created by KAKA on 2024/5/27.

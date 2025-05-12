@@ -73,9 +73,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.base.ContainerActivity;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.ContainerActivity;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 /**
  * 浏览器页面 <p/>

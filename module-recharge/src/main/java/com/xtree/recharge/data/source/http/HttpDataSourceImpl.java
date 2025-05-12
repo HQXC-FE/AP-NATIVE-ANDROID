@@ -21,7 +21,7 @@ import java.util.Map;
 
 import io.reactivex.Flowable;
 import io.reactivex.functions.Function;
-import me.xtree.mvvmhabit.http.BaseResponse;
+import com.xtree.base.http.BaseResponse;
 import okhttp3.ResponseBody;
 
 /**

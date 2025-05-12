@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.xtree.mine.ui.fragment.MineFragment;
 
-import me.xtree.mvvmhabit.base.ContainerActivity;
+import com.xtree.base.base.ContainerActivity;
 
 /**
  * 组件单独运行时的调试界面，不会被编译进release里

@@ -4,8 +4,6 @@ import android.text.TextUtils;
 
 import com.xtree.base.global.SPKeyGlobal;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
-
 public class DomainUtil {
 
     private static String apiUrl = "https://app.zgntcpgxds.com:16801"; // API 用

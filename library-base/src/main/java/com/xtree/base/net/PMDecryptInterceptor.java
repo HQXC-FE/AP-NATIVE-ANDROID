@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import kotlin.text.Charsets;
-import me.xtree.mvvmhabit.utils.KLog;
+import com.xtree.base.utils.KLog;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Request;

@@ -2,9 +2,6 @@ package com.xtree.bet.weight.fb;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -12,8 +9,6 @@ import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.constant.FBConstants;
 import com.xtree.bet.weight.BaseDetailDataView;
-
-import me.xtree.mvvmhabit.utils.ConvertUtils;
 
 /**
  * 网球相关数据view(第一盘，第二盘比分等)

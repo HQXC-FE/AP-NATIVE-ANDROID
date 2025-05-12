@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
-import me.xtree.mvvmhabit.http.BaseResponse;
+import com.xtree.base.http.BaseResponse;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.Field;

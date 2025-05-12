@@ -10,7 +10,7 @@ import com.xtree.base.global.SPKeyGlobal;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.SPUtils;
 
 public class BtCarCgReq {
     private String cuid = SPUtils.getInstance().getString(SPKeyGlobal.PM_USER_ID);

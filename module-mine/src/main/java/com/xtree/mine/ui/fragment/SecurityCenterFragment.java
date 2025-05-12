@@ -25,8 +25,8 @@ import com.xtree.mine.databinding.FragmentSecurityCenterBinding;
 import com.xtree.mine.ui.viewmodel.VerifyViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.SPUtils;
 
 /**
  * 安全中心

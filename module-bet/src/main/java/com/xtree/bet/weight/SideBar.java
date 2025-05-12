@@ -5,20 +5,16 @@ import android.text.TextUtils;
 import android.view.View;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.widget.TextView;
 
 import com.xtree.bet.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.utils.ConvertUtils;
+import com.xtree.base.utils.ConvertUtils;
 
 public class SideBar extends View {
     //SideBar上显示的字母

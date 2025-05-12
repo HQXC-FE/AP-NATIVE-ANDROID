@@ -20,7 +20,7 @@ import com.xtree.bet.manager.SportEntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.SPUtils;
 
 /**
  * 赛事列表UI显示需要用的比赛信息结构

@@ -64,12 +64,12 @@ import io.sentry.Sentry;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
-import me.xtree.mvvmhabit.base.AppManager;
-import me.xtree.mvvmhabit.base.BaseActivity;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.utils.ConvertUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.base.AppManager;
+import com.xtree.base.base.BaseActivity;
+import com.xtree.base.base.BaseViewModel;
+import com.xtree.base.utils.ConvertUtils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.Utils;
 
 
 @Route(path = RouterActivityPath.Main.PAGER_MAIN)
@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, BaseViewMode
     @Override
     protected void initImmersionBar() {
         ImmersionBar.with(MainActivity.this)
-                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
+                .navigationBarColor(R.color.default_navigation_bar_color)
                 .fitsSystemWindows(false)
                 .statusBarDarkFont(true)
                 .init();

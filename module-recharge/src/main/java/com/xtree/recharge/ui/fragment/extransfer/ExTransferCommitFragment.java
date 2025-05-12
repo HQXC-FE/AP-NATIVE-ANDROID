@@ -30,11 +30,11 @@ import com.xtree.recharge.ui.widget.Comm100ChatWindows;
 import java.util.Map;
 import java.util.Stack;
 
-import me.xtree.mvvmhabit.base.AppManager;
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.base.ContainerActivity;
-import me.xtree.mvvmhabit.bus.RxBus;
+import com.xtree.base.base.AppManager;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.base.BaseViewModel;
+import com.xtree.base.base.ContainerActivity;
+import com.xtree.base.bus.RxBus;
 
 /**
  * Created by KAKA on 2024/5/28.

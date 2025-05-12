@@ -40,11 +40,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import me.xtree.mvvmhabit.base.BaseDialogFragment;
-import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.utils.ConvertUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.base.BaseDialogFragment;
+import com.xtree.base.bus.RxBus;
+import com.xtree.base.utils.ConvertUtils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.Utils;
 
 /**
  * 联赛筛选

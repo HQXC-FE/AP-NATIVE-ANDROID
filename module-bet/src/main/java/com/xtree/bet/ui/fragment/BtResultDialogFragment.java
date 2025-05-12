@@ -24,8 +24,6 @@ import com.xtree.bet.bean.ui.BetConfirmOptionFb;
 import com.xtree.bet.bean.ui.BetConfirmOptionPm;
 import com.xtree.bet.bean.ui.BtResult;
 import com.xtree.bet.bean.ui.CgOddLimit;
-import com.xtree.bet.bean.ui.LeagueFb;
-import com.xtree.bet.bean.ui.LeaguePm;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.OptionList;
@@ -48,9 +46,9 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import me.xtree.mvvmhabit.base.BaseDialogFragment;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.base.BaseDialogFragment;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.Utils;
 
 /**
  * 投注确认页面

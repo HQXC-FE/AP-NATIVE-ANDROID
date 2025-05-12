@@ -21,8 +21,8 @@ import com.xtree.base.widget.TipDialog;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.DialogAccountMgmtBinding;
 
-import me.xtree.mvvmhabit.base.ContainerActivity;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.base.ContainerActivity;
+import com.xtree.base.utils.SPUtils;
 
 /**
  * 账户管理 底部弹窗

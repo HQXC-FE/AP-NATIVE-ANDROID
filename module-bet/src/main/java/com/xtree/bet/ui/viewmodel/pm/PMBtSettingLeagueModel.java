@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.utils.RxUtils;
+import com.xtree.base.utils.RxUtils;
 
 /**
  * Created by marquis

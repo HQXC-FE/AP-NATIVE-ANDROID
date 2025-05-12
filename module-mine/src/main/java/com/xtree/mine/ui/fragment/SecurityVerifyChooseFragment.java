@@ -36,9 +36,9 @@ import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
 import java.util.ArrayList;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.base.ContainerActivity;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.base.ContainerActivity;
+import com.xtree.base.utils.SPUtils;
 import project.tqyb.com.library_res.databinding.ItemTextBinding;
 
 /**

@@ -6,7 +6,7 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
 import android.text.TextUtils;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.SPUtils;
 
 public class BetConfirmOptionUtil {
     public static BetConfirmOption getInstance(Match match, PlayType playType, OptionList optionList, Option option){

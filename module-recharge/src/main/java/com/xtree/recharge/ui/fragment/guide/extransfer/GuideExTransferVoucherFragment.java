@@ -32,9 +32,9 @@ import com.xtree.recharge.ui.viewmodel.factory.AppViewModelFactory;
 import java.util.Map;
 import java.util.Stack;
 
-import me.xtree.mvvmhabit.base.AppManager;
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.base.BaseViewModel;
+import com.xtree.base.base.AppManager;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.base.BaseViewModel;
 
 /**
  * Created by KAKA on 2024/5/28.

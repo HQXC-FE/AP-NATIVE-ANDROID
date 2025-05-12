@@ -32,8 +32,8 @@ import com.xtree.home.ui.viewmodel.factory.AppViewModelFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.SPUtils;
 
 @Route(path = RouterFragmentPath.Home.AD)
 public class AdsFragment extends BaseFragment<FragmentAdsBinding, HomeViewModel> {

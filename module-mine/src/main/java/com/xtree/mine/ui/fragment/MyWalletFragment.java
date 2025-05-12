@@ -24,7 +24,6 @@ import com.xtree.base.router.RouterFragmentPath;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.ProfileVo;
-import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
@@ -39,8 +38,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.ToastUtils;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_MY_WALLET)
 public class MyWalletFragment extends BaseFragment<FragmentMyWalletBinding, MyWalletViewModel> {

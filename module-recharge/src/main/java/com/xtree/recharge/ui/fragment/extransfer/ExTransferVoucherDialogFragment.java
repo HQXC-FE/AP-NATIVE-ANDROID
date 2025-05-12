@@ -29,9 +29,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 
-import me.xtree.mvvmhabit.base.AppManager;
-import me.xtree.mvvmhabit.base.BaseDialogFragment;
-import me.xtree.mvvmhabit.base.BaseViewModel;
+import com.xtree.base.base.AppManager;
+import com.xtree.base.base.BaseDialogFragment;
+import com.xtree.base.base.BaseViewModel;
 
 public class ExTransferVoucherDialogFragment extends BaseDialogFragment<LayoutRcExpBankDialog3Binding, ExTransferViewModel> {
 

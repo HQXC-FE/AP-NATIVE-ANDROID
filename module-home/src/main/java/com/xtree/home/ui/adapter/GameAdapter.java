@@ -27,7 +27,7 @@ import com.xtree.home.R;
 import com.xtree.home.databinding.HmItemGameBinding;
 import com.xtree.home.vo.GameVo;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.SPUtils;
 
 public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
     Context ctx;

@@ -8,8 +8,8 @@ import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.util.XPopupUtils
 import com.xtree.base.widget.BrowserActivity
 import com.xtree.home.R
-import me.xtree.mvvmhabit.utils.ConvertUtils
-import me.xtree.mvvmhabit.utils.KLog
+import com.xtree.base.utils.ConvertUtils
+import com.xtree.base.utils.KLog
 
 class ECAnimDialog : BasePopupView {
     constructor(context: Context) : super(context)

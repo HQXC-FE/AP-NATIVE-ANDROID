@@ -8,10 +8,7 @@ import com.xtree.home.data.source.HomeApiService;
 import com.xtree.home.data.source.HttpDataSource;
 import com.xtree.home.data.source.LocalDataSource;
 
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import me.xtree.mvvmhabit.base.BaseModel;
-import me.xtree.mvvmhabit.http.BaseResponse;
+import com.xtree.base.base.BaseModel;
 
 /**
  * MVVM的Model层，统一模块的数据仓库，包含网络数据和本地数据（一个应用可以有多个Repositor）

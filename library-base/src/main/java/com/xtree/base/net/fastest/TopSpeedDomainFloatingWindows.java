@@ -45,10 +45,10 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import me.xtree.mvvmhabit.base.BaseApplication;
-import me.xtree.mvvmhabit.utils.ConvertUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.base.BaseApplication;
+import com.xtree.base.utils.ConvertUtils;
+import com.xtree.base.utils.ToastUtils;
+import com.xtree.base.utils.Utils;
 
 public class TopSpeedDomainFloatingWindows extends FloatingWindows {
     MainLayoutTopSpeedDomainBinding mBinding;

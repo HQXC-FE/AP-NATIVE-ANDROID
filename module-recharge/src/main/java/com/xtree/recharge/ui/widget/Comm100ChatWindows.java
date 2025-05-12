@@ -21,9 +21,9 @@ import java.util.Map;
 import java.util.Set;
 
 import io.sentry.Sentry;
-import me.xtree.mvvmhabit.base.BaseApplication;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.base.BaseApplication;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.Utils;
 
 /**
  * Created by KAKA on 2024/6/12.

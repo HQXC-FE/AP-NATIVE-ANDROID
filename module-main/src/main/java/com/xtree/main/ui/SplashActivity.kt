@@ -17,9 +17,9 @@ import com.xtree.main.R
 import com.xtree.main.databinding.ActivitySplashBinding
 import com.xtree.main.ui.viewmodel.SplashViewModel
 import com.xtree.main.ui.viewmodel.factory.AppViewModelFactory
-import me.xtree.mvvmhabit.base.BaseActivity
-import me.xtree.mvvmhabit.utils.SPUtils
-import me.xtree.mvvmhabit.utils.ToastUtils
+import com.xtree.base.base.BaseActivity
+import com.xtree.base.utils.SPUtils
+import com.xtree.base.utils.ToastUtils
 
 /**
  * 冷启动

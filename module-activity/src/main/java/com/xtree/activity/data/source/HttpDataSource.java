@@ -2,7 +2,7 @@ package com.xtree.activity.data.source;
 
 
 import io.reactivex.Flowable;
-import me.xtree.mvvmhabit.http.BaseResponse;
+import com.xtree.base.http.BaseResponse;
 
 /**
  * Created by goldze on 2019/3/26.

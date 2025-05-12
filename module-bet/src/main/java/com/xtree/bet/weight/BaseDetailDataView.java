@@ -35,8 +35,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import me.xtree.mvvmhabit.utils.ConvertUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.ConvertUtils;
+import com.xtree.base.utils.SPUtils;
 
 public abstract class BaseDetailDataView extends ConstraintLayout{
     protected LinearLayout root;

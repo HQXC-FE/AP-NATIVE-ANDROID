@@ -23,7 +23,7 @@ import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 /**
  * Created by goldze on 2018/6/21
@@ -58,7 +58,7 @@ public class BtDetailOptionFragment extends BaseFragment<BtLayoutDetailOptionBin
     protected void initImmersionBar() {
         //设置共同沉浸式样式
         ImmersionBar.with(this)
-                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
+                .navigationBarColor(R.color.default_navigation_bar_color)
                 .fitsSystemWindows(false)
                 .statusBarDarkFont(false)
                 .init();

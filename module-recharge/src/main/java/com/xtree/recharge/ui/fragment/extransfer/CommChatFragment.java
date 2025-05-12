@@ -41,8 +41,8 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
 
-import me.xtree.mvvmhabit.base.AppManager;
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.AppManager;
+import com.xtree.base.base.BaseFragment;
 
 /**
  * Created by KAKA on 2024/6/17.

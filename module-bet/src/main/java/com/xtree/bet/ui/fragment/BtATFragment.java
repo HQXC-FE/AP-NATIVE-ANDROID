@@ -16,8 +16,8 @@ import com.xtree.bet.databinding.FragmentAtBinding;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FBMainViewModel;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.Utils;
 
 /**
  * 公告&教程

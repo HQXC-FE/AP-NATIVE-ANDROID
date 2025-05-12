@@ -16,9 +16,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import me.xtree.mvvmhabit.base.BaseApplication;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.base.BaseApplication;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.Utils;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;

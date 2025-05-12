@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.xtree.recharge.BR;
 import com.xtree.recharge.R;
-import com.xtree.recharge.databinding.LayoutRcExpBankDialog3Binding;
 import com.xtree.recharge.databinding.LayoutRcExpBankDialog3PositiveBinding;
 import com.xtree.recharge.ui.fragment.RechargeFragment;
 import com.xtree.recharge.ui.viewmodel.ExTransferViewModel;
@@ -32,9 +31,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 
-import me.xtree.mvvmhabit.base.AppManager;
-import me.xtree.mvvmhabit.base.BaseDialogFragment;
-import me.xtree.mvvmhabit.base.BaseViewModel;
+import com.xtree.base.base.AppManager;
+import com.xtree.base.base.BaseDialogFragment;
+import com.xtree.base.base.BaseViewModel;
 
 public class ExTransferVoucherPositiveDialogFragment extends BaseDialogFragment<LayoutRcExpBankDialog3PositiveBinding, ExTransferViewModel> {
 

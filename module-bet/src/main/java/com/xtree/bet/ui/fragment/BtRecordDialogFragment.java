@@ -53,10 +53,10 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import me.xtree.mvvmhabit.base.BaseDialogFragment;
-import me.xtree.mvvmhabit.utils.ConvertUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.base.BaseDialogFragment;
+import com.xtree.base.utils.ConvertUtils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.Utils;
 
 /**
  * 投注记录页面

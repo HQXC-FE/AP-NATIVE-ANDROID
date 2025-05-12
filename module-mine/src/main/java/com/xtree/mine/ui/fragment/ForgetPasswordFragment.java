@@ -25,8 +25,8 @@ import com.xtree.mine.ui.activity.LoginRegisterActivity;
 import com.xtree.mine.ui.viewmodel.ForgetPasswordViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.ToastUtils;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_FORGET_PASSWORD)
 public class ForgetPasswordFragment extends BaseFragment<FragmentForgetPasswordBinding, ForgetPasswordViewModel> {

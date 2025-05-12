@@ -26,9 +26,9 @@ import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
 import java.util.HashMap;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 /**
  * 修改密码

@@ -18,7 +18,7 @@ import com.xtree.mine.databinding.FragmentSportRegularBinding;
 import com.xtree.mine.ui.viewmodel.MineViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_SPORT_REGULAR)
 public class SpoetRegularFragment extends BaseFragment<FragmentSportRegularBinding, MineViewModel> {

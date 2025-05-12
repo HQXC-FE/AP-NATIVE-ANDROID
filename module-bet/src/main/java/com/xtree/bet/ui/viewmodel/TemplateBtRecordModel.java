@@ -10,7 +10,7 @@ import com.xtree.bet.data.BetRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import com.xtree.base.bus.event.SingleLiveData;
 
 /**
  * Created by marquis

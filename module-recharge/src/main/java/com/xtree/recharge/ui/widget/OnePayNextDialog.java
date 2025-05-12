@@ -20,8 +20,6 @@ import com.xtree.recharge.vo.RechargeVo;
 
 import java.util.Arrays;
 
-import me.xtree.mvvmhabit.utils.ConvertUtils;
-
 public class OnePayNextDialog extends BottomPopupView {
 
     RechargeVo curRechargeVo;

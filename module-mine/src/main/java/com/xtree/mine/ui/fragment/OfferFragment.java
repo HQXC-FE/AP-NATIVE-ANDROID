@@ -34,7 +34,7 @@ import com.xtree.mine.vo.OfferItemVo;
 
 import java.util.HashMap;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_OFFER)
 public class OfferFragment extends BaseFragment<FragmentOfferBinding, MineViewModel> {

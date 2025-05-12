@@ -14,9 +14,10 @@ import com.scwang.smart.refresh.layout.listener.DefaultRefreshFooterCreator;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
 import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
+import com.xtree.base.net.HttpCallBackCacheManager;
 import com.xtree.base.utils.CacheManager;
 
-import me.xtree.mvvmhabit.utils.KLog;
+import com.xtree.base.utils.KLog;
 
 /**
  * Created by goldze on 2018/6/21 0021.
@@ -36,6 +37,7 @@ public class BaseModuleInit implements IModuleInit {
         ARouter.init(application); // 尽可能早，推荐在Application中初始化
         initRefreshHeader();
         CacheManager.init(application);
+        HttpCallBackCacheManager.init(application);
         KLog.e("基础层初始化ss -- onInitAhead");
         return false;
     }

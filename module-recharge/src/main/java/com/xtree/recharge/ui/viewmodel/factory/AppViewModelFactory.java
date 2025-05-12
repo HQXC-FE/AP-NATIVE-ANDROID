@@ -15,7 +15,7 @@ import com.xtree.recharge.data.RechargeRepository;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import me.xtree.mvvmhabit.base.BaseModel;
+import com.xtree.base.base.BaseModel;
 
 /**
  * Created by marquis on 2023/11/22.

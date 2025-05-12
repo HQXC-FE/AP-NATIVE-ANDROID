@@ -21,7 +21,7 @@ import com.xtree.home.ui.viewmodel.HomeViewModel;
 import com.xtree.home.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.home.vo.GameVo;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 /**
  * PG电子，PP电子，PT电子，奥丁电子

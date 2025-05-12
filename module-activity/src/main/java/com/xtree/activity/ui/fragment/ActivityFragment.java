@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 /**
  * 活动页-主页

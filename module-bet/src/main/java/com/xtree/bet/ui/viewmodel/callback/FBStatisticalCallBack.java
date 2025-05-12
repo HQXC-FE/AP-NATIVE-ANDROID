@@ -3,8 +3,6 @@ package com.xtree.bet.ui.viewmodel.callback;
 import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_14010;
 
 import com.xtree.base.net.HttpCallBack;
-import com.xtree.bet.bean.response.fb.FbStatisticalInfoCacheRsp;
-import com.xtree.bet.bean.response.fb.MatchListRsp;
 import com.xtree.bet.bean.response.fb.MatchTypeInfo;
 import com.xtree.bet.bean.response.fb.MatchTypeStatisInfo;
 import com.xtree.bet.bean.response.fb.StatisticalInfo;
@@ -17,8 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.http.BusinessException;
+import com.xtree.base.http.BusinessException;
 
 public class FBStatisticalCallBack extends HttpCallBack<StatisticalInfo> {
 

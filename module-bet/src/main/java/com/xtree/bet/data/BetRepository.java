@@ -7,7 +7,7 @@ import androidx.annotation.VisibleForTesting;
 import com.xtree.bet.data.source.HttpDataSource;
 import com.xtree.bet.data.source.LocalDataSource;
 
-import me.xtree.mvvmhabit.base.BaseModel;
+import com.xtree.base.base.BaseModel;
 
 /**
  * MVVM的Model层，统一模块的数据仓库，包含网络数据和本地数据（一个应用可以有多个Repositor）

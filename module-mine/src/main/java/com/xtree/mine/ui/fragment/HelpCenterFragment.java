@@ -18,7 +18,7 @@ import com.xtree.mine.databinding.FragmentHelpCenterBinding;
 import com.xtree.mine.ui.viewmodel.MineViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_INFO)
 public class HelpCenterFragment extends BaseFragment<FragmentHelpCenterBinding, MineViewModel> {

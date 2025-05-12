@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.bus.RxBus;
+import com.xtree.base.utils.ToastUtils;
 
 public class BtCarManager {
     private static boolean isCg; //是否串关

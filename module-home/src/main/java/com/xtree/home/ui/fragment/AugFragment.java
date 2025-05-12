@@ -27,8 +27,8 @@ import com.xtree.home.vo.AugVo;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.SPUtils;
 
 @Route(path = RouterFragmentPath.Home.AUG)
 public class AugFragment extends BaseFragment<FragmentAugBinding, HomeViewModel> {

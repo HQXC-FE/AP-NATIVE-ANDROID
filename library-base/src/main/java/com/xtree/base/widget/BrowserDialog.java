@@ -1,8 +1,6 @@
 package com.xtree.base.widget;
 
 import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH;
-import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FAILED;
-import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FINISH;
 
 import android.app.Activity;
 import android.content.Context;
@@ -61,8 +59,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 /**
  * 浏览器底部弹窗<p/>

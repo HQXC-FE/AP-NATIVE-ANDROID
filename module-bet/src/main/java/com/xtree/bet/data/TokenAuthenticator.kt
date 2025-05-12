@@ -10,10 +10,10 @@ import com.xtree.bet.data.source.HttpDataSource
 import com.xtree.bet.data.source.LocalDataSource
 import com.xtree.bet.data.source.http.HttpDataSourceImpl
 import com.xtree.bet.data.source.local.LocalDataSourceImpl
-import me.xtree.mvvmhabit.http.BaseResponse
-import me.xtree.mvvmhabit.utils.KLog
-import me.xtree.mvvmhabit.utils.RxUtils
-import me.xtree.mvvmhabit.utils.SPUtils
+import com.xtree.base.http.BaseResponse
+import com.xtree.base.utils.KLog
+import com.xtree.base.utils.RxUtils
+import com.xtree.base.utils.SPUtils
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.json.JSONObject

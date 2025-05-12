@@ -38,11 +38,11 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.utils.RxUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.http.BaseResponse;
+import com.xtree.base.http.BusinessException;
+import com.xtree.base.utils.RxUtils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 /**
  * Created by marquis

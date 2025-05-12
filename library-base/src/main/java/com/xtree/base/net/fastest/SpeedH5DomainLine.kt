@@ -2,8 +2,8 @@ package com.xtree.base.net.fastest
 
 import com.drake.net.utils.runMain
 import com.xtree.base.utils.TagUtils
-import me.xtree.mvvmhabit.utils.ToastUtils
-import me.xtree.mvvmhabit.utils.Utils
+import com.xtree.base.utils.ToastUtils
+import com.xtree.base.utils.Utils
 
 /**
  * 域名竞速

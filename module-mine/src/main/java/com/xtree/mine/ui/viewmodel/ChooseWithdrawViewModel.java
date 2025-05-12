@@ -36,10 +36,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.utils.RxUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.base.BaseViewModel;
+import com.xtree.base.http.BusinessException;
+import com.xtree.base.utils.RxUtils;
+import com.xtree.base.utils.Utils;
 
 /**
  * 选择支付银行卡ViewModel

@@ -8,7 +8,7 @@ import com.xtree.base.net.HttpCallBack;
 import com.xtree.bet.bean.response.pm.MatchLeagueListCacheRsp;
 import com.xtree.bet.ui.viewmodel.pm.PMMainViewModel;
 
-import me.xtree.mvvmhabit.http.BusinessException;
+import com.xtree.base.http.BusinessException;
 
 public class PMHotMatchCountCacheCallBack extends HttpCallBack<MatchLeagueListCacheRsp> {
 

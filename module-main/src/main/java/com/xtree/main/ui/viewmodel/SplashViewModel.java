@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.xtree.main.data.MainRepository;
 
-import me.xtree.mvvmhabit.base.BaseViewModel;
+import com.xtree.base.base.BaseViewModel;
 
 /**
  * Created by marquis on 2023/11/24.

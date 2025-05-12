@@ -5,16 +5,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application>
         <activity
-            android:name="me.xtree.mvvmhabit.base.ContainerActivity"
+            android:name="me.xtree.base.com.xtree.base.base.ContainerActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             ></activity>
         <activity
-            android:name="me.xtree.mvvmhabit.crash.DefaultErrorActivity"
+            android:name="me.xtree.base.com.xtree.base.crash.DefaultErrorActivity"
             android:process=":error_activity" />
 
         <provider
-            android:name="me.xtree.mvvmhabit.crash.CaocInitProvider"
+            android:name="me.xtree.base.com.xtree.base.crash.CaocInitProvider"
             android:authorities="${applicationId}.customactivityoncrashinitprovider"
             android:exported="false"
             android:initOrder="101" />

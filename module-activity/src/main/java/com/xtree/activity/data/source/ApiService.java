@@ -5,7 +5,7 @@ import com.xtree.activity.vo.NewVo;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import me.xtree.mvvmhabit.http.BaseResponse;
+import com.xtree.base.http.BaseResponse;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;

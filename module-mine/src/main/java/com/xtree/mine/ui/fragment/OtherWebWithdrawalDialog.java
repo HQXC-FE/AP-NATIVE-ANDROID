@@ -36,7 +36,6 @@ import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.FightFanZhaUtils;
-import com.xtree.base.utils.StringUtils;
 import com.xtree.base.vo.EventVo;
 import com.xtree.base.widget.GlideEngine;
 import com.xtree.base.widget.ImageFileCompressEngine;
@@ -63,8 +62,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.Utils;
 
 /**
  * 微信/支付宝提款

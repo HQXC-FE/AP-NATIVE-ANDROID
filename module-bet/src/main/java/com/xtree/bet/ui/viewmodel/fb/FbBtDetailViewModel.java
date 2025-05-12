@@ -34,10 +34,10 @@ import java.util.Map;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.utils.RxUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.http.BaseResponse;
+import com.xtree.base.http.BusinessException;
+import com.xtree.base.utils.RxUtils;
+import com.xtree.base.utils.SPUtils;
 
 /**
  * Created by marquis

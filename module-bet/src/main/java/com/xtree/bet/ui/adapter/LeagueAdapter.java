@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,8 +34,6 @@ import com.xtree.bet.bean.ui.PlayGroupFb;
 import com.xtree.bet.bean.ui.PlayGroupPm;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.constant.Constants;
-import com.xtree.bet.constant.FBConstants;
-import com.xtree.bet.constant.PMConstants;
 import com.xtree.bet.contract.BetContract;
 import com.xtree.bet.databinding.BtFbLeagueGroupBinding;
 import com.xtree.bet.databinding.BtFbMatchListBinding;
@@ -50,14 +46,13 @@ import com.xtree.bet.weight.DiscolourTextView;
 import com.xtree.bet.weight.PageHorizontalScrollView;
 import com.xtree.bet.weight.pm.SnkDataView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.base.BaseActivity;
-import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.utils.ConvertUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseActivity;
+import com.xtree.base.bus.RxBus;
+import com.xtree.base.utils.ConvertUtils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpandableListAdapter {
     private List<League> mDatas;

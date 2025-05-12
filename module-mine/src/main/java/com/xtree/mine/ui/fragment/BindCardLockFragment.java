@@ -20,8 +20,8 @@ import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
 import java.util.HashMap;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.ToastUtils;
 
 /**
  * 锁定银行卡

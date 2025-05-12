@@ -25,7 +25,7 @@ import com.xtree.recharge.vo.RechargeVo;
 
 import java.util.List;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.SPUtils;
 
 public class RechargeRecommendDialog extends CenterPopupView {
     Context ctx;

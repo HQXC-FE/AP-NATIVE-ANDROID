@@ -17,8 +17,8 @@ import com.xtree.recharge.databinding.DialogEreplyslipExampleBinding;
 
 import java.util.Objects;
 
-import me.xtree.mvvmhabit.base.BaseDialogFragment;
-import me.xtree.mvvmhabit.base.BaseViewModel;
+import com.xtree.base.base.BaseDialogFragment;
+import com.xtree.base.base.BaseViewModel;
 
 /**
  * Created by KAKA on 2024/5/28.

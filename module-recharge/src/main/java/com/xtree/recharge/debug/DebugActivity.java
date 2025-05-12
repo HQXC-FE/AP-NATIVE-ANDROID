@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.xtree.recharge.ui.fragment.RechargeFragment;
 
-import me.xtree.mvvmhabit.base.ContainerActivity;
+import com.xtree.base.base.ContainerActivity;
 
 
 /**

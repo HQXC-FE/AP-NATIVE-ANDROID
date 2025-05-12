@@ -90,11 +90,11 @@ import io.sentry.Sentry;
 import me.majiajie.pagerbottomtabstrip.NavigationController;
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem;
 import me.majiajie.pagerbottomtabstrip.listener.OnTabItemSelectedListener;
-import me.xtree.mvvmhabit.base.BaseActivity;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.bus.Messenger;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseActivity;
+import com.xtree.base.base.BaseViewModel;
+import com.xtree.base.bus.Messenger;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 @Route(path = RouterActivityPath.Bet.PAGER_BET_HOME)
 public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMainViewModel> implements OnRefreshLoadMoreListener, View.OnClickListener {
@@ -367,7 +367,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     protected void initImmersionBar() {
         //设置共同沉浸式样式
         ImmersionBar.with(this)
-                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
+                .navigationBarColor(R.color.default_navigation_bar_color)
                 .fitsSystemWindows(true)
                 .statusBarDarkFont(true)
                 .init();

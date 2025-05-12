@@ -36,7 +36,7 @@ import com.xtree.base.net.HeaderInterceptor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import me.xtree.mvvmhabit.utils.ToastUtils
+import com.xtree.base.utils.ToastUtils
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient

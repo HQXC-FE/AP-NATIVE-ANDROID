@@ -22,7 +22,7 @@ import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.DialogRcOrderWebBinding;
 import com.xtree.recharge.vo.RechargePayVo;
 
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.utils.ToastUtils;
 
 public class RechargeOrderWebDialog extends BottomPopupView {
 

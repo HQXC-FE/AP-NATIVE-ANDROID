@@ -14,7 +14,7 @@ import com.xtree.base.widget.BrowserActivity;
 import com.xtree.base.widget.WebAppInterface;
 import com.xtree.mine.R;
 
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.utils.ToastUtils;
 
 /**
  * 全局验证页 (HQAP2-4516)

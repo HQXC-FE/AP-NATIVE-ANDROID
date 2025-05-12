@@ -30,11 +30,11 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import me.xtree.mvvmhabit.base.BaseApplication
-import me.xtree.mvvmhabit.bus.event.SingleLiveData
-import me.xtree.mvvmhabit.http.NetworkUtil
-import me.xtree.mvvmhabit.utils.ToastUtils
-import me.xtree.mvvmhabit.utils.Utils
+import com.xtree.base.base.BaseApplication
+import com.xtree.base.bus.event.SingleLiveData
+import com.xtree.base.http.NetworkUtil
+import com.xtree.base.utils.ToastUtils
+import com.xtree.base.utils.Utils
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Request
@@ -74,7 +74,8 @@ class FastestTopDomainUtil private constructor() {
         @set:Synchronized
         @get:Synchronized
         var mIsFinish: Boolean = true
-        val fastestDomain = SingleLiveData<TopSpeedDomain>()
+        val fastestDomain =
+            SingleLiveData<TopSpeedDomain>()
 
         //是否第一次测速
         var isFirstTime: Boolean = true
@@ -91,7 +92,8 @@ class FastestTopDomainUtil private constructor() {
     lateinit var apiScopeNet: AndroidScope
 
     fun start() {
-        if (!NetworkUtil.isNetworkAvailable(Utils.getContext())) {
+        if (!NetworkUtil.isNetworkAvailable(
+                Utils.getContext())) {
             runMain { ToastUtils.showShort("网络不可用，请检查您的手机网络是否开启") }
             EventBus.getDefault().post(EventVo(EventConstant.EVENT_TOP_SPEED_FAILED, ""))
             return

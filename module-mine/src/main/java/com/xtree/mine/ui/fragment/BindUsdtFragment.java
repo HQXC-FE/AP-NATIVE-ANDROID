@@ -30,7 +30,7 @@ import com.xtree.mine.vo.UserUsdtJumpVo;
 
 import java.util.HashMap;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 /**
  * 绑定USDT 列表

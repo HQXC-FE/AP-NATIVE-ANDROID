@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import com.xtree.base.base.BaseViewModel;
+import com.xtree.base.bus.RxBus;
+import com.xtree.base.bus.event.SingleLiveData;
 
 /**
  * Created by marquis

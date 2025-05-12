@@ -21,14 +21,13 @@ import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.FragmentBindCardBinding;
 import com.xtree.mine.databinding.ItemBindBankCardBinding;
-import com.xtree.mine.databinding.ItemBindCardBinding;
 import com.xtree.mine.ui.viewmodel.BindCardViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.mine.vo.BankCardVo;
 
 import java.util.HashMap;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 /**
  * 绑定银行卡

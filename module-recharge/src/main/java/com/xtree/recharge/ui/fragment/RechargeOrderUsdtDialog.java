@@ -16,7 +16,7 @@ import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.DialogRcOrderUsdtBinding;
 import com.xtree.recharge.vo.RechargePayVo;
 
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.utils.ToastUtils;
 
 public class RechargeOrderUsdtDialog extends BottomPopupView {
 

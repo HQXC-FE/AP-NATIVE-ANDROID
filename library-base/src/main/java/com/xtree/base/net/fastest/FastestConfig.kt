@@ -4,8 +4,8 @@ import com.drake.net.NetConfig
 import com.drake.net.okhttp.trustSSLCertificate
 import com.drake.net.request.UrlRequest
 import com.xtree.base.BuildConfig
-import me.xtree.mvvmhabit.http.interceptor.logging.Level
-import me.xtree.mvvmhabit.http.interceptor.logging.LoggingInterceptor
+import com.xtree.base.http.interceptor.logging.Level
+import com.xtree.base.http.interceptor.logging.LoggingInterceptor
 import okhttp3.ConnectionPool
 import okhttp3.Dispatcher
 import okhttp3.MediaType

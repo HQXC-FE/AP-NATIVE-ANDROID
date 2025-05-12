@@ -28,8 +28,8 @@ import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.mine.vo.AwardsRecordVo;
 import com.xtree.mine.vo.ChooseInfoVo;
 
-import me.xtree.mvvmhabit.base.BaseActivity;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseActivity;
+import com.xtree.base.utils.ToastUtils;
 
 /*提款流程Activity*/
 @Route(path = PAGER_CHOOSE_WITHDRAW)

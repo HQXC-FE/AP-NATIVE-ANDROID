@@ -1,13 +1,6 @@
 package com.xtree.bet.ui.viewmodel.pm;
 
 
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_10000001;
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_400524;
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_400527;
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
-
 import android.app.Application;
 import android.text.TextUtils;
 
@@ -37,10 +30,10 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.utils.RxUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.http.BusinessException;
+import com.xtree.base.utils.RxUtils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 public class PMBtRecordModel extends TemplateBtRecordModel {
     public Map<String, BtRecordRsp.RecordsBean> mOrderMap = new HashMap<>();

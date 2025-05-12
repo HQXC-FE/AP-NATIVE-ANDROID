@@ -5,7 +5,7 @@ import com.xtree.mine.data.source.http.service.HttpApiService;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import me.xtree.mvvmhabit.http.BaseResponse;
+import com.xtree.base.http.BaseResponse;
 
 /**
  * Created by goldze on 2019/3/26.

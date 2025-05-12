@@ -1,9 +1,7 @@
 package com.xtree.bet.weight;
 
 import android.content.Context;
-import android.telecom.Call;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,7 +10,7 @@ import android.view.animation.TranslateAnimation;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import me.xtree.mvvmhabit.utils.ConvertUtils;
+import com.xtree.base.utils.ConvertUtils;
 
 public class DraggableImageView extends androidx.appcompat.widget.AppCompatImageView {
     private int lastX;

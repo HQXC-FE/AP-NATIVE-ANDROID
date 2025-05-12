@@ -5,7 +5,6 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.xtree.base.BuildConfig;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.CfLog;
 
@@ -16,13 +15,12 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import me.xtree.mvvmhabit.http.cookie.CookieJarImpl;
-import me.xtree.mvvmhabit.http.cookie.store.PersistentCookieStore;
-import me.xtree.mvvmhabit.http.interceptor.CacheInterceptor;
-import me.xtree.mvvmhabit.http.interceptor.logging.LoggingInterceptor;
-import me.xtree.mvvmhabit.utils.KLog;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.http.cookie.CookieJarImpl;
+import com.xtree.base.http.cookie.store.PersistentCookieStore;
+import com.xtree.base.http.interceptor.CacheInterceptor;
+import com.xtree.base.utils.KLog;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.Utils;
 import okhttp3.Cache;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;

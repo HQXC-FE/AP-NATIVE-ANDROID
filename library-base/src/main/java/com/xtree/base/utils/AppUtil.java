@@ -19,8 +19,7 @@ import com.xtree.base.net.fastest.FastestTopDomainUtil;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.widget.CustomerServiceDialogActivity;
 
-import me.xtree.mvvmhabit.base.AppManager;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.base.AppManager;
 
 
 public class AppUtil {

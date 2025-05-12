@@ -3,10 +3,10 @@
 //import com.xtree.base.utils.AppUtil;
 //
 //import io.reactivex.subscribers.DisposableSubscriber;
-//import me.xtree.mvvmhabit.http.PMBaseResponse;
-//import me.xtree.mvvmhabit.http.ResponseThrowable;
-//import me.xtree.mvvmhabit.utils.KLog;
-//import me.xtree.mvvmhabit.utils.ToastUtils;
+//import me.xtree.base.http.PMBaseResponse;
+//import me.xtree.base.http.ResponseThrowable;
+//import me.xtree.base.utils.KLog;
+//import me.xtree.base.utils.ToastUtils;
 //
 //public abstract class PMHttpCallBack<T> extends DisposableSubscriber<T> {
 //    public abstract void onResult(T t);

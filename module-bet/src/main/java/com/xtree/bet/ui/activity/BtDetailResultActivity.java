@@ -34,10 +34,10 @@ import com.xtree.bet.weight.BaseDetailDataView;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.base.BaseActivity;
-import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.utils.KLog;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.base.BaseActivity;
+import com.xtree.base.bus.RxBus;
+import com.xtree.base.utils.KLog;
+import com.xtree.base.utils.SPUtils;
 
 /**
  * 投注赛果详情
@@ -77,7 +77,7 @@ public class BtDetailResultActivity extends BaseActivity<BtLayoutDetailResultBin
     protected void initImmersionBar() {
         //设置共同沉浸式样式
         ImmersionBar.with(this)
-                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
+                .navigationBarColor(R.color.default_navigation_bar_color)
                 .fitsSystemWindows(false)
                 .statusBarDarkFont(false)
                 .init();

@@ -24,7 +24,7 @@ import com.xtree.mine.vo.AwardsRecordVo;
 
 import java.util.ArrayList;
 
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.utils.Utils;
 
 /**
  * 奖项流水

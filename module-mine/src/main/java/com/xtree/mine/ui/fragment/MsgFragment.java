@@ -22,7 +22,7 @@ import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
 import java.util.ArrayList;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_MSG)
 public class MsgFragment extends BaseFragment<FragmentMsgBinding, MsgViewModel> {

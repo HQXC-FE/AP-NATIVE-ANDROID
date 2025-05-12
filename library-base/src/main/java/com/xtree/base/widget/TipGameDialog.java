@@ -10,8 +10,8 @@ import com.xtree.base.databinding.DialogGameTipBinding;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.TimeUtils;
 
-import me.xtree.mvvmhabit.utils.KLog;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.KLog;
+import com.xtree.base.utils.SPUtils;
 
 public class TipGameDialog extends CenterPopupView {
 

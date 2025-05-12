@@ -44,10 +44,10 @@ import com.xtree.mine.vo.WithdrawVo.WithdrawalQuotaVo;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import me.xtree.mvvmhabit.base.ContainerActivity;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.base.ContainerActivity;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
+import com.xtree.base.utils.Utils;
 
 /**
  * 选择提款方式Dialog

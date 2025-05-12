@@ -13,8 +13,8 @@ import com.xtree.bet.manager.BtCarManager;
 
 import java.util.List;
 
-import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.bus.event.SingleLiveData;
+import com.xtree.base.bus.RxBus;
+import com.xtree.base.bus.event.SingleLiveData;
 
 public abstract class TemplateBtCarViewModel extends BaseBtViewModel implements BtCarViewModel {
     public SingleLiveData<List<BetConfirmOption>> btConfirmInfoDate = new SingleLiveData<>();

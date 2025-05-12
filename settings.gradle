@@ -1,4 +1,4 @@
-include ':app', ':library-base', ':module-main', ':module-home', ':library-res',  ':mvvmhabit'
+include ':app', ':library-base', ':module-main', ':module-home', ':library-res'
 
 include ':module-mine'
 include ':module-activity'

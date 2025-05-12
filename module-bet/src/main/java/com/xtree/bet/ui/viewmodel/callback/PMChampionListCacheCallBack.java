@@ -1,6 +1,5 @@
 package com.xtree.bet.ui.viewmodel.callback;
 
-import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401013;
 import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401026;
 import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
@@ -12,7 +11,6 @@ import com.google.gson.Gson;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.bet.bean.response.pm.MatchInfo;
 import com.xtree.bet.bean.response.pm.MatchLeagueListCacheRsp;
-import com.xtree.bet.bean.response.pm.MatchListRsp;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.MatchPm;
 import com.xtree.bet.bean.ui.Option;
@@ -25,8 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.http.BusinessException;
+import com.xtree.base.utils.SPUtils;
 
 public class PMChampionListCacheCallBack extends HttpCallBack<MatchLeagueListCacheRsp> {
 

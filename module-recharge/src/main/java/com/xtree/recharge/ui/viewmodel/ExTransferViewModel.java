@@ -80,12 +80,12 @@ import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
-import me.xtree.mvvmhabit.base.AppManager;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.utils.RxUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.AppManager;
+import com.xtree.base.base.BaseViewModel;
+import com.xtree.base.http.BaseResponse;
+import com.xtree.base.http.BusinessException;
+import com.xtree.base.utils.RxUtils;
+import com.xtree.base.utils.ToastUtils;
 
 /**
  * Created by KAKA on 2024/5/28.

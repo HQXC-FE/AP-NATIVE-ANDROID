@@ -21,8 +21,8 @@ import java.util.zip.DataFormatException;
 import java.util.zip.GZIPInputStream;
 
 import kotlin.text.Charsets;
-import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.http.BaseResponse;
+import com.xtree.base.utils.Utils;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;

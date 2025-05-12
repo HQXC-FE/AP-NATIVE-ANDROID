@@ -23,8 +23,8 @@ import com.xtree.base.widget.FloatingWindows;
 import com.xtree.bet.R;
 import com.xtree.bet.ui.adapter.BtDomainAdapter;
 
-import me.xtree.mvvmhabit.utils.ConvertUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.ConvertUtils;
+import com.xtree.base.utils.SPUtils;
 
 public class BettingNetFloatingWindows extends FloatingWindows {
     private static BettingNetFloatingWindows INSTANCE;

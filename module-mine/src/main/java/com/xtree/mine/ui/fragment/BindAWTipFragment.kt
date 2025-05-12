@@ -11,7 +11,7 @@ import com.xtree.mine.R
 import com.xtree.mine.databinding.FragmentAwTipBinding
 import com.xtree.mine.ui.viewmodel.BindCardViewModel
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory
-import me.xtree.mvvmhabit.base.BaseFragment
+import com.xtree.base.base.BaseFragment
 
 @Route(path = RouterFragmentPath.Mine.PAGER_BIND_AW_TIP)
 class BindAWTipFragment : BaseFragment<FragmentAwTipBinding, BindCardViewModel>() {

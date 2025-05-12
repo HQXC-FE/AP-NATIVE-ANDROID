@@ -55,7 +55,6 @@ import com.xtree.mine.data.Injection;
 import com.xtree.mine.databinding.DialogBankWithdrawalBankNewBinding;
 import com.xtree.mine.ui.viewmodel.ChooseWithdrawViewModel;
 import com.xtree.mine.vo.ChooseInfoVo;
-import com.xtree.mine.vo.PlatWithdrawConfirmVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalBankInfoVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalListVo;
 import com.xtree.mine.vo.WithdrawVo.WithdrawalSubmitVo;
@@ -69,9 +68,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
+import com.xtree.base.utils.Utils;
 import project.tqyb.com.library_res.databinding.ItemTextBinding;
 
 /**

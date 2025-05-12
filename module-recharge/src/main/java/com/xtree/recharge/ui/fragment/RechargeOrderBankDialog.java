@@ -19,7 +19,7 @@ import com.xtree.recharge.R;
 import com.xtree.recharge.databinding.DialogRcOrderBankBinding;
 import com.xtree.recharge.vo.RechargePayVo;
 
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.utils.ToastUtils;
 
 public class RechargeOrderBankDialog extends BottomPopupView {
 

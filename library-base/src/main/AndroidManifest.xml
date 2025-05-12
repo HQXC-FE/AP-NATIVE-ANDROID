@@ -35,10 +35,10 @@
     <application android:requestLegacyExternalStorage="true">
         <activity
             android:name=".widget.BrowserActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="true"
             android:launchMode="singleTop"
-            android:screenOrientation="sensor"
-            android:configChanges="orientation|screenSize">
+            android:screenOrientation="sensor">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -49,6 +49,19 @@
             android:name=".widget.ForbiddenActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".base.ContainerActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".crash.DefaultErrorActivity"
+            android:process=":error_activity" />
+
+        <provider
+            android:name=".crash.CaocInitProvider"
+            android:authorities="${applicationId}.customactivityoncrashinitprovider"
+            android:exported="false"
+            android:initOrder="101" />
         <!--APP更新对应文件-->
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -24,12 +24,11 @@ import com.xtree.mine.BR
 import com.xtree.mine.R
 import com.xtree.mine.databinding.FragmentBindAwBinding
 import com.xtree.mine.databinding.ItemBindAlipayBinding
-import com.xtree.mine.databinding.ItemBindAwBinding
 import com.xtree.mine.ui.viewmodel.BindCardViewModel
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory
 import com.xtree.mine.vo.AWVo
 import com.xtree.mine.vo.UserBindBaseVo
-import me.xtree.mvvmhabit.base.BaseFragment
+import com.xtree.base.base.BaseFragment
 
 
 /**

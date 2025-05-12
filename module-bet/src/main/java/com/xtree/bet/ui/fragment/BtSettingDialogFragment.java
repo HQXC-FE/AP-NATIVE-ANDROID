@@ -35,10 +35,10 @@ import com.xtree.bet.ui.viewmodel.pm.PMBtCarViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.base.BaseDialogFragment;
-import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.base.BaseDialogFragment;
+import com.xtree.base.bus.RxBus;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.Utils;
 
 /**
  * 设置菜单

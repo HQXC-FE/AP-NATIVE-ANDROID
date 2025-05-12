@@ -17,8 +17,6 @@ import android.widget.RelativeLayout;
 import com.xtree.base.utils.AppUtil;
 import com.xtree.mine.R;
 
-import me.xtree.mvvmhabit.utils.ToastUtils;
-
 /*web 提现 浮窗
 onepayfix3、onepayfix4、onepayfix5、onepayfix6页面增加弹出按钮，点击，页面在浏览器新窗口打开
 *   */

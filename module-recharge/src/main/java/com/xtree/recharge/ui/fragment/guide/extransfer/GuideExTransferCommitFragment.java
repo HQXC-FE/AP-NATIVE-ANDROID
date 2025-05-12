@@ -33,10 +33,10 @@ import com.xtree.recharge.ui.viewmodel.factory.AppViewModelFactory;
 import java.util.Map;
 import java.util.Stack;
 
-import me.xtree.mvvmhabit.base.AppManager;
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.bus.RxBus;
+import com.xtree.base.base.AppManager;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.base.BaseViewModel;
+import com.xtree.base.bus.RxBus;
 
 /**
  * 银行卡充值 引导页面

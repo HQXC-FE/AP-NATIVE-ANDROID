@@ -17,14 +17,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.xtree.bet.BR;
 import com.xtree.bet.R;
-import com.xtree.bet.databinding.BtFragmentTutorialBinding;
 import com.xtree.bet.databinding.BtTutorialItemBinding;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FBMainViewModel;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.Utils;
 
 /**
  *

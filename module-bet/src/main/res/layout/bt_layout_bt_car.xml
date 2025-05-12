@@ -92,7 +92,7 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <me.xtree.mvvmhabit.widget.MaxHeightNetsedScrollView
+            <com.xtree.base.widget.MaxHeightNetsedScrollView
                 android:id="@+id/nsv_option"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -176,7 +176,7 @@
                         android:textSize="@dimen/bt_text_12sp"
                         android:visibility="gone" />
                 </RelativeLayout>
-            </me.xtree.mvvmhabit.widget.MaxHeightNetsedScrollView>
+            </com.xtree.base.widget.MaxHeightNetsedScrollView>
 
             <View
                 android:id="@+id/v_line"

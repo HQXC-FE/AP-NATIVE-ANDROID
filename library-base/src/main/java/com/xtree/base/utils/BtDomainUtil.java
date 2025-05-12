@@ -5,8 +5,6 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
-
 public class BtDomainUtil {
     public final static String KEY_PLATFORM = "KEY_PLATFORM";
     public final static String KEY_PLATFORM_NAME = "KEY_PLATFORM_NAME";

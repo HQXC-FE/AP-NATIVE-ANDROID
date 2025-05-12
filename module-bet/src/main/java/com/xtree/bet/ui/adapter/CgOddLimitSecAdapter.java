@@ -2,9 +2,7 @@ package com.xtree.bet.ui.adapter;
 
 import android.content.Context;
 import android.text.Editable;
-import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -25,8 +23,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.base.BaseActivity;
-import me.xtree.mvvmhabit.utils.KLog;
+import com.xtree.base.base.BaseActivity;
+import com.xtree.base.utils.KLog;
 
 public class CgOddLimitSecAdapter extends CgOddLimitView.Adapter<CgOddLimit> {
     private boolean flag;

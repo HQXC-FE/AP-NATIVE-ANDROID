@@ -2,7 +2,7 @@ package com.xtree.base.debug;
 
 import com.xtree.base.config.ModuleLifecycleConfig;
 
-import me.xtree.mvvmhabit.base.BaseApplication;
+import com.xtree.base.base.BaseApplication;
 
 /**
  * Created by goldze on 2018/6/25 0025.

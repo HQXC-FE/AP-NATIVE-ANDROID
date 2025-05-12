@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.xtree.base.base.IModuleInit;
 
-import me.xtree.mvvmhabit.utils.KLog;
+import com.xtree.base.utils.KLog;
 
 /**
  * Created by goldze on 2018/6/21 0021.

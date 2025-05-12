@@ -16,7 +16,7 @@ import com.xtree.mine.databinding.FragmentInfoBinding;
 import com.xtree.mine.ui.viewmodel.MineViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_QUESTION)
 public class QuestionFragment extends BaseFragment<FragmentInfoBinding, MineViewModel> {

@@ -17,8 +17,8 @@ import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.vo.ProfileVo;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 /**
  *我的客服 Dialog形式

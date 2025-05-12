@@ -32,10 +32,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 
-import me.xtree.mvvmhabit.base.AppManager;
-import me.xtree.mvvmhabit.base.BaseDialogFragment;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.base.AppManager;
+import com.xtree.base.base.BaseDialogFragment;
+import com.xtree.base.base.BaseViewModel;
+import com.xtree.base.utils.SPUtils;
 
 public class ExTransferKindTipsDialogFragment extends BaseDialogFragment<LayoutRcExpBankDialog1KindTipsBinding, ExTransferViewModel> {
 

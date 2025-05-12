@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.TypeReference
 import com.xtree.base.global.SPKeyGlobal
 import com.xtree.base.vo.TopSpeedDomain
-import me.xtree.mvvmhabit.utils.SPUtils
+import com.xtree.base.utils.SPUtils
 
 /**
  *Created by KAKA on 2024/11/7.

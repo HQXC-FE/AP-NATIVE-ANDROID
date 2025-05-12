@@ -47,9 +47,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
+import com.xtree.base.utils.Utils;
 import project.tqyb.com.library_res.databinding.ItemTextBinding;
 
 /**

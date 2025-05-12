@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
-
 import io.sentry.Sentry;
 import io.sentry.SentryEvent;
 

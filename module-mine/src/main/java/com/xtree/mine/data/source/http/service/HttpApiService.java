@@ -2,10 +2,8 @@ package com.xtree.mine.data.source.http.service;
 
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.BalanceVo;
-import com.xtree.base.vo.FBService;
 import com.xtree.base.vo.MsgPersonInfoVo;
 import com.xtree.base.vo.MsgPersonListVo;
-import com.xtree.base.vo.PMService;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.vo.PromotionCodeVo;
 import com.xtree.mine.vo.AWVo;
@@ -75,8 +73,8 @@ import java.util.Map;
 
 import io.reactivex.Flowable;
 import io.reactivex.rxjava3.core.Observable;
-import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.BaseResponse;
+import com.xtree.base.http.BaseResponse;
+
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

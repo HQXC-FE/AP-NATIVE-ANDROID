@@ -4,7 +4,7 @@ package com.xtree.mine.data.source.local;
 
 import com.xtree.mine.data.source.LocalDataSource;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.SPUtils;
 
 /**
  * 本地数据源，可配合Room框架使用

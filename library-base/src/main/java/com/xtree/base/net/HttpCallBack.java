@@ -2,7 +2,7 @@ package com.xtree.base.net;
 
 import static com.xtree.base.net.HttpCallBack.CodeRule.CODE_401038;
 import static com.xtree.base.utils.EventConstant.EVENT_LOG_OUT;
-import static me.xtree.mvvmhabit.http.ExceptionHandle.ERROR.HIJACKED_ERROR;
+import static com.xtree.base.http.ExceptionHandle.ERROR.HIJACKED_ERROR;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.xtree.base.global.SPKeyGlobal;
@@ -20,13 +20,13 @@ import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.subscribers.DisposableSubscriber;
 import io.sentry.Sentry;
-import me.xtree.mvvmhabit.http.BaseResponse;
-import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.http.HijackedException;
-import me.xtree.mvvmhabit.utils.KLog;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.http.BaseResponse;
+import com.xtree.base.http.BusinessException;
+import com.xtree.base.http.HijackedException;
+import com.xtree.base.utils.KLog;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
+import com.xtree.base.utils.Utils;
 
 public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
     public void onResult(T t) {

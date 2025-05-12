@@ -9,7 +9,7 @@ import com.xtree.bet.bean.response.pm.MatchListRsp;
 import com.xtree.bet.ui.viewmodel.pm.PMMainViewModel;
 
 
-import me.xtree.mvvmhabit.http.BusinessException;
+import com.xtree.base.http.BusinessException;
 
 public class PMHotMatchCountCallBack extends HttpCallBack<MatchListRsp> {
 

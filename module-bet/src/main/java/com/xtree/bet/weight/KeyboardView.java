@@ -14,7 +14,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.xtree.base.utils.CfLog;
 import com.xtree.bet.R;
 import com.xtree.bet.ui.fragment.BtCarDialogFragment;
 import com.zhy.adapter.recyclerview.CommonAdapter;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.SPUtils;
 
 public class KeyboardView extends FrameLayout implements View.OnClickListener {
     public static final String KEY_USER_BALANCE = "key_user_balance";

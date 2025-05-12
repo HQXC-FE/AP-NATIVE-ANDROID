@@ -59,7 +59,7 @@
 
             </LinearLayout>
 
-            <me.xtree.mvvmhabit.widget.MaxHeightNetsedScrollView
+            <com.xtree.base.widget.MaxHeightNetsedScrollView
                 android:id="@+id/nsv_option"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                         tools:listitem="@layout/bt_layout_car_cg_result_item" />
 
                 </LinearLayout>
-            </me.xtree.mvvmhabit.widget.MaxHeightNetsedScrollView>
+            </com.xtree.base.widget.MaxHeightNetsedScrollView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/csl_bottom"

@@ -3,9 +3,9 @@ package com.xtree.recharge.ui.viewmodel;
 
 import androidx.annotation.NonNull;
 
-import me.xtree.mvvmhabit.base.ItemViewModel;
-import me.xtree.mvvmhabit.binding.command.BindingAction;
-import me.xtree.mvvmhabit.binding.command.BindingCommand;
+import com.xtree.base.base.ItemViewModel;
+import com.xtree.base.binding.command.BindingAction;
+import com.xtree.base.binding.command.BindingCommand;
 
 /**
  * Created by goldze on 2018/7/18.

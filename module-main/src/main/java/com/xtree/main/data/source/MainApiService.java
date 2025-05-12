@@ -4,7 +4,7 @@ import com.xtree.base.vo.MsgPersonInfoVo;
 import com.xtree.base.vo.WsToken;
 
 import io.reactivex.Flowable;
-import me.xtree.mvvmhabit.http.BaseResponse;
+import com.xtree.base.http.BaseResponse;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 

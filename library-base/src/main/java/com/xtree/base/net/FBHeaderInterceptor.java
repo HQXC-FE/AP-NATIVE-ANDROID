@@ -3,22 +3,17 @@ package com.xtree.base.net;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.StringUtils;
 import com.xtree.base.utils.TagUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.Utils;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;

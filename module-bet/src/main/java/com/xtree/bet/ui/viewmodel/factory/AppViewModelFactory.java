@@ -16,8 +16,8 @@ import com.xtree.bet.data.Injection;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import me.xtree.mvvmhabit.base.BaseModel;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.base.BaseModel;
+import com.xtree.base.utils.SPUtils;
 
 /**
  * Created by marquis on 2023/11/22.

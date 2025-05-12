@@ -31,7 +31,7 @@ import com.xtree.home.vo.AugVo;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 public class AugChildFragment extends BaseFragment<FragmentAugChildBinding, HomeViewModel> {
 

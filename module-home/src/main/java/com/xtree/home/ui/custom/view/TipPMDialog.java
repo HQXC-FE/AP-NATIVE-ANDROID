@@ -11,8 +11,8 @@ import com.xtree.base.utils.TimeUtils;
 import com.xtree.home.R;
 import com.xtree.home.databinding.DialogPmTipBinding;
 
-import me.xtree.mvvmhabit.utils.KLog;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.KLog;
+import com.xtree.base.utils.SPUtils;
 
 public class TipPMDialog extends CenterPopupView {
 

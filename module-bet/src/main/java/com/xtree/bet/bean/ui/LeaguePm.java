@@ -8,15 +8,13 @@ import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
-
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.SPUtils;
 
 @SuppressLint("ParcelCreator")
 public class LeaguePm implements League{

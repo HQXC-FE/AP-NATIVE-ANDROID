@@ -48,11 +48,11 @@
 #-------------------------------------------MVVMHabit混淆规则----------------------------------------------
 #---------------------------------1.实体类---------------------------------
 
--keep class me.xtree.mvvmhabit.http.BaseResponse { *; }
--keep class me.xtree.mvvmhabit.http.BaseResponse2 { *; }
--keep class me.xtree.mvvmhabit.http.BaseResponse3 { *; }
--keep class me.xtree.mvvmhabit.http.PMBaseResponse { *; }
--keep class me.xtree.mvvmhabit.http.ValidateResponse { *; }
+-keep class com.xtree.base.http.BaseResponse { *; }
+-keep class me.xtree.base.http.BaseResponse2 { *; }
+-keep class me.xtree.base.http.BaseResponse3 { *; }
+-keep class me.xtree.base.http.PMBaseResponse { *; }
+-keep class com.xtree.base.http.ValidateResponse { *; }
 
 -keep class com.xtree.base.vo.**{*;}
 -keep class com.xtree.activity.vo.**{*;}
@@ -158,10 +158,10 @@
 #----------------------------------------------------------------------------
 
 #---------------------------------4.反射相关的类和方法-----------------------
--keep public class * extends me.xtree.mvvmhabit.base.BaseActivity{ *; }
--keep public class * extends me.xtree.mvvmhabit.base.BaseFragment{ *; }
--keep public class * extends me.xtree.mvvmhabit.binding.command.BindingCommand{ *; }
--keep public class * extends me.xtree.mvvmhabit.binding.command.ResponseCommand{ *; }
+-keep public class * extends com.xtree.base.base.BaseActivity{ *; }
+-keep public class * extends com.xtree.base.base.BaseFragment{ *; }
+-keep public class * extends com.xtree.base.binding.command.BindingCommand{ *; }
+-keep public class * extends com.xtree.base.binding.command.ResponseCommand{ *; }
 
 
 #----------------------------------------------------------------------------

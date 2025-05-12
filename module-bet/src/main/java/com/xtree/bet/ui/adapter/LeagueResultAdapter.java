@@ -39,10 +39,10 @@ import com.xtree.bet.weight.PageHorizontalScrollView;
 
 import java.util.List;
 
-import me.xtree.mvvmhabit.base.BaseActivity;
-import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseActivity;
+import com.xtree.base.bus.RxBus;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 public class LeagueResultAdapter extends AnimatedExpandableListViewMax.AnimatedExpandableListAdapter {
     private List<League> mDatas;

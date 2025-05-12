@@ -41,9 +41,9 @@ import com.xtree.mine.vo.VerifyVo;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_BIND_PHONE)
 public class BindPhoneFragment extends BaseFragment<FragmentBindPhoneBinding, VerifyViewModel> {

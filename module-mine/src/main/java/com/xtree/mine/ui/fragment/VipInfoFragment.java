@@ -15,7 +15,7 @@ import com.xtree.mine.databinding.FragmentVipInfoBinding;
 import com.xtree.mine.ui.viewmodel.MineViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_VIP_INFO)
 public class VipInfoFragment extends BaseFragment<FragmentVipInfoBinding, MineViewModel> {

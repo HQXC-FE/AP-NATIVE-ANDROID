@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="me.xtree.mvvmhabit.base.BaseViewModel" />
+            type="com.xtree.base.base.BaseViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

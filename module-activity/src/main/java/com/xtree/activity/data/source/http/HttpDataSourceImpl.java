@@ -5,7 +5,7 @@ import com.xtree.activity.data.source.ApiService;
 import com.xtree.activity.data.source.HttpDataSource;
 
 import io.reactivex.Flowable;
-import me.xtree.mvvmhabit.http.BaseResponse;
+import com.xtree.base.http.BaseResponse;
 
 /**
  * Created by goldze on 2019/3/26.

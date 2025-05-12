@@ -36,11 +36,11 @@ import com.xtree.mine.databinding.FragmentBindAddAwBinding
 import com.xtree.mine.ui.viewmodel.BindCardViewModel
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory
 import com.xtree.mine.vo.UserBankConfirmVo
-import me.xtree.mvvmhabit.base.BaseFragment
-import me.xtree.mvvmhabit.utils.ImageUtils
-import me.xtree.mvvmhabit.utils.KLog
-import me.xtree.mvvmhabit.utils.SPUtils
-import me.xtree.mvvmhabit.utils.ToastUtils
+import com.xtree.base.base.BaseFragment
+import com.xtree.base.utils.ImageUtils
+import com.xtree.base.utils.KLog
+import com.xtree.base.utils.SPUtils
+import com.xtree.base.utils.ToastUtils
 import java.io.File
 
 

@@ -13,7 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 
-import me.xtree.mvvmhabit.http.ValidateResponse;
+import com.xtree.base.http.ValidateResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 

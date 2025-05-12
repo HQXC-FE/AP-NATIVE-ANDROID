@@ -3,7 +3,6 @@ package com.xtree.base.net.fastest
 import android.content.Intent
 import com.alibaba.android.arouter.utils.TextUtils
 import com.drake.net.Get
-import com.drake.net.okhttp.trustSSLCertificate
 import com.drake.net.transform.transform
 import com.drake.net.utils.fastest
 import com.drake.net.utils.scopeNet
@@ -14,9 +13,9 @@ import com.xtree.base.utils.AESUtil
 import com.xtree.base.utils.CfLog
 import com.xtree.base.utils.DomainUtil
 import com.xtree.base.vo.Domain
-import me.xtree.mvvmhabit.base.AppManager
-import me.xtree.mvvmhabit.utils.ToastUtils
-import me.xtree.mvvmhabit.utils.Utils
+import com.xtree.base.base.AppManager
+import com.xtree.base.utils.ToastUtils
+import com.xtree.base.utils.Utils
 import java.util.concurrent.CancellationException
 
 class ChangeApiLineUtil private constructor() {

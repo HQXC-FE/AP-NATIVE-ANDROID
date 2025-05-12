@@ -10,7 +10,7 @@ import com.xtree.bet.bean.response.fb.HotLeague;
 
 import java.util.List;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.SPUtils;
 
 public class Constants {
 

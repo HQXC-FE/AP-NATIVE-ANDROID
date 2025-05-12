@@ -12,9 +12,9 @@ import com.xtree.base.vo.WsToken;
 import com.xtree.main.data.MainRepository;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.bus.event.SingleLiveData;
-import me.xtree.mvvmhabit.utils.RxUtils;
+import com.xtree.base.base.BaseViewModel;
+import com.xtree.base.bus.event.SingleLiveData;
+import com.xtree.base.utils.RxUtils;
 
 public class WebSocketViewModel extends BaseViewModel<MainRepository> {
     public SingleLiveData<WsToken> getWsTokenLiveData = new SingleLiveData<>();

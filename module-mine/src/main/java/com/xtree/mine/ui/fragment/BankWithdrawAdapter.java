@@ -15,8 +15,6 @@ import com.xtree.base.vo.ProfileVo;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.ItemBankWithdrawBinding;
 
-import me.xtree.mvvmhabit.utils.ToastUtils;
-
 public class BankWithdrawAdapter extends CachedAutoRefreshAdapter<ProfileVo.CardInfoVo> {
 
     Context ctx;

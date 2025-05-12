@@ -35,7 +35,7 @@ import java.security.cert.X509Certificate;
 
 import javax.net.ssl.X509TrustManager;
 
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.utils.ToastUtils;
 
 /*App更新Dialog*/
 public class AppUpdateDialog extends CenterPopupView {

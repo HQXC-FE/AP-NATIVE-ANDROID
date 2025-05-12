@@ -17,7 +17,7 @@ import com.xtree.mine.ui.viewmodel.GooglePwdViewModel;
 
 import java.util.HashMap;
 
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.utils.Utils;
 
 /**
  * 谷歌验证 弹窗

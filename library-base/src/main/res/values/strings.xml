@@ -14,4 +14,15 @@
     <string name="txt_save_fail_pls_screenshot">保存失败，请截图</string>
     <string name="txt_saving">正在保存，请稍候</string>
     <string name="txt_ok">保存成功</string>
+    <string name="customactivityoncrash_error_activity_error_occurred_explanation">发生意外错误。\n抱歉，给您带来不便。</string>
+    <string name="customactivityoncrash_error_activity_restart_app">重新启动</string>
+    <string name="customactivityoncrash_error_activity_close_app">关闭程序</string>
+    <string name="customactivityoncrash_error_activity_error_details">错误日志</string>
+    <string name="customactivityoncrash_error_activity_error_details_title">错误详情</string>
+    <string name="customactivityoncrash_error_activity_error_details_close">关闭</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy">复制日志</string>
+    <string name="customactivityoncrash_error_activity_error_details_copied">复制日志</string>
+    <string name="customactivityoncrash_error_activity_error_details_clipboard_label">错误信息</string>
+    <string name="build_time">-</string>
+    <string name="text_hijack_tip">被拦截域名：%1$s\n被拦截接口：%2$s\n被拦截接口返回内容：%3$s</string>
 </resources>

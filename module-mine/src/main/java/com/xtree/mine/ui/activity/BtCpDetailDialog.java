@@ -23,7 +23,7 @@ import com.xtree.mine.vo.LotteryOrderVo;
 
 import java.util.HashMap;
 
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.utils.Utils;
 
 public class BtCpDetailDialog extends BottomPopupView {
 

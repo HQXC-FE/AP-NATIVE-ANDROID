@@ -3,30 +3,19 @@ package com.xtree.bet.ui.adapter;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.LeagueArea;
-import com.xtree.bet.bean.ui.Match;
-import com.xtree.bet.bean.ui.Option;
-import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.contract.BetContract;
-import com.xtree.bet.databinding.BtDialogLeagueBinding;
 import com.xtree.bet.databinding.BtDialogLeagueGroupBinding;
 import com.xtree.bet.databinding.BtFbLeagueChildBinding;
-import com.xtree.bet.databinding.BtFbMatchGroupBinding;
-import com.xtree.bet.databinding.BtFbPlaytypeListBinding;
 import com.xtree.bet.weight.AnimatedExpandableListViewMax;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.bus.RxBus;
-import me.xtree.mvvmhabit.utils.ConvertUtils;
+import com.xtree.base.bus.RxBus;
 
 public class SettingLeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpandableListAdapter {
     private List<LeagueArea> mDatas;

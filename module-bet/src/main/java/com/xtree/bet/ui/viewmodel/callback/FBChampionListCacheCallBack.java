@@ -17,9 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.utils.KLog;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.http.BusinessException;
+import com.xtree.base.utils.KLog;
+import com.xtree.base.utils.SPUtils;
 
 public class FBChampionListCacheCallBack extends HttpCallBack<FbMatchListCacheRsp> {
     private FBMainViewModel mViewModel;

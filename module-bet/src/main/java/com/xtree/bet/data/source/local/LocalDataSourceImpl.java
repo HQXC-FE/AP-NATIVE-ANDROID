@@ -3,8 +3,6 @@ package com.xtree.bet.data.source.local;
 
 import com.xtree.bet.data.source.LocalDataSource;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
-
 /**
  * 本地数据源，可配合Room框架使用
  * Created by goldze on 2019/3/26.

@@ -33,7 +33,7 @@ import com.xtree.home.vo.GameVo;
 
 import java.util.Objects;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, HomeViewModel> {
 

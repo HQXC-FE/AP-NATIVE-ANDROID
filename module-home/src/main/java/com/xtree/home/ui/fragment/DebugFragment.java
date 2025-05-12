@@ -46,8 +46,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.SPUtils;
 
 @Route(path = RouterFragmentPath.Home.PG_DEBUG)
 public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewModel> {

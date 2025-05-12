@@ -25,10 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.utils.RxUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseViewModel;
+import com.xtree.base.utils.RxUtils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 public class MsgViewModel extends BaseViewModel<MineRepository> {
     public MutableLiveData<List<MsgVo>> liveDataMsg = new MutableLiveData<>();

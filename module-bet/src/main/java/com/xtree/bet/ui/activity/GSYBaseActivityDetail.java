@@ -15,7 +15,7 @@ import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
 import com.xtree.bet.databinding.BtLayoutDetailBinding;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
 
-import me.xtree.mvvmhabit.base.BaseActivity;
+import com.xtree.base.base.BaseActivity;
 
 /**
  * 详情模式播放页面基础类

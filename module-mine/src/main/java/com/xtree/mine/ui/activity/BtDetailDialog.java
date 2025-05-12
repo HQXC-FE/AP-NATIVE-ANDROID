@@ -25,7 +25,7 @@ import com.xtree.mine.vo.BtDetailVo;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.utils.Utils;
 
 public class BtDetailDialog extends BottomPopupView {
 

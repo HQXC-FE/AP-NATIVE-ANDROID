@@ -29,8 +29,8 @@ import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 
 import java.util.ArrayList;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.SPUtils;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_SECURITY_VERIFY)
 public class SecurityVerificationFragment extends BaseFragment<FragmentSecurityVerificationBinding, VerifyViewModel> {

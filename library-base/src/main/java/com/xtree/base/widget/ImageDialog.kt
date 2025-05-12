@@ -15,7 +15,6 @@ import com.xtree.base.mvvm.loadImageAuthentication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import me.xtree.mvvmhabit.utils.KLog
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient

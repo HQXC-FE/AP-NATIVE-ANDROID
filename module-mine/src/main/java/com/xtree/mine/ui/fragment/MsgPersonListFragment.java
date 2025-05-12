@@ -28,8 +28,8 @@ import com.xtree.mine.vo.MsgPersonVo;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.base.BaseFragment;
+import com.xtree.base.utils.SPUtils;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_MSG_PERSON_LIST)
 public class MsgPersonListFragment extends BaseFragment<FragmentMsgPersonListBinding, MsgViewModel> {

@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.functions.Consumer;
-import me.xtree.mvvmhabit.base.AppManager;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.AppManager;
+import com.xtree.base.utils.ToastUtils;
 
 public class MainDomainAdapter extends BaseAdapter<TopSpeedDomain> {
     private boolean mChecking = true;

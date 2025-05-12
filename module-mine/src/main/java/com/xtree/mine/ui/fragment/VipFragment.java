@@ -28,7 +28,7 @@ import com.xtree.mine.vo.VipUpgradeInfoVo;
 
 import java.util.ArrayList;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 @Route(path = RouterFragmentPath.Mine.PAGER_VIP_UPGRADE)
 public class VipFragment extends BaseFragment<FragmentVipBinding, MineViewModel> {

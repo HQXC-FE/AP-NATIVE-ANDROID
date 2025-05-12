@@ -6,7 +6,7 @@ import com.xtree.base.utils.TagUtils;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
-import me.xtree.mvvmhabit.base.BaseApplication;
+import com.xtree.base.base.BaseApplication;
 
 /**
  * Created by goldze on 2018/6/21 0021.

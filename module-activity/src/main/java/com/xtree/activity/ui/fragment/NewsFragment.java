@@ -18,7 +18,7 @@ import com.xtree.base.utils.CfLog;
 
 import java.util.ArrayList;
 
-import me.xtree.mvvmhabit.base.BaseFragment;
+import com.xtree.base.base.BaseFragment;
 
 /**
  * 活动页-子页

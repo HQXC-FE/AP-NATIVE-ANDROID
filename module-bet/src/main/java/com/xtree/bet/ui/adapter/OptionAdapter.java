@@ -22,8 +22,8 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 
-import me.xtree.mvvmhabit.base.BaseActivity;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseActivity;
+import com.xtree.base.utils.ToastUtils;
 
 public class OptionAdapter extends BaseAdapter<Option> {
     private Match match;

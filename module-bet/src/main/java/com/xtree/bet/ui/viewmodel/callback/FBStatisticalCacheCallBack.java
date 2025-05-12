@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.utils.KLog;
+import com.xtree.base.http.BusinessException;
+import com.xtree.base.utils.KLog;
 
 public class FBStatisticalCacheCallBack extends HttpCallBack<FbStatisticalInfoCacheRsp> {
 

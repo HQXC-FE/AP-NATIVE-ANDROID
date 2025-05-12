@@ -16,7 +16,7 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
+import com.xtree.base.utils.SPUtils;
 
 public class BtDomainAdapter extends BaseAdapter<String> {
     private BettingNetFloatingWindows.ICallBack mICallBack;

@@ -24,13 +24,13 @@ import com.xtree.mine.vo.SettingsVo;
 import java.util.HashMap;
 
 import io.reactivex.disposables.Disposable;
-import me.xtree.mvvmhabit.base.BaseViewModel;
-import me.xtree.mvvmhabit.bus.event.SingleLiveData;
-import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.utils.KLog;
-import me.xtree.mvvmhabit.utils.RxUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.ToastUtils;
+import com.xtree.base.base.BaseViewModel;
+import com.xtree.base.bus.event.SingleLiveData;
+import com.xtree.base.http.BusinessException;
+import com.xtree.base.utils.KLog;
+import com.xtree.base.utils.RxUtils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.ToastUtils;
 
 public class LoginViewModel extends BaseViewModel<MineRepository> {
 

@@ -19,7 +19,7 @@ import com.xtree.mine.ui.viewmodel.ChooseWithdrawViewModel;
 import com.xtree.mine.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.mine.vo.AwardsRecordVo;
 
-import me.xtree.mvvmhabit.base.BaseActivity;
+import com.xtree.base.base.BaseActivity;
 
 @Route(path = RouterActivityPath.Mine.PAGER_MY_WALLET_FLOW)
 /** 活动流水*/

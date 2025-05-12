@@ -8,12 +8,9 @@ import com.xtree.bet.bean.response.pm.OptionDataListInfo;
 import com.xtree.bet.bean.response.pm.OptionInfo;
 import com.xtree.bet.bean.response.pm.PlayTypeInfo;
 import com.xtree.bet.constant.PMConstants;
-import com.xtree.bet.constant.SPKey;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import me.xtree.mvvmhabit.utils.SPUtils;
 
 public class PlayTypePm implements PlayType{
     private String className;

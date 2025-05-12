@@ -48,7 +48,7 @@ dependencies {
     //公用资源在base中依赖
     api project(':library-res')
     //核心基础库(由于这是例子, 所以这里采用远程依赖的方式, 可根据实际情况自行换成源码依赖，源码地址：https://github.com/goldze/MVVMHabit)
-    api project(':mvvmhabit')
+//    api project(':mvvmhabit')
     api 'com.github.liangjingkanji:Net:3.4.14'
     /*api project(':base-adapter-library')
     api project(':baseadapter-recyclerview')*/
@@ -91,4 +91,87 @@ dependencies {
     api rootProject.ext.dependencies["constraintlayout"]
     api rootProject.ext.dependencies["okhttp-dnsoverhttps"]
     api rootProject.ext.dependencies["BaseQuickAdapter"]
+
+
+    api rootProject.ext.support["jutil"]
+    //appcompat
+    api rootProject.ext.support["appcompat-v7"]
+    //rxjava
+    api rootProject.ext.dependencies.rxjava
+    api rootProject.ext.dependencies.rxandroid
+    //rx管理View的生命周期
+    api(rootProject.ext.dependencies.rxlifecycle) {
+        exclude group: 'com.android.support'
+    }
+    api(rootProject.ext.dependencies["rxlifecycle-components"]) {
+        exclude group: 'com.android.support'
+    }
+    //rxbinding
+    api(rootProject.ext.dependencies.rxbinding) {
+        exclude group: 'com.android.support'
+    }
+    //rx权限请求
+    api(rootProject.ext.dependencies.rxpermissions) {
+        exclude group: 'com.android.support'
+    }
+    //network
+    api rootProject.ext.dependencies.okhttp
+    api rootProject.ext.dependencies.retrofit
+    api rootProject.ext.dependencies["converter-gson"]
+    api rootProject.ext.dependencies["adapter-rxjava"]
+    //json解析
+    api rootProject.ext.dependencies.gson
+    //material-dialogs
+    api(rootProject.ext.dependencies["material-dialogs-core"]) {
+        exclude group: 'com.android.support'
+    }
+    api(rootProject.ext.dependencies["material-dialogs-commons"]) {
+        exclude group: 'com.android.support'
+    }
+    //glide图片加载库
+    api (rootProject.ext.dependencies.glide){
+        exclude group: 'com.android.support'
+    }
+    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+    //recyclerview的databinding套装
+    api(rootProject.ext.dependencies.bindingcollectionadapter) {
+        exclude group: 'com.android.support'
+    }
+    api(rootProject.ext.dependencies["bindingcollectionadapter-recyclerview"]) {
+        exclude group: 'com.android.support'
+    }
+    api(rootProject.ext.dependencies["bindingcollectionadapter-viewpager2"]) {
+        exclude group: 'com.android.support'
+    }
+    //Google LiveData和ViewModel组件
+    api rootProject.ext.dependencies["lifecycle-viewmodel"]
+    api rootProject.ext.dependencies["lifecycle-viewmodel-compose"]
+    api rootProject.ext.dependencies["lifecycle-livedata"]
+    api rootProject.ext.dependencies["lifecycle-lifecycle-runtime"]
+    api rootProject.ext.dependencies["lifecycle-viewmodel-savedstate"]
+    api rootProject.ext.dependencies["lifecycle-lifecycle-service"]
+    api rootProject.ext.dependencies["lifecycle-lifecycle-process"]
+    api rootProject.ext.dependencies["lifecycle-lifecycle-reactivestreams"]
+    annotationProcessor rootProject.ext.dependencies["lifecycle-compiler"]
+
+    api rootProject.ext.dependencies["swiperefreshlayout"]
+    api rootProject.ext.dependencies["viewpager2"]
+
+    api rootProject.ext.dependencies["arouter-api"]
+    api rootProject.ext.dependencies["immersionbar"]
+    api rootProject.ext.dependencies["sentry"]
+
+    api rootProject.ext.dependencies["brv"]
+    api rootProject.ext.dependencies["kotlin-stdlib"]
+    api rootProject.ext.dependencies["kotlin-reflect"]
+    api rootProject.ext.dependencies["BaseQuickAdapter"]
+
+    api rootProject.ext.dependencies["jsoup"]
+
+    configurations.all {
+        resolutionStrategy {
+            force 'org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10',
+                    'org.jetbrains.kotlin:kotlin-stdlib:1.7.10'
+        }
+    }
 }

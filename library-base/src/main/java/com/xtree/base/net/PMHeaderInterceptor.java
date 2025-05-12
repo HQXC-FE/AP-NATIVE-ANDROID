@@ -11,8 +11,8 @@ import com.xtree.base.utils.StringUtils;
 
 import java.io.IOException;
 
-import me.xtree.mvvmhabit.utils.SPUtils;
-import me.xtree.mvvmhabit.utils.Utils;
+import com.xtree.base.utils.SPUtils;
+import com.xtree.base.utils.Utils;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;

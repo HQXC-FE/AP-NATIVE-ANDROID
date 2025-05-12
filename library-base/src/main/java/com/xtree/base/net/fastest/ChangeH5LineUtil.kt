@@ -20,7 +20,7 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import me.xtree.mvvmhabit.utils.Utils
+import com.xtree.base.utils.Utils
 import okhttp3.Response
 import org.greenrobot.eventbus.EventBus
 import org.jsoup.Jsoup
