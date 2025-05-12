@@ -7,6 +7,7 @@ import com.xtree.bet.bean.response.im.RecommendedEvent;
 import com.xtree.bet.bean.ui.Match;
 
 import java.util.*;
+import java.util.function.Function;
 
 public final class IMOrganizedMarkLinesManager {
 
@@ -15,13 +16,13 @@ public final class IMOrganizedMarkLinesManager {
     private IMOrganizedMarkLinesManager() {
     }
 
-    public void organizedMarkLinesWith(EventListRsp.Sport imSport, RecommendedEvent imSportEvents, Map<String, List<MarketLine>> organizedArray) {
+    public void organizedMarkLinesWith(EventListRsp.Sport imSport, RecommendedEvent imSportEvents) {
         if (imSport.getSportId() == 1) {
-            soccerOrganizedMarkLinesWith(imSport, imSportEvents, organizedArray);
+            soccerOrganizedMarkLinesWith(imSportEvents);
         } else if (imSport.getSportId() == 2) {
-            basketballOrganizedMarkLinesWith(imSport, imSportEvents, organizedArray);
+            basketballOrganizedMarkLinesWith(imSportEvents);
         } else {
-            defaultOrganizedMarkLinesWith(imSport, imSportEvents, organizedArray);
+            defaultOrganizedMarkLinesWith(imSportEvents);
         }
     }
 
@@ -42,72 +43,68 @@ public final class IMOrganizedMarkLinesManager {
         }
     }
 
-    private void soccerOrganizedMarkLinesWith(EventListRsp.Sport imSport, RecommendedEvent imSportEvents, Map<String, List<MarketLine>> organizedArray) {
+    private void soccerOrganizedMarkLinesWith(RecommendedEvent imSportEvents) {
         for (MarketLine marketLine : imSportEvents.getMarketLines()) {
             if (SoccerRule.ahou.contains(marketLine.getBetTypeId())) {
-                organizedArray.computeIfAbsent("h", k -> new ArrayList<>()).add(marketLine);
-            }
-            if (SoccerRule.cs.contains(marketLine.getBetTypeId())) {
-                organizedArray.computeIfAbsent("cs", k -> new ArrayList<>()).add(marketLine);
-            }
-            if ((SoccerRule.corner.contains(marketLine.getBetTypeId()) && imSportEvents.getGroundTypeId() == 2) || marketLine.getBetTypeName().toLowerCase().contains("corner") || marketLine.getBetTypeName().contains("角球")) {
-                organizedArray.computeIfAbsent("c", k -> new ArrayList<>()).add(marketLine);
-            }
-            if (imSportEvents.getEventGroupId() == 3 && (marketLine.getBetTypeName().toLowerCase().contains("booking") || marketLine.getBetTypeName().contains("获牌"))) {
-                organizedArray.computeIfAbsent("b", k -> new ArrayList<>()).add(marketLine);
-            }
-            if (SoccerRule.goals.contains(marketLine.getBetTypeId())) {
-                organizedArray.computeIfAbsent("s", k -> new ArrayList<>()).add(marketLine);
-            }
-            if (SoccerRule.halves.contains(marketLine.getPeriodId())) {
-                organizedArray.computeIfAbsent("f", k -> new ArrayList<>()).add(marketLine);
-            }
-            if (SoccerRule.period.contains(marketLine.getBetTypeId())) {
-                organizedArray.computeIfAbsent("period", k -> new ArrayList<>()).add(marketLine);
-            }
-            if (SoccerRule.specials.contains(marketLine.getBetTypeId())) {
-                organizedArray.computeIfAbsent("i", k -> new ArrayList<>()).add(marketLine);
+                marketLine.setBetTypeGroupName("h");
+            } else if (SoccerRule.cs.contains(marketLine.getBetTypeId())) {
+                marketLine.setBetTypeGroupName("cs");
+            } else if ((SoccerRule.corner.contains(marketLine.getBetTypeId()) && imSportEvents.getGroundTypeId() == 2) || marketLine.getBetTypeName().toLowerCase().contains("corner") || marketLine.getBetTypeName().contains("角球")) {
+                marketLine.setBetTypeGroupName("c");
+            } else if (imSportEvents.getEventGroupId() == 3 && (marketLine.getBetTypeName().toLowerCase().contains("booking") || marketLine.getBetTypeName().contains("获牌"))) {
+                marketLine.setBetTypeGroupName("b");
+            } else if (SoccerRule.goals.contains(marketLine.getBetTypeId())) {
+                marketLine.setBetTypeGroupName("s");
+            } else if (SoccerRule.halves.contains(marketLine.getPeriodId())) {
+                marketLine.setBetTypeGroupName("f");
+            } else if (SoccerRule.period.contains(marketLine.getBetTypeId())) {
+                marketLine.setBetTypeGroupName("period");
+            } else if (SoccerRule.specials.contains(marketLine.getBetTypeId())) {
+                marketLine.setBetTypeGroupName("i");
             }
         }
     }
 
     // 篮球规则
     public static class BasketballRule {
+        //全场
         public static final Set<Integer> fulltime = new HashSet<>(Collections.singletonList(1));
+        //半场
         public static final Set<Integer> halves = new HashSet<>(Arrays.asList(2, 3));
+        //球队
         public static final Set<Integer> team = new HashSet<>(Arrays.asList(93, 94));
     }
 
-    private void basketballOrganizedMarkLinesWith(EventListRsp.Sport imSport, RecommendedEvent imSportEvents, Map<String, List<MarketLine>> organizedArray) {
+    private void basketballOrganizedMarkLinesWith(RecommendedEvent imSportEvents) {
         for (MarketLine marketLine : imSportEvents.MarketLines) {
             if (BasketballRule.fulltime.contains(marketLine.getPeriodId())) {
-                organizedArray.computeIfAbsent("ft", k -> new ArrayList<>()).add(marketLine);
-            }
-            if (BasketballRule.halves.contains(marketLine.getPeriodId())) {
-                organizedArray.computeIfAbsent("f", k -> new ArrayList<>()).add(marketLine);
-            }
-            if (marketLine.getBetTypeName().contains("节") || marketLine.getBetTypeName().toLowerCase().contains("quarter")) {
-                organizedArray.computeIfAbsent("q", k -> new ArrayList<>()).add(marketLine);
-            }
-            if (BasketballRule.team.contains(marketLine.getBetTypeId())) {
-                organizedArray.computeIfAbsent("team", k -> new ArrayList<>()).add(marketLine);
+                marketLine.setBetTypeGroupName("ft");
+            } else if (BasketballRule.halves.contains(marketLine.getPeriodId())) {
+                marketLine.setBetTypeGroupName("f");
+            } else if (marketLine.getBetTypeName().contains("节") || marketLine.getBetTypeName().toLowerCase().contains("quarter")) {
+                marketLine.setBetTypeGroupName("q");
+            } else if (BasketballRule.team.contains(marketLine.getBetTypeId())) {
+                marketLine.setBetTypeGroupName("team");
             }
         }
     }
 
     // 默认规则
     public static class DefaultRule {
+
+        //让球&大小
         public static final Set<Integer> ahou = new HashSet<>(Arrays.asList(1, 2));
+
+        //赌赢
         public static final Set<Integer> ml = new HashSet<>(Collections.singletonList(4));
     }
 
-    private void defaultOrganizedMarkLinesWith(EventListRsp.Sport imSport, RecommendedEvent imSportEvents, Map<String, List<MarketLine>> organizedArray) {
+    private void defaultOrganizedMarkLinesWith(RecommendedEvent imSportEvents) {
         for (MarketLine marketLine : imSportEvents.MarketLines) {
             if (DefaultRule.ahou.contains(marketLine.getBetTypeId())) {
-                organizedArray.computeIfAbsent("h", k -> new ArrayList<>()).add(marketLine);
-            }
-            if (DefaultRule.ml.contains(marketLine.getBetTypeId()) || marketLine.getBetTypeName().contains("独赢") || marketLine.getBetTypeName().toLowerCase().contains("1x2")) {
-                organizedArray.computeIfAbsent("ml", k -> new ArrayList<>()).add(marketLine);
+                marketLine.setBetTypeGroupName("h");
+            } else if (DefaultRule.ml.contains(marketLine.getBetTypeId()) || marketLine.getBetTypeName().contains("独赢") || marketLine.getBetTypeName().toLowerCase().contains("1x2")) {
+                marketLine.setBetTypeGroupName("ml");
             }
         }
     }
