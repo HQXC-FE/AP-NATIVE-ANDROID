@@ -48,7 +48,7 @@ public class MarketLine implements BaseBean {
     }
 
     public void setBetTypeGroupName(String betTypeGroupName) {
-        this.betTypeGroupName = IMMarketTag.getMarketTag(betTypeGroupName);
+        this.betTypeGroupName = betTypeGroupName;
     }
 
     public MarketLine() {

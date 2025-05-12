@@ -89,7 +89,6 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
         if (matchInfo.getSports().isEmpty()) {
             return categoryList;
         }
-
         CategoryIm categoryAll = new CategoryIm(IMMarketTag.getMarketTag("all"));
         categoryMap.put("all", categoryAll);
         categoryList.add(categoryAll);
@@ -106,7 +105,7 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
                 categoryAll.addPlayTypeList(playType);
                 String name = marketLine.getBetTypeGroupName();
                 if (categoryMap.get(name) == null) {
-                    Category category = new CategoryIm(name);
+                    Category category = new CategoryIm(IMMarketTag.getMarketTag(name));
                     categoryMap.put(name, category);
                     categoryList.add(category);
                 }
