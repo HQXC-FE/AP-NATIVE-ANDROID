@@ -19,6 +19,8 @@ import com.xtree.bet.bean.response.fb.MatchInfo;
 import com.xtree.bet.bean.response.fb.PlayTypeInfo;
 import com.xtree.bet.bean.response.im.Event;
 import com.xtree.bet.bean.response.im.EventListRsp;
+import com.xtree.bet.bean.response.im.MarketLine;
+import com.xtree.bet.bean.response.im.RecommendedEvent;
 import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.CategoryFb;
 import com.xtree.bet.bean.ui.CategoryIm;
@@ -27,6 +29,7 @@ import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.OptionList;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.bean.ui.PlayTypeFb;
+import com.xtree.bet.bean.ui.PlayTypeIm;
 import com.xtree.bet.constant.FBMarketTag;
 import com.xtree.bet.constant.IMMarketTag;
 import com.xtree.bet.data.BetRepository;
@@ -54,7 +57,7 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
         super(application, repository);
     }
 
-    public void getMatchDetail(long matchId,String sportId) {
+    public void getMatchDetail(long matchId, String sportId) {
         mMatchId = matchId;
         mSportId = sportId;
 
@@ -65,14 +68,12 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
         List<Long> eventsId = new ArrayList<>();
         eventsId.add(mMatchId);
         SelectedEventInfoReq req = new SelectedEventInfoReq(Long.parseLong(sportId), eventsId, 2, false, true);
-        launchFlow(model.getIMApiService().getSelectedEventInfo(
-                new BaseIMRequest<>(IMApiService.GetSelectedEventInfo, req)),
-                new HttpCallBack<EventListRsp>() {
+        launchFlow(model.getIMApiService().getSelectedEventInfo(new BaseIMRequest<>(IMApiService.GetSelectedEventInfo, req)), new HttpCallBack<EventListRsp>() {
             @Override
             public void onResult(EventListRsp eventListRsp) {
                 super.onResult(eventListRsp);
-                MatchInfo matchInfo =  ImModelUtils.INSTANCE.convertImToCommonModel(eventListRsp);
-                List<Category> categoryList = getCategoryList(matchInfo);
+//                MatchInfo matchInfo =  ImModelUtils.INSTANCE.convertImToCommonModel(eventListRsp);
+                List<Category> categoryList = getCategoryList(eventListRsp);
 
                 categoryListData.postValue(categoryList);
             }
@@ -135,26 +136,26 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
 
     }
 
-    public List<Category> getCategoryList(MatchInfo matchInfo) {
+    public List<Category> getCategoryList(EventListRsp matchInfo) {
         Map<String, Category> categoryMap = new HashMap<>();
         List<Category> categoryList = new ArrayList<>();
-        if (matchInfo.mg.isEmpty()) {
+        if (matchInfo.getSports().isEmpty()) {
             return categoryList;
         }
 
         CategoryIm categoryAll = new CategoryIm(IMMarketTag.getMarketTag("all"));
         categoryMap.put("all", categoryAll);
         categoryList.add(categoryAll);
-        for (PlayTypeInfo playTypeInfo : matchInfo.mg) {
-            PlayTypeFb playType = new PlayTypeFb(playTypeInfo);
-            categoryAll.addPlayTypeList(playType);
-            for (String type : playTypeInfo.tps) {
-                if (categoryMap.get(type) == null) {
-                    Category category = new CategoryFb(FBMarketTag.getMarketTag(type));
-                    categoryMap.put(type, category);
-                    categoryList.add(category);
-                }
-                categoryMap.get(type).addPlayTypeList(playType);
+
+        EventListRsp.Sport sport = matchInfo.getSports().get(0);
+        List<RecommendedEvent> events = sport.getEvents();
+
+        for (RecommendedEvent event : events) {
+            for (MarketLine marketLine : event.getMarketLines()) {
+                marketLine.setOpenParlay(event.openParlay); //里面新增一个是否串关的字段
+                PlayTypeIm playType = new PlayTypeIm(marketLine, event);
+                categoryAll.addPlayTypeList(playType);
+
             }
         }
         if (mCategoryMap.isEmpty()) {
@@ -257,7 +258,7 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
                     BtDomainUtil.setFbDomainUrl(fbService.getDomains());
                 }
 
-                getMatchDetail(mMatchId,mSportId);
+                getMatchDetail(mMatchId, mSportId);
             }
         });
 

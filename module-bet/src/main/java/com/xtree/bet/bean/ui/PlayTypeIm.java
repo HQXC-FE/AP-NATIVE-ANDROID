@@ -5,10 +5,12 @@ import android.text.TextUtils;
 
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.response.im.MarketLine;
+import com.xtree.bet.bean.response.im.MarketLine;
 import com.xtree.bet.bean.response.im.OddsList;
 import com.xtree.bet.bean.response.im.OptionDataListInfo;
-import com.xtree.bet.bean.response.im.OptionInfo;
 import com.xtree.bet.bean.response.im.PlayTypeInfo;
+import com.xtree.bet.bean.response.im.RecommendedEvent;
+import com.xtree.bet.bean.response.im.WagerSelection;
 import com.xtree.bet.bean.response.im.WagerSelection;
 import com.xtree.bet.constant.PMConstants;
 
@@ -16,13 +18,21 @@ import com.xtree.bet.constant.PMConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayTypeIm implements PlayType{
+public class PlayTypeIm implements PlayType {
     private String className;
     private MarketLine marketLine;
+
+    private RecommendedEvent event;
 
     public PlayTypeIm(MarketLine marketLine){
         this.marketLine = marketLine;
         this.className = getClass().getSimpleName();
+    }
+
+    public PlayTypeIm(MarketLine marketLine, RecommendedEvent event) {
+        this.marketLine = marketLine;
+        this.className = getClass().getSimpleName();
+        this.event = event;
     }
 
     @Override
@@ -37,14 +47,21 @@ public class PlayTypeIm implements PlayType{
 
     /**
      * 获取玩法类型，如 亚盘、大小球等
+     *
      * @return
      */
     @Override
     public int getPlayType() {
         return marketLine.getBetTypeId();
     }
+
     /**
-     * 获取玩法名称
+     * 获取玩法名称 - 详情中Group的显示标题
+     * <p>
+     * Group（ name = playTypeName）
+     * Child
+     * Child
+     *
      * @return
      */
     @Override
@@ -65,13 +82,14 @@ public class PlayTypeIm implements PlayType{
     @Override
     public List<OptionList> getOptionLists() {
         List<OptionList> optionLists = new ArrayList<>();
-        if(marketLine != null && marketLine.getWagerSelections() != null) {
-//            for (OptionDataListInfo optionDataListInfo : marketLine.getWagerSelections()) {
-////                optionLists.add(new OptionListIm(optionDataListInfo, playTypeInfo));
-//            }
+        if (marketLine != null && marketLine.getWagerSelections() != null) {
+            for (WagerSelection optionDataListInfo : marketLine.getWagerSelections()) {
+                optionLists.add(new OptionListIm(optionDataListInfo, marketLine));
+            }
         }
         return optionLists;
     }
+
     /**
      * 获取投注玩法列表
      * @return
@@ -113,7 +131,7 @@ public class PlayTypeIm implements PlayType{
         List<Option> optionList = new ArrayList<>();
         if(marketLine != null && marketLine.getWagerSelections() != null && !marketLine.getWagerSelections().isEmpty()) {
             for(WagerSelection wagerSelection: marketLine.getWagerSelections()){
-            //for (OddsList optionInfo : wagerSelection.oddsList) {
+                //for (OddsList optionInfo : wagerSelection.oddsList) {
                 OptionDataListInfo optionDataListInfo = new OptionDataListInfo();
                 optionDataListInfo.hs = marketLine.isLocked ? 1 : 0;
                 optionDataListInfo.hmt = marketLine.betTypeId;
@@ -130,14 +148,17 @@ public class PlayTypeIm implements PlayType{
 
     /**
      * 获取盘口组标签集合
+     *
      * @return
      */
     @Override
     public List<String> getTags() {
         return null;
     }
+
     /**
      * 获取所属玩法集ID
+     *
      * @return
      */
     @Override
@@ -148,7 +169,7 @@ public class PlayTypeIm implements PlayType{
     @Override
     public String getMatchDeadLine() {
         //return TimeUtils.longFormatString(Long.valueOf(playTypeInfo.hmed), TimeUtils.FORMAT_YY_MM_DD_HH_MM_1);
-        return ""; //未找到对应
+        return TimeUtils.longFormatString(Long.parseLong(event.getEventDate()), TimeUtils.FORMAT_YY_MM_DD_HH_MM_1);
     }
 
     @Override

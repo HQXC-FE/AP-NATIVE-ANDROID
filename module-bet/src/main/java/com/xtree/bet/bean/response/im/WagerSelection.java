@@ -39,6 +39,15 @@ public class WagerSelection implements BaseBean {
     @SerializedName("OddsList")
     public List<OddsList> oddsList;
 
+    /**
+     * 是否选中
+     */
+    public boolean isSelected;
+
+    public int change;
+
+
+
     public WagerSelection() {
     }
 

@@ -37,6 +37,9 @@ public class MarketLine implements BaseBean {
     @SerializedName("WagerSelections")
     public List<WagerSelection> wagerSelections;
 
+    @SerializedName("OpenParlay")
+    public boolean openParlay;
+
     public MarketLine() {
     }
 
@@ -50,6 +53,7 @@ public class MarketLine implements BaseBean {
         marketlineStatusId = in.readInt();
         isLocked = in.readByte() != 0;
         wagerSelections = in.createTypedArrayList(WagerSelection.CREATOR);
+        openParlay = in.readByte() != 0;
     }
 
     @Override
@@ -63,6 +67,7 @@ public class MarketLine implements BaseBean {
         dest.writeInt(marketlineStatusId);
         dest.writeByte((byte) (isLocked ? 1 : 0));
         dest.writeTypedList(wagerSelections);
+        dest.writeByte((byte) (openParlay ? 1 : 0));
     }
 
     @Override
@@ -156,5 +161,12 @@ public class MarketLine implements BaseBean {
         this.wagerSelections = wagerSelections;
     }
 
+    public boolean isOpenParlay() {
+        return openParlay;
+    }
+
+    public void setOpenParlay(boolean openParlay) {
+        this.openParlay = openParlay;
+    }
 }
 
