@@ -72,68 +72,14 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
             @Override
             public void onResult(EventListRsp eventListRsp) {
                 super.onResult(eventListRsp);
-//                MatchInfo matchInfo =  ImModelUtils.INSTANCE.convertImToCommonModel(eventListRsp);
                 List<Category> categoryList = getCategoryList(eventListRsp);
-
                 categoryListData.postValue(categoryList);
             }
         });
 
-//        Disposable disposable = (Disposable) model.getApiService().getMatchDetail(map)
-//                .compose(RxUtils.schedulersTransformer()) //线程调度
-//                .compose(RxUtils.exceptionTransformer())
-//                .subscribeWith(new HttpCallBack<MatchInfo>() {
-//                    @Override
-//                    public void onResult(MatchInfo matchInfo) {
-//                        Match match = new MatchFb(matchInfo);
-//                        if (mMatch != null) {
-//                            setOptionOddChange(match);
-//                        }
-//                        mMatch = match;
-//                        matchData.postValue(match);
-//                        categoryListData.postValue(getCategoryList(matchInfo));
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable t) {
-//                        if (((BusinessException) t).code == CodeRule.CODE_14010) {
-//                            getGameTokenApi();
-//                        }
-//                    }
-//                });
-//        addSubscribe(disposable);
-
     }
 
     public void getMatchDetailResult(long matchId) {
-        //mMatchId = matchId;
-        //Map<String, String> map = new HashMap<>();
-        //map.put("languageType", "CMN");
-        //map.put("matchId", String.valueOf(matchId));
-        //
-        //Disposable disposable = (Disposable) model.getApiService().getMatchDetailResult(map)
-        //        .compose(RxUtils.schedulersTransformer()) //线程调度
-        //        .compose(RxUtils.exceptionTransformer())
-        //        .subscribeWith(new FBHttpCallBack<MatchInfo>() {
-        //            @Override
-        //            public void onResult(MatchInfo matchInfo) {
-        //                //Match match = new MatchFb(matchInfo);
-        //                //matchDataResult.postValue(match);
-        //                //KLog.i("mCategories", "1");
-        //                //List<Category> list = getCategoryList(matchInfo);
-        //                //KLog.i("mCategories", list);
-        //                //categoryResultListData.postValue(list);
-        //            }
-        //
-        //            @Override
-        //            public void onError(Throwable t) {
-        //                if (((BusinessException) t).code == CODE_14010) {
-        //                    getGameTokenApi();
-        //                }
-        //            }
-        //        });
-        //addSubscribe(disposable);
-
     }
 
     public List<Category> getCategoryList(EventListRsp matchInfo) {
@@ -156,8 +102,22 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
                 PlayTypeIm playType = new PlayTypeIm(marketLine, event);
                 categoryAll.addPlayTypeList(playType);
 
+
             }
         }
+
+//        for (PlayTypeInfo playTypeInfo : matchInfo.mg) {
+//            PlayTypeFb playType = new PlayTypeFb(playTypeInfo);
+//            categoryAll.addPlayTypeList(playType);
+//            for (String type : playTypeInfo.tps) {
+//                if (categoryMap.get(type) == null) {
+//                    Category category = new CategoryFb(FBMarketTag.getMarketTag(type));
+//                    categoryMap.put(type, category);
+//                    categoryList.add(category);
+//                }
+//                categoryMap.get(type).addPlayTypeList(playType);
+//            }
+//        }
         if (mCategoryMap.isEmpty()) {
             mCategoryMap = categoryMap;
             mCategoryList = categoryList;
