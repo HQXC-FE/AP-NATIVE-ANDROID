@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MatchInfo implements BaseBean {
@@ -147,10 +146,10 @@ public class MatchInfo implements BaseBean {
     public boolean isBetTradeOpen;
 
     @SerializedName("LiveStreamingUrl")
-    public List<String> liveStreamingUrl;
+    public List<LiveStreamingUrl> liveStreamingUrl;
 
     @SerializedName("RelatedScores")
-    public String relatedScores;
+    public List<RelatedScore> relatedScores;
 
     @SerializedName("ExtraInfo")
     public String extraInfo;
@@ -224,8 +223,8 @@ public class MatchInfo implements BaseBean {
         homeRedCard = in.readString();
         awayRedCard = in.readString();
         isBetTradeOpen = in.readByte() != 0;
-        liveStreamingUrl = in.createStringArrayList();
-        relatedScores = in.readString();
+        liveStreamingUrl = in.createTypedArrayList(LiveStreamingUrl.CREATOR);
+        relatedScores = in.createTypedArrayList(RelatedScore.CREATOR);
         extraInfo = in.readString();
         rSportId = in.readInt();
         eventName = in.readString();
@@ -276,8 +275,8 @@ public class MatchInfo implements BaseBean {
         dest.writeString(homeRedCard);
         dest.writeString(awayRedCard);
         dest.writeByte((byte) (isBetTradeOpen ? 1 : 0));
-        dest.writeStringList(liveStreamingUrl);
-        dest.writeString(relatedScores);
+        dest.writeTypedList(liveStreamingUrl);
+        dest.writeTypedList(relatedScores);
         dest.writeString(extraInfo);
         dest.writeInt(rSportId);
         dest.writeString(eventName);

@@ -19,7 +19,7 @@ public class EventInfoByPageListParser {
 
 
     public static EventInfoByPageListRsp getEventInfoByPageListRsp(Context context) {
-        String json = loadJSONFromAsset(context, "data.json");;
+        String json = loadJSONFromAsset(context, "live_data.json");
         Gson gson = new Gson();
         return gson.fromJson(json, EventInfoByPageListRsp.class);
     }

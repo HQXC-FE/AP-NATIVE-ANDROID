@@ -243,8 +243,8 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         if (mCurrentPage == 1 && !isTimerRefresh && !isStepSecond) {
-            CfLog.d("============ ImMainViewModel getLeagueList mPlayMethodType =============="+mPlayMethodType);
-            CfLog.d("============ ImMainViewModel getLeagueList searchDatePos =============="+searchDatePos);
+            //CfLog.d("============ ImMainViewModel getLeagueList mPlayMethodType =============="+mPlayMethodType);
+            //CfLog.d("============ ImMainViewModel getLeagueList searchDatePos =============="+searchDatePos);
             //showCache(sportId, mPlayMethodType, searchDatePos);
         }
 
@@ -351,10 +351,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         if (isRefresh) {
             mNoLiveheaderLeague = null;
         }
-        CfLog.d("================ getLeagueList type ================="+type);
-        CfLog.d("================ getLeagueList needSecondStep ================="+needSecondStep);
-        CfLog.d("================ getLeagueList isTimerRefresh ================="+isTimerRefresh);
-        Thread.dumpStack();
         if ((type == 1 && needSecondStep) // 获取今日中的全部滚球赛事列表
                 || isTimerRefresh) { // 定时刷新赔率变更
             createIMListCallback(isTimerRefresh, isRefresh, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList, flowable);
@@ -501,14 +497,19 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                         CfLog.d("================== ImMainViewModel matchResultPage onResult ====");
                         ArrayList<League> leagues = new ArrayList<>();
                         Map<String, League> mapLeague = new HashMap<>();
-                        List<MatchInfo> matchList = new ArrayList<>();
                         data = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
+                        List<MatchInfo> matchInfoList = data.getSports().get(0).getEvents();
+                        for (MatchInfo matchInfo : matchInfoList) {
+                            matchInfo.setSportId(data.getSports().get(0).getSportId());
+                            matchInfo.setSportName(data.getSports().get(0).getSportName());
+                            CfLog.d("================= IMLeagueListCallBack onResult matchInfo =================="+matchInfo);
+                        }
                         List<Sport> matches =  data.getSports();
                         if (matches != null) {
-                            matchList = data.getSports().get(0).getEvents();
+                            matchInfoList = data.getSports().get(0).getEvents();
                         }
 
-                        for (MatchInfo matchInfo : matchList) {
+                        for (MatchInfo matchInfo : matchInfoList) {
                             Match match = new MatchIm(matchInfo);
                             League league = mapLeague.get(String.valueOf(matchInfo.competition.getCompetitionId()));
                             if (league == null) {

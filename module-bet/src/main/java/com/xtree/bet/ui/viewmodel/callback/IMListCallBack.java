@@ -131,32 +131,42 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     @Override
     public void onResult(EventInfoByPageListRsp data) {
         CfLog.d("============= IMListCallBack onResult =============");
-        CfLog.d("============= IMListCallBack onResult mIsTimerRefresh ============="+mIsTimerRefresh);
-        data = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
-        List<MatchInfo> matchList = data.getSports().get(0).getEvents();
-        if (mIsTimerRefresh) { //定时刷新赔率变更
-            if (matchList.size() != mMatchids.size()) {
-                //List<Long> matchIdList = new ArrayList<>();
-                mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);
-            } else {
-                setOptionOddChange(matchList);
-                mViewModel.leagueLiveTimerListData.postValue(mLeagueList);
+        CfLog.d("============= IMListCallBack onResult mIsTimerRefresh =============" + mIsTimerRefresh);
+        try {
+            data = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
+            CfLog.d("============= IMListCallBack onResult data =============" + data);
+            List<MatchInfo> matchInfoList = data.getSports().get(0).getEvents();
+            CfLog.d("============= IMListCallBack matchInfoList =============" + matchInfoList.size());
+            for (MatchInfo matchInfo : matchInfoList) {
+                matchInfo.setSportId(data.getSports().get(0).getSportId());
+                matchInfo.setSportName(data.getSports().get(0).getSportName());
             }
-        } else {  // 获取今日中的全部滚球赛事列表
-            if (mIsRefresh) {
-                mLeagueList.clear();
-                mMapLeague.clear();
-                mMapSportType.clear();
-                mLiveMatchList.clear();
+            if (mIsTimerRefresh) { //定时刷新赔率变更
+                if (matchInfoList.size() != mMatchids.size()) {
+                    //List<Long> matchIdList = new ArrayList<>();
+                    mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);
+                } else {
+                    setOptionOddChange(matchInfoList);
+                    mViewModel.leagueLiveTimerListData.postValue(mLeagueList);
+                }
+            } else {  // 获取今日中的全部滚球赛事列表
+                if (mIsRefresh) {
+                    mLeagueList.clear();
+                    mMapLeague.clear();
+                    mMapSportType.clear();
+                    mLiveMatchList.clear();
+                }
+                mViewModel.firstNetworkFinishData.call();
+                mIsStepSecond = true;
+                mLiveMatchList.addAll(matchInfoList);
+                if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
+                    leagueGoingList(matchInfoList);
+                }
+                mViewModel.saveLeague(this);
+                mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, 2, mSearchDatePos, mOddType, false, mIsRefresh, mIsStepSecond);
             }
-            mViewModel.firstNetworkFinishData.call();
-            mIsStepSecond = true;
-            mLiveMatchList.addAll(matchList);
-            if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
-                leagueGoingList(matchList);
-            }
-            mViewModel.saveLeague(this);
-            mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, 2, mSearchDatePos, mOddType, false, mIsRefresh, mIsStepSecond);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

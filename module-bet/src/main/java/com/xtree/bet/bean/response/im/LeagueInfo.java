@@ -98,4 +98,20 @@ public class LeagueInfo implements BaseBean {
             return new LeagueInfo[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "LeagueInfo{" +
+                "tournamentId=" + tournamentId +
+                ", num=" + num +
+                ", nameText='" + nameText + '\'' +
+                ", tournamentLevel=" + tournamentLevel +
+                ", picUrlthumb='" + picUrlthumb + '\'' +
+                ", sportId=" + sportId +
+                ", regionId=" + regionId +
+                ", regionName='" + regionName + '\'' +
+                ", hotStatus=" + hotStatus +
+                '}';
+    }
+
 }
