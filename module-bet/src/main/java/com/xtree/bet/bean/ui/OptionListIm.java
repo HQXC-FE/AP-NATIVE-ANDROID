@@ -5,6 +5,7 @@ import android.os.Parcel;
 
 import com.xtree.bet.bean.response.im.OptionDataListInfo;
 import com.xtree.bet.bean.response.im.OptionInfo;
+import com.xtree.bet.bean.response.im.WagerSelection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +63,8 @@ public class OptionListIm implements OptionList {
     @Override
     public List<Option> getOptionList() {
         List<Option> optionList = new ArrayList<>();
-        for (OptionInfo optionInfo : optionDataListInfo.op) {
-            optionList.add(new OptionIm(optionInfo));
+        for (WagerSelection wagerSelection : optionDataListInfo.op) {
+            optionList.add(new OptionIm(wagerSelection));
         }
         return optionList;
     }

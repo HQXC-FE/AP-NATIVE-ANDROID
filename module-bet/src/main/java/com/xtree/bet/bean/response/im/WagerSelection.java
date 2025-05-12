@@ -5,40 +5,39 @@ import android.os.Parcel;
 import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
 
-import java.util.Date;
 import java.util.List;
 
 public class WagerSelection implements BaseBean {
 
     @SerializedName("WagerSelectionId")
-    private long wagerSelectionId;
+    public long wagerSelectionId;
 
     @SerializedName("SelectionId")
-    private int selectionId;
+    public int selectionId;
 
     @SerializedName("SelectionName")
-    private String selectionName;
+    public String selectionName;
 
     @SerializedName("Handicap")
-    private double handicap;
+    public double handicap;
 
     @SerializedName("DisplayHandicap")
-    private String displayHandicap;
+    public String displayHandicap;
 
     @SerializedName("Specifiers")
-    private String specifiers;
+    public String specifiers;
 
     @SerializedName("OddsType")
-    private int oddsType;
+    public int oddsType;
 
     @SerializedName("Odds")
-    private double odds;
+    public double odds;
 
     @SerializedName("PreBoostOdds")
-    private String preBoostOdds;
+    public String preBoostOdds;
 
     @SerializedName("OddsList")
-    private List<OddsList> oddsList;
+    public List<OddsList> oddsList;
 
     public WagerSelection() {
     }

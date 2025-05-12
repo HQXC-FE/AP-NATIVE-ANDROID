@@ -11,31 +11,31 @@ import java.util.List;
 public class MarketLine implements BaseBean {
 
     @SerializedName("MarketlineId")
-    private long marketlineId;
+    public long marketlineId;
 
     @SerializedName("BetTypeId")
-    private int betTypeId;
+    public int betTypeId;
 
     @SerializedName("BetTypeName")
-    private String betTypeName;
+    public String betTypeName;
 
     @SerializedName("PeriodId")
-    private int periodId;
+    public int periodId;
 
     @SerializedName("PeriodName")
-    private String periodName;
+    public String periodName;
 
     @SerializedName("MarketLineLevel")
-    private int marketLineLevel;
+    public int marketLineLevel;
 
     @SerializedName("MarketlineStatusId")
-    private int marketlineStatusId;
+    public int marketlineStatusId;
 
     @SerializedName("IsLocked")
-    private boolean isLocked;
+    public boolean isLocked;
 
     @SerializedName("WagerSelections")
-    private List<WagerSelection> wagerSelections;
+    public List<WagerSelection> wagerSelections;
 
     public MarketLine() {
     }

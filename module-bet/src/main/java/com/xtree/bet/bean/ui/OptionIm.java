@@ -2,8 +2,10 @@ package com.xtree.bet.bean.ui;
 
 import android.os.Parcel;
 
+import com.xtree.bet.bean.response.im.MarketLine;
 import com.xtree.bet.bean.response.im.OptionDataListInfo;
 import com.xtree.bet.bean.response.im.OptionInfo;
+import com.xtree.bet.bean.response.im.WagerSelection;
 import com.xtree.bet.constant.SPKey;
 
 import java.math.BigDecimal;
@@ -14,26 +16,34 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 public class OptionIm implements Option {
     private String className;
     private int change;
-    private OptionInfo mOptionInfo;
+    private WagerSelection mOptionInfo;
+    private MarketLine marketLine;
 
     private String code;
 
     private OptionDataListInfo optionList;
 
-    public OptionIm(OptionInfo optionInfo) {
+    public OptionIm(WagerSelection optionInfo) {
         this.mOptionInfo = optionInfo;
         this.className = getClass().getSimpleName();
     }
 
-    public OptionIm(OptionInfo optionInfo, OptionDataListInfo optionList) {
+    public OptionIm(WagerSelection optionInfo, OptionDataListInfo optionList) {
         this.mOptionInfo = optionInfo;
         this.optionList = optionList;
         this.className = getClass().getSimpleName();
     }
 
+    public OptionIm(WagerSelection optionInfo, OptionDataListInfo optionList, MarketLine marketLine){
+        this.mOptionInfo = optionInfo;
+        this.optionList = optionList;
+        this.marketLine = marketLine;
+        this.className = getClass().getSimpleName();
+    }
+
     @Override
     public String getId() {
-        return "";
+        return String.valueOf(mOptionInfo.wagerSelectionId);
     }
 
     /**
@@ -43,14 +53,14 @@ public class OptionIm implements Option {
         if (mOptionInfo == null) {
             return "";
         }
-        return mOptionInfo.na;
+        return mOptionInfo.getSelectionName();
     }
 
     /**
      * 选项简称(全名or简名，订单相关为全名，否则为简名)， 赔率列表一般都用简称展示
      */
     public String getSortName() {
-        return mOptionInfo.nm;
+        return mOptionInfo.selectionName;
     }
 
     /**
@@ -59,7 +69,7 @@ public class OptionIm implements Option {
      * @return
      */
     public String getOptionType() {
-        return String.valueOf(mOptionInfo.ty);
+        return String.valueOf(mOptionInfo.getOddsType());
     }
 
     /**
@@ -67,29 +77,29 @@ public class OptionIm implements Option {
      */
     public double getUiShowOdd() {
         if (isHongKongMarket()) {
-            BigDecimal bg = new BigDecimal(mOptionInfo.od - 1);
+            BigDecimal bg = new BigDecimal(mOptionInfo.odds - 1);
             return bg.setScale(2, RoundingMode.HALF_UP).doubleValue();
         }
-        return mOptionInfo.od;
+        return mOptionInfo.odds;
     }
 
     @Override
     public double getRealOdd() {
-        return mOptionInfo.od;
+        return mOptionInfo.odds;
     }
 
     /**
      * 赔率
      */
     public double getBodd() {
-        return mOptionInfo.bod;
+        return mOptionInfo.odds;
     }
 
     /**
      * 赔率类型
      */
     public int getOddType() {
-        return mOptionInfo.odt;
+        return mOptionInfo.getOddsType();
     }
 
     /**
@@ -112,12 +122,14 @@ public class OptionIm implements Option {
      * 选项结算结果，仅虚拟体育展示
      */
     public int getSettlementResult() {
-        return mOptionInfo.otcm;
+        //return mOptionInfo.otcm;
+        return 0;
     }
 
     @Override
     public boolean setSelected(boolean isSelected) {
-        return mOptionInfo.isSelected = isSelected;
+        //return mOptionInfo.isSelected = isSelected;
+        return false;
     }
 
     /**
@@ -127,7 +139,8 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isSelected() {
-        return mOptionInfo.isSelected;
+        //return mOptionInfo.isSelected;
+        return false;
     }
 
     /**
@@ -137,7 +150,8 @@ public class OptionIm implements Option {
      */
     @Override
     public String getLine() {
-        return mOptionInfo.li;
+        //return mOptionInfo.li;
+        return "";
     }
 
     /**
@@ -169,7 +183,7 @@ public class OptionIm implements Option {
     public void setChange(double oldOdd) {
         change = oldOdd < getRealOdd() ? 1 : oldOdd > getRealOdd() ? -1 : 0;
         //Log.e("test", "===========" + change);
-        mOptionInfo.change = change;
+        //mOptionInfo.change = change;
     }
 
     /**
@@ -179,7 +193,8 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isUp() {
-        return mOptionInfo.change == 1;
+        //return mOptionInfo.change == 1;
+        return false;
     }
 
     /**
@@ -189,12 +204,13 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isDown() {
-        return mOptionInfo.change == -1;
+        //return mOptionInfo.change == -1;
+        return false;
     }
 
     @Override
     public void reset() {
-        mOptionInfo.change = 0;
+       // mOptionInfo.change = 0;
     }
 
     /**

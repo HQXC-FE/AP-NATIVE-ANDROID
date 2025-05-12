@@ -4,9 +4,12 @@ import android.os.Parcel;
 import android.text.TextUtils;
 
 import com.xtree.base.utils.TimeUtils;
+import com.xtree.bet.bean.response.im.MarketLine;
+import com.xtree.bet.bean.response.im.OddsList;
 import com.xtree.bet.bean.response.im.OptionDataListInfo;
 import com.xtree.bet.bean.response.im.OptionInfo;
 import com.xtree.bet.bean.response.im.PlayTypeInfo;
+import com.xtree.bet.bean.response.im.WagerSelection;
 import com.xtree.bet.constant.PMConstants;
 
 
@@ -15,21 +18,21 @@ import java.util.List;
 
 public class PlayTypeIm implements PlayType{
     private String className;
-    private PlayTypeInfo playTypeInfo;
+    private MarketLine marketLine;
 
-    public PlayTypeIm(PlayTypeInfo playTypeInfo){
-        this.playTypeInfo = playTypeInfo;
+    public PlayTypeIm(MarketLine marketLine){
+        this.marketLine = marketLine;
         this.className = getClass().getSimpleName();
     }
 
     @Override
     public String getId() {
-        return playTypeInfo.hpid;
+        return String.valueOf(marketLine.getMarketlineId());
     }
 
     @Override
     public String getMarketId() {
-        return String.valueOf(playTypeInfo.hid);
+        return String.valueOf(marketLine.getMarketlineId());
     }
 
     /**
@@ -38,7 +41,7 @@ public class PlayTypeIm implements PlayType{
      */
     @Override
     public int getPlayType() {
-        return Integer.parseInt(playTypeInfo.hpid);
+        return marketLine.getBetTypeId();
     }
     /**
      * 获取玩法名称
@@ -46,29 +49,26 @@ public class PlayTypeIm implements PlayType{
      */
     @Override
     public String getPlayTypeName() {
-        if(!TextUtils.isEmpty(playTypeInfo.hpn)){
-            return playTypeInfo.hpn;
-        }else{
-            return playTypeInfo.hps;
-        }
+        return marketLine.getBetTypeName();
     }
 
-    public PlayTypeInfo getPlayTypeInfo(){
-        return playTypeInfo;
+    public MarketLine getPlayTypeInfo(){
+        return marketLine;
     }
 
     @Override
     public String setPlayTypeName(String playTypeName) {
-        return playTypeInfo.hpn = playTypeName;
+        marketLine.setBetTypeName(playTypeName);
+        return marketLine.getBetTypeName();
     }
 
     @Override
     public List<OptionList> getOptionLists() {
         List<OptionList> optionLists = new ArrayList<>();
-        if(playTypeInfo != null && playTypeInfo.hl != null) {
-            for (OptionDataListInfo optionDataListInfo : playTypeInfo.hl) {
-//                optionLists.add(new OptionListIm(optionDataListInfo, playTypeInfo));
-            }
+        if(marketLine != null && marketLine.getWagerSelections() != null) {
+//            for (OptionDataListInfo optionDataListInfo : marketLine.getWagerSelections()) {
+////                optionLists.add(new OptionListIm(optionDataListInfo, playTypeInfo));
+//            }
         }
         return optionLists;
     }
@@ -79,9 +79,9 @@ public class PlayTypeIm implements PlayType{
     @Override
     public List<Option> getOptionList(String sportId) {
         List<Option> optionList = new ArrayList<>();
-        int length = playTypeInfo.hpn.contains("独赢") && TextUtils.equals(PMConstants.SPORT_ID_FB, sportId) || TextUtils.equals(PMConstants.SPORT_ID_ICEQ, sportId) ? 3 : 2;
+        int length = marketLine.getBetTypeName().contains("独赢") && TextUtils.equals(PMConstants.SPORT_ID_FB, sportId) || TextUtils.equals(PMConstants.SPORT_ID_ICEQ, sportId) ? 3 : 2;
 
-        if(playTypeInfo != null && playTypeInfo.hl != null && !playTypeInfo.hl.isEmpty()) {
+        if(marketLine != null && marketLine.getWagerSelections() != null && !marketLine.getWagerSelections().isEmpty()) {
             for (int i = 0; i < length; i++) {
 //                OptionInfo optionInfo;
 //                try{
@@ -111,22 +111,22 @@ public class PlayTypeIm implements PlayType{
     @Override
     public List<Option> getChampionOptionList() {
         List<Option> optionList = new ArrayList<>();
-//        if(playTypeInfo != null && playTypeInfo.ol != null && !playTypeInfo.ol.isEmpty()) {
-//            for (OptionInfo optionInfo : playTypeInfo.ol) {
-//                OptionDataListInfo optionDataListInfo = new OptionDataListInfo();
-//                optionDataListInfo.hs = playTypeInfo.hs;
-//                optionDataListInfo.hmt = 3;
-//                optionList.add(new OptionIm(optionInfo, optionDataListInfo, playTypeInfo));
-//            }
-//        }
+        if(marketLine != null && marketLine.getWagerSelections() != null && !marketLine.getWagerSelections().isEmpty()) {
+            for(WagerSelection wagerSelection: marketLine.getWagerSelections()){
+            //for (OddsList optionInfo : wagerSelection.oddsList) {
+                OptionDataListInfo optionDataListInfo = new OptionDataListInfo();
+                optionDataListInfo.hs = marketLine.isLocked ? 1 : 0;
+                optionDataListInfo.hmt = marketLine.betTypeId;
+                optionList.add(new OptionIm(wagerSelection, optionDataListInfo, marketLine));
+            }
+        }
         return optionList;
     }
 
     @Override
     public int getPlayPeriod() {
-        return Integer.parseInt(playTypeInfo.hpid);
+        return marketLine.getPeriodId();
     }
-
 
     /**
      * 获取盘口组标签集合
@@ -142,12 +142,13 @@ public class PlayTypeIm implements PlayType{
      */
     @Override
     public String getCategoryId() {
-        return playTypeInfo.hlid;
+        return String.valueOf(marketLine.getMarketlineId());
     }
 
     @Override
     public String getMatchDeadLine() {
-        return TimeUtils.longFormatString(Long.valueOf(playTypeInfo.hmed), TimeUtils.FORMAT_YY_MM_DD_HH_MM_1);
+        //return TimeUtils.longFormatString(Long.valueOf(playTypeInfo.hmed), TimeUtils.FORMAT_YY_MM_DD_HH_MM_1);
+        return ""; //未找到对应
     }
 
     @Override
@@ -158,17 +159,17 @@ public class PlayTypeIm implements PlayType{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.className);
-        dest.writeParcelable(this.playTypeInfo, flags);
+        dest.writeParcelable(this.marketLine, flags);
     }
 
     public void readFromParcel(Parcel source) {
         this.className = source.readString();
-        this.playTypeInfo = source.readParcelable(PlayTypeInfo.class.getClassLoader());
+        this.marketLine = source.readParcelable(PlayTypeInfo.class.getClassLoader());
     }
 
     protected PlayTypeIm(Parcel in) {
         this.className = in.readString();
-        this.playTypeInfo = in.readParcelable(PlayTypeInfo.class.getClassLoader());
+        this.marketLine = in.readParcelable(PlayTypeInfo.class.getClassLoader());
     }
 
     public static final Creator<PlayTypeIm> CREATOR = new Creator<PlayTypeIm>() {

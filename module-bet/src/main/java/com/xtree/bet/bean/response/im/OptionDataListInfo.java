@@ -29,9 +29,19 @@ public class OptionDataListInfo implements BaseBean {
      */
     public String li;
     /**
+     * 盘口状态
+     */
+    public int hs;
+    /**
+     * 盘口类型：0-滚球，1-早盘
+     */
+    public int hmt;
+    /**
      * 玩法选项
      */
-    public List<OptionInfo> op = new ArrayList<>();
+    public List<WagerSelection> op = new ArrayList<>();
+
+
 
     @Override
     public int describeContents() {
@@ -54,7 +64,7 @@ public class OptionDataListInfo implements BaseBean {
         this.au = source.readInt();
         this.mbl = source.readInt();
         this.li = source.readString();
-        this.op = source.createTypedArrayList(OptionInfo.CREATOR);
+        this.op = source.createTypedArrayList(WagerSelection.CREATOR);
     }
 
     public OptionDataListInfo() {
@@ -66,7 +76,7 @@ public class OptionDataListInfo implements BaseBean {
         this.au = in.readInt();
         this.mbl = in.readInt();
         this.li = in.readString();
-        this.op = in.createTypedArrayList(OptionInfo.CREATOR);
+        this.op = in.createTypedArrayList(WagerSelection.CREATOR);
     }
 
     public static final Creator<OptionDataListInfo> CREATOR = new Creator<OptionDataListInfo>() {

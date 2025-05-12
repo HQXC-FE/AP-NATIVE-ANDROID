@@ -264,10 +264,10 @@ public class MatchIm implements Match {
      */
     public List<PlayType> getPlayTypeList() {
         List<PlayType> playTypeList = new ArrayList<>();
-//        for (MarketLine marketLine : matchInfo.marketLines) {
-//            PlayTypeIm playTypeIm = new PlayTypeIm(playTypeInfo);
-//            playTypeList.add(playTypePm);
-//        }
+        for (MarketLine marketLine : matchInfo.marketLines) {
+            PlayTypeIm playTypeIm = new PlayTypeIm(marketLine);
+            playTypeList.add(playTypeIm);
+        }
         return playTypeList;
     }
 
