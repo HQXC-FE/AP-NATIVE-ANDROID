@@ -8,18 +8,17 @@ import com.xtree.bet.bean.request.im.DeltaEventInfoMbtReq;
 import com.xtree.bet.bean.request.im.EventInfoByPageRsq;
 import com.xtree.bet.bean.request.im.EventInfoMbtReq;
 import com.xtree.bet.bean.request.im.GetBetListReq;
-import com.xtree.bet.bean.request.im.GetStatement;
+import com.xtree.bet.bean.request.im.GetGetDeltaBetTradeReq;
+import com.xtree.bet.bean.request.im.GetStatementReq;
 import com.xtree.bet.bean.request.im.OutrightEventsReq;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
 import com.xtree.bet.bean.request.im.SelectedEventInfoReq;
 import com.xtree.bet.bean.request.im.StatementReq;
-import com.xtree.bet.bean.request.pm.BtCashOutBetReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
-import com.xtree.bet.bean.response.fb.T;
 import com.xtree.bet.bean.response.im.BetInfo;
-import com.xtree.bet.bean.response.im.BetList;
+import com.xtree.bet.bean.response.im.BetTrade;
 import com.xtree.bet.bean.response.im.DeltaEventListRsp;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
 import com.xtree.bet.bean.response.im.EventListRsp;
@@ -32,7 +31,6 @@ import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.response.im.StatementRsp;
 import com.xtree.bet.bean.response.im.Wager;
 import com.xtree.bet.bean.response.im.WagerListRsp;
-import com.xtree.bet.bean.response.pm.BtCashOutStatusInfo;
 import com.xtree.bet.bean.response.pm.BtRecordRsp;
 import com.xtree.bet.bean.response.pm.BtResultInfo;
 import com.xtree.bet.bean.response.pm.FrontListInfo;
@@ -86,7 +84,7 @@ public interface IMApiService {
     Flowable<BaseResponse<SportCountRsp>> getAllSportCount(@Body AllSportCountReq sportCountReq);
 
     /**
-     * 索取投注明细，投注记录（未结算）
+     * 投注记录（未结算）
      */
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
@@ -97,7 +95,14 @@ public interface IMApiService {
      */
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<List<Wager>>> getStatement(@Body GetStatement getBetListReq);
+    Flowable<BaseResponse<List<Wager>>> getStatement(@Body GetStatementReq getBetListReq);
+
+    /**
+     * 提前结算下注
+     */
+    @POST(forwardPath)
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<BetTrade>> getDeltaBetTrade(@Body GetGetDeltaBetTradeReq getBetListReq);
 
     /**
      * 索取所有竞赛计数
@@ -340,15 +345,6 @@ public interface IMApiService {
     @POST("/yewu11/v1/m/placeBet")
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Single<BaseResponse<PlaceBet>> placeBet(@Body Map<String, String> map);
-
-    /**
-     *以页数索取投注明细，投注记录
-     */
-    @POST("/yewu11/v1/m/getBetListByPage")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Single<BaseResponse<BetList>> getBetListByPage(@Body GetBetListReq getBetListReq);
-
-
 
     /**
      * 索取投注账目

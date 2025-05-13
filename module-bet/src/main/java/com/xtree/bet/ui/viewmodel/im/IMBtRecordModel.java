@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.bet.bean.request.im.GetBetListReq;
-import com.xtree.bet.bean.request.im.GetStatement;
+import com.xtree.bet.bean.request.im.GetStatementReq;
 import com.xtree.bet.bean.response.fb.BtResultInfo;
 import com.xtree.bet.bean.response.im.Wager;
 import com.xtree.bet.data.BetRepository;
@@ -69,7 +69,7 @@ public class IMBtRecordModel extends TemplateBtRecordModel {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String formattedDate = sdf.format(calendar.getTime());
-        GetStatement req = new GetStatement();
+        GetStatementReq req = new GetStatementReq();
         req.setStartDate(formattedDate);
         req.setEndDate(formattedDate);
         launchFlow(model.getIMApiService().getStatement(

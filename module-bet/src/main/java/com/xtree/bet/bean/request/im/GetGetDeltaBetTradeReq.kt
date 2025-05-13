@@ -1,12 +1,11 @@
 package com.xtree.bet.bean.request.im
 
-class GetStatement {
-    var api = "getStatement"
+class GetGetDeltaBetTradeReq {
+    var api = "GetDeltaBetTrade"
     var method = "post"
     var format = "json"
-    var LanguageCode = "CHS"//使用会员语言
-    var StartDate: String = ""
-    var EndDate: String = ""
+
+    var WagerIds= arrayListOf<String>()
 
     //后端统一处理
     var Token: String = ""
