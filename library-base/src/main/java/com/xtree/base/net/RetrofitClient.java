@@ -39,7 +39,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
  */
 public class RetrofitClient {
     //超时时间
-    private static final int DEFAULT_TIMEOUT = 40;
+    private static final int DEFAULT_TIMEOUT = 20;
     //缓存时间
     private static final int CACHE_TIMEOUT = 10 * 1024 * 1024;
     //服务端根路径
