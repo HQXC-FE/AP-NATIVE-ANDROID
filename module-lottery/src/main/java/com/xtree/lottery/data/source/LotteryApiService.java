@@ -6,6 +6,7 @@ import com.xtree.lottery.data.source.vo.LotteryChaseDetailVo;
 import com.xtree.lottery.data.source.vo.LotteryOrderVo;
 import com.xtree.lottery.data.source.vo.LotteryReportVo;
 import com.xtree.lottery.data.source.vo.MethodMenus;
+import com.xtree.lottery.data.source.vo.PollData;
 import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.data.source.vo.TraceInfoVo;
 
@@ -92,6 +93,12 @@ public interface LotteryApiService {
     @POST("/gameinfo/canceltask?client=m")
     @Headers({"Content-Type: application/json; charset=utf-8"})
     Flowable<CancelOrderVo> cancelTask(@Body Map<String, Object> map);
+
+    /**
+     * 轮询接口
+     */
+    @GET("/lp/{id}")
+    Flowable<BaseResponse<PollData>> getPoll(@Path("id") int id, @QueryMap Map<String, String> map);
 
     /**
      * GET

@@ -29,6 +29,7 @@ import com.xtree.lottery.data.source.vo.LotteryChaseDetailVo;
 import com.xtree.lottery.data.source.vo.LotteryOrderVo;
 import com.xtree.lottery.data.source.vo.LotteryReportVo;
 import com.xtree.lottery.data.source.vo.MethodMenus;
+import com.xtree.lottery.data.source.vo.PollData;
 import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.data.source.vo.SimulatedNumber;
 import com.xtree.lottery.data.source.vo.TraceInfoVo;
