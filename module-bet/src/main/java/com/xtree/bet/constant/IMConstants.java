@@ -71,47 +71,47 @@ public class IMConstants {
     /**
      * 体育分类ID-网球
      */
-    public static String SPORT_ID_WQ = "5";
+    public static String SPORT_ID_WQ = "3";
     /**
      * 体育分类ID-斯诺克
      */
-    public static String SPORT_ID_SNK = "7";
+    public static String SPORT_ID_SNK = "34";
     /**
      * 体育分类ID-棒球
      */
-    public static String SPORT_ID_BQ = "3";
+    public static String SPORT_ID_BQ = "8";
     /**
      * 体育分类ID-排球
      */
-    public static String SPORT_ID_PQ = "9";
+    public static String SPORT_ID_PQ = "40";
     /**
      * 体育分类ID-羽毛球
      */
-    public static String SPORT_ID_YMQ = "10";
+    public static String SPORT_ID_YMQ = "7";
     /**
      * 体育分类ID-美式足球
      */
-    public static String SPORT_ID_MSZQ = "6";
+    public static String SPORT_ID_MSZQ = "19";
     /**
      * 体育分类ID-乒乓球
      */
-    public static String SPORT_ID_BBQ = "8";
+    public static String SPORT_ID_BBQ = "36";
     /**
      * 体育分类ID-冰球
      */
-    public static String SPORT_ID_ICEQ = "4";
+    public static String SPORT_ID_ICEQ = "25";
     /**
      * 体育分类ID-拳击
      */
-    public static String SPORT_ID_QJ = "12";
+    public static String SPORT_ID_QJ = "11";
     /**
      * 体育分类ID-沙滩排球
      */
-    public static String SPORT_ID_STPQ = "39";
+    public static String SPORT_ID_STPQ = "9";
     /**
      * 体育分类ID-手球
      */
-    public static String SPORT_ID_SQ = "11";
+    public static String SPORT_ID_SQ = "23";
 
     /**
      * 比分类型-得分

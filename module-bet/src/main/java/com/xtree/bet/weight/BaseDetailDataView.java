@@ -1,6 +1,7 @@
 package com.xtree.bet.weight;
 
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_IM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
@@ -169,7 +170,9 @@ public abstract class BaseDetailDataView extends ConstraintLayout{
             }/* else if (sport.equals(FBConstants.SPORT_ID_SNK)) {
             return new SnkDataView(context, match);
             }*/
-        }else{
+        }else if (TextUtils.equals(platform, PLATFORM_IM)){
+
+        } else{
             if (sport.equals(PMConstants.SPORT_ID_FB)) {
                 return new com.xtree.bet.weight.pm.FbDataView(context, match, isMatchList);
             } else if (sport.equals(PMConstants.SPORT_ID_BSB)) {
