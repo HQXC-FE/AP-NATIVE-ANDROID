@@ -1,8 +1,6 @@
 package com.xtree.bet.ui.viewmodel.callback;
 
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 
 import android.text.TextUtils;
@@ -202,20 +200,11 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
             if (error.isHttpError) {
                 UploadExcetionReq uploadExcetionReq = new UploadExcetionReq();
 
-                String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
-                String domainUrl = null;
-                if (TextUtils.equals(platform, PLATFORM_PMXC)) {
-                    domainUrl = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_API_SERVICE_URL);
-                    uploadExcetionReq.setLogTag("pmzy_url_error");
-                } else if (TextUtils.equals(platform, PLATFORM_PM)) {
-                    domainUrl = SPUtils.getInstance().getString(SPKeyGlobal.PM_API_SERVICE_URL);
-                    uploadExcetionReq.setLogTag("pm_url_error");
-                }
-
-                uploadExcetionReq.setLogTag("pm_url_error");
-                uploadExcetionReq.setApiUrl(domainUrl);
-                uploadExcetionReq.setLogType("" + ((BusinessException) t).code);
-                uploadExcetionReq.setMsg(((BusinessException) t).message);
+//                domainUrl = SPUtils.getInstance().getString(SPKeyGlobal.PM_API_SERVICE_URL);
+//                uploadExcetionReq.setLogTag("pm_url_error");
+//                uploadExcetionReq.setApiUrl(domainUrl);
+//                uploadExcetionReq.setLogType("" + ((BusinessException) t).code);
+//                uploadExcetionReq.setMsg(((BusinessException) t).message);
                 mViewModel.firstNetworkExceptionData.postValue(uploadExcetionReq);
             } else if (error.code == CodeRule.CODE_401026 || error.code == CodeRule.CODE_401013) {
                 mViewModel.getGameTokenApi();

@@ -8,6 +8,7 @@ import com.xtree.bet.bean.response.im.MarketLine;
 import com.xtree.bet.bean.response.im.MarketLine;
 import com.xtree.bet.bean.response.im.OddsList;
 import com.xtree.bet.bean.response.im.OptionDataListInfo;
+import com.xtree.bet.bean.response.im.OptionInfo;
 import com.xtree.bet.bean.response.im.PlayTypeInfo;
 import com.xtree.bet.bean.response.im.RecommendedEvent;
 import com.xtree.bet.bean.response.im.WagerSelection;
@@ -66,7 +67,7 @@ public class PlayTypeIm implements PlayType {
      */
     @Override
     public String getPlayTypeName() {
-        return marketLine.getBetTypeName();
+        return marketLine.getPeriodName() + marketLine.getBetTypeName();
     }
 
     public MarketLine getPlayTypeInfo(){
@@ -101,18 +102,22 @@ public class PlayTypeIm implements PlayType {
 
         if(marketLine != null && marketLine.getWagerSelections() != null && !marketLine.getWagerSelections().isEmpty()) {
             for (int i = 0; i < length; i++) {
-//                OptionInfo optionInfo;
-//                try{
-//                    optionInfo = playTypeInfo.hl.get(0).ol.get(i);
-//                }catch (Exception e){
-//                    optionInfo = null;
-//                }
-//
-//                if(optionInfo == null){
-//                    optionList.add(null);
-//                }else{
-//                    optionList.add(new OptionPm(optionInfo, playTypeInfo.hl.get(0), playTypeInfo));
-//                }
+                OptionInfo optionInfo;
+                WagerSelection wagerSelection = marketLine.wagerSelections.get(i);;
+                try{
+                    optionInfo = new OptionInfo();
+                    optionInfo.setTy(wagerSelection.selectionId);
+                    optionInfo.setBod(wagerSelection.odds);
+                    optionInfo.setOdt(wagerSelection.oddsType);
+                }catch (Exception e){
+                    optionInfo = null;
+                }
+
+                if(optionInfo == null){
+                    optionList.add(null);
+                }else{
+                    optionList.add(new OptionIm(wagerSelection, marketLine));
+                }
             }
         }else{
             for (int i = 0; i < length; i++) {
@@ -135,7 +140,7 @@ public class PlayTypeIm implements PlayType {
                 OptionDataListInfo optionDataListInfo = new OptionDataListInfo();
                 optionDataListInfo.hs = marketLine.isLocked ? 1 : 0;
                 optionDataListInfo.hmt = marketLine.betTypeId;
-                optionList.add(new OptionIm(wagerSelection, optionDataListInfo, marketLine));
+                optionList.add(new OptionIm(wagerSelection, marketLine));
             }
         }
         return optionList;

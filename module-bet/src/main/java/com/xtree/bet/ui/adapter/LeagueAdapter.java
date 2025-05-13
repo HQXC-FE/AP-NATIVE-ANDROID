@@ -7,6 +7,7 @@ import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.R;
@@ -370,6 +372,8 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         }
 
         List<PlayGroup> playGroupList = playGroup.getPlayGroupList(match.getSportId());
+        CfLog.d("=============== LeagueAdapter playGroupList  ==============="+playGroupList.size());
+        CfLog.d("=============== LeagueAdapter match.getSportId()  ==============="+match.getSportId());
 
         if (!playGroupList.isEmpty()) {
 
@@ -453,7 +457,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         ViewGroup.LayoutParams params = rootPlayType.getLayoutParams();
         params.width = parent.getWidth() / 2 / 3;
         rootPlayType.setLayoutParams(params);
-
+        CfLog.d("=================== LeagueAdapter setPlayTypeGroup playType.getPlayTypeName() =================="+playType.getPlayTypeName());
         for (int j = 0; j < rootPlayType.getChildCount(); j++) {
             View view = rootPlayType.getChildAt(j);
             if (view instanceof TextView) {
@@ -462,6 +466,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
                 LinearLayout optionView = (LinearLayout) view;
                 List<Option> options = playType.getOptionList(match.getSportId());
+
                 if (j - 1 == playType.getOptionList(match.getSportId()).size()) {
                     optionView.setVisibility(View.GONE);
                 } else {
@@ -474,8 +479,9 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                     }
                     TextView uavailableTextView = (TextView) optionView.getChildAt(0);
                     TextView nameTextView = (TextView) optionView.getChildAt(1);
+                    nameTextView.setBackgroundColor(Color.BLUE);
                     DiscolourTextView oddTextView = (DiscolourTextView) optionView.getChildAt(2);
-
+                    CfLog.d("=================== LeagueAdapter setPlayTypeGroup option =================="+option);
                     if (option == null) {
                         uavailableTextView.setVisibility(View.VISIBLE);
                         oddTextView.setVisibility(View.GONE);
@@ -505,6 +511,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                             }
                             oddTextView.setOptionOdd(option);
                             BetConfirmOption betConfirmOption = BetConfirmOptionUtil.getInstance(match, playType, optionList, option);
+                            CfLog.d("=================== LeagueAdapter BetConfirmOption betConfirmOption =================="+betConfirmOption.toString());
                             optionView.setTag(betConfirmOption);
                             if (BtCarManager.isCg()) {
                                 boolean has = BtCarManager.has(betConfirmOption);

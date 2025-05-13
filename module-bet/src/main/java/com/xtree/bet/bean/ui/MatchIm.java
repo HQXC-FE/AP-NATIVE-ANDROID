@@ -197,10 +197,12 @@ public class MatchIm implements Match {
 //                }
 //            }
 //        }
-        int homeScore = matchInfo.relatedScores.get(0).homeScore;
-        int awayScore = matchInfo.relatedScores.get(0).awayScore;
-        sc.add(homeScore);
-        sc.add(awayScore);
+        if(matchInfo != null && matchInfo.relatedScores != null && matchInfo.relatedScores.size() > 0){
+            int homeScore = matchInfo.relatedScores.get(0).homeScore;
+            int awayScore = matchInfo.relatedScores.get(0).awayScore;
+            sc.add(homeScore);
+            sc.add(awayScore);
+        }
         return sc;
     }
 
@@ -274,9 +276,12 @@ public class MatchIm implements Match {
     public List<PlayType> getPlayTypeList() {
         List<PlayType> playTypeList = new ArrayList<>();
         for (MarketLine marketLine : matchInfo.marketLines) {
-            PlayTypeIm playTypeIm = new PlayTypeIm(marketLine);
-            playTypeList.add(playTypeIm);
+            if(marketLine.marketLineLevel == 1){
+                PlayTypeIm playTypeIm = new PlayTypeIm(marketLine);
+                playTypeList.add(playTypeIm);
+            }
         }
+        CfLog.d("============= MatchIm  playTypeList ================="+playTypeList);
         return playTypeList;
     }
 
@@ -423,12 +428,12 @@ public class MatchIm implements Match {
     @Override
     public boolean isGoingon() {
         String state = matchInfo.rbTime;
-        CfLog.d("================= MatchIm isGoingon state ================"+state);
+        //CfLog.d("================= MatchIm isGoingon state ================"+state);
         if (state != null && !state.trim().isEmpty()) {
             String[] parts = state.trim().split("\\s+");
             if (parts.length > 0) {
                 String period = state.split(" ")[0];
-                CfLog.d("================= MatchIm isGoingon period ================"+period);
+                //CfLog.d("================= MatchIm isGoingon period ================"+period);
                 if (String.valueOf(period).equals("!Live") || String.valueOf(period).equals("HT") || String.valueOf(period).equals("FT")) {
                     return false;
                 } else {

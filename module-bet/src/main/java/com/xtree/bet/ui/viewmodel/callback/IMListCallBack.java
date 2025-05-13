@@ -18,7 +18,7 @@ import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.MatchIm;
 import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.PlayGroup;
-import com.xtree.bet.bean.ui.PlayGroupPm;
+import com.xtree.bet.bean.ui.PlayGroupIm;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.ui.activity.MainActivity;
 import com.xtree.bet.ui.viewmodel.im.ImMainViewModel;
@@ -288,12 +288,15 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     }
 
     private List<Option> getMatchOptionList(List<Match> matchList) {
+        CfLog.d("================ IMlistCallBack getMatchOptionList ==============");
         List<Option> optionList = new ArrayList<>();
         for (Match match : matchList) {
-            PlayGroup newPlayGroup = new PlayGroupPm(match.getPlayTypeList());
+            CfLog.d("================ IMlistCallBack match.getPlayTypeList() =============="+match.getPlayTypeList());
+            PlayGroup newPlayGroup = new PlayGroupIm(match.getPlayTypeList());
 
             for (PlayType playType : newPlayGroup.getPlayTypeList()) {
                 playType.getOptionLists();
+                CfLog.d("================ IMlistCallBack match.getSportId() =============="+match.getSportId());
                 for (Option option : playType.getOptionList(match.getSportId())) {
                     if (option == null) {
                         continue;
@@ -308,6 +311,7 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
                 }
             }
         }
+        CfLog.d("================ IMlistCallBack getMatchOptionList optionList =============="+optionList.size());
         return optionList;
     }
 
