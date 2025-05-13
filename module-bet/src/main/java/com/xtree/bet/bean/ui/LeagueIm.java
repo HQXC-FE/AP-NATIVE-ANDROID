@@ -1,14 +1,13 @@
 package com.xtree.bet.bean.ui;
 
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
-import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
 import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.text.TextUtils;
 
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.utils.CfLog;
 import com.xtree.bet.bean.response.im.LeagueInfo;
 
 import java.util.ArrayList;
@@ -56,9 +55,9 @@ public class LeagueIm implements League{
     public String getIcon() {
         String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
         String domain = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_IMG_SERVICE_URL);
-        if (TextUtils.equals(platform, PLATFORM_PM) || TextUtils.equals(platform, PLATFORM_PMXC)) {
+        //if (TextUtils.equals(platform, PLATFORM_PM) || TextUtils.equals(platform, PLATFORM_PMXC)) {
             domain = SPUtils.getInstance().getString(SPKeyGlobal.PM_IMG_SERVICE_URL);
-        }
+        //}
 
         if(TextUtils.isEmpty(leagueInfo.picUrlthumb)){
             return "";
@@ -244,4 +243,20 @@ public class LeagueIm implements League{
             return new LeagueIm[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "LeagueIm{" +
+                "isExpand=" + isExpand +
+                ", isHead=" + isHead +
+                ", isSelected=" + isSelected +
+                ", matchCount=" + matchCount +
+                ", sort=" + sort +
+                ", leagueName='" + leagueName + '\'' +
+                ", headType=" + headType +
+                ", leagueInfo=" + (leagueInfo != null ? leagueInfo.toString() : "null") +
+                ", matchListSize=" + (matchList != null ? matchList.size() : 0) +
+                '}';
+    }
+
 }

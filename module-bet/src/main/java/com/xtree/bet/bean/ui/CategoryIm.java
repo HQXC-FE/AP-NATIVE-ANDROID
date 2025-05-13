@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryIm implements Category{
-    private List<PlayType> playTypeList = new ArrayList<>();
+    private final List<PlayType> playTypeList = new ArrayList<>();
     /**
      * marketName : 热门
      * orderNo : 1

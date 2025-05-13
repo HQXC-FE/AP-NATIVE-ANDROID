@@ -1,5 +1,7 @@
 package com.xtree.bet.bean.ui;
 
+import com.xtree.base.utils.CfLog;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +29,9 @@ public class PlayGroupIm implements PlayGroup{
     }
 
     public List<PlayGroup> getPlayGroupList(String sportId) {
-
+//        CfLog.d("================ getPlayGroupList ===============");
+//        Thread.dumpStack();
+//        CfLog.d("================ getPlayGroupList ===============");
         List<PlayGroup> playGroupList = new ArrayList<>();
         PlayGroupIm playGroup = null;
         for (int i = 0; i < playTypeList.size(); i++) {

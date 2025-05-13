@@ -3,7 +3,6 @@ package com.xtree.bet.bean.ui;
 import android.os.Parcel;
 
 import com.xtree.bet.bean.response.im.MarketLine;
-import com.xtree.bet.bean.response.im.OddsListItem;
 import com.xtree.bet.bean.response.im.OptionDataListInfo;
 import com.xtree.bet.bean.response.im.OptionInfo;
 import com.xtree.bet.bean.response.im.WagerSelection;
@@ -36,12 +35,12 @@ public class OptionIm implements Option {
         this.className = getClass().getSimpleName();
     }
 
-    public OptionIm(WagerSelection optionInfo, OptionDataListInfo optionList, MarketLine marketLine){
-        this.mOptionInfo = optionInfo;
-        this.optionList = optionList;
-        this.marketLine = marketLine;
-        this.className = getClass().getSimpleName();
-    }
+//    public OptionIm(WagerSelection optionInfo, OptionDataListInfo optionList, MarketLine marketLine){
+//        this.mOptionInfo = optionInfo;
+//        this.optionList = optionList;
+//        this.marketLine = marketLine;
+//        this.className = getClass().getSimpleName();
+//    }
 
     @Override
     public String getId() {
@@ -269,4 +268,17 @@ public class OptionIm implements Option {
             return new OptionIm[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "OptionIm{" +
+                "className='" + className + '\'' +
+                ", change=" + change +
+                ", mOptionInfo=" + mOptionInfo +
+                ", code='" + code + '\'' +
+                ", marketLine=" + marketLine +
+                ", optionList=" + optionList +
+                '}';
+    }
+
 }

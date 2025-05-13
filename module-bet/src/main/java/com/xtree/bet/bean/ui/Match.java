@@ -149,11 +149,15 @@ public interface Match extends BaseBean {
      * @return
      */
     boolean isGoingon();
+
     /**
      * 获取开赛时间
+     *
      * @return
      */
-    long getMatchTime();
+    default long getMatchTime() {
+        return 0;
+    }
 
     /**
      * 是否冠军赛事

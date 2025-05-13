@@ -28,6 +28,7 @@ public class IMMarketTag {
             map.put("o", "其它");
             map.put("q", "节");
             map.put("t", "15分钟");
+            map.put("period","时段"); //IM新增时段
             map.put("j", "赛局");
             map.put("set", "赛盘");
             map.put("qu", "前二组合");

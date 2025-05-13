@@ -21,6 +21,7 @@ import com.xtree.bet.bean.response.im.Event;
 import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.MarketLine;
 import com.xtree.bet.bean.response.im.RecommendedEvent;
+import com.xtree.bet.bean.response.im.WagerSelection;
 import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.CategoryFb;
 import com.xtree.bet.bean.ui.CategoryIm;
@@ -88,7 +89,6 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
         if (matchInfo.getSports().isEmpty()) {
             return categoryList;
         }
-
         CategoryIm categoryAll = new CategoryIm(IMMarketTag.getMarketTag("all"));
         categoryMap.put("all", categoryAll);
         categoryList.add(categoryAll);
@@ -97,27 +97,22 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
         List<RecommendedEvent> events = sport.getEvents();
 
         for (RecommendedEvent event : events) {
+            //分配分组，设置GroupName
+            IMOrganizedMarkLinesManager.shared.organizedMarkLinesWith(sport, event);
             for (MarketLine marketLine : event.getMarketLines()) {
                 marketLine.setOpenParlay(event.openParlay); //里面新增一个是否串关的字段
                 PlayTypeIm playType = new PlayTypeIm(marketLine, event);
                 categoryAll.addPlayTypeList(playType);
-
-
+                String name = marketLine.getBetTypeGroupName();
+                if (categoryMap.get(name) == null) {
+                    Category category = new CategoryIm(IMMarketTag.getMarketTag(name));
+                    categoryMap.put(name, category);
+                    categoryList.add(category);
+                }
+                categoryMap.get(name).addPlayTypeList(playType);
             }
         }
 
-//        for (PlayTypeInfo playTypeInfo : matchInfo.mg) {
-//            PlayTypeFb playType = new PlayTypeFb(playTypeInfo);
-//            categoryAll.addPlayTypeList(playType);
-//            for (String type : playTypeInfo.tps) {
-//                if (categoryMap.get(type) == null) {
-//                    Category category = new CategoryFb(FBMarketTag.getMarketTag(type));
-//                    categoryMap.put(type, category);
-//                    categoryList.add(category);
-//                }
-//                categoryMap.get(type).addPlayTypeList(playType);
-//            }
-//        }
         if (mCategoryMap.isEmpty()) {
             mCategoryMap = categoryMap;
             mCategoryList = categoryList;

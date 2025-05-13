@@ -1,6 +1,7 @@
 package com.xtree.bet.bean.response.im;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.xtree.base.vo.BaseBean;
 
@@ -8,47 +9,68 @@ import com.xtree.base.vo.BaseBean;
  * 玩法选项
  */
 public class OptionInfo implements BaseBean {
+
     /**
      * 选项全称，投注框一般用全称展示
      */
-    public String na;
+    private String na;
+
     /**
      * 选项简称(全名or简名，订单相关为全名，否则为简名)， 赔率列表一般都用简称展示
      */
-    public String nm;
+    private String nm;
+
     /**
      * 选项类型，主、客、大、小等，投注时需要提交该字段作为选中的选项参数
      */
-    public int ty;
+    private int ty;
+
     /**
      * 欧盘赔率，目前我们只提供欧洲盘赔率，投注是请提交该字段赔率值作为选项赔率，赔率小于0代表锁盘
      */
-    public double od;
+    private double od;
+
     /**
      * 赔率
      */
-    public double bod;
+    private double bod;
+
     /**
      * 赔率类型
      */
-    public int odt;
+    private int odt;
+
     /**
      * 选项结算结果，仅虚拟体育展示
      */
-    public int otcm;
+    private int otcm;
+
     /**
      * 是否选中
      */
-    public boolean isSelected;
-    /**
-     * 	line值，带线玩法的线，例如大小球2.5线，部分玩法展示可用该字段进行分组展示
-     */
-    public String li;
-    public int change;
+    private boolean isSelected;
 
-    @Override
-    public int describeContents() {
-        return 0;
+    /**
+     * line值，带线玩法的线，例如大小球2.5线，部分玩法展示可用该字段进行分组展示
+     */
+    private String li;
+
+    private int change;
+
+    public OptionInfo() {
+    }
+
+    protected OptionInfo(Parcel in) {
+        this.na = in.readString();
+        this.nm = in.readString();
+        this.ty = in.readInt();
+        this.od = in.readDouble();
+        this.bod = in.readDouble();
+        this.odt = in.readInt();
+        this.otcm = in.readInt();
+        this.isSelected = in.readByte() != 0;
+        this.li = in.readString();
+        this.change = in.readInt();
     }
 
     @Override
@@ -78,20 +100,9 @@ public class OptionInfo implements BaseBean {
         this.change = source.readInt();
     }
 
-    public OptionInfo() {
-    }
-
-    protected OptionInfo(Parcel in) {
-        this.na = in.readString();
-        this.nm = in.readString();
-        this.ty = in.readInt();
-        this.od = in.readDouble();
-        this.bod = in.readDouble();
-        this.odt = in.readInt();
-        this.otcm = in.readInt();
-        this.isSelected = in.readByte() != 0;
-        this.li = in.readString();
-        this.change = in.readInt();
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<OptionInfo> CREATOR = new Creator<OptionInfo>() {
@@ -105,4 +116,85 @@ public class OptionInfo implements BaseBean {
             return new OptionInfo[size];
         }
     };
+
+    // Getter and Setter methods
+    public String getNa() {
+        return na;
+    }
+
+    public void setNa(String na) {
+        this.na = na;
+    }
+
+    public String getNm() {
+        return nm;
+    }
+
+    public void setNm(String nm) {
+        this.nm = nm;
+    }
+
+    public int getTy() {
+        return ty;
+    }
+
+    public void setTy(int ty) {
+        this.ty = ty;
+    }
+
+    public double getOd() {
+        return od;
+    }
+
+    public void setOd(double od) {
+        this.od = od;
+    }
+
+    public double getBod() {
+        return bod;
+    }
+
+    public void setBod(double bod) {
+        this.bod = bod;
+    }
+
+    public int getOdt() {
+        return odt;
+    }
+
+    public void setOdt(int odt) {
+        this.odt = odt;
+    }
+
+    public int getOtcm() {
+        return otcm;
+    }
+
+    public void setOtcm(int otcm) {
+        this.otcm = otcm;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public String getLi() {
+        return li;
+    }
+
+    public void setLi(String li) {
+        this.li = li;
+    }
+
+    public int getChange() {
+        return change;
+    }
+
+    public void setChange(int change) {
+        this.change = change;
+    }
 }

@@ -18,7 +18,7 @@ import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.MatchIm;
 import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.PlayGroup;
-import com.xtree.bet.bean.ui.PlayGroupPm;
+import com.xtree.bet.bean.ui.PlayGroupIm;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.ui.activity.MainActivity;
 import com.xtree.bet.ui.viewmodel.im.ImMainViewModel;
@@ -131,32 +131,42 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     @Override
     public void onResult(EventInfoByPageListRsp data) {
         CfLog.d("============= IMListCallBack onResult =============");
-        CfLog.d("============= IMListCallBack onResult mIsTimerRefresh ============="+mIsTimerRefresh);
-        data = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
-        List<MatchInfo> matchList = data.getSports().get(0).getEvents();
-        if (mIsTimerRefresh) { //定时刷新赔率变更
-            if (matchList.size() != mMatchids.size()) {
-                //List<Long> matchIdList = new ArrayList<>();
-                mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);
-            } else {
-                setOptionOddChange(matchList);
-                mViewModel.leagueLiveTimerListData.postValue(mLeagueList);
+        CfLog.d("============= IMListCallBack onResult mIsTimerRefresh =============" + mIsTimerRefresh);
+        try {
+            data = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
+            CfLog.d("============= IMListCallBack onResult data =============" + data);
+            List<MatchInfo> matchInfoList = data.getSports().get(0).getEvents();
+            CfLog.d("============= IMListCallBack matchInfoList =============" + matchInfoList.size());
+            for (MatchInfo matchInfo : matchInfoList) {
+                matchInfo.setSportId(data.getSports().get(0).getSportId());
+                matchInfo.setSportName(data.getSports().get(0).getSportName());
             }
-        } else {  // 获取今日中的全部滚球赛事列表
-            if (mIsRefresh) {
-                mLeagueList.clear();
-                mMapLeague.clear();
-                mMapSportType.clear();
-                mLiveMatchList.clear();
+            if (mIsTimerRefresh) { //定时刷新赔率变更
+                if (matchInfoList.size() != mMatchids.size()) {
+                    //List<Long> matchIdList = new ArrayList<>();
+                    mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);
+                } else {
+                    setOptionOddChange(matchInfoList);
+                    mViewModel.leagueLiveTimerListData.postValue(mLeagueList);
+                }
+            } else {  // 获取今日中的全部滚球赛事列表
+                if (mIsRefresh) {
+                    mLeagueList.clear();
+                    mMapLeague.clear();
+                    mMapSportType.clear();
+                    mLiveMatchList.clear();
+                }
+                mViewModel.firstNetworkFinishData.call();
+                mIsStepSecond = true;
+                mLiveMatchList.addAll(matchInfoList);
+                if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
+                    leagueGoingList(matchInfoList);
+                }
+                mViewModel.saveLeague(this);
+                mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, 2, mSearchDatePos, mOddType, false, mIsRefresh, mIsStepSecond);
             }
-            mViewModel.firstNetworkFinishData.call();
-            mIsStepSecond = true;
-            mLiveMatchList.addAll(matchList);
-            if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
-                leagueGoingList(matchList);
-            }
-            mViewModel.saveLeague(this);
-            mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, 2, mSearchDatePos, mOddType, false, mIsRefresh, mIsStepSecond);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -278,12 +288,15 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     }
 
     private List<Option> getMatchOptionList(List<Match> matchList) {
+        CfLog.d("================ IMlistCallBack getMatchOptionList ==============");
         List<Option> optionList = new ArrayList<>();
         for (Match match : matchList) {
-            PlayGroup newPlayGroup = new PlayGroupPm(match.getPlayTypeList());
+            CfLog.d("================ IMlistCallBack match.getPlayTypeList() =============="+match.getPlayTypeList());
+            PlayGroup newPlayGroup = new PlayGroupIm(match.getPlayTypeList());
 
             for (PlayType playType : newPlayGroup.getPlayTypeList()) {
                 playType.getOptionLists();
+                CfLog.d("================ IMlistCallBack match.getSportId() =============="+match.getSportId());
                 for (Option option : playType.getOptionList(match.getSportId())) {
                     if (option == null) {
                         continue;
@@ -298,6 +311,7 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
                 }
             }
         }
+        CfLog.d("================ IMlistCallBack getMatchOptionList optionList =============="+optionList.size());
         return optionList;
     }
 

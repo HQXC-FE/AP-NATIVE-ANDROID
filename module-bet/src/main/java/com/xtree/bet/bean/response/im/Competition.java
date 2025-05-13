@@ -8,15 +8,15 @@ import com.xtree.base.vo.BaseBean;
 
 public class Competition implements BaseBean, Parcelable {
     @SerializedName("CompetitionId")
-    private int competitionId;
+    public int competitionId;
     @SerializedName("CompetitionName")
-    private String competitionName;
+    public String competitionName;
     @SerializedName("CompetitionTypeId")
-    private int competitionTypeId;
+    public int competitionTypeId;
     @SerializedName("PMOrderNumber")
-    private int pmOrderNumber;
+    public int pmOrderNumber;
     @SerializedName("RBOrderNumber")
-    private int rbOrderNumber;
+    public int rbOrderNumber;
 
     public Competition() {
     }

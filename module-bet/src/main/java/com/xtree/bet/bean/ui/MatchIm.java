@@ -6,8 +6,10 @@ import android.os.Parcel;
 import android.text.TextUtils;
 
 import com.xtree.base.global.SPKeyGlobal;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.response.im.LeagueInfo;
+import com.xtree.bet.bean.response.im.LiveStreamingUrl;
 import com.xtree.bet.bean.response.im.MarketLine;
 import com.xtree.bet.bean.response.im.MatchInfo;
 import com.xtree.bet.constant.IMConstants;
@@ -113,7 +115,11 @@ public class MatchIm implements Match {
     public String getStage() {
         String state = matchInfo.rbTime;
         String period = state.split(" ")[0];
-        return IMMatchPeriod.getMatchPeriod(String.valueOf(period));
+        String time = "";
+        if(state.split(" ").length >1 ){
+            time = state.split(" ")[1];
+        }
+        return IMMatchPeriod.getMatchPeriod(String.valueOf(period)) + " " +time;
     }
 
     /**
@@ -136,6 +142,7 @@ public class MatchIm implements Match {
         try {
             String state = matchInfo.rbTime;
             String time = state.split(" ")[1];
+
             if (matchInfo != null && time != null) {
                 return TimeUtils.sToMs(Integer.valueOf(time));
             } else {
@@ -173,25 +180,29 @@ public class MatchIm implements Match {
     public List<Integer> getScore(String... type) {
         List<Integer> sc = new ArrayList<>();
 
-        if (matchInfo.rbTime != null) {
-            String state = matchInfo.rbTime;
-            //String score = state.split(" ")[1];
-            for (String str : state.split(" ")) {
-                if (state.split(" ")[1] != null && !state.split(" ")[1].isEmpty()) {
-                    String score = state.split(" ")[1];
-                    if (!TextUtils.isEmpty(score) && score.contains(" ")) {
-                        score = score.substring(score.indexOf(" ") + 1, score.length());
-                        if (!TextUtils.isEmpty(score) && score.contains(":") && score.split(":").length > 1) {
-                            sc.add(Double.valueOf(score.split(":")[0]).intValue()); // 修复小数转换整数异常
-                            sc.add(Double.valueOf(score.split(":")[1]).intValue());
-                        }
-                    }
-                    return sc;
-                }
-            }
+//        if (matchInfo.rbTime != null) {
+//            String state = matchInfo.rbTime;
+//            //String score = state.split(" ")[1];
+//            for (String str : state.split(" ")) {
+//                if (state.split(" ")[1] != null && !state.split(" ")[1].isEmpty()) {
+//                    String score = state.split(" ")[1];
+//                    if (!TextUtils.isEmpty(score) && score.contains(" ")) {
+//                        score = score.substring(score.indexOf(" ") + 1, score.length());
+//                        if (!TextUtils.isEmpty(score) && score.contains(":") && score.split(":").length > 1) {
+//                            sc.add(Double.valueOf(score.split(":")[0]).intValue()); // 修复小数转换整数异常
+//                            sc.add(Double.valueOf(score.split(":")[1]).intValue());
+//                        }
+//                    }
+//                    return sc;
+//                }
+//            }
+//        }
+        if(matchInfo != null && matchInfo.relatedScores != null && matchInfo.relatedScores.size() > 0){
+            int homeScore = matchInfo.relatedScores.get(0).homeScore;
+            int awayScore = matchInfo.relatedScores.get(0).awayScore;
+            sc.add(homeScore);
+            sc.add(awayScore);
         }
-        sc.add(0);
-        sc.add(0);
         return sc;
     }
 
@@ -265,9 +276,12 @@ public class MatchIm implements Match {
     public List<PlayType> getPlayTypeList() {
         List<PlayType> playTypeList = new ArrayList<>();
         for (MarketLine marketLine : matchInfo.marketLines) {
-            PlayTypeIm playTypeIm = new PlayTypeIm(marketLine);
-            playTypeList.add(playTypeIm);
+            if(marketLine.marketLineLevel == 1){
+                PlayTypeIm playTypeIm = new PlayTypeIm(marketLine);
+                playTypeList.add(playTypeIm);
+            }
         }
+        CfLog.d("============= MatchIm  playTypeList ================="+playTypeList);
         return playTypeList;
     }
 
@@ -309,9 +323,10 @@ public class MatchIm implements Match {
     public List<String> getVideoUrls() {
         List<String> urls = new ArrayList<>();
         if (matchInfo != null && matchInfo.liveStreamingUrl != null) {
-            for (String videoInfo : matchInfo.liveStreamingUrl) {
-                if (!TextUtils.isEmpty(videoInfo)) {
-                    urls.add(videoInfo);
+            for (LiveStreamingUrl liveStreamingUrl : matchInfo.liveStreamingUrl) {
+                String videoUrl = liveStreamingUrl.getUrl();
+                if (!TextUtils.isEmpty(videoUrl)) {
+                    urls.add(videoUrl);
                 }
             }
         }
@@ -325,8 +340,10 @@ public class MatchIm implements Match {
      */
     @Override
     public List<String> getAnmiUrls() {
-        return matchInfo.liveStreamingUrl;
+        //return matchInfo.liveStreamingUrl.get(0).getUrl();
         //return matchInfo.as;
+        List<String> list = new ArrayList<String>();
+        return list;
     }
 
     /**
@@ -411,18 +428,20 @@ public class MatchIm implements Match {
     @Override
     public boolean isGoingon() {
         String state = matchInfo.rbTime;
+        //CfLog.d("================= MatchIm isGoingon state ================"+state);
         if (state != null && !state.trim().isEmpty()) {
             String[] parts = state.trim().split("\\s+");
             if (parts.length > 0) {
                 String period = state.split(" ")[0];
+                //CfLog.d("================= MatchIm isGoingon period ================"+period);
                 if (String.valueOf(period).equals("!Live") || String.valueOf(period).equals("HT") || String.valueOf(period).equals("FT")) {
-                    return true;
-                } else {
                     return false;
+                } else {
+                    return true;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -433,10 +452,12 @@ public class MatchIm implements Match {
     @Override
     public long getMatchTime() {
         String dateStr = matchInfo.eventDate;
+        CfLog.d("============== MatchIm getMatchTime ================="+matchInfo.eventDate);
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
         try {
             Date date = sdf.parse(dateStr);
             long timestamp = date.getTime();
+            CfLog.d("============== MatchIm getMatchTime timestamp ================="+timestamp);
             return timestamp;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -497,7 +518,12 @@ public class MatchIm implements Match {
     @Override
     public boolean hasCornor() {
         List<Integer> cornor = getScore(IMConstants.SCORE_TYPE_CORNER);
-        return cornor.get(0) > 0 || cornor.get(1) > 0;
+        if(cornor.size() > 1){
+            return cornor.get(0) > 0 || cornor.get(1) > 0;
+        }else{
+            return false;
+        }
+
     }
 
     /**
