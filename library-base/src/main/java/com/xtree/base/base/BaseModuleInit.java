@@ -28,7 +28,7 @@ public class BaseModuleInit implements IModuleInit {
     @Override
     public boolean onInitAhead(Application application) {
         //开启打印日志
-        KLog.init(true);
+        KLog.init(BuildConfig.DEBUG);
         //初始化阿里路由框架
         if (BuildConfig.DEBUG) {
             ARouter.openLog();     // 打印日志
