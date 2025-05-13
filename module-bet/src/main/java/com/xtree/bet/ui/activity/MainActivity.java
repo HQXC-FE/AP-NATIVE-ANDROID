@@ -1165,14 +1165,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, DomainUtil.getApiUrl());
                 } else {
-                    System.out.println("########### MainActivity baseUrl 333333 ###########" + DomainUtil.getApiUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, DomainUtil.getApiUrl());
                 }
             } else {
                 if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
                     SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, BtDomainUtil.getDefaultPmxcDomainUrl());
                 } else {
-                    System.out.println("########### MainActivity baseUrl 44444 ###########" + BtDomainUtil.getDefaultPmDomainUrl());
                     SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, BtDomainUtil.getDefaultPmDomainUrl());
                 }
             }
@@ -1344,7 +1342,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             }
         });
         viewModel.sportItemData.observe(this, matchitemList -> {
-            CfLog.d("============= MainActivity sportItemData observe ==============");
             sportTypePos = -1;
             if (mStatisticalData == null) {
                 return;
@@ -1361,7 +1358,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             binding.tabSportType.post(() -> autoClickItem(binding.tabSportType, selectPosition));
         });
         viewModel.leagueItemData.observe(this, leagueItemList -> {
-            CfLog.d("============= MainActivity leagueItemData observe ==============");
             mLeagueItemList = leagueItemList;
             if (leagueItemList == null) {
                 binding.tabFbLeague.setVisibility(View.GONE);

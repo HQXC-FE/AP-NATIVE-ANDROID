@@ -332,8 +332,10 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         }
 
         binding.tvPlaytypeCount.setText(match.getPlayTypeCount() + "+>");
+        CfLog.d("=============== LeagueAdapter match.isGoingon()  ==============="+match.isGoingon());
         // 比赛未开始
         if (!match.isGoingon()) {
+            CfLog.d("=============== LeagueAdapter match.getMatchTime()  ==============="+match.getMatchTime());
             binding.tvMatchTime.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_HH_MM));
         } else {
             String mc = match.getStage();
@@ -372,8 +374,8 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         }
 
         List<PlayGroup> playGroupList = playGroup.getPlayGroupList(match.getSportId());
-        CfLog.d("=============== LeagueAdapter playGroupList  ==============="+playGroupList.size());
-        CfLog.d("=============== LeagueAdapter match.getSportId()  ==============="+match.getSportId());
+//        CfLog.d("=============== LeagueAdapter playGroupList  ==============="+playGroupList.size());
+//        CfLog.d("=============== LeagueAdapter match.getSportId()  ==============="+match.getSportId());
 
         if (!playGroupList.isEmpty()) {
 

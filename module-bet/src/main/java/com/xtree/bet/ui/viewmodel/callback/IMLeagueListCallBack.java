@@ -118,7 +118,6 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     public void saveLeague() {
         if (!mIsRefresh || mIsStepSecond) {
             mLeagueList = mViewModel.getLeagueList();
-            CfLog.d("================= IMLeagueListCallBack mLeagueList =================="+mLeagueList.size());
             mGoingOnLeagueList = mViewModel.getGoingOnLeagueList();
             mMapLeague = mViewModel.getMapLeague();
             mMatchList = mViewModel.getMatchList();
@@ -169,6 +168,9 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
             }
         }
         mNoliveMatchList.addAll(matchInfoList);
+        CfLog.d("======= IMLeagueListCallBack mFinalType ========"+mFinalType);
+        CfLog.d("======= IMLeagueListCallBack mNoliveMatchList ========"+mNoliveMatchList.size());
+        CfLog.d("======= IMLeagueListCallBack mLeagueList ========"+mLeagueList.size());
         if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
             leagueAdapterList(matchInfoList);
             if (mFinalType == 1) { // 滚球

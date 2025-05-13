@@ -107,7 +107,6 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     }
 
     public void saveLeague() {
-        CfLog.d("================ IMListCallBack saveLeague mIsRefresh ==============="+mIsRefresh);
         mLiveMatchList = mViewModel.getLiveMatchList();
         if (!mIsRefresh) {
             mLeagueList = mViewModel.getLeagueList();
@@ -132,10 +131,8 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     public void onResult(EventInfoByPageListRsp data) {
         CfLog.d("============= IMListCallBack onResult =============");
         try {
-            data = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
-            CfLog.d("============= IMListCallBack onResult data =============" + data);
+            data = EventInfoByPageListParser.getLiveEventInfoListRsp(MainActivity.getContext());
             List<MatchInfo> matchInfoList = data.getSports().get(0).getEvents();
-            CfLog.d("============= IMListCallBack matchInfoList =============" + matchInfoList.size());
             for (MatchInfo matchInfo : matchInfoList) {
                 matchInfo.setSportId(data.getSports().get(0).getSportId());
                 matchInfo.setSportName(data.getSports().get(0).getSportName());

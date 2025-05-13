@@ -125,7 +125,7 @@ public interface IMApiService {
     /**
      * 索取赛事和主要玩法资料,
      * 这里是第一次获取，是获取全量赛事
-     * 获取赛事列表-->对应matchesPagePB接口
+     * 获取赛事列表--> 进行中
      */
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
@@ -134,7 +134,7 @@ public interface IMApiService {
     /**
      * 索取赛事和主要玩法资料,
      * 这里是第一次获取，是获取全量赛事
-     * 获取赛事列表-->对应matchesPagePB接口
+     * 获取赛事列表--> 未开赛
      */
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})

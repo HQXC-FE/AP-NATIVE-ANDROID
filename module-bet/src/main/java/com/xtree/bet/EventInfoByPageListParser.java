@@ -12,14 +12,18 @@ import com.xtree.bet.bean.response.im.Sport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EventInfoByPageListParser {
 
 
-    public static EventInfoByPageListRsp getEventInfoByPageListRsp(Context context) {
+    public static EventInfoByPageListRsp getLiveEventInfoListRsp(Context context) {
         String json = loadJSONFromAsset(context, "live_data.json");
+        Gson gson = new Gson();
+        return gson.fromJson(json, EventInfoByPageListRsp.class);
+    }
+
+    public static EventInfoByPageListRsp getEventInfoByPageListRsp(Context context) {
+        String json = loadJSONFromAsset(context, "data.json");
         Gson gson = new Gson();
         return gson.fromJson(json, EventInfoByPageListRsp.class);
     }

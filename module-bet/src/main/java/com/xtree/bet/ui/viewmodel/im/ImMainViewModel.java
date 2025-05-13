@@ -763,7 +763,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     // 根据条件设置 HttpCallBack 类型的对象
     public void createIMListCallback(boolean isTimerRefresh, boolean isRefresh, int sportPos, String sportId, int orderBy, List<Long> leagueIds, int searchDatePos, int oddType, List<Long> matchidList, Flowable flowable) {
-        //CfLog.d("============== ImMainViewModel createIMListCallback ===============");
         // 根据是否使用缓存选择回调类型
         Object callback = new IMListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mPlayMethodType,
                 sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType, matchidList);
@@ -777,7 +776,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     public void createIMLeagueListCallback(boolean isTimerRefresh, boolean isRefresh,
                                            int sportPos, String sportId, int orderBy, List<Long> leagueIds,
                                            int searchDatePos, int oddType, List<Long> matchidList, int finalType, boolean isStepSecond, Flowable flowable) {
-        //CfLog.d("============== ImMainViewModel createIMLeagueListCallback ===============");
         mImLeagueCallBack = new IMLeagueListCallBack(this, mHasCache, isTimerRefresh, isRefresh, mCurrentPage,
                 mPlayMethodType, sportPos, sportId, orderBy, leagueIds, searchDatePos, oddType,
                 matchidList, finalType, isStepSecond);

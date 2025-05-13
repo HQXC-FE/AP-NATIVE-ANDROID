@@ -17,6 +17,8 @@ import com.xtree.bet.constant.IMMatchPeriod;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -438,21 +440,17 @@ public class MatchIm implements Match {
      */
     @Override
     public boolean isGoingon() {
-        String state = matchInfo.rbTime;
-        //CfLog.d("================= MatchIm isGoingon state ================"+state);
-        if (state != null && !state.trim().isEmpty()) {
-            String[] parts = state.trim().split("\\s+");
-            if (parts.length > 0) {
-                String period = state.split(" ")[0];
-                //CfLog.d("================= MatchIm isGoingon period ================"+period);
-                if (String.valueOf(period).equals("!Live") || String.valueOf(period).equals("HT") || String.valueOf(period).equals("FT")) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
+        if (matchInfo.rbTime == null || matchInfo.rbTime.trim().isEmpty()) {
+            return false;
         }
-        return true;
+
+        String[] parts = matchInfo.rbTime.trim().split("\\s+");
+        if (parts.length == 0) {
+            return false;
+        }
+
+        String period = parts[0];
+        return !(period.equals("!Live") || period.equals("HT") || period.equals("FT"));
     }
 
     /**
@@ -462,16 +460,12 @@ public class MatchIm implements Match {
      */
     @Override
     public long getMatchTime() {
-        String dateStr = matchInfo.eventDate;
-        CfLog.d("============== MatchIm getMatchTime ================="+matchInfo.eventDate);
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        try {
-            Date date = sdf.parse(dateStr);
-            long timestamp = date.getTime();
-            CfLog.d("============== MatchIm getMatchTime timestamp ================="+timestamp);
-            return timestamp;
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // 去掉多余的小数位（.0000000 -> .000）
+            String input = matchInfo.eventDate.replace(".0000000", ".000");
+            OffsetDateTime offsetDateTime = OffsetDateTime.parse(input);
+            Instant instant = offsetDateTime.toInstant(); // UTC 时间点
+            return instant.toEpochMilli();
         }
         return 0L;
     }
