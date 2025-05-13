@@ -2,7 +2,7 @@ package com.xtree.bet.ui.viewmodel.im;
 
 import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.MarketLine;
-import com.xtree.bet.bean.response.im.RecommendedEvent;
+import com.xtree.bet.bean.response.im.MatchInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +20,7 @@ public final class IMOrganizedMarkLinesManager1 {
     private IMOrganizedMarkLinesManager1() {
     }
 
-    public void organizedMarkLinesWith(EventListRsp.Sport imSport, RecommendedEvent imSportEvents, Map<String, List<MarketLine>> organizedArray) {
+    public void organizedMarkLinesWith(EventListRsp.Sport imSport, MatchInfo imSportEvents, Map<String, List<MarketLine>> organizedArray) {
         if (imSport.getSportId() == 1) {
             soccerOrganizedMarkLinesWith(imSportEvents, organizedArray);
         } else if (imSport.getSportId() == 2) {
@@ -47,7 +47,7 @@ public final class IMOrganizedMarkLinesManager1 {
         }
     }
 
-    private void soccerOrganizedMarkLinesWith(RecommendedEvent imSportEvents, Map<String, List<MarketLine>> organizedArray) {
+    private void soccerOrganizedMarkLinesWith(MatchInfo imSportEvents, Map<String, List<MarketLine>> organizedArray) {
         for (MarketLine marketLine : imSportEvents.getMarketLines()) {
             if (SoccerRule.ahou.contains(marketLine.getBetTypeId())) {
                 organizedArray.computeIfAbsent("h", s -> new ArrayList<>()).add(marketLine);
@@ -83,8 +83,8 @@ public final class IMOrganizedMarkLinesManager1 {
         public static final Set<Integer> team = new HashSet<>(Arrays.asList(93, 94));
     }
 
-    private void basketballOrganizedMarkLinesWith(RecommendedEvent imSportEvents, Map<String, List<MarketLine>> organizedArray) {
-        for (MarketLine marketLine : imSportEvents.MarketLines) {
+    private void basketballOrganizedMarkLinesWith(MatchInfo imSportEvents, Map<String, List<MarketLine>> organizedArray) {
+        for (MarketLine marketLine : imSportEvents.getMarketLines()) {
             if (BasketballRule.fulltime.contains(marketLine.getPeriodId())) {
                 organizedArray.computeIfAbsent("ft", k -> new ArrayList<>()).add(marketLine);
             }
@@ -106,8 +106,8 @@ public final class IMOrganizedMarkLinesManager1 {
         public static final Set<Integer> ml = new HashSet<>(Collections.singletonList(4));
     }
 
-    private void defaultOrganizedMarkLinesWith(RecommendedEvent imSportEvents, Map<String, List<MarketLine>> organizedArray) {
-        for (MarketLine marketLine : imSportEvents.MarketLines) {
+    private void defaultOrganizedMarkLinesWith(MatchInfo imSportEvents, Map<String, List<MarketLine>> organizedArray) {
+        for (MarketLine marketLine : imSportEvents.getMarketLines()) {
             if (DefaultRule.ahou.contains(marketLine.getBetTypeId())) {
                 organizedArray.computeIfAbsent("h", k -> new ArrayList<>()).add(marketLine);
             }
