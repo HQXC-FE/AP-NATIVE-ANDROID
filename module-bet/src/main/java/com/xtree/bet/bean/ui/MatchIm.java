@@ -38,6 +38,8 @@ public class MatchIm implements Match {
     private boolean isHead;
     private boolean isExpand;
 
+    private List<MatchInfo> matchInfoList;
+
     public MatchIm() {
         this.className = getClass().getSimpleName();
     }
@@ -45,6 +47,11 @@ public class MatchIm implements Match {
     public MatchIm(MatchInfo matchInfo) {
         this.className = getClass().getSimpleName();
         this.matchInfo = matchInfo;
+    }
+
+    public MatchIm(List<MatchInfo> matchInfoList) {
+        this.className = getClass().getSimpleName();
+        this.matchInfoList = matchInfoList;
     }
 
     @Override

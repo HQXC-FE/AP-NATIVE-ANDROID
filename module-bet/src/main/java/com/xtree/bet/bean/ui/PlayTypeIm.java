@@ -5,13 +5,10 @@ import android.text.TextUtils;
 
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.response.im.MarketLine;
-import com.xtree.bet.bean.response.im.MarketLine;
-import com.xtree.bet.bean.response.im.OddsList;
+import com.xtree.bet.bean.response.im.MatchInfo;
 import com.xtree.bet.bean.response.im.OptionDataListInfo;
 import com.xtree.bet.bean.response.im.OptionInfo;
 import com.xtree.bet.bean.response.im.PlayTypeInfo;
-import com.xtree.bet.bean.response.im.RecommendedEvent;
-import com.xtree.bet.bean.response.im.WagerSelection;
 import com.xtree.bet.bean.response.im.WagerSelection;
 import com.xtree.bet.constant.PMConstants;
 
@@ -23,14 +20,14 @@ public class PlayTypeIm implements PlayType {
     private String className;
     private MarketLine marketLine;
 
-    private RecommendedEvent event;
+    private MatchInfo event;
 
     public PlayTypeIm(MarketLine marketLine){
         this.marketLine = marketLine;
         this.className = getClass().getSimpleName();
     }
 
-    public PlayTypeIm(MarketLine marketLine, RecommendedEvent event) {
+    public PlayTypeIm(MarketLine marketLine, MatchInfo event) {
         this.marketLine = marketLine;
         this.className = getClass().getSimpleName();
         this.event = event;

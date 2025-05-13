@@ -1,6 +1,7 @@
 package com.xtree.bet.ui.activity;
 
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_IM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
@@ -48,8 +49,10 @@ import com.xtree.bet.ui.fragment.BtCarDialogFragment;
 import com.xtree.bet.ui.fragment.BtDetailOptionFragment;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.bet.ui.viewmodel.factory.IMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FbBtDetailViewModel;
+import com.xtree.bet.ui.viewmodel.im.IMBtDetailViewModel;
 import com.xtree.bet.ui.viewmodel.pm.PmBtDetailViewModel;
 import com.xtree.bet.util.MatchDeserializer;
 import com.xtree.bet.weight.BaseDetailDataView;
@@ -117,12 +120,10 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
 
     @Override
     public TemplateBtDetailViewModel initViewModel() {
-//        if (TextUtils.equals(mPlatform, PLATFORM_IM)) {
-//            IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance(getApplication());
-//            return new ViewModelProvider(this, factory).get(IMBtDetailViewModel.class);
-//        } else
-
-        if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+        if (TextUtils.equals(mPlatform, PLATFORM_IM)) {
+            IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance(getApplication());
+            return new ViewModelProvider(this, factory).get(IMBtDetailViewModel.class);
+        } else if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
             AppViewModelFactory factory = AppViewModelFactory.getInstance(getApplication());
             return new ViewModelProvider(this, factory).get(FbBtDetailViewModel.class);
         } else {
@@ -193,7 +194,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
         //mMatch = getIntent().getParcelableExtra(KEY_MATCH);
         Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
         mMatch = gson.fromJson(SPUtils.getInstance().getString(KEY_MATCH), Match.class);
-        viewModel.getMatchDetail(mMatch.getId(),mMatch.getSportId());
+        viewModel.getMatchDetail(mMatch.getId(), mMatch.getSportId());
         viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
         viewModel.addSubscription();
         setCgBtCar();
@@ -202,19 +203,15 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
     @Override
     protected void onResume() {
         super.onResume();
-        Observable.interval(5, 5, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this))).subscribe(aLong -> {
-                    viewModel.getMatchDetail(mMatch.getId(),mMatch.getSportId());
-                    viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
-                });
+        Observable.interval(5, 5, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this))).subscribe(aLong -> {
+            viewModel.getMatchDetail(mMatch.getId(), mMatch.getSportId());
+            viewModel.getCategoryList(String.valueOf(mMatch.getId()), mMatch.getSportId());
+        });
 
-        Observable.interval(1, 1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this))).subscribe(aLong -> {
-                    secoend = secoend + 1;
-                    updateMatchTime(mMatch);
-                });
+        Observable.interval(1, 1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this))).subscribe(aLong -> {
+            secoend = secoend + 1;
+            updateMatchTime(mMatch);
+        });
 
     }
 

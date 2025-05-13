@@ -1,13 +1,10 @@
 package com.xtree.bet.ui.viewmodel.im;
 
-import com.xtree.bet.bean.response.im.Event;
 import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.MarketLine;
-import com.xtree.bet.bean.response.im.RecommendedEvent;
-import com.xtree.bet.bean.ui.Match;
+import com.xtree.bet.bean.response.im.MatchInfo;
 
 import java.util.*;
-import java.util.function.Function;
 
 public final class IMOrganizedMarkLinesManager {
 
@@ -16,7 +13,7 @@ public final class IMOrganizedMarkLinesManager {
     private IMOrganizedMarkLinesManager() {
     }
 
-    public void organizedMarkLinesWith(EventListRsp.Sport imSport, RecommendedEvent imSportEvents) {
+    public void organizedMarkLinesWith(EventListRsp.Sport imSport, MatchInfo imSportEvents) {
         if (imSport.getSportId() == 1) {
             soccerOrganizedMarkLinesWith(imSportEvents);
         } else if (imSport.getSportId() == 2) {
@@ -43,7 +40,7 @@ public final class IMOrganizedMarkLinesManager {
         }
     }
 
-    private void soccerOrganizedMarkLinesWith(RecommendedEvent imSportEvents) {
+    private void soccerOrganizedMarkLinesWith(MatchInfo imSportEvents) {
         for (MarketLine marketLine : imSportEvents.getMarketLines()) {
             if (SoccerRule.ahou.contains(marketLine.getBetTypeId())) {
                 marketLine.setBetTypeGroupName("h");
@@ -75,8 +72,8 @@ public final class IMOrganizedMarkLinesManager {
         public static final Set<Integer> team = new HashSet<>(Arrays.asList(93, 94));
     }
 
-    private void basketballOrganizedMarkLinesWith(RecommendedEvent imSportEvents) {
-        for (MarketLine marketLine : imSportEvents.MarketLines) {
+    private void basketballOrganizedMarkLinesWith(MatchInfo imSportEvents) {
+        for (MarketLine marketLine : imSportEvents.getMarketLines()) {
             if (BasketballRule.fulltime.contains(marketLine.getPeriodId())) {
                 marketLine.setBetTypeGroupName("ft");
             } else if (BasketballRule.halves.contains(marketLine.getPeriodId())) {
@@ -99,8 +96,8 @@ public final class IMOrganizedMarkLinesManager {
         public static final Set<Integer> ml = new HashSet<>(Collections.singletonList(4));
     }
 
-    private void defaultOrganizedMarkLinesWith(RecommendedEvent imSportEvents) {
-        for (MarketLine marketLine : imSportEvents.MarketLines) {
+    private void defaultOrganizedMarkLinesWith(MatchInfo imSportEvents) {
+        for (MarketLine marketLine : imSportEvents.getMarketLines()) {
             if (DefaultRule.ahou.contains(marketLine.getBetTypeId())) {
                 marketLine.setBetTypeGroupName("h");
             } else if (DefaultRule.ml.contains(marketLine.getBetTypeId()) || marketLine.getBetTypeName().contains("独赢") || marketLine.getBetTypeName().toLowerCase().contains("1x2")) {

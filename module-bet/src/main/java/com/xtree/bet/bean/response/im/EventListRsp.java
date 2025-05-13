@@ -72,7 +72,7 @@ public class EventListRsp implements BaseBean {
         public String sportName;
 
         @SerializedName("Events")
-        public List<RecommendedEvent> events;
+        public List<MatchInfo> events;
 
         @SerializedName("OrderNumber")
         public int orderNumber;
@@ -83,7 +83,7 @@ public class EventListRsp implements BaseBean {
         protected Sport(Parcel in) {
             sportId = in.readInt();
             sportName = in.readString();
-            events = in.createTypedArrayList(RecommendedEvent.CREATOR);
+            events = in.createTypedArrayList(MatchInfo.CREATOR);
             orderNumber = in.readInt();
         }
 
@@ -115,11 +115,11 @@ public class EventListRsp implements BaseBean {
             this.sportName = sportName;
         }
 
-        public List<RecommendedEvent> getEvents() {
+        public List<MatchInfo> getEvents() {
             return events;
         }
 
-        public void setEvents(List<RecommendedEvent> events) {
+        public void setEvents(List<MatchInfo> events) {
             this.events = events;
         }
 

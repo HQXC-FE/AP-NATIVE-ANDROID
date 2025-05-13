@@ -15,23 +15,17 @@ import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.vo.FBService;
 import com.xtree.bet.bean.request.im.BaseIMRequest;
 import com.xtree.bet.bean.request.im.SelectedEventInfoReq;
-import com.xtree.bet.bean.response.fb.MatchInfo;
-import com.xtree.bet.bean.response.fb.PlayTypeInfo;
-import com.xtree.bet.bean.response.im.Event;
 import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.MarketLine;
-import com.xtree.bet.bean.response.im.RecommendedEvent;
-import com.xtree.bet.bean.response.im.WagerSelection;
+import com.xtree.bet.bean.response.im.MatchInfo;
 import com.xtree.bet.bean.ui.Category;
-import com.xtree.bet.bean.ui.CategoryFb;
 import com.xtree.bet.bean.ui.CategoryIm;
 import com.xtree.bet.bean.ui.Match;
+import com.xtree.bet.bean.ui.MatchIm;
 import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.OptionList;
 import com.xtree.bet.bean.ui.PlayType;
-import com.xtree.bet.bean.ui.PlayTypeFb;
 import com.xtree.bet.bean.ui.PlayTypeIm;
-import com.xtree.bet.constant.FBMarketTag;
 import com.xtree.bet.constant.IMMarketTag;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.data.IMApiService;
@@ -74,6 +68,10 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
             public void onResult(EventListRsp eventListRsp) {
                 super.onResult(eventListRsp);
                 List<Category> categoryList = getCategoryList(eventListRsp);
+
+                List<MatchInfo> events = eventListRsp.getSports().get(0).getEvents();
+                Match match = new MatchIm(events);
+                matchData.postValue(match);
                 categoryListData.postValue(categoryList);
             }
         });
@@ -94,9 +92,9 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
         categoryList.add(categoryAll);
 
         EventListRsp.Sport sport = matchInfo.getSports().get(0);
-        List<RecommendedEvent> events = sport.getEvents();
+        List<MatchInfo> events = sport.getEvents();
 
-        for (RecommendedEvent event : events) {
+        for (MatchInfo event : events) {
             //分配分组，设置GroupName
             IMOrganizedMarkLinesManager.shared.organizedMarkLinesWith(sport, event);
             for (MarketLine marketLine : event.getMarketLines()) {
