@@ -1,15 +1,11 @@
 package com.xtree.base.net;
 
-import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
 
 import com.xtree.base.utils.DomainUtil;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
-import java.util.Set;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -20,37 +16,28 @@ public class UrlModifyingInterceptor implements Interceptor {
     @NonNull
     @Override
     public Response intercept(@NonNull Chain chain) throws IOException {
-
         Request originalRequest = chain.request();
         HttpUrl originalUrl = originalRequest.url();
 
-        List<String> paths = originalUrl.encodedPathSegments();
-        HttpUrl.Builder builder = new HttpUrl.Builder();
+        // 获取目标主机信息
+        String baseUrl = DomainUtil.getApiUrl();
+        String scheme = baseUrl.startsWith("http:") ? "http" : "https";
+        URL url = new URL(baseUrl);
+        String newHost = url.getHost();
+        int newPort = url.getPort() > 0 ? url.getPort() : ("http".equals(scheme) ? 80 : 443);
 
-        for (int i = 0; i < paths.size(); i++) {
-            builder.addPathSegment(paths.get(i));
+        // 如果 host、port、scheme 都一样就不修改
+        if (originalUrl.scheme().equals(scheme) && originalUrl.host().equals(newHost) && originalUrl.port() == newPort) {
+            return chain.proceed(originalRequest);
         }
 
-        Set<String> queryParameterNames = originalUrl.queryParameterNames();
+        // 构建新的 URL
+        HttpUrl modifiedUrl = originalUrl.newBuilder().scheme(scheme).host(newHost).port(newPort).build();
 
-        for (String queryParameterName : queryParameterNames) {
-            List<String> values = originalUrl.queryParameterValues(queryParameterName);
-            for (String value : values) {
-                builder.addQueryParameter(queryParameterName, value);
-            }
-        }
-        String scheme = DomainUtil.getApiUrl().startsWith("http:") ? "http" : "https";
-        URL url = new URL(DomainUtil.getApiUrl());
-        int port = url.getPort() > 0 ? url.getPort() : TextUtils.equals(scheme, "http") ? 80 : 443;
-        // 修改URL
-        HttpUrl modifiedUrl = builder.scheme(scheme).host(url.getHost()).port(port).build();
+        // 构建新的请求
+        Request newRequest = originalRequest.newBuilder().url(modifiedUrl).build();
 
-        // 创建新的请求
-        Request newRequest = originalRequest.newBuilder()
-                .url(modifiedUrl)
-                .build();
-
-        // 发送请求
         return chain.proceed(newRequest);
     }
 }
+
