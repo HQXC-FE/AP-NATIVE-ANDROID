@@ -479,9 +479,8 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                     }
                     TextView uavailableTextView = (TextView) optionView.getChildAt(0);
                     TextView nameTextView = (TextView) optionView.getChildAt(1);
-                    nameTextView.setBackgroundColor(Color.BLUE);
                     DiscolourTextView oddTextView = (DiscolourTextView) optionView.getChildAt(2);
-                    CfLog.d("=================== LeagueAdapter setPlayTypeGroup option =================="+option);
+                    //CfLog.d("=================== LeagueAdapter setPlayTypeGroup option =================="+option);
                     if (option == null) {
                         uavailableTextView.setVisibility(View.VISIBLE);
                         oddTextView.setVisibility(View.GONE);

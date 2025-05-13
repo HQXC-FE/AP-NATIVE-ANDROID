@@ -39,7 +39,7 @@ public class OptionListIm implements OptionList {
      * 2 = 关盘
      */
     public boolean isOpen() {
-        return marketLine.getMarketlineId() == 1;
+        return !marketLine.isLocked; //未锁定就是开盘
     }
 
     /**

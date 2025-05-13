@@ -121,12 +121,15 @@ public class MatchIm implements Match {
     @Override
     public String getStage() {
         String state = matchInfo.rbTime;
-        String period = state.split(" ")[0];
-        String time = "";
-        if(state.split(" ").length >1 ){
-            time = state.split(" ")[1];
+        if(state != null && !state.isEmpty()){
+            String period = state.split(" ")[0];
+            String time = "";
+            if(state.split(" ").length >1 ){
+                time = state.split(" ")[1];
+            }
+            return IMMatchPeriod.getMatchPeriod(String.valueOf(period)) + " " +time;
         }
-        return IMMatchPeriod.getMatchPeriod(String.valueOf(period)) + " " +time;
+        return "";
     }
 
     /**
@@ -277,6 +280,7 @@ public class MatchIm implements Match {
 
     /**
      * 获取玩法列表
+     *
      *
      * @return
      */

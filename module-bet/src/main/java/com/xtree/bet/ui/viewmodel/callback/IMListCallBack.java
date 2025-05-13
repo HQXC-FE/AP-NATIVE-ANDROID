@@ -131,7 +131,6 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     @Override
     public void onResult(EventInfoByPageListRsp data) {
         CfLog.d("============= IMListCallBack onResult =============");
-        CfLog.d("============= IMListCallBack onResult mIsTimerRefresh =============" + mIsTimerRefresh);
         try {
             data = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
             CfLog.d("============= IMListCallBack onResult data =============" + data);

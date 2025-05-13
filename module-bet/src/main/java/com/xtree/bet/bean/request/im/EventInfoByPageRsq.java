@@ -12,9 +12,9 @@ public class EventInfoByPageRsq {
 
     private String LanguageCode = "CHS";
     private String TimeStamp;
-    private String Token = "09adefdde10c202a0c6c9bb54c810850";
+    //private String Token = "09adefdde10c202a0c6c9bb54c810850";
     private int OddsType;
-    private String MemberCode = "p02hill999";
+    //private String MemberCode = "p02hill999";
     private List<Integer> BetTypeIds = Arrays.asList(1, 2, 3, 4);
     private String Market;
     private int MatchDay;
@@ -40,14 +40,14 @@ public class EventInfoByPageRsq {
     public void setTimeStamp(String timeStamp) {
         this.TimeStamp = timeStamp;
     }
-
-    public String getToken() {
-        return Token;
-    }
-
-    public void setToken(String token) {
-        this.Token = token;
-    }
+//
+//    public String getToken() {
+//        return Token;
+//    }
+//
+//    public void setToken(String token) {
+//        this.Token = token;
+//    }
 
     public int getOddsType() {
         return OddsType;
@@ -57,13 +57,13 @@ public class EventInfoByPageRsq {
         this.OddsType = oddsType;
     }
 
-    public String getMemberCode() {
-        return MemberCode;
-    }
-
-    public void setMemberCode(String memberCode) {
-        this.MemberCode = memberCode;
-    }
+//    public String getMemberCode() {
+//        return MemberCode;
+//    }
+//
+//    public void setMemberCode(String memberCode) {
+//        this.MemberCode = memberCode;
+//    }
 
     public List<Integer> getBetTypeIds() {
         return BetTypeIds;
@@ -142,9 +142,9 @@ public class EventInfoByPageRsq {
         return "EventInfoFullReq{" +
                 "LanguageCode='" + LanguageCode + '\'' +
                 ", TimeStamp='" + TimeStamp + '\'' +
-                ", Token='" + Token + '\'' +
+//                ", Token='" + Token + '\'' +
                 ", OddsType=" + OddsType +
-                ", MemberCode='" + MemberCode + '\'' +
+//                ", MemberCode='" + MemberCode + '\'' +
                 ", BetTypeIds=" + BetTypeIds +
                 ", Market='" + Market + '\'' +
                 ", MatchDay=" + MatchDay +
