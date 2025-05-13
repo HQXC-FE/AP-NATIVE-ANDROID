@@ -8,11 +8,11 @@ android {
             versionName "1.0.0"
             versionCode 100
             //resValue "string", "app_name", "${name}"
-            resValue "string", "app_name", "凯捷2T${versionCode}"
+            resValue "string", "app_name", "博世体育T${versionCode}"
             // 后面可能会改成 https://preyiang22test.oxldkm.com 如后续有连线问题 尝试看看
             resValue "string", "domain_api", "https://preyiang3.oxldkm.com"
             resValue "string", "domain_url", "https://preyiang3.oxldkm.com"
-            resValue "string", "channel_name", "kj2"  // 渠道名称
+            resValue "string", "channel_name", "bs"  // 渠道名称
             resValue "string", "platform_set", "49"  // 平台代号,升级用 35-意昂, 38-意昂2 ，40-意昂3
             resValue "string", "build_time", "${buildTime()}"
             resValue "string", "mixpanel_token", "aeb0e83d57c9c765a9f0c1631f16e1d8"
@@ -32,10 +32,10 @@ android {
             applicationId "com.kj2.app" // eon3
             versionName "1.0.0"
             versionCode 100
-            resValue "string", "app_name", "凯捷2"
+            resValue "string", "app_name", "博世体育"
             resValue "string", "domain_api", "http://129.226.129.111:46820"
             resValue "string", "domain_url", "https://h51.d4c1tc.vip"
-            resValue "string", "channel_name", "kj2"  // 渠道名称
+            resValue "string", "channel_name", "bs"  // 渠道名称
             resValue "string", "platform_set", "49"  // 平台代号,升级用 35-意昂, 38-意昂2 40-意昂3
             resValue "string", "build_time", "${buildTime()}"
             resValue "string", "mixpanel_token", "cce6df315eee2c445da416c6b717f114"
