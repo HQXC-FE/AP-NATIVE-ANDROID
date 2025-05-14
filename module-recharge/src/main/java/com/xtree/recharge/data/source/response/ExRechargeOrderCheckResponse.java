@@ -84,6 +84,21 @@ public class ExRechargeOrderCheckResponse {
          */
         @SerializedName("platformOrder")
         private String platformOrder;
+
+        /**
+         * platformOrder
+         */
+        @SerializedName("receipt_bankcode_switch")
+        private Integer receiptBankcodeSwitch;
+
+        public Integer getReceiptBankcodeSwitch() {
+            return receiptBankcodeSwitch;
+        }
+
+        public void setReceiptBankcodeSwitch(Integer receiptBankcodeSwitch) {
+            this.receiptBankcodeSwitch = receiptBankcodeSwitch;
+        }
+
         /**
          * payAmount
          */
@@ -179,21 +194,11 @@ public class ExRechargeOrderCheckResponse {
          */
         @SerializedName("bank_code")
         private String bankCode;
-
-        public String getPayBankType() {
-            return payBankType;
-        }
-
-        public void setPayBankType(String payBankType) {
-            this.payBankType = payBankType;
-        }
-
         /**
          * bankCode
          */
         @SerializedName("payBankType")
         private String payBankType;
-
         /**
          * bankName
          */
@@ -214,6 +219,14 @@ public class ExRechargeOrderCheckResponse {
          */
         @SerializedName("user_bank_info")
         private Object userBankInfo;
+
+        public String getPayBankType() {
+            return payBankType;
+        }
+
+        public void setPayBankType(String payBankType) {
+            this.payBankType = payBankType;
+        }
 
         @Override
         public String toString() {

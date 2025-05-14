@@ -118,6 +118,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
     //付款银行
     public MutableLiveData<String> bankCodeOfPayment = new MutableLiveData<>();
     public MutableLiveData<String> bankNameOfPayment = new MutableLiveData<>();
+    public MutableLiveData<Integer> receiptBankcodeSwitch = new MutableLiveData<>();
     public MutableLiveData<String> typeOfPayment = new MutableLiveData<>();
     //付款卡号
     public MutableLiveData<String> bankNumberOfPayment = new MutableLiveData<>();
@@ -243,6 +244,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
             bankInfo.setExpireTime(data.getExpireTime());
             bankInfoData.setValue(bankInfo);
         }
+        receiptBankcodeSwitch.setValue(data.getReceiptBankcodeSwitch());
 
         deadlinesData.setValue("请于 " + data.getExpireTime() + " 内完成上传");
         cancleWaitTimeKeeping();
@@ -397,6 +399,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
                         ExRechargeOrderCheckResponse.DataDTO data = vo.getData();
                         if (data != null) {
                             payOrderData.setValue(data);
+                            receiptBankcodeSwitch.setValue(data.getReceiptBankcodeSwitch());
 
                             checkCancleState();
                             checkCancleWaitState();
@@ -645,7 +648,7 @@ public class ExTransferViewModel extends BaseViewModel<RechargeRepository> {
 
         boolean isPositive = "1".equals(typeOfPayment.getValue());
         isPositive = true;
-        if (isPositive && mActivity != null && mActivity.get() != null) {
+        if (receiptBankcodeSwitch.getValue() == 1 && mActivity != null && mActivity.get() != null) {
             if (positiveConfirmDialog != null && positiveConfirmDialog.isShow()) {
                 positiveConfirmDialog.dismiss();
             }
