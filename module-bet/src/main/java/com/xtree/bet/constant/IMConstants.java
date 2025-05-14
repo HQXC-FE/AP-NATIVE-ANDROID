@@ -128,11 +128,11 @@ public class IMConstants {
     /**
      * 比分类型-黄牌
      */
-    public static String SCORE_TYPE_YELLOW_CARD = "S12";
+    public static String SCORE_TYPE_YELLOW_CARD = "HomeTeamYellowCardScore";
     /**
      * 比分类型-红牌
      */
-    public static String SCORE_TYPE_RED_CARD = "S11";
+    public static String SCORE_TYPE_RED_CARD = "HomeTeamRedCardScore";
 
     public static int getBgMatchDetailTop(String sportId) {
         if (mapBgMatchDetailTop.isEmpty()) {

@@ -1,6 +1,8 @@
 package com.xtree.bet.constant;
 
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FB;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_FBXC;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
@@ -82,10 +84,12 @@ public class Constants {
      */
     public static String getScoreType() {
         String mPlatform = SPUtils.getInstance().getString(KEY_PLATFORM);
-        if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+        if (TextUtils.equals(mPlatform, PLATFORM_FB) && !TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
             return String.valueOf(FBConstants.SCORE_TYPE_SCORE);
-        } else {
+        } else  if ((TextUtils.equals(mPlatform, PLATFORM_PM) && TextUtils.equals(mPlatform, PLATFORM_PMXC))){
             return PMConstants.SCORE_TYPE_SCORE;
+        } else{
+            return IMConstants.SCORE_TYPE_SCORE;
         }
     }
 

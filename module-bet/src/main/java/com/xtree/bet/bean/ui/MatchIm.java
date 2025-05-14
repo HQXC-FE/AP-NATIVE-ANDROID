@@ -5,6 +5,8 @@ import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import android.os.Parcel;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
@@ -15,6 +17,7 @@ import com.xtree.bet.bean.response.im.MatchInfo;
 import com.xtree.bet.constant.IMConstants;
 import com.xtree.bet.constant.IMMatchPeriod;
 
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * 赛事列表UI显示需要用的比赛信息结构
@@ -190,32 +194,27 @@ public class MatchIm implements Match {
      */
     @Override
     public List<Integer> getScore(String... type) {
+        if(type == null || type.length == 0) return null;
         List<Integer> sc = new ArrayList<>();
-
-//        if (matchInfo.rbTime != null) {
-//            String state = matchInfo.rbTime;
-//            //String score = state.split(" ")[1];
-//            for (String str : state.split(" ")) {
-//                if (state.split(" ")[1] != null && !state.split(" ")[1].isEmpty()) {
-//                    String score = state.split(" ")[1];
-//                    if (!TextUtils.isEmpty(score) && score.contains(" ")) {
-//                        score = score.substring(score.indexOf(" ") + 1, score.length());
-//                        if (!TextUtils.isEmpty(score) && score.contains(":") && score.split(":").length > 1) {
-//                            sc.add(Double.valueOf(score.split(":")[0]).intValue()); // 修复小数转换整数异常
-//                            sc.add(Double.valueOf(score.split(":")[1]).intValue());
-//                        }
-//                    }
-//                    return sc;
-//                }
-//            }
-//        }
-        if(matchInfo != null && matchInfo.relatedScores != null && matchInfo.relatedScores.size() > 0){
-            int homeScore = matchInfo.relatedScores.get(0).homeScore;
-            int awayScore = matchInfo.relatedScores.get(0).awayScore;
-            sc.add(homeScore);
-            sc.add(awayScore);
+        CfLog.d("============= MatchIm getScore type ================="+type[0]);
+        if(type[0].equals(IMConstants.SCORE_TYPE_SCORE)){ //获取比分
+            if(matchInfo != null && matchInfo.relatedScores != null && matchInfo.relatedScores.size() > 0){
+                int homeScore = matchInfo.relatedScores.get(0).homeScore;
+                int awayScore = matchInfo.relatedScores.get(0).awayScore;
+                sc.add(homeScore);
+                sc.add(awayScore);
+            }
+            return sc;
+        }else{ //获取红黄牌
+            Gson gson = new Gson();
+            Type typeJson = new TypeToken<Map<String, String>>() {}.getType();
+            Map<String, String> extraInfoMap = gson.fromJson(matchInfo.extraInfo, typeJson);
+            if(extraInfoMap.get(type[0])!= null){
+                sc.add(Integer.parseInt(extraInfoMap.get(type[0])));
+                sc.add(Integer.parseInt(extraInfoMap.get(type[0])));
+            }
+            return sc;
         }
-        return sc;
     }
 
     /**
