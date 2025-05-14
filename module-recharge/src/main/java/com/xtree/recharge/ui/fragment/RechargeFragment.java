@@ -820,7 +820,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
         }
 
         //op下单是否可选银行卡
-        if (vo.op_direct_config != null && vo.op_direct_config.allow_bank_select == 0) {
+        if (vo.receipt_bankcode_switch == 0) {
             if (vo.getOpBankList() != null && vo.getOpBankList().getUsed() != null && !vo.getOpBankList().getUsed().isEmpty()) {
                 binding.llBankCard.setVisibility(View.VISIBLE);
                 binding.tvwBankCard.setClickable(false);
@@ -1170,7 +1170,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
             return;
         }
 
-        if (viewModel.isOnePayFix(curRechargeVo) && curRechargeVo.op_direct_config != null && curRechargeVo.op_direct_config.allow_bank_select == 0) {
+        if (viewModel.isOnePayFix(curRechargeVo) && curRechargeVo.receipt_bankcode_switch == 0) {
             //无需开启银行卡
         } else {
         // 普通银行卡充值 bankId非空; 极速充值 bankId,bankCode 至少要有一个非空

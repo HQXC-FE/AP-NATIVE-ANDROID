@@ -71,7 +71,7 @@ public class RechargeVo {
     public String onepay_customer_service_link; // op客服链接
     public boolean can_use_name_channel_status;//是否已配置 仅真实姓名可用渠道
     public boolean need_fill_real_name;//是否需要填写真实姓名
-    public OpDirectConfig op_direct_config;
+    public int receipt_bankcode_switch;//receipt_bankcode_switch :是否开放银行别 1开,0关
 
     /**
      * opBankList
