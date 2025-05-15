@@ -24,7 +24,8 @@
         android:src="@mipmap/ic_app_msg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/ckb_msg_check"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/ivw_msg_point"
@@ -40,7 +41,7 @@
         style="@style/style_bind_confirm_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="20dp"
         android:ellipsize="end"
         android:maxEms="10"
         android:singleLine="true"
@@ -54,7 +55,7 @@
         style="@style/style_bind_confirm_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="20dp"
         android:text="2023-10-13 16:08:33"
         android:textStyle="normal"
         android:textSize="@dimen/bt_text_10sp"
