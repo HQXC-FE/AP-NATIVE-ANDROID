@@ -9,6 +9,8 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.utils.CfLog;
+import com.xtree.bet.EventInfoByPageListParser;
 import com.xtree.bet.bean.response.im.ChampionEventsRsp;
 import com.xtree.bet.bean.response.im.MatchInfo;
 import com.xtree.bet.bean.ui.Match;
@@ -16,6 +18,7 @@ import com.xtree.bet.bean.ui.MatchIm;
 import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.OptionList;
 import com.xtree.bet.bean.ui.PlayType;
+import com.xtree.bet.ui.activity.MainActivity;
 import com.xtree.bet.ui.viewmodel.im.ImMainViewModel;
 
 import java.util.ArrayList;
@@ -64,8 +67,10 @@ public class IMChampionListCallBack extends HttpCallBack<ChampionEventsRsp> {
 
     @Override
     public void onResult(ChampionEventsRsp championEventsRsp) {
+        championEventsRsp = EventInfoByPageListParser.getChampionEventsRsp(MainActivity.getContext());
         if (mIsTimerRefresh) {
             setChampionOptionOddChange(championEventsRsp.Events);
+            CfLog.d("======== IMChampionListCallBack onResult championMatchTimerListData.postValue =======");
             mViewModel.championMatchTimerListData.postValue(mViewModel.mChampionMatchList);
             return;
         }
@@ -102,9 +107,14 @@ public class IMChampionListCallBack extends HttpCallBack<ChampionEventsRsp> {
                 mViewModel.finishLoadMore(true);
             }
         }
-        mViewModel.mChampionMatchInfoList.addAll(championEventsRsp.Events);
+
+        if (championEventsRsp != null && championEventsRsp.Events != null) {
+            mViewModel.mChampionMatchInfoList.addAll(championEventsRsp.Events);
+        }
+
         if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
             championLeagueList(championEventsRsp.Events);
+            CfLog.d("======== IMChampionListCallBack onResult championMatchListData.postValue ======="+championEventsRsp.Events);
             mViewModel.championMatchListData.postValue(mViewModel.mChampionMatchList);
         } else {
             mViewModel.searchMatch(mViewModel.mSearchWord, true);
@@ -137,6 +147,7 @@ public class IMChampionListCallBack extends HttpCallBack<ChampionEventsRsp> {
      * @param matchInfoList
      */
     private void setChampionOptionOddChange(List<MatchInfo> matchInfoList) {
+        CfLog.d("============= IMChampionListCallBack setChampionOptionOddChange matchInfoList ================"+matchInfoList.size());
         List<Match> newMatchList = new ArrayList<>();
         Map<String, Match> map = new HashMap<>();
 
@@ -148,6 +159,7 @@ public class IMChampionListCallBack extends HttpCallBack<ChampionEventsRsp> {
 
         for (MatchInfo matchInfo : matchInfoList) {
             Match newMatch = new MatchIm(matchInfo);
+            CfLog.d("============= IMChampionListCallBack setChampionOptionOddChange newMatch ================"+newMatch);
             newMatchList.add(newMatch);
         }
 
@@ -210,11 +222,13 @@ public class IMChampionListCallBack extends HttpCallBack<ChampionEventsRsp> {
         if (!matchInfoList.isEmpty()) {
             Match header = new MatchIm();
             header.setHead(true);
+            CfLog.d("=============== IMChampionListCallBack championLeagueList header ================="+header);
             mViewModel.mChampionMatchList.add(header);
             for (MatchInfo matchInfo : matchInfoList) {
                 Match match = new MatchIm(matchInfo);
                 mViewModel.mChampionMatchList.add(match);
             }
         }
+        CfLog.d("=============== IMChampionListCallBack championLeagueList =================");
     }
 }

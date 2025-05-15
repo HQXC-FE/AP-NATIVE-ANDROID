@@ -379,6 +379,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      * @param isRefresh
      */
     public void getChampionList(int sportPos, String sportId, int orderBy, List<Long> leagueIds, List<Long> matchids, int playMethodType, int oddType, boolean isTimerRefresh, boolean isRefresh) {
+        CfLog.d("============== IMChampionnListCallBack getChampionList sportId ============="+sportId);
         if (TextUtils.equals("0", sportId)) {
             championMatchListData.postValue(new ArrayList<>());
             return;

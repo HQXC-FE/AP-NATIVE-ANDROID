@@ -7,14 +7,17 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.xtree.base.utils.CfLog;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.Match;
+import com.xtree.bet.bean.ui.MatchIm;
 import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.databinding.BtFbMatchGroupBinding;
 import com.xtree.bet.databinding.BtFbPlaytypeListBinding;
 import com.xtree.bet.weight.AnimatedExpandableListViewMax;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +113,7 @@ public class ChampionMatchAdapter extends AnimatedExpandableListViewMax.Animated
             binding.llHeader.setVisibility(View.GONE);
             binding.rlLeague.setVisibility(View.VISIBLE);
             binding.tvLeagueName.setText(match.getChampionMatchName());
+            CfLog.d("================= getGroupView atch.getLeague().getIcon() =============="+match.getLeague().getIcon());
             Glide.with(mContext)
                     .load(match.getLeague().getIcon())
                     //.apply(new RequestOptions().placeholder(placeholderRes))
@@ -145,7 +149,6 @@ public class ChampionMatchAdapter extends AnimatedExpandableListViewMax.Animated
 
         binding.tvTitle.setText(playType.getPlayTypeName());
         binding.tvDeadline.setText(mContext.getResources().getString(R.string.bt_bt_champion_match_deadline, playType.getMatchDeadLine()));
-
         binding.rvOptionList.setLayoutManager(new GridLayoutManager(mContext, 2));
         binding.rvOptionList.setAdapter(new OptionChampionAdapter(mContext, (Match) getGroup(groupPosition), playType, playType.getChampionOptionList()));
         binding.vSpace.setVisibility(childPosition == getRealChildrenCount(groupPosition) - 1 ? View.VISIBLE : View.GONE);

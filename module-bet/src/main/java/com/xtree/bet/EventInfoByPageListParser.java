@@ -30,7 +30,7 @@ public class EventInfoByPageListParser {
     }
 
     public static ChampionEventsRsp getChampionEventsRsp(Context context) {
-        String json = loadJSONFromAsset(context, "data.json");
+        String json = loadJSONFromAsset(context, "champion.json");
         Gson gson = new Gson();
         return gson.fromJson(json, ChampionEventsRsp.class);
     }
@@ -50,32 +50,4 @@ public class EventInfoByPageListParser {
         }
         return json;
     }
-
-//    public static List<MatchInfo> convertToMatchInfoList(EventInfoByPageListRsp data) {
-//        List<MatchInfo> matchList = new ArrayList<>();
-//        if (data == null || data.getSports() == null) return matchList;
-//        CfLog.d("============== IMListCallBack convertToMatchInfoList ===============");
-//        for (Sport sport : data.getSports()) {
-//            if (sport.getEvents() == null) continue;
-//            for (MatchEvent event : sport.getEvents()) {
-////                MatchInfo matchInfo = new MatchInfo();
-////                matchInfo.csid = String.valueOf(sport.getSportId());
-////                matchInfo.csna = sport.getSportName();
-////                matchInfo.mid = String.valueOf(event.eventId);
-////                matchInfo.tn = event.competition.getCompetitionName();
-////                matchInfo.mhid = String.valueOf(event.homeTeamId);
-////                matchInfo.mhn = event.homeTeam;
-////                matchInfo.mst = String.valueOf(event.eventDate);
-////                matchInfo.man = event.awayTeam;
-////                matchInfo.maid = String.valueOf(event.awayTeamId);
-////                matchInfo.tid = String.valueOf(event.eventGroupId);
-////                matchInfo.mgt = event.rbTime;
-////                matchList.add(matchInfo);
-////                CfLog.d("============== IMListCallBack matchInfo ==============="+matchInfo);
-//            }
-//        }
-//        CfLog.d("============== IMListCallBack convertToMatchInfoList matchList ==============="+matchList);
-//        CfLog.d("============== IMListCallBack convertToMatchInfoList matchList size ==============="+matchList.size());
-//        return matchList;
-//    }
 }

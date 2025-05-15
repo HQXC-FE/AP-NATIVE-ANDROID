@@ -1,13 +1,10 @@
 package com.xtree.bet.bean.ui;
 
-import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
-
 import android.os.Parcel;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.response.im.LeagueInfo;
@@ -18,14 +15,10 @@ import com.xtree.bet.constant.IMConstants;
 import com.xtree.bet.constant.IMMatchPeriod;
 
 import java.lang.reflect.Type;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -289,11 +282,10 @@ public class MatchIm implements Match {
         List<PlayType> playTypeList = new ArrayList<>();
         for (MarketLine marketLine : matchInfo.marketLines) {
             if(marketLine.marketLineLevel == 1){
-                PlayTypeIm playTypeIm = new PlayTypeIm(marketLine);
+                PlayTypeIm playTypeIm = new PlayTypeIm(marketLine,matchInfo);
                 playTypeList.add(playTypeIm);
             }
         }
-        CfLog.d("============= MatchIm  playTypeList ================="+playTypeList);
         return playTypeList;
     }
 
@@ -372,7 +364,7 @@ public class MatchIm implements Match {
         } else {
             leagueInfo = mLeague.getLeagueInfo();
         }
-        //leagueInfo.picUrlthumb = matchInfo.lurl;
+        leagueInfo.picUrlthumb = "";
         leagueInfo.nameText = matchInfo.competition.getCompetitionName();
         if (!TextUtils.isEmpty(String.valueOf(matchInfo.competition.getCompetitionId()))) {
             leagueInfo.tournamentId = Long.valueOf(String.valueOf(matchInfo.competition.getCompetitionId()));
@@ -634,4 +626,17 @@ public class MatchIm implements Match {
             return new MatchIm[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "MatchIm{" +
+                "className='" + className + '\'' +
+                ", matchInfo=" + matchInfo +
+                ", mLeague=" + mLeague +
+                ", referUrl='" + referUrl + '\'' +
+                ", isHead=" + isHead +
+                ", isExpand=" + isExpand +
+                '}';
+    }
+
 }
