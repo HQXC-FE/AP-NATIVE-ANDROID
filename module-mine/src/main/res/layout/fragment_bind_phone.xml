@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:text="+86 |"
                     android:textSize="14sp"
-                    android:textColor="@color/clr_txt_mouse5"
+                    android:textColor="@color/clr_txt_07"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="2dp"
                     />
@@ -91,7 +91,7 @@
                     android:inputType="phone"
                     android:maxLength="11"
                     android:textSize="14sp"
-
+                    android:textColorHint="@color/clr_txt_07"
                     android:textColor="@color/clr_txt_01"/>
 
             </LinearLayout>
@@ -153,6 +153,7 @@
                     android:textSize="14sp"
                     android:textColor="@color/clr_txt_01"
                     android:paddingStart="8dp"
+                    android:textColorHint="@color/clr_txt_07"
                     />
 
                 <TextView
