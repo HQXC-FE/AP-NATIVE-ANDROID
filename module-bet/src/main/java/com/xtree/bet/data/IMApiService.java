@@ -7,6 +7,7 @@ import com.xtree.bet.bean.request.im.DeltaOutrightEventsReq;
 import com.xtree.bet.bean.request.im.DeltaEventInfoMbtReq;
 import com.xtree.bet.bean.request.im.EventInfoByPageRsq;
 import com.xtree.bet.bean.request.im.EventInfoMbtReq;
+import com.xtree.bet.bean.request.im.EventInfoResulReq;
 import com.xtree.bet.bean.request.im.GetBetListReq;
 import com.xtree.bet.bean.request.im.GetGetDeltaBetTradeReq;
 import com.xtree.bet.bean.request.im.GetStatementReq;
@@ -140,6 +141,13 @@ public interface IMApiService {
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<EventInfoByPageListRsp>> getEventInfoByPage(@Body EventInfoByPageRsq eventInfoMbtReq);
+
+    /**
+     * 赛果功能
+     */
+    @POST(forwardPath)
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<EventInfoByPageListRsp>> GetCompletedResults(@Body EventInfoResulReq req);
 
     /**
      * 索取DELTA赛事和主要玩法详情

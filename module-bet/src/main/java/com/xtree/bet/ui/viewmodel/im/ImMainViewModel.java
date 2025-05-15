@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
@@ -13,11 +12,11 @@ import com.xtree.bet.EventInfoByPageListParser;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
 import com.xtree.bet.bean.request.im.AnnouncementReq;
 import com.xtree.bet.bean.request.im.EventInfoByPageRsq;
+import com.xtree.bet.bean.request.im.EventInfoResulReq;
 import com.xtree.bet.bean.request.im.OutrightEventsReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.im.Announcement;
-import com.xtree.bet.bean.response.im.ChampionEventsRsp;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
 import com.xtree.bet.bean.response.im.LeagueInfo;
@@ -34,27 +33,32 @@ import com.xtree.bet.constant.SportTypeItem;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.activity.MainActivity;
 import com.xtree.bet.ui.viewmodel.MainViewModel;
-import com.xtree.bet.ui.viewmodel.SportCacheType;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
 import com.xtree.bet.ui.viewmodel.callback.IMChampionListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMLeagueListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMListCallBack;
-import com.xtree.bet.ui.viewmodel.callback.PMChampionListCacheCallBack;
-import com.xtree.bet.ui.viewmodel.callback.PMChampionListCallBack;
 
 import org.reactivestreams.Subscriber;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.RxUtils;
-import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
  * Created by vickers
@@ -69,7 +73,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     private Map<String, List<SportTypeItem>> sportCountMap = new HashMap<>();
     private List<MenuInfo> mMenuInfoList = new ArrayList<>();
     private IMLeagueListCallBack mImLeagueCallBack;
-
 
     private HashMap<Integer, SportTypeItem> mMatchGames = new HashMap<>();
 
@@ -379,7 +382,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      * @param isRefresh
      */
     public void getChampionList(int sportPos, String sportId, int orderBy, List<Long> leagueIds, List<Long> matchids, int playMethodType, int oddType, boolean isTimerRefresh, boolean isRefresh) {
-        CfLog.d("============== IMChampionnListCallBack getChampionList sportId ============="+sportId);
+        CfLog.d("============== IMChampionnListCallBack getChampionList sportId =============" + sportId);
         if (TextUtils.equals("0", sportId)) {
             championMatchListData.postValue(new ArrayList<>());
             return;
@@ -443,51 +446,29 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      * 获取赛果配置参数
      */
     public void postMerchant() {
-        Map<String, String> map = new HashMap<>();
-        map.put("languageType", "CMN");
-//        Disposable disposable = (Disposable) model.getIMApiService().resultMenuPB(map).compose(RxUtils.schedulersTransformer()) //线程调度
-//                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<PMResultBean>>() {
-//                    @Override
-//                    public void onResult(List<PMResultBean> list) {
-//                        List<SportTypeItem> list1 = new ArrayList<>();
-//                        for (PMResultBean i : list) {
-//                            if (IMConstants.getMatchGames().get(i.getMenuType()) == null || i.getMenuType() == 3001 || i.getMenuType() == 3002 || i.getMenuType() == 3003) {
-//                                //体育赛果隐藏英雄联盟、DOTA2、王者荣耀
-//                                continue;
-//                            }
-//                            SportTypeItem item = new SportTypeItem();
-//                            item.id = i.getMenuType();
-//                            item.menuId = Integer.parseInt(i.getMenuId());
-//                            list1.add(item);
-//                        }
-//                        ConcurrentHashMap<String, List<SportTypeItem>> sportMap = new ConcurrentHashMap<>();
-//                        sportMap.put("1", list1);
-//                        sportMap.put("2", new ArrayList<>());
-//                        resultData.setValue(sportMap);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable t) {
-//                        super.onError(t);
-//
-//                    }
-//                });
-//        addSubscribe(disposable);
+        ConcurrentHashMap<String, List<SportTypeItem>> sportMap = new ConcurrentHashMap<>();
+        List<Integer> numbers = Arrays.asList(1, 2, 34, 8, 40, 7, 19, 36, 25, 4, 8, 10, 12, 14, 17, 18, 11, 15);
+        List<SportTypeItem> list = new ArrayList<>();
+        for (Integer num : numbers) {
+            SportTypeItem item = new SportTypeItem();
+            item.id = num;
+            list.add(item);
+        }
+        sportMap.put("1", list);
+        sportMap.put("2", new ArrayList<>());
+        resultData.setValue(sportMap);
     }
 
     /**
      * 获取赛果信息赛事列表
      */
     public void matchResultPage(String beginTime, String endTime, int playMethodPos, String sportId) {
-        EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
-        eventInfoByPageRsq.setSportId(1);
-        eventInfoByPageRsq.setMarket("2");
-        eventInfoByPageRsq.setMatchDay(0);
-        eventInfoByPageRsq.setOddsType(3);
-        eventInfoByPageRsq.setPage(1);
-        eventInfoByPageRsq.setSeason(0);
-        eventInfoByPageRsq.setIsCombo(false);
-        Disposable disposable = (Disposable) model.getIMApiService().getEventInfoByPage(eventInfoByPageRsq).compose(RxUtils.schedulersTransformer()) //线程调度
+        EventInfoResulReq req = new EventInfoResulReq();
+        req.setStartDate(TimeUtils.formatTimestamp(beginTime));
+        req.setEndDate(TimeUtils.formatTimestamp(endTime));
+        req.setSportId(Integer.parseInt(sportId));
+        req.setEventTypeId(1);
+        Disposable disposable = (Disposable) model.getIMApiService().GetCompletedResults(req).compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<EventInfoByPageListRsp>() {
                     @Override
                     public void onResult(EventInfoByPageListRsp data) {
@@ -499,9 +480,9 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                         for (MatchInfo matchInfo : matchInfoList) {
                             matchInfo.setSportId(data.getSports().get(0).getSportId());
                             matchInfo.setSportName(data.getSports().get(0).getSportName());
-                            CfLog.d("================= IMLeagueListCallBack onResult matchInfo =================="+matchInfo);
+                            CfLog.d("================= IMLeagueListCallBack onResult matchInfo ==================" + matchInfo);
                         }
-                        List<Sport> matches =  data.getSports();
+                        List<Sport> matches = data.getSports();
                         if (matches != null) {
                             matchInfoList = data.getSports().get(0).getEvents();
                         }
@@ -521,8 +502,8 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                             league.getMatchList().add(match);
 
                         }
-                        CfLog.d("=============  ImMainViewModel matchResultPage onResult leagues ==============="+leagues.toString());
-                        resultLeagueData.setValue(leagues);
+                        CfLog.d("=============  ImMainViewModel matchResultPage onResult leagues ===============" + leagues.toString());
+                        //resultLeagueData.setValue(leagues);
                     }
 
                     @Override
@@ -716,7 +697,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
     }
 
     private Flowable getFlowableLiveMatches(PMListReq pmListReq) {
-            //flowable = model.getIMApiService().liveMatchesPB(pmListReq);
+        //flowable = model.getIMApiService().liveMatchesPB(pmListReq);
         EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
         eventInfoByPageRsq.setSportId(1);
         eventInfoByPageRsq.setMarket("2");

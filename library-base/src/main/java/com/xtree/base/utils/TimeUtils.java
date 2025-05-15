@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 //@SuppressLint("SimpleDateFormat")
 public class TimeUtils {
@@ -331,6 +333,17 @@ public class TimeUtils {
             strSeconds = "0" + seconds;
         }
         return String.format("%s : %s", strMinutes, strSeconds);
+    }
+
+    /**
+     * 时间戳转yyyy-MM-dd'T'HH:mm:ss（2025-05-15T00:00:00）
+     */
+    public static String formatTimestamp(String timestampStr) {
+        long timestamp = Long.parseLong(timestampStr);
+        Date date = new Date(timestamp);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getDefault());
+        return sdf.format(date);
     }
 
 }

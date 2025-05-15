@@ -38,8 +38,10 @@ import com.xtree.bet.ui.adapter.LeagueResultAdapter;
 import com.xtree.bet.ui.adapter.TabSportResultAdapter;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.bet.ui.viewmodel.factory.IMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FBMainViewModel;
+import com.xtree.bet.ui.viewmodel.im.ImMainViewModel;
 import com.xtree.bet.ui.viewmodel.pm.PMMainViewModel;
 
 import java.util.ArrayList;
@@ -214,23 +216,6 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
         }
     }
 
-    //private void autoClickItem(RecyclerView recyclerView, int position) {
-    //    // 找到指定位置的ViewHolder
-    //    RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(position);
-    //    if (viewHolder != null) {
-    //        // 获取itemView并模拟点击
-    //        viewHolder.itemView.performClick();
-    //    } else {
-    //        // 如果ViewHolder为空，可能是因为RecyclerView还没有完全渲染或item不可见，需要滚动到该位置并再尝试
-    //        recyclerView.post(() -> {
-    //            RecyclerView.ViewHolder vh = recyclerView.findViewHolderForAdapterPosition(position);
-    //            if (vh != null) {
-    //                vh.itemView.performClick();
-    //            }
-    //        });
-    //    }
-    //}
-
     @Override
     public void initData() {
         viewModel.postMerchant();
@@ -284,12 +269,15 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
 
     @Override
     public TemplateMainViewModel initViewModel() {
-        if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
-            AppViewModelFactory factory = AppViewModelFactory.getInstance((Application) Utils.getContext());
-            return new ViewModelProvider(this, factory).get(FBMainViewModel.class);
-        } else {
+        if (TextUtils.equals(mPlatform, PLATFORM_PM) || TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
             PMAppViewModelFactory factory = PMAppViewModelFactory.getInstance((Application) Utils.getContext());
             return new ViewModelProvider(this, factory).get(PMMainViewModel.class);
+        } else if(TextUtils.equals(mPlatform, PLATFORM_FB) || TextUtils.equals(mPlatform, PLATFORM_FBXC)){
+            AppViewModelFactory factory = AppViewModelFactory.getInstance((Application) Utils.getContext());
+            return new ViewModelProvider(this, factory).get(FBMainViewModel.class);
+        }else {
+            IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance((Application) Utils.getContext());
+            return new ViewModelProvider(this, factory).get(ImMainViewModel.class);
         }
     }
 

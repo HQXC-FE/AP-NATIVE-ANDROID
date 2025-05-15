@@ -6,6 +6,12 @@ import com.xtree.base.vo.BaseBean
 import kotlinx.android.parcel.RawValue
 import kotlinx.parcelize.Parcelize
 
+data class WageData(
+    val ServerTime: String,
+    val StatusCode: Int,
+    val StatusDesc: String,
+    val WagerList: List<Wager>
+)
 @Parcelize
 data class Wager(
     /**
