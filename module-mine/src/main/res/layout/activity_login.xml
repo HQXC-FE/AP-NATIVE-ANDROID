@@ -119,7 +119,8 @@
                             android:layout_height="wrap_content"
                             android:text="@string/me_pwd_forget"
                             android:textColor="@color/clr_txt_link"
-                            android:textSize="@dimen/me_test_size" />
+                            android:textSize="@dimen/me_test_size"
+                            android:visibility="invisible"/>
                     </LinearLayout>
 
                     <LinearLayout
