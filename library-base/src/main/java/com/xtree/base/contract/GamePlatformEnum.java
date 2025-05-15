@@ -12,7 +12,7 @@ public enum GamePlatformEnum {
     BBIN("BBIN娱乐", "bbin"),
     AG("AG街机捕鱼", "ag"),
     DBEGAME("DB电竞", "obgdj"),
-    YY("云游棋牌", "yy"),
+    YY("YOO棋牌", "yy"),
     DB("DB棋牌", "obgqp"),
     WALI("瓦力棋牌", "wali"),
     ;
@@ -58,7 +58,7 @@ public enum GamePlatformEnum {
                 return AG;
             case "DB电竞":
                 return DBEGAME;
-            case "云游棋牌":
+            case "YOO棋牌":
                 return YY;
             case "DB棋牌":
                 return DB;
