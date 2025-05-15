@@ -20,8 +20,8 @@ android {
             resValue "string", "sentry_dsn", "https://0cefc03e1c8e991010eb93fb0722e362@o4507447554539520.ingest.us.sentry.io/4507604245217280"
             resValue "bool", "is_tag", "false" // 是否开启统计
             // 后面可能会改成 https://preyiang22test.oxldkm.com 如后续有连线问题 尝试看看
-            resValue "string", "domain_api_list", "https://preyiang3.oxldkm.com;"
-            resValue "string", "domain_url_list", "https://preyiang3.oxldkm.com;"
+            resValue "string", "domain_api_list", "https://bosch.oxldkm.com;"
+            resValue "string", "domain_url_list", "https://bosch.oxldkm.com;"
             resValue "string", "domain_url_list_third", ""
             multiDexEnabled true
             dimension "channelName"
