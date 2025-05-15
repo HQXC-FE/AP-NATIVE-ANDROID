@@ -184,6 +184,7 @@ public class MatchInfo implements BaseBean {
     @SerializedName("MarketLines")
     public List<MarketLine> marketLines;
 
+    @SerializedName("SportId")
     public int sportId;
 
     public String sportName;

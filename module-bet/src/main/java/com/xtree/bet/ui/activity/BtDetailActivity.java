@@ -220,7 +220,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
      */
     private void setTopBg() {
         if (mMatch != null && mMatch.getSportId() != null) {
-            binding.ctlBg.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
+//            binding.ctlBg.setBackgroundResource(Constants.getBgMatchDetailTop(mMatch.getSportId()));
         }
     }
 
@@ -346,7 +346,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             if (match == null) {
                 return;
             }
-            setTopBg();
+//            setTopBg();
             if (match.hasAs()) {
                 binding.tvAnimi.setVisibility(View.VISIBLE);
             } else {

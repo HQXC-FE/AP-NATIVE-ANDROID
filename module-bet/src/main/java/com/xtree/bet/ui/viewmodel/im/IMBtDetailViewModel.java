@@ -8,16 +8,20 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.BtDomainUtil;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.vo.FBService;
+import com.xtree.bet.EventInfoByPageListParser;
 import com.xtree.bet.bean.request.im.BaseIMRequest;
 import com.xtree.bet.bean.request.im.SelectedEventInfoReq;
+import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
 import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.MarketLine;
 import com.xtree.bet.bean.response.im.MatchInfo;
+import com.xtree.bet.bean.response.im.Sport;
 import com.xtree.bet.bean.ui.Category;
 import com.xtree.bet.bean.ui.CategoryIm;
 import com.xtree.bet.bean.ui.Match;
@@ -37,8 +41,10 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Flowable;
+import io.sentry.protocol.App;
 import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.utils.SPUtils;
+import me.xtree.mvvmhabit.utils.Utils;
 
 /**
  * Created by marquis
@@ -59,29 +65,37 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
 //        Map<String, String> map = new HashMap<>();
 //        map.put("languageType", "CMN");
 //        map.put("matchId", String.valueOf(matchId));
+//
+//        List<Long> eventsId = new ArrayList<>();
+//        eventsId.add(mMatchId);
+//        SelectedEventInfoReq req = new SelectedEventInfoReq(Long.parseLong(sportId), eventsId, 2, false, true);
+//        launchFlow(model.getIMApiService().getSelectedEventInfo(new BaseIMRequest<>(IMApiService.GetSelectedEventInfo, req)), new HttpCallBack<EventInfoByPageListRsp>() {
+//            @Override
+//            public void onResult(EventInfoByPageListRsp eventListRsp) {
+//                super.onResult(eventListRsp);
+//                List<Category> categoryList = getCategoryList(eventListRsp);
+//
+//                List<MatchInfo> events = eventListRsp.getSports().get(0).getEvents();
+//                Match match = new MatchIm(events);
+//                matchData.postValue(match);
+//                categoryListData.postValue(categoryList);
+//            }
+//        });
 
-        List<Long> eventsId = new ArrayList<>();
-        eventsId.add(mMatchId);
-        SelectedEventInfoReq req = new SelectedEventInfoReq(Long.parseLong(sportId), eventsId, 2, false, true);
-        launchFlow(model.getIMApiService().getSelectedEventInfo(new BaseIMRequest<>(IMApiService.GetSelectedEventInfo, req)), new HttpCallBack<EventListRsp>() {
-            @Override
-            public void onResult(EventListRsp eventListRsp) {
-                super.onResult(eventListRsp);
-                List<Category> categoryList = getCategoryList(eventListRsp);
 
-                List<MatchInfo> events = eventListRsp.getSports().get(0).getEvents();
-                Match match = new MatchIm(events);
-                matchData.postValue(match);
-                categoryListData.postValue(categoryList);
-            }
-        });
+        EventInfoByPageListRsp eventListRsp = EventInfoByPageListParser.getSelectedEventInfo(Utils.getContext());
+        List<Category> categoryList = getCategoryList(eventListRsp);
+        List<MatchInfo> events = eventListRsp.getSports().get(0).getEvents();
+        Match match = new MatchIm(events.get(0));
+        matchData.postValue(match);
+        categoryListData.postValue(categoryList);
 
     }
 
     public void getMatchDetailResult(long matchId) {
     }
 
-    public List<Category> getCategoryList(EventListRsp matchInfo) {
+    public List<Category> getCategoryList(EventInfoByPageListRsp matchInfo) {
         Map<String, Category> categoryMap = new HashMap<>();
         List<Category> categoryList = new ArrayList<>();
         if (matchInfo.getSports().isEmpty()) {
@@ -91,7 +105,7 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
         categoryMap.put("all", categoryAll);
         categoryList.add(categoryAll);
 
-        EventListRsp.Sport sport = matchInfo.getSports().get(0);
+        Sport sport = matchInfo.getSports().get(0);
         List<MatchInfo> events = sport.getEvents();
 
         for (MatchInfo event : events) {

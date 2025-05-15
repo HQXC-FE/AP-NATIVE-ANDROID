@@ -175,7 +175,7 @@ public interface IMApiService {
      */
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<EventListRsp>> getSelectedEventInfo(@Body BaseIMRequest<SelectedEventInfoReq> selectedEventInfoReq);
+    Flowable<BaseResponse<EventInfoByPageListRsp>> getSelectedEventInfo(@Body BaseIMRequest<SelectedEventInfoReq> selectedEventInfoReq);
 
     /**
      * 获取冠军赛事

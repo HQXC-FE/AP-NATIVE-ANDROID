@@ -1,8 +1,8 @@
 package com.xtree.bet.ui.viewmodel.im;
 
-import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.MarketLine;
 import com.xtree.bet.bean.response.im.MatchInfo;
+import com.xtree.bet.bean.response.im.Sport;
 
 import java.util.*;
 
@@ -13,7 +13,7 @@ public final class IMOrganizedMarkLinesManager {
     private IMOrganizedMarkLinesManager() {
     }
 
-    public void organizedMarkLinesWith(EventListRsp.Sport imSport, MatchInfo imSportEvents) {
+    public void organizedMarkLinesWith(Sport imSport, MatchInfo imSportEvents) {
         if (imSport.getSportId() == 1) {
             soccerOrganizedMarkLinesWith(imSportEvents);
         } else if (imSport.getSportId() == 2) {

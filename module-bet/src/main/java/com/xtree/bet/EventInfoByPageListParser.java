@@ -35,6 +35,13 @@ public class EventInfoByPageListParser {
         return gson.fromJson(json, ChampionEventsRsp.class);
     }
 
+    public static EventInfoByPageListRsp getSelectedEventInfo(Context context) {
+        String json = loadJSONFromAsset(context, "detail_data.json");
+        Gson gson = new Gson();
+        return gson.fromJson(json, EventInfoByPageListRsp.class);
+
+    }
+
     public static String loadJSONFromAsset(Context context, String fileName) {
         String json;
         try {

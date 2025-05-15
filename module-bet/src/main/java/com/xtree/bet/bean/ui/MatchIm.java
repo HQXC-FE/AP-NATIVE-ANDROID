@@ -321,7 +321,8 @@ public class MatchIm implements Match {
      */
     @Override
     public boolean hasAs() {
-        //return matchInfo.mvs != -1 && !getAnmiUrls().isEmpty(); 没找到动画对应字段
+        //IM文档没看懂，暂时不接动画直播，先返回false
+//        boolean hasAs = matchInfo.hasVisualization;
         return false;
     }
 
@@ -488,7 +489,10 @@ public class MatchIm implements Match {
      */
     @Override
     public String getSportId() {
-        return String.valueOf(matchInfo.sportId);
+        if (matchInfo!=null){
+            return String.valueOf(matchInfo.sportId);
+        }
+        return "0";
     }
 
     /**
