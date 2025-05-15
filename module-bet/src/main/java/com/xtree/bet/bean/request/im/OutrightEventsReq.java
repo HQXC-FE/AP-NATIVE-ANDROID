@@ -4,6 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class OutrightEventsReq {
 
+    private String api = "GetOutrightEvents";
+    private String method = "post";
+    private String format = "json";
+
+
+    private String LanguageCode = "CHS";
+
     @SerializedName("IsCombo")
     private boolean isCombo;
 

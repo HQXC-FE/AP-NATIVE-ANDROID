@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.xtree.base.utils.CfLog;
+import com.xtree.bet.bean.response.im.ChampionEventsRsp;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
 import com.xtree.bet.bean.response.im.MatchEvent;
 import com.xtree.bet.bean.response.im.MatchInfo;
@@ -26,6 +27,12 @@ public class EventInfoByPageListParser {
         String json = loadJSONFromAsset(context, "data.json");
         Gson gson = new Gson();
         return gson.fromJson(json, EventInfoByPageListRsp.class);
+    }
+
+    public static ChampionEventsRsp getChampionEventsRsp(Context context) {
+        String json = loadJSONFromAsset(context, "data.json");
+        Gson gson = new Gson();
+        return gson.fromJson(json, ChampionEventsRsp.class);
     }
 
     public static String loadJSONFromAsset(Context context, String fileName) {

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
@@ -16,6 +17,7 @@ import com.xtree.bet.bean.request.im.OutrightEventsReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.im.Announcement;
+import com.xtree.bet.bean.response.im.ChampionEventsRsp;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
 import com.xtree.bet.bean.response.im.LeagueInfo;
@@ -32,9 +34,13 @@ import com.xtree.bet.constant.SportTypeItem;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.activity.MainActivity;
 import com.xtree.bet.ui.viewmodel.MainViewModel;
+import com.xtree.bet.ui.viewmodel.SportCacheType;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
+import com.xtree.bet.ui.viewmodel.callback.IMChampionListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMLeagueListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMListCallBack;
+import com.xtree.bet.ui.viewmodel.callback.PMChampionListCacheCallBack;
+import com.xtree.bet.ui.viewmodel.callback.PMChampionListCallBack;
 
 import org.reactivestreams.Subscriber;
 
@@ -48,6 +54,7 @@ import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.RxUtils;
+import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
  * Created by vickers
@@ -388,28 +395,18 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         OutrightEventsReq outrightEventsReq = new OutrightEventsReq();
-
         outrightEventsReq.setIsCombo(false);
         outrightEventsReq.setMatchDay(0);
-        outrightEventsReq.setMemberCode("p02hill999");
         outrightEventsReq.setOddsType("3");
         outrightEventsReq.setOrderBy(2);
         outrightEventsReq.setPage(0);
         outrightEventsReq.setSeason(0);
         outrightEventsReq.setSportId(1);
 
-        Disposable disposable = (Disposable) model.getIMApiService().getOutrightEvents(outrightEventsReq).compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<SportCountRsp>() {
-                    @Override
-                    public void onResult(SportCountRsp sportCountRsp) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-
-                    }
-                });
+        Flowable flowable = getOutrightEvents(outrightEventsReq);
+        Object callback = new IMChampionListCallBack(this, sportPos, sportId, orderBy, leagueIds, matchids, playMethodType, oddType, isTimerRefresh, isRefresh, mCurrentPage);
+        // 1.创建 Disposable，2.并进行订阅
+        Disposable disposable = createDisposable(flowable, callback);
         addSubscribe(disposable);
     }
 
@@ -422,7 +419,6 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
                 .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<SportCountRsp>() {
                     @Override
                     public void onResult(SportCountRsp sportCountRsp) {
-                        List<SportCountRsp.CountItem> sportList = sportCountRsp.getSportCount();
                         mMenuInfoList.clear();
                         processSportCount(sportCountRsp);
                     }
@@ -790,5 +786,11 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         return (Disposable) flowable.compose(RxUtils.schedulersTransformer()) // 线程调度
                 .compose(RxUtils.exceptionTransformer()) // 异常处理
                 .subscribeWith((Subscriber) callBack); // 订阅并返回 Disposable
+    }
+
+    private Flowable getOutrightEvents(OutrightEventsReq outrightEventsReq) {
+        outrightEventsReq = new OutrightEventsReq();
+        Flowable flowable = model.getIMApiService().getOutrightEvents(outrightEventsReq);
+        return flowable;
     }
 }

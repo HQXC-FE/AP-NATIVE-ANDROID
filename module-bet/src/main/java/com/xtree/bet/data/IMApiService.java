@@ -19,6 +19,7 @@ import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.im.BetInfo;
 import com.xtree.bet.bean.response.im.BetTrade;
+import com.xtree.bet.bean.response.im.ChampionEventsRsp;
 import com.xtree.bet.bean.response.im.DeltaEventListRsp;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
 import com.xtree.bet.bean.response.im.EventListRsp;
@@ -173,7 +174,7 @@ public interface IMApiService {
      * @return
      */
     @POST(forwardPath)
-    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<EventListRsp>> getSelectedEventInfo(@Body BaseIMRequest<SelectedEventInfoReq> selectedEventInfoReq);
 
     /**
@@ -181,9 +182,9 @@ public interface IMApiService {
      *
      * @return
      */
-    @GET("/yewu11/v1/getOutrightEvents")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<WagerListRsp>> getOutrightEvents(@Body OutrightEventsReq outrightEventsReq);
+    @POST(forwardPath)
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<ChampionEventsRsp>> getOutrightEvents(@Body OutrightEventsReq outrightEventsReq);
 
     /**
      * 获取优胜冠军赛事指定比赛,如足球或篮球等
