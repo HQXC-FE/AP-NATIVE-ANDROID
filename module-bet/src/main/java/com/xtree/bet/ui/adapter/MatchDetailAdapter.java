@@ -159,7 +159,7 @@ public class MatchDetailAdapter extends AnimatedExpandableListViewMax.AnimatedEx
         }
         BtFbDetailItemPlayTypeChildBinding binding = BtFbDetailItemPlayTypeChildBinding.bind(holder.itemView);
         binding.rvOptionList.setHasFixedSize(true);
-        int spanCount = optionList.getOptionList().size() >= 3 ? 3 : optionList.getOptionList().size();
+        int spanCount = Math.min(optionList.getOptionList().size(), 3);
         binding.rvOptionList.setLayoutManager(new GridLayoutManager(mContext, spanCount));
         if (isResult) {
             OptionResultAdapter optionAdapter = new OptionResultAdapter(mContext, optionList.getOptionList());

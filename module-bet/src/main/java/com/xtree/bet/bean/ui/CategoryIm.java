@@ -1,8 +1,12 @@
 package com.xtree.bet.bean.ui;
 
 
+import com.xtree.bet.bean.response.im.WagerSelection;
+
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CategoryIm implements Category{
     private final List<PlayType> playTypeList = new ArrayList<>();
@@ -37,8 +41,43 @@ public class CategoryIm implements Category{
 
     @Override
     public List<PlayType> getPlayTypeList() {
-        return playTypeList;
+        return mergePlayTypes(playTypeList);
     }
+
+
+    public List<PlayType> mergePlayTypes(List<PlayType> playTypeList) {
+        Map<String, PlayTypeIm> mergedMap = new LinkedHashMap<>();
+
+        for (PlayType playType : playTypeList) {
+            if (!(playType instanceof PlayTypeIm)) continue;
+
+            PlayTypeIm playTypeIm = (PlayTypeIm) playType;
+            String name = playTypeIm.getPlayTypeName();
+
+            if (!mergedMap.containsKey(name)) {
+                mergedMap.put(name, playTypeIm);
+            } else {
+                PlayTypeIm existing = mergedMap.get(name);
+
+                List<WagerSelection> existingSelections = existing.getPlayTypeInfo().getWagerSelections();
+                List<WagerSelection> currentSelections = playTypeIm.getPlayTypeInfo().getWagerSelections();
+
+                if (existingSelections == null) {
+                    existingSelections = new ArrayList<>();
+                    existing.getPlayTypeInfo().setWagerSelections(existingSelections);
+                }
+
+                if (currentSelections != null) {
+                    existingSelections.addAll(currentSelections);
+                }
+            }
+        }
+
+        return new ArrayList<>(mergedMap.values());
+    }
+
+
+
 
     @Override
     public void addPlayTypeList(PlayType playType) {

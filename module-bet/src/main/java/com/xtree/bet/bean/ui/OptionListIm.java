@@ -70,9 +70,10 @@ public class OptionListIm implements OptionList {
     @Override
     public List<Option> getOptionList() {
         List<Option> optionList = new ArrayList<>();
-        for (WagerSelection optionInfo : marketLine.getWagerSelections()) {
-            optionList.add(new OptionIm(optionInfo));
-        }
+//        for (WagerSelection optionInfo : marketLine.getWagerSelections()) {
+//            optionList.add(new OptionIm(optionInfo));
+//        }
+        optionList.add(new OptionIm(optionDataListInfo));
         return optionList;
     }
 

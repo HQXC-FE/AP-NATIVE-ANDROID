@@ -113,7 +113,7 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
             IMOrganizedMarkLinesManager.shared.organizedMarkLinesWith(sport, event);
             for (MarketLine marketLine : event.getMarketLines()) {
                 marketLine.setOpenParlay(event.openParlay); //里面新增一个是否串关的字段
-                PlayTypeIm playType = new PlayTypeIm(marketLine, event);
+                PlayType playType = new PlayTypeIm(marketLine, event);
                 categoryAll.addPlayTypeList(playType);
                 String name = marketLine.getBetTypeGroupName();
                 if (categoryMap.get(name) == null) {
