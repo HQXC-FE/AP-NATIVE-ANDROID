@@ -3,7 +3,7 @@ android {
 
     productFlavors {
         // 测试环境 测试用
-        kj2_pre {
+        bs_pre {
             applicationId "com.${name.toLowerCase()}.app"
             versionName "1.0.0"
             versionCode 100
@@ -28,8 +28,8 @@ android {
         }
 
         // 生产环境 发布用
-        kj2_OL {
-            applicationId "com.kj2.app" // eon3
+        bs_OL {
+            applicationId "com.bs.app" // eon3
             versionName "1.0.0"
             versionCode 100
             resValue "string", "app_name", "博世"
@@ -136,12 +136,12 @@ androidJunkCode {
         debug config
         release config
 
-        kj2Debug config2
-        kj2Release config2
-        kj2_preDebug config2
-        kj2_preRelease config2
-        kj2_OLDebug config2
-        kj2_OLRelease config2
+        bsDebug config2
+        bsRelease config2
+        bs_preDebug config2
+        bs_preRelease config2
+        bs_OLDebug config2
+        bs_OLRelease config2
     }
 
 }
