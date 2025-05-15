@@ -41,6 +41,9 @@ public class LeagueFb implements League{
 
     @Override
     public String getIcon() {
+        if(leagueInfo == null){
+              return "";
+        }
         return leagueInfo.lurl;
     }
 

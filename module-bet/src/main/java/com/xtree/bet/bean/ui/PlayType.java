@@ -3,6 +3,7 @@ package com.xtree.bet.bean.ui;
 import com.stx.xhb.androidx.entity.BaseBannerInfo;
 import com.xtree.base.vo.BaseBean;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface PlayType extends BaseBean {

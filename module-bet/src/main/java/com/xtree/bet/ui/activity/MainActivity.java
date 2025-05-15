@@ -949,15 +949,17 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
     private void getMatchData(String sportId, int orderBy, List<Long> leagueIds, List<Long> matchids, int playMethodType, int searchDatePos, boolean isTimedRefresh, boolean isRefresh) {
         if (playMethodType == 7 || playMethodType == 100) { // 冠军 sportTypePos不需要使用在这里
+            CfLog.d("=========== MainActivity getMatchData sportId ==============="+sportId);
+            CfLog.d("=========== MainActivity getMatchData sportTypePos ==============="+sportTypePos);
             viewModel.getChampionList(sportTypePos, sportId, orderBy, leagueIds, matchids,
                     playMethodType, mOddType, isTimedRefresh, isRefresh);
         } else {
             if (sportTypePos == 0 && (playMethodPos == 0 || playMethodPos == 3)) {
-                CfLog.d("=========== MainActivity getMatchData viewModel.getLeagueList 1111 ===============");
+                //CfLog.d("=========== MainActivity getMatchData viewModel.getLeagueList 1111 ===============");
                 viewModel.getLeagueList(sportTypePos, sportId, orderBy, viewModel.hotLeagueList, matchids,
                         playMethodType, searchDatePos, mOddType, isTimedRefresh, isRefresh);
             } else {//sportTypePos 这里有可能为-1
-                CfLog.d("=========== MainActivity getMatchData viewModel.getLeagueList 2222 ===============");
+                //CfLog.d("=========== MainActivity getMatchData viewModel.getLeagueList 2222 ===============");
                 viewModel.getLeagueList(sportTypePos, sportId, orderBy, leagueIds, matchids,
                         playMethodType, searchDatePos, mOddType, isTimedRefresh, isRefresh);
             }
@@ -1197,6 +1199,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 }
             }
         } else {
+            CfLog.d("================ refreshLeague mChampionMatchList ==================="+mChampionMatchList.size());
             for (Match match : mChampionMatchList) {
                 if (!match.isHead() && match.isExpand()) {
                     matchIdList.add(match.getId());
@@ -1689,6 +1692,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             if (!(binding.rvLeague.getExpandableListAdapter() instanceof ChampionMatchAdapter)) {
                 binding.rvLeague.setAdapter(mChampionMatchAdapter);
             }
+            CfLog.d("=============== MainActivity updateChampionMatchData mChampionMatchList =============="+mChampionMatchList.size());
             mChampionMatchAdapter.setData(mChampionMatchList);
         }
         if (mChampionMatchList.isEmpty()) {

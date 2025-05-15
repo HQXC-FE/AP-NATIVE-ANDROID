@@ -13,8 +13,13 @@ import com.xtree.bet.bean.response.im.WagerSelection;
 import com.xtree.bet.constant.PMConstants;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PlayTypeIm implements PlayType {
     private String className;
@@ -170,8 +175,23 @@ public class PlayTypeIm implements PlayType {
 
     @Override
     public String getMatchDeadLine() {
-        //return TimeUtils.longFormatString(Long.valueOf(playTypeInfo.hmed), TimeUtils.FORMAT_YY_MM_DD_HH_MM_1);
-        return TimeUtils.longFormatString(Long.parseLong(event.getEventDate()), TimeUtils.FORMAT_YY_MM_DD_HH_MM_1);
+        String isoDate = event.getEventDate(); // "2025-07-10T00:00:00.0000000-04:00"
+
+        // 先处理微秒格式（7位 -> 3位），再处理时区（-04:00 -> -0400）
+        isoDate = isoDate.replaceFirst("(\\.\\d{3})\\d+", "$1") // 保留前3位小数
+                .replaceFirst(":(\\d\\d)$", "$1"); // 替换时区冒号
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US);
+        Date date = null;
+        try {
+            date = sdf.parse(isoDate);
+            long timestamp = date.getTime();
+            return TimeUtils.longFormatString(timestamp, TimeUtils.FORMAT_YY_MM_DD_HH_MM_1);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } finally {
+            return "";
+        }
     }
 
     @Override
