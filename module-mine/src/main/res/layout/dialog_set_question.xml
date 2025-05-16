@@ -65,7 +65,9 @@
         app:layout_constraintBottom_toBottomOf="@+id/tv1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv1"
-        app:layout_constraintTop_toTopOf="@+id/tv1" />
+        app:layout_constraintTop_toTopOf="@+id/tv1"
+        android:textColor="@color/clr_txt_07"
+        />
 
     <TextView
         android:id="@+id/tv2"
@@ -87,7 +89,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/tv2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv1"
-        app:layout_constraintTop_toTopOf="@+id/tv2" />
+        app:layout_constraintTop_toTopOf="@+id/tv2"
+        android:textColor="@color/clr_txt_07"/>
 
     <TextView
         android:id="@+id/tv3"
@@ -95,10 +98,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="问题二："
-        android:textColor="@color/clr_txt_02"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/tv1"
-        app:layout_constraintTop_toBottomOf="@+id/tv2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv2"
+        android:textColor="@color/clr_txt_07"/>
 
     <TextView
         android:id="@+id/tv_question2"
@@ -109,7 +112,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/tv3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv1"
-        app:layout_constraintTop_toTopOf="@+id/tv3" />
+        app:layout_constraintTop_toTopOf="@+id/tv3"
+        android:textColor="@color/clr_txt_07"/>
 
     <TextView
         android:id="@+id/tv4"
@@ -131,7 +135,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/tv4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv1"
-        app:layout_constraintTop_toTopOf="@+id/tv4" />
+        app:layout_constraintTop_toTopOf="@+id/tv4"
+        android:textColor="@color/clr_txt_07"/>
 
     <Button
         android:id="@+id/btn_set"
