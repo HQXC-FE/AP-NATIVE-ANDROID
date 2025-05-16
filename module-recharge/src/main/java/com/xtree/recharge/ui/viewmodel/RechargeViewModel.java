@@ -1015,18 +1015,16 @@ public class RechargeViewModel extends BaseViewModel<RechargeRepository> {
      * @return true:是 false:否
      */
     public boolean isOnePayFix(RechargeVo vo) {
+        //兼容op无需建单选择银行的情况
+        if (vo.paycode.contains(ONE_PAY_FIX)&&vo.op_direct_config != null && vo.op_direct_config.allow_bank_select == 0){
+            return true;
+        }
         RechargeVo.OpBankListDTO bk = vo.getOpBankList();
         if (bk == null) {
             return false;
         }
 
-        boolean isNotEmpty = (bk.getTop() != null && !bk.getTop().isEmpty())
-                || (bk.getOthers() != null && !bk.getOthers().isEmpty())
-                || (bk.getUsed() != null && !bk.getUsed().isEmpty())
-                || (bk.getHot() != null && !bk.getHot().isEmpty());
-        if (vo.paycode.contains(ONE_PAY_FIX) && isNotEmpty) {
-            return true;
-        }
-        return false;
+        boolean isNotEmpty = (bk.getTop() != null && !bk.getTop().isEmpty()) || (bk.getOthers() != null && !bk.getOthers().isEmpty()) || (bk.getUsed() != null && !bk.getUsed().isEmpty()) || (bk.getHot() != null && !bk.getHot().isEmpty());
+        return vo.paycode.contains(ONE_PAY_FIX) && isNotEmpty;
     }
 }
