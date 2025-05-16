@@ -7,11 +7,13 @@
         android:layout_height="match_parent"
        >
        <!-- android:background="@mipmap/cm_bg_dark"
-       android:src="@mipmap/launch_screen"-->
+       android:src="@mipmap/launch_screen"
+       android:background="@mipmap/ic_splash_bg"-->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+
              />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
