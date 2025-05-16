@@ -41,7 +41,7 @@ import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.factory.IMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FBMainViewModel;
-import com.xtree.bet.ui.viewmodel.im.ImMainViewModel;
+import com.xtree.bet.ui.viewmodel.im.IMMainViewModel;
 import com.xtree.bet.ui.viewmodel.pm.PMMainViewModel;
 
 import java.util.ArrayList;
@@ -277,7 +277,7 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
             return new ViewModelProvider(this, factory).get(FBMainViewModel.class);
         }else {
             IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance((Application) Utils.getContext());
-            return new ViewModelProvider(this, factory).get(ImMainViewModel.class);
+            return new ViewModelProvider(this, factory).get(IMMainViewModel.class);
         }
     }
 
