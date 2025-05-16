@@ -202,6 +202,8 @@ public class BtReportFragment extends BaseFragment<FragmentReportBinding, Report
                         binding2.tvwGamePlat.setText(list.getShowName());
                     }
                 }
+
+                CfLog.e("project_Game_name = " + vo.project_Game_name );
                 binding2.tvwGameName.setText(vo.project_Game_name);
                 binding2.tvwGameCode.setText(vo.project_Game_code);
                 binding2.tvwGameDate.setText(vo.project_Game_date);
