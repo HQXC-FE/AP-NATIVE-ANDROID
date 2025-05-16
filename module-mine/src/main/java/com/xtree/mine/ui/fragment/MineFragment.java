@@ -35,6 +35,7 @@ import com.xtree.base.widget.AppUpdateDialog;
 import com.xtree.base.widget.BrowserActivityX5;
 import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
+import com.xtree.base.widget.X5WebView;
 import com.xtree.mine.BR;
 import com.xtree.mine.R;
 import com.xtree.mine.databinding.FragmentMineBinding;
@@ -391,6 +392,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             @Override
             public void onClickRight() {
                 clearWebView();
+                X5WebView.getInstance(getContext()).cleanAllCache();
                 viewModel.doLogout();
                 ppw.dismiss();
             }
