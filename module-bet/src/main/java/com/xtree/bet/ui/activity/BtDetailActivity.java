@@ -256,17 +256,6 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
             @Override
             public void onPageFinished(WebView view, String url) {
                 CfLog.d("onPageFinished url: " + url);
-                //对接IM动画
-                if (TextUtils.equals(mPlatform, PLATFORM_IM)) {
-                    String params = "{" +
-                            "matchId:" + mMatch.getId() + "," +
-                            "sport:" + mMatch.getSportId()+ ","+
-                            "openMenu: true," +
-                            "openLive: true," +
-                            "index: 0," +
-                            "}";
-                    webView.evaluateJavascript("initGamePlugin(" + params + ")", null);
-                }
             }
 
             @Override

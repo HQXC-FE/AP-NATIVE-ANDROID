@@ -30,7 +30,7 @@
                 a[e] || (i = a[e] = function() {
                     (a[e].q = a[e].q || []).push(arguments)
                 }, i.l = 1 * new Date, i.o = f,
-                g = b.createElement(c), h = b.getElementsByTagName(c)[0], g.async = 1, g.src = d, g.setAttribute("n", e), h.parentNode.insertBefore(g, h))
+                g = b.createElement(c), h = b.getElementsByTagName(c)[0], g.async=1, g.src=d, g.setAttribute("n", e), h.parentNode.insertBefore(g,h))
             })(window, document, "script", "https://ws-cdn001.akamaized.net/b8b1e37591e951674647e626f875a954/widgetloader", "SIR", {
                 theme: false,
                 language: "zh"
@@ -92,6 +92,18 @@
         render();
     }
 
+    // Parse URL query parameters and call initGamePlugin on load
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const params = {
+            matchId: urlParams.get('matchId') || 'default',
+            sport: parseInt(urlParams.get('sport')) || 1,
+            openMenu: urlParams.get('openMenu') === 'true',
+            openLive: urlParams.get('openLive') === 'true',
+            index: parseInt(urlParams.get('index')) || 0
+        };
+        initGamePlugin(params);
+    };
 </script>
 </body>
 </html>

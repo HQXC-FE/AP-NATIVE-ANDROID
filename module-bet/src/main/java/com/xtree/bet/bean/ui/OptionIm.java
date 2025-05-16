@@ -61,7 +61,11 @@ public class OptionIm implements Option {
      * 选项简称(全名or简名，订单相关为全名，否则为简名)， 赔率列表一般都用简称展示
      */
     public String getSortName() {
-        return mOptionInfo.getSelectionName();
+        if (mOptionInfo!=null && mOptionInfo.getDisplayHandicap()!=null){
+            return mOptionInfo.getSelectionName() + " " +mOptionInfo.getDisplayHandicap();
+        }else {
+            return mOptionInfo.getSelectionName();
+        }
     }
 
     /**

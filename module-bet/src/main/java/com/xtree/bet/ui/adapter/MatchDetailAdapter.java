@@ -159,7 +159,13 @@ public class MatchDetailAdapter extends AnimatedExpandableListViewMax.AnimatedEx
         }
         BtFbDetailItemPlayTypeChildBinding binding = BtFbDetailItemPlayTypeChildBinding.bind(holder.itemView);
         binding.rvOptionList.setHasFixedSize(true);
+        PlayType playType = (PlayType) getGroup(groupPosition);
         int spanCount = Math.min(optionList.getOptionList().size(), 3);
+        if (playType.getPlayTypeName().contains("大/小")) {
+            spanCount = 2;
+        } else if (playType.getPlayTypeName().contains("让球")) {
+            spanCount = 2;
+        }
         binding.rvOptionList.setLayoutManager(new GridLayoutManager(mContext, spanCount));
         if (isResult) {
             OptionResultAdapter optionAdapter = new OptionResultAdapter(mContext, optionList.getOptionList());
