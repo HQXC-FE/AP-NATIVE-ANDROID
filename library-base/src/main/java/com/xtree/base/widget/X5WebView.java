@@ -152,6 +152,16 @@ public class X5WebView {
         // 1. 清除 WebView 資源
         webView.clearHistory();
         webView.clearFormData();
+        webView.loadUrl("about:blank"); // 清除視圖上的內容
+
+        // 3. 清除 localStorage / sessionStorage（需注入 JavaScript）
+        webView.evaluateJavascript("sessionStorage.clear();", null);
+    }
+
+    public void cleanAllCache() {
+        // 1. 清除 WebView 資源
+        webView.clearHistory();
+        webView.clearFormData();
         webView.clearCache(true);
         webView.loadUrl("about:blank"); // 清除視圖上的內容
 
