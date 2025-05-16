@@ -1,12 +1,10 @@
 package com.xtree.bet.ui.viewmodel.callback;
 
-import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.request.UploadExcetionReq;
 import com.xtree.base.utils.CfLog;
@@ -167,17 +165,25 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
                 mViewModel.finishLoadMore(true);
             }
         }
-        mNoliveMatchList.addAll(matchInfoList);
         CfLog.d("======= IMLeagueListCallBack mFinalType ========"+mFinalType);
-        CfLog.d("======= IMLeagueListCallBack mNoliveMatchList ========"+mNoliveMatchList.size());
-        CfLog.d("======= IMLeagueListCallBack mLeagueList ========"+mLeagueList.size());
+        mNoliveMatchList.addAll(matchInfoList);
         if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
-            leagueAdapterList(matchInfoList);
             if (mFinalType == 1) { // 滚球
                 mViewModel.leagueLiveListData.postValue(mLeagueList);
             } else {
                 mViewModel.leagueNoLiveListData.postValue(mLeagueList);
             }
+            if(mFinalType == 3) { // 串关
+                for (MatchInfo matchInfo : matchInfoList) {
+                    if (!matchInfo.isOpenParlay()) {
+                        matchInfoList.remove(matchInfo);
+                    }
+                }
+                leagueAdapterList(matchInfoList);
+            }else{
+                leagueAdapterList(matchInfoList);
+            }
+
         } else {
             searchMatch(mViewModel.mSearchWord);
         }
@@ -358,7 +364,6 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
                 //leagueInfo.picUrlthumb = matchInfo.lurl;
                 leagueInfo.nameText = matchInfo.competition.getCompetitionName();
                 leagueInfo.tournamentId = Long.valueOf(matchInfo.competition.getCompetitionId());
-                CfLog.d("============ IMLeagueListCallBack leagueAdapterList leagueInfo =============="+leagueInfo);
                 league = new LeagueIm(leagueInfo);
                 mapLeague.put(String.valueOf(matchInfo.competition.getCompetitionId()), league);
 
@@ -420,13 +425,13 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
      */
     public void buildNoLiveSportHeader(Match match, League league) {
         League sportHeader = mMapSportType.get(match.getSportId());
-        CfLog.d("=========== IMLeagueListCallBack buildNoLiveSportHeader mMapSportType ========"+mMapSportType);
+        //CfLog.d("=========== IMLeagueListCallBack buildNoLiveSportHeader mMapSportType ========"+mMapSportType);
         if (sportHeader == null) {
             League sportHeaderLeague = league;
             sportHeaderLeague.setHead(true);
             sportHeaderLeague.setHeadType(League.HEAD_TYPE_SPORT_NAME);
             sportHeaderLeague.setLeagueName(match.getSportName());
-            CfLog.d("=========== IMLeagueListCallBack buildNoLiveSportHeader match.getSportName()========"+match.getSportName());
+            //CfLog.d("=========== IMLeagueListCallBack buildNoLiveSportHeader match.getSportName()========"+match.getSportName());
             sportHeaderLeague.setMatchCount(1);
             if (!mGoingOnLeagueList.isEmpty() && mLeagueList.isEmpty()) { // 进行中
                 mGoingOnLeagueList.add(sportHeaderLeague);

@@ -137,7 +137,7 @@ public abstract class TemplateMainViewModel extends BaseBtViewModel implements M
     }
 
     public List<League> getLeagueList() {
-        CfLog.d("========== TemplateMainViewModel getLeagueList ============");
+        //CfLog.d("========== TemplateMainViewModel getLeagueList ============");
         return mLeagueList;
     }
 

@@ -129,7 +129,6 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
 
     @Override
     public void onResult(EventInfoByPageListRsp data) {
-        CfLog.d("============= IMListCallBack onResult =============");
         try {
             data = EventInfoByPageListParser.getLiveEventInfoListRsp(MainActivity.getContext());
             List<MatchInfo> matchInfoList = data.getSports().get(0).getEvents();

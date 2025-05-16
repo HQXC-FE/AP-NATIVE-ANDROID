@@ -7,11 +7,8 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.bumptech.glide.Glide;
-import com.xtree.base.utils.CfLog;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.Match;
-import com.xtree.bet.bean.ui.MatchIm;
-import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.databinding.BtFbMatchGroupBinding;
 import com.xtree.bet.databinding.BtFbPlaytypeListBinding;
@@ -113,7 +110,7 @@ public class ChampionMatchAdapter extends AnimatedExpandableListViewMax.Animated
             binding.llHeader.setVisibility(View.GONE);
             binding.rlLeague.setVisibility(View.VISIBLE);
             binding.tvLeagueName.setText(match.getChampionMatchName());
-            CfLog.d("================= getGroupView atch.getLeague().getIcon() =============="+match.getLeague().getIcon());
+            //CfLog.d("================= getGroupView atch.getLeague().getIcon() =============="+match.getLeague().getIcon());
             Glide.with(mContext)
                     .load(match.getLeague().getIcon())
                     //.apply(new RequestOptions().placeholder(placeholderRes))
@@ -128,9 +125,6 @@ public class ChampionMatchAdapter extends AnimatedExpandableListViewMax.Animated
 
     @Override
     public View getRealChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-
-        //Log.e("test", "============getRealChildView============");
-
         ChildHolder holder;
         PlayType playType = (PlayType) getChild(groupPosition, childPosition);
         if (playType == null) {

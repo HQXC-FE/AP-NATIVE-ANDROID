@@ -418,6 +418,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             public void onTabSelected(TabLayout.Tab tab) {
                 ((TextView) tab.getCustomView()).setTextSize(16);
                 CfLog.i("playMethodPos   " + playMethodPos + "  " + tab.getPosition());
+                CfLog.i("============ MainActivity onTabSelected tab.getPosition ==============" + tab.getPosition());
                 if (playMethodPos != tab.getPosition()) {
                     hideSearchView();
                     mIsChange = true;
@@ -1869,6 +1870,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        CfLog.d("================ MainActivity onRefresh getMatchData ==============");
         mIsShowLoading = false;
         getMatchData(String.valueOf(getSportId()), mOrderBy, mLeagueIdList, null,
                 playMethodType, searchDatePos, false, true);
@@ -1877,6 +1879,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
         mIsShowLoading = false;
+        CfLog.d("================ MainActivity onLoadMore getMatchData ==============");
         getMatchData(String.valueOf(getSportId()), mOrderBy, mLeagueIdList, null,
                 playMethodType, searchDatePos, false, false);
     }

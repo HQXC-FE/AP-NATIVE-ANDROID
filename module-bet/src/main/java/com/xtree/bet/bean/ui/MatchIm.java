@@ -189,7 +189,6 @@ public class MatchIm implements Match {
     public List<Integer> getScore(String... type) {
         if(type == null || type.length == 0) return null;
         List<Integer> sc = new ArrayList<>();
-        CfLog.d("============= MatchIm getScore type ================="+type[0]);
         if(type[0].equals(IMConstants.SCORE_TYPE_SCORE)){ //获取比分
             if(matchInfo != null && matchInfo.relatedScores != null && matchInfo.relatedScores.size() > 0){
                 int homeScore = matchInfo.relatedScores.get(0).homeScore;
