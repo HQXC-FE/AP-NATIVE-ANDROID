@@ -154,6 +154,11 @@ public class X5WebView {
         webView.clearFormData();
         webView.loadUrl("about:blank"); // 清除視圖上的內容
 
+        // 2. 清除 Cookie（可選）
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeAllCookies(null);
+        cookieManager.flush();
+
         // 3. 清除 localStorage / sessionStorage（需注入 JavaScript）
         webView.evaluateJavascript("sessionStorage.clear();", null);
     }
