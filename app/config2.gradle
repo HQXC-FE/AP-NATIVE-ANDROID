@@ -27,7 +27,7 @@ android {
             dimension "channelName"
         }
 
-        // 生产环境 发布用
+     /*   // 生产环境 发布用
         bs_OL {
             applicationId "com.bs.app" // eon3
             versionName "1.0.0"
@@ -77,7 +77,7 @@ android {
                     ";https://e3cn2app.hjttz.vip/e3/app_config_e3.json"
             multiDexEnabled true
             dimension "channelName"
-        }
+        }*/
 
     }
 
