@@ -185,10 +185,14 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
     }
 
     public void playGame(String playUrl, String title) {
-        CfLog.i("URL: " + playUrl);
+        CfLog.i("URL: " + playUrl + "|title = " +title);
         Intent it = new Intent(ctx, BrowserActivity.class);
         it.putExtra("url", playUrl);
+        if (title.equals("云游棋牌")){
+            title = "YOO棋牌";
+        }
         it.putExtra("title", title);
+
         it.putExtra(BrowserActivity.ARG_IS_GAME, true);
         ctx.startActivity(it);
     }
