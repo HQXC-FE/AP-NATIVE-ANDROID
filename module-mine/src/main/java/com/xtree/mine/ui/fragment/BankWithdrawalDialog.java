@@ -760,7 +760,7 @@ public class BankWithdrawalDialog extends BottomPopupView implements IAmountCall
 
                 x5WebView.setWebViewClient(new CustomWebViewClient());
 
-                x5WebView.setWebChromeClient(new WebChromeClient());
+                x5WebView.setWebChromeClient(new CustomWebChromeClient());
 
                 x5WebView.bindToContainer(binding.nsH5View);
 

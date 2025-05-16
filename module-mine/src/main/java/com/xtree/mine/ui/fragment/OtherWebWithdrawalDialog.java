@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
-import android.webkit.ValueCallback;
 
 import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
@@ -27,6 +26,7 @@ import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
+import com.tencent.smtt.sdk.ValueCallback;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -510,6 +510,7 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
          * For Android >= 4.1
          * 16(Android 4.1.2) <= API <= 20(Android 4.4W.2)回调此方法
          */
+        @Override
         public void openFileChooser(ValueCallback<Uri> valueCallback, String acceptType, String capture) {
             CfLog.i("*********");
             mUploadCallbackBelow = valueCallback;
@@ -521,6 +522,7 @@ public class OtherWebWithdrawalDialog extends BottomPopupView implements FruitHo
          * For Android >= 5.0
          * API >= 21(Android 5.0.1)回调此方法
          */
+        @Override
         public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
             CfLog.i("*********");
             // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
