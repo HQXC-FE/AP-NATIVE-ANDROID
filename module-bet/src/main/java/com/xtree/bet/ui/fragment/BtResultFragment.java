@@ -302,15 +302,19 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
     }
 
     public void showLoadDialog() {
-        if (binding.ivLoading.getVisibility() == View.GONE) {
-            binding.ivLoading.setVisibility(View.VISIBLE);
-            ObjectAnimator.ofFloat(binding.ivLoading, "rotation", 0f, 360f).setDuration(700).start();
-        }
+//        if (binding.ivLoading.getVisibility() == View.GONE) {
+//            binding.ivLoading.setVisibility(View.VISIBLE);
+//            ObjectAnimator.ofFloat(binding.ivLoading, "rotation", 0f, 360f).setDuration(700).start();
+//        }
+        binding.lavLoading.playAnimation();
     }
 
     public void dismissLoadDialog() {
-        binding.ivLoading.clearAnimation();
-        binding.ivLoading.setVisibility(View.GONE);
+//        binding.ivLoading.clearAnimation();
+//        binding.ivLoading.setVisibility(View.GONE);
+        binding.lavLoading.cancelAnimation();
+        binding.lavLoading.setVisibility(View.GONE);
+
     }
 
 }
