@@ -27,7 +27,14 @@
                     android:id="@+id/ivw_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/me_icon_name" />
+                    android:src="@mipmap/me_icon_name"
+                   />
+                <ImageView
+                    android:id="@+id/ivw_head_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/me_icon_name_login"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tvw_name"

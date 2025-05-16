@@ -71,6 +71,8 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
 
     private void refresh() {
         if (TextUtils.isEmpty(token)) {
+            binding.ivwHead.setVisibility(View.VISIBLE);
+            binding.ivwHeadLogin.setVisibility(View.GONE);
             binding.ivwSetting.setClickable(false);
             binding.ivwMsg.setClickable(false);
             binding.tvwQa.setClickable(false);
@@ -82,6 +84,8 @@ public class MineFragment extends BaseFragment<FragmentMineBinding, MineViewMode
             setChildClickable(binding.llMenuClient02, true);
             setChildClickable(binding.llMenuClient03, true);
         } else {
+            binding.ivwHead.setVisibility(View.GONE);
+            binding.ivwHeadLogin.setVisibility(View.VISIBLE);
             binding.ivwSetting.setClickable(true);
             binding.ivwMsg.setClickable(true);
             binding.tvwQa.setClickable(true);
