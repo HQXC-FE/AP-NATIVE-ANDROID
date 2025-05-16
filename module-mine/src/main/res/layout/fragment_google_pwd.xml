@@ -116,7 +116,9 @@
                 android:layout_marginRight="0dp"
                 android:hint="@string/edit_google_hit"
                 android:inputType="number"
-                app:layout_constraintTop_toBottomOf="@id/tvw_prompt3" />
+                android:textColor="@color/clr_bg_frame_32"
+                app:layout_constraintTop_toBottomOf="@id/tvw_prompt3"
+                tools:text="123123"/>
 
             <TextView
                 android:id="@+id/tvw_prompt5"
@@ -132,7 +134,7 @@
             <Button
                 android:id="@+id/btn_bind"
                 style="@style/style_cm_btn_round"
-
+                android:textColor="@color/clr_bg_frame_32"
                 android:text="绑定" />
 
         </LinearLayout>
