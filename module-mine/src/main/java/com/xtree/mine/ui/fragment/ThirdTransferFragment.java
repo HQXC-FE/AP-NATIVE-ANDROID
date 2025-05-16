@@ -1,6 +1,7 @@
 package com.xtree.mine.ui.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,9 +98,15 @@ public class ThirdTransferFragment extends BaseFragment<FragmentReportBinding, R
             public void onBindViewHolder(@NonNull CacheViewHolder holder, int position) {
                 ItemReport3rdTransferBinding binding2 = ItemReport3rdTransferBinding.bind(holder.itemView);
                 ThirdTransferVo vo = get(position);
-
+                //"in": "云游棋牌", "out": "平台中心钱包",
                 binding2.tvwActionTime.setText(vo.actiontime);
                 binding2.tvwStatus.setText(vo.status);
+                if (TextUtils.equals( "云游棋牌" ,vo.out)){
+                    vo.out= "YOO棋牌";
+                }
+                if (TextUtils.equals( "云游棋牌" ,vo.in)){
+                    vo.in= "YOO棋牌";
+                }
                 binding2.tvwOut.setText(vo.out);
                 binding2.tvwIn.setText(vo.in);
                 binding2.tvwAmount.setText(vo.amount);
