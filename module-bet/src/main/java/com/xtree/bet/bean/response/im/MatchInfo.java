@@ -189,6 +189,10 @@ public class MatchInfo implements BaseBean {
 
     public String sportName;
 
+    public MatchInfo() {
+
+    }
+
     protected MatchInfo(Parcel in) {
         liveStatusInfo = in.readString();
         liveStatusId = in.readString();
@@ -321,7 +325,7 @@ public class MatchInfo implements BaseBean {
     }
 
     public String getSportName() {
-        return  sportName;
+        return sportName;
     }
 
     public String getLiveStatusInfo() {

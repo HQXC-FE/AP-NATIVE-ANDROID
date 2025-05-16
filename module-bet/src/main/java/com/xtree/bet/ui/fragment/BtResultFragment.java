@@ -243,7 +243,7 @@ public class BtResultFragment extends BaseFragment<FragmentResultBinding, Templa
                 binding.rvLeague.setAdapter(resultAdapter);
                 //防止用户搜索时，resultAdapter还为空
                 initSearch();
-            } else {//搞个加载圈
+            } else {
                 resultAdapter.setData(list);
             }
             if (list.isEmpty()) {

@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
-import com.xtree.bet.EventInfoByPageListParser;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
 import com.xtree.bet.bean.request.im.AnnouncementReq;
 import com.xtree.bet.bean.request.im.EventInfoByPageRsq;
@@ -17,13 +16,13 @@ import com.xtree.bet.bean.request.im.OutrightEventsReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.im.Announcement;
-import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
+import com.xtree.bet.bean.response.im.Competition2;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
-import com.xtree.bet.bean.response.im.LeagueInfo;
+import com.xtree.bet.bean.response.im.ImCompletedResultsEntity;
 import com.xtree.bet.bean.response.im.MatchInfo;
 import com.xtree.bet.bean.response.im.MenuInfo;
-import com.xtree.bet.bean.response.im.Sport;
 import com.xtree.bet.bean.response.im.SportCountRsp;
+import com.xtree.bet.bean.response.im.LeagueInfo;
 import com.xtree.bet.bean.ui.League;
 import com.xtree.bet.bean.ui.LeagueIm;
 import com.xtree.bet.bean.ui.Match;
@@ -31,7 +30,6 @@ import com.xtree.bet.bean.ui.MatchIm;
 import com.xtree.bet.constant.IMConstants;
 import com.xtree.bet.constant.SportTypeItem;
 import com.xtree.bet.data.BetRepository;
-import com.xtree.bet.ui.activity.MainActivity;
 import com.xtree.bet.ui.viewmodel.MainViewModel;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
 import com.xtree.bet.ui.viewmodel.callback.IMChampionListCallBack;
@@ -40,17 +38,10 @@ import com.xtree.bet.ui.viewmodel.callback.IMListCallBack;
 
 import org.reactivestreams.Subscriber;
 
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -469,41 +460,27 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         req.setSportId(Integer.parseInt(sportId));
         req.setEventTypeId(1);
         Disposable disposable = (Disposable) model.getIMApiService().GetCompletedResults(req).compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<EventInfoByPageListRsp>() {
+                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<ImCompletedResultsEntity>() {
                     @Override
-                    public void onResult(EventInfoByPageListRsp data) {
-                        CfLog.d("================== ImMainViewModel matchResultPage onResult ====");
-                        ArrayList<League> leagues = new ArrayList<>();
-                        Map<String, League> mapLeague = new HashMap<>();
-                        data = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
-                        List<MatchInfo> matchInfoList = data.getSports().get(0).getEvents();
-                        for (MatchInfo matchInfo : matchInfoList) {
-                            matchInfo.setSportId(data.getSports().get(0).getSportId());
-                            matchInfo.setSportName(data.getSports().get(0).getSportName());
-                            CfLog.d("================= IMLeagueListCallBack onResult matchInfo ==================" + matchInfo);
-                        }
-                        List<Sport> matches = data.getSports();
-                        if (matches != null) {
-                            matchInfoList = data.getSports().get(0).getEvents();
-                        }
-
-                        for (MatchInfo matchInfo : matchInfoList) {
-                            Match match = new MatchIm(matchInfo);
-                            League league = mapLeague.get(String.valueOf(matchInfo.competition.getCompetitionId()));
-                            if (league == null) {
-                                LeagueInfo leagueInfo = new LeagueInfo();
-                                //leagueInfo.picUrlthumb = matchInfo.lurl; //暂时没有联赛图标,需要通过FTP获取
-                                leagueInfo.nameText = matchInfo.competition.getCompetitionName();
-                                leagueInfo.tournamentId = matchInfo.competition.getCompetitionId();
-                                league = new LeagueIm(leagueInfo);
-                                mapLeague.put(String.valueOf(matchInfo.competition.getCompetitionId()), league);
-                                leagues.add(league);
+                    public void onResult(ImCompletedResultsEntity data) {
+                        ArrayList<League> leagues = new ArrayList<League>();
+                        for (Competition2 competition : data.getCompetitions()) {
+                            LeagueInfo leagueInfo = new LeagueInfo();
+                            leagueInfo.nameText=competition.getCompetitionName();
+                            League league = new LeagueIm(leagueInfo);
+                            for(Competition2.Event event :competition.getEvents()){
+                                MatchInfo matchInfo = new MatchInfo();
+                                matchInfo.setSportId(competition.getSportId());
+                                matchInfo.homeTeam=event.getHomeTeamName();
+                                matchInfo.awayTeam=event.getAwayTeamName();
+                                matchInfo.relatedScores=event.getRelatedScores();
+                                matchInfo.eventDate=event.getEventDate();
+                                Match match = new MatchIm(matchInfo);
+                                league.getMatchList().add(match);
                             }
-                            league.getMatchList().add(match);
-
+                            leagues.add(league);
                         }
-                        CfLog.d("=============  ImMainViewModel matchResultPage onResult leagues ===============" + leagues.toString());
-                        //resultLeagueData.setValue(leagues);
+                        resultLeagueData.setValue(leagues);
                     }
 
                     @Override
