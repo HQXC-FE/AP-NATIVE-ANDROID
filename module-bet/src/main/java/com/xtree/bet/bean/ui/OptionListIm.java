@@ -24,6 +24,11 @@ public class OptionListIm implements OptionList {
         this.className = getClass().getSimpleName();
     }
 
+    public OptionListIm(MarketLine marketLine) {
+        this.marketLine = marketLine;
+        this.className = getClass().getSimpleName();
+    }
+
     public long getId() {
         return marketLine.getMarketlineId();
     }
@@ -70,10 +75,10 @@ public class OptionListIm implements OptionList {
     @Override
     public List<Option> getOptionList() {
         List<Option> optionList = new ArrayList<>();
-//        for (WagerSelection optionInfo : marketLine.getWagerSelections()) {
-//            optionList.add(new OptionIm(optionInfo));
-//        }
-        optionList.add(new OptionIm(optionDataListInfo));
+        for (WagerSelection optionInfo : marketLine.getWagerSelections()) {
+            optionList.add(new OptionIm(optionInfo));
+        }
+//        optionList.add(new OptionIm(optionDataListInfo));
         return optionList;
     }
 

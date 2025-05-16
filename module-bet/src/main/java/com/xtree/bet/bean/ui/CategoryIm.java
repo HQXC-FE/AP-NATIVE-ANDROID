@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CategoryIm implements Category{
+public class CategoryIm implements Category {
     private final List<PlayType> playTypeList = new ArrayList<>();
     /**
      * marketName : 热门
@@ -35,12 +35,13 @@ public class CategoryIm implements Category{
      */
     private List<Integer> plays;
 
-    public CategoryIm(String marketName){
+    public CategoryIm(String marketName) {
         this.marketName = marketName;
     }
 
     @Override
     public List<PlayType> getPlayTypeList() {
+//        return (playTypeList);
         return mergePlayTypes(playTypeList);
     }
 
@@ -75,8 +76,6 @@ public class CategoryIm implements Category{
 
         return new ArrayList<>(mergedMap.values());
     }
-
-
 
 
     @Override
