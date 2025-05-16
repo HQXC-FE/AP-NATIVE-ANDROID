@@ -27,7 +27,7 @@ public class PlayTypeIm implements PlayType {
 
     private MatchInfo event;
 
-    public PlayTypeIm(MarketLine marketLine){
+    public PlayTypeIm(MarketLine marketLine) {
         this.marketLine = marketLine;
         this.className = getClass().getSimpleName();
     }
@@ -72,7 +72,7 @@ public class PlayTypeIm implements PlayType {
         return marketLine.getPeriodName() + marketLine.getBetTypeName();
     }
 
-    public MarketLine getPlayTypeInfo(){
+    public MarketLine getPlayTypeInfo() {
         return marketLine;
     }
 
@@ -84,17 +84,19 @@ public class PlayTypeIm implements PlayType {
 
     @Override
     public List<OptionList> getOptionLists() {
+        //子项返回的数据是 optionLists.get(position).getOptionList()
         List<OptionList> optionLists = new ArrayList<>();
         if (marketLine != null && marketLine.getWagerSelections() != null) {
-            for (WagerSelection optionDataListInfo : marketLine.getWagerSelections()) {
-                optionLists.add(new OptionListIm(optionDataListInfo, marketLine));
-            }
+//            for (WagerSelection optionDataListInfo : marketLine.getWagerSelections()) {
+            optionLists.add(new OptionListIm(marketLine));
+//            }
         }
         return optionLists;
     }
 
     /**
      * 获取投注玩法列表
+     *
      * @return
      */
     @Override
@@ -102,26 +104,27 @@ public class PlayTypeIm implements PlayType {
         List<Option> optionList = new ArrayList<>();
         int length = marketLine.getBetTypeName().contains("独赢") && TextUtils.equals(PMConstants.SPORT_ID_FB, sportId) || TextUtils.equals(PMConstants.SPORT_ID_ICEQ, sportId) ? 3 : 2;
 
-        if(marketLine != null && marketLine.getWagerSelections() != null && !marketLine.getWagerSelections().isEmpty()) {
+        if (marketLine != null && marketLine.getWagerSelections() != null && !marketLine.getWagerSelections().isEmpty()) {
             for (int i = 0; i < length; i++) {
                 OptionInfo optionInfo;
-                WagerSelection wagerSelection = marketLine.wagerSelections.get(i);;
-                try{
+                WagerSelection wagerSelection = marketLine.wagerSelections.get(i);
+                ;
+                try {
                     optionInfo = new OptionInfo();
                     optionInfo.setTy(wagerSelection.selectionId);
                     optionInfo.setBod(wagerSelection.odds);
                     optionInfo.setOdt(wagerSelection.oddsType);
-                }catch (Exception e){
+                } catch (Exception e) {
                     optionInfo = null;
                 }
 
-                if(optionInfo == null){
+                if (optionInfo == null) {
                     optionList.add(null);
-                }else{
+                } else {
                     optionList.add(new OptionIm(wagerSelection, marketLine));
                 }
             }
-        }else{
+        } else {
             for (int i = 0; i < length; i++) {
                 optionList.add(null);
             }
@@ -131,13 +134,14 @@ public class PlayTypeIm implements PlayType {
 
     /**
      * 获取冠军赛事投注玩法列表
+     *
      * @return
      */
     @Override
     public List<Option> getChampionOptionList() {
         List<Option> optionList = new ArrayList<>();
-        if(marketLine != null && marketLine.getWagerSelections() != null && !marketLine.getWagerSelections().isEmpty()) {
-            for(WagerSelection wagerSelection: marketLine.getWagerSelections()){
+        if (marketLine != null && marketLine.getWagerSelections() != null && !marketLine.getWagerSelections().isEmpty()) {
+            for (WagerSelection wagerSelection : marketLine.getWagerSelections()) {
                 //for (OddsList optionInfo : wagerSelection.oddsList) {
                 OptionDataListInfo optionDataListInfo = new OptionDataListInfo();
                 optionDataListInfo.hs = marketLine.isLocked ? 1 : 0;
