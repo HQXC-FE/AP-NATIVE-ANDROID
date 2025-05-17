@@ -22,6 +22,8 @@ import com.xtree.bet.weight.PageHorizontalScrollView;
 
 import java.util.List;
 
+import me.xtree.mvvmhabit.utils.KLog;
+
 public class MatchDetailAdapter extends AnimatedExpandableListViewMax.AnimatedExpandableListAdapter {
     private List<PlayType> mDatas;
     private Match match;
@@ -166,6 +168,7 @@ public class MatchDetailAdapter extends AnimatedExpandableListViewMax.AnimatedEx
         } else if (playType.getPlayTypeName().contains("让球")) {
             spanCount = 2;
         }
+        KLog.d("groupName:"+playType.getPlayTypeName()+" childCount:"+optionList.getOptionList().size());
         binding.rvOptionList.setLayoutManager(new GridLayoutManager(mContext, spanCount));
         if (isResult) {
             OptionResultAdapter optionAdapter = new OptionResultAdapter(mContext, optionList.getOptionList());

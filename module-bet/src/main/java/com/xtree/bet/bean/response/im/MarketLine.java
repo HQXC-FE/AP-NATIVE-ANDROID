@@ -41,7 +41,6 @@ public class MarketLine implements BaseBean {
 
     public boolean openParlay;
 
-
     public List<String> betTypeGroupName;//经过转化之后的分组名称
 
     public List<String> getBetTypeGroupName() {

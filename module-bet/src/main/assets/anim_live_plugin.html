@@ -39,11 +39,11 @@
 
         // Show live game widget
         function showLiveGame() {
-            if (config.sport !== 1 && config.sport !== 2) {
-                window.SIR("addWidget", `.live-widget-${config.matchId}`, "match.lmtPlus", { layout: "topdown", matchId: config.matchId });
-            } else {
-                window.SIR("addWidget", `.live-widget-${config.matchId}`, "match.lmtEssential", { matchId: config.matchId });
-            }
+          //  if (config.sport !== 1 && config.sport !== 2) { //layout: "topdown",
+                window.SIR("addWidget", `.live-widget-${config.matchId}`, "match.lmtPlus", { matchId: config.matchId });
+          // } else {
+          //      window.SIR("addWidget", `.live-widget-${config.matchId}`, "match.lmtEssential", { matchId: config.matchId });
+          //  }
         }
 
         // Show widget based on current menu

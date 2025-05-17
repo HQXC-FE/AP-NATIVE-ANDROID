@@ -127,7 +127,7 @@ public class BtDetailResultActivity extends BaseActivity<BtLayoutDetailResultBin
                     }
                 }
 
-                updateOptionData();
+//                updateOptionData();
             }
 
             @Override
@@ -300,7 +300,7 @@ public class BtDetailResultActivity extends BaseActivity<BtLayoutDetailResultBin
             //    }
             //    viewModel.updateCategoryData();
             //}
-            updateOptionData();
+//            updateOptionData();
             /*} else {
                 mCategories = categories;
                 updateOptionData();

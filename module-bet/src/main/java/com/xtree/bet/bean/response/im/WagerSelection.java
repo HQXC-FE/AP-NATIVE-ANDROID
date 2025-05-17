@@ -63,6 +63,8 @@ public class WagerSelection implements BaseBean {
         odds = in.readDouble();
         preBoostOdds = in.readString();
         oddsList = in.createTypedArrayList(OddsList.CREATOR);
+        isSelected = in.readByte() != 0;
+        change = in.readInt();
     }
 
     @Override
@@ -77,6 +79,8 @@ public class WagerSelection implements BaseBean {
         dest.writeDouble(odds);
         dest.writeString(preBoostOdds);
         dest.writeTypedList(oddsList);
+        dest.writeByte((byte) (isSelected ? 1 : 0));
+        dest.writeInt(change);
     }
 
     @Override

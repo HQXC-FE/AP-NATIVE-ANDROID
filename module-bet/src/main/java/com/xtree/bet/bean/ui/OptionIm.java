@@ -18,11 +18,8 @@ public class OptionIm implements Option {
     private String className;
     private int change;
     private WagerSelection mOptionInfo;
-
     private String code;
-
     private MarketLine marketLine;
-    private OptionDataListInfo optionList;
 
 
     public OptionIm(WagerSelection optionInfo) {
@@ -287,7 +284,6 @@ public class OptionIm implements Option {
                 ", mOptionInfo=" + mOptionInfo +
                 ", code='" + code + '\'' +
                 ", marketLine=" + marketLine +
-                ", optionList=" + optionList +
                 '}';
     }
 

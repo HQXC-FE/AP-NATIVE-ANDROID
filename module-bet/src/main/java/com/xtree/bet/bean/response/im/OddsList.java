@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.xtree.base.vo.BaseBean;
 
-public class OddsList implements BaseBean, Parcelable {
+public class OddsList implements BaseBean {
 
     private int oddsType;
     private OddsValues oddsValues;

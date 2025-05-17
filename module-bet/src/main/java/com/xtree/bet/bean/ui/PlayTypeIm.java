@@ -69,7 +69,7 @@ public class PlayTypeIm implements PlayType {
      */
     @Override
     public String getPlayTypeName() {
-        //eventGroupTypeId == 2是角球 ，1是足球 3是全部
+        //eventGroupTypeId == 2是角球
         if (event.getEventGroupTypeId() == 2) {
             return marketLine.getBetTypeName() + " - 角球";
         } else {
@@ -214,16 +214,19 @@ public class PlayTypeIm implements PlayType {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.className);
         dest.writeParcelable(this.marketLine, flags);
+        dest.writeParcelable(this.event,flags);
     }
 
     public void readFromParcel(Parcel source) {
         this.className = source.readString();
-        this.marketLine = source.readParcelable(PlayTypeInfo.class.getClassLoader());
+        this.marketLine = source.readParcelable(MarketLine.class.getClassLoader());
+        this.event = source.readParcelable(MatchInfo.class.getClassLoader());
     }
 
     protected PlayTypeIm(Parcel in) {
         this.className = in.readString();
-        this.marketLine = in.readParcelable(PlayTypeInfo.class.getClassLoader());
+        this.marketLine = in.readParcelable(MarketLine.class.getClassLoader());
+        this.event = in.readParcelable(MatchInfo.class.getClassLoader());
     }
 
     public static final Creator<PlayTypeIm> CREATOR = new Creator<PlayTypeIm>() {

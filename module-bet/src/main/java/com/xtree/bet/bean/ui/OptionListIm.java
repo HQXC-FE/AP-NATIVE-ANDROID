@@ -78,7 +78,6 @@ public class OptionListIm implements OptionList {
         for (WagerSelection optionInfo : marketLine.getWagerSelections()) {
             optionList.add(new OptionIm(optionInfo));
         }
-//        optionList.add(new OptionIm(optionDataListInfo));
         return optionList;
     }
 
@@ -97,16 +96,13 @@ public class OptionListIm implements OptionList {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.className);
         dest.writeParcelable(this.optionDataListInfo, flags);
-    }
-
-    public void readFromParcel(Parcel source) {
-        this.className = source.readString();
-        this.optionDataListInfo = source.readParcelable(OptionDataListInfo.class.getClassLoader());
+        dest.writeParcelable(this.marketLine,flags);
     }
 
     protected OptionListIm(Parcel in) {
         this.className = in.readString();
         this.optionDataListInfo = in.readParcelable(OptionDataListInfo.class.getClassLoader());
+        this.marketLine = in.readParcelable(MarketLine.class.getClassLoader());
     }
 
     public static final Creator<OptionListIm> CREATOR = new Creator<OptionListIm>() {

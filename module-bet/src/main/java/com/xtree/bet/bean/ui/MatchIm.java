@@ -28,7 +28,6 @@ public class MatchIm implements Match {
     private String className;
 
     MatchInfo matchInfo;
-
     LeagueIm mLeague;
     /**
      * 播放器请求头
@@ -36,8 +35,6 @@ public class MatchIm implements Match {
     private String referUrl;
     private boolean isHead;
     private boolean isExpand;
-
-    private List<MatchInfo> matchInfoList;
 
     public MatchIm() {
         this.className = getClass().getSimpleName();
@@ -48,10 +45,6 @@ public class MatchIm implements Match {
         this.matchInfo = matchInfo;
     }
 
-    public MatchIm(List<MatchInfo> matchInfoList) {
-        this.className = getClass().getSimpleName();
-        this.matchInfoList = matchInfoList;
-    }
 
     @Override
     public boolean isHead() {
