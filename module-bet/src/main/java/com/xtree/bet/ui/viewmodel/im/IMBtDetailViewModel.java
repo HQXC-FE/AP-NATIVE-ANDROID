@@ -117,11 +117,16 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
                 categoryAll.addPlayTypeList(playType);
                 String name = marketLine.getBetTypeGroupName();
                 if (categoryMap.get(name) == null) {
-                    Category category = new CategoryIm(IMMarketTag.getMarketTag(name));
-                    categoryMap.put(name, category);
-                    categoryList.add(category);
+                    String marketName = IMMarketTag.getMarketTag(name);
+                    if (marketName!=null){
+                        Category category = new CategoryIm(marketName);
+                        categoryMap.put(name, category);
+                        categoryList.add(category);
+                    }
                 }
-                categoryMap.get(name).addPlayTypeList(playType);
+                if (name != null && categoryMap.get(name)!=null){
+                    categoryMap.get(name).addPlayTypeList(playType);
+                }
             }
         }
 

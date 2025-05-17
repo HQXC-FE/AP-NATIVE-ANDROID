@@ -69,7 +69,8 @@ public class PlayTypeIm implements PlayType {
      */
     @Override
     public String getPlayTypeName() {
-        return marketLine.getPeriodName() + marketLine.getBetTypeName();
+//        return marketLine.getPeriodName() + marketLine.getBetTypeName();
+        return  marketLine.getBetTypeName();
     }
 
     public MarketLine getPlayTypeInfo() {
