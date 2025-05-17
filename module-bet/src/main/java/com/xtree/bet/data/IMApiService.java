@@ -33,6 +33,7 @@ import com.xtree.bet.bean.response.im.SportCompetitionCountRsp;
 import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.response.im.StatementRsp;
 import com.xtree.bet.bean.response.im.Wager;
+import com.xtree.bet.bean.response.im.WagerEntity;
 import com.xtree.bet.bean.response.im.WagerListRsp;
 import com.xtree.bet.bean.response.pm.BtRecordRsp;
 import com.xtree.bet.bean.response.pm.BtResultInfo;
@@ -91,14 +92,14 @@ public interface IMApiService {
      */
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<List<Wager>>> getBetList(@Body GetBetListReq getBetListReq);
+    Flowable<BaseResponse<WagerEntity>> getBetList(@Body GetBetListReq getBetListReq);
 
     /**
      * 投注记录（已结算）
      */
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<List<Wager>>> getStatement(@Body GetStatementReq getBetListReq);
+    Flowable<BaseResponse<WagerEntity>> getStatement(@Body GetStatementReq getBetListReq);
 
     /**
      * 提前结算下注

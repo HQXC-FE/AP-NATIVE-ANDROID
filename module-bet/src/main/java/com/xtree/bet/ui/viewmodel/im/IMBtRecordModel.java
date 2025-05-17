@@ -11,6 +11,7 @@ import com.xtree.bet.bean.request.im.GetBetListReq;
 import com.xtree.bet.bean.request.im.GetStatementReq;
 import com.xtree.bet.bean.response.fb.BtResultInfo;
 import com.xtree.bet.bean.response.im.Wager;
+import com.xtree.bet.bean.response.im.WagerEntity;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.TemplateBtRecordModel;
 
@@ -55,10 +56,10 @@ public class IMBtRecordModel extends TemplateBtRecordModel {
         btRecordReq.setBetConfirmationStatus(list);
 
         launchFlow(model.getIMApiService().getBetList(
-                btRecordReq), new HttpCallBack<List<Wager>>() {
+                btRecordReq), new HttpCallBack<WagerEntity>() {
             @Override
-            public void onResult(List<Wager> btRecordRsp) {
-                CfLog.i("betRecord     " + new Gson().toJson(btRecordRsp));
+            public void onResult(WagerEntity rsp) {
+                CfLog.i("betRecord     " + new Gson().toJson(rsp));
                 //btRecordTimeDate.postValue(btRecordTimeList);
             }
 
@@ -73,9 +74,9 @@ public class IMBtRecordModel extends TemplateBtRecordModel {
         req.setStartDate(formattedDate);
         req.setEndDate(formattedDate);
         launchFlow(model.getIMApiService().getStatement(
-                req), new HttpCallBack<List<Wager>>() {
+                req), new HttpCallBack<WagerEntity>() {
             @Override
-            public void onResult(List<Wager> btRecordRsp) {
+            public void onResult(WagerEntity btRecordRsp) {
                 //btRecordTimeDate.postValue(btRecordTimeList);
             }
 
