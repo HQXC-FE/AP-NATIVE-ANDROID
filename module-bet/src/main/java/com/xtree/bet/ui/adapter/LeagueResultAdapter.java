@@ -268,9 +268,13 @@ public class LeagueResultAdapter extends AnimatedExpandableListViewMax.AnimatedE
         binding.tvTeamNameVisitor.setText(match.getTeamVistor());
 
         List<Integer> scoreList = match.getScore(Constants.getScoreType());
-
-        binding.tvScoreMain.setText(String.valueOf(scoreList.get(0)));
-        binding.tvScoreVisitor.setText(String.valueOf(scoreList.get(1)));
+        if (scoreList != null && scoreList.size() > 1) {
+            binding.tvScoreMain.setText(String.valueOf(scoreList.get(0)));
+            binding.tvScoreVisitor.setText(String.valueOf(scoreList.get(1)));
+        } else {
+            binding.tvScoreMain.setText("");
+            binding.tvScoreVisitor.setText("");
+        }
         binding.tvMatchTime.setText(TimeUtils.longFormatString(match.getMatchTime(), TimeUtils.FORMAT_MM_DD_HH_MM));
 
         binding.btDetail.setOnClickListener(view1 -> {
