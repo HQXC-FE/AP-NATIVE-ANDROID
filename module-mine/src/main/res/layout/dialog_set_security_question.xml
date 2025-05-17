@@ -99,7 +99,8 @@
                         android:drawableEnd="@mipmap/bt_icon_expand"
                         android:hint="@string/txt_set_question1_tip1"
                         android:singleLine="true"
-                        android:text="" />
+                        android:text=""
+                        android:textColor="@color/white"/>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -126,7 +127,8 @@
 
                         android:hint="@string/txt_set_question1_tip"
                         android:singleLine="true"
-                        android:text="" />
+                        android:text=""
+                        android:textColor="@color/white"/>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -153,7 +155,8 @@
                         android:drawableEnd="@mipmap/bt_icon_expand"
                         android:hint="@string/txt_set_question2_tip2"
                         android:singleLine="true"
-                        android:text="" />
+                        android:text=""
+                        android:textColor="@color/white"/>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -181,7 +184,8 @@
                         android:layout_toRightOf="@id/tv_unreceived_orders4"
                         android:hint="@string/txt_set_question2_tip"
                         android:singleLine="true"
-                        android:text="" />
+                        android:text=""
+                        android:textColor="@color/white"/>
                 </RelativeLayout>
             </LinearLayout>
             <!-- android:src="@mipmap/me_reset_password_login"-->
