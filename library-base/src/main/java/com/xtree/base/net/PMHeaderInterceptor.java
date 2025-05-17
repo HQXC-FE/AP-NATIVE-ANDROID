@@ -1,5 +1,7 @@
 package com.xtree.base.net;
 
+import static com.xtree.base.net.PMRetrofitClient.PLATFORM_PMXC;
+
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -23,7 +25,13 @@ public class PMHeaderInterceptor implements Interceptor {
         Request.Builder builder = chain.request()
                 .newBuilder();
 
-        String token = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
+        String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
+        String token;
+        if(TextUtils.equals(platform, PLATFORM_PMXC)) {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN);
+        } else {
+            token = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
+        }
         builder.addHeader("Content-Type", "application/json; charset=utf-8");
         if (!TextUtils.isEmpty(token)) {
             builder.removeHeader("Authorization");

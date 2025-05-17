@@ -7,12 +7,14 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.net.RetrofitClient;
 import com.xtree.base.net.fastest.FastestMonitorCache;
+import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.FBService;
@@ -223,6 +225,31 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                     @Override
                     public void onError(Throwable t) {
                         //super.onError(t);
+                    }
+                });
+        addSubscribe(disposable);
+    }
+
+    public void getPMXCGameTokenApi() {
+        String token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
+        if (TextUtils.isEmpty(token)) {
+            return;
+        }
+        Disposable disposable = (Disposable) model.getApiService().getPMXCGameTokenApi()
+                .compose(RxUtils.schedulersTransformer())
+                .compose(RxUtils.exceptionTransformer())
+                .subscribeWith(new HttpCallBack<PMService>() {
+                    @Override
+                    public void onResult(PMService pmService) {
+                        SPUtils.getInstance().put(SPKeyGlobal.PMXC_TOKEN, pmService.getToken());
+                        SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, pmService.getApiDomain());
+                        SPUtils.getInstance().put(SPKeyGlobal.PMXC_IMG_SERVICE_URL, pmService.getImgDomain());
+                        SPUtils.getInstance().put(SPKeyGlobal.PMXC_USER_ID, pmService.getUserId());
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
                     }
                 });
         addSubscribe(disposable);

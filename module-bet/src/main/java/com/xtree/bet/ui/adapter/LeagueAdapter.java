@@ -384,7 +384,7 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
 
         PlayGroup playGroup;
 
-        if (!TextUtils.equals(platform, MainActivity.PLATFORM_PM)) {
+        if (!TextUtils.equals(platform, MainActivity.PLATFORM_PM) && !TextUtils.equals(platform, MainActivity.PLATFORM_PMXC)) {
             playGroup = new PlayGroupFb(match.getPlayTypeList());
         } else {
             playGroup = new PlayGroupPm(match.getPlayTypeList());

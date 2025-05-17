@@ -1,7 +1,7 @@
 package com.xtree.home.ui.fragment;
 
 import static com.xtree.home.ui.adapter.GameAdapter.PLATFORM_FB;
-import static com.xtree.home.ui.adapter.GameAdapter.PLATFORM_FBXC;
+import static com.xtree.home.ui.adapter.GameAdapter.PLATFORM_PMXC;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -419,8 +419,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 if (ClickUtil.isFastClick()) {
                     return;
                 }
-                if (TextUtils.equals(vo.alias, PLATFORM_FBXC)) {
-                    viewModel.getFBXCGameTokenApi();
+                if (TextUtils.equals(vo.alias, PLATFORM_PMXC)) {
+                    viewModel.getPMXCGameTokenApi();
                 } else if (TextUtils.equals(vo.alias, PLATFORM_FB)) {
                     viewModel.getFBGameTokenApi();
                 } else {

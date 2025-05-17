@@ -38,6 +38,10 @@ public class SPKeyGlobal {
     public static final String PM_TOKEN = "pm_token";
     public static final String FB_API_SERVICE_URL = "fb_api_service_url";
     public static final String FBXC_API_SERVICE_URL = "fbxc_api_service_url";
+    public static final String PMXC_TOKEN = "PMXC_TOKEN";
+    public static final String PMXC_API_SERVICE_URL = "PMXC_API_SERVICE_URL";
+    public static final String PMXC_IMG_SERVICE_URL = "PMXC_IMG_SERVICE_URL";
+    public static final String PMXC_USER_ID = "PMXC_USER_ID";
     public static final String PM_API_SERVICE_URL = "pm_api_service_url";
     public static final String PM_IMG_SERVICE_URL = "PM_IMG_SERVICE_URL";
     public static final String PM_USER_ID = "PM_USER_ID";
