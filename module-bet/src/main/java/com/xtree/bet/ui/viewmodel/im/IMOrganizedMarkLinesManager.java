@@ -49,24 +49,43 @@ public final class IMOrganizedMarkLinesManager {
     }
 
     private void soccerOrganizedMarkLinesWith(MatchInfo imSportEvents) {
+
+
         for (MarketLine marketLine : imSportEvents.getMarketLines()) {
-            if (SoccerRule.ahou.contains(marketLine.getBetTypeId())) {
-                marketLine.setBetTypeGroupName("h");
-            } else if (SoccerRule.cs.contains(marketLine.getBetTypeId())) {
-                marketLine.setBetTypeGroupName("cs");
-            } else if ((SoccerRule.corner.contains(marketLine.getBetTypeId()) && imSportEvents.getGroundTypeId() == 2) || marketLine.getBetTypeName().toLowerCase().contains("corner") || marketLine.getBetTypeName().contains("角球")) {
-                marketLine.setBetTypeGroupName("c");
-            } else if (imSportEvents.getEventGroupId() == 3 && (marketLine.getBetTypeName().toLowerCase().contains("booking") || marketLine.getBetTypeName().contains("获牌"))) {
-                marketLine.setBetTypeGroupName("b");
-            } else if (SoccerRule.goals.contains(marketLine.getBetTypeId())) {
-                marketLine.setBetTypeGroupName("s");
-            } else if (SoccerRule.halves.contains(marketLine.getPeriodId())) {
-                marketLine.setBetTypeGroupName("f");
-            } else if (SoccerRule.period.contains(marketLine.getBetTypeId())) {
-                marketLine.setBetTypeGroupName("period");
-            } else if (SoccerRule.specials.contains(marketLine.getBetTypeId())) {
-                marketLine.setBetTypeGroupName("i");
+            List<String> list = new ArrayList<>();
+            if (SoccerRule.ahou.contains(marketLine.getBetTypeId()) && imSportEvents.getEventGroupTypeId() != 2) {
+                list.add("h");
             }
+
+            if (SoccerRule.cs.contains(marketLine.getBetTypeId())) {
+                list.add("cs");
+            }
+
+            if ((SoccerRule.corner.contains(marketLine.getBetTypeId()) && imSportEvents.getEventGroupTypeId() == 2) || marketLine.getBetTypeName().toLowerCase().contains("corner") || marketLine.getBetTypeName().contains("角球")) {
+                list.add("c");
+            }
+
+            if (imSportEvents.getEventGroupId() == 3 && (marketLine.getBetTypeName().toLowerCase().contains("booking") || marketLine.getBetTypeName().contains("获牌"))) {
+                list.add("b");
+            }
+
+            if (SoccerRule.goals.contains(marketLine.getBetTypeId())) {
+                list.add("s");
+            }
+
+            if (SoccerRule.halves.contains(marketLine.getPeriodId())) {
+                list.add("f");
+            }
+
+            if (SoccerRule.period.contains(marketLine.getBetTypeId())) {
+                list.add("period");
+            }
+
+            if (SoccerRule.specials.contains(marketLine.getBetTypeId())) {
+                list.add("i");
+            }
+
+            marketLine.setBetTypeGroupName(list);
         }
     }
 
@@ -82,15 +101,21 @@ public final class IMOrganizedMarkLinesManager {
 
     private void basketballOrganizedMarkLinesWith(MatchInfo imSportEvents) {
         for (MarketLine marketLine : imSportEvents.getMarketLines()) {
+            List<String> list = new ArrayList<>();
             if (BasketballRule.fulltime.contains(marketLine.getPeriodId())) {
-                marketLine.setBetTypeGroupName("ft");
-            } else if (BasketballRule.halves.contains(marketLine.getPeriodId())) {
-                marketLine.setBetTypeGroupName("f");
-            } else if (marketLine.getBetTypeName().contains("节") || marketLine.getBetTypeName().toLowerCase().contains("quarter")) {
-                marketLine.setBetTypeGroupName("q");
-            } else if (BasketballRule.team.contains(marketLine.getBetTypeId())) {
-                marketLine.setBetTypeGroupName("team");
+                list.add("ft");
             }
+            if (BasketballRule.halves.contains(marketLine.getPeriodId())) {
+                list.add("f");
+            }
+            if (marketLine.getBetTypeName().contains("节") || marketLine.getBetTypeName().toLowerCase().contains("quarter")) {
+                list.add("q");
+            }
+
+            if (BasketballRule.team.contains(marketLine.getBetTypeId())) {
+                list.add("team");
+            }
+            marketLine.setBetTypeGroupName(list);
         }
     }
 
@@ -106,11 +131,17 @@ public final class IMOrganizedMarkLinesManager {
 
     private void defaultOrganizedMarkLinesWith(MatchInfo imSportEvents) {
         for (MarketLine marketLine : imSportEvents.getMarketLines()) {
+            List<String> list = new ArrayList<>();
             if (DefaultRule.ahou.contains(marketLine.getBetTypeId())) {
-                marketLine.setBetTypeGroupName("h");
-            } else if (DefaultRule.ml.contains(marketLine.getBetTypeId()) || marketLine.getBetTypeName().contains("独赢") || marketLine.getBetTypeName().toLowerCase().contains("1x2")) {
-                marketLine.setBetTypeGroupName("ml");
+                list.add("h");
             }
+
+            if (DefaultRule.ml.contains(marketLine.getBetTypeId()) || marketLine.getBetTypeName().contains("独赢") || marketLine.getBetTypeName().toLowerCase().contains("1x2")) {
+                list.add("ml");
+            }
+
+            marketLine.setBetTypeGroupName(list);
+
         }
     }
 }

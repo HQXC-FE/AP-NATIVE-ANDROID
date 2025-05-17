@@ -134,7 +134,7 @@ public class BtDetailOptionFragment extends BaseFragment<BtLayoutDetailOptionBin
                 } else {
                     match = ((BtDetailActivity) getContext()).getmMatch();
                 }
-                updateOptionData();
+//                updateOptionData();
             }
         });
     }

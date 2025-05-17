@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.constant.IMMarketTag;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -41,13 +42,13 @@ public class MarketLine implements BaseBean {
     public boolean openParlay;
 
 
-    public String betTypeGroupName;//经过转化之后的分组名称
+    public List<String> betTypeGroupName;//经过转化之后的分组名称
 
-    public String getBetTypeGroupName() {
+    public List<String> getBetTypeGroupName() {
         return betTypeGroupName;
     }
 
-    public void setBetTypeGroupName(String betTypeGroupName) {
+    public void setBetTypeGroupName(List<String> betTypeGroupName) {
         this.betTypeGroupName = betTypeGroupName;
     }
 
@@ -65,7 +66,7 @@ public class MarketLine implements BaseBean {
         isLocked = in.readByte() != 0;
         wagerSelections = in.createTypedArrayList(WagerSelection.CREATOR);
         openParlay = in.readByte() != 0;
-        betTypeGroupName = in.readString();
+        betTypeGroupName = in.createStringArrayList();
     }
 
     @Override
@@ -80,7 +81,7 @@ public class MarketLine implements BaseBean {
         dest.writeByte((byte) (isLocked ? 1 : 0));
         dest.writeTypedList(wagerSelections);
         dest.writeByte((byte) (openParlay ? 1 : 0));
-        dest.writeString(betTypeGroupName);
+        dest.writeStringList(betTypeGroupName);
     }
 
     @Override

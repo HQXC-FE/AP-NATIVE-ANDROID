@@ -115,18 +115,21 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
                 marketLine.setOpenParlay(event.openParlay); //里面新增一个是否串关的字段
                 PlayType playType = new PlayTypeIm(marketLine, event);
                 categoryAll.addPlayTypeList(playType);
-                String name = marketLine.getBetTypeGroupName();
-                if (categoryMap.get(name) == null) {
-                    String marketName = IMMarketTag.getMarketTag(name);
-                    if (marketName!=null){
-                        Category category = new CategoryIm(marketName);
-                        categoryMap.put(name, category);
-                        categoryList.add(category);
+                List<String> names = marketLine.getBetTypeGroupName();
+                for (String name : names) {
+                    if (categoryMap.get(name) == null) {
+                        String marketName = IMMarketTag.getMarketTag(name);
+                        if (marketName != null) {
+                            Category category = new CategoryIm(marketName);
+                            categoryMap.put(name, category);
+                            categoryList.add(category);
+                        }
+                    }
+                    if (name != null && categoryMap.get(name) != null) {
+                        categoryMap.get(name).addPlayTypeList(playType);
                     }
                 }
-                if (name != null && categoryMap.get(name)!=null){
-                    categoryMap.get(name).addPlayTypeList(playType);
-                }
+
             }
         }
 

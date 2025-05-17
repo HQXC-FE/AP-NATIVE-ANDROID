@@ -70,7 +70,12 @@ public class PlayTypeIm implements PlayType {
     @Override
     public String getPlayTypeName() {
 //        return marketLine.getPeriodName() + marketLine.getBetTypeName();
-        return  marketLine.getBetTypeName();
+        if (event.getEventGroupTypeId() == 2) {
+            return marketLine.getBetTypeName() + "-角球";
+        } else {
+            return marketLine.getBetTypeName();
+        }
+
     }
 
     public MarketLine getPlayTypeInfo() {
