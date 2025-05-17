@@ -14,12 +14,12 @@ import java.util.List;
 
 public class OptionListIm implements OptionList {
     private String className;
-    WagerSelection optionDataListInfo;
+    WagerSelection wagerSelection;
 
     MarketLine marketLine;
 
-    public OptionListIm(WagerSelection optionDataListInfo, MarketLine marketLine) {
-        this.optionDataListInfo = optionDataListInfo;
+    public OptionListIm(WagerSelection wagerSelection, MarketLine marketLine) {
+        this.wagerSelection = wagerSelection;
         this.marketLine = marketLine;
         this.className = getClass().getSimpleName();
     }
@@ -95,13 +95,13 @@ public class OptionListIm implements OptionList {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.className);
-        dest.writeParcelable(this.optionDataListInfo, flags);
+        dest.writeParcelable(this.wagerSelection, flags);
         dest.writeParcelable(this.marketLine,flags);
     }
 
     protected OptionListIm(Parcel in) {
         this.className = in.readString();
-        this.optionDataListInfo = in.readParcelable(OptionDataListInfo.class.getClassLoader());
+        this.wagerSelection = in.readParcelable(WagerSelection.class.getClassLoader());
         this.marketLine = in.readParcelable(MarketLine.class.getClassLoader());
     }
 

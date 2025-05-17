@@ -1,12 +1,16 @@
 package com.xtree.bet.bean.ui;
 
 
+import androidx.annotation.NonNull;
+
 import com.xtree.bet.bean.response.im.WagerSelection;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class CategoryIm implements Category {
     private final List<PlayType> playTypeList = new ArrayList<>();
@@ -60,21 +64,32 @@ public class CategoryIm implements Category {
             } else {
                 PlayTypeIm existing = mergedMap.get(name);
 
-                List<WagerSelection> existingSelections = existing.getPlayTypeInfo().getWagerSelections();
-                List<WagerSelection> currentSelections = playTypeIm.getPlayTypeInfo().getWagerSelections();
+                assert existing != null;
+                List<WagerSelection> existingSelections = getWagerSelections(existing, playTypeIm);
 
-                if (existingSelections == null) {
-                    existingSelections = new ArrayList<>();
-                    existing.getPlayTypeInfo().setWagerSelections(existingSelections);
-                }
-
-                if (currentSelections != null) {
-                    existingSelections.addAll(currentSelections);
-                }
+                existing.getPlayTypeInfo().setWagerSelections(existingSelections);
             }
         }
 
         return new ArrayList<>(mergedMap.values());
+    }
+
+    @NonNull
+    private static List<WagerSelection> getWagerSelections(PlayTypeIm existing, PlayTypeIm playTypeIm) {
+        List<WagerSelection> existingSelections = existing.getPlayTypeInfo().getWagerSelections();
+        List<WagerSelection> currentSelections = playTypeIm.getPlayTypeInfo().getWagerSelections();
+
+        if (existingSelections == null) {
+            existingSelections = new ArrayList<>();
+        }
+
+        if (currentSelections != null) {
+            // 用 Set 去重合并 WagerSelection
+            Set<WagerSelection> mergedSet = new LinkedHashSet<>(existingSelections);
+            mergedSet.addAll(currentSelections);
+            existingSelections = new ArrayList<>(mergedSet);
+        }
+        return existingSelections;
     }
 
 

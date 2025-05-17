@@ -49,9 +49,9 @@ public class BtDetailOptionFragment extends BaseFragment<BtLayoutDetailOptionBin
         for (PlayType playType : playTypeList) {
             String name = playType.getPlayTypeName();
             int size = playType.getOptionLists().get(0).getOptionList().size();
-            if (name.equals("大/小") || name.equals("让球")){
-                KLog.e("BtDetailOptionFragment1 - name:"+name + " size()："+size + " 第一次");
-            }
+//            if (name.equals("大/小") || name.equals("让球")) {
+            KLog.e("BtDetailOptionFragment1 - name:" + name + " size()：" + size + " 第一次");
+//            }
         }
         bundle.putParcelable(KEY_MATCH, match);
         bundle.putBoolean("isResult", isResult);
@@ -65,11 +65,7 @@ public class BtDetailOptionFragment extends BaseFragment<BtLayoutDetailOptionBin
      */
     protected void initImmersionBar() {
         //设置共同沉浸式样式
-        ImmersionBar.with(this)
-                .navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color)
-                .fitsSystemWindows(false)
-                .statusBarDarkFont(false)
-                .init();
+        ImmersionBar.with(this).navigationBarColor(me.xtree.mvvmhabit.R.color.default_navigation_bar_color).fitsSystemWindows(false).statusBarDarkFont(false).init();
     }
 
     @Override
@@ -97,16 +93,23 @@ public class BtDetailOptionFragment extends BaseFragment<BtLayoutDetailOptionBin
 
     @Override
     public void initData() {
-        match = getArguments().getParcelable(KEY_MATCH);
-        playTypeList = getArguments().getParcelableArrayList(KEY_PLAY_TYPE);
-        for (PlayType playType : playTypeList) {
-            String name = playType.getPlayTypeName();
-            int size = playType.getOptionLists().get(0).getOptionList().size();
-            if (name.equals("大/小") || name.equals("让球")){
-                KLog.e("BtDetailOptionFragment1 - name:"+name + " size()："+size+" 第二次");
+        Bundle arguments = getArguments();
+        if (arguments == null) {
+            return;
+        }
+        match = arguments.getParcelable(KEY_MATCH);
+        playTypeList = arguments.getParcelableArrayList(KEY_PLAY_TYPE);
+        if (playTypeList != null) {
+            for (PlayType playType : playTypeList) {
+                String name = playType.getPlayTypeName();
+                int size = playType.getOptionLists().get(0).getOptionList().size();
+//                if (name.equals("大/小") || name.equals("让球")) {
+                KLog.e("BtDetailOptionFragment1 - name:" + name + " size()：" + size + " 第二次");
+//                }
             }
         }
-        isResult = getArguments().getBoolean("isResult");
+
+        isResult = arguments.getBoolean("isResult");
         viewModel.addSubscription();
         updateOptionData();
 
@@ -149,7 +152,7 @@ public class BtDetailOptionFragment extends BaseFragment<BtLayoutDetailOptionBin
 //                } else {
 //                    match = ((BtDetailActivity) getContext()).getmMatch();
 //                }
-////                updateOptionData();
+//                updateOptionData();
 //            }
 //        });
     }

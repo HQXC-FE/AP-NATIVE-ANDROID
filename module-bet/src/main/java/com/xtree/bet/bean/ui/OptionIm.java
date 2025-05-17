@@ -17,19 +17,19 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 public class OptionIm implements Option {
     private String className;
     private int change;
-    private WagerSelection mOptionInfo;
+    private WagerSelection wagerSelection;
     private String code;
     private MarketLine marketLine;
 
 
-    public OptionIm(WagerSelection optionInfo) {
-        this.mOptionInfo = optionInfo;
+    public OptionIm(WagerSelection wagerSelection) {
+        this.wagerSelection = wagerSelection;
         this.className = getClass().getSimpleName();
     }
 
-    public OptionIm(WagerSelection optionInfo, MarketLine optionList) {
-        this.mOptionInfo = optionInfo;
-        this.marketLine = optionList;
+    public OptionIm(WagerSelection wagerSelection, MarketLine marketLine) {
+        this.wagerSelection = wagerSelection;
+        this.marketLine = marketLine;
         this.className = getClass().getSimpleName();
     }
 
@@ -49,20 +49,20 @@ public class OptionIm implements Option {
      * 选项全称，投注框一般用全称展示
      */
     public String getName() {
-        if (mOptionInfo == null) {
+        if (wagerSelection == null) {
             return "";
         }
-        return mOptionInfo.getSelectionName();
+        return wagerSelection.getSelectionName();
     }
 
     /**
      * 选项简称(全名or简名，订单相关为全名，否则为简名)， 赔率列表一般都用简称展示
      */
     public String getSortName() {
-        if (mOptionInfo!=null && mOptionInfo.getDisplayHandicap()!=null){
-            return mOptionInfo.getSelectionName() + " " +mOptionInfo.getDisplayHandicap();
+        if (wagerSelection!=null && wagerSelection.getDisplayHandicap()!=null){
+            return wagerSelection.getSelectionName() + " " +wagerSelection.getDisplayHandicap();
         }else {
-            return mOptionInfo.getSelectionName();
+            return wagerSelection.getSelectionName();
         }
     }
 
@@ -72,7 +72,7 @@ public class OptionIm implements Option {
      * @return
      */
     public String getOptionType() {
-        return String.valueOf(mOptionInfo.getOddsType());
+        return String.valueOf(wagerSelection.getOddsType());
     }
 
     /**
@@ -80,29 +80,29 @@ public class OptionIm implements Option {
      */
     public double getUiShowOdd() {
         if (isHongKongMarket()) {
-            BigDecimal bg = BigDecimal.valueOf(mOptionInfo.getOdds() - 1);
+            BigDecimal bg = BigDecimal.valueOf(wagerSelection.getOdds() - 1);
             return bg.setScale(2, RoundingMode.HALF_UP).doubleValue();
         }
-        return mOptionInfo.getOdds();
+        return wagerSelection.getOdds();
     }
 
     @Override
     public double getRealOdd() {
-        return mOptionInfo.getOdds();
+        return wagerSelection.getOdds();
     }
 
     /**
      * 赔率
      */
     public double getBodd() {
-        return mOptionInfo.getOdds();
+        return wagerSelection.getOdds();
     }
 
     /**
      * 赔率类型
      */
     public int getOddType() {
-        return mOptionInfo.getOddsType();
+        return wagerSelection.getOddsType();
     }
 
     /**
@@ -130,7 +130,7 @@ public class OptionIm implements Option {
 
     @Override
     public boolean setSelected(boolean isSelected) {
-        return mOptionInfo.isSelected = isSelected;
+        return wagerSelection.isSelected = isSelected;
     }
 
     /**
@@ -140,7 +140,7 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isSelected() {
-        return mOptionInfo.isSelected;
+        return wagerSelection.isSelected;
     }
 
     /**
@@ -184,8 +184,8 @@ public class OptionIm implements Option {
         CfLog.d("========== OptionIm setChange getRealOdd ==========="+getRealOdd());
         change = oldOdd < getRealOdd() ? 1 : oldOdd > getRealOdd() ? -1 : 0;
         //Log.e("test", "===========" + change);
-        mOptionInfo.change = change;
-        CfLog.d("========== OptionIm setChange mOptionInfo.change ==========="+mOptionInfo.change);
+        wagerSelection.change = change;
+        CfLog.d("========== OptionIm setChange mOptionInfo.change ==========="+wagerSelection.change);
     }
 
     /**
@@ -195,8 +195,8 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isUp() {
-        CfLog.d("========== OptionIm isUp mOptionInfo.change==========="+mOptionInfo.change);
-        return mOptionInfo.change == 1;
+        CfLog.d("========== OptionIm isUp mOptionInfo.change==========="+wagerSelection.change);
+        return wagerSelection.change == 1;
     }
 
     /**
@@ -206,13 +206,13 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isDown() {
-        CfLog.d("========== OptionIm isDown mOptionInfo.change==========="+mOptionInfo.change);
-        return mOptionInfo.change == -1;
+        CfLog.d("========== OptionIm isDown mOptionInfo.change==========="+wagerSelection.change);
+        return wagerSelection.change == -1;
     }
 
     @Override
     public void reset() {
-        mOptionInfo.change = 0;
+        wagerSelection.change = 0;
     }
 
     /**
@@ -222,10 +222,10 @@ public class OptionIm implements Option {
      */
     @Override
     public OptionList getOptionList() {
-        if (mOptionInfo == null) {
+        if (wagerSelection == null) {
             return null;
         }
-        return new OptionListIm(mOptionInfo, marketLine);
+        return new OptionListIm(wagerSelection, marketLine);
     }
 
     @Override
@@ -243,23 +243,16 @@ public class OptionIm implements Option {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.className);
         dest.writeInt(this.change);
-        dest.writeParcelable(this.mOptionInfo, flags);
+        dest.writeParcelable(this.wagerSelection, flags);
         dest.writeString(this.code);
         dest.writeParcelable(this.marketLine, flags);
     }
 
-    public void readFromParcel(Parcel source) {
-        this.className = source.readString();
-        this.change = source.readInt();
-        this.mOptionInfo = source.readParcelable(OptionInfo.class.getClassLoader());
-        this.code = source.readString();
-        this.marketLine = source.readParcelable(MarketLine.class.getClassLoader());
-    }
 
     protected OptionIm(Parcel in) {
         this.className = in.readString();
         this.change = in.readInt();
-        this.mOptionInfo = in.readParcelable(OptionInfo.class.getClassLoader());
+        this.wagerSelection = in.readParcelable(WagerSelection.class.getClassLoader());
         this.code = in.readString();
         this.marketLine = in.readParcelable(MarketLine.class.getClassLoader());
     }
@@ -281,7 +274,7 @@ public class OptionIm implements Option {
         return "OptionIm{" +
                 "className='" + className + '\'' +
                 ", change=" + change +
-                ", mOptionInfo=" + mOptionInfo +
+                ", mOptionInfo=" + wagerSelection +
                 ", code='" + code + '\'' +
                 ", marketLine=" + marketLine +
                 '}';

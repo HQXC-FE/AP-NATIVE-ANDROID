@@ -242,6 +242,8 @@ public class MatchInfo implements BaseBean {
         availBetTypes = new ArrayList<>();
         in.readList(availBetTypes, Integer.class.getClassLoader());
         marketLines = in.createTypedArrayList(MarketLine.CREATOR);
+        sportId = in.readInt();
+        sportName = in.readString();
     }
 
     @Override
@@ -293,6 +295,8 @@ public class MatchInfo implements BaseBean {
         dest.writeParcelable(programme, flags);
         dest.writeList(availBetTypes);
         dest.writeTypedList(marketLines);
+        dest.writeInt(sportId);
+        dest.writeString(sportName);
     }
 
     @Override

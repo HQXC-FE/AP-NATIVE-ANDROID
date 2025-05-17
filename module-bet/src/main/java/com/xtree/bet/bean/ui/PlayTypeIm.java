@@ -24,7 +24,6 @@ import java.util.Locale;
 public class PlayTypeIm implements PlayType {
     private String className;
     private MarketLine marketLine;
-
     private MatchInfo event;
 
     public PlayTypeIm(MarketLine marketLine) {
