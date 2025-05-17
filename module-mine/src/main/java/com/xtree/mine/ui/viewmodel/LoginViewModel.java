@@ -199,6 +199,8 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
         SPUtils.getInstance().remove(SPKeyGlobal.MSG_PERSON_INFO);
         SPUtils.getInstance().remove(SPKeyGlobal.FB_TOKEN);
         SPUtils.getInstance().remove(SPKeyGlobal.PM_TOKEN);
+        SPUtils.getInstance().remove(SPKeyGlobal.PMXC_TOKEN);
+        SPUtils.getInstance().remove(SPKeyGlobal.FBXC_TOKEN);
 
         RetrofitClient.init();
 

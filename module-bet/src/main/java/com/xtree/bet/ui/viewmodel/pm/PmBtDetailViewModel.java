@@ -3,6 +3,8 @@ package com.xtree.bet.ui.viewmodel.pm;
 import static com.xtree.base.net.FBHttpCallBack.CodeRule.CODE_14010;
 import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401013;
 import static com.xtree.base.net.PMHttpCallBack.CodeRule.CODE_401026;
+import static com.xtree.bet.ui.activity.MainActivity.KEY_PLATFORM;
+import static com.xtree.bet.ui.activity.MainActivity.PLATFORM_PMXC;
 
 import android.app.Application;
 import android.text.TextUtils;
@@ -33,7 +35,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
+import me.xtree.mvvmhabit.http.BaseResponse;
 import me.xtree.mvvmhabit.http.ResponseThrowable;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
@@ -289,16 +293,30 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
     }
 
     public void getGameTokenApi() {
-        Disposable disposable = (Disposable) model.getBaseApiService().getPMGameTokenApi()
+        Flowable<BaseResponse<PMService>> flowable;
+        String mPlatform = SPUtils.getInstance().getString(KEY_PLATFORM);
+        if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+            flowable = model.getBaseApiService().getPMXCGameTokenApi();
+        } else {
+            flowable = model.getBaseApiService().getPMGameTokenApi();
+        }
+        Disposable disposable = (Disposable) flowable
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())
                 .subscribeWith(new HttpCallBack<PMService>() {
                     @Override
                     public void onResult(PMService pmService) {
-                        SPUtils.getInstance().put(SPKeyGlobal.PM_TOKEN, pmService.getToken());
-                        SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, pmService.getApiDomain());
-                        SPUtils.getInstance().put(SPKeyGlobal.PM_IMG_SERVICE_URL, pmService.getImgDomain());
-                        SPUtils.getInstance().put(SPKeyGlobal.PM_USER_ID, pmService.getUserId());
+                        if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+                            SPUtils.getInstance().put(SPKeyGlobal.PMXC_TOKEN, pmService.getToken());
+                            SPUtils.getInstance().put(SPKeyGlobal.PMXC_API_SERVICE_URL, pmService.getApiDomain());
+                            SPUtils.getInstance().put(SPKeyGlobal.PMXC_IMG_SERVICE_URL, pmService.getImgDomain());
+                            SPUtils.getInstance().put(SPKeyGlobal.PMXC_USER_ID, pmService.getUserId());
+                        } else {
+                            SPUtils.getInstance().put(SPKeyGlobal.PM_TOKEN, pmService.getToken());
+                            SPUtils.getInstance().put(SPKeyGlobal.PM_API_SERVICE_URL, pmService.getApiDomain());
+                            SPUtils.getInstance().put(SPKeyGlobal.PM_IMG_SERVICE_URL, pmService.getImgDomain());
+                            SPUtils.getInstance().put(SPKeyGlobal.PM_USER_ID, pmService.getUserId());
+                        }
                         getMatchDetail(mMatchId);
                         if(TextUtils.isEmpty(mSportId)) {
                             getCategoryList(String.valueOf(mMatchId), mSportId);
