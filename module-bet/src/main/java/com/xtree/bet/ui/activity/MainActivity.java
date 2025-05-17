@@ -32,7 +32,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
@@ -74,14 +73,13 @@ import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.factory.IMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FBMainViewModel;
-import com.xtree.bet.ui.viewmodel.im.ImMainViewModel;
+import com.xtree.bet.ui.viewmodel.im.IMMainViewModel;
 import com.xtree.bet.ui.viewmodel.pm.PMMainViewModel;
 import com.xtree.bet.weight.AnimatedExpandableListViewMax;
 import com.xtree.bet.weight.BettingNetFloatingWindows;
 import com.xtree.bet.weight.PageHorizontalScrollView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -376,7 +374,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             return new ViewModelProvider(this, factory).get(PMMainViewModel.class);
         } else {
             IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance(getApplication());
-            return new ViewModelProvider(this, factory).get(ImMainViewModel.class);
+            return new ViewModelProvider(this, factory).get(IMMainViewModel.class);
         }
     }
 
@@ -451,6 +449,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                         binding.tabSearchDate.setVisibility(View.GONE);
                     }
                     if (playMethodPos == 0 || playMethodPos == 3) {
+                        CfLog.d("============== getHotMatchCount playMethodPos ================"+playMethodPos);
                         viewModel.getHotMatchCount(playMethodType, viewModel.hotLeagueList);
                     }
                 }
@@ -955,12 +954,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             viewModel.getChampionList(sportTypePos, sportId, orderBy, leagueIds, matchids,
                     playMethodType, mOddType, isTimedRefresh, isRefresh);
         } else {
+            CfLog.d("=========== MainActivity getMatchData sportTypePos ==============="+sportTypePos);
             if (sportTypePos == 0 && (playMethodPos == 0 || playMethodPos == 3)) {
-                //CfLog.d("=========== MainActivity getMatchData viewModel.getLeagueList 1111 ===============");
+                CfLog.d("=========== MainActivity getMatchData viewModel.getLeagueList 1111 ===============");
                 viewModel.getLeagueList(sportTypePos, sportId, orderBy, viewModel.hotLeagueList, matchids,
                         playMethodType, searchDatePos, mOddType, isTimedRefresh, isRefresh);
             } else {//sportTypePos 这里有可能为-1
-                //CfLog.d("=========== MainActivity getMatchData viewModel.getLeagueList 2222 ===============");
                 viewModel.getLeagueList(sportTypePos, sportId, orderBy, leagueIds, matchids,
                         playMethodType, searchDatePos, mOddType, isTimedRefresh, isRefresh);
             }

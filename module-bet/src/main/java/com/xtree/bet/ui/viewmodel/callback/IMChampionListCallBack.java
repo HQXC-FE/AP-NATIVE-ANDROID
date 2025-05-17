@@ -19,7 +19,7 @@ import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.OptionList;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.ui.activity.MainActivity;
-import com.xtree.bet.ui.viewmodel.im.ImMainViewModel;
+import com.xtree.bet.ui.viewmodel.im.IMMainViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import me.xtree.mvvmhabit.utils.SPUtils;
 
 public class IMChampionListCallBack extends HttpCallBack<ChampionEventsRsp> {
 
-    private ImMainViewModel mViewModel;
+    private IMMainViewModel mViewModel;
     private boolean mHasCache;
     private boolean mIsTimerRefresh;
     private boolean mIsRefresh;
@@ -44,7 +44,7 @@ public class IMChampionListCallBack extends HttpCallBack<ChampionEventsRsp> {
     private int mPlayMethodType;
     private int mOddType;
 
-    public IMChampionListCallBack(ImMainViewModel viewModel, int sportPos, String sportId, int orderBy, List<Long> leagueIds, List<Long> matchids, int playMethodType, int oddType, boolean isTimerRefresh, boolean isRefresh, int currentPage) {
+    public IMChampionListCallBack(IMMainViewModel viewModel, int sportPos, String sportId, int orderBy, List<Long> leagueIds, List<Long> matchids, int playMethodType, int oddType, boolean isTimerRefresh, boolean isRefresh, int currentPage) {
         mViewModel = viewModel;
         mIsTimerRefresh = isTimerRefresh;
         mIsRefresh = isRefresh;

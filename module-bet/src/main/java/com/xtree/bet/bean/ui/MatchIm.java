@@ -313,14 +313,15 @@ public class MatchIm implements Match {
     @Override
     public boolean hasAs() {
         //IM文档没看懂，暂时不接动画直播，先返回false
-//        boolean hasAs = matchInfo.hasVisualization;
-        return false;
+        //return false;
+        //根据前端给的jsx插件修改动画直播的逻辑
+        return matchInfo.hasVisualization;
     }
 
     @Override
     public boolean isAnimationStart() {
         //return matchInfo.mvs == 2 || matchInfo.mvs == 1;
-        return false;
+        return matchInfo.hasVisualization;
     }
 
     @Override
@@ -344,9 +345,9 @@ public class MatchIm implements Match {
      */
     @Override
     public List<String> getAnmiUrls() {
-        //return matchInfo.liveStreamingUrl.get(0).getUrl();
-        //return matchInfo.as;
         List<String> list = new ArrayList<String>();
+        String animUrl = "file:///android_asset/anim_live_plugin.html";
+        list.add(animUrl);
         return list;
     }
 

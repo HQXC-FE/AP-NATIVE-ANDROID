@@ -21,7 +21,7 @@ import com.xtree.bet.bean.ui.PlayGroup;
 import com.xtree.bet.bean.ui.PlayGroupIm;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.ui.activity.MainActivity;
-import com.xtree.bet.ui.viewmodel.im.ImMainViewModel;
+import com.xtree.bet.ui.viewmodel.im.IMMainViewModel;
 
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import me.xtree.mvvmhabit.utils.Utils;
 
 public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
 
-    private ImMainViewModel mViewModel;
+    private IMMainViewModel mViewModel;
     private boolean mHasCache;
     private boolean mIsTimerRefresh;
     private boolean mIsRefresh;
@@ -63,10 +63,9 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
      */
     private List<BaseBean> mNoliveMatchList = new ArrayList<>();
 
-    public IMListCallBack(ImMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
+    public IMListCallBack(IMMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
                           int playMethodType, int sportPos, String sportId, int orderBy, List<Long> leagueIds,
                           int searchDatePos, int oddType, List<Long> matchids/*, boolean isStepSecond*/) {
-        CfLog.d("================ IMListCallBack ===============");
         mViewModel = viewModel;
         mHasCache = hasCache;
         mIsTimerRefresh = isTimerRefresh;

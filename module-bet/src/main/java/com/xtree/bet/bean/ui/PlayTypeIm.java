@@ -87,6 +87,7 @@ public class PlayTypeIm implements PlayType {
         //子项返回的数据是 optionLists.get(position).getOptionList()
         List<OptionList> optionLists = new ArrayList<>();
         if (marketLine != null && marketLine.getWagerSelections() != null) {
+            //这里不需要遍历，因为OptionListIm子项会再次进行遍历
 //            for (WagerSelection optionDataListInfo : marketLine.getWagerSelections()) {
             optionLists.add(new OptionListIm(marketLine));
 //            }

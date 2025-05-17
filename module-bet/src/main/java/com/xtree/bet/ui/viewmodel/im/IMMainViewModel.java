@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
+import com.xtree.bet.bean.request.fb.FBListReq;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
 import com.xtree.bet.bean.request.im.AnnouncementReq;
 import com.xtree.bet.bean.request.im.EventInfoByPageRsq;
@@ -32,7 +33,10 @@ import com.xtree.bet.constant.SportTypeItem;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.ui.viewmodel.MainViewModel;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
+import com.xtree.bet.ui.viewmodel.callback.FBhotMatchCacheCallBack;
+import com.xtree.bet.ui.viewmodel.callback.FBhotMatchCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMChampionListCallBack;
+import com.xtree.bet.ui.viewmodel.callback.IMHotMatchCountCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMLeagueListCallBack;
 import com.xtree.bet.ui.viewmodel.callback.IMListCallBack;
 
@@ -55,7 +59,7 @@ import me.xtree.mvvmhabit.utils.RxUtils;
  * Created by vickers
  */
 
-public class ImMainViewModel extends TemplateMainViewModel implements MainViewModel {
+public class IMMainViewModel extends TemplateMainViewModel implements MainViewModel {
     private List<Match> mMatchList = new ArrayList<>();
     public List<Match> mChampionMatchList = new ArrayList<>();
     private Map<String, Match> mMapMatch = new HashMap<>();
@@ -83,7 +87,7 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     private int mPlayType;
 
-    public ImMainViewModel(@NonNull Application application, BetRepository repository) {
+    public IMMainViewModel(@NonNull Application application, BetRepository repository) {
         super(application, repository);
         sportItemData.postValue(new String[]{});
     }
@@ -130,39 +134,9 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
      */
     @Override
     public void getHotMatchCount(int playMethodType, List<Long> leagueIds) {
-
         if (leagueIds.isEmpty()) {
             return;
         }
-//        PMListReq pmListReq = new PMListReq();
-//        pmListReq.setCuid();
-//        pmListReq.setCpn(mCurrentPage);
-//        pmListReq.setCps(mGoingOnPageSize);
-//
-//        String sportIds = "";
-//        if (mMenuInfoList.isEmpty()) {
-//            hotEmptyMatchCountData.postValue(0);
-//            return;
-//        } else {
-//            for (MenuInfo menuInfo : mMenuInfoList) {
-//                if (playMethodType == menuInfo.menuType) {
-//                    for (MenuInfo subMenu : menuInfo.subList) {
-//                        sportIds += subMenu.menuId + ",";
-//                    }
-//                }
-//            }
-//        }
-//        pmListReq.setEuid(sportIds);
-//        if (leagueIds != null && !leagueIds.isEmpty()) {
-//            String leagueids = "";
-//            for (Long leagueid : leagueIds) {
-//                leagueids += leagueid + ",";
-//            }
-//            pmListReq.setTid(leagueids.substring(0, leagueids.length() - 1));
-//        }
-//
-//        pmListReq.setType(3);
-        // 获取 Flowable 对象
 
         EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
         eventInfoByPageRsq.setSportId(1);
@@ -172,18 +146,12 @@ public class ImMainViewModel extends TemplateMainViewModel implements MainViewMo
         eventInfoByPageRsq.setPage(1);
         eventInfoByPageRsq.setSeason(0);
         eventInfoByPageRsq.setIsCombo(false);
-        model.getIMApiService().getEventInfoByPage(eventInfoByPageRsq);
-
-//        EventInfoMbtReq eventInfoMbtReq = new EventInfoMbtReq();
-//        eventInfoMbtReq.setSportId(1);
-//        eventInfoMbtReq.setMarket(3);
-//        eventInfoMbtReq.setMatchDay(0);
-//        eventInfoMbtReq.setOddsType(3);
-//        eventInfoMbtReq.setPage(1);
-//        eventInfoMbtReq.setSeason(0);
-//        eventInfoMbtReq.setCombo(false);
-//        CfLog.d("==== ImMainViewModel getLeagueList ====");
-//        model.getIMApiService().getEventInfoMbt(eventInfoMbtReq);
+        Object callBack = new IMHotMatchCountCallBack(this);
+        Flowable flowable = model.getIMApiService().getEventInfoByPage(eventInfoByPageRsq);
+        Disposable disposable = (Disposable) flowable.compose(RxUtils.schedulersTransformer()) // 线程调度
+                .compose(RxUtils.exceptionTransformer()) // 异常处理
+                .subscribeWith((Subscriber) callBack);
+        addSubscribe(disposable);
 
     }
 

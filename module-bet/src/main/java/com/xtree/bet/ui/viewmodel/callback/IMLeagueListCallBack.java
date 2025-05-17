@@ -19,7 +19,7 @@ import com.xtree.bet.bean.ui.LeagueIm;
 import com.xtree.bet.bean.ui.Match;
 import com.xtree.bet.bean.ui.MatchIm;
 import com.xtree.bet.ui.activity.MainActivity;
-import com.xtree.bet.ui.viewmodel.im.ImMainViewModel;
+import com.xtree.bet.ui.viewmodel.im.IMMainViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +32,7 @@ import me.xtree.mvvmhabit.utils.Utils;
 
 public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
 
-    private ImMainViewModel mViewModel;
+    private IMMainViewModel mViewModel;
     private boolean mHasCache;
     private boolean mIsTimerRefresh;
     private boolean mIsRefresh;
@@ -64,7 +64,7 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
      */
     private List<BaseBean> mNoliveMatchList = new ArrayList<>();
 
-    public IMLeagueListCallBack(ImMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
+    public IMLeagueListCallBack(IMMainViewModel viewModel, boolean hasCache, boolean isTimerRefresh, boolean isRefresh,
                                 int currentPage, int playMethodType, int sportPos, String sportId, int orderBy, List<Long> leagueIds,
                                 int searchDatePos, int oddType, List<Long> matchids, int finalType, boolean isStepSecond) {
         mViewModel = viewModel;
@@ -137,14 +137,19 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
 
     @Override
     public void onResult(EventInfoByPageListRsp matchListRsp) {
-        CfLog.d("================= IMLeagueListCallBack onResult ==================");
+        CfLog.d("================= IMLeagueListCallBack onResult mSportPos =================="+mSportPos);
         matchListRsp = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
         List<MatchInfo> matchInfoList = matchListRsp.getSports().get(0).getEvents();
+        CfLog.d("================= IMLeagueListCallBack onResult matchInfoList.size before =================="+matchInfoList.size());
+        matchListRsp = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
         for (MatchInfo matchInfo : matchInfoList) {
             matchInfo.setSportId(matchListRsp.getSports().get(0).getSportId());
             matchInfo.setSportName(matchListRsp.getSports().get(0).getSportName());
+            if(mSportPos == 0 && !matchInfo.isPopular){ //筛选出热门比赛
+                matchInfoList.remove(matchInfo);
+            }
         }
-
+        CfLog.d("================= IMLeagueListCallBack onResult matchInfoList.size after =================="+matchInfoList.size());
         mViewModel.getUC().getDismissDialogEvent().call();
         if (mIsRefresh) {
             mNoliveMatchList.clear();
@@ -165,7 +170,7 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
                 mViewModel.finishLoadMore(true);
             }
         }
-        CfLog.d("======= IMLeagueListCallBack mFinalType ========"+mFinalType);
+
         mNoliveMatchList.addAll(matchInfoList);
         if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
             if (mFinalType == 1) { // 滚球
@@ -425,13 +430,11 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
      */
     public void buildNoLiveSportHeader(Match match, League league) {
         League sportHeader = mMapSportType.get(match.getSportId());
-        //CfLog.d("=========== IMLeagueListCallBack buildNoLiveSportHeader mMapSportType ========"+mMapSportType);
         if (sportHeader == null) {
             League sportHeaderLeague = league;
             sportHeaderLeague.setHead(true);
             sportHeaderLeague.setHeadType(League.HEAD_TYPE_SPORT_NAME);
             sportHeaderLeague.setLeagueName(match.getSportName());
-            //CfLog.d("=========== IMLeagueListCallBack buildNoLiveSportHeader match.getSportName()========"+match.getSportName());
             sportHeaderLeague.setMatchCount(1);
             if (!mGoingOnLeagueList.isEmpty() && mLeagueList.isEmpty()) { // 进行中
                 mGoingOnLeagueList.add(sportHeaderLeague);
