@@ -120,13 +120,13 @@ public class MatchIm implements Match {
     @Override
     public String getStage() {
         String state = matchInfo.rbTime;
-        if(state != null && !state.isEmpty()){
+        if (state != null && !state.isEmpty()) {
             String period = state.split(" ")[0];
             String time = "";
-            if(state.split(" ").length >1 ){
+            if (state.split(" ").length > 1) {
                 time = state.split(" ")[1];
             }
-            return IMMatchPeriod.getMatchPeriod(String.valueOf(period)) + " " +time;
+            return IMMatchPeriod.getMatchPeriod(String.valueOf(period)) + " " + time;
         }
         return "";
     }
@@ -187,21 +187,22 @@ public class MatchIm implements Match {
      */
     @Override
     public List<Integer> getScore(String... type) {
-        if(type == null || type.length == 0) return null;
+        if (type == null || type.length == 0) return null;
         List<Integer> sc = new ArrayList<>();
-        if(type[0].equals(IMConstants.SCORE_TYPE_SCORE)){ //获取比分
-            if(matchInfo != null && matchInfo.relatedScores != null && matchInfo.relatedScores.size() > 0){
+        if (type[0].equals(IMConstants.SCORE_TYPE_SCORE)) { //获取比分
+            if (matchInfo != null && matchInfo.relatedScores != null && matchInfo.relatedScores.size() > 0) {
                 int homeScore = matchInfo.relatedScores.get(0).homeScore;
                 int awayScore = matchInfo.relatedScores.get(0).awayScore;
                 sc.add(homeScore);
                 sc.add(awayScore);
             }
             return sc;
-        }else{ //获取红黄牌
+        } else { //获取红黄牌
             Gson gson = new Gson();
-            Type typeJson = new TypeToken<Map<String, String>>() {}.getType();
+            Type typeJson = new TypeToken<Map<String, String>>() {
+            }.getType();
             Map<String, String> extraInfoMap = gson.fromJson(matchInfo.extraInfo, typeJson);
-            if(extraInfoMap.get(type[0])!= null){
+            if (extraInfoMap.get(type[0]) != null) {
                 sc.add(Integer.parseInt(extraInfoMap.get(type[0])));
                 sc.add(Integer.parseInt(extraInfoMap.get(type[0])));
             }
@@ -274,14 +275,13 @@ public class MatchIm implements Match {
     /**
      * 获取玩法列表
      *
-     *
      * @return
      */
     public List<PlayType> getPlayTypeList() {
         List<PlayType> playTypeList = new ArrayList<>();
         for (MarketLine marketLine : matchInfo.marketLines) {
-            if(marketLine.marketLineLevel == 1){
-                PlayTypeIm playTypeIm = new PlayTypeIm(marketLine,matchInfo);
+            if (marketLine.marketLineLevel == 1) {
+                PlayTypeIm playTypeIm = new PlayTypeIm(marketLine, matchInfo);
                 playTypeList.add(playTypeIm);
             }
         }
@@ -345,8 +345,14 @@ public class MatchIm implements Match {
      */
     @Override
     public List<String> getAnmiUrls() {
-        List<String> list = new ArrayList<String>();
-        String animUrl = "file:///android_asset/anim_live_plugin.html";
+        List<String> list = new ArrayList<>();
+        // 加载 HTML 并附加查询参数
+        String animUrl = "file:///android_asset/anim_live_plugin.html" +
+                "?matchId=" + matchInfo.brEventId +
+                "&sport=" + matchInfo.sportId +
+                "&openMenu=true" +
+                "&openLive=true" +
+                "&index=0";
         list.add(animUrl);
         return list;
     }
@@ -469,9 +475,9 @@ public class MatchIm implements Match {
      */
     @Override
     public boolean isChampion() {
-        if(matchInfo.eventGroupTypeId != 1){
-             return true;
-        }else{
+        if (matchInfo.eventGroupTypeId != 1) {
+            return true;
+        } else {
             return false;
         }
     }
@@ -481,7 +487,7 @@ public class MatchIm implements Match {
      */
     @Override
     public String getSportId() {
-        if (matchInfo!=null){
+        if (matchInfo != null) {
             return String.valueOf(matchInfo.sportId);
         }
         return "0";
@@ -518,9 +524,9 @@ public class MatchIm implements Match {
     @Override
     public boolean hasCornor() {
         List<Integer> cornor = getScore(IMConstants.SCORE_TYPE_CORNER);
-        if(cornor.size() > 1){
+        if (cornor.size() > 1) {
             return cornor.get(0) > 0 || cornor.get(1) > 0;
-        }else{
+        } else {
             return false;
         }
 

@@ -25,13 +25,21 @@ public final class IMOrganizedMarkLinesManager {
 
     // 足球规则
     public static class SoccerRule {
+        //让球&大小
         public static final Set<Integer> ahou = new HashSet<>(Arrays.asList(1, 2, 35, 54, 160, 161));
+        //波胆
         public static final Set<Integer> cs = new HashSet<>(Arrays.asList(6, 62, 158, 162));
+        //角球  EventGroupTypeID = 2 是角球盘，但是角球盘会包含角球让球等（还要处理下）
         public static final Set<Integer> corner = new HashSet<>(Arrays.asList(2, 3, 5, 6, 7, 8));
+        //获牌总数
         public static final Set<Integer> bookings = new HashSet<>(Collections.singletonList(0));
+        //进球
         public static final Set<Integer> goals = new HashSet<>(Arrays.asList(7, 60, 61, 18, 16, 17, 21, 13, 14, 15, 22, 23));
+        //半场 使用period判断
         public static final Set<Integer> halves = new HashSet<>(Arrays.asList(2, 3));
+        //时段
         public static final Set<Integer> period = new HashSet<>(Arrays.asList(47, 48, 49, 50, 51, 52, 53, 54));
+        //特殊投注
         public static final Set<Integer> specials;
 
         static {
