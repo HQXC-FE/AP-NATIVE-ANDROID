@@ -33,11 +33,12 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
 
     public final static String PLATFORM_FBXC = "fbxc";
     public final static String PLATFORM_FB = "fb";
+    public final static String PLATFORM_PMXC = "obgzy";
+    public final static String PLATFORM_PM = "obg";
     private BasePopupView basePopupView;
 
     public interface ICallBack {
         void onClick(GameVo vo); // String gameAlias, String gameId
-
         void getToken(GameVo vo);
     }
 
@@ -151,17 +152,18 @@ public class GameAdapter extends CachedAutoRefreshAdapter<GameVo> {
     private void goApp(GameVo vo) {
         String cgToken;
         String baseUrl;
-        if (TextUtils.equals(vo.alias, PLATFORM_FBXC)) {
-            cgToken = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_TOKEN);
-            baseUrl = SPUtils.getInstance().getString(SPKeyGlobal.FBXC_API_SERVICE_URL);
+        if (TextUtils.equals(vo.alias, PLATFORM_PMXC)) {
+            cgToken = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN);
+            baseUrl = SPUtils.getInstance().getString(SPKeyGlobal.PMXC_API_SERVICE_URL);
         } else if (TextUtils.equals(vo.alias, PLATFORM_FB)) {
             cgToken = SPUtils.getInstance().getString(SPKeyGlobal.FB_TOKEN);
             baseUrl = SPUtils.getInstance().getString(SPKeyGlobal.FB_API_SERVICE_URL);
         } else {
+            CfLog.e(vo.alias);
             cgToken = SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN);
             baseUrl = SPUtils.getInstance().getString(SPKeyGlobal.PM_API_SERVICE_URL);
         }
-
+        CfLog.e(cgToken+"   "+baseUrl);
         if (TextUtils.isEmpty(cgToken) || TextUtils.isEmpty(baseUrl)) {
             CfLog.e("无法获取到场馆地址");
             mCallBack.getToken(vo);

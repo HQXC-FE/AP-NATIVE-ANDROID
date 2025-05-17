@@ -3,6 +3,7 @@ package com.xtree.bet.ui.fragment;
 import static com.xtree.bet.ui.activity.MainActivity.KEY_PLATFORM;
 import static com.xtree.bet.ui.activity.MainActivity.KEY_PLATFORM_NAME;
 import static com.xtree.bet.ui.activity.MainActivity.PLATFORM_PM;
+import static com.xtree.bet.ui.activity.MainActivity.PLATFORM_PMXC;
 
 import android.animation.ObjectAnimator;
 import android.app.Application;
@@ -252,7 +253,7 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
                 if (!hasCloseOption) {
                     hasCloseOption = betConfirmOptionList.get(i).isClose();
                 }
-                if (!TextUtils.equals(platform, PLATFORM_PM)) {
+                if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {
                     betConfirmOptionList.get(i).setRealData(betConfirmOptions.get(i).getRealData());
                 } else {
                     for (BetConfirmOption option : betConfirmOptions) {
@@ -404,7 +405,7 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
 
     @Override
     public TemplateBtCarViewModel initViewModel() {
-        if (!TextUtils.equals(platform, PLATFORM_PM)) {
+        if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {
             AppViewModelFactory factory = AppViewModelFactory.getInstance((Application) Utils.getContext());
             return new ViewModelProvider(this, factory).get(FBBtCarViewModel.class);
         } else {

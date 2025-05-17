@@ -3,6 +3,7 @@ package com.xtree.bet.ui.viewmodel;
 import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
 import static com.xtree.bet.ui.activity.MainActivity.KEY_PLATFORM;
 import static com.xtree.bet.ui.activity.MainActivity.PLATFORM_PM;
+import static com.xtree.bet.ui.activity.MainActivity.PLATFORM_PMXC;
 
 import android.app.Application;
 import android.text.TextUtils;
@@ -187,7 +188,7 @@ public abstract class TemplateMainViewModel extends BaseBtViewModel implements M
      */
     public void getHotLeague(String platform) {
         Map<String, String> map = new HashMap<>();
-        map.put("fields", !TextUtils.equals(platform, PLATFORM_PM) ? "fbxc_popular_leagues" : "obg_popular_leagues");
+        map.put("fields", !TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC) ? "fbxc_popular_leagues" : "obg_popular_leagues");
 
         Disposable disposable = (Disposable) model.getBaseApiService().getSettings(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
@@ -195,11 +196,13 @@ public abstract class TemplateMainViewModel extends BaseBtViewModel implements M
                 .subscribeWith(new HttpCallBack<HotLeagueInfo>() {
                     @Override
                     public void onResult(HotLeagueInfo hotLeagueInfo) {
-                        List<String> hotLeagues = !TextUtils.equals(platform, PLATFORM_PM) ? hotLeagueInfo.fbxc_popular_leagues : hotLeagueInfo.obg_popular_leagues;
+                        List<String> hotLeagues =
+                                !TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC) ?
+                                        hotLeagueInfo.fbxc_popular_leagues : hotLeagueInfo.obg_popular_leagues;
                         for (String leagueId : hotLeagues) {
                             hotLeagueList.add(Long.valueOf(leagueId));
                         }
-                        getHotMatchCount(!TextUtils.equals(platform, PLATFORM_PM) ? 6 : 3, hotLeagueList);
+                        getHotMatchCount(!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC) ? 6 : 3, hotLeagueList);
                     }
 
                     @Override
@@ -314,7 +317,9 @@ public abstract class TemplateMainViewModel extends BaseBtViewModel implements M
         mHasCache = !TextUtils.isEmpty(json);
         json = TextUtils.isEmpty(json) ? "[]" : json;
         Gson gson = new GsonBuilder().serializeNulls().registerTypeAdapter(Match.class, new MatchDeserializer()).create();
-        Type listType = TextUtils.equals(platform, PLATFORM_PM) ? new TypeToken<List<LeaguePm>>() { }.getType() : new TypeToken<List<LeagueFb>>() { }.getType();
+        Type listType = TextUtils.equals(platform, PLATFORM_PM) || TextUtils.equals(platform, PLATFORM_PMXC) ? new TypeToken<List<LeaguePm>>() {
+        }.getType() : new TypeToken<List<LeagueFb>>() {
+        }.getType();
         List<League> leagueList = gson.fromJson(json, listType);
 
         if (playMethodType == 1) { // 滚球
@@ -333,7 +338,9 @@ public abstract class TemplateMainViewModel extends BaseBtViewModel implements M
         String json = SPUtils.getInstance().getString(BT_LEAGUE_LIST_CACHE + playMethodType + sportId);
         mHasCache = !TextUtils.isEmpty(json);
         json = TextUtils.isEmpty(json) ? "[]" : json;
-        Type listType = TextUtils.equals(platform, PLATFORM_PM) ? new TypeToken<List<MatchPm>>() { }.getType() : new TypeToken<List<MatchFb>>() { }.getType();
+        Type listType = TextUtils.equals(platform, PLATFORM_PM) || TextUtils.equals(platform, PLATFORM_PMXC) ? new TypeToken<List<MatchPm>>() {
+        }.getType() : new TypeToken<List<MatchFb>>() {
+        }.getType();
         List<Match> matchList = new Gson().fromJson(json, listType);
 
         championMatchListData.postValue(matchList);

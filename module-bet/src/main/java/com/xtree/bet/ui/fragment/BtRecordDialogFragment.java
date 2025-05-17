@@ -4,6 +4,7 @@ import static com.xtree.bet.ui.activity.MainActivity.KEY_PLATFORM;
 import static com.xtree.bet.ui.activity.MainActivity.PLATFORM_FB;
 import static com.xtree.bet.ui.activity.MainActivity.PLATFORM_FBXC;
 import static com.xtree.bet.ui.activity.MainActivity.PLATFORM_PM;
+import static com.xtree.bet.ui.activity.MainActivity.PLATFORM_PMXC;
 
 import android.app.Application;
 import android.content.res.ColorStateList;
@@ -246,8 +247,8 @@ public class BtRecordDialogFragment extends BaseDialogFragment<BtDialogBtRecordB
         } else if (id == R.id.tv_to_record) {
             Bundle bundle = new Bundle();
             bundle.putString("typeId", mPlatform);
-            if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
-                mPlatformName = getString(R.string.bt_platform_name_fbxc);
+            if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+                mPlatformName = getString(R.string.bt_platform_name_pmxc);
             } else if (TextUtils.equals(mPlatform, PLATFORM_FB)) {
                 mPlatformName = getString(R.string.bt_platform_name_fb);
             } else {
@@ -261,7 +262,7 @@ public class BtRecordDialogFragment extends BaseDialogFragment<BtDialogBtRecordB
 
     @Override
     public TemplateBtRecordModel initViewModel() {
-        if (!TextUtils.equals(mPlatform, PLATFORM_PM)) {
+        if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
             AppViewModelFactory factory = AppViewModelFactory.getInstance((Application) Utils.getContext());
             return new ViewModelProvider(this, factory).get(FBBtRecordModel.class);
         } else {

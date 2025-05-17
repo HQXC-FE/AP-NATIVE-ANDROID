@@ -66,9 +66,6 @@ import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
 
-/**
- * Created by goldze on 2018/6/21
- */
 @Route(path = RouterActivityPath.Bet.PAGER_BET_HOME)
 public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMainViewModel> implements OnRefreshLoadMoreListener, View.OnClickListener {
     public final static String KEY_PLATFORM = "KEY_PLATFORM";
@@ -76,9 +73,10 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     public final static String PLATFORM_FBXC = "fbxc";
     public final static String PLATFORM_FB = "fb";
     public final static String PLATFORM_PM = "obg";
+    public final static String PLATFORM_PMXC = "obgzy";
     public final static String BET_EXPAND = "betExpand";
 
-    private String mPlatform = PLATFORM_FBXC;
+    private String mPlatform = PLATFORM_PMXC;
     private String mPlatformName;
     private boolean mIsShowLoading = true;
     private boolean mIsChange = true;
@@ -167,8 +165,8 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
     @Override
     public void initParam() {
         mPlatform = getIntent().getStringExtra(KEY_PLATFORM);
-        if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
-            mPlatformName = getString(R.string.bt_platform_name_fbxc);
+        if (TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
+            mPlatformName = getString(R.string.bt_platform_name_pmxc);
         } else if (TextUtils.equals(mPlatform, PLATFORM_FB)) {
             mPlatformName = getString(R.string.bt_platform_name_fb);
         } else {
@@ -191,7 +189,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
     @Override
     public TemplateMainViewModel initViewModel() {
-        if (!TextUtils.equals(mPlatform, PLATFORM_PM)) {
+        if (!TextUtils.equals(mPlatform, PLATFORM_PM) && !TextUtils.equals(mPlatform, PLATFORM_PMXC)) {
             AppViewModelFactory factory = AppViewModelFactory.getInstance(getApplication());
             return new ViewModelProvider(this, factory).get(FBMainViewModel.class);
         } else {
