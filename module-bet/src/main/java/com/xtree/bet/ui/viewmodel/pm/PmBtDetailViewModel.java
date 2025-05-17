@@ -178,11 +178,14 @@ public class PmBtDetailViewModel extends TemplateBtDetailViewModel {
 
     @Override
     public void getMatchOddsInfoPB(String mid, String mcid) {
+        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
         Map<String, String> map = new HashMap<>();
         map.put("mid", mid);
         map.put("mcid", mcid);
         map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PM_USER_ID));
-
+        if(TextUtils.equals(platform, PLATFORM_PMXC)){
+            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
+        }
         Disposable disposable = (Disposable) model.getPMApiService().getMatchOddsInfoPB(map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())

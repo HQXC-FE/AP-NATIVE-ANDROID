@@ -11,6 +11,8 @@ import static com.xtree.bet.constant.PMConstants.SPORT_NAMES_LIVE;
 import static com.xtree.bet.constant.PMConstants.SPORT_NAMES_NOMAL;
 import static com.xtree.bet.constant.PMConstants.SPORT_NAMES_TODAY_CG;
 import static com.xtree.bet.constant.SPKey.BT_LEAGUE_LIST_CACHE;
+import static com.xtree.bet.ui.activity.MainActivity.KEY_PLATFORM;
+import static com.xtree.bet.ui.activity.MainActivity.PLATFORM_PMXC;
 
 import android.app.Application;
 import android.text.TextUtils;
@@ -203,6 +205,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
             return;
         }
         PMListReq pmListReq = new PMListReq();
+        pmListReq.setCuid();
         pmListReq.setCpn(mCurrentPage);
         pmListReq.setCps(mGoingOnPageSize);
         String sportIds = "";
@@ -304,6 +307,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         PMListReq pmListReq = new PMListReq();
+        pmListReq.setCuid();
         pmListReq.setEuid(String.valueOf(sportId));
         pmListReq.setMids(matchidList);
 
@@ -597,6 +601,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         PMListReq pmListReq = new PMListReq();
+        pmListReq.setCuid();
         pmListReq.setType(playMethodType);
         pmListReq.setSort(orderBy);
         pmListReq.setCpn(mCurrentPage);
@@ -699,7 +704,11 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
      */
     public void statistical(int playMethodType) {
         Map<String, String> map = new HashMap<>();
+        String platform = SPUtils.getInstance().getString(KEY_PLATFORM);
         map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PM_USER_ID));
+        if(TextUtils.equals(platform, PLATFORM_PMXC)){
+            map.put("cuid", SPUtils.getInstance().getString(SPKeyGlobal.PMXC_USER_ID));
+        }
         map.put("sys", "7");
 
         Disposable disposable = (Disposable) model.getPMApiService().initPB(map)

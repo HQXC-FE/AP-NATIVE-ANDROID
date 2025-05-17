@@ -68,7 +68,6 @@ public class FBRetrofitClient {
     }*/
 
     private FBRetrofitClient() {
-        baseUrl = SPUtils.getInstance().getString(SPKeyGlobal.FB_API_SERVICE_URL);
 
         String platform = SPUtils.getInstance().getString("KEY_PLATFORM");
         if(TextUtils.equals(platform, "fbxc")) {
