@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.SportsCacheSwitchInfo;
@@ -658,6 +659,7 @@ public class PMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     private Flowable getFlowableMatchesPagePB(PMListReq pmListReq) {
         Flowable flowable;
+        CfLog.d("=============== getFlowableMatchesPagePB pmListReq =================="+pmListReq.toString());
         if (isUseCacheApiService()) {
             if (getSportCacheType().equals(SportCacheType.PM)) {
                 pmListReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PM_TOKEN));

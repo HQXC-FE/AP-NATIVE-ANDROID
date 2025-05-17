@@ -114,7 +114,6 @@ public class IMChampionListCallBack extends HttpCallBack<ChampionEventsRsp> {
 
         if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
             championLeagueList(championEventsRsp.Events);
-            CfLog.d("======== IMChampionListCallBack onResult championMatchListData.postValue ======="+championEventsRsp.Events);
             mViewModel.championMatchListData.postValue(mViewModel.mChampionMatchList);
         } else {
             mViewModel.searchMatch(mViewModel.mSearchWord, true);

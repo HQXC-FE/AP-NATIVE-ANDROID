@@ -949,12 +949,12 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
 
     private void getMatchData(String sportId, int orderBy, List<Long> leagueIds, List<Long> matchids, int playMethodType, int searchDatePos, boolean isTimedRefresh, boolean isRefresh) {
         if (playMethodType == 7 || playMethodType == 100) { // 冠军 sportTypePos不需要使用在这里
-            CfLog.d("=========== MainActivity getMatchData sportId ==============="+sportId);
-            CfLog.d("=========== MainActivity getMatchData sportTypePos ==============="+sportTypePos);
+//            CfLog.d("=========== MainActivity getMatchData sportId ==============="+sportId);
+//            CfLog.d("=========== MainActivity getMatchData sportTypePos ==============="+sportTypePos);
             viewModel.getChampionList(sportTypePos, sportId, orderBy, leagueIds, matchids,
                     playMethodType, mOddType, isTimedRefresh, isRefresh);
         } else {
-            CfLog.d("=========== MainActivity getMatchData sportTypePos ==============="+sportTypePos);
+            //CfLog.d("=========== MainActivity getMatchData sportTypePos ==============="+sportTypePos);
             if (sportTypePos == 0 && (playMethodPos == 0 || playMethodPos == 3)) {
                 CfLog.d("=========== MainActivity getMatchData viewModel.getLeagueList 1111 ===============");
                 viewModel.getLeagueList(sportTypePos, sportId, orderBy, viewModel.hotLeagueList, matchids,
@@ -1190,22 +1190,24 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
             for (int i = firstVisiblePos; i <= lastVisiblePos; i++) {
                 long position = binding.rvLeague.getExpandableListPosition(i);
                 int type = binding.rvLeague.getPackedPositionType(position);
-
+                CfLog.d("================ MainAcitivity refreshLeague type ==================="+type);
                 if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     Match match = (Match) binding.rvLeague.getItemAtPosition(i);
                     if (match != null) {
+                        CfLog.d("================ MainAcitivity refreshLeague matchIdList.add 11111 ===================");
                         matchIdList.add(match.getId());
                     }
                 }
             }
         } else {
-            CfLog.d("================ refreshLeague mChampionMatchList ==================="+mChampionMatchList.size());
             for (Match match : mChampionMatchList) {
                 if (!match.isHead() && match.isExpand()) {
+                   // CfLog.d("================ refreshLeague matchIdList.add 22222 ===================");
                     matchIdList.add(match.getId());
                 }
             }
         }
+        CfLog.d("================ refreshLeague matchIdList size ==================="+matchIdList.size());
         if (!matchIdList.isEmpty()) {
             getMatchData(String.valueOf(getSportId()), mOrderBy, mLeagueIdList, matchIdList,
                     playMethodType, searchDatePos, true, false);

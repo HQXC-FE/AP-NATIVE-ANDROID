@@ -4,6 +4,7 @@ package com.xtree.bet.ui.viewmodel.callback;
 import android.text.TextUtils;
 
 import com.xtree.base.net.HttpCallBack;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.pm.LeagueInfo;
@@ -123,6 +124,8 @@ public class PMListCallBack extends HttpCallBack<List<MatchInfo>> {
     @Override
     public void onResult(List<MatchInfo> data) {
         if (mIsTimerRefresh) { // 定时刷新赔率变更
+            CfLog.d("=================== PMListCallBack onResult mMatchids.size ===================="+mMatchids.size());
+            CfLog.d("=================== PMListCallBack onResult data.size() ===================="+data.size());
             if (data.size() != mMatchids.size()) {
                 //List<Long> matchIdList = new ArrayList<>();
                 mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);

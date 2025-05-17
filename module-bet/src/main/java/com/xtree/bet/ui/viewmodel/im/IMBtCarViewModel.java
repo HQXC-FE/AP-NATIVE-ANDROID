@@ -18,7 +18,7 @@ import com.xtree.bet.bean.response.pm.CgOddLimitInfo;
 import com.xtree.bet.bean.response.pm.PlayTypeInfo;
 import com.xtree.bet.bean.response.pm.SeriesOrderInfo;
 import com.xtree.bet.bean.ui.BetConfirmOption;
-import com.xtree.bet.bean.ui.BetConfirmOptionPm;
+import com.xtree.bet.bean.ui.BetConfirmOptionIm;
 import com.xtree.bet.bean.ui.BtResult;
 import com.xtree.bet.bean.ui.BtResultPm;
 import com.xtree.bet.bean.ui.CgOddLimit;
@@ -109,7 +109,7 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
                         }
                         List<BetConfirmOption> mBetConfirmOptionList = new ArrayList<>();
                         for (BtConfirmInfo btConfirmInfo : btConfirmInfoList) {
-                            mBetConfirmOptionList.add(new BetConfirmOptionPm(btConfirmInfo, ""));
+                            mBetConfirmOptionList.add(new BetConfirmOptionIm(btConfirmInfo, ""));
                         }
                         btConfirmInfoDate.postValue(mBetConfirmOptionList);
                     }

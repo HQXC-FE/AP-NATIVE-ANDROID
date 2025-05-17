@@ -3,6 +3,7 @@ package com.xtree.bet.bean.ui;
 import android.os.Parcel;
 import android.text.TextUtils;
 
+import com.xtree.base.utils.CfLog;
 import com.xtree.bet.bean.response.pm.OptionDataListInfo;
 import com.xtree.bet.bean.response.pm.OptionInfo;
 import com.xtree.bet.bean.response.pm.PlayTypeInfo;
@@ -165,6 +166,9 @@ public class OptionPm implements Option{
      */
     @Override
     public void setChange(double oldOdd) {
+        CfLog.d("============ OptionPm setChange setChange ============");
+        Thread.dumpStack();
+        CfLog.d("============ OptionPm setChange setChange ============");
         change = oldOdd < getRealOdd() ? 1 : oldOdd > getRealOdd() ? -1 : 0;
         //Log.e("test", "===========" + change);
         optionInfo.change = change;

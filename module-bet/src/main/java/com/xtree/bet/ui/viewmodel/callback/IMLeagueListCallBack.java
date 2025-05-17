@@ -137,8 +137,8 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
 
     @Override
     public void onResult(EventInfoByPageListRsp matchListRsp) {
-        CfLog.d("================= IMLeagueListCallBack onResult mSportPos =================="+mSportPos);
-        matchListRsp = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
+        //CfLog.d("================= IMLeagueListCallBack onResult mSportPos =================="+mSportPos);
+        //matchListRsp = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
         List<MatchInfo> matchInfoList = matchListRsp.getSports().get(0).getEvents();
         CfLog.d("================= IMLeagueListCallBack onResult matchInfoList.size before =================="+matchInfoList.size());
         matchListRsp = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());

@@ -129,13 +129,15 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     @Override
     public void onResult(EventInfoByPageListRsp data) {
         try {
-            data = EventInfoByPageListParser.getLiveEventInfoListRsp(MainActivity.getContext());
+            //data = EventInfoByPageListParser.getLiveEventInfoListRsp(MainActivity.getContext());
             List<MatchInfo> matchInfoList = data.getSports().get(0).getEvents();
             for (MatchInfo matchInfo : matchInfoList) {
                 matchInfo.setSportId(data.getSports().get(0).getSportId());
                 matchInfo.setSportName(data.getSports().get(0).getSportName());
             }
             if (mIsTimerRefresh) { //定时刷新赔率变更
+                CfLog.d("============== IMListCallBack setOptionOddChange matchInfoList.size() ================"+matchInfoList.size());
+                CfLog.d("============== IMListCallBack setOptionOddChange mMatchids.size() ================"+mMatchids.size());
                 if (matchInfoList.size() != mMatchids.size()) {
                     //List<Long> matchIdList = new ArrayList<>();
                     mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);
@@ -188,6 +190,7 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
      * @param matchInfoList
      */
     private void setOptionOddChange(List<MatchInfo> matchInfoList) {
+        CfLog.d("============== IMListCallBack setOptionOddChange ================");
         List<Match> newMatchList = new ArrayList<>();
 
         for (MatchInfo matchInfo : matchInfoList) {
@@ -203,6 +206,7 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
                 if (oldOption != null && newOption != null
                         && oldOption.getRealOdd() != newOption.getRealOdd()
                         && TextUtils.equals(oldOption.getCode(), newOption.getCode())) {
+                    CfLog.d("============== IMListCallBack setOptionOddChange 11111 ================");
                     newOption.setChange(oldOption.getRealOdd());
                     break;
                 }

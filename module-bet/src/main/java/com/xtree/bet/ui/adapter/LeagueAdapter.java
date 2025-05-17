@@ -463,7 +463,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         ViewGroup.LayoutParams params = rootPlayType.getLayoutParams();
         params.width = parent.getWidth() / 2 / 3;
         rootPlayType.setLayoutParams(params);
-        //CfLog.d("=================== LeagueAdapter setPlayTypeGroup playType.getPlayTypeName() =================="+playType.getPlayTypeName());
         for (int j = 0; j < rootPlayType.getChildCount(); j++) {
             View view = rootPlayType.getChildAt(j);
             if (view instanceof TextView) {
@@ -486,7 +485,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                     TextView uavailableTextView = (TextView) optionView.getChildAt(0);
                     TextView nameTextView = (TextView) optionView.getChildAt(1);
                     DiscolourTextView oddTextView = (DiscolourTextView) optionView.getChildAt(2);
-                    //CfLog.d("=================== LeagueAdapter setPlayTypeGroup option =================="+option);
                     if (option == null) {
                         uavailableTextView.setVisibility(View.VISIBLE);
                         oddTextView.setVisibility(View.GONE);
@@ -516,7 +514,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
                             }
                             oddTextView.setOptionOdd(option);
                             BetConfirmOption betConfirmOption = BetConfirmOptionUtil.getInstance(match, playType, optionList, option);
-                            //CfLog.d("=================== LeagueAdapter BetConfirmOption betConfirmOption =================="+betConfirmOption.toString());
                             optionView.setTag(betConfirmOption);
                             if (BtCarManager.isCg()) {
                                 boolean has = BtCarManager.has(betConfirmOption);

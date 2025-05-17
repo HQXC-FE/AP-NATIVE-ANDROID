@@ -2,6 +2,7 @@ package com.xtree.bet.bean.ui;
 
 import android.os.Parcel;
 
+import com.xtree.base.utils.CfLog;
 import com.xtree.bet.bean.response.im.MarketLine;
 import com.xtree.bet.bean.response.im.OptionDataListInfo;
 import com.xtree.bet.bean.response.im.OptionInfo;
@@ -182,9 +183,12 @@ public class OptionIm implements Option {
      */
     @Override
     public void setChange(double oldOdd) {
+        CfLog.d("========== OptionIm setChange oldOdd ==========="+oldOdd);
+        CfLog.d("========== OptionIm setChange getRealOdd ==========="+getRealOdd());
         change = oldOdd < getRealOdd() ? 1 : oldOdd > getRealOdd() ? -1 : 0;
         //Log.e("test", "===========" + change);
         mOptionInfo.change = change;
+        CfLog.d("========== OptionIm setChange mOptionInfo.change ==========="+mOptionInfo.change);
     }
 
     /**
@@ -194,6 +198,7 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isUp() {
+        CfLog.d("========== OptionIm isUp mOptionInfo.change==========="+mOptionInfo.change);
         return mOptionInfo.change == 1;
     }
 
@@ -204,6 +209,7 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isDown() {
+        CfLog.d("========== OptionIm isDown mOptionInfo.change==========="+mOptionInfo.change);
         return mOptionInfo.change == -1;
     }
 

@@ -217,10 +217,11 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
             //showCache(sportId, mPlayMethodType, searchDatePos);
         }
 
-        PMListReq pmListReq = new PMListReq();
-        pmListReq.setCuid();
-        pmListReq.setEuid(String.valueOf(sportId));
-        pmListReq.setMids(matchidList);
+        EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
+        //eventInfoByPageRsq.setCuid(); //userid
+        //eventInfoByPageRsq.setEuid(String.valueOf(sportId)); //菜单ID
+        eventInfoByPageRsq.setSportId(Integer.parseInt(sportId));
+        //eventInfoByPageRsq.setMids(matchidList); //赛事ID
 
         if (isRefresh) {
             type = playMethodType == 3 || (playMethodType == 11 && searchDatePos == 0) ? 1 : playMethodType;
@@ -241,7 +242,7 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         if (mMenuInfoList.isEmpty()) {
-            pmListReq.setEuid(sportId);
+            eventInfoByPageRsq.setSportId(Integer.parseInt(sportId));
         } else {
             for (MenuInfo menuInfo : mMenuInfoList) {
                 boolean isFound = false;
@@ -253,14 +254,15 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
                         } else {
                             if (TextUtils.equals(String.valueOf(subMenu.menuId), sportId)) {
                                 isFound = true;
-                                pmListReq.setEuid(String.valueOf(subMenu.menuId));
+                                //eventInfoByPageRsq.setEuid(String.valueOf(subMenu.menuId));
                                 break;
                             }
                         }
                     }
                     if (TextUtils.equals(sportId, "0") || TextUtils.equals(sportId, "1111")) {
                         isFound = true;
-                        pmListReq.setEuid(sportIds.substring(0, sportIds.length() - 1));
+                        //eventInfoByPageRsq.setEuid(sportIds.substring(0, sportIds.length() - 1));
+                        eventInfoByPageRsq.setSportId(Integer.parseInt(sportId));
                     }
                 }
                 if (isFound) {
@@ -275,46 +277,46 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
          */
         final boolean needSecondStep = flag;
 
-        pmListReq.setType(type);
+        //eventInfoByPageRsq.setType(type);
         if (type == 1 && flag) {
-            pmListReq.setType(3);
+            //eventInfoByPageRsq.setType(3);
         }
 
-        pmListReq.setSort(orderBy);
+        //eventInfoByPageRsq.setSort(orderBy);
         if (leagueIds != null && !leagueIds.isEmpty()) {
             String leagueids = "";
             for (Long leagueid : leagueIds) {
                 leagueids += leagueid + ",";
             }
-            pmListReq.setTid(leagueids.substring(0, leagueids.length() - 1));
+            //eventInfoByPageRsq.setTid(leagueids.substring(0, leagueids.length() - 1));
         }
-        pmListReq.setCpn(mCurrentPage);
+        //eventInfoByPageRsq.setCpn(mCurrentPage);
         //pmListReq.setDevice("v2_h5_st");
 
         if (!dateList.isEmpty()) {
             if (searchDatePos == dateList.size() - 1) {
                 String time = TimeUtils.parseTime(dateList.get(searchDatePos), TimeUtils.FORMAT_YY_MM_DD) + " 12:00:00";
-                pmListReq.setMd(String.valueOf(0 - TimeUtils.strFormatDate(time, TimeUtils.FORMAT_YY_MM_DD_HH_MM_SS).getTime()));
+                //eventInfoByPageRsq.setMd(String.valueOf(0 - TimeUtils.strFormatDate(time, TimeUtils.FORMAT_YY_MM_DD_HH_MM_SS).getTime()));
             } else if (searchDatePos > 0) {
                 String time = TimeUtils.parseTime(dateList.get(searchDatePos), TimeUtils.FORMAT_YY_MM_DD) + " 12:00:00";
-                pmListReq.setMd(String.valueOf(TimeUtils.strFormatDate(time, TimeUtils.FORMAT_YY_MM_DD_HH_MM_SS).getTime()));
+                //eventInfoByPageRsq.setMd(String.valueOf(TimeUtils.strFormatDate(time, TimeUtils.FORMAT_YY_MM_DD_HH_MM_SS).getTime()));
             }
         }
 
-        Flowable flowable = getFlowableMatchesPage(pmListReq);
+        Flowable flowable = getFlowableMatchesPage(eventInfoByPageRsq);
         if (isStepSecond) {
-            flowable = getFlowableNoLiveMatchesPage(pmListReq);
+            flowable = getFlowableNoLiveMatchesPage(eventInfoByPageRsq);
         }
-        pmListReq.setCps(mPageSize);
+        //eventInfoByPageRsq.setCps(mPageSize);
         if (type == 1) {// 滚球
             if (needSecondStep) {
-                pmListReq.setCps(mGoingOnPageSize);
-                flowable = getFlowableLiveMatches(pmListReq);
+                //eventInfoByPageRsq.setCps(mGoingOnPageSize);
+                flowable = getFlowableLiveMatches(eventInfoByPageRsq);
             }
         }
 
         if (isTimerRefresh) {
-            flowable = getFlowableMatchBaseInfoByMidsPB(pmListReq);
+            flowable = getFlowableMatchBaseInfoByMidsPB(eventInfoByPageRsq);
         }
 
         if (isRefresh) {
@@ -628,8 +630,7 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
         return menuInfoList;
     }
 
-    private Flowable getFlowableMatchesPage(PMListReq pmListReq) {
-        EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
+    private Flowable getFlowableMatchesPage(EventInfoByPageRsq eventInfoByPageRsq) {
         eventInfoByPageRsq.setSportId(1);
         eventInfoByPageRsq.setMarket("2");
         eventInfoByPageRsq.setMatchDay(0);
@@ -641,10 +642,9 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
         return flowable;
     }
 
-    private Flowable getFlowableLiveMatches(PMListReq pmListReq) {
+    private Flowable getFlowableLiveMatches(EventInfoByPageRsq eventInfoByPageRsq) {
         //flowable = model.getIMApiService().liveMatchesPB(pmListReq);
-        EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
-        eventInfoByPageRsq.setSportId(1);
+        eventInfoByPageRsq.setSportId(1); //
         eventInfoByPageRsq.setMarket("2");
         eventInfoByPageRsq.setMatchDay(0);
         eventInfoByPageRsq.setOddsType(3);
@@ -655,9 +655,9 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
         return flowable;
     }
 
-    private Flowable getFlowableNoLiveMatchesPage(PMListReq pmListReq) {
+    private Flowable getFlowableNoLiveMatchesPage(EventInfoByPageRsq eventInfoByPageRsq) {
         //Flowable flowable = model.getIMApiService().noLiveMatchesPagePB(pmListReq);
-        EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
+        //EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
         eventInfoByPageRsq.setSportId(1);
         eventInfoByPageRsq.setMarket("2");
         eventInfoByPageRsq.setMatchDay(0);
@@ -669,9 +669,8 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
         return flowable;
     }
 
-    private Flowable getFlowableMatchBaseInfoByMidsPB(PMListReq pmListReq) {
+    private Flowable getFlowableMatchBaseInfoByMidsPB(EventInfoByPageRsq eventInfoByPageRsq) {
         Flowable flowable;
-        EventInfoByPageRsq eventInfoByPageRsq = new EventInfoByPageRsq();
         eventInfoByPageRsq.setSportId(1);
         eventInfoByPageRsq.setMarket("2");
         eventInfoByPageRsq.setMatchDay(0);
