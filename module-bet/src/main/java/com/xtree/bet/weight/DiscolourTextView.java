@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import com.xtree.base.utils.CfLog;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.ui.Option;
 
@@ -30,6 +31,7 @@ public class DiscolourTextView extends AppCompatTextView {
     }
 
     public void startUp() {
+        CfLog.d("============== DiscolourTextView startUp =============");
         setTextColor(getContext().getResources().getColor(R.color.bt_color_odd_up));
         setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.bt_icon_odd_up_line, 0);
         postDelayed(() -> {
@@ -45,6 +47,7 @@ public class DiscolourTextView extends AppCompatTextView {
     }
 
     public void startDown() {
+        CfLog.d("============== DiscolourTextView startDown =============");
         setTextColor(getContext().getResources().getColor(R.color.bt_color_odd_down));
         setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.bt_icon_odd_down_line, 0);
         postDelayed(() -> {
