@@ -69,9 +69,9 @@ public class PlayTypeIm implements PlayType {
      */
     @Override
     public String getPlayTypeName() {
-//        return marketLine.getPeriodName() + marketLine.getBetTypeName();
+        //eventGroupTypeId == 2是角球 ，1是足球 3是全部
         if (event.getEventGroupTypeId() == 2) {
-            return marketLine.getBetTypeName() + "-角球";
+            return marketLine.getBetTypeName() + " - 角球";
         } else {
             return marketLine.getBetTypeName();
         }
