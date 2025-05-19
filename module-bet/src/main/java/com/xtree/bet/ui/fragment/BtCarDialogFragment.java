@@ -2,6 +2,7 @@ package com.xtree.bet.ui.fragment;
 
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
 import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM_NAME;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_IM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PM;
 import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
 
@@ -39,8 +40,10 @@ import com.xtree.bet.ui.adapter.BetConfirmOptionAdapter;
 import com.xtree.bet.ui.adapter.CgOddLimitSecAdapter;
 import com.xtree.bet.ui.viewmodel.TemplateBtCarViewModel;
 import com.xtree.bet.ui.viewmodel.factory.AppViewModelFactory;
+import com.xtree.bet.ui.viewmodel.factory.IMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.factory.PMAppViewModelFactory;
 import com.xtree.bet.ui.viewmodel.fb.FBBtCarViewModel;
+import com.xtree.bet.ui.viewmodel.im.IMBtCarViewModel;
 import com.xtree.bet.ui.viewmodel.pm.PMBtCarViewModel;
 import com.xtree.bet.weight.KeyboardView;
 
@@ -432,8 +435,11 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
 
     @Override
     public TemplateBtCarViewModel initViewModel() {
-        if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {
+        if (TextUtils.equals(platform,PLATFORM_IM)){
             AppViewModelFactory factory = AppViewModelFactory.getInstance((Application) Utils.getContext());
+            return new ViewModelProvider(this, factory).get(IMBtCarViewModel.class);
+        }else if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {
+            IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance((Application) Utils.getContext());
             return new ViewModelProvider(this, factory).get(FBBtCarViewModel.class);
         } else {
             PMAppViewModelFactory factory = PMAppViewModelFactory.getInstance((Application) Utils.getContext());

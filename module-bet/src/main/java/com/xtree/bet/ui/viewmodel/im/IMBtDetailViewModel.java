@@ -74,11 +74,14 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
 //            public void onResult(EventInfoByPageListRsp eventListRsp) {
 //                super.onResult(eventListRsp);
 //                List<Category> categoryList = getCategoryList(eventListRsp);
-//
-//                List<MatchInfo> events = eventListRsp.getSports().get(0).getEvents();
-//                Match match = new MatchIm(events);
-//                matchData.postValue(match);
-//                categoryListData.postValue(categoryList);
+//                if (categoryList != null && !eventListRsp.getSports().isEmpty()) {
+//                    List<MatchInfo> events = eventListRsp.getSports().get(0).getEvents();
+//                    if (!events.isEmpty()) {
+//                        Match match = new MatchIm(events.get(0));
+//                        matchData.postValue(match);
+//                    }
+//                    categoryListData.postValue(categoryList);
+//                }
 //            }
 //        });
 

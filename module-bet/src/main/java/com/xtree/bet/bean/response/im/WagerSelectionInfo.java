@@ -3,6 +3,8 @@ package com.xtree.bet.bean.response.im;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class WagerSelectionInfo implements Parcelable {
     public int BetTypeId;
     public long EventId;
@@ -13,8 +15,14 @@ public class WagerSelectionInfo implements Parcelable {
     public long MarketlineId;
     public int PeriodId;
     public double Handicap;
+    public long RefId; //WagerSelectionId
+    /**
+     * 投注选项类型 ID. （只适用于定时赛事，如果优胜冠军会是0）
+     */
     public int BetTypeSelectionId;
-    public long RefId;
+    /**
+     * 优胜冠军类型 ID. （只适用于优胜冠军，如果定时赛事会是0）
+     */
     public int OutrightTeamId;
     public boolean ReturnNearestHandicap;
     public String Specifiers;

@@ -46,8 +46,6 @@ public class WagerSelection implements BaseBean {
 
     public int change;
 
-
-
     public WagerSelection() {
     }
 

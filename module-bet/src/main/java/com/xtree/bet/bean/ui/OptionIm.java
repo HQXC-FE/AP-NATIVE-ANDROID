@@ -42,7 +42,7 @@ public class OptionIm implements Option {
 
     @Override
     public String getId() {
-        return "";
+        return String.valueOf(wagerSelection.getSelectionId());
     }
 
     /**
@@ -226,6 +226,10 @@ public class OptionIm implements Option {
             return null;
         }
         return new OptionListIm(wagerSelection, marketLine);
+    }
+
+    public double getHandicap(){
+        return wagerSelection.getHandicap();
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.text.TextUtils;
 
 import com.xtree.base.vo.BaseBean;
+import com.xtree.bet.bean.response.im.WagerSelection;
 import com.xtree.bet.bean.response.pm.BtConfirmInfo;
 import com.xtree.bet.bean.response.pm.OptionInfo;
 
@@ -117,12 +118,9 @@ public class BetConfirmOptionIm implements BetConfirmOption {
     @Override
     public Option getOption() {
         if (btConfirmInfo != null && btConfirmInfo.marketOddsList != null && !btConfirmInfo.marketOddsList.isEmpty() && mOption != null) {
-            OptionInfo optionInfo = new OptionInfo();
-            optionInfo.oid = btConfirmInfo.marketOddsList.get(0).id;
-            optionInfo.onb = TextUtils.isEmpty(mOption.getSortName()) ? mOption.isBtHome() ? btConfirmInfo.home : btConfirmInfo.away : mOption.getSortName();
-            optionInfo.on = TextUtils.isEmpty(mOption.getSortName()) ? mOption.isBtHome() ? btConfirmInfo.home : btConfirmInfo.away : mOption.getSortName();
-            optionInfo.ov = btConfirmInfo.marketOddsList.get(0).oddsValue;
-            mOption = new OptionPm(optionInfo);
+            WagerSelection wagerSelection = new WagerSelection();
+
+            mOption = new OptionIm(wagerSelection);
             if(oldOdd > 0) {
                 mOption.setChange(oldOdd);
             }

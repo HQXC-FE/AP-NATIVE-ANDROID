@@ -408,7 +408,7 @@ public class BtDetailActivity extends GSYBaseActivityDetail<StandardGSYVideoPlay
                 mScoreDataView.setMatch(match, false);
             }
 
-        });
+        }) ;
         viewModel.updateCagegoryListData.observe(this, categories -> {
             mCategories = categories;
         });

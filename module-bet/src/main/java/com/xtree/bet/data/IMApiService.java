@@ -8,6 +8,7 @@ import com.xtree.bet.bean.request.im.DeltaEventInfoMbtReq;
 import com.xtree.bet.bean.request.im.EventInfoByPageRsq;
 import com.xtree.bet.bean.request.im.EventInfoMbtReq;
 import com.xtree.bet.bean.request.im.EventInfoResulReq;
+import com.xtree.bet.bean.request.im.GetBetInfoReq;
 import com.xtree.bet.bean.request.im.GetBetListReq;
 import com.xtree.bet.bean.request.im.GetGetDeltaBetTradeReq;
 import com.xtree.bet.bean.request.im.GetStatementReq;
@@ -165,7 +166,7 @@ public interface IMApiService {
      */
     @POST(forwardPath)
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Single<BaseResponse<BetInfo>> getBetInfo(@Body Map<String, String> map);
+    Flowable<BaseResponse<BetInfo>> getBetInfo(@Body BaseIMRequest<GetBetInfoReq> req);
 
 
     /**

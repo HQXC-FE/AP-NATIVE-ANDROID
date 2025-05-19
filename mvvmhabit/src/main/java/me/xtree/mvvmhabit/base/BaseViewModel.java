@@ -297,7 +297,7 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
         public static String BUNDLE = "BUNDLE";
     }
 
-    protected <T> void launchFlow(Flowable<BaseResponse<T>> flowable, DisposableSubscriber<T> subscriber) {
+    public <T> void launchFlow(Flowable<BaseResponse<T>> flowable, DisposableSubscriber<T> subscriber) {
         RxUtils.safeSubscribe(flowable, getmCompositeDisposable(), subscriber);
     }
 }
