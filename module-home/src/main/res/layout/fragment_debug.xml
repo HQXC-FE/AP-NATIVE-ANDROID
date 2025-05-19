@@ -430,6 +430,25 @@
 
                 <LinearLayout style="@style/style_item_ll_row_0">
 
+                    <TextView
+                        style="@style/style_item_report_title"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_weight="0"
+                        android:text="使用的浏览器版本：" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvw_x5"
+                    style="@style/style_item_report_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/layout_margin"
+                    android:layout_marginEnd="@dimen/layout_margin"
+                    android:ellipsize="end"
+                    tools:text="原生版本" />
+
+                <LinearLayout style="@style/style_item_ll_row_0">
+
                     <CheckBox
                         android:id="@+id/tvw_vf_globe"
                         style="@style/style_item_report_value"
