@@ -112,6 +112,7 @@ public class DebugFragment extends BaseFragment<FragmentDebugBinding, HomeViewMo
         binding.tvwApiList.setText(getString(R.string.domain_api_list).replace(";", "\n").trim());
         binding.tvwH5List.setText(getString(R.string.domain_url_list).replace(";", "\n").trim());
         binding.edtFastestMonitorTimeout.setText(String.valueOf(FastestMonitorCache.INSTANCE.getMAX_UPLOAD_TIME()));
+        binding.tvwX5.setText(SPUtils.getInstance().getString(SPKeyGlobal.DEBUG_USE_WEBVIEW, "原生 WebView"));
 
         String debugUrl = SPUtils.getInstance().getString(SPKeyGlobal.DEBUG_APPLY_DOMAIN);
         binding.tvwVfGlobe.setChecked(!TextUtils.isEmpty(debugUrl));

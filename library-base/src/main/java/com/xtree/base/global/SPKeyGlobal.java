@@ -105,4 +105,6 @@ public class SPKeyGlobal {
     //域名拼接推广Code至嗨客服
     public static final String APP_REGISTER_CODE = "register_promotion_code";
 
+    public static final String DEBUG_USE_WEBVIEW = "debug_use_webview";
+
 }

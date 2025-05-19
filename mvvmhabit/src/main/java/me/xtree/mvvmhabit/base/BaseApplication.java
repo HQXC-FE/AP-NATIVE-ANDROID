@@ -11,6 +11,7 @@ import com.drake.brv.utils.BRV;
 import com.tencent.smtt.sdk.QbSdk;
 
 import me.xtree.mvvmhabit.BR;
+import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
 /**
@@ -29,8 +30,10 @@ public class BaseApplication extends Application {
             public void onViewInitFinished(boolean isX5) {
                 if (!isX5) {
                     Log.d("X5WebView", "X5 核心未載入，將使用系統 WebView");
+                    SPUtils.getInstance().put("debug_use_webview", "原生 WebView");
                 } else {
                     Log.d("X5WebView","X5 核心成功載入！");
+                    SPUtils.getInstance().put("debug_use_webview", "X5 WebView");
                 }
             }
 
