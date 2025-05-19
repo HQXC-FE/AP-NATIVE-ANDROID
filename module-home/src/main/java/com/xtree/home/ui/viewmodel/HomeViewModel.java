@@ -29,9 +29,7 @@ import com.xtree.home.vo.EleVo;
 import com.xtree.home.vo.GameStatusVo;
 import com.xtree.home.vo.GameVo;
 import com.xtree.home.vo.NoticeVo;
-import com.xtree.home.vo.RedPocketVo;
 import com.xtree.home.vo.SettingsVo;
-import com.xtree.home.vo.VipInfoVo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,11 +59,9 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
     public MutableLiveData<Map> liveDataPlayUrl = new MutableLiveData<>();
     public MutableLiveData<CookieVo> liveDataCookie = new MutableLiveData<>();
     public MutableLiveData<ProfileVo> liveDataProfile = new MutableLiveData<>();
-    public MutableLiveData<VipInfoVo> liveDataVipInfo = new MutableLiveData<>();
     public MutableLiveData<SettingsVo> liveDataSettings = new MutableLiveData<>();
     public MutableLiveData<HashMap<String, ArrayList<AugVo>>> liveDataAug = new MutableLiveData<>();
     public MutableLiveData<EleVo> liveDataEle = new MutableLiveData<>();
-    public MutableLiveData<RedPocketVo> liveDataRedPocket = new MutableLiveData<>();
     public MutableLiveData<AppUpdateVo> liveDataUpdate = new MutableLiveData<>();//更新
 
     String public_key;
@@ -269,7 +265,12 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
 
     public void getPlayUrl(String gameAlias, String gameId, String name) {
         if (TextUtils.isEmpty(gameId)) {
-            gameId = "1";
+            //如果是瓦力棋牌，gameId为""
+            if (TextUtils.equals(gameAlias, "wali")) {
+                gameId = "";
+            } else {
+                gameId = "1";
+            }
         }
         int autoThrad = SPUtils.getInstance().getInt(SPKeyGlobal.USER_AUTO_THRAD_STATUS);
 
@@ -406,28 +407,6 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         addSubscribe(disposable);
     }
 
-    public void getVipInfo() {
-        Disposable disposable = (Disposable) model.getApiService().getVipInfo()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<VipInfoVo>() {
-                    @Override
-                    public void onResult(VipInfoVo vo) {
-                        CfLog.i(vo.toString());
-                        SPUtils.getInstance().put(SPKeyGlobal.HOME_VIP_INFO, new Gson().toJson(vo));
-                        liveDataVipInfo.setValue(vo);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        //super.onError(t);
-                        //ToastUtils.showLong("请求失败");
-                    }
-                });
-        addSubscribe(disposable);
-    }
-
     public void getAugList(Context context) {
         LoadingDialog.show(context);
         Disposable disposable = (Disposable) model.getApiService().getAugList()
@@ -459,8 +438,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         addSubscribe(disposable);
     }
 
-    public void getEle(Context context, int id, int page, int pageSize, String cateId, int isHot) {
-        LoadingDialog.show(context);
+    public void getEle(int id, int page, int pageSize, String cateId, int isHot) {
         HashMap map = new HashMap<>();
         map.put("platform_id", id);
         map.put("page", page);
@@ -474,30 +452,7 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
                     @Override
                     public void onResult(EleVo vo) {
                         CfLog.i(vo.toString().toString());
-                        Gson gson = new Gson();
-                        SPUtils.getInstance().put(String.valueOf(id), gson.toJson(vo));
                         liveDataEle.setValue(vo);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        super.onError(t);
-                        //ToastUtils.showLong("请求失败");
-                    }
-                });
-        addSubscribe(disposable);
-    }
-
-    public void getRedPocket() {
-        Disposable disposable = (Disposable) model.getApiService().getRedPocket()
-                .compose(RxUtils.schedulersTransformer())
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<RedPocketVo>() {
-                    @Override
-                    public void onResult(RedPocketVo vo) {
-                        CfLog.i(vo.toString());
-                        liveDataRedPocket.setValue(vo);
                     }
 
                     @Override
@@ -539,12 +494,6 @@ public class HomeViewModel extends BaseViewModel<HomeRepository> {
         ProfileVo vo = gson.fromJson(json, ProfileVo.class);
         if (vo != null) {
             liveDataProfile.setValue(vo);
-        }
-
-        json = SPUtils.getInstance().getString(SPKeyGlobal.HOME_VIP_INFO);
-        VipInfoVo vo2 = gson.fromJson(json, VipInfoVo.class);
-        if (vo2 != null) {
-            liveDataVipInfo.setValue(vo2);
         }
 
     }
