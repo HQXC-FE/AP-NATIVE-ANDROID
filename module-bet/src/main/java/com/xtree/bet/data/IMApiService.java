@@ -65,6 +65,15 @@ public interface IMApiService {
      * 索取赛事选项资料
      */
     String GetSelectedEventInfo = "GetSelectedEventInfo";
+    /**
+     * 索取投注信息
+     */
+    String GetBetInfo = "GetBetInfo";
+    /**
+     * 投注 [ 此 API 常用于展示各投注项目. 当会员在确认投注时将被调用.]
+     */
+    String PlaceBet = "PlaceBet";
+
 
 
     /**
@@ -150,6 +159,28 @@ public interface IMApiService {
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<ImCompletedResultsEntity>> GetCompletedResults(@Body EventInfoResulReq req);
+
+    /**
+     * 索取投注信息
+     */
+    @POST(forwardPath)
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Single<BaseResponse<BetInfo>> getBetInfo(@Body Map<String, String> map);
+
+
+    /**
+     * 投注 [ 此 API 常用于展示各投注项目. 当会员在确认投注时将被调用.]
+     */
+    @POST(forwardPath)
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Single<BaseResponse<PlaceBet>> placeBet(@Body Map<String, String> map);
+
+    /**
+     * 索取投注账目
+     */
+    @POST("/yewu11/v1/m/getStatement")
+    @Headers({"Content-Type: application/json; charset=utf-8"})
+    Single<BaseResponse<List<Wager>>> getStatement(@Body Map<String, String> map);
 
     /**
      * 索取DELTA赛事和主要玩法详情
@@ -342,27 +373,7 @@ public interface IMApiService {
     Single<BaseResponse<RecommendedSelections>> getRecommendedSelection(@Body Map<String, String> map);
 
 
-    /**
-     * 索取投注信息
-     */
-    @POST("/yewu11/v1/m/getBetInfo")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Single<BaseResponse<BetInfo>> getBetInfo(@Body Map<String, String> map);
 
-
-    /**
-     * 投注 [ 此 API 常用于展示各投注项目. 当会员在确认投注时将被调用.]
-     */
-    @POST("/yewu11/v1/m/placeBet")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Single<BaseResponse<PlaceBet>> placeBet(@Body Map<String, String> map);
-
-    /**
-     * 索取投注账目
-     */
-    @POST("/yewu11/v1/m/getStatement")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Single<BaseResponse<List<Wager>>> getStatement(@Body Map<String, String> map);
 
 
 

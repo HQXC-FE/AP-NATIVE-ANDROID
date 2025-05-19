@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
 
 import java.util.ArrayList;
@@ -12,41 +13,26 @@ import java.util.List;
 
 public class BetInfo implements BaseBean {
 
-    public int WagerType;
-    public List<WagerSelectionInfo> WagerSelectionInfos;
-    public String Token;
-    public String MemberCode;
-    public String TimeStamp;
-    public int LanguageCode;
-    public boolean IsCombo;
+    @SerializedName("WagerSelectionInfos")
+    private List<WagerSelectionInfo> wagerSelectionInfos;
+    @SerializedName("BetSetting")
+    private List<BetSetting> betSetting;
 
-    public BetInfo() {}
+    @SerializedName("ServerTime")
+    private String serverTime;
+
+    @SerializedName("StatusCode")
+    private int statusCode;
+
+    @SerializedName("StatusDesc")
+    private String statusDesc;
 
     protected BetInfo(Parcel in) {
-        WagerType = in.readInt();
-        WagerSelectionInfos = new ArrayList<>();
-        in.readList(WagerSelectionInfos, WagerSelectionInfo.class.getClassLoader());
-        Token = in.readString();
-        MemberCode = in.readString();
-        TimeStamp = in.readString();
-        LanguageCode = in.readInt();
-        IsCombo = in.readByte() != 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(WagerType);
-        dest.writeList(WagerSelectionInfos);
-        dest.writeString(Token);
-        dest.writeString(MemberCode);
-        dest.writeString(TimeStamp);
-        dest.writeInt(LanguageCode);
-        dest.writeByte((byte) (IsCombo ? 1 : 0));
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        wagerSelectionInfos = in.createTypedArrayList(WagerSelectionInfo.CREATOR);
+        betSetting = in.createTypedArrayList(BetSetting.CREATOR);
+        serverTime = in.readString();
+        statusCode = in.readInt();
+        statusDesc = in.readString();
     }
 
     public static final Creator<BetInfo> CREATOR = new Creator<BetInfo>() {
@@ -60,6 +46,20 @@ public class BetInfo implements BaseBean {
             return new BetInfo[size];
         }
     };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList(wagerSelectionInfos);
+        dest.writeTypedList(betSetting);
+        dest.writeString(serverTime);
+        dest.writeInt(statusCode);
+        dest.writeString(statusDesc);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
 
 }
