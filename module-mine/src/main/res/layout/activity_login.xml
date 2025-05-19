@@ -120,8 +120,7 @@
                             android:visibility="gone"
                             android:text="@string/me_pwd_forget"
                             android:textColor="@color/clr_txt_link"
-                            android:textSize="@dimen/me_test_size"
-                            android:visibility="invisible"/>
+                            android:textSize="@dimen/me_test_size" />
                     </LinearLayout>
 
                     <LinearLayout
