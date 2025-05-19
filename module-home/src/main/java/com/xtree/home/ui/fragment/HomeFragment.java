@@ -40,6 +40,7 @@ import com.xtree.base.vo.AppUpdateVo;
 import com.xtree.base.vo.ProfileVo;
 import com.xtree.base.widget.AppUpdateDialog;
 import com.xtree.base.widget.BrowserActivity;
+import com.xtree.base.widget.LoadingDialog;
 import com.xtree.base.widget.MsgDialog;
 import com.xtree.home.BR;
 import com.xtree.home.R;
@@ -53,7 +54,6 @@ import com.xtree.home.vo.GameVo;
 import com.xtree.home.vo.NoticeVo;
 import com.youth.banner.adapter.BannerImageAdapter;
 import com.youth.banner.holder.BannerImageHolder;
-import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -116,7 +116,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     }
 
     private void refresh() {
-        //viewModel.readCache(); // 读取缓存,用户信息可能发生了变更
+        viewModel.getGameStatus(getContext()); // 获取游戏状态列表
+
         TagUtils.tagDailyEvent(getContext());
         checkUpdate(); // 检查更新
         if (!TextUtils.isEmpty(token)) {
@@ -159,7 +160,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
         viewModel.getSettings(); // 获取公钥,配置信息
         viewModel.getBanners(); // 获取banner
-        viewModel.getGameStatus(getContext()); // 获取游戏状态列表
 
         token = SPUtils.getInstance().getString(SPKeyGlobal.USER_TOKEN);
         if (!TextUtils.isEmpty(token)) {
@@ -235,15 +235,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             }
 
         });
-        viewModel.liveDataVipInfo.observe(getViewLifecycleOwner(), vo -> {
-            CfLog.d("*** " + vo.toString());
-            //意昂3去除 VIP选项
-           /* if (vo.sp.equals("1")) {
-                binding.tvwVip.setText("VIP " + vo.display_level); // display_level
-            } else {
-                binding.tvwVip.setText("VIP " + vo.level); // level
-            }*/
-        });
         //App更新
         viewModel.liveDataUpdate.observe(getViewLifecycleOwner(), vo -> {
             updateVo = vo;
@@ -275,14 +266,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
         });
 
-        viewModel.liveDataRedPocket.observe(getViewLifecycleOwner(), vo -> {
-            CfLog.e("Check has money : " + vo.money);
-            //if (vo.status == 0) {
-            //    binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member_has_red, 0, 0);
-            //} else {
-            //    binding.tvwMember.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.hm_ic_member, 0, 0);
-            //}
-        });
     }
 
     public void initView() {
@@ -302,7 +285,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             selectUpdate = true;
             viewModel.getProfile(); // 获取个人信息（刷新用户余额）
         });
-        binding.bnrTop.setIndicator(new CircleIndicator(getContext())); // 增加小圆点
         //binding.bnrTop.setBannerGalleryEffect(20, 12, 0.8f);// 画廊效果
         //binding.bnrTop.setBannerRound2(20);
         binding.bnrTop.setAdapter(new BannerImageAdapter<BannersVo>(new ArrayList<>()) {
@@ -421,12 +403,14 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                     startContainerFragment(RouterFragmentPath.Home.AUG);
                     return;
                 }
-                if (vo.cid == 19 || vo.cid == 34 || vo.cid == 1) {
+                if (vo.cid == 19 || vo.cid == 34 || vo.cid == 1 || vo.cid == 52) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("vo", vo);
                     startContainerFragment(RouterFragmentPath.Home.ELE, bundle);
                     return;
                 }
+
+                LoadingDialog.show(getContext());
                 viewModel.getPlayUrl(vo.alias, vo.gameId, vo.name);
             }
 
@@ -668,10 +652,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             map.put("platform_set", getResources().getString(R.string.platform_set));
             viewModel.getUpdate(map);
         }
-    }
-
-    private void checkRedPocket() {
-        viewModel.getRedPocket();
     }
 
     /**
