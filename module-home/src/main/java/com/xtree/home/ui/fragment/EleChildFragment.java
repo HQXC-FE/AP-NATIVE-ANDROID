@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.xtree.base.adapter.CacheViewHolder;
 import com.xtree.base.adapter.CachedAutoRefreshAdapter;
+import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.TagUtils;
@@ -28,6 +29,8 @@ import com.xtree.home.ui.viewmodel.HomeViewModel;
 import com.xtree.home.ui.viewmodel.factory.AppViewModelFactory;
 import com.xtree.home.vo.Ele;
 import com.xtree.home.vo.GameVo;
+
+import java.util.Objects;
 
 import me.xtree.mvvmhabit.base.BaseFragment;
 
@@ -72,7 +75,6 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
         }
         position = getArguments().getInt("position");
         gameVo = getArguments().getParcelable("gameVo");
-
         binding.refreshLayout.setEnableRefresh(false);
         binding.refreshLayout.setOnLoadMoreListener(refreshLayout -> {
             requestData();
@@ -91,7 +93,7 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
             public void onBindViewHolder(@NonNull CacheViewHolder holder, int position) {
                 EleItemBinding binding = EleItemBinding.bind(holder.itemView);
                 Ele vo1 = get(position);
-                //CfLog.i(vo1.toString());
+                CfLog.i(vo1.toString());
                 Glide.with(EleChildFragment.this.requireContext())
                         .load(DomainUtil.getDomain2() + vo1.getPicture())
                         .placeholder(R.mipmap.cm_placeholder_image)
@@ -102,9 +104,14 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
                     if (ClickUtil.isFastClick()) {
                         return;
                     }
-                    String eventName = gameVo.name.length() > 2 ? gameVo.name.substring(0, 2) : "gm2";
-                    TagUtils.tagEvent(getContext(), eventName, vo1.getId()); // 打点
-                    BrowserActivity.start(getContext(), gameVo.name, DomainUtil.getDomain() + gameVo.playURL + vo1.getId(), false, true);
+                    if (gameVo.cid == 52) {
+                        viewModel.getPlayUrl("odin", String.valueOf(vo1.getId()), gameVo.name);
+                    } else {
+                        CfLog.i(vo1.toString());
+                        String eventName = gameVo.name != null && gameVo.name.length() > 2 ? gameVo.name.substring(0, 2) : "gm2";
+                        TagUtils.tagEvent(getContext(), eventName, vo1.getId()); // 打点
+                        BrowserActivity.start(getContext(), gameVo.name, DomainUtil.getDomain() + gameVo.playURL + vo1.getId(), false, true);
+                    }
                 });
             }
 
@@ -130,6 +137,13 @@ public class EleChildFragment extends BaseFragment<FragmentEleChildBinding, Home
             }
             adapter.addAll(eleVo.getList());
             curPage += 1;
+        });
+        viewModel.liveDataPlayUrl.observe(getViewLifecycleOwner(), map -> {
+            String url = Objects.requireNonNull(map.get("url")).toString();
+            String name = Objects.requireNonNull(map.get("name")).toString();
+            // 跳转到游戏H5
+            CfLog.i("URL: " + url);
+            BrowserActivity.start(getContext(), name, url, false, true);
         });
     }
 
