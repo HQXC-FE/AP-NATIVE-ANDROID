@@ -115,11 +115,7 @@ public class MatchIm implements Match {
         String state = matchInfo.rbTime;
         if (state != null && !state.isEmpty()) {
             String period = state.split(" ")[0];
-            String time = "";
-            if (state.split(" ").length > 1) {
-                time = state.split(" ")[1];
-            }
-            return IMMatchPeriod.getMatchPeriod(String.valueOf(period)) + " " + time;
+            return IMMatchPeriod.getMatchPeriod(String.valueOf(period));
         }
         return "";
     }
@@ -163,10 +159,11 @@ public class MatchIm implements Match {
      */
     @Override
     public int getTimeS() {
-        String state = matchInfo.rbTime;
+        String state = matchInfo.rbTime; //rbTime =>[2H 59:34]
         String time = state.split(" ")[1];
-        if (matchInfo != null && time != null) {
-            return Integer.valueOf(time);
+        String second = time.split(":")[1];
+        if (matchInfo != null && second != null) {
+            return Integer.parseInt(second);
         } else {
             return 0;
         }
@@ -481,7 +478,7 @@ public class MatchIm implements Match {
     @Override
     public String getSportId() {
         if (matchInfo != null) {
-            return String.valueOf(matchInfo.sportId);
+            return String.valueOf(matchInfo.getrSportId());
         }
         return "0";
     }
