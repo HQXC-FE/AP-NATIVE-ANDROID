@@ -3,6 +3,7 @@ package me.xtree.mvvmhabit.base;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -23,7 +24,21 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         setApplication(this);
-        QbSdk.initX5Environment(getApplicationContext(), null);
+        QbSdk.initX5Environment(getApplicationContext(), new QbSdk.PreInitCallback() {
+            @Override
+            public void onViewInitFinished(boolean isX5) {
+                if (!isX5) {
+                    Log.d("X5WebView", "X5 核心未載入，將使用系統 WebView");
+                } else {
+                    Log.d("X5WebView","X5 核心成功載入！");
+                }
+            }
+
+            @Override
+            public void onCoreInitFinished() {
+                Log.d("X5WebView", "初始化完成");
+            }
+        });
 
         initBRV();
     }
