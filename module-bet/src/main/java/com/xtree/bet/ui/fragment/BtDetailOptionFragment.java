@@ -48,10 +48,12 @@ public class BtDetailOptionFragment extends BaseFragment<BtLayoutDetailOptionBin
         bundle.putParcelableArrayList(KEY_PLAY_TYPE, playTypeList);
         for (PlayType playType : playTypeList) {
             String name = playType.getPlayTypeName();
-            int size = playType.getOptionLists().get(0).getOptionList().size();
-//            if (name.equals("大/小") || name.equals("让球")) {
-            KLog.e("BtDetailOptionFragment1 - name:" + name + " size()：" + size + " 第一次");
+            if (!playType.getOptionLists().isEmpty()){
+                int size = playType.getOptionLists().get(0).getOptionList().size();
+                //            if (name.equals("大/小") || name.equals("让球")) {
+                KLog.e("BtDetailOptionFragment1 - name:" + name + " size()：" + size + " 第一次");
 //            }
+            }
         }
         bundle.putParcelable(KEY_MATCH, match);
         bundle.putBoolean("isResult", isResult);
@@ -102,10 +104,12 @@ public class BtDetailOptionFragment extends BaseFragment<BtLayoutDetailOptionBin
         if (playTypeList != null) {
             for (PlayType playType : playTypeList) {
                 String name = playType.getPlayTypeName();
-                int size = playType.getOptionLists().get(0).getOptionList().size();
-//                if (name.equals("大/小") || name.equals("让球")) {
-                KLog.e("BtDetailOptionFragment1 - name:" + name + " size()：" + size + " 第二次");
-//                }
+                if (!playType.getOptionLists().isEmpty()){
+                    int size = playType.getOptionLists().get(0).getOptionList().size();
+                    //            if (name.equals("大/小") || name.equals("让球")) {
+                    KLog.e("BtDetailOptionFragment1 - name:" + name + " size()：" + size + " 第二次");
+//            }
+                }
             }
         }
 
@@ -144,17 +148,17 @@ public class BtDetailOptionFragment extends BaseFragment<BtLayoutDetailOptionBin
     @Override
     public void initViewObservable() {
 
-//        viewModel.betContractListData.observe(this, betContract -> {
-//            if (betContract.action == BetContract.ACTION_OPTION_CHANGE) {
-//                playTypeList = (List<PlayType>) betContract.getData();
-//                if (isResult) {
-//                    match = ((BtDetailResultActivity) getContext()).getmMatch();
-//                } else {
-//                    match = ((BtDetailActivity) getContext()).getmMatch();
-//                }
-//                updateOptionData();
-//            }
-//        });
+        viewModel.betContractListData.observe(this, betContract -> {
+            if (betContract.action == BetContract.ACTION_OPTION_CHANGE) {
+                playTypeList = (List<PlayType>) betContract.getData();
+                if (isResult) {
+                    match = ((BtDetailResultActivity) getContext()).getmMatch();
+                } else {
+                    match = ((BtDetailActivity) getContext()).getmMatch();
+                }
+                updateOptionData();
+            }
+        });
     }
 
 }
