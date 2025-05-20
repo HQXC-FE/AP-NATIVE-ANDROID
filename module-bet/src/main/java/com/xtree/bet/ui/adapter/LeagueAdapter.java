@@ -378,8 +378,6 @@ public class LeagueAdapter extends AnimatedExpandableListViewMax.AnimatedExpanda
         }
 
         List<PlayGroup> playGroupList = playGroup.getPlayGroupList(match.getSportId());
-//        CfLog.d("=============== LeagueAdapter playGroupList  ==============="+playGroupList.size());
-//        CfLog.d("=============== LeagueAdapter match.getSportId()  ==============="+match.getSportId());
 
         if (!playGroupList.isEmpty()) {
 

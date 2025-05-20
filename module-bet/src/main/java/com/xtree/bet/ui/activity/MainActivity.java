@@ -1194,7 +1194,7 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
                 if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
                     Match match = (Match) binding.rvLeague.getItemAtPosition(i);
                     if (match != null) {
-                        CfLog.d("================ MainAcitivity refreshLeague matchIdList.add 11111 ===================");
+                        CfLog.d("================ MainAcitivity refreshLeague matchIdList.add 11111 ==================="+match.getId());
                         matchIdList.add(match.getId());
                     }
                 }
@@ -1202,7 +1202,6 @@ public class MainActivity extends BaseActivity<FragmentMainBinding, TemplateMain
         } else {
             for (Match match : mChampionMatchList) {
                 if (!match.isHead() && match.isExpand()) {
-                   // CfLog.d("================ refreshLeague matchIdList.add 22222 ===================");
                     matchIdList.add(match.getId());
                 }
             }

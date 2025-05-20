@@ -130,8 +130,10 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     public void onResult(EventInfoByPageListRsp data) {
         try {
             //data = EventInfoByPageListParser.getLiveEventInfoListRsp(MainActivity.getContext());
-            List<MatchInfo> matchInfoList = data.getSports().get(0).getEvents();
+            List<MatchInfo> matchInfoList = data.getSports().get(0).getEvents(); //这里应该是只获取当前显示的比赛赔率
             for (MatchInfo matchInfo : matchInfoList) {
+                CfLog.d("============== IMListCallBack data.getSports() ================"+data.getSports());
+                CfLog.d("============== IMListCallBack data.getSports().get(0) ================"+data.getSports().get(0));
                 matchInfo.setSportId(data.getSports().get(0).getSportId());
                 matchInfo.setSportName(data.getSports().get(0).getSportName());
             }

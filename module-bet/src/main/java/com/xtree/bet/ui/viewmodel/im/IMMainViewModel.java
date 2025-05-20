@@ -11,9 +11,11 @@ import com.xtree.base.utils.TimeUtils;
 import com.xtree.bet.bean.request.fb.FBListReq;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
 import com.xtree.bet.bean.request.im.AnnouncementReq;
+import com.xtree.bet.bean.request.im.BaseIMRequest;
 import com.xtree.bet.bean.request.im.EventInfoByPageRsq;
 import com.xtree.bet.bean.request.im.EventInfoResulReq;
 import com.xtree.bet.bean.request.im.OutrightEventsReq;
+import com.xtree.bet.bean.request.im.SelectedEventInfoReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
 import com.xtree.bet.bean.response.fb.FBAnnouncementInfo;
 import com.xtree.bet.bean.response.im.Announcement;
@@ -31,6 +33,7 @@ import com.xtree.bet.bean.ui.MatchIm;
 import com.xtree.bet.constant.IMConstants;
 import com.xtree.bet.constant.SportTypeItem;
 import com.xtree.bet.data.BetRepository;
+import com.xtree.bet.data.IMApiService;
 import com.xtree.bet.ui.viewmodel.MainViewModel;
 import com.xtree.bet.ui.viewmodel.TemplateMainViewModel;
 import com.xtree.bet.ui.viewmodel.callback.FBhotMatchCacheCallBack;
@@ -221,7 +224,7 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
         //eventInfoByPageRsq.setCuid(); //userid
         //eventInfoByPageRsq.setEuid(String.valueOf(sportId)); //菜单ID
         eventInfoByPageRsq.setSportId(Integer.parseInt(sportId));
-        //eventInfoByPageRsq.setMids(matchidList); //赛事ID
+        //eventInfoByPageRsq.setMids(matchidList); //指定赛事ID
 
         if (isRefresh) {
             type = playMethodType == 3 || (playMethodType == 11 && searchDatePos == 0) ? 1 : playMethodType;
@@ -316,7 +319,7 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         if (isTimerRefresh) {
-            flowable = getFlowableMatchBaseInfoByMidsPB(eventInfoByPageRsq);
+            flowable = getFlowableMatchBaseInfoByMidsPB(Integer.parseInt(sportId),matchidList);
         }
 
         if (isRefresh) {
@@ -356,7 +359,7 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
         }
 
         if (mCurrentPage == 1 && !isTimerRefresh) {
-            showChampionCache(sportId, playMethodType);
+            //showChampionCache(sportId, playMethodType);
         }
 
         OutrightEventsReq outrightEventsReq = new OutrightEventsReq();
@@ -669,16 +672,9 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
         return flowable;
     }
 
-    private Flowable getFlowableMatchBaseInfoByMidsPB(EventInfoByPageRsq eventInfoByPageRsq) {
-        Flowable flowable;
-        eventInfoByPageRsq.setSportId(1);
-        eventInfoByPageRsq.setMarket("2");
-        eventInfoByPageRsq.setMatchDay(0);
-        eventInfoByPageRsq.setOddsType(3);
-        eventInfoByPageRsq.setPage(1);
-        eventInfoByPageRsq.setSeason(0);
-        eventInfoByPageRsq.setIsCombo(false);
-        flowable = model.getIMApiService().getEventInfoByPage(eventInfoByPageRsq);
+    private Flowable getFlowableMatchBaseInfoByMidsPB(int sportId, List<Long> matchidList) {
+        SelectedEventInfoReq selectedEventInfoReq = new SelectedEventInfoReq(sportId, matchidList, 2, false, true);
+        Flowable flowable = model.getIMApiService().getSelectedEventInfo(new BaseIMRequest<>(IMApiService.GetSelectedEventInfo, selectedEventInfoReq));
 
         return flowable;
     }

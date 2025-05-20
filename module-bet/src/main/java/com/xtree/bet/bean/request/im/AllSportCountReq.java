@@ -21,14 +21,6 @@ public class AllSportCountReq {
         this.FilterType = Collections.singletonList(1);
     }
 
-//    public String getTimeStamp() {
-//        return TimeStamp;
-//    }
-//
-//    public void setTimeStamp(String timeStamp) {
-//        this.TimeStamp = timeStamp;
-//    }
-
     public String getLanguageCode() {
         return LanguageCode;
     }
