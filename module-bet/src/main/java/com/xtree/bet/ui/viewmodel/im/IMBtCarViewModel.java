@@ -136,20 +136,32 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
             wagerSelectionInfo.OutrightTeamId = (int) Long.parseLong(betConfirmOption.getOption().getId());
             list.add(wagerSelectionInfo);
         }
-
-
-        getBetInfoReq.setToken(SPUtils.getInstance().getString(SPKeyGlobal.PMXC_TOKEN));
         getBetInfoReq.setWagerSelectionInfos(list);
-        BaseIMRequest<GetBetInfoReq> baseIMRequest = new BaseIMRequest<>(IMApiService.GetBetInfo,getBetInfoReq);
+        BaseIMRequest<GetBetInfoReq> baseIMRequest = new BaseIMRequest<>(IMApiService.GetBetInfo, getBetInfoReq);
         launchFlow(model.getIMApiService().getBetInfo(baseIMRequest), new HttpCallBack<BetInfo>() {
             @Override
             public void onResult(BetInfo betInfo) {
                 super.onResult(betInfo);
+                //                        if (btConfirmInfoList == null || btConfirmInfoList.isEmpty()) {
+//                            btConfirmInfoDate.postValue(new ArrayList<>());
+//                            return;
+//                        }
+//                        List<BetConfirmOption> mBetConfirmOptionList = new ArrayList<>();
+//                        for (BtConfirmInfo btConfirmInfo : btConfirmInfoList) {
+//                            mBetConfirmOptionList.add(new BetConfirmOptionIm(btConfirmInfo, ""));
+//                        }
+//                        btConfirmInfoDate.postValue(mBetConfirmOptionList);
             }
 
             @Override
             public void onError(Throwable t) {
                 super.onError(t);
+                if (t instanceof BusinessException) {
+                    BusinessException error = (BusinessException) t;
+                    if (error.code == CodeRule.CODE_401026 || error.code == CodeRule.CODE_401013) {
+//                        batchBetMatchMarketOfJumpLine(betConfirmOptionList);
+                    }
+                }
             }
         });
 
@@ -173,12 +185,7 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
 //                    @Override
 //                    public void onError(Throwable t) {
 //                        //super.onError(t);
-//                        if (t instanceof BusinessException) {
-//                            BusinessException error = (BusinessException) t;
-//                            if (error.code == CodeRule.CODE_401026 || error.code == CodeRule.CODE_401013) {
-//                                batchBetMatchMarketOfJumpLine(betConfirmOptionList);
-//                            }
-//                        }
+
 //                    }
 //                });
 //        addSubscribe(disposable);

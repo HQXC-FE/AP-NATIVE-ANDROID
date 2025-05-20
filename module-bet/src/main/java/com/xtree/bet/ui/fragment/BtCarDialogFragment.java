@@ -436,10 +436,10 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
     @Override
     public TemplateBtCarViewModel initViewModel() {
         if (TextUtils.equals(platform,PLATFORM_IM)){
-            AppViewModelFactory factory = AppViewModelFactory.getInstance((Application) Utils.getContext());
+            IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance((Application) Utils.getContext());
             return new ViewModelProvider(this, factory).get(IMBtCarViewModel.class);
         }else if (!TextUtils.equals(platform, PLATFORM_PM) && !TextUtils.equals(platform, PLATFORM_PMXC)) {
-            IMAppViewModelFactory factory = IMAppViewModelFactory.getInstance((Application) Utils.getContext());
+            AppViewModelFactory factory = AppViewModelFactory.getInstance((Application) Utils.getContext());
             return new ViewModelProvider(this, factory).get(FBBtCarViewModel.class);
         } else {
             PMAppViewModelFactory factory = PMAppViewModelFactory.getInstance((Application) Utils.getContext());
