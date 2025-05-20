@@ -277,7 +277,7 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
                     betConfirmOptionList.get(i).setRealData(betConfirmOptions.get(i).getRealData());
                 } else {
                     for (BetConfirmOption option : betConfirmOptions) {
-                        if (TextUtils.equals(((BetConfirmOption) betConfirmOptionList.get(i)).getMatchId(), ((BetConfirmOption) option).getMatchId())) {
+                        if (TextUtils.equals(betConfirmOptionList.get(i).getMatchId(), option.getMatchId())) {
                             BtConfirmInfo btConfirmInfo = ((BtConfirmInfo) option.getRealData());
                             if (!TextUtils.equals(betConfirmOptionList.get(i).getPlayType().getId(), btConfirmInfo.playId + "")) {
                                 //盘口已关闭

@@ -19,7 +19,7 @@ import com.xtree.bet.bean.request.im.StatementReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.PMListReq;
-import com.xtree.bet.bean.response.im.BetInfo;
+import com.xtree.bet.bean.response.im.BtConfirmInfo;
 import com.xtree.bet.bean.response.im.BetTrade;
 import com.xtree.bet.bean.response.im.ChampionEventsRsp;
 import com.xtree.bet.bean.response.im.DeltaEventListRsp;
@@ -35,7 +35,6 @@ import com.xtree.bet.bean.response.im.SportCountRsp;
 import com.xtree.bet.bean.response.im.StatementRsp;
 import com.xtree.bet.bean.response.im.Wager;
 import com.xtree.bet.bean.response.im.WagerEntity;
-import com.xtree.bet.bean.response.im.WagerListRsp;
 import com.xtree.bet.bean.response.pm.BtRecordRsp;
 import com.xtree.bet.bean.response.pm.BtResultInfo;
 import com.xtree.bet.bean.response.pm.FrontListInfo;
@@ -166,7 +165,7 @@ public interface IMApiService {
      */
     @POST(forwardPath)
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<BetInfo>> getBetInfo(@Body BaseIMRequest<GetBetInfoReq> req);
+    Flowable<BaseResponse<BtConfirmInfo>> getBetInfo(@Body BaseIMRequest<GetBetInfoReq> req);
 
 
     /**

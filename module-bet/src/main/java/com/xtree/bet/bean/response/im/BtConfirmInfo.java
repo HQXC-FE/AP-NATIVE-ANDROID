@@ -1,18 +1,17 @@
 package com.xtree.bet.bean.response.im;
 
 import android.os.Parcel;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 import com.xtree.base.vo.BaseBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class BetInfo implements BaseBean {
+public class BtConfirmInfo implements BaseBean {
 
+    /**
+     * 对应FB和BT的BtConfirmOptionInfo
+     */
     @SerializedName("WagerSelectionInfos")
     private List<WagerSelectionInfo> wagerSelectionInfos;
     @SerializedName("BetSetting")
@@ -27,7 +26,7 @@ public class BetInfo implements BaseBean {
     @SerializedName("StatusDesc")
     private String statusDesc;
 
-    protected BetInfo(Parcel in) {
+    protected BtConfirmInfo(Parcel in) {
         wagerSelectionInfos = in.createTypedArrayList(WagerSelectionInfo.CREATOR);
         betSetting = in.createTypedArrayList(BetSetting.CREATOR);
         serverTime = in.readString();
@@ -35,15 +34,15 @@ public class BetInfo implements BaseBean {
         statusDesc = in.readString();
     }
 
-    public static final Creator<BetInfo> CREATOR = new Creator<BetInfo>() {
+    public static final Creator<BtConfirmInfo> CREATOR = new Creator<BtConfirmInfo>() {
         @Override
-        public BetInfo createFromParcel(Parcel in) {
-            return new BetInfo(in);
+        public BtConfirmInfo createFromParcel(Parcel in) {
+            return new BtConfirmInfo(in);
         }
 
         @Override
-        public BetInfo[] newArray(int size) {
-            return new BetInfo[size];
+        public BtConfirmInfo[] newArray(int size) {
+            return new BtConfirmInfo[size];
         }
     };
 

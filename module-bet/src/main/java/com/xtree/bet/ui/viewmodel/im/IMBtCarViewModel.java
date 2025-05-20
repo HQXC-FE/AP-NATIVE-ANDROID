@@ -4,20 +4,17 @@ package com.xtree.bet.ui.viewmodel.im;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.compose.ui.text.input.ImeOptions;
 
-import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.bet.bean.request.im.BaseIMRequest;
 import com.xtree.bet.bean.request.im.GetBetInfoReq;
 import com.xtree.bet.bean.request.pm.BtCarCgReq;
-import com.xtree.bet.bean.request.pm.BtCarReq;
 import com.xtree.bet.bean.request.pm.BtReq;
 import com.xtree.bet.bean.request.pm.OrderDetail;
 import com.xtree.bet.bean.request.pm.SeriesOrder;
-import com.xtree.bet.bean.response.im.BetInfo;
+import com.xtree.bet.bean.response.im.BetSetting;
+import com.xtree.bet.bean.response.im.BtConfirmInfo;
 import com.xtree.bet.bean.response.im.WagerSelectionInfo;
-import com.xtree.bet.bean.response.pm.BtConfirmInfo;
 import com.xtree.bet.bean.response.pm.BtResultInfo;
 import com.xtree.bet.bean.response.pm.BtResultOptionInfo;
 import com.xtree.bet.bean.response.pm.CgOddLimitInfo;
@@ -28,10 +25,9 @@ import com.xtree.bet.bean.ui.BetConfirmOptionIm;
 import com.xtree.bet.bean.ui.BtResult;
 import com.xtree.bet.bean.ui.BtResultPm;
 import com.xtree.bet.bean.ui.CgOddLimit;
+import com.xtree.bet.bean.ui.CgOddLimitFb;
 import com.xtree.bet.bean.ui.CgOddLimitPm;
-import com.xtree.bet.bean.ui.Option;
 import com.xtree.bet.bean.ui.OptionIm;
-import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.bean.ui.PlayTypePm;
 import com.xtree.bet.constant.SPKey;
 import com.xtree.bet.data.BetRepository;
@@ -104,9 +100,9 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
         }
         getBetInfoReq.setWagerSelectionInfos(list);
         BaseIMRequest<GetBetInfoReq> baseIMRequest = new BaseIMRequest<>(IMApiService.GetBetInfo, getBetInfoReq);
-        launchFlow(model.getIMApiService().getBetInfo(baseIMRequest), new HttpCallBack<BetInfo>() {
+        launchFlow(model.getIMApiService().getBetInfo(baseIMRequest), new HttpCallBack<BtConfirmInfo>() {
             @Override
-            public void onResult(BetInfo betInfo) {
+            public void onResult(BtConfirmInfo betInfo) {
                 super.onResult(betInfo);
                 if (betInfo == null) {
                     btConfirmInfoDate.postValue(new ArrayList<>());
@@ -115,12 +111,21 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
 
                 List<BetConfirmOption> mBetConfirmOptionList = new ArrayList<>();
                 for (WagerSelectionInfo wsi : betInfo.getWagerSelectionInfos()) {
-                    BtConfirmInfo btConfirmInfo = new BtConfirmInfo();
-//                    btConfirmInfo.id = String.valueOf(btConfirmInfo.EventId);
-//                    btConfirmInfo.marketOddsList = new ArrayList<>();
-                    mBetConfirmOptionList.add(new BetConfirmOptionIm(btConfirmInfo, ""));
+                    mBetConfirmOptionList.add(new BetConfirmOptionIm(wsi, ""));
                 }
                 btConfirmInfoDate.postValue(mBetConfirmOptionList);
+
+
+                List<CgOddLimit> cgOddLimitInfoList = new ArrayList<>();
+                if (!btConfirmInfo.sos.isEmpty()) {
+                    int index = 0;
+                    for (com.xtree.bet.bean.response.fb.CgOddLimitInfo cgOddLimitInfo : btConfirmInfo.sos) {
+                        cgOddLimitInfoList.add(new CgOddLimitFb(cgOddLimitInfo, btConfirmInfo.bms.get(index++), btConfirmInfo.bms.size()));
+                    }
+                } else {
+                    cgOddLimitInfoList.add(new CgOddLimitFb(null, btConfirmInfo.bms.get(0), 0));
+                }
+                cgOddLimitDate.postValue(cgOddLimitInfoList);
             }
 
             @Override

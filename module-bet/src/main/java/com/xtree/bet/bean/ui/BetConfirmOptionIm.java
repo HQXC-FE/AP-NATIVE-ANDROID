@@ -4,15 +4,14 @@ import android.os.Parcel;
 import android.text.TextUtils;
 
 import com.xtree.base.vo.BaseBean;
+import com.xtree.bet.bean.response.im.BtConfirmInfo;
 import com.xtree.bet.bean.response.im.WagerSelection;
-import com.xtree.bet.bean.response.pm.BtConfirmInfo;
-import com.xtree.bet.bean.response.pm.OptionInfo;
+import com.xtree.bet.bean.response.im.WagerSelectionInfo;
 
 /**
  * 投注确认页选项
  */
 public class BetConfirmOptionIm implements BetConfirmOption {
-    private BtConfirmInfo btConfirmInfo;
     private Match match;
     private PlayType playType;
     private OptionList optionList;
@@ -20,10 +19,8 @@ public class BetConfirmOptionIm implements BetConfirmOption {
     private String teamName;
     private double oldOdd;
 
-    public BetConfirmOptionIm(BtConfirmInfo btConfirmInfo, String teamName) {
-        this.btConfirmInfo = btConfirmInfo;
-        this.teamName = teamName;
-    }
+    private WagerSelectionInfo wagerSelectionInfo;
+
 
     public BetConfirmOptionIm(Match match, PlayType playType, OptionList optionList, Option option) {
         this.optionList = optionList;
@@ -32,6 +29,11 @@ public class BetConfirmOptionIm implements BetConfirmOption {
         this.playType = playType;
         teamName = match.getTeamMain() + " VS " + match.getTeamVistor();
         oldOdd = option.getRealOdd();
+    }
+
+    public BetConfirmOptionIm(WagerSelectionInfo wsi, String teamName) {
+        this.wagerSelectionInfo = wsi;
+        this.teamName = teamName;
     }
 
     /**
@@ -54,8 +56,8 @@ public class BetConfirmOptionIm implements BetConfirmOption {
      */
     @Override
     public String getMatchId() {
-        if (btConfirmInfo != null) {
-            return String.valueOf(btConfirmInfo.matchInfoId);
+        if (wagerSelectionInfo != null) {
+            return String.valueOf(wagerSelectionInfo.getWagerId());
         } else {
             return String.valueOf(getMatch().getId());
         }
@@ -68,15 +70,6 @@ public class BetConfirmOptionIm implements BetConfirmOption {
      */
     @Override
     public String getCode() {
-        /*StringBuffer code = new StringBuffer();
-        code.append(match.getId());
-        code.append(playType.getPlayType());
-        code.append(playType.getPlayPeriod());
-        code.append(optionList.getId());
-        code.append(option.getOptionType());
-        if (!TextUtils.isEmpty(option.getLine())) {
-            code.append(option.getLine());
-        }*/
         if(TextUtils.isEmpty(mOption.getCode())){
             return getMatchId() + mOption.getId();
         }else{
@@ -86,28 +79,21 @@ public class BetConfirmOptionIm implements BetConfirmOption {
 
     @Override
     public int getPlaceNum() {
-        if(btConfirmInfo != null) {
-            return btConfirmInfo.placeNum;
-        }else{
-            return optionList.getPlaceNum();
-        }
+        return 0 ;
     }
 
     @Override
     public String getOptionName() {
         if(!TextUtils.isEmpty(getOption().getSortName())){
             return getOption().getSortName();
-        }else if(btConfirmInfo != null && !TextUtils.isEmpty(btConfirmInfo.marketValue)){
-            return btConfirmInfo.marketValue;
-        }else {
-            return mOption.isBtHome() ? match.getTeamMain() : match.getTeamVistor();
         }
+        return "";
     }
 
     @Override
     public String getPlayTypeId() {
-        if (btConfirmInfo != null && !TextUtils.isEmpty(btConfirmInfo.id)) {
-            return btConfirmInfo.id;
+        if ( wagerSelectionInfo!= null && !TextUtils.isEmpty(String.valueOf(wagerSelectionInfo.getMarketlineId()))) {
+            return String.valueOf(wagerSelectionInfo.getMarketlineId());
         } else if(optionList.getId() > 0){
             return String.valueOf(optionList.getId());
         } else {
@@ -117,8 +103,15 @@ public class BetConfirmOptionIm implements BetConfirmOption {
 
     @Override
     public Option getOption() {
-        if (btConfirmInfo != null && btConfirmInfo.marketOddsList != null && !btConfirmInfo.marketOddsList.isEmpty() && mOption != null) {
+        if (wagerSelectionInfo != null && mOption != null) {
             WagerSelection wagerSelection = new WagerSelection();
+            wagerSelection.setSelectionId((int)wagerSelectionInfo.getWagerSelectionId());
+            wagerSelection.setHandicap(wagerSelectionInfo.getHandicap());
+            wagerSelection.setOdds(wagerSelectionInfo.getOdds());
+//            wagerSelection.setSelectionName(wagerSelectionInfo.get);//没有对应字段
+            wagerSelection.setSpecifiers(wagerSelectionInfo.getSpecifiers());
+            wagerSelection.setWagerSelectionId(wagerSelectionInfo.getWagerSelectionId());
+
 
             mOption = new OptionIm(wagerSelection);
             if(oldOdd > 0) {
@@ -135,17 +128,10 @@ public class BetConfirmOptionIm implements BetConfirmOption {
      */
     @Override
     public boolean isClose() {
-        if (btConfirmInfo == null) {
+        if (wagerSelectionInfo == null) {
             return false;
         }
-        boolean isColse = false;
-        if(!btConfirmInfo.marketOddsList.isEmpty()) {
-            isColse = btConfirmInfo.marketOddsList.get(0).oddsStatus == 2; // 首先检查投注项的关闭情况，如果投注项未关闭，再检查赛事级别的开关状态
-        }
-        if (!isColse) {
-            isColse = btConfirmInfo.matchHandicapStatus == 1 || btConfirmInfo.matchHandicapStatus == 2 || btConfirmInfo.matchHandicapStatus == 11;
-        }
-        return isColse;
+        return wagerSelectionInfo.getMarketlineStatusId() != 1;
     }
 
     @Override
@@ -178,8 +164,8 @@ public class BetConfirmOptionIm implements BetConfirmOption {
      */
     @Override
     public String getOptionType() {
-        if (btConfirmInfo != null && btConfirmInfo.marketOddsList != null && !btConfirmInfo.marketOddsList.isEmpty()) {
-            return String.valueOf(btConfirmInfo.marketOddsList.get(0).oddsType);
+        if (wagerSelectionInfo != null ) {
+            return String.valueOf(wagerSelectionInfo.getOddsType());
         } else {
             return mOption.getOptionType();
         }
@@ -202,10 +188,10 @@ public class BetConfirmOptionIm implements BetConfirmOption {
      */
     @Override
     public void setRealData(BaseBean data) {
-        if(btConfirmInfo != null && btConfirmInfo.marketOddsList != null && !btConfirmInfo.marketOddsList.isEmpty()) {
-            oldOdd = btConfirmInfo.marketOddsList.get(0).oddsValue / 100000;
+        if(wagerSelectionInfo != null ) {
+            oldOdd = wagerSelectionInfo.getOdds();
         }
-        this.btConfirmInfo = (BtConfirmInfo) data;
+        this.wagerSelectionInfo = (WagerSelectionInfo) data;
     }
 
     /**
@@ -220,7 +206,7 @@ public class BetConfirmOptionIm implements BetConfirmOption {
 
     @Override
     public BaseBean getRealData() {
-        return btConfirmInfo;
+        return wagerSelectionInfo;
     }
 
     @Override
@@ -230,7 +216,7 @@ public class BetConfirmOptionIm implements BetConfirmOption {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.btConfirmInfo, flags);
+        dest.writeParcelable(this.wagerSelectionInfo, flags);
         dest.writeParcelable(this.match, flags);
         dest.writeParcelable(this.playType, flags);
         dest.writeParcelable(this.optionList, flags);
@@ -238,17 +224,9 @@ public class BetConfirmOptionIm implements BetConfirmOption {
         dest.writeString(this.teamName);
     }
 
-    public void readFromParcel(Parcel source) {
-        this.btConfirmInfo = source.readParcelable(BtConfirmInfo.class.getClassLoader());
-        this.match = source.readParcelable(Match.class.getClassLoader());
-        this.playType = source.readParcelable(PlayType.class.getClassLoader());
-        this.optionList = source.readParcelable(OptionList.class.getClassLoader());
-        this.mOption = source.readParcelable(Option.class.getClassLoader());
-        this.teamName = source.readString();
-    }
 
     protected BetConfirmOptionIm(Parcel in) {
-        this.btConfirmInfo = in.readParcelable(BtConfirmInfo.class.getClassLoader());
+        this.wagerSelectionInfo = in.readParcelable(WagerSelectionInfo.class.getClassLoader());
         this.match = in.readParcelable(Match.class.getClassLoader());
         this.playType = in.readParcelable(PlayType.class.getClassLoader());
         this.optionList = in.readParcelable(OptionList.class.getClassLoader());
