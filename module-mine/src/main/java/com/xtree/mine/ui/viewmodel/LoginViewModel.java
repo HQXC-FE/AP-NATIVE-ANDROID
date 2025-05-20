@@ -113,6 +113,10 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
         addSubscribe(disposable);
     }
 
+    /**
+     * 登录成功 保存登录信息
+     * @param vo LoginResultVo 返回的登录信息
+     */
     public void setLoginSucc(LoginResultVo vo) {
         SPUtils.getInstance().put(SPKeyGlobal.USER_TOKEN, vo.token);
         SPUtils.getInstance().put(SPKeyGlobal.USER_TOKEN_TYPE, vo.token_type);
