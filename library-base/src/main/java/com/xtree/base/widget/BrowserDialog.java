@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
@@ -365,6 +366,7 @@ public class BrowserDialog extends BottomPopupView {
      * 图片选择
      */
     private void gotoSelectMedia() {
+        tvwTitle.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         PictureSelector.create(getContext())
                 .openGallery(SelectMimeType.ofImage())
                 .setMaxSelectNum(1)
@@ -373,7 +375,7 @@ public class BrowserDialog extends BottomPopupView {
                 .forResult(new OnResultCallbackListener<LocalMedia>() {
                     @Override
                     public void onResult(ArrayList<LocalMedia> list) {
-
+                        tvwTitle.setTypeface(Typeface.DEFAULT);
                         ArrayList<Uri> results = new ArrayList<>();
                         for (LocalMedia t : list) {
                             Uri mUri = null;
@@ -396,6 +398,7 @@ public class BrowserDialog extends BottomPopupView {
 
                     @Override
                     public void onCancel() {
+                        tvwTitle.setTypeface(Typeface.DEFAULT);
                         mUploadCallbackAboveL.onReceiveValue(null);
                     }
                 });
