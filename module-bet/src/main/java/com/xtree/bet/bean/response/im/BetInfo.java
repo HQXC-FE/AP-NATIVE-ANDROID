@@ -62,5 +62,44 @@ public class BetInfo implements BaseBean {
     }
 
 
+    public List<WagerSelectionInfo> getWagerSelectionInfos() {
+        return wagerSelectionInfos;
+    }
+
+    public void setWagerSelectionInfos(List<WagerSelectionInfo> wagerSelectionInfos) {
+        this.wagerSelectionInfos = wagerSelectionInfos;
+    }
+
+    public List<BetSetting> getBetSetting() {
+        return betSetting;
+    }
+
+    public void setBetSetting(List<BetSetting> betSetting) {
+        this.betSetting = betSetting;
+    }
+
+    public String getServerTime() {
+        return serverTime;
+    }
+
+    public void setServerTime(String serverTime) {
+        this.serverTime = serverTime;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
 }
 

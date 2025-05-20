@@ -74,40 +74,6 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
      */
     public void batchBetMatchMarketOfJumpLine(List<BetConfirmOption> betConfirmOptionList) {
         mSearchBetConfirmOptionList = betConfirmOptionList;
-//        BtCarReq btCarReq = new BtCarReq();
-//        btCarReq.setCuid();
-//        List<BtCarReq.BetMatchMarket> betMatchMarketList = new ArrayList<>();
-//        for (BetConfirmOption betConfirmOption : betConfirmOptionList) {
-//            BtCarReq.BetMatchMarket betMatchMarket = new BtCarReq.BetMatchMarket();
-//            betMatchMarket.setMatchInfoId(betConfirmOption.getMatch().getId());
-//            betMatchMarket.setMarketId(Long.valueOf(betConfirmOption.getPlayTypeId()));
-//            if (betConfirmOption.getOption() == null) {
-//                //初始化投注弹窗是，option有可能为空
-//                return;
-//            }
-//            betMatchMarket.setOddsId(betConfirmOption.getOption().getId());
-//            betMatchMarket.setPlayId(betConfirmOption.getPlayType().getId());//betConfirmOption.getPlayType().getId()  这个值就是hpid
-//            betMatchMarket.setMatchType(betConfirmOption.getOptionList().getMatchType());
-//            betMatchMarket.setSportId(Integer.valueOf(betConfirmOption.getMatch().getSportId()));
-//            betMatchMarket.setPlaceNum(betConfirmOption.getPlaceNum());
-//
-//            //处理ClassCastException: com.xtree.bet.bean.ui.PlayTypeFb cannot be cast to com.xtree.bet.bean.ui.PlayTypePm
-//            PlayType playType = betConfirmOption.getPlayType();
-//            PlayTypeInfo playTypeInfo = ((PlayTypePm) playType).getPlayTypeInfo();
-//            String chpid = "";
-//            if (playTypeInfo.topKey != null) {
-//                chpid = playTypeInfo.topKey;
-//            } else {
-//                chpid = betConfirmOption.getPlayType().getId();
-//            }
-//            if (!chpid.isEmpty()) {
-//                betMatchMarket.setChpid(chpid);
-//            }
-//            betMatchMarketList.add(betMatchMarket);
-//        }
-//        btCarReq.setIdList(betMatchMarketList);
-
-
         GetBetInfoReq getBetInfoReq = new GetBetInfoReq();
         if (BtCarManager.isCg()) {
             getBetInfoReq.setWagerType(2);
@@ -129,9 +95,9 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
                 OptionIm option = (OptionIm) betConfirmOption.getOption();
                 wagerSelectionInfo.Handicap = option.getHandicap();
             }
+            wagerSelectionInfo.RefId = Long.parseLong(betConfirmOption.getOption().getId());
             //如果是冠军赛事，这个值为0
             wagerSelectionInfo.BetTypeSelectionId = Integer.parseInt(betConfirmOption.getOption().getId());
-            wagerSelectionInfo.RefId = Long.parseLong(betConfirmOption.getOption().getId());
             //如果是定时赛事，这个值为0
             wagerSelectionInfo.OutrightTeamId = (int) Long.parseLong(betConfirmOption.getOption().getId());
             list.add(wagerSelectionInfo);
@@ -142,15 +108,19 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
             @Override
             public void onResult(BetInfo betInfo) {
                 super.onResult(betInfo);
-                //                        if (btConfirmInfoList == null || btConfirmInfoList.isEmpty()) {
-//                            btConfirmInfoDate.postValue(new ArrayList<>());
-//                            return;
-//                        }
-//                        List<BetConfirmOption> mBetConfirmOptionList = new ArrayList<>();
-//                        for (BtConfirmInfo btConfirmInfo : btConfirmInfoList) {
-//                            mBetConfirmOptionList.add(new BetConfirmOptionIm(btConfirmInfo, ""));
-//                        }
-//                        btConfirmInfoDate.postValue(mBetConfirmOptionList);
+                if (betInfo == null) {
+                    btConfirmInfoDate.postValue(new ArrayList<>());
+                    return;
+                }
+
+                List<BetConfirmOption> mBetConfirmOptionList = new ArrayList<>();
+                for (WagerSelectionInfo wsi : betInfo.getWagerSelectionInfos()) {
+                    BtConfirmInfo btConfirmInfo = new BtConfirmInfo();
+//                    btConfirmInfo.id = String.valueOf(btConfirmInfo.EventId);
+//                    btConfirmInfo.marketOddsList = new ArrayList<>();
+                    mBetConfirmOptionList.add(new BetConfirmOptionIm(btConfirmInfo, ""));
+                }
+                btConfirmInfoDate.postValue(mBetConfirmOptionList);
             }
 
             @Override
@@ -159,38 +129,11 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
                 if (t instanceof BusinessException) {
                     BusinessException error = (BusinessException) t;
                     if (error.code == CodeRule.CODE_401026 || error.code == CodeRule.CODE_401013) {
-//                        batchBetMatchMarketOfJumpLine(betConfirmOptionList);
+                        batchBetMatchMarketOfJumpLine(betConfirmOptionList);
                     }
                 }
             }
         });
-
-
-//        queryMarketMaxMinBetMoney(betConfirmOptionList);
-//        Disposable disposable = (Disposable) model.getIMApiService().getBetInfo(btCarReq).compose(RxUtils.schedulersTransformer()) //线程调度
-//                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<BtConfirmInfo>>() {
-//                    @Override
-//                    public void onResult(List<BtConfirmInfo> btConfirmInfoList, BusinessException exception) {
-//                        if (btConfirmInfoList == null || btConfirmInfoList.isEmpty()) {
-//                            btConfirmInfoDate.postValue(new ArrayList<>());
-//                            return;
-//                        }
-//                        List<BetConfirmOption> mBetConfirmOptionList = new ArrayList<>();
-//                        for (BtConfirmInfo btConfirmInfo : btConfirmInfoList) {
-//                            mBetConfirmOptionList.add(new BetConfirmOptionIm(btConfirmInfo, ""));
-//                        }
-//                        btConfirmInfoDate.postValue(mBetConfirmOptionList);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable t) {
-//                        //super.onError(t);
-
-//                    }
-//                });
-//        addSubscribe(disposable);
-
-
     }
 
     /**
