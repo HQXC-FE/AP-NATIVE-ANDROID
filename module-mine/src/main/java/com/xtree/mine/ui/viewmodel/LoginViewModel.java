@@ -343,9 +343,7 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
         map.put("userpass", pwd); // 明文
         map.put("validcode", key+":"+validcode);//注册验证码
         map.put("needCaptcha","1");
-
         CfLog.e("*********** register  code1=" + map);
-
         Disposable disposable = (Disposable) model.getApiService().register(code,map)
                 .compose(RxUtils.schedulersTransformer()) //线程调度
                 .compose(RxUtils.exceptionTransformer())

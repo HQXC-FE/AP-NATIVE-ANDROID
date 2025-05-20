@@ -739,6 +739,8 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
         viewModel.liveDataLoginFail.observe(this, vo -> {
             if (vo.code == HttpCallBack.CodeRule.CODE_20208) {
                 showVerifyDialog(vo);
+            }else if (!TextUtils.isEmpty(vo.message)){
+                ToastUtils.showError(vo.message);
             }
 
         });
