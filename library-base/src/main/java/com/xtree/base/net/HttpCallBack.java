@@ -297,8 +297,8 @@ public abstract class HttpCallBack<T> extends DisposableSubscriber<T> {
         public static final int CODE_30018 = 30018; // 谷歌验证
         public static final int CODE_30004 = 30004; // 被踢下线, 禁止登录
         public static final int CODE_20204 = 20204;//需要用户获取登录验证码
-        public static final int CODE_20205 = 20205;
-        public static final int CODE_20206 = 20206;
+        public static final int CODE_20205 = 20205;//验证码错误
+        public static final int CODE_20206 = 20206;//需要输入验证码
         public static final int CODE_900001 = 900001; // 全局验证
         public static final int CODE_14010 = 14010; //FB场馆 TOKEN失效
         //请求成功, 正确的操作方式

@@ -392,7 +392,9 @@ public class LoginViewModel extends BaseViewModel<MineRepository> {
                             regErrorLiveData.setValue(t);
                             super.onFail(t);
                         } else {
-                            super.onFail(t);
+                            //BusinessException {code=30723, message='该账户已经存在，请重新输入'}
+                            liveDataLoginFail.setValue(t);
+                            //super.onFail(t);
                         }
 
                     }

@@ -597,11 +597,8 @@ public class LoginRegisterActivity extends BaseActivity<ActivityLoginBinding, Lo
 
                     /**
                      剪贴板 =4  =  剪贴板
-
                      promotion 接口 =2 =   系统设置（来源：default/promotioncode接口）
-
                      promption_code  = 2 = 系统设置（来源：setting接口）
-
                      default_promption_code = 1 =  系统默认 （来源：setting接口）
                      */
 
