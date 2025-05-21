@@ -703,7 +703,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                     }
                     url = DomainUtil.getApiUrl() + separator + url;
                 }
-                showWebPayDialog(vo.title, url, curRechargeVo != null && Arrays.asList(arrayBrowser).contains(curRechargeVo.paycode));
+                showWebPayDialog(vo.title, url, true);
             } else if (vo.paycode.contains(viewModel.ONE_PAY_FIX)) {
                 // 极速充值
                 CfLog.i(vo.bid + " , " + vo.title + " , " + vo.paycode);
@@ -1735,7 +1735,7 @@ public class RechargeFragment extends BaseFragment<FragmentRechargeBinding, Rech
                 url = DomainUtil.getApiUrl() + separator + url;
             }
             CfLog.d(vo.title + ", jump: " + url);
-            showWebPayDialog(vo.title, url, curRechargeVo != null && Arrays.asList(arrayBrowser).contains(curRechargeVo.paycode));
+            showWebPayDialog(vo.title, url, true);
         });
 
         viewModel.liveDataRechargePay.observe(getViewLifecycleOwner(), vo -> {

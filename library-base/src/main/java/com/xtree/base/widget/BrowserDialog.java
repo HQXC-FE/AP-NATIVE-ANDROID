@@ -1,22 +1,24 @@
 package com.xtree.base.widget;
 
 import static com.xtree.base.utils.EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH;
-import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FAILED;
-import static com.xtree.base.utils.EventConstant.EVENT_TOP_SPEED_FINISH;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
@@ -34,8 +36,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.just.agentweb.AgentWeb;
 import com.just.agentweb.AgentWebConfig;
+import com.just.agentweb.WebChromeClient;
 import com.just.agentweb.WebViewClient;
 import com.luck.picture.lib.basic.PictureSelector;
+import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.config.SelectMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.interfaces.OnResultCallbackListener;
@@ -45,15 +49,19 @@ import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterActivityPath;
+import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.FightFanZhaUtils;
+import com.xtree.base.utils.ImageUploadUtil;
 import com.xtree.base.utils.TagUtils;
 import com.xtree.base.vo.EventVo;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.net.UnknownHostException;
@@ -72,6 +80,13 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
  */
 public class BrowserDialog extends BottomPopupView {
     public static final String ARG_SEARCH_DNS_URL = "https://dns.alidns.com/dns-query";
+    protected String title;
+    protected String url;
+    protected int maxHeight = 85; // 最大高度百分比 10-100
+    protected boolean isContainTitle = false; // 网页自身是否包含标题(少数情况下会包含)
+    protected boolean isActivity = false; // 是否来自活动页面
+    protected boolean is3rdLink = false; // 是否跳转到三方链接(如果是,就不用带header和cookie了)
+    protected boolean isHideTitle = false; // 是否隐藏标题栏
     Context mContext;
     TextView tvwTitle;
     View vTitle;
@@ -83,14 +98,6 @@ public class BrowserDialog extends BottomPopupView {
     ImageView ivwLaunch;
     //LinearLayout llBackground;
     int sslErrorCount = 0;
-
-    protected String title;
-    protected String url;
-    protected int maxHeight = 85; // 最大高度百分比 10-100
-    protected boolean isContainTitle = false; // 网页自身是否包含标题(少数情况下会包含)
-    protected boolean isActivity = false; // 是否来自活动页面
-    protected boolean is3rdLink = false; // 是否跳转到三方链接(如果是,就不用带header和cookie了)
-    protected boolean isHideTitle = false; // 是否隐藏标题栏
     boolean isFirstLoad = true; // 是否头一次打开当前网页,加载cookie时用
     boolean isFirstOpenBrowser = true; // 是否第一次打开webView组件(解决第一次打开webView时传递header/cookie/token失效)
     String token;
@@ -139,11 +146,6 @@ public class BrowserDialog extends BottomPopupView {
         return this;
     }
 
-    public BrowserDialog setMaxHeight(int maxHeight) {
-        this.maxHeight = maxHeight;
-        return this;
-    }
-
     @Override
     protected void onCreate() {
         super.onCreate();
@@ -168,10 +170,7 @@ public class BrowserDialog extends BottomPopupView {
         tvwTitle.setText(title);
         ivwLoading.setVisibility(View.GONE);
 
-        String cookie = "auth=" + token
-                + ";" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_COOKIE_NAME)
-                + "=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID)
-                + ";";
+        String cookie = "auth=" + token + ";" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_COOKIE_NAME) + "=" + SPUtils.getInstance().getString(SPKeyGlobal.USER_SHARE_SESSID) + ";";
         String auth = "bearer " + token;
         CfLog.d("Cookie: " + cookie);
         CfLog.d("Authorization: " + auth);
@@ -197,8 +196,7 @@ public class BrowserDialog extends BottomPopupView {
 
         if (isFirstOpenBrowser && !TextUtils.isEmpty(token)) {
             String urlBase64 = Base64.encodeToString(url.getBytes(), Base64.DEFAULT);
-            url = DomainUtil.getH5Domain2() + "/static/sessionkeeper.html?token=" + token
-                    + "&tokenExpires=3600&url=" + urlBase64;
+            url = DomainUtil.getH5Domain2() + "/static/sessionkeeper.html?token=" + token + "&tokenExpires=3600&url=" + urlBase64;
             SPUtils.getInstance().put(SPKeyGlobal.IS_FIRST_OPEN_BROWSER, false);
         }
         //setWebCookie();
@@ -212,8 +210,8 @@ public class BrowserDialog extends BottomPopupView {
         ivwClose.setOnClickListener(v -> dismiss());
 
         //todo
-        if(FightFanZhaUtils.isOpenTest && BuildConfig.DEBUG){
-            FightFanZhaUtils.mockJumpFanZha(agentWeb.getWebCreator().getWebView(),url);
+        if (FightFanZhaUtils.isOpenTest && BuildConfig.DEBUG) {
+            FightFanZhaUtils.mockJumpFanZha(agentWeb.getWebCreator().getWebView(), url);
         }
 
     }
@@ -245,18 +243,25 @@ public class BrowserDialog extends BottomPopupView {
             AgentWebConfig.debug();
         }
 
-        agentWeb = AgentWeb.with((Activity) mContext)
-                .setAgentWebParent(findViewById(R.id.wv_main), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-                .useDefaultIndicator() // 使用默认的加载进度条
-                .additionalHttpHeader(url, header)
-                .setWebViewClient(new CustomWebViewClient()) // 设置 WebViewClient
-                .addJavascriptInterface("android", new WebAppInterface(mContext, ivwClose, getCallBack()))
-                .setWebChromeClient(new com.just.agentweb.WebChromeClient() {
+        agentWeb = AgentWeb.with((Activity) mContext).setAgentWebParent(findViewById(R.id.wv_main), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)).useDefaultIndicator() // 使用默认的加载进度条
+                .additionalHttpHeader(url, header).setWebViewClient(new CustomWebViewClient()) // 设置 WebViewClient
+                .addJavascriptInterface("android", new WebAppInterface(mContext, ivwClose, getCallBack()) {
+                    @Override
+                    @JavascriptInterface
+                    public void openAndroidFileChooser() {
+                        CfLog.i("*******  openAndroidFileChooser");
+                        // 切换到主线程执行
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            gotoSelectMedia();
+                        });
+
+                    }
+                }).setWebChromeClient(new WebChromeClient() {
 
                     @Override
                     public void onReceivedTitle(WebView webView, String s) {
                         super.onReceivedTitle(webView, s);
-                        FightFanZhaUtils.checkHeadTitle(webView,s,is3rdLink,url);
+                        FightFanZhaUtils.checkHeadTitle(webView, s, is3rdLink, url);
                     }
 
                     @Override
@@ -274,9 +279,7 @@ public class BrowserDialog extends BottomPopupView {
                     // debug模式
                     @Override
                     public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                        CfLog.d("AgentWeb", consoleMessage.message() + " -- From line "
-                                + consoleMessage.lineNumber() + " of "
-                                + consoleMessage.sourceId());
+                        CfLog.d("AgentWeb", consoleMessage.message() + " -- From line " + consoleMessage.lineNumber() + " of " + consoleMessage.sourceId());
                         return true;
                     }
 
@@ -285,7 +288,7 @@ public class BrowserDialog extends BottomPopupView {
                      * 16(Android 4.1.2) <= API <= 20(Android 4.4W.2)回调此方法
                      */
                     public void openFileChooser(ValueCallback<Uri> valueCallback, String acceptType, String capture) {
-                        CfLog.i("*********");
+                        CfLog.i("*******  openFileChooser");
                         mUploadCallbackBelow = valueCallback;
                         //openImageChooserActivity();
                         gotoSelectMedia();
@@ -296,7 +299,7 @@ public class BrowserDialog extends BottomPopupView {
                      * API >= 21(Android 5.0.1)回调此方法
                      */
                     public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-                        CfLog.i("*********");
+                        CfLog.i("*******  onShowFileChooser");
                         // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
                         mUploadCallbackAboveL = filePathCallback;
                         //openImageChooserActivity();
@@ -304,9 +307,17 @@ public class BrowserDialog extends BottomPopupView {
                         return true;
                     }
                 }) // 设置 WebChromeClient
-                .createAgentWeb() // 创建 AgentWeb
-                .ready()
-                .go(url); // 加载网页
+                .createAgentWeb()
+//                .get(); // 创建 AgentWeb
+                .ready().go(url); // 加载网页
+//        String htmlContent = "<!DOCTYPE html>\n" + "<html>\n" + "<head>\n" + "  <meta charset='utf-8'>\n" + "  <title>上传图片</title>\n" + "</head>\n" + "<body>\n" + "\n" + "<button id='uploadBtn'>上传图片</button>\n" + "<br><br>\n" + "<img id='preview' src='' alt='预览图片' style='max-width: 100%;'/>\n" + "\n" + "<script type='text/javascript'>\n" + "  // 1. 给按钮添加点击事件\n" + "  document.getElementById('uploadBtn').addEventListener('click', function () {\n" + "    if (window.android && typeof window.android.openAndroidFileChooser === 'function') {\n" + "      window.android.openAndroidFileChooser();\n" + "    } else {\n" + "      alert('不支持 Android 接口！');\n" + "    }\n" + "  });\n" + "\n" + "  // 2. Java 通过 evaluateJavascript 调用此方法\n" + "  function uploadAndroidImage(base64Data) {\n" + "    if (typeof base64Data !== 'string') {\n" + "      alert('无效的图片数据');\n" + "      return;\n" + "    }\n" + "    document.getElementById('preview').src = base64Data;\n" + "  }\n" + "</script>\n" + "\n" + "</body>\n" + "</html>";
+//        agentWeb.getWebCreator().getWebView().loadDataWithBaseURL(
+//                null,                  // baseUrl，可为 null
+//                htmlContent,           // HTML 内容
+//                "text/html",           // MIME 类型
+//                "utf-8",               // 编码格式
+//                null                   // 历史记录 URL（可为 null）
+//        );
 
         WebView webView = agentWeb.getWebCreator().getWebView();
         WebSettings webSettings = webView.getSettings();
@@ -332,9 +343,7 @@ public class BrowserDialog extends BottomPopupView {
                 CfLog.i("type: " + type);
                 if (TextUtils.equals(type, "captchaVerifySucceed")) {
                     TagUtils.tagEvent(getContext(), "captchaVerifyOK");
-                    ARouter.getInstance().build(RouterActivityPath.Main.PAGER_SPLASH)
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            .navigation();
+                    ARouter.getInstance().build(RouterActivityPath.Main.PAGER_SPLASH).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK).navigation();
                 } else if (TextUtils.equals(type, "captchaVerifyFail")) {
                     TagUtils.tagEvent(getContext(), "captchaVerifyFail");
                     CfLog.e("type error... type: " + type);
@@ -365,40 +374,98 @@ public class BrowserDialog extends BottomPopupView {
      * 图片选择
      */
     private void gotoSelectMedia() {
-        PictureSelector.create(getContext())
-                .openGallery(SelectMimeType.ofImage())
-                .setMaxSelectNum(1)
-                .setImageEngine(GlideEngine.createGlideEngine())
-                .setCompressEngine(ImageFileCompressEngine.create())
-                .forResult(new OnResultCallbackListener<LocalMedia>() {
-                    @Override
-                    public void onResult(ArrayList<LocalMedia> list) {
-
-                        ArrayList<Uri> results = new ArrayList<>();
-                        for (LocalMedia t : list) {
-                            Uri mUri = null;
-                            if (t.getWatermarkPath() != null && !t.getWatermarkPath().isEmpty()) {
-                                // 水印 /storage/emulated/0/Android/data/com.xxx.xxx/files/Mark/Mark_20220609xxx.jpg
-                                mUri = Uri.fromFile(new File(t.getWatermarkPath()));
-                            } else if (t.isCompressed()) {
-                                // 压缩后的 /storage/emulated/0/Android/data/com.xxx.xxx/cache/luban_disk_cache/CMP_20220609xxx.jpg
-                                mUri = Uri.fromFile(new File(t.getCompressPath()));
-                                //mUri = Uri.fromFile(new File(t.getPath())); // content://media/external/images/media/29003
-                            } else {
-                                // 实际路径,压缩前的 /storage/emulated/0/Pictures/Screenshots/Screenshot_20220609_xx.jpg
-                                mUri = Uri.fromFile(new File(t.getRealPath()));
-                            }
-                            CfLog.i(mUri.toString());
-                            results.add(mUri);
+        if (ClickUtil.isFastClick()) {
+            return;
+        }
+        tvwTitle.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        PictureSelector.create(getContext()).openGallery(SelectMimeType.ofImage()).setMaxSelectNum(1).setImageEngine(GlideEngine.createGlideEngine()).setCompressEngine(ImageFileCompressEngine.create()).forResult(new OnResultCallbackListener<LocalMedia>() {
+            @Override
+            public void onResult(ArrayList<LocalMedia> list) {
+                if (list == null || list.isEmpty()) {
+                    ToastUtils.showError("未选中图片");
+                    tvwTitle.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
+                    return;
+                }
+                tvwTitle.setTypeface(Typeface.DEFAULT);
+                if (mUploadCallbackAboveL != null) {
+                    ArrayList<Uri> results = new ArrayList<>();
+                    for (LocalMedia t : list) {
+                        Uri mUri = null;
+                        if (t.getWatermarkPath() != null && !t.getWatermarkPath().isEmpty()) {
+                            // 水印 /storage/emulated/0/Android/data/com.xxx.xxx/files/Mark/Mark_20220609xxx.jpg
+                            mUri = Uri.fromFile(new File(t.getWatermarkPath()));
+                        } else if (t.isCompressed()) {
+                            // 压缩后的 /storage/emulated/0/Android/data/com.xxx.xxx/cache/luban_disk_cache/CMP_20220609xxx.jpg
+                            mUri = Uri.fromFile(new File(t.getCompressPath()));
+                            //mUri = Uri.fromFile(new File(t.getPath())); // content://media/external/images/media/29003
+                        } else {
+                            // 实际路径,压缩前的 /storage/emulated/0/Pictures/Screenshots/Screenshot_20220609_xx.jpg
+                            mUri = Uri.fromFile(new File(t.getRealPath()));
                         }
+                        CfLog.i(mUri.toString());
+                        results.add(mUri);
+                    }
+                    try {
                         mUploadCallbackAboveL.onReceiveValue(results.toArray(new Uri[results.size()]));
+                        mUploadCallbackAboveL = null;
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
-                    @Override
-                    public void onCancel() {
-                        mUploadCallbackAboveL.onReceiveValue(null);
+                } else {
+                    Uri voucher = null;
+                    for (int i = 0; i < list.size(); i++) {
+                        String imageRealPathString = list.get(i).getCompressPath();
+                        if (TextUtils.isEmpty(imageRealPathString)) {
+                            imageRealPathString = list.get(i).getRealPath();
+                        }
+
+                        if (PictureMimeType.isContent(imageRealPathString)) {
+                            voucher = Uri.parse(imageRealPathString);
+                        } else {
+                            voucher = Uri.fromFile(new File(imageRealPathString));
+                        }
+                        CfLog.i("获取图片地址是 uri ====== " + voucher);
                     }
-                });
+                    String imageBase64 = ImageUploadUtil.bitmapToString(voucher.getPath());
+                    String fullData = "data:image/jpeg;base64," + imageBase64;
+                    String safeBase64 = JSONObject.quote(fullData); // 会自动加双引号并转义特殊字符
+                    CfLog.i("获取图片base64大小 ====== " + safeBase64.length());
+                    String jsCode = "uploadAndroidImage(" + safeBase64 + ")";
+                    try {
+                        agentWeb.getWebCreator().getWebView().evaluateJavascript(jsCode, value -> {
+                            // 处理返回值
+                            CfLog.i("js 返回结果" + value);
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    TagUtils.tagEvent(getContext(), "js桥接选择图片上传", new StringBuilder().append(AppUtil.getSysName(getContext())).append(",").append("Version:").append(AppUtil.getAppVersion(getContext())));
+                }
+            }
+
+            @Override
+            public void onCancel() {
+                tvwTitle.setTypeface(Typeface.DEFAULT);
+                if (mUploadCallbackAboveL != null) {
+                    try {
+                        mUploadCallbackAboveL.onReceiveValue(null);
+                        mUploadCallbackAboveL = null;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    String jsCode = "uploadAndroidImage(" + ")";
+                    agentWeb.getWebCreator().getWebView().evaluateJavascript(jsCode, value -> {
+                        // 处理返回值
+                        CfLog.i("js 返回结果" + value);
+                    });
+                    TagUtils.tagEvent(getContext(), "js桥接选择图片取消", new StringBuilder().append(AppUtil.getSysName(getContext())).append(",").append("Version:").append(AppUtil.getAppVersion(getContext())));
+                }
+            }
+        });
     }
 
     @Override
@@ -412,6 +479,11 @@ public class BrowserDialog extends BottomPopupView {
             maxHeight = 85;
         }
         return (XPopupUtils.getScreenHeight(getContext()) * maxHeight / 100);
+    }
+
+    public BrowserDialog setMaxHeight(int maxHeight) {
+        this.maxHeight = maxHeight;
+        return this;
     }
 
     private void setWebCookie() {
@@ -451,13 +523,7 @@ public class BrowserDialog extends BottomPopupView {
         js += "const d = new Date();" + "\n";
         if (isActivity) {
             // title:隐藏标题 transform:隐藏由下而上动画
-            js += "var style = document.createElement('style'); \n" +
-                    "style.type = 'text/css'; \n" +
-                    "style.id = 'iOS_inject'; \n" +
-                    "style.innerHTML = '.popup-wrapper > .title{ visibility: hidden !important} " +
-                    ".popup-wrapper{transform: translate3d(0, 0, 0) !important; animation: none !important}'; \n" +
-                    "document.head.appendChild(style);" + "\n" +
-                    "document.querySelector('#iOS_inject').innerHTML = '.rndx{display: none !important;}'; \n";
+            js += "var style = document.createElement('style'); \n" + "style.type = 'text/css'; \n" + "style.id = 'iOS_inject'; \n" + "style.innerHTML = '.popup-wrapper > .title{ visibility: hidden !important} " + ".popup-wrapper{transform: translate3d(0, 0, 0) !important; animation: none !important}'; \n" + "document.head.appendChild(style);" + "\n" + "document.querySelector('#iOS_inject').innerHTML = '.rndx{display: none !important;}'; \n";
         }
         js += "d.setTime(d.getTime() + (24*60*60*1000));" + "\n";
         js += "let expires = \"expires=\"+ d.toUTCString();" + "\n";
@@ -480,6 +546,28 @@ public class BrowserDialog extends BottomPopupView {
         FightFanZhaUtils.reset();
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventVo event) {
+        switch (event.getEvent()) {
+            case EVENT_CHANGE_URL_FANZHA_FINSH:
+                if (!is3rdLink) {
+                    //只有自己的h5域名站作更换域名，重新Load
+                    String newBaseUrl = DomainUtil.getH5Domain2();
+                    if (TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(url)) {
+                        return;
+                    }
+                    String oldBaseUrl = FightFanZhaUtils.getDomain(url);
+                    if (!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)) {
+                        return;
+                    }
+                    String goUrl = url.replace(oldBaseUrl, newBaseUrl);
+                    CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
+                    agentWeb.getUrlLoader().loadUrl(goUrl);
+                }
+                break;
+        }
     }
 
     public class CustomWebViewClient extends WebViewClient {
@@ -551,7 +639,7 @@ public class BrowserDialog extends BottomPopupView {
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView webView, WebResourceRequest webResourceRequest) {
-            if(FightFanZhaUtils.checkRequest(getContext(),webResourceRequest,is3rdLink,url)){
+            if (FightFanZhaUtils.checkRequest(getContext(), webResourceRequest, is3rdLink, url)) {
                 return FightFanZhaUtils.replaceLoadingHtml(is3rdLink);
             }
             return super.shouldInterceptRequest(webView, webResourceRequest);
@@ -559,7 +647,7 @@ public class BrowserDialog extends BottomPopupView {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
-            if(FightFanZhaUtils.checkRequest(getContext(),webResourceRequest,is3rdLink,url)){
+            if (FightFanZhaUtils.checkRequest(getContext(), webResourceRequest, is3rdLink, url)) {
                 return false;
             }
             return super.shouldOverrideUrlLoading(webView, webResourceRequest);
@@ -567,30 +655,6 @@ public class BrowserDialog extends BottomPopupView {
 
 
     }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(EventVo event) {
-        switch (event.getEvent()) {
-            case EVENT_CHANGE_URL_FANZHA_FINSH:
-                if(!is3rdLink){
-                    //只有自己的h5域名站作更换域名，重新Load
-                    String newBaseUrl = DomainUtil.getH5Domain2();
-                    if(TextUtils.isEmpty(newBaseUrl) || TextUtils.isEmpty(url)){
-                        return;
-                    }
-                    String oldBaseUrl = FightFanZhaUtils.getDomain(url);
-                    if(!FightFanZhaUtils.checkBeforeReplace(oldBaseUrl)){
-                        return;
-                    }
-                    String goUrl = url.replace(oldBaseUrl,newBaseUrl);
-                    CfLog.d("fanzha-刷新最新域名加载url： " + goUrl);
-                    agentWeb.getUrlLoader().loadUrl(goUrl);
-                }
-                break;
-        }
-    }
-
 
 
 }
