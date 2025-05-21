@@ -249,6 +249,7 @@ public class BrowserDialog extends BottomPopupView {
                     @Override
                     @JavascriptInterface
                     public void openAndroidFileChooser() {
+                        CfLog.i("*******  openAndroidFileChooser");
                         // 切换到主线程执行
                         new Handler(Looper.getMainLooper()).post(() -> {
                             gotoSelectMedia();
@@ -287,7 +288,7 @@ public class BrowserDialog extends BottomPopupView {
                      * 16(Android 4.1.2) <= API <= 20(Android 4.4W.2)回调此方法
                      */
                     public void openFileChooser(ValueCallback<Uri> valueCallback, String acceptType, String capture) {
-                        CfLog.i("*********");
+                        CfLog.i("*******  openFileChooser");
                         mUploadCallbackBelow = valueCallback;
                         //openImageChooserActivity();
                         gotoSelectMedia();
@@ -298,7 +299,7 @@ public class BrowserDialog extends BottomPopupView {
                      * API >= 21(Android 5.0.1)回调此方法
                      */
                     public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-                        CfLog.i("*********");
+                        CfLog.i("*******  onShowFileChooser");
                         // (1)该方法回调时说明版本API >= 21，此时将结果赋值给 mUploadCallbackAboveL，使之 != null
                         mUploadCallbackAboveL = filePathCallback;
                         //openImageChooserActivity();
@@ -406,6 +407,7 @@ public class BrowserDialog extends BottomPopupView {
                     }
                     try {
                         mUploadCallbackAboveL.onReceiveValue(results.toArray(new Uri[results.size()]));
+                        mUploadCallbackAboveL = null;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -449,6 +451,7 @@ public class BrowserDialog extends BottomPopupView {
                 if (mUploadCallbackAboveL != null) {
                     try {
                         mUploadCallbackAboveL.onReceiveValue(null);
+                        mUploadCallbackAboveL = null;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
