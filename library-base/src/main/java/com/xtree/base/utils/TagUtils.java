@@ -62,8 +62,6 @@ public class TagUtils {
     private static String CHANNEL_NAME = ""; // 本包的渠道名,关于页显示当前安装包的渠道名用的。
     private static String MEDIA_SOURCE = ""; // 旧包的渠道名,就是升级到最新官方安装包前的渠道名。
     private static boolean IS_TAG = false; // 是否开启打点统计, true:开启, false:关闭
-    private static String MIXPANEL_TOKEN = "******";
-    private static String MS_SECRET_KEY = "******";
     private static String USER_ID = "";
     private static String USER_NAME = SPUtils.getInstance().getString(SPKeyGlobal.USER_NAME);
     private static String deviceId;
@@ -75,54 +73,13 @@ public class TagUtils {
     }
 
     public static void init(Context ctx, String[] token, String channel, String userId, boolean isTag) {
-        MIXPANEL_TOKEN = token[0];
-        MS_SECRET_KEY = token[1];
         CHANNEL_NAME = channel;
         USER_ID = userId;
         IS_TAG = isTag;
-        if (!IS_TAG) {
-            return;
-        }
-//        initMixpanel(ctx);
-//        initAppCenter(ctx);
     }
 
     public static boolean isTag() {
         return IS_TAG;
-    }
-
-    private static void initMixpanel(Context ctx) {
-        String channelName = CHANNEL_NAME; // 渠道号
-        JSONObject props = new JSONObject();
-        try {
-            props.put("name", channelName);
-        } catch (JSONException e) {
-        }
-        initMixpanel(ctx, props);
-    }
-
-    private static void initAppCenter(Context ctx) {
-        AppCenter.start((Application) ctx.getApplicationContext(), MS_SECRET_KEY, Analytics.class, Crashes.class);
-        AppCenter.setLogLevel(Log.VERBOSE);
-    }
-
-    private static void initMixpanel(Context ctx, JSONObject props) {
-        CfLog.i("******");
-
-        MixpanelAPI.getInstance(ctx, MIXPANEL_TOKEN, props, true);
-        if (USER_ID != null && !USER_ID.isEmpty()) {
-            MixpanelAPI.getInstance(ctx, MIXPANEL_TOKEN, true).identify(USER_ID);
-        } else {
-            /*SharedPreferences sp = ctx.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-            String dvcId = sp.getString("dvcId", "");
-            if (dvcId.isEmpty()) {
-                dvcId = TimeUtils.getCurDate() + "-" + UUID.randomUUID().toString().substring(0, 4);
-                sp.edit().putString("dvcId", dvcId).commit();
-            }*/
-            String dvcId = getDevId(ctx);
-            CfLog.i("dvcId: " + dvcId);
-            MixpanelAPI.getInstance(ctx, MIXPANEL_TOKEN, true).identify(dvcId);
-        }
     }
 
     public static void logEvent(Context ctx, String event) {
@@ -131,9 +88,6 @@ public class TagUtils {
 
     public static void tagEvent(Context ctx, String event) {
         CfLog.i(ctx.getClass().getSimpleName() + ", event: " + event);
-//        tagAppsFlyer(ctx, event, getMap(null, null));
-//        tagMixpanel(ctx, event, null);
-//        tagAppCenter(event);
         tagSentry(event, event);
     }
 
@@ -143,56 +97,7 @@ public class TagUtils {
 
     public static void tagEvent(Context ctx, String event, String key, String value) {
         CfLog.i(ctx.getClass().getSimpleName() + ", event: " + event + ", key: " + key + ", value: " + value);
-
-//        tagAppsFlyer(ctx, event, getMap(key, value));
-//        tagMixpanel(ctx, event, key, value);
-//        tagAppCenter(event, getMap(key, value));
-//        tagAppCenter(event, getMap(key, value));
-        tagSentry(event, getMap(key, value));
-    }
-
-    public static void tagEvent(Context ctx, String event, HashMap<String, Object> map) {
-        CfLog.i(ctx.getClass().getSimpleName() + ", event: " + event + ", map: " + new Gson().toJson(map));
-
-        if (!map.containsKey("uid")) {
-            map.put("uid", USER_ID);
-        }
-//        tagAppsFlyer(ctx, event, map);
-//        tagMixpanel(ctx, event, getJson(map));
-//        tagAppCenter(event, getMap(map));
-        tagSentry(event, getMap(map));
-    }
-
-    private static HashMap<String, String> getMap(HashMap<String, Object> map) {
-        if (map == null) {
-            return null;
-        }
-        HashMap<String, String> tmp = new HashMap<>();
-        Iterator it = map.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
-            tmp.put((String) entry.getKey(), String.valueOf(entry.getValue()));
-        }
-
-        return tmp;
-    }
-
-    /**
-     * 注册/登录成功事件，带uerId
-     *
-     * @param ctx   Context
-     * @param event event
-     * @param uid   userId
-     */
-    public static void loginEvent(Context ctx, String event, String uid) {
-        CfLog.i(ctx.getClass().getSimpleName() + ", event: " + event + ", uid: " + uid);
-
-        USER_ID = uid;
-        //HashMap<String, Object> map = new HashMap<>();
-        //map.put("uid", uid);
-        //tagAppsFlyer(ctx, event, getMap("uid", uid));
-        MixpanelAPI.getInstance(ctx, MIXPANEL_TOKEN, true).identify(uid);
-        tagEvent(ctx, event, "uid", uid);
+        tagSentry(key, value, getMap(key, value));
     }
 
     /**
@@ -205,103 +110,49 @@ public class TagUtils {
         if (!IS_TAG) {
             return;
         }
-
         int date = ctx.getSharedPreferences("myPrefs", Context.MODE_PRIVATE).getInt("lastTagDate", 0);
         int curDate = Integer.parseInt(TimeUtils.getCurDate());
         if (date != curDate) {
             CfLog.d("event: tagDaily, " + curDate);
             ctx.getSharedPreferences("myPrefs", Context.MODE_PRIVATE).edit().putInt("lastTagDate", curDate).commit();
-//            tagAppCenter("tagDaily"); // AppCenter MS
-//            tagAppsFlyer(ctx, "tagDaily", null);
-//            tagMixpanel(ctx, "tagDaily", null);
             tagSentry("tagDaily", "" + curDate);
         }
     }
 
-    private static void tagAppsFlyer(Context ctx, String event, HashMap<String, Object> map) {
-        //AppsFlyerLib.getInstance().logEvent(ctx, event, map);
-    }
-
-    private static void tagMixpanel(Context ctx, String event, String key, Object value) {
-        if (!IS_TAG || isFrequent(event, TAG_MP)) {
-            return;
-        }
-        JSONObject props = getJson(key, value);
-        tagMixpanel(ctx, event, props);
-    }
-
-    private static void tagMixpanel(Context ctx, String event, JSONObject props) {
-        if (!IS_TAG || isFrequent(event, TAG_MP)) {
-            return;
-        }
-        if (props == null) {
-            props = new JSONObject();
-        }
-        if (!props.has("uid") && !TextUtils.isEmpty(USER_ID)) {
-            try {
-                props.put("uid", USER_ID);
-            } catch (JSONException e) {
-            }
-        }
-        MixpanelAPI.getInstance(ctx, MIXPANEL_TOKEN, true).track(event, props);
-    }
-
-    private static void tagAppCenter(String event) {
-        if (!IS_TAG || isFrequent(event, TAG_AC)) {
-            return;
-        }
-        Analytics.trackEvent(event); // AppCenter MS
-    }
-
-    private static void tagAppCenter(String event, Map<String, String> map) {
-        if (!IS_TAG || isFrequent(event, TAG_AC)) {
-            return;
-        }
-        Analytics.trackEvent(event, map); // AppCenter MS
-    }
 
     private static void tagSentry(String event, String value) {
         if (!IS_TAG || isFrequent(event, TAG_ST)) {
             return;
         }
-        SentryEvent mSentryEvent = new SentryEvent();
-        mSentryEvent.setTag(event, value);
-        Sentry.captureEvent(mSentryEvent);
+        tagSentry(event, value, null);
     }
 
-//    private static void tagSentry(String event, Map<String, String> map) {
-//        if (!IS_TAG || isFrequent(event, TAG_ST)) {
-//            return;
-//        }
-//        SentryEvent mSentryEvent = new SentryEvent();
-//        mSentryEvent.setTags(map);
-//        Sentry.captureEvent(mSentryEvent);
-//    }
-
-    private static void tagSentry(String event, Map<String, String> map) {
+    private static void tagSentry(String event, String value, Map<String, String> map) {
         if (!IS_TAG || isFrequent(event, TAG_ST)) {
             return;
         }
         SentryEvent sentryEvent = new SentryEvent();
-        // 设置事件等级为 info（不会当做 error 出现在 Issues 中）
-        sentryEvent.setLevel(SentryLevel.INFO);
-        // 设置 transaction 名称
+        sentryEvent.setLevel(SentryLevel.INFO); // 设置为 info，不进入 Issues 列表
         sentryEvent.setTransaction(event);
-        // 设置 tags
-        if (map != null) {
+
+        // 拼接 message
+        StringBuilder messageBuilder = new StringBuilder();
+        messageBuilder.append("埋点事件：").append(event);
+        if (map != null && !map.isEmpty()) {
+            messageBuilder.append(" | 数据：");
             for (Map.Entry<String, String> entry : map.entrySet()) {
+                messageBuilder.append(entry.getKey()).append("=").append(entry.getValue()).append(" ");
                 sentryEvent.setTag(entry.getKey(), entry.getValue());
             }
+        } else {
+            messageBuilder.append(" | 数据: Event = ").append(event).append(", Value = ").append(value);
+            sentryEvent.setTag(event, value);
         }
-        // 设置 message
+
         Message message = new Message();
-        message.setMessage("埋点事件：" + event);
-        // 将 tag 的 value 作为 message 的参数
-        if (map != null) {
-            List<String> params = new ArrayList<>(map.values());
-            message.setParams(params);
-        }
+        message.setMessage(messageBuilder.toString().trim());
         sentryEvent.setMessage(message);
+
         // 上报事件
         Sentry.captureEvent(sentryEvent);
     }
