@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -52,6 +53,8 @@ public class LoadingDialog extends BottomPopupView {
 
     private void initView() {
         ImageView ivwLoading = findViewById(R.id.ivw_loading);
+        TextView tvwLoading = findViewById(R.id.tvwLoading);
+        tvwLoading.setText("博世体育");
         ConstraintLayout clLoading = findViewById(R.id.cl_loading);
 
         clLoading.setOnClickListener(v -> {
