@@ -269,6 +269,7 @@
                     android:orientation="vertical"
                     android:padding="@dimen/layout_margin"
                     android:visibility="gone"
+                    tools:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imv_menu_2">
@@ -380,7 +381,8 @@
                             android:id="@+id/tvw_bonus"
                             style="@style/style_menu_black"
                             android:drawableTop="@mipmap/me_bonus"
-                            android:text="@string/txt_bonus" />
+                            android:text="@string/txt_bonus"
+                            android:visibility="invisible"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -393,7 +395,8 @@
                     android:padding="@dimen/layout_margin"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imv_menu_2">
+                    app:layout_constraintTop_toBottomOf="@id/imv_menu_2"
+                    tools:visibility="gone">
 
                     <LinearLayout
                         android:id="@+id/ll_menu_client_01"
