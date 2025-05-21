@@ -164,7 +164,7 @@ public class TopSpeedDomainFloatingWindows extends FloatingWindows {
     public TopSpeedDomainFloatingWindows(Context context) {
         super(context);
         onCreate(R.layout.main_layout_top_speed_domain);
-        setIcon(0);
+        setIcon(R.mipmap.main_icon_shadow);
     }
 
     @Override
