@@ -14,6 +14,7 @@ import com.xtree.bet.bean.request.im.GetGetDeltaBetTradeReq;
 import com.xtree.bet.bean.request.im.GetStatementReq;
 import com.xtree.bet.bean.request.im.OutrightEventsReq;
 import com.xtree.bet.bean.request.im.AllSportCountReq;
+import com.xtree.bet.bean.request.im.PlaceBetReq;
 import com.xtree.bet.bean.request.im.SelectedEventInfoReq;
 import com.xtree.bet.bean.request.im.StatementReq;
 import com.xtree.bet.bean.request.pm.BtRecordReq;
@@ -173,7 +174,7 @@ public interface IMApiService {
      */
     @POST(forwardPath)
     @Headers({"Content-Type: application/json; charset=utf-8"})
-    Single<BaseResponse<PlaceBet>> placeBet(@Body Map<String, String> map);
+    Single<BaseResponse<PlaceBet>> placeBet(@Body BaseIMRequest<PlaceBetReq> map);
 
     /**
      * 索取投注账目

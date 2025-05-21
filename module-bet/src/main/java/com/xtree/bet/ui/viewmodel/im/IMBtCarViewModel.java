@@ -93,8 +93,10 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
                 wagerSelectionInfo.Handicap = option.getHandicap();
             }
             wagerSelectionInfo.RefId = Long.parseLong(betConfirmOption.getOption().getId());
+            //todo 这里没有判断冠军赛事和定时赛事
             //如果是冠军赛事，这个值为0
             wagerSelectionInfo.BetTypeSelectionId = Integer.parseInt(betConfirmOption.getOption().getId());
+            //todo 这里没有判断冠军赛事和定时赛事
             //如果是定时赛事，这个值为0
             wagerSelectionInfo.OutrightTeamId = (int) Long.parseLong(betConfirmOption.getOption().getId());
             list.add(wagerSelectionInfo);
@@ -139,42 +141,6 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
                 }
             }
         });
-    }
-
-    /**
-     * 查询最大最小投注金额
-     */
-    private void queryMarketMaxMinBetMoney(List<BetConfirmOption> betConfirmOptionList) {
-        BtCarCgReq btCarCgReq = getBtCarCgReq(betConfirmOptionList);
-
-        Disposable disposable = (Disposable) model.getPMApiService().queryMarketMaxMinBetMoney(btCarCgReq).compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<List<CgOddLimitInfo>>() {
-                    @Override
-                    public void onResult(List<CgOddLimitInfo> cgOddLimitInfos) {
-
-                        List<CgOddLimit> cgOddLimitInfoList = new ArrayList<>();
-                        if (betConfirmOptionList.size() == 1) {
-                            CgOddLimitInfo cgOddLimitInfo = cgOddLimitInfos.get(0);
-                            cgOddLimitInfo.seriesOdds = String.valueOf(betConfirmOptionList.get(0).getOption().getRealOdd());
-                            cgOddLimitInfo.type = "1";
-                            cgOddLimitInfoList.add(new CgOddLimitPm(cgOddLimitInfo));
-                        } else {
-                            if (!cgOddLimitInfos.isEmpty()) {
-                                for (CgOddLimitInfo cgOddLimitInfo : cgOddLimitInfos) {
-                                    cgOddLimitInfoList.add(new CgOddLimitPm(cgOddLimitInfo));
-                                }
-                            }
-                        }
-
-                        cgOddLimitDate.postValue(cgOddLimitInfoList);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        //super.onError(t);
-                    }
-                });
-        addSubscribe(disposable);
     }
 
     @NonNull

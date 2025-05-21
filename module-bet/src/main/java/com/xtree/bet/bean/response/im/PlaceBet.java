@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlaceBet implements BaseBean {
+
+
     public List<WagerSelectionInfo> WagerSelectionInfos = new ArrayList<>();
     public List<AcceptedWagerSelection> AcceptedWagerSelectionList = new ArrayList<>();
     public List<UpdatedWagerSelectionInfo> UpdatedWagerSelectionInfos = new ArrayList<>();
@@ -59,4 +61,59 @@ public class PlaceBet implements BaseBean {
         }
     };
 
+    public List<WagerSelectionInfo> getWagerSelectionInfos() {
+        return WagerSelectionInfos;
+    }
+
+    public void setWagerSelectionInfos(List<WagerSelectionInfo> wagerSelectionInfos) {
+        WagerSelectionInfos = wagerSelectionInfos;
+    }
+
+    public List<AcceptedWagerSelection> getAcceptedWagerSelectionList() {
+        return AcceptedWagerSelectionList;
+    }
+
+    public void setAcceptedWagerSelectionList(List<AcceptedWagerSelection> acceptedWagerSelectionList) {
+        AcceptedWagerSelectionList = acceptedWagerSelectionList;
+    }
+
+    public List<UpdatedWagerSelectionInfo> getUpdatedWagerSelectionInfos() {
+        return UpdatedWagerSelectionInfos;
+    }
+
+    public void setUpdatedWagerSelectionInfos(List<UpdatedWagerSelectionInfo> updatedWagerSelectionInfos) {
+        UpdatedWagerSelectionInfos = updatedWagerSelectionInfos;
+    }
+
+    public List<UpdatedBetSetting> getUpdatedBetSetting() {
+        return UpdatedBetSetting;
+    }
+
+    public void setUpdatedBetSetting(List<UpdatedBetSetting> updatedBetSetting) {
+        UpdatedBetSetting = updatedBetSetting;
+    }
+
+    public double getAvailableBalance() {
+        return AvailableBalance;
+    }
+
+    public void setAvailableBalance(double availableBalance) {
+        AvailableBalance = availableBalance;
+    }
+
+    public int getStatusCode() {
+        return StatusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        StatusCode = statusCode;
+    }
+
+    public String getStatusDesc() {
+        return StatusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        StatusDesc = statusDesc;
+    }
 }
