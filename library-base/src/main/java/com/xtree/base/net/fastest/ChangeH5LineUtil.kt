@@ -7,6 +7,7 @@ import com.drake.net.utils.fastest
 import com.drake.net.utils.scopeNet
 import com.google.gson.Gson
 import com.xtree.base.R
+import com.xtree.base.global.SPKeyGlobal
 import com.xtree.base.utils.AESUtil
 import com.xtree.base.utils.CfLog
 import com.xtree.base.utils.DomainUtil
@@ -20,16 +21,20 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import me.xtree.mvvmhabit.utils.SPUtils
 import me.xtree.mvvmhabit.utils.Utils
 import okhttp3.Response
 import org.greenrobot.eventbus.EventBus
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 import java.util.concurrent.CancellationException
 
 class ChangeH5LineUtil private constructor() {
 
     init {
+        domainCache = Gson().fromJson(
+            SPUtils.getInstance().getString(SPKeyGlobal.API_DOMAIN_CACHE) ?: "",
+            Domain::class.java
+        )
+
         mCurH5DomainList = ArrayList()
         mThirdDomainList = ArrayList()
     }
@@ -38,16 +43,22 @@ class ChangeH5LineUtil private constructor() {
         @JvmStatic
         val instance: ChangeH5LineUtil by lazy { ChangeH5LineUtil() }
 
+        //远程域名缓存
+        var domainCache: Domain? = null
+
         /**
          * 当前预埋域名列表
          */
         lateinit var mCurH5DomainList: MutableList<String>
         lateinit var mThirdDomainList: MutableList<String>
+
         private var mIsRunning: Boolean = false
         @set:Synchronized
         @get:Synchronized
         private var mIsFromFanZha:  Boolean = false //是否来自h5反诈劫持后的测速任务
     }
+    //使用过的H5域名
+    private val usedH5DomainList = mutableSetOf<String>()
 
     fun start() {
         if (!mIsRunning) {
@@ -87,9 +98,19 @@ class ChangeH5LineUtil private constructor() {
     }
 
     private fun getFastestH5Domain(isThird: Boolean) {
+
+        // 剩下还没用过的域名
+        var availableDomains = mCurH5DomainList.filterNot { it in usedH5DomainList }
+
+        // 如果都用过了，就重置
+        if (availableDomains.isEmpty()) {
+            usedH5DomainList.clear()
+            availableDomains = mCurH5DomainList
+        }
+
         scopeNet {
             // 并发请求本地配置的域名 命名参数 uid = "the fastest line" 用于库自动取消任务
-            val domainTasks = mCurH5DomainList.map { host ->
+            val domainTasks = availableDomains.map { host ->
                 Get<Response>(
                     getFastestAPI(host,FASTEST_H5_API),
                     tag = "the_fastest_line", block = {
@@ -107,30 +128,49 @@ class ChangeH5LineUtil private constructor() {
                         try {
                             val result = it.await()
                             mutex.withLock {
-                                val fullUrl = result.request.url.toString()
-                                val url = fullUrl.replace(FASTEST_H5_API, "")
 
-                                result.body?.string()?.let {
-                                    val doc: Document = Jsoup.parse(it)
-                                    val rootDiv = doc.select("div.root").first()
-                                    if (rootDiv != null) {
-                                        val dataTargetValue = rootDiv.attr("data-target")
-                                        if (dataTargetValue.equals("specialFeature-1691834599183")) {
-                                            Net.cancelGroup(FASTEST_GOURP_NAME_H5)
-                                            CfLog.e("域名：H5------$ " + url )
-                                            DomainUtil.setH5Url(url)
-                                            mIsRunning = false
-                                            if(mIsFromFanZha){
-                                                CfLog.e("域名：H5--发送重刷- $ " + url )
-                                                EventBus.getDefault()
-                                                    .post(EventVo(EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH, ""))
-                                                mIsFromFanZha = false
-                                                FightFanZhaUtils.reset()
-                                            }
+                                if (result.code == 200) {
+                                    val fullUrl = result.request.url.toString()
+                                    val url = fullUrl.replace(FASTEST_H5_API, "")
+
+                                    if (mIsRunning) {
+                                        Net.cancelGroup(FASTEST_GOURP_NAME_H5)
+                                        CfLog.e("域名：H5------$ " + url )
+                                        DomainUtil.setH5Url(url)
+                                        if(mIsFromFanZha){
+                                            CfLog.e("域名：H5--发送重刷- $ " + url )
+                                            EventBus.getDefault()
+                                                .post(EventVo(EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH, ""))
+                                            mIsFromFanZha = false
+                                            FightFanZhaUtils.reset()
                                         }
+                                        //将用过域名放入数组
+                                        usedH5DomainList.add(DomainUtil.getH5Domain2())
+                                        mIsRunning = false
                                     }
-
                                 }
+
+                                //H5已经取消此target
+//                                result.body?.string()?.let {
+//                                    val doc: Document = Jsoup.parse(it)
+//                                    val rootDiv = doc.select("div.root").first()
+//                                    if (rootDiv != null) {
+//                                        val dataTargetValue = rootDiv.attr("data-target")
+//                                        if (dataTargetValue.equals("specialFeature-1691834599183")) {
+//                                            Net.cancelGroup(FASTEST_GOURP_NAME_H5)
+//                                            CfLog.e("域名：H5------$ " + url )
+//                                            DomainUtil.setH5Url(url)
+//                                            mIsRunning = false
+//                                            if(mIsFromFanZha){
+//                                                CfLog.e("域名：H5--发送重刷- $ " + url )
+//                                                EventBus.getDefault()
+//                                                    .post(EventVo(EventConstant.EVENT_CHANGE_URL_FANZHA_FINSH, ""))
+//                                                mIsFromFanZha = false
+//                                                FightFanZhaUtils.reset()
+//                                            }
+//                                        }
+//                                    }
+//                                }
                             }
                         } catch (e: Exception) {
                             try {
@@ -164,7 +204,7 @@ class ChangeH5LineUtil private constructor() {
     }
 
     /**
-     * 三方域名存储地址竞速  todo   修改
+     * 三方域名存储地址竞速
      */
     private fun getThirdFastestDomain(isH5: Boolean) {
         scopeNet {
@@ -194,7 +234,21 @@ class ChangeH5LineUtil private constructor() {
 
                             getFastestH5Domain(isThird = true)
                         } catch (e: Exception) {
-                            mIsRunning = false
+                            domainCache?.let {
+                                if (!it.h5.isNullOrEmpty()) {
+                                    mCurH5DomainList.clear()
+                                }
+                                it.h5.forEachIndexed { _, domain ->
+                                    run {
+                                        if (!mCurH5DomainList.contains(domain)) {
+                                            mCurH5DomainList.add(domain)
+                                        }
+                                    }
+                                }
+                                getFastestH5Domain(isThird = true)
+                            }?:run {
+                                mIsRunning = false
+                            }
                             //ToastUtils.showLong("切换H5线路失败，获取三方域名存储地址失败，请检查手机网络连接情况")
                         }
                         data
@@ -204,6 +258,18 @@ class ChangeH5LineUtil private constructor() {
                 fastest(domainTasks, "the_fastest_line_third")
             } catch (e: Exception) {
                 CfLog.e(e.toString())
+                domainCache?.let {
+                    if (!it.h5.isNullOrEmpty()) {
+                        mCurH5DomainList.clear()
+                    }
+                    it.h5.forEachIndexed { _, domain ->
+                        run {
+                            if (!mCurH5DomainList.contains(domain)) {
+                                mCurH5DomainList.add(domain)
+                            }
+                        }
+                    }
+                }
                 getFastestH5Domain(isThird = true)
                 //ToastUtils.showLong("切换H5线路失败，获取三方域名存储地址失败，请检查手机网络连接情况")
             }
