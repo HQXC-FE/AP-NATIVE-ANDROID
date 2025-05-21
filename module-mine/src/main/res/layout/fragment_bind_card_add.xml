@@ -222,7 +222,8 @@
 
                             <TextView
                                 style="@style/style_bind_confirm_bank_title"
-                                android:text="@string/txt_nickname_c" />
+                                android:text="@string/txt_nickname_c"
+                                android:textColor="@color/clr_white"/>
 
                             <TextView
                                 android:id="@+id/tvw_nickname"
@@ -235,7 +236,8 @@
 
                             <TextView
                                 style="@style/style_bind_confirm_bank_title"
-                                android:text="@string/txt_bind_bank_c" />
+                                android:text="@string/txt_bind_bank_c"
+                                android:textColor="@color/clr_white"/>
 
                             <TextView
                                 android:id="@+id/tvw_bank"
@@ -248,7 +250,8 @@
 
                             <TextView
                                 style="@style/style_bind_confirm_bank_title"
-                                android:text="@string/txt_bank_province_c" />
+                                android:text="@string/txt_bank_province_c"
+                                android:textColor="@color/clr_white"/>
 
                             <TextView
                                 android:id="@+id/tvw_bank_province"
@@ -261,7 +264,8 @@
 
                             <TextView
                                 style="@style/style_bind_confirm_bank_title"
-                                android:text="@string/txt_bank_city_c" />
+                                android:text="@string/txt_bank_city_c"
+                                android:textColor="@color/clr_white"/>
 
                             <TextView
                                 android:id="@+id/tvw_bank_city"
@@ -274,7 +278,8 @@
 
                             <TextView
                                 style="@style/style_bind_confirm_bank_title"
-                                android:text="@string/txt_branch_name_c" />
+                                android:text="@string/txt_branch_name_c"
+                                android:textColor="@color/clr_white"/>
 
                             <TextView
                                 android:id="@+id/tvw_branch"
@@ -287,7 +292,8 @@
 
                             <TextView
                                 style="@style/style_bind_confirm_bank_title"
-                                android:text="@string/txt_acc_name_c" />
+                                android:text="@string/txt_acc_name_c"
+                                android:textColor="@color/clr_white"/>
 
                             <TextView
                                 android:id="@+id/tvw_real_name"
@@ -300,6 +306,7 @@
 
                             <TextView
                                 style="@style/style_bind_confirm_bank_title"
+                                android:textColor="@color/white"
                                 android:text="@string/txt_bank_acc_c" />
 
                             <TextView

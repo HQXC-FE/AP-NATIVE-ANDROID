@@ -930,7 +930,7 @@
         <item name="android:layout_marginEnd">@dimen/layout_margin</item>
         <item name="android:gravity">start</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/clr_grey_80</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">14sp</item>
     </style>
 
