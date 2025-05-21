@@ -49,6 +49,7 @@ import com.xtree.base.BuildConfig;
 import com.xtree.base.R;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterActivityPath;
+import com.xtree.base.utils.AppUtil;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
@@ -428,6 +429,7 @@ public class BrowserDialog extends BottomPopupView {
                         // 处理返回值
                         CfLog.i("js 返回结果" + value);
                     });
+                    TagUtils.tagEvent(getContext(), "js桥接选择图片上传", new StringBuilder().append(AppUtil.getSysName(getContext())).append(",").append("Version:").append(AppUtil.getAppVersion(getContext())));
                 }
             }
 
@@ -442,6 +444,7 @@ public class BrowserDialog extends BottomPopupView {
                         // 处理返回值
                         CfLog.i("js 返回结果" + value);
                     });
+                    TagUtils.tagEvent(getContext(), "js桥接选择图片取消", new StringBuilder().append(AppUtil.getSysName(getContext())).append(",").append("Version:").append(AppUtil.getAppVersion(getContext())));
                 }
             }
         });
