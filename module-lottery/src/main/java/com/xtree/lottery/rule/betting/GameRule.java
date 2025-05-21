@@ -2,6 +2,7 @@ package com.xtree.lottery.rule.betting;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class GameRule {
@@ -11,6 +12,9 @@ public class GameRule {
     public String join;
     public boolean hasZero;
     public String description;
+    private final Pattern DELIMITER_PATTERN = Pattern.compile("(,|;|，|；|\\n)");
+
+
 
     public GameRule(List<String> matcherNames, String regex, String filter, String join, boolean hasZero, String description) {
         this.matcherNames = matcherNames;
@@ -22,15 +26,16 @@ public class GameRule {
     }
 
     public List<String> filter(String codes, String filter) {
+
         switch (filter) {
             case "rankFilter":
             case "choose5Filter":
-                return Arrays.stream(codes.split("[,;，；\n]"))
+                return Arrays.stream(DELIMITER_PATTERN.split(codes))
                         .map(String::trim)
-                        .filter(s -> !s.isEmpty())
+                        .filter(s -> !s.isEmpty() && !isDelimiter(s))
                         .collect(Collectors.toList());
             case "k3Filter":
-                return Arrays.stream(codes.split("[, ;\t，；\n]"))
+                return Arrays.stream(DELIMITER_PATTERN.split(codes))
                         .map(String::trim)
                         .filter(s -> !s.isEmpty())
                         .map(item -> item.chars().mapToObj(c -> String.valueOf((char) c)).sorted().collect(Collectors.joining()))
@@ -38,17 +43,21 @@ public class GameRule {
                         .collect(Collectors.toList());
             case "dif2Filter":
             case "sk2Filter":
-                return Arrays.stream(codes.split("[, ;\t，；\n]"))
+                return Arrays.stream(DELIMITER_PATTERN.split(codes))
                         .map(String::trim)
                         .filter(s -> !s.isEmpty())
                         .map(item -> item.chars().mapToObj(c -> String.valueOf((char) c)).sorted().collect(Collectors.joining()))
                         .filter(item -> item.chars().distinct().count() == 2)
                         .collect(Collectors.toList());
             default:
-                return Arrays.stream(codes.split("[, ;\t，；\n]"))
+                return Arrays.stream(DELIMITER_PATTERN.split(codes))
                         .map(String::trim)
-                        .filter(s -> !s.isEmpty())
                         .collect(Collectors.toList());
         }
+    }
+
+    private static boolean isDelimiter(String s) {
+        return s.equals(",") || s.equals(";") || s.equals("，") ||
+                s.equals("；") || s.equals("\n");
     }
 }
