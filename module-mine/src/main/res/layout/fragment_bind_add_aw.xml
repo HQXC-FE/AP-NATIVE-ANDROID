@@ -240,7 +240,8 @@
                 <TextView
                     android:id="@+id/tvw_name"
                     style="@style/style_bind_confirm_bank_title"
-                    tools:text="@string/txt_alipay_name" />
+                    tools:text="@string/txt_alipay_name"
+                    android:textColor="@color/clr_white"/>
 
                 <TextView
                     android:id="@+id/tvw_name_content"
@@ -255,7 +256,8 @@
                 <TextView
                     android:id="@+id/tvw_phone"
                     style="@style/style_bind_confirm_bank_title"
-                    tools:text="@string/txt_alipay_phone" />
+                    tools:text="@string/txt_alipay_phone"
+                    android:textColor="@color/clr_white"/>
 
                 <TextView
                     android:id="@+id/tvw_phone_content"
@@ -270,7 +272,8 @@
                 <TextView
                     android:id="@+id/tvw_nickname"
                     style="@style/style_bind_confirm_bank_title"
-                    tools:text="@string/txt_alipay_nickname" />
+                    tools:text="@string/txt_alipay_nickname"
+                    android:textColor="@color/clr_white"/>
 
                 <TextView
                     android:id="@+id/tvw_nickname_content"
@@ -282,7 +285,8 @@
                 android:id="@+id/tvw_code"
                 style="@style/style_bind_confirm_bank_title"
                 android:layout_marginTop="12dp"
-                tools:text="@string/txt_alipay_code" />
+                tools:text="@string/txt_alipay_code"
+                android:textColor="@color/clr_white"/>
 
             <ImageView
                 android:id="@+id/iv_code"
