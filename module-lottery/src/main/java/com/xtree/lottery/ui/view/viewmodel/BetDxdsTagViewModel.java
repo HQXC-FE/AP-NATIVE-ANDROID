@@ -84,7 +84,7 @@ public class BetDxdsTagViewModel {
         for (int i = 0; i < bindModels.size(); i++) {
             BetDxdsTagModel dxdsTagModel = (BetDxdsTagModel) bindModels.get(i);
             if (Boolean.TRUE.equals(dxdsTagModel.clicked.get())) {
-                codesBuildr.append(dxdsTagModel.getCode());
+                codesBuildr.append(dxdsTagModel.getCode() != null ? dxdsTagModel.getCode() : dxdsTagModel.getTag());
                 codesBuildr.append("&");
             }
         }
