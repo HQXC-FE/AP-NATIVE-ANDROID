@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import io.sentry.SentryLevel;
+import io.sentry.protocol.Message;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
 import io.sentry.Sentry;
@@ -79,8 +81,8 @@ public class TagUtils {
         if (!IS_TAG) {
             return;
         }
-        initMixpanel(ctx);
-        initAppCenter(ctx);
+//        initMixpanel(ctx);
+//        initAppCenter(ctx);
     }
 
     public static boolean isTag() {
@@ -127,9 +129,9 @@ public class TagUtils {
 
     public static void tagEvent(Context ctx, String event) {
         CfLog.i(ctx.getClass().getSimpleName() + ", event: " + event);
-        tagAppsFlyer(ctx, event, getMap(null, null));
-        tagMixpanel(ctx, event, null);
-        tagAppCenter(event);
+//        tagAppsFlyer(ctx, event, getMap(null, null));
+//        tagMixpanel(ctx, event, null);
+//        tagAppCenter(event);
         tagSentry(event, event);
     }
 
@@ -140,10 +142,10 @@ public class TagUtils {
     public static void tagEvent(Context ctx, String event, String key, String value) {
         CfLog.i(ctx.getClass().getSimpleName() + ", event: " + event + ", key: " + key + ", value: " + value);
 
-        tagAppsFlyer(ctx, event, getMap(key, value));
-        tagMixpanel(ctx, event, key, value);
-        tagAppCenter(event, getMap(key, value));
-        tagAppCenter(event, getMap(key, value));
+//        tagAppsFlyer(ctx, event, getMap(key, value));
+//        tagMixpanel(ctx, event, key, value);
+//        tagAppCenter(event, getMap(key, value));
+//        tagAppCenter(event, getMap(key, value));
         tagSentry(event, getMap(key, value));
     }
 
@@ -153,9 +155,9 @@ public class TagUtils {
         if (!map.containsKey("uid")) {
             map.put("uid", USER_ID);
         }
-        tagAppsFlyer(ctx, event, map);
-        tagMixpanel(ctx, event, getJson(map));
-        tagAppCenter(event, getMap(map));
+//        tagAppsFlyer(ctx, event, map);
+//        tagMixpanel(ctx, event, getJson(map));
+//        tagAppCenter(event, getMap(map));
         tagSentry(event, getMap(map));
     }
 
@@ -207,9 +209,9 @@ public class TagUtils {
         if (date != curDate) {
             CfLog.d("event: tagDaily, " + curDate);
             ctx.getSharedPreferences("myPrefs", Context.MODE_PRIVATE).edit().putInt("lastTagDate", curDate).commit();
-            tagAppCenter("tagDaily"); // AppCenter MS
-            tagAppsFlyer(ctx, "tagDaily", null);
-            tagMixpanel(ctx, "tagDaily", null);
+//            tagAppCenter("tagDaily"); // AppCenter MS
+//            tagAppsFlyer(ctx, "tagDaily", null);
+//            tagMixpanel(ctx, "tagDaily", null);
             tagSentry("tagDaily", "" + curDate);
         }
     }
@@ -265,13 +267,34 @@ public class TagUtils {
         Sentry.captureEvent(mSentryEvent);
     }
 
+//    private static void tagSentry(String event, Map<String, String> map) {
+//        if (!IS_TAG || isFrequent(event, TAG_ST)) {
+//            return;
+//        }
+//        SentryEvent mSentryEvent = new SentryEvent();
+//        mSentryEvent.setTags(map);
+//        Sentry.captureEvent(mSentryEvent);
+//    }
+
     private static void tagSentry(String event, Map<String, String> map) {
         if (!IS_TAG || isFrequent(event, TAG_ST)) {
             return;
         }
-        SentryEvent mSentryEvent = new SentryEvent();
-        mSentryEvent.setTags(map);
-        Sentry.captureEvent(mSentryEvent);
+        SentryEvent sentryEvent = new SentryEvent();
+        Message message = new Message();
+        message.setMessage(event);
+        sentryEvent.setMessage(message);
+        sentryEvent.setLevel(SentryLevel.INFO);
+        if (map != null && !map.isEmpty()) {
+            int limit = 20;
+            int count = 0;
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                if (++count > limit) break;
+                sentryEvent.setTag(entry.getKey(), entry.getValue());
+            }
+        }
+        // 发送事件
+        Sentry.captureEvent(sentryEvent);
     }
 
     /**

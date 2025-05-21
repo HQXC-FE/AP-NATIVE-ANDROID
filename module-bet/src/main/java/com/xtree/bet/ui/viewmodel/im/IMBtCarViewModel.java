@@ -26,6 +26,7 @@ import com.xtree.bet.bean.ui.BtResult;
 import com.xtree.bet.bean.ui.BtResultPm;
 import com.xtree.bet.bean.ui.CgOddLimit;
 import com.xtree.bet.bean.ui.CgOddLimitFb;
+import com.xtree.bet.bean.ui.CgOddLimitIm;
 import com.xtree.bet.bean.ui.CgOddLimitPm;
 import com.xtree.bet.bean.ui.OptionIm;
 import com.xtree.bet.bean.ui.PlayTypePm;
@@ -117,13 +118,13 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
 
 
                 List<CgOddLimit> cgOddLimitInfoList = new ArrayList<>();
-                if (!btConfirmInfo.sos.isEmpty()) {
-                    int index = 0;
-                    for (com.xtree.bet.bean.response.fb.CgOddLimitInfo cgOddLimitInfo : btConfirmInfo.sos) {
-                        cgOddLimitInfoList.add(new CgOddLimitFb(cgOddLimitInfo, btConfirmInfo.bms.get(index++), btConfirmInfo.bms.size()));
+                if (!betInfo.getBetSetting().isEmpty()){
+                    int index = 0 ;
+                    for (BetSetting betSetting : betInfo.getBetSetting()) {
+                        cgOddLimitInfoList.add(new CgOddLimitIm(betSetting, betInfo.getWagerSelectionInfos().get(index++), betInfo.getBetSetting().size()));
                     }
-                } else {
-                    cgOddLimitInfoList.add(new CgOddLimitFb(null, btConfirmInfo.bms.get(0), 0));
+                }else{
+                    cgOddLimitInfoList.add(new CgOddLimitIm(null,betInfo.getWagerSelectionInfos().get(0),0));
                 }
                 cgOddLimitDate.postValue(cgOddLimitInfoList);
             }
