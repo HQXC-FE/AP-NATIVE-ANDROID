@@ -404,7 +404,12 @@ public class BrowserDialog extends BottomPopupView {
                         CfLog.i(mUri.toString());
                         results.add(mUri);
                     }
-                    mUploadCallbackAboveL.onReceiveValue(results.toArray(new Uri[results.size()]));
+                    try {
+                        mUploadCallbackAboveL.onReceiveValue(results.toArray(new Uri[results.size()]));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 } else {
                     Uri voucher = null;
                     for (int i = 0; i < list.size(); i++) {
@@ -425,10 +430,15 @@ public class BrowserDialog extends BottomPopupView {
                     String safeBase64 = JSONObject.quote(fullData); // 会自动加双引号并转义特殊字符
                     CfLog.i("获取图片base64大小 ====== " + safeBase64.length());
                     String jsCode = "uploadAndroidImage(" + safeBase64 + ")";
-                    agentWeb.getWebCreator().getWebView().evaluateJavascript(jsCode, value -> {
-                        // 处理返回值
-                        CfLog.i("js 返回结果" + value);
-                    });
+                    try {
+                        agentWeb.getWebCreator().getWebView().evaluateJavascript(jsCode, value -> {
+                            // 处理返回值
+                            CfLog.i("js 返回结果" + value);
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     TagUtils.tagEvent(getContext(), "js桥接选择图片上传", new StringBuilder().append(AppUtil.getSysName(getContext())).append(",").append("Version:").append(AppUtil.getAppVersion(getContext())));
                 }
             }
@@ -437,7 +447,12 @@ public class BrowserDialog extends BottomPopupView {
             public void onCancel() {
                 tvwTitle.setTypeface(Typeface.DEFAULT);
                 if (mUploadCallbackAboveL != null) {
-                    mUploadCallbackAboveL.onReceiveValue(null);
+                    try {
+                        mUploadCallbackAboveL.onReceiveValue(null);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 } else {
                     String jsCode = "uploadAndroidImage(" + ")";
                     agentWeb.getWebCreator().getWebView().evaluateJavascript(jsCode, value -> {
