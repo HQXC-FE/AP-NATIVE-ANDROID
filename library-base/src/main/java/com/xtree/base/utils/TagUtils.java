@@ -19,9 +19,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import io.sentry.SentryLevel;
@@ -281,19 +283,26 @@ public class TagUtils {
             return;
         }
         SentryEvent sentryEvent = new SentryEvent();
-        Message message = new Message();
-        message.setMessage(event);
-        sentryEvent.setMessage(message);
+        // 设置事件等级为 info（不会当做 error 出现在 Issues 中）
         sentryEvent.setLevel(SentryLevel.INFO);
-        if (map != null && !map.isEmpty()) {
-            int limit = 20;
-            int count = 0;
+        // 设置 transaction 名称
+        sentryEvent.setTransaction(event);
+        // 设置 tags
+        if (map != null) {
             for (Map.Entry<String, String> entry : map.entrySet()) {
-                if (++count > limit) break;
                 sentryEvent.setTag(entry.getKey(), entry.getValue());
             }
         }
-        // 发送事件
+        // 设置 message
+        Message message = new Message();
+        message.setMessage("埋点事件：" + event);
+        // 将 tag 的 value 作为 message 的参数
+        if (map != null) {
+            List<String> params = new ArrayList<>(map.values());
+            message.setParams(params);
+        }
+        sentryEvent.setMessage(message);
+        // 上报事件
         Sentry.captureEvent(sentryEvent);
     }
 
