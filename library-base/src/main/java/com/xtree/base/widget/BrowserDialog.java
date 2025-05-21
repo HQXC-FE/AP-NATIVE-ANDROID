@@ -50,6 +50,7 @@ import com.xtree.base.R;
 import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.router.RouterActivityPath;
 import com.xtree.base.utils.CfLog;
+import com.xtree.base.utils.ClickUtil;
 import com.xtree.base.utils.DomainUtil;
 import com.xtree.base.utils.FightFanZhaUtils;
 import com.xtree.base.utils.ImageUploadUtil;
@@ -246,7 +247,7 @@ public class BrowserDialog extends BottomPopupView {
                 .addJavascriptInterface("android", new WebAppInterface(mContext, ivwClose, getCallBack()) {
                     @Override
                     @JavascriptInterface
-                    public void openAndroidFileChooser(String args) {
+                    public void openAndroidFileChooser() {
                         // 切换到主线程执行
                         new Handler(Looper.getMainLooper()).post(() -> {
                             gotoSelectMedia();
@@ -307,39 +308,7 @@ public class BrowserDialog extends BottomPopupView {
                 .createAgentWeb()
 //                .get(); // 创建 AgentWeb
                 .ready().go(url); // 加载网页
-        String htmlContent="<!DOCTYPE html>\n" +
-                "<html>\n" +
-                "<head>\n" +
-                "  <meta charset=\"utf-8\">\n" +
-                "  <title>上传图片</title>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "\n" +
-                "<button id=\"uploadBtn\">上传图片</button>\n" +
-                "<br><br>\n" +
-                "<img id=\"preview\" src=\"\" alt=\"预览图片\" style=\"max-width: 100%;\"/>\n" +
-                "\n" +
-                "<script>\n" +
-                "  // 1. 给按钮添加点击事件\n" +
-                "  document.getElementById('uploadBtn').addEventListener('click', function () {\n" +
-                "    if (window.android && window.android.openAndroidFileChooser) {\n" +
-                "      // 2. 调用 Java 方法，参数可以是任意字符串（比如选择类型）\n" +
-                "      window.android.openAndroidFileChooser(\"image/*\");\n" +
-                "    } else {\n" +
-                "      alert(\"不支持 Android 接口！\");\n" +
-                "    }\n" +
-                "  });\n" +
-                "\n" +
-                "  // 3. Java 会通过 evaluateJavascript 调用这个 JS 方法，把 base64 回传回来\n" +
-                "  function uploadAndroidImage(base64Data) {\n" +
-                "    // 4. 设置到 <img> 标签中显示\n" +
-                "    const img = document.getElementById('preview');\n" +
-                "    img.src = \"data:image/jpeg;base64,\" + base64Data;\n" +
-                "  }\n" +
-                "</script>\n" +
-                "\n" +
-                "</body>\n" +
-                "</html>\n";
+//        String htmlContent = "<!DOCTYPE html>\n" + "<html>\n" + "<head>\n" + "  <meta charset='utf-8'>\n" + "  <title>上传图片</title>\n" + "</head>\n" + "<body>\n" + "\n" + "<button id='uploadBtn'>上传图片</button>\n" + "<br><br>\n" + "<img id='preview' src='' alt='预览图片' style='max-width: 100%;'/>\n" + "\n" + "<script type='text/javascript'>\n" + "  // 1. 给按钮添加点击事件\n" + "  document.getElementById('uploadBtn').addEventListener('click', function () {\n" + "    if (window.android && typeof window.android.openAndroidFileChooser === 'function') {\n" + "      window.android.openAndroidFileChooser();\n" + "    } else {\n" + "      alert('不支持 Android 接口！');\n" + "    }\n" + "  });\n" + "\n" + "  // 2. Java 通过 evaluateJavascript 调用此方法\n" + "  function uploadAndroidImage(base64Data) {\n" + "    if (typeof base64Data !== 'string') {\n" + "      alert('无效的图片数据');\n" + "      return;\n" + "    }\n" + "    document.getElementById('preview').src = base64Data;\n" + "  }\n" + "</script>\n" + "\n" + "</body>\n" + "</html>";
 //        agentWeb.getWebCreator().getWebView().loadDataWithBaseURL(
 //                null,                  // baseUrl，可为 null
 //                htmlContent,           // HTML 内容
@@ -403,6 +372,9 @@ public class BrowserDialog extends BottomPopupView {
      * 图片选择
      */
     private void gotoSelectMedia() {
+        if (ClickUtil.isFastClick()) {
+            return;
+        }
         tvwTitle.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         PictureSelector.create(getContext()).openGallery(SelectMimeType.ofImage()).setMaxSelectNum(1).setImageEngine(GlideEngine.createGlideEngine()).setCompressEngine(ImageFileCompressEngine.create()).forResult(new OnResultCallbackListener<LocalMedia>() {
             @Override
@@ -448,7 +420,8 @@ public class BrowserDialog extends BottomPopupView {
                         CfLog.i("获取图片地址是 uri ====== " + voucher);
                     }
                     String imageBase64 = ImageUploadUtil.bitmapToString(voucher.getPath());
-                    String safeBase64 = JSONObject.quote(imageBase64); // 会自动加双引号并转义特殊字符
+                    String fullData = "data:image/jpeg;base64," + imageBase64;
+                    String safeBase64 = JSONObject.quote(fullData); // 会自动加双引号并转义特殊字符
                     CfLog.i("获取图片base64大小 ====== " + safeBase64.length());
                     String jsCode = "uploadAndroidImage(" + safeBase64 + ")";
                     agentWeb.getWebCreator().getWebView().evaluateJavascript(jsCode, value -> {
