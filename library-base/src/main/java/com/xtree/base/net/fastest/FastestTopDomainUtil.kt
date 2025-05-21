@@ -161,7 +161,7 @@ class FastestTopDomainUtil private constructor() {
         domainList.forEachIndexed { _, s ->
             run {
                 if (!TextUtils.isEmpty(s)) {
-                    mThirdDomainList.add(s+"1123")
+                    mThirdDomainList.add(s)
                 }
             }
         }
