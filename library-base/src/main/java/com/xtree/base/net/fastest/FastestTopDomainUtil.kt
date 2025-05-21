@@ -10,6 +10,7 @@ import com.drake.net.utils.scopeNet
 import com.google.gson.Gson
 import com.xtree.base.BuildConfig
 import com.xtree.base.R
+import com.xtree.base.global.SPKeyGlobal
 import com.xtree.base.net.RetrofitClient
 import com.xtree.base.utils.AESUtil
 import com.xtree.base.utils.AppUtil
@@ -33,6 +34,7 @@ import kotlinx.coroutines.sync.withLock
 import me.xtree.mvvmhabit.base.BaseApplication
 import me.xtree.mvvmhabit.bus.event.SingleLiveData
 import me.xtree.mvvmhabit.http.NetworkUtil
+import me.xtree.mvvmhabit.utils.SPUtils
 import me.xtree.mvvmhabit.utils.ToastUtils
 import me.xtree.mvvmhabit.utils.Utils
 import okhttp3.Call
@@ -49,6 +51,11 @@ import java.util.concurrent.CancellationException
 
 class FastestTopDomainUtil private constructor() {
     init {
+        domainCache = Gson().fromJson(
+            SPUtils.getInstance().getString(SPKeyGlobal.API_DOMAIN_CACHE) ?: "",
+            Domain::class.java
+        )
+
         mThirdApiDomainList = ArrayList()
         mCurApiDomainList = ArrayList()
         mThirdDomainList = ArrayList()
@@ -59,6 +66,9 @@ class FastestTopDomainUtil private constructor() {
     companion object {
         @JvmStatic
         val instance: FastestTopDomainUtil by lazy { FastestTopDomainUtil() }
+
+        //远程域名缓存
+        var domainCache: Domain? = null
 
         /**
          * 当前预埋域名列表
@@ -151,7 +161,7 @@ class FastestTopDomainUtil private constructor() {
         domainList.forEachIndexed { _, s ->
             run {
                 if (!TextUtils.isEmpty(s)) {
-                    mThirdDomainList.add(s)
+                    mThirdDomainList.add(s+"1123")
                 }
             }
         }
@@ -381,6 +391,10 @@ class FastestTopDomainUtil private constructor() {
                     getFastestApiDomain(true)
                     CfLog.e("getThirdFastestDomain success")
 
+                    //缓存域名
+                    SPUtils.getInstance().put(SPKeyGlobal.API_DOMAIN_CACHE, domainJson)
+                    domainCache = domain
+
                     TagUtils.tagEvent(
                         Utils.getContext(),
                         TagUtils.EVENT_FASTEST,
@@ -389,7 +403,7 @@ class FastestTopDomainUtil private constructor() {
                     )
 
                 } catch (e: Exception) {
-                    CfLog.e("getThirdFastestDomain fail")
+                    CfLog.e("getThirdFastestDomain fail：" + e.message)
                     TagUtils.tagEvent(
                         Utils.getContext(),
                         TagUtils.EVENT_FASTEST,
@@ -402,9 +416,38 @@ class FastestTopDomainUtil private constructor() {
                 }
             }
         } else if (mCurApiDomainList.isEmpty()) {
-            mIsFinish = true
-            EventBus.getDefault().post(EventVo(EventConstant.EVENT_TOP_SPEED_FAILED, ""))
+
+            domainCache?.let {
+                if (!it.api.isNullOrEmpty()) {
+                    mCurApiDomainList.clear()
+                }
+                it.api.forEachIndexed { _, domain ->
+                    run {
+                        if (!mCurApiDomainList.contains(domain)) {
+                            mCurApiDomainList.add(domain)
+                        }
+                    }
+                }
+                getFastestApiDomain(true)
+            }?:run {
+                mIsFinish = true
+                EventBus.getDefault().post(EventVo(EventConstant.EVENT_TOP_SPEED_FAILED, ""))
+            }
+
         } else {
+            domainCache?.let {
+                if (!it.api.isNullOrEmpty()) {
+                    mCurApiDomainList.clear()
+                }
+                it.api.forEachIndexed { _, domain ->
+                    run {
+                        if (!mCurApiDomainList.contains(domain)) {
+                            mCurApiDomainList.add(domain)
+                        }
+                    }
+                }
+            }
+
             getFastestApiDomain(true)
         }
     }

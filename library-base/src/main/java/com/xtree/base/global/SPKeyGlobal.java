@@ -104,5 +104,7 @@ public class SPKeyGlobal {
     public static final String APP_SERVICE_LINK = "app_service_link";
     //域名拼接推广Code至嗨客服
     public static final String APP_REGISTER_CODE = "register_promotion_code";
+    //远程域名本地缓存
+    public static final String API_DOMAIN_CACHE = "api_domain_cache";
 
 }
