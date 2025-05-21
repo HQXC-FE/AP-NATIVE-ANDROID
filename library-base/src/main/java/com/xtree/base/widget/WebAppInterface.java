@@ -113,6 +113,15 @@ public class WebAppInterface {
         goApp(type, vo);
     }
 
+    /**
+     * op web充值 上传凭证
+     * @param args
+     */
+    @JavascriptInterface
+    public void openAndroidFileChooser(String args){
+
+    }
+
     public void goApp(String type, JsParameterVo vo) {
         // 在这里处理 JavaScript 调用，并执行相应的原生功能
         CfLog.i("****** type: " + type);
