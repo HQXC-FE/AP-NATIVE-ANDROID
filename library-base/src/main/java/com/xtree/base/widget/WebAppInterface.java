@@ -118,7 +118,7 @@ public class WebAppInterface {
      * @param args
      */
     @JavascriptInterface
-    public void openAndroidFileChooser(String args){
+    public void openAndroidFileChooser(){
 
     }
 
