@@ -116,7 +116,6 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
                 }
                 btConfirmInfoDate.postValue(mBetConfirmOptionList);
 
-
                 List<CgOddLimit> cgOddLimitInfoList = new ArrayList<>();
                 if (!betInfo.getBetSetting().isEmpty()){
                     int index = 0 ;

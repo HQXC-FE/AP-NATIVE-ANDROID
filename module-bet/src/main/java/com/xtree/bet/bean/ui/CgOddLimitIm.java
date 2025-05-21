@@ -25,7 +25,6 @@ public class CgOddLimitIm implements CgOddLimit {
      * 下注金额
      */
     private double btCount;
-    //    private CgOddLimitInfo cgOddLimitInfo;
     private BetSetting betSetting;
     private WagerSelectionInfo wagerSelectionInfo;
 
@@ -139,17 +138,40 @@ public class CgOddLimitIm implements CgOddLimit {
         if(betSetting == null || TextUtils.isEmpty(getCgName())){
             return 1;
         }
+
         String cgName = getCgName();
         if(TextUtils.equals("1", getCgType())){
             return 1;
         }
-//        String[] ints = cgName.split("串");
-//        int btCount = Integer.valueOf(ints[1]);
-//        if(btCount == 1){
-//            btCount = calculate(BtCarManager.size(), Integer.valueOf(ints[0]));
-//        }
+        String[] ints = cgName.split("串");
+        int btCount = Integer.parseInt(ints[1]);
+        if(btCount == 1){
+            btCount = calculate(BtCarManager.size(), Integer.valueOf(ints[0]));
+        }
 
-        return 1;
+        return btCount;
+    }
+
+
+    /**
+     * 计算组合数 C(n, k)
+     */
+    public int calculate(int n, int k) {
+        return factorial(n) / (factorial(k) * factorial(n - k));
+    }
+
+    /**
+     * 计算阶乘
+     */
+    public static int factorial(int n) {
+        if (n == 0 || n == 1) {
+            return 1;
+        }
+        int num = 1;
+        for (int i = 1; i <= n; i++) {
+            num = num * i;
+        }
+        return num;
     }
 
     /**
