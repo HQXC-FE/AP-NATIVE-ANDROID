@@ -97,8 +97,8 @@ public interface LotteryApiService {
     /**
      * 轮询接口
      */
-    @GET("/lp/{id}")
-    Flowable<BaseResponse<PollData>> getPoll(@Path("id") int id, @QueryMap Map<String, String> map);
+    @GET("/lp/{path}")
+    Flowable<BaseResponse<PollData>> getPoll(@Path("path") String path, @QueryMap Map<String, String> map);
 
     /**
      * GET

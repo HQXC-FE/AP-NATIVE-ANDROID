@@ -50,6 +50,7 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
             }
         }
         binding.rvLottery.adapter = adapter
+        viewModel.getPoll()
     }
 
     override fun initViewObservable() {

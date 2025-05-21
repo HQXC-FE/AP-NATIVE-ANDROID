@@ -157,6 +157,6 @@ public interface HomeApiService {
      * 彩票轮询配置数据
      */
     @GET("/api/push/settings")
-    Flowable<SettingVo> settings();
+    Flowable<BaseResponse<SettingVo>> settings();
 
 }
