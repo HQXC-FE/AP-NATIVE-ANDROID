@@ -5,8 +5,8 @@ android {
         // 测试环境 测试用
         xingCai_pre {
             applicationId "com.${name.toLowerCase()}.app" //
-            versionName "1.5.1"
-            versionCode 151
+            versionName "1.5.2"
+            versionCode 152
             resValue "string", "app_name", "杏彩T${versionCode}"
             resValue "string", "domain_api", "https://ap3sport.oxldkm.com"
             resValue "string", "domain_url", "https://ap3sport.oxldkm.com"
@@ -25,8 +25,8 @@ android {
         // 生产环境 发布用
         xingCai_OL {
             applicationId "com.xcspg.app" // xcsport
-            versionName "1.5.1"
-            versionCode 151
+            versionName "1.5.2"
+            versionCode 152
             resValue "string", "app_name", "XC Sports"
             resValue "string", "domain_api", "http://114.117.238.52:16803"
             resValue "string", "domain_url", "https://h61.nbkwogh.com:16801"
@@ -36,19 +36,19 @@ android {
             resValue "string", "ms_secret_key", "efa54723-d17f-40a5-ba10-95f6a4ec7832"
             resValue "string", "sentry_dsn", "https://78cf4cf46e69206c1ddc741b9ab7edca@o4507447554539520.ingest.us.sentry.io/4507456764706816"
             resValue "bool", "is_tag", "true" // 是否开启统计
-            resValue "string", "domain_api_list", "https://app11.c8j4dl.vip;" +
-                    "https://app11.p8i6pb.vip;" +
-                    "https://app11.x7m8yd.vip;" +
-                    "https://app11.w5k3hb.vip;" +
-                    "https://app21.x7q3lt.vip;" +
-                    "https://app21.q5n2on.vip;" +
-                    "https://app21.x5e9ax.vip;" +
-                    "https://app21.k1e3uv.vip;" +
-                    "https://app31.z6p5og.vip;" +
-                    "https://app31.w8j8by.vip;" +
-                    "https://app31.v5e4wb.vip;" +
-                    "https://app31.u1n6ad.vip;" +
-                    "https://app41.m7m9dp.vip;" +
+            resValue "string", "domain_api_list", "https://app11.u4t1id.vip;" +
+                    "https://app11.g4f7jb.vip;" +
+                    "https://app11.r4x6mj.vip;" +
+                    "https://app11.q4t4hq.vip;" +
+                    "https://app21.f6h8cc.vip;" +
+                    "https://app21.o8s1wf.vip;" +
+                    "https://app21.t1y3tl.vip;" +
+                    "https://app21.y7t3hj.vip;" +
+                    "https://app31.n9n4dl.vip;" +
+                    "https://app31.b6m9vq.vip;" +
+                    "https://app31.e3e5yj.vip;" +
+                    "https://app31.d7x3di.vip;" +
+                    "https://app41.i9b9ee.vip;" +
                     "https://app.bdqnmanong.com:16801;" +
                     "https://app.yuechengbj.com:16801;" +
                     "https://app.hstxdl.com:16801;" +
@@ -60,16 +60,16 @@ android {
                     "http://129.226.129.111:16803;" +
                     "https://app.tznhpc.com:16801;" +
                     "https://app.dglmzs.com:16801"
-            resValue "string", "domain_url_list", "https://h14.a4r8em.vip;" +
-                    "https://h14.m2a2zg.vip;" +
-                    "https://h14.t6v2sl.vip;" +
-                    "https://h24.r5i2va.vip;" +
-                    "https://h24.b9f3cv.vip;" +
-                    "https://h24.x3b5at.vip;" +
-                    "https://h34.r5n9zc.vip;" +
-                    "https://h34.u2d6yk.vip;" +
-                    "https://h34.t4k3my.vip;" +
-                    "https://h44.w2i1jo.vip;" +
+            resValue "string", "domain_url_list", "https://h11.y1y3fj.vip;" +
+                    "https://h11.k2y5wf.vip;" +
+                    "https://h11.h7w6ns.vip;" +
+                    "https://h21.y7v3wc.vip;" +
+                    "https://h21.x8b1uy.vip;" +
+                    "https://h21.n5p4ga.vip;" +
+                    "https://h31.r5i3qi.vip;" +
+                    "https://h31.v3j7mi.vip;" +
+                    "https://h31.r4l9hy.vip;" +
+                    "https://h41.s6f6jr.vip;" +
                     "https://h61.nbkwogh.com:16801;" +
                     "https://h61.sxbeiqu.com:16801;" +
                     "https://h61.sudaxmt.com:16801;" +
