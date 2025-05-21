@@ -174,7 +174,8 @@
 
                 <TextView
                     style="@style/style_bind_confirm_title"
-                    android:text="@string/txt_type_c" />
+                    android:text="@string/txt_type_c"
+                    android:textColor="@color/clr_white"/>
 
                 <TextView
                     android:id="@+id/tvw_type"
@@ -186,7 +187,9 @@
 
                 <TextView
                     style="@style/style_bind_confirm_title"
-                    android:text="@string/txt_address_c" />
+                    android:text="@string/txt_address_c"
+                    android:textColor="@color/clr_white"
+                    />
 
                 <TextView
                     android:id="@+id/tvw_acc"
