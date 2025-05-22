@@ -14,12 +14,21 @@ import com.xtree.lottery.BR
 import com.xtree.lottery.R
 import com.xtree.lottery.data.LotteryDataManager
 import com.xtree.lottery.data.config.lotteries
+import com.xtree.lottery.data.source.vo.Data
 import com.xtree.lottery.databinding.ActivityMainLtBinding
 import com.xtree.lottery.ui.adapter.LotteryAdapter
+import com.xtree.lottery.ui.view.PrizeInfo
+import com.xtree.lottery.ui.view.PrizeNoticeView
 import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
+import com.xtree.lottery.utils.LotteryEventConstant
+import com.xtree.lottery.utils.LotteryEventVo
+import com.xtree.lottery.utils.LotteryPolling
 import me.xtree.mvvmhabit.base.BaseActivity
 import me.xtree.mvvmhabit.utils.SPUtils
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 /**
@@ -50,7 +59,7 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
             }
         }
         binding.rvLottery.adapter = adapter
-        viewModel.getPoll()
+        LotteryPolling.startPollingWithOkHttp()
     }
 
     override fun initViewObservable() {
@@ -63,6 +72,37 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
                 application
             )
         return ViewModelProvider(this, factory)[LotteryViewModel::class.java]
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LotteryPolling.startPollingWithOkHttp()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: LotteryEventVo) {
+        when (event.event) {
+            LotteryEventConstant.EVENT_PRIZI_N0TICE -> {
+                val prizeNotice = PrizeNoticeView(binding.layout1)
+                val data = event.data as Data
+                prizeNotice.showPrize(
+                    PrizeInfo(
+                        bonus = data.bonus,
+                        issue = data.issue
+                    )
+                )
+            }
+        }
     }
 
     /**

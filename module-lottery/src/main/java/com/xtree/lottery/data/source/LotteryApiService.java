@@ -95,12 +95,6 @@ public interface LotteryApiService {
     Flowable<CancelOrderVo> cancelTask(@Body Map<String, Object> map);
 
     /**
-     * 轮询接口
-     */
-    @GET("/lp/{path}")
-    Flowable<BaseResponse<PollData>> getPoll(@Path("path") String path, @QueryMap Map<String, String> map);
-
-    /**
      * GET
      *
      * @param url 接口名称

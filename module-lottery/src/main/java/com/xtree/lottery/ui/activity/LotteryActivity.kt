@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -25,6 +24,7 @@ import com.xtree.lottery.BR
 import com.xtree.lottery.R
 import com.xtree.lottery.data.LotteryDetailManager
 import com.xtree.lottery.data.config.Lottery
+import com.xtree.lottery.data.source.vo.Data
 import com.xtree.lottery.data.source.vo.IssueVo
 import com.xtree.lottery.data.source.vo.MethodMenus
 import com.xtree.lottery.databinding.ActivityLotteryBinding
@@ -41,8 +41,6 @@ import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
 import com.xtree.lottery.utils.LotteryEventConstant
 import com.xtree.lottery.utils.LotteryEventVo
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import me.xtree.mvvmhabit.base.BaseActivity
 import me.xtree.mvvmhabit.utils.KLog
 import me.xtree.mvvmhabit.utils.SPUtils
@@ -85,13 +83,6 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         EventBus.getDefault().register(this)
         FastestTopDomainUtil.instance.start()
         ChangeH5LineUtil.instance.start()
-        //val prizeNotice = PrizeNoticeView(binding.layout1)
-        //prizeNotice.showPrize(
-        //    PrizeInfo(
-        //        bonus = "288",
-        //        issue = "20240501"
-        //    )
-        //)
     }
 
     private fun setCustomDensity() {
@@ -361,4 +352,21 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
     override fun onActivitySendData(data: ArrayList<IssueVo>) {
         lotteryBetsFragment.onFragmentSendData(data)
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: LotteryEventVo) {
+        when (event.event) {
+            LotteryEventConstant.EVENT_PRIZI_N0TICE -> {
+                val prizeNotice = PrizeNoticeView(binding.layout1)
+                val data = event.data as Data
+                prizeNotice.showPrize(
+                    PrizeInfo(
+                        bonus = data.bonus,
+                        issue = data.issue
+                    )
+                )
+            }
+        }
+    }
+
 }

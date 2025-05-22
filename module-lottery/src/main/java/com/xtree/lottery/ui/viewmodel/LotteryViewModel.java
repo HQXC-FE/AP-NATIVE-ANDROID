@@ -9,11 +9,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.xtree.base.global.SPKeyGlobal;
-import com.xtree.base.lottery.data.LotteryPublicData;
 import com.xtree.base.mvvm.ExKt;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
@@ -43,15 +41,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.base.BaseViewModel;
 import me.xtree.mvvmhabit.bus.event.SingleLiveData;
 import me.xtree.mvvmhabit.http.BusinessException;
-import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.ToastUtils;
@@ -161,39 +156,6 @@ public class LotteryViewModel extends BaseViewModel<LotteryRepository> {
                     @Override
                     public void onResult(ArrayList<IssueVo> data) {
                         liveDataListIssue.setValue(data);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        CfLog.e("error, " + t.toString());
-                        super.onError(t);
-                    }
-                });
-        addSubscribe(disposable);
-    }
-
-    public void getPoll() {
-
-        long timestamp = System.currentTimeMillis();
-        HashMap<String, String> map = new HashMap<>();
-        KLog.i(new Gson().toJson(LotteryPublicData.INSTANCE.getPushSetting()));
-        map.put("token", LotteryPublicData.INSTANCE.getPushSetting().getPub_channel_token());
-        map.put("tag", "1");
-        Date date = new Date(timestamp);
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        String formatted = sdf.format(date);
-        map.put("time", formatted);
-        map.put("eventid", "");
-        map.put("callback", "PushStreamManager_0_onmessage_" + timestamp);
-        map.put("_", String.valueOf(timestamp));
-        Disposable disposable = (Disposable) model.getApiService().getPoll(LotteryPublicData.INSTANCE.getPushSetting().getUser_channel_id(), map)
-                .compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer())
-                .subscribeWith(new HttpCallBack<PollData>() {
-                    @Override
-                    public void onResult(PollData data) {
-                        pollLiveData.setValue(data);
                     }
 
                     @Override

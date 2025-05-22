@@ -1,14 +1,14 @@
 package com.xtree.lottery.data.source.vo
 
-data class PollData(
+class PollData(
     val channel: String,
     val id: Int,
     val tag: Int,
-    val text: String,
+    val text: LotteryData,
     val time: String
 )
 data class LotteryData(
-    val `data`: List<Data>,
+    val data: String,
     val module: String,
     val tokenId: String
 )
