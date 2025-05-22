@@ -8,7 +8,7 @@ import com.xtree.bet.bean.response.im.WagerSelectionInfo;
 
 import java.util.List;
 
-public class GetBetInfoReq  {
+public class GetBetInfoReq  extends BaseIMRequest{
 
     /**
      * 指出投注性质.
@@ -20,11 +20,10 @@ public class GetBetInfoReq  {
     private List<WagerSelectionInfo> WagerSelectionInfos;
 
 
-    /**
-     * 后台统一处理
-     */
-    private String Token;
-
+    public GetBetInfoReq(int wagerType, List<WagerSelectionInfo> wagerSelectionInfos, String token) {
+        WagerType = wagerType;
+        WagerSelectionInfos = wagerSelectionInfos;
+    }
 
     public GetBetInfoReq() {}
 
@@ -43,14 +42,6 @@ public class GetBetInfoReq  {
 
     public void setWagerSelectionInfos(List<WagerSelectionInfo> WagerSelectionInfos) {
         this.WagerSelectionInfos = WagerSelectionInfos;
-    }
-
-    public String getToken() {
-        return Token;
-    }
-
-    public void setToken(String Token) {
-        this.Token = Token;
     }
 
 }

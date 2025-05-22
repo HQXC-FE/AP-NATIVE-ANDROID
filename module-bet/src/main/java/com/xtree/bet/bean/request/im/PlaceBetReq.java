@@ -7,7 +7,7 @@ import com.xtree.bet.bean.response.im.WagerSelectionInfo;
 
 import java.util.List;
 
-public class PlaceBetReq {
+public class PlaceBetReq extends BaseIMRequest{
 
     @SerializedName("WagerType")
     private int wagerType;
@@ -33,8 +33,6 @@ public class PlaceBetReq {
     @SerializedName("ComboSelections")
     private List<ComboSelection> comboSelections;
 
-    @SerializedName("Token")
-    private String token;
     @SerializedName("SourceWallet")
     private int sourceWallet;
 

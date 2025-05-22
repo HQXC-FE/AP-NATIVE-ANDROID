@@ -36,14 +36,6 @@ data class SelectedEventInfoReq @JvmOverloads constructor(
      */
     @SerializedName("IncludeGroupEvents") val includeGroupEvents: Boolean,
     /**
-     * 会员令牌 - 非必传
-     */
-    @SerializedName("Token") val token: String? = null,
-    /**
-     * 用户名 - 非必传
-     */
-    @SerializedName("MemberCode") val memberCode: String? = null,
-    /**
      * 返回的投注类型 (非必传)
      */
     @SerializedName("BetTypeIds") val betTypeIds: List<Int>? = null,
@@ -54,4 +46,4 @@ data class SelectedEventInfoReq @JvmOverloads constructor(
      * 3 = 2H下半场
      */
     @SerializedName("PeriodIds") val periodIds: List<Int>? = null,
-)
+) : BaseIMRequest()

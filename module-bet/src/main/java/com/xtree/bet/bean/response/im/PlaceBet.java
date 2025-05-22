@@ -10,7 +10,6 @@ import java.util.List;
 
 public class PlaceBet implements BaseBean {
 
-
     public List<WagerSelectionInfo> WagerSelectionInfos = new ArrayList<>();
     public List<AcceptedWagerSelection> AcceptedWagerSelectionList = new ArrayList<>();
     public List<UpdatedWagerSelectionInfo> UpdatedWagerSelectionInfos = new ArrayList<>();

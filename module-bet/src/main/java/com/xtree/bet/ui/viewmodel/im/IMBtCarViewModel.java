@@ -5,6 +5,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
+import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.bet.bean.request.im.BaseIMRequest;
 import com.xtree.bet.bean.request.im.GetBetInfoReq;
@@ -15,9 +16,6 @@ import com.xtree.bet.bean.request.pm.SeriesOrder;
 import com.xtree.bet.bean.response.im.BetSetting;
 import com.xtree.bet.bean.response.im.BtConfirmInfo;
 import com.xtree.bet.bean.response.im.WagerSelectionInfo;
-import com.xtree.bet.bean.response.pm.BtResultInfo;
-import com.xtree.bet.bean.response.pm.BtResultOptionInfo;
-import com.xtree.bet.bean.response.pm.CgOddLimitInfo;
 import com.xtree.bet.bean.response.pm.PlayTypeInfo;
 import com.xtree.bet.bean.response.pm.SeriesOrderInfo;
 import com.xtree.bet.bean.ui.BetConfirmOption;
@@ -102,8 +100,10 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
             list.add(wagerSelectionInfo);
         }
         getBetInfoReq.setWagerSelectionInfos(list);
-        BaseIMRequest<GetBetInfoReq> baseIMRequest = new BaseIMRequest<>(IMApiService.GetBetInfo, getBetInfoReq);
-        launchFlow(model.getIMApiService().getBetInfo(baseIMRequest), new HttpCallBack<BtConfirmInfo>() {
+        getBetInfoReq.setApi(IMApiService.GetBetInfo);
+        getBetInfoReq.setMemberCode("");
+
+        launchFlow(model.getIMApiService().getBetInfo(getBetInfoReq), new HttpCallBack<BtConfirmInfo>() {
             @Override
             public void onResult(BtConfirmInfo betInfo) {
                 super.onResult(betInfo);
@@ -226,38 +226,38 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
             return;
         }
 
-        Disposable disposable = (Disposable) model.getPMApiService().bet(btReq).compose(RxUtils.schedulersTransformer()) //线程调度
-                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<BtResultInfo>() {
-                    @Override
-                    public void onResult(BtResultInfo btResultInfo) {
-                        List<BtResult> btResultList = new ArrayList<>();
-                        if (btResultInfo.seriesOrderRespList != null) {
-                            for (SeriesOrderInfo seriesOrderInfo : btResultInfo.seriesOrderRespList) {
-                                btResultList.add(new BtResultPm(seriesOrderInfo));
-                            }
-                        } else {
-                            BtResultOptionInfo btResultOptionInfo = btResultInfo.orderDetailRespList.get(0);
-                            SeriesOrderInfo seriesOrderInfo = new SeriesOrderInfo();
-                            seriesOrderInfo.maxWinAmount = btResultOptionInfo.maxWinMoney;
-                            seriesOrderInfo.orderNo = btResultOptionInfo.orderNo;
-                            seriesOrderInfo.orderStatusCode = Integer.valueOf(btResultOptionInfo.orderStatusCode);
-                            seriesOrderInfo.betAmount = btResultOptionInfo.betMoney;
-                            btResultList.add(new BtResultPm(seriesOrderInfo));
-                        }
-                        btResultInfoDate.postValue(btResultList);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                        if (t instanceof BusinessException) {
-                            if (((BusinessException) t).code == CodeRule.CODE_400467) {
-                                batchBetMatchMarketOfJumpLine(mSearchBetConfirmOptionList);
-                            }
-                        }
-                    }
-                });
-        addSubscribe(disposable);
+//        Disposable disposable = (Disposable) model.getPMApiService().bet(btReq).compose(RxUtils.schedulersTransformer()) //线程调度
+//                .compose(RxUtils.exceptionTransformer()).subscribeWith(new HttpCallBack<BtResultInfo>() {
+//                    @Override
+//                    public void onResult(BtResultInfo btResultInfo) {
+//                        List<BtResult> btResultList = new ArrayList<>();
+//                        if (btResultInfo.seriesOrderRespList != null) {
+//                            for (SeriesOrderInfo seriesOrderInfo : btResultInfo.seriesOrderRespList) {
+//                                btResultList.add(new BtResultPm(seriesOrderInfo));
+//                            }
+//                        } else {
+//                            BtResultOptionInfo btResultOptionInfo = btResultInfo.orderDetailRespList.get(0);
+//                            SeriesOrderInfo seriesOrderInfo = new SeriesOrderInfo();
+//                            seriesOrderInfo.maxWinAmount = btResultOptionInfo.maxWinMoney;
+//                            seriesOrderInfo.orderNo = btResultOptionInfo.orderNo;
+//                            seriesOrderInfo.orderStatusCode = Integer.valueOf(btResultOptionInfo.orderStatusCode);
+//                            seriesOrderInfo.betAmount = btResultOptionInfo.betMoney;
+//                            btResultList.add(new BtResultPm(seriesOrderInfo));
+//                        }
+//                        btResultInfoDate.postValue(btResultList);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//                        super.onError(t);
+//                        if (t instanceof BusinessException) {
+//                            if (((BusinessException) t).code == CodeRule.CODE_400467) {
+//                                batchBetMatchMarketOfJumpLine(mSearchBetConfirmOptionList);
+//                            }
+//                        }
+//                    }
+//                });
+//        addSubscribe(disposable);
     }
 
     @Override

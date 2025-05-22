@@ -674,8 +674,8 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
 
     private Flowable getFlowableMatchBaseInfoByMidsPB(int sportId, List<Long> matchidList) {
         SelectedEventInfoReq selectedEventInfoReq = new SelectedEventInfoReq(sportId, matchidList, 2, false, true);
-        Flowable flowable = model.getIMApiService().getSelectedEventInfo(new BaseIMRequest<>(IMApiService.GetSelectedEventInfo, selectedEventInfoReq));
-
+        selectedEventInfoReq.setApi(IMApiService.GetSelectedEventInfo);
+        Flowable flowable = model.getIMApiService().getSelectedEventInfo(selectedEventInfoReq);
         return flowable;
     }
 

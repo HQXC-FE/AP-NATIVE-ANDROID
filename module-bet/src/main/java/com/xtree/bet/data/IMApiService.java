@@ -165,22 +165,21 @@ public interface IMApiService {
      * 索取投注信息
      */
     @POST(forwardPath)
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Flowable<BaseResponse<BtConfirmInfo>> getBetInfo(@Body BaseIMRequest<GetBetInfoReq> req);
+    Flowable<BaseResponse<BtConfirmInfo>> getBetInfo(@Body GetBetInfoReq req);
 
 
     /**
      * 投注 [ 此 API 常用于展示各投注项目. 当会员在确认投注时将被调用.]
      */
     @POST(forwardPath)
-    @Headers({"Content-Type: application/json; charset=utf-8"})
-    Single<BaseResponse<PlaceBet>> placeBet(@Body BaseIMRequest<PlaceBetReq> map);
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
+    Single<BaseResponse<PlaceBet>> placeBet(@Body PlaceBetReq map);
 
     /**
      * 索取投注账目
      */
     @POST("/yewu11/v1/m/getStatement")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Single<BaseResponse<List<Wager>>> getStatement(@Body Map<String, String> map);
 
     /**
@@ -198,7 +197,7 @@ public interface IMApiService {
      * @return
      */
     @POST("/yewu13/v1/getMlInfoObt")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<EventListRsp>> getMlInfoObt(@Body EventInfoMbtReq eventInfoMbtReq);
 
     /**
@@ -207,7 +206,7 @@ public interface IMApiService {
      * @return
      */
     @POST("/yewu13/v1/getDeltaMlInfoObt")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<DeltaEventListRsp>> getDeltaMlInfoObt(@Body DeltaEventInfoMbtReq evenDeltatInfoMbtReq);
 
     /**
@@ -217,7 +216,7 @@ public interface IMApiService {
      */
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
-    Flowable<BaseResponse<EventInfoByPageListRsp>> getSelectedEventInfo(@Body BaseIMRequest<SelectedEventInfoReq> selectedEventInfoReq);
+    Flowable<BaseResponse<EventInfoByPageListRsp>> getSelectedEventInfo(@Body SelectedEventInfoReq selectedEventInfoReq);
 
     /**
      * 获取冠军赛事
@@ -234,7 +233,7 @@ public interface IMApiService {
      * @return
      */
     @GET("/yewu11/v1/getDeltaOutrightEventInfo")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<OutrightEventRsp>> getDeltaOutrightEventInfo(@Body DeltaOutrightEventsReq deltaOutrightEventsReq);
 
     /**
@@ -243,7 +242,7 @@ public interface IMApiService {
      * @return
      */
     @GET("/yewu11/v1/getStatement")
-    @Headers({"Content-Type: application/json; charset=utf-8"})
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<StatementRsp>> getStatement(@Body StatementReq statementReq);
 
     /**

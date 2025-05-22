@@ -90,6 +90,9 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
         List<Category> categoryList = getCategoryList(eventListRsp);
         List<MatchInfo> events = eventListRsp.getSports().get(0).getEvents();
         Match match = new MatchIm(events.get(0));
+        if (mMatch != null) {
+            setOptionOddChange(match);
+        }
         matchData.postValue(match);
         categoryListData.postValue(categoryList);
 
@@ -239,38 +242,6 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
                 getMatchDetail(mMatchId, mSportId);
             }
         });
-
-//        Disposable disposable = (Disposable) flowable
-//                .compose(RxUtils.schedulersTransformer()) //线程调度
-//                .compose(RxUtils.exceptionTransformer())
-//                .subscribeWith(new HttpCallBack<FBService>() {
-//                    @Override
-//                    public void onResult(FBService fbService) {
-//                        if (TextUtils.equals(mPlatform, PLATFORM_FBXC)) {
-//                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_TOKEN, fbService.getToken());
-//                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_DISABLED, fbService.isDisabled);
-//                            SPUtils.getInstance().put(SPKeyGlobal.FBXC_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
-//                            BtDomainUtil.setDefaultFbxcDomainUrl(fbService.getForward().getApiServerAddress());
-//                            BtDomainUtil.addFbxcDomainUrl(fbService.getForward().getApiServerAddress());
-//                            BtDomainUtil.setFbxcDomainUrl(fbService.getDomains());
-//                        } else {
-//                            SPUtils.getInstance().put(SPKeyGlobal.FB_TOKEN, fbService.getToken());
-//                            SPUtils.getInstance().put(SPKeyGlobal.FB_DISABLED, fbService.isDisabled);
-//                            SPUtils.getInstance().put(SPKeyGlobal.FB_API_SERVICE_URL, fbService.getForward().getApiServerAddress());
-//                            BtDomainUtil.setDefaultFbDomainUrl(fbService.getForward().getApiServerAddress());
-//                            BtDomainUtil.addFbDomainUrl(fbService.getForward().getApiServerAddress());
-//                            BtDomainUtil.setFbDomainUrl(fbService.getDomains());
-//                        }
-//
-//                        getMatchDetail(mMatchId);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable t) {
-//                        //super.onError(t);
-//                    }
-//                });
-//        addSubscribe(disposable);
     }
 
 }
