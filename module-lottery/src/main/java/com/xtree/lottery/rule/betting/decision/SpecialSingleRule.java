@@ -102,11 +102,11 @@ public class SpecialSingleRule {
                 List<List<String>> sortedCodes = currentCodes.stream()
                         .map(code -> {
                             String[] parts;
-                            if (!code.contains(sortSplit)) {
-                                // 没有空格，拆成單個字元
-                                parts = code.split("");
+                            // 如果不包含分隔符，就不拆了，直接当一整段处理
+                            if (!code.contains(" ") && !code.contains(",")) {
+                                parts = new String[] { code };
                             } else {
-                                parts = code.split(sortSplit);
+                                parts = code.split(sortSplit); // 使用正则切分空格或逗号
                             }
                             return Arrays.stream(parts)
                                     .filter(s -> !s.isEmpty())
