@@ -13,10 +13,12 @@ import org.jeasy.rules.api.Facts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -104,7 +106,7 @@ public class SpecialSingleRule {
                             String[] parts;
                             // 如果不包含分隔符，就不拆了，直接当一整段处理
                             if (!code.contains(" ") && !code.contains(",")) {
-                                parts = new String[] { code };
+                                parts = new String[]{code};
                             } else {
                                 parts = code.split(sortSplit); // 使用正则切分空格或逗号
                             }
@@ -114,28 +116,44 @@ public class SpecialSingleRule {
                                     .collect(Collectors.toList());
                         })
                         .distinct()
-                        .sorted((list1, list2) -> {
-                            String s1 = String.join(sortSplit, list1);
-                            String s2 = String.join(sortSplit, list2);
-                            return s1.compareTo(s2);
-                        })
+                        .sorted(Comparator.comparing(list -> String.join(sortSplit, list)))
                         .collect(Collectors.toList());
 
-
+                // 检查重复组：只保留一组重复号码
+                Set<String> seenDuplicateKeys = new HashSet<>();
                 List<List<String>> repeatCodes = new ArrayList<>();
+
                 if (!attachedFlags.contains("banco")) {
                     for (List<String> code : sortedCodes) {
-                        // 如果所有号码都相同，加入重复列表
-                        if (new HashSet<>(code).size() == 1) {
-                            repeatCodes.add(code);
+                        Set<String> uniqueNumbers = new HashSet<>(code);
+                        if (uniqueNumbers.size() == 1) {
+                            // 例如 ["2", "2", "2"] 的 key 是 "2"
+                            String key = code.get(0);
+                            if (!seenDuplicateKeys.contains(key)) {
+                                repeatCodes.add(code);  // 只加入第一次出现的重复组
+                                seenDuplicateKeys.add(key);
+                            }
                         }
                     }
                 }
 
-                // 计算最终的有效号码
+                // 生成最终结果：排除多余的重复组，仅保留 repeatCodes 中的那一组
+                List<String> repeatCodeStrings = repeatCodes.stream()
+                        .map(list -> String.join(sortSplit, list))
+                        .collect(Collectors.toList());
+
+                Set<String> finalCodeStringsSet = new HashSet<>(repeatCodeStrings);
+
                 List<String> finalCodes = sortedCodes.stream()
-                        .filter(code -> !repeatCodes.contains(code))
-                        .map(code -> code.stream().map(String::valueOf).collect(Collectors.joining(" ")))
+                        .map(code -> String.join(sortSplit, code))
+                        .filter(codeStr -> {
+                            // 保留不重复的，或者是第一次出现在 repeatCodes 里的
+                            if (finalCodeStringsSet.contains(codeStr)) {
+                                finalCodeStringsSet.remove(codeStr); // 只保留一次
+                                return true;
+                            }
+                            return !repeatCodeStrings.contains(codeStr);
+                        })
                         .collect(Collectors.toList());
 
                 // 找出被移除的号码

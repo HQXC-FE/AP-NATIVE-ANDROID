@@ -13,6 +13,7 @@ public class GameRule {
     public boolean hasZero;
     public String description;
     private final Pattern DELIMITER_PATTERN = Pattern.compile("(,|;|，|；|\\n)");
+    private final Pattern DELIMITER_PATTERN_2 = Pattern.compile("(,| |;|\\t|，|　|；|\\n)");
 
 
 
@@ -35,7 +36,7 @@ public class GameRule {
                         .filter(s -> !s.isEmpty() && !isDelimiter(s))
                         .collect(Collectors.toList());
             case "k3Filter":
-                return Arrays.stream(DELIMITER_PATTERN.split(codes))
+                return Arrays.stream(DELIMITER_PATTERN_2.split(codes))
                         .map(String::trim)
                         .filter(s -> !s.isEmpty())
                         .map(item -> item.chars().mapToObj(c -> String.valueOf((char) c)).sorted().collect(Collectors.joining()))
@@ -43,14 +44,14 @@ public class GameRule {
                         .collect(Collectors.toList());
             case "dif2Filter":
             case "sk2Filter":
-                return Arrays.stream(DELIMITER_PATTERN.split(codes))
+                return Arrays.stream(DELIMITER_PATTERN_2.split(codes))
                         .map(String::trim)
                         .filter(s -> !s.isEmpty())
                         .map(item -> item.chars().mapToObj(c -> String.valueOf((char) c)).sorted().collect(Collectors.joining()))
                         .filter(item -> item.chars().distinct().count() == 2)
                         .collect(Collectors.toList());
             default:
-                return Arrays.stream(DELIMITER_PATTERN.split(codes))
+                return Arrays.stream(DELIMITER_PATTERN_2.split(codes))
                         .map(String::trim)
                         .collect(Collectors.toList());
         }
