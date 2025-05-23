@@ -31,6 +31,7 @@ import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryOrderViewModel
 import com.xtree.lottery.utils.LotteryEventConstant
 import com.xtree.lottery.utils.LotteryEventVo
 import me.xtree.mvvmhabit.base.BaseDialogFragment
+import me.xtree.mvvmhabit.utils.KLog
 import me.xtree.mvvmhabit.utils.ToastUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -102,7 +103,8 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
             val plus3 = binding.plus3.getNumber()
             val plus4 = binding.plus4.getNumber()
             val plus5 = binding.plus5.getNumber()
-            val issues = if (LotteryDetailManager.mIssues.size < LotteryDetailManager.mIndex + 200) {
+            val issues = if (LotteryDetailManager.mIndex + 200 < LotteryDetailManager.mIssues.size) {
+                KLog.i("LotteryDetailManager.mIssues.size", LotteryDetailManager.mIssues.size.toString() + "    " + LotteryDetailManager.mIndex)
                 LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIndex + 200)
             } else {
                 LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIssues.size)
@@ -262,14 +264,15 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
             money = BigDecimal(requireArguments().getString("money")!!)
             val jsonString = requireArguments().getString("orders")!!
             val gson = Gson()
-            val type = object : TypeToken<List<BetOrderData?>?>() {}.getType()
+            val type = object : TypeToken<List<BetOrderData?>?>() {}.type
             orders = gson.fromJson(jsonString, type)
 
             if (orders.size > 1) {
                 showTipDialog("多注单追号倍率需默认为1倍，已默认设置倍率为1")
             }
 
-            val issues = if (LotteryDetailManager.mIssues.size < LotteryDetailManager.mIndex + 200) {
+            val issues = if (LotteryDetailManager.mIndex + 200 < LotteryDetailManager.mIssues.size) {
+                KLog.i("LotteryDetailManager.mIssues.size", LotteryDetailManager.mIssues.size.toString() + "    " + LotteryDetailManager.mIndex)
                 LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIndex + 200)
             } else {
                 LotteryDetailManager.mIssues.subList(LotteryDetailManager.mIndex, LotteryDetailManager.mIssues.size)
@@ -294,7 +297,7 @@ open class LotteryChasingNumberFragment private constructor() : BaseDialogFragme
                         haveIsCheck = true
                     }
                 }
-                if(!haveIsCheck){
+                if (!haveIsCheck) {
                     ToastUtils.showLong("请先选择要追号的奖期")
                     return@setOnClickListener
                 }
