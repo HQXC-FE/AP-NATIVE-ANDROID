@@ -1,10 +1,14 @@
 package com.xtree.bet.ui.viewmodel.im;
 
+import static com.xtree.base.utils.BtDomainUtil.KEY_PLATFORM;
+import static com.xtree.base.utils.BtDomainUtil.PLATFORM_PMXC;
+
 import android.app.Application;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import com.xtree.base.global.SPKeyGlobal;
 import com.xtree.base.net.HttpCallBack;
 import com.xtree.base.utils.CfLog;
 import com.xtree.base.utils.TimeUtils;
@@ -57,6 +61,7 @@ import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.RxUtils;
+import me.xtree.mvvmhabit.utils.SPUtils;
 
 /**
  * Created by vickers
@@ -654,7 +659,19 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
         eventInfoByPageRsq.setPage(1);
         eventInfoByPageRsq.setSeason(0);
         eventInfoByPageRsq.setIsCombo(false);
-        Flowable flowable = model.getIMApiService().getLiveEventInfo(eventInfoByPageRsq);
+//        Flowable flowable = model.getIMApiService().getLiveEventInfo(eventInfoByPageRsq);
+        Map<String, String> map = new HashMap<>();
+        map.put("page", "1");
+        map.put("perPage", "30");
+        map.put("Market", "2");
+        //map.put("EventId", "7");
+        map.put("OpenParlay", "-1");
+        map.put("MarketLineLevel", "1");
+        map.put("SportId", "1");
+        map.put("IsCombo", "false");
+        map.put("OddsType", "3");
+        map.put("OrderBy", "1");
+        Flowable flowable = model.getIMApiService().getEventInfoMBTPaged(map);
         return flowable;
     }
 
@@ -668,7 +685,18 @@ public class IMMainViewModel extends TemplateMainViewModel implements MainViewMo
         eventInfoByPageRsq.setPage(1);
         eventInfoByPageRsq.setSeason(0);
         eventInfoByPageRsq.setIsCombo(false);
-        Flowable flowable = model.getIMApiService().getEventInfoByPage(eventInfoByPageRsq);
+        Map<String, String> map = new HashMap<>();
+        map.put("page", "1");
+        map.put("perPage", "30");
+        map.put("Market", "2");
+        //map.put("EventId", "7");
+        map.put("OpenParlay", "-1");
+        map.put("MarketLineLevel", "1");
+        map.put("SportId", "1");
+        map.put("IsCombo", "false");
+        map.put("OddsType", "3");
+        map.put("OrderBy", "1");
+        Flowable flowable = model.getIMApiService().getEventInfoMBTPaged(map);
         return flowable;
     }
 
