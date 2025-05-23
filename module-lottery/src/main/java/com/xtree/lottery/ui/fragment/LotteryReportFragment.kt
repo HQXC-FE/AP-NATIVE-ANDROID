@@ -104,13 +104,10 @@ class LotteryReportFragment : BaseFragment<FragmentLotteryReportBinding, Lottery
                 }
             }
         }
-        LoadingDialog.show(requireContext())
-        requestDataCP()
         binding.btMore.setOnClickListener {
             startContainerFragment(RouterFragmentPath.Mine.PAGER_BT_REPORT) // 投注记录
         }
         binding.btRefresh.setOnClickListener {
-            LoadingDialog.show(context)
             requestDataCP()
         }
         mAdapter.setEmptyView(R.layout.layout_no_data)
@@ -123,7 +120,8 @@ class LotteryReportFragment : BaseFragment<FragmentLotteryReportBinding, Lottery
         }
     }
 
-    private fun requestDataCP() {
+    fun requestDataCP() {
+        LoadingDialog.show(context)
         viewModel.getCpReport()
     }
 

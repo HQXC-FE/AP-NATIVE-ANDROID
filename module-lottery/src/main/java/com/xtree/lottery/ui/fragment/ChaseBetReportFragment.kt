@@ -35,7 +35,6 @@ class ChaseBetReportFragment : BaseFragment<FragmentCharseReportBinding, Lottery
         }
     }
 
-
     override fun initImmersionBar() {
 
     }
@@ -70,10 +69,8 @@ class ChaseBetReportFragment : BaseFragment<FragmentCharseReportBinding, Lottery
                 }
             }
         }
-        LoadingDialog.show(requireContext())
-        requestData()
+
         binding.btRefresh.setOnClickListener {
-            LoadingDialog.show(context)
             requestData()
         }
         mAdapter.setEmptyView(R.layout.layout_no_data)
@@ -86,7 +83,8 @@ class ChaseBetReportFragment : BaseFragment<FragmentCharseReportBinding, Lottery
         }
     }
 
-    private fun requestData() {
+    fun requestData() {
+        LoadingDialog.show(context)
         viewModel.getTraceinfo()
     }
 

@@ -51,7 +51,9 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * 彩票详情
  */
-class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>(){
+class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>() {
+    private lateinit var lotteryReportFragment: LotteryReportFragment
+    private lateinit var chaseBetReportFragment: ChaseBetReportFragment
     private var currentIssue: IssueVo? = null
     private lateinit var lotteryBetsFragment: LotteryBetsFragment
     private var methodMenus: MethodMenus? = null
@@ -127,7 +129,7 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         binding.tvBack.setOnClickListener { finish() }
 
         binding.vpLottery.isUserInputEnabled = false
-        //binding.vpLottery.offscreenPageLimit = 1 预加载  ViewPager2默认不预加载
+        binding.vpLottery.offscreenPageLimit = 5 //预加载
 
         binding.tlLottery.addTab(binding.tlLottery.newTab().setText("近期开奖"))
         binding.tlLottery.addTab(binding.tlLottery.newTab().setText("彩种投注"))
@@ -146,6 +148,19 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         binding.tlLottery.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 binding.vpLottery.currentItem = tab.position
+                if (lottery.handicap) {//是否显示盘口玩法
+                    if (tab.position == 3) {
+                        lotteryReportFragment.requestDataCP()
+                    } else if (tab.position == 4) {
+                        chaseBetReportFragment.requestData()
+                    }
+                } else {
+                    if (tab.position == 2) {
+                        lotteryReportFragment.requestDataCP()
+                    } else if (tab.position == 3) {
+                        chaseBetReportFragment.requestData()
+                    }
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -159,8 +174,10 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         if (lottery.handicap) {//是否显示盘口玩法
             fragmentList.add(LotteryHandicapFragment.newInstance(lottery))
         }
-        fragmentList.add(LotteryReportFragment())
-        fragmentList.add(ChaseBetReportFragment())
+        lotteryReportFragment = LotteryReportFragment()
+        chaseBetReportFragment = ChaseBetReportFragment()
+        fragmentList.add(lotteryReportFragment)
+        fragmentList.add(chaseBetReportFragment)
 
         val mAdapter = object : FragmentStateAdapter(supportFragmentManager, lifecycle) {
             override fun createFragment(position: Int): Fragment {
