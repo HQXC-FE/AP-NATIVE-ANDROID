@@ -38,16 +38,22 @@ public class IMHeaderInterceptor implements Interceptor {
         builder.addHeader("app-version", StringUtils.getVersionName(Utils.getContext()));
         // 如果是 POST 请求并有 body
         if ("POST".equalsIgnoreCase(original.method()) && original.body() != null) {
-            MediaType mediaType = MediaType.parse("application/vnd.sc-api.v1.json");
+            // 检查是否已有 Content-Type 请求头
+            if (original.header("Content-Type") == null) {
+                MediaType mediaType = MediaType.parse("application/vnd.sc-api.v1.json");
 
-            Buffer buffer = new Buffer();
-            original.body().writeTo(buffer);
-            byte[] bytes = buffer.readByteArray();
+                Buffer buffer = new Buffer();
+                original.body().writeTo(buffer);
+                byte[] bytes = buffer.readByteArray();
 
-            RequestBody newBody = RequestBody.create(bytes, mediaType);
-
-            builder.method(original.method(), newBody);
+                RequestBody newBody = RequestBody.create(bytes, mediaType);
+                builder.method(original.method(), newBody);
+            } else {
+                // 如果已有 Content-Type，不做任何处理，沿用原来的 body
+                builder.method(original.method(), original.body());
+            }
         }
+
         return chain.proceed(builder.build());
     }
 }
