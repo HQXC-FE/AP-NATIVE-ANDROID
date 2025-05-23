@@ -9,7 +9,7 @@ public interface BtCarViewModel {
     /**
      * 投注前查询指定玩法赔率
      */
-    void batchBetMatchMarketOfJumpLine(List<BetConfirmOption> betConfirmOptionList);
+    void batchBetMatchMarketOfJumpLine(List<BetConfirmOption> betConfirmOptionList,boolean isChampion);
     /**
      * 单关投注
      */

@@ -46,7 +46,7 @@ public class FBBtCarViewModel extends TemplateBtCarViewModel {
     /**
      * 投注前查询指定玩法赔率
      */
-    public void batchBetMatchMarketOfJumpLine(List<BetConfirmOption> betConfirmOptionList) {
+    public void batchBetMatchMarketOfJumpLine(List<BetConfirmOption> betConfirmOptionList,boolean isChampion) {
         BtCarReq btCarReq = new BtCarReq();
         btCarReq.setLanguageType("CMN");
         btCarReq.setCurrencyId(1);
@@ -90,7 +90,7 @@ public class FBBtCarViewModel extends TemplateBtCarViewModel {
                     public void onError(Throwable t) {
                         if (t instanceof BusinessException) {
                             if (((BusinessException) t).code == HttpCallBack.CodeRule.CODE_14010) {
-                                batchBetMatchMarketOfJumpLine(betConfirmOptionList);
+                                batchBetMatchMarketOfJumpLine(betConfirmOptionList,false);
                             }
                         }
                     }

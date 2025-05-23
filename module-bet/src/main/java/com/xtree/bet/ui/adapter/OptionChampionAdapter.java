@@ -117,6 +117,7 @@ public class OptionChampionAdapter extends BaseAdapter<Option> {
                 BtCarDialogFragment btCarDialogFragment = new BtCarDialogFragment();
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(BtCarDialogFragment.KEY_BT_OPTION, (BetConfirmOption) view1.getTag());
+                bundle.putString(BtCarDialogFragment.KEY_CHAMPION,BtCarDialogFragment.KEY_CHAMPION);
                 btCarDialogFragment.setArguments(bundle);
                 if (mContext instanceof BaseActivity) {
                     btCarDialogFragment.show(((BaseActivity) mContext).getSupportFragmentManager(), "btCarDialogFragment");

@@ -49,6 +49,7 @@ import com.xtree.bet.weight.KeyboardView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -66,6 +67,7 @@ import me.xtree.mvvmhabit.utils.Utils;
  */
 public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding, TemplateBtCarViewModel> {
     public final static String KEY_BT_OPTION = "KEY_BT_OPTION";
+    public final static String KEY_CHAMPION = "CHAMPION"; //是否是冠军体育赛事
     /**
      * 投注项列表
      */
@@ -88,6 +90,9 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
     private String mBanlance = "-1";
     private long lastBetClickTime;
     private boolean haveRealData = false;//是否已经获取过一次投注赔率数据
+
+    private boolean isChampion = false;//是否是冠军体育
+
 
     private KeyBoardListener mKeyBoardListener = new KeyBoardListener() {
         @Override
@@ -214,6 +219,9 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
             BetConfirmOption betConfirmOption = getArguments().getParcelable(KEY_BT_OPTION);
             betConfirmOptionList.add(betConfirmOption);
         }
+        if (getArguments()!=null){
+            isChampion =  requireArguments().getString(BtCarDialogFragment.KEY_CHAMPION) != null ;
+        }
         /*if (!BtCarManager.getBtCarList().isEmpty()) {
             betConfirmOptionList = BtCarManager.getBtCarList();
         } else {
@@ -229,7 +237,7 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
         binding.rvBtOption.setAdapter(betConfirmOptionAdapter);
         betConfirmOptionAdapter.setBtCarDialogFragment(this);
         binding.tvTimer.setText(String.valueOf(countdown));
-        viewModel.batchBetMatchMarketOfJumpLine(betConfirmOptionList);
+        viewModel.batchBetMatchMarketOfJumpLine(betConfirmOptionList,isChampion);
         if (!BtCarManager.isCg()) {
             binding.tvTimer.setVisibility(View.VISIBLE);
             runnable = () -> {
@@ -361,7 +369,7 @@ public class BtCarDialogFragment extends BaseDialogFragment<BtLayoutBtCarBinding
         if (BtCarManager.isCg()) {
             betConfirmOptionList = BtCarManager.getBtCarList();
         }
-        viewModel.batchBetMatchMarketOfJumpLine(betConfirmOptionList);
+        viewModel.batchBetMatchMarketOfJumpLine(betConfirmOptionList,isChampion);
     }
 
     public interface KeyBoardListener {

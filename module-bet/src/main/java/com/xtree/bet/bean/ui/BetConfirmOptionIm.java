@@ -105,9 +105,12 @@ public class BetConfirmOptionIm implements BetConfirmOption {
     public Option getOption() {
         if (wagerSelectionInfo != null && mOption != null) {
             WagerSelection wagerSelection = new WagerSelection();
-            wagerSelection.setSelectionId((int)wagerSelectionInfo.getWagerSelectionId());
+            wagerSelection.setSelectionId(wagerSelectionInfo.getBetTypeSelectionId());
             wagerSelection.setHandicap(wagerSelectionInfo.getHandicap());
             wagerSelection.setOdds(wagerSelectionInfo.getOdds());
+            wagerSelection.setOddsType(wagerSelectionInfo.getOddsType());
+//            wagerSelection.set
+
 //            wagerSelection.setSelectionName(wagerSelectionInfo.get);//没有对应字段
             wagerSelection.setSpecifiers(wagerSelectionInfo.getSpecifiers());
             wagerSelection.setWagerSelectionId(wagerSelectionInfo.getWagerSelectionId());

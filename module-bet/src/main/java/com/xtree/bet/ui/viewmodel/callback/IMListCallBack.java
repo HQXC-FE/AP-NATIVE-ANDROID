@@ -208,7 +208,7 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
                 if (oldOption != null && newOption != null
                         && oldOption.getRealOdd() != newOption.getRealOdd()
                         && TextUtils.equals(oldOption.getCode(), newOption.getCode())) {
-                    CfLog.d("============== IMListCallBack setOptionOddChange 11111 ================");
+//                    CfLog.d("============== IMListCallBack setOptionOddChange 11111 ================");
                     newOption.setChange(oldOption.getRealOdd());
                     break;
                 }
@@ -288,15 +288,15 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     }
 
     private List<Option> getMatchOptionList(List<Match> matchList) {
-        CfLog.d("================ IMlistCallBack getMatchOptionList ==============");
+//        CfLog.d("================ IMlistCallBack getMatchOptionList ==============");
         List<Option> optionList = new ArrayList<>();
         for (Match match : matchList) {
-            CfLog.d("================ IMlistCallBack match.getPlayTypeList() =============="+match.getPlayTypeList());
+//            CfLog.d("================ IMlistCallBack match.getPlayTypeList() =============="+match.getPlayTypeList());
             PlayGroup newPlayGroup = new PlayGroupIm(match.getPlayTypeList());
 
             for (PlayType playType : newPlayGroup.getPlayTypeList()) {
                 playType.getOptionLists();
-                CfLog.d("================ IMlistCallBack match.getSportId() =============="+match.getSportId());
+//                CfLog.d("================ IMlistCallBack match.getSportId() =============="+match.getSportId());
                 for (Option option : playType.getOptionList(match.getSportId())) {
                     if (option == null) {
                         continue;

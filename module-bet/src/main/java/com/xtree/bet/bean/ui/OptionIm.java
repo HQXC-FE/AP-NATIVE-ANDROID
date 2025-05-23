@@ -59,9 +59,9 @@ public class OptionIm implements Option {
      * 选项简称(全名or简名，订单相关为全名，否则为简名)， 赔率列表一般都用简称展示
      */
     public String getSortName() {
-        if (wagerSelection!=null && wagerSelection.getDisplayHandicap()!=null){
-            return wagerSelection.getSelectionName() + " " +wagerSelection.getDisplayHandicap();
-        }else {
+        if (wagerSelection != null && wagerSelection.getDisplayHandicap() != null) {
+            return wagerSelection.getSelectionName() + " " + wagerSelection.getDisplayHandicap();
+        } else {
             return wagerSelection.getSelectionName();
         }
     }
@@ -79,11 +79,8 @@ public class OptionIm implements Option {
      * 欧盘赔率，目前我们只提供欧洲盘赔率，投注是请提交该字段赔率值作为选项赔率，赔率小于0代表锁盘
      */
     public double getUiShowOdd() {
-        if (isHongKongMarket()) {
-            BigDecimal bg = BigDecimal.valueOf(wagerSelection.getOdds() - 1);
-            return bg.setScale(2, RoundingMode.HALF_UP).doubleValue();
-        }
-        return wagerSelection.getOdds();
+        BigDecimal bg = BigDecimal.valueOf(wagerSelection.getOdds());
+        return bg.setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     @Override
@@ -180,12 +177,12 @@ public class OptionIm implements Option {
      */
     @Override
     public void setChange(double oldOdd) {
-        CfLog.d("========== OptionIm setChange oldOdd ==========="+oldOdd);
-        CfLog.d("========== OptionIm setChange getRealOdd ==========="+getRealOdd());
+//        CfLog.d("========== OptionIm setChange oldOdd ==========="+oldOdd);
+//        CfLog.d("========== OptionIm setChange getRealOdd ==========="+getRealOdd());
         change = oldOdd < getRealOdd() ? 1 : oldOdd > getRealOdd() ? -1 : 0;
         //Log.e("test", "===========" + change);
         wagerSelection.change = change;
-        CfLog.d("========== OptionIm setChange mOptionInfo.change ==========="+wagerSelection.change);
+//        CfLog.d("========== OptionIm setChange mOptionInfo.change ==========="+wagerSelection.change);
     }
 
     /**
@@ -195,7 +192,7 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isUp() {
-        CfLog.d("========== OptionIm isUp mOptionInfo.change==========="+wagerSelection.change);
+//        CfLog.d("========== OptionIm isUp mOptionInfo.change==========="+wagerSelection.change);
         return wagerSelection.change == 1;
     }
 
@@ -206,7 +203,7 @@ public class OptionIm implements Option {
      */
     @Override
     public boolean isDown() {
-        CfLog.d("========== OptionIm isDown mOptionInfo.change==========="+wagerSelection.change);
+//        CfLog.d("========== OptionIm isDown mOptionInfo.change==========="+wagerSelection.change);
         return wagerSelection.change == -1;
     }
 
@@ -228,8 +225,12 @@ public class OptionIm implements Option {
         return new OptionListIm(wagerSelection, marketLine);
     }
 
-    public double getHandicap(){
+    public double getHandicap() {
         return wagerSelection.getHandicap();
+    }
+
+    public long getWagerSelectionId() {
+        return wagerSelection.getWagerSelectionId();
     }
 
     @Override

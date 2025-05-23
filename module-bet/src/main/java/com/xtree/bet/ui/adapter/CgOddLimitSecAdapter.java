@@ -216,10 +216,9 @@ public class CgOddLimitSecAdapter extends CgOddLimitView.Adapter<CgOddLimit> {
                             tvPay.setText(mContext.getResources().getString(payResStringId, NumberUtils.format(minValue * cgOddLimit.getBtCount(), 2)));
                             flag = false;
                         });
-                        if(disposable.isDisposed())
-                        disposable.dispose();
+                        if (disposable.isDisposed())
+                            disposable.dispose();
                     });
-
                 }
 
             } else if (amount > maxValue) {
@@ -227,6 +226,7 @@ public class CgOddLimitSecAdapter extends CgOddLimitView.Adapter<CgOddLimit> {
                 tvWin.setText(mContext.getResources().getString(winResStringId, NumberUtils.format(odd * maxValue - maxValue, 2)));
                 tvPay.setText(mContext.getResources().getString(payResStringId, NumberUtils.format(maxValue * cgOddLimit.getBtCount(), 2)));
             } else {
+                KLog.d("odd:" + odd + ", amount:" + amount + ", odd * amount - amount :" + (odd * amount - amount));
                 tvWin.setText(mContext.getResources().getString(winResStringId, NumberUtils.format(odd * amount - amount, 2)));
                 tvPay.setText(mContext.getResources().getString(payResStringId, NumberUtils.format(amount * cgOddLimit.getBtCount(), 2)));
             }

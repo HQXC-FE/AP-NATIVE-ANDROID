@@ -31,7 +31,7 @@ public class DiscolourTextView extends AppCompatTextView {
     }
 
     public void startUp() {
-        CfLog.d("============== DiscolourTextView startUp =============");
+//        CfLog.d("============== DiscolourTextView startUp =============");
         setTextColor(getContext().getResources().getColor(R.color.bt_color_odd_up));
         setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.bt_icon_odd_up_line, 0);
         postDelayed(() -> {

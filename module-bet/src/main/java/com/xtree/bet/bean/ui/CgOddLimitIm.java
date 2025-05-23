@@ -12,6 +12,8 @@ import com.xtree.bet.manager.BtCarManager;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.xtree.mvvmhabit.utils.KLog;
+
 /**
  * 杏彩体育（IM）
  */
@@ -129,13 +131,15 @@ public class CgOddLimitIm implements CgOddLimit {
 
     @Override
     public double getWin(double amount) {
+        KLog.e("betSetting.getEstimatedPayoutAmount()："+betSetting.getEstimatedPayoutAmount() + " , amount:"+amount);
+
         if (betSetting == null) return amount;
         return betSetting.getEstimatedPayoutAmount() * amount;
     }
 
     @Override
     public int getBtCount() {
-        if(betSetting == null || TextUtils.isEmpty(getCgName())){
+        if(betSetting == null || (getCgName()!=null && getCgName().equals("单关"))){
             return 1;
         }
 
@@ -146,7 +150,7 @@ public class CgOddLimitIm implements CgOddLimit {
         String[] ints = cgName.split("串");
         int btCount = Integer.parseInt(ints[1]);
         if(btCount == 1){
-            btCount = calculate(BtCarManager.size(), Integer.valueOf(ints[0]));
+            btCount = calculate(BtCarManager.size(), Integer.parseInt(ints[0]));
         }
 
         return btCount;

@@ -72,7 +72,7 @@ public class MatchIm implements Match {
      * @return
      */
     public long getId() {
-        return Long.valueOf(matchInfo.eventId);
+        return matchInfo.eventId;
     }
 
     /**

@@ -3,7 +3,7 @@ package com.xtree.bet.bean.ui;
 import com.xtree.base.vo.BaseBean;
 
 /**
- * 玩法选项实时赔率及限额信息(为了适配FB和PM体育用)
+ * 玩法选项实时赔率及限额信息(为了适配FB,PM,IM体育用)
  */
 public interface BetConfirmOption extends BaseBean {
     /**

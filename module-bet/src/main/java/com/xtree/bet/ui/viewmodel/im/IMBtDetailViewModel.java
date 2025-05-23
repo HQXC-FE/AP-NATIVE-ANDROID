@@ -31,8 +31,10 @@ import com.xtree.bet.bean.ui.OptionList;
 import com.xtree.bet.bean.ui.PlayType;
 import com.xtree.bet.bean.ui.PlayTypeIm;
 import com.xtree.bet.constant.IMMarketTag;
+import com.xtree.bet.constant.SPKey;
 import com.xtree.bet.data.BetRepository;
 import com.xtree.bet.data.IMApiService;
+import com.xtree.bet.manager.BtCarManager;
 import com.xtree.bet.ui.viewmodel.TemplateBtDetailViewModel;
 
 import java.util.ArrayList;
@@ -62,39 +64,50 @@ public class IMBtDetailViewModel extends TemplateBtDetailViewModel {
         mMatchId = matchId;
         mSportId = sportId;
 
-//        Map<String, String> map = new HashMap<>();
-//        map.put("languageType", "CMN");
-//        map.put("matchId", String.valueOf(matchId));
-//
-//        List<Long> eventsId = new ArrayList<>();
-//        eventsId.add(mMatchId);
-//        SelectedEventInfoReq req = new SelectedEventInfoReq(Long.parseLong(sportId), eventsId, 2, false, true);
-//        launchFlow(model.getIMApiService().getSelectedEventInfo(new BaseIMRequest<>(IMApiService.GetSelectedEventInfo, req)), new HttpCallBack<EventInfoByPageListRsp>() {
-//            @Override
-//            public void onResult(EventInfoByPageListRsp eventListRsp) {
-//                super.onResult(eventListRsp);
-//                List<Category> categoryList = getCategoryList(eventListRsp);
-//                if (categoryList != null && !eventListRsp.getSports().isEmpty()) {
-//                    List<MatchInfo> events = eventListRsp.getSports().get(0).getEvents();
-//                    if (!events.isEmpty()) {
-//                        Match match = new MatchIm(events.get(0));
-//                        matchData.postValue(match);
-//                    }
-//                    categoryListData.postValue(categoryList);
-//                }
-//            }
-//        });
+        Map<String, String> map = new HashMap<>();
+        map.put("languageType", "CMN");
+        map.put("matchId", String.valueOf(matchId));
+
+        List<Long> eventsId = new ArrayList<>();
+        eventsId.add(mMatchId);
+        //是否是香港盘，香港盘oddsType传2，欧洲盘传3
+        boolean isHkMarket = SPUtils.getInstance().getInt(SPKey.BT_MATCH_LIST_ODDTYPE) == 2;
+        SelectedEventInfoReq req = new SelectedEventInfoReq(
+                Long.parseLong(sportId), eventsId, isHkMarket ? 2 : 3, BtCarManager.isCg(), true
+        );
+        req.setApi(IMApiService.GetSelectedEventInfo);
+        launchFlow(model.getIMApiService().getSelectedEventInfo(req), new HttpCallBack<EventInfoByPageListRsp>() {
+            @Override
+            public void onResult(EventInfoByPageListRsp eventListRsp) {
+                super.onResult(eventListRsp);
+                List<Category> categoryList = getCategoryList(eventListRsp);
+                if (categoryList != null && !eventListRsp.getSports().isEmpty()) {
+                    List<MatchInfo> events = eventListRsp.getSports().get(0).getEvents();
+
+                    if (!events.isEmpty()) {
+                        Match match = new MatchIm(events.get(0));
+                        if (mMatch != null) {
+                            setOptionOddChange(match);
+                        }
+                        mMatch = match;
+                        matchData.postValue(match);
+                    }
+                    categoryListData.postValue(categoryList);
+                }
+            }
+        });
 
 
-        EventInfoByPageListRsp eventListRsp = EventInfoByPageListParser.getSelectedEventInfo(Utils.getContext());
-        List<Category> categoryList = getCategoryList(eventListRsp);
-        List<MatchInfo> events = eventListRsp.getSports().get(0).getEvents();
-        Match match = new MatchIm(events.get(0));
-        if (mMatch != null) {
-            setOptionOddChange(match);
-        }
-        matchData.postValue(match);
-        categoryListData.postValue(categoryList);
+        //假数据调试
+//        EventInfoByPageListRsp eventListRsp = EventInfoByPageListParser.getSelectedEventInfo(Utils.getContext());
+//        List<Category> categoryList = getCategoryList(eventListRsp);
+//        List<MatchInfo> events = eventListRsp.getSports().get(0).getEvents();
+//        Match match = new MatchIm(events.get(0));
+//        if (mMatch != null) {
+//            setOptionOddChange(match);
+//        }
+//        matchData.postValue(match);
+//        categoryListData.postValue(categoryList);
 
     }
 

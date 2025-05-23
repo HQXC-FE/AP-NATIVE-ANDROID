@@ -13,6 +13,8 @@ import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 
+import me.xtree.mvvmhabit.utils.KLog;
+
 public class CgBtResultAdapter extends BaseAdapter<BtResult> {
     private List<CgOddLimit> cgOddLimitList;
 

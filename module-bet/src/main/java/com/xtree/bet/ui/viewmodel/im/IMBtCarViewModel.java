@@ -39,6 +39,7 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import me.xtree.mvvmhabit.http.BusinessException;
+import me.xtree.mvvmhabit.utils.KLog;
 import me.xtree.mvvmhabit.utils.RxUtils;
 import me.xtree.mvvmhabit.utils.SPUtils;
 
@@ -67,7 +68,7 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
     /**
      * 投注前查询指定玩法赔率
      */
-    public void batchBetMatchMarketOfJumpLine(List<BetConfirmOption> betConfirmOptionList) {
+    public void batchBetMatchMarketOfJumpLine(List<BetConfirmOption> betConfirmOptionList,boolean isChampion) {
         mSearchBetConfirmOptionList = betConfirmOptionList;
         GetBetInfoReq getBetInfoReq = new GetBetInfoReq();
         if (BtCarManager.isCg()) {
@@ -81,28 +82,29 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
             wagerSelectionInfo.BetTypeId = betConfirmOption.getPlayType().getPlayType();
             wagerSelectionInfo.EventId = betConfirmOption.getMatch().getId();
             wagerSelectionInfo.SportId = Integer.parseInt(betConfirmOption.getMatch().getSportId());
+            KLog.e("OddsType:"+betConfirmOption.getOption().getOddType());
             wagerSelectionInfo.OddsType = betConfirmOption.getOption().getOddType();
             wagerSelectionInfo.Odds = betConfirmOption.getOption().getRealOdd();
-            wagerSelectionInfo.WagerSelectionId = Long.parseLong(betConfirmOption.getOption().getId());
             wagerSelectionInfo.MarketlineId = Long.parseLong(betConfirmOption.getPlayTypeId());
             wagerSelectionInfo.PeriodId = betConfirmOption.getPlayType().getPlayPeriod();
+
             if (betConfirmOption.getOption() instanceof OptionIm) {
                 OptionIm option = (OptionIm) betConfirmOption.getOption();
                 wagerSelectionInfo.Handicap = option.getHandicap();
+                wagerSelectionInfo.WagerSelectionId = option.getWagerSelectionId();
             }
-            wagerSelectionInfo.RefId = Long.parseLong(betConfirmOption.getOption().getId());
-            //todo 这里没有判断冠军赛事和定时赛事
-            //如果是冠军赛事，这个值为0
-            wagerSelectionInfo.BetTypeSelectionId = Integer.parseInt(betConfirmOption.getOption().getId());
-            //todo 这里没有判断冠军赛事和定时赛事
-            //如果是定时赛事，这个值为0
-            wagerSelectionInfo.OutrightTeamId = (int) Long.parseLong(betConfirmOption.getOption().getId());
+            wagerSelectionInfo.RefId = Long.parseLong(betConfirmOption.getPlayTypeId());
+            if (isChampion){
+                //如果是定时赛事，这个值为0
+                wagerSelectionInfo.OutrightTeamId = (int) Long.parseLong(betConfirmOption.getOption().getId());
+            }else{
+                //如果是冠军赛事，这个值为0
+                wagerSelectionInfo.BetTypeSelectionId = Integer.parseInt(betConfirmOption.getOption().getId());
+            }
             list.add(wagerSelectionInfo);
         }
         getBetInfoReq.setWagerSelectionInfos(list);
         getBetInfoReq.setApi(IMApiService.GetBetInfo);
-        getBetInfoReq.setMemberCode("");
-
         launchFlow(model.getIMApiService().getBetInfo(getBetInfoReq), new HttpCallBack<BtConfirmInfo>() {
             @Override
             public void onResult(BtConfirmInfo betInfo) {
@@ -136,7 +138,7 @@ public class IMBtCarViewModel extends TemplateBtCarViewModel {
                 if (t instanceof BusinessException) {
                     BusinessException error = (BusinessException) t;
                     if (error.code == CodeRule.CODE_401026 || error.code == CodeRule.CODE_401013) {
-                        batchBetMatchMarketOfJumpLine(betConfirmOptionList);
+                        batchBetMatchMarketOfJumpLine(betConfirmOptionList,isChampion);
                     }
                 }
             }

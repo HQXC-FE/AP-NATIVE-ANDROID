@@ -66,7 +66,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
     /**
      * 投注前查询指定玩法赔率
      */
-    public void batchBetMatchMarketOfJumpLine(List<BetConfirmOption> betConfirmOptionList) {
+    public void batchBetMatchMarketOfJumpLine(List<BetConfirmOption> betConfirmOptionList,boolean isChampion) {
         mSearchBetConfirmOptionList = betConfirmOptionList;
         BtCarReq btCarReq = new BtCarReq();
         btCarReq.setCuid();
@@ -124,7 +124,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                         if (t instanceof BusinessException) {
                             BusinessException error = (BusinessException) t;
                             if (error.code == HttpCallBack.CodeRule.CODE_401026 || error.code == HttpCallBack.CodeRule.CODE_401013) {
-                                batchBetMatchMarketOfJumpLine(betConfirmOptionList);
+                                batchBetMatchMarketOfJumpLine(betConfirmOptionList,isChampion);
                             }
                         }
                     }
@@ -275,7 +275,7 @@ public class PMBtCarViewModel extends TemplateBtCarViewModel {
                         super.onError(t);
                         if (t instanceof BusinessException) {
                             if (((BusinessException) t).code == HttpCallBack.CodeRule.CODE_400467) {
-                                batchBetMatchMarketOfJumpLine(mSearchBetConfirmOptionList);
+                                batchBetMatchMarketOfJumpLine(mSearchBetConfirmOptionList,false);
                             }
                         }
                     }

@@ -51,7 +51,7 @@ public class BtDetailOptionFragment extends BaseFragment<BtLayoutDetailOptionBin
             if (!playType.getOptionLists().isEmpty()){
                 int size = playType.getOptionLists().get(0).getOptionList().size();
                 //            if (name.equals("大/小") || name.equals("让球")) {
-                KLog.e("BtDetailOptionFragment1 - name:" + name + " size()：" + size + " 第一次");
+//                KLog.e("BtDetailOptionFragment1 - name:" + name + " size()：" + size + " 第一次");
 //            }
             }
         }
@@ -107,7 +107,7 @@ public class BtDetailOptionFragment extends BaseFragment<BtLayoutDetailOptionBin
                 if (!playType.getOptionLists().isEmpty()){
                     int size = playType.getOptionLists().get(0).getOptionList().size();
                     //            if (name.equals("大/小") || name.equals("让球")) {
-                    KLog.e("BtDetailOptionFragment1 - name:" + name + " size()：" + size + " 第二次");
+//                    KLog.e("BtDetailOptionFragment1 - name:" + name + " size()：" + size + " 第二次");
 //            }
                 }
             }
