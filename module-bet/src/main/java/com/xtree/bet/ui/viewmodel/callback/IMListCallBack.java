@@ -9,6 +9,7 @@ import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.EventInfoByPageListParser;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
+import com.xtree.bet.bean.response.im.EventInfoMBTPagedRsp;
 import com.xtree.bet.bean.response.im.LeagueInfo;
 import com.xtree.bet.bean.response.im.MatchInfo;
 
@@ -32,7 +33,7 @@ import java.util.Map;
 import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
+public class IMListCallBack extends HttpCallBack<EventInfoMBTPagedRsp> {
 
     private IMMainViewModel mViewModel;
     private boolean mHasCache;
@@ -127,41 +128,44 @@ public class IMListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     }
 
     @Override
-    public void onResult(EventInfoByPageListRsp data) {
+    public void onResult(EventInfoMBTPagedRsp data) {
         try {
+            CfLog.d("================= IMListCallBack data ==============="+data);
             //data = EventInfoByPageListParser.getLiveEventInfoListRsp(MainActivity.getContext());
-            List<MatchInfo> matchInfoList = data.getSports().get(0).getEvents(); //这里应该是只获取当前显示的比赛赔率
-            for (MatchInfo matchInfo : matchInfoList) {
-                CfLog.d("============== IMListCallBack data.getSports() ================"+data.getSports());
-                CfLog.d("============== IMListCallBack data.getSports().get(0) ================"+data.getSports().get(0));
-                matchInfo.setSportId(data.getSports().get(0).getSportId());
-                matchInfo.setSportName(data.getSports().get(0).getSportName());
-            }
-            if (mIsTimerRefresh) { //定时刷新赔率变更
-                CfLog.d("============== IMListCallBack setOptionOddChange matchInfoList.size() ================"+matchInfoList.size());
-                CfLog.d("============== IMListCallBack setOptionOddChange mMatchids.size() ================"+mMatchids.size());
-                if (matchInfoList.size() != mMatchids.size()) {
-                    //List<Long> matchIdList = new ArrayList<>();
-                    mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);
-                } else {
-                    setOptionOddChange(matchInfoList);
-                    mViewModel.leagueLiveTimerListData.postValue(mLeagueList);
+            if(data.getEvents() != null){
+                List<MatchInfo> matchInfoList = data.getEvents();
+                for (MatchInfo matchInfo : matchInfoList) {
+                    //CfLog.d("============== IMListCallBack data.getSports() ================"+data.getEvents());
+                    //CfLog.d("============== IMListCallBack data.getSports().get(0) ================"+data.getEvents().get(0));
+                    matchInfo.setSportId(1);
+                    matchInfo.setSportName("足球");
                 }
-            } else {  // 获取今日中的全部滚球赛事列表
-                if (mIsRefresh) {
-                    mLeagueList.clear();
-                    mMapLeague.clear();
-                    mMapSportType.clear();
-                    mLiveMatchList.clear();
+                if (mIsTimerRefresh) { //定时刷新赔率变更
+                    CfLog.d("============== IMListCallBack setOptionOddChange matchInfoList.size() ================"+matchInfoList.size());
+                    CfLog.d("============== IMListCallBack setOptionOddChange mMatchids.size() ================"+mMatchids.size());
+                    if (matchInfoList.size() != mMatchids.size()) {
+                        //List<Long> matchIdList = new ArrayList<>();
+                        mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, null, mPlayMethodType, mSearchDatePos, mOddType, false, true);
+                    } else {
+                        setOptionOddChange(matchInfoList);
+                        mViewModel.leagueLiveTimerListData.postValue(mLeagueList);
+                    }
+                } else {  // 获取今日中的全部滚球赛事列表
+                    if (mIsRefresh) {
+                        mLeagueList.clear();
+                        mMapLeague.clear();
+                        mMapSportType.clear();
+                        mLiveMatchList.clear();
+                    }
+                    mViewModel.firstNetworkFinishData.call();
+                    mIsStepSecond = true;
+                    mLiveMatchList.addAll(matchInfoList);
+                    if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
+                        leagueGoingList(matchInfoList);
+                    }
+                    mViewModel.saveLeague(this);
+                    mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, 2, mSearchDatePos, mOddType, false, mIsRefresh, mIsStepSecond);
                 }
-                mViewModel.firstNetworkFinishData.call();
-                mIsStepSecond = true;
-                mLiveMatchList.addAll(matchInfoList);
-                if (TextUtils.isEmpty(mViewModel.mSearchWord)) {
-                    leagueGoingList(matchInfoList);
-                }
-                mViewModel.saveLeague(this);
-                mViewModel.getLeagueList(mSportPos, mSportId, mOrderBy, mLeagueIds, mMatchids, 2, mSearchDatePos, mOddType, false, mIsRefresh, mIsStepSecond);
             }
         } catch (Exception e) {
             e.printStackTrace();

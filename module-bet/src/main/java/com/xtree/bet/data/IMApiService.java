@@ -25,6 +25,7 @@ import com.xtree.bet.bean.response.im.BetTrade;
 import com.xtree.bet.bean.response.im.ChampionEventsRsp;
 import com.xtree.bet.bean.response.im.DeltaEventListRsp;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
+import com.xtree.bet.bean.response.im.EventInfoMBTPagedRsp;
 import com.xtree.bet.bean.response.im.EventListRsp;
 import com.xtree.bet.bean.response.im.GetAnnouncementRsp;
 import com.xtree.bet.bean.response.im.ImCompletedResultsEntity;
@@ -153,6 +154,14 @@ public interface IMApiService {
     @POST(forwardPath)
     @Headers({"content-type: application/vnd.sc-api.v1.json"})
     Flowable<BaseResponse<EventInfoByPageListRsp>> getEventInfoByPage(@Body EventInfoByPageRsq eventInfoMbtReq);
+
+
+    /**
+     * 获取后台的分页赛事数据
+     */
+    @GET("/api/sports/imsb/GetEventInfoMBTPaged")
+    @Headers({"content-type: application/vnd.sc-api.v1.json"})
+    Flowable<BaseResponse<EventInfoMBTPagedRsp>> getEventInfoMBTPaged(@QueryMap(encoded = true) Map<String, String> filters);
 
     /**
      * 赛果功能

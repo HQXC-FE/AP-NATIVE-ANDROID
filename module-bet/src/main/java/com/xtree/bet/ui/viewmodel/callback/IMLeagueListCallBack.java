@@ -12,6 +12,7 @@ import com.xtree.base.vo.BaseBean;
 import com.xtree.bet.EventInfoByPageListParser;
 import com.xtree.bet.R;
 import com.xtree.bet.bean.response.im.EventInfoByPageListRsp;
+import com.xtree.bet.bean.response.im.EventInfoMBTPagedRsp;
 import com.xtree.bet.bean.response.im.LeagueInfo;
 import com.xtree.bet.bean.response.im.MatchInfo;
 import com.xtree.bet.bean.ui.League;
@@ -30,7 +31,7 @@ import me.xtree.mvvmhabit.http.BusinessException;
 import me.xtree.mvvmhabit.utils.SPUtils;
 import me.xtree.mvvmhabit.utils.Utils;
 
-public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
+public class IMLeagueListCallBack extends HttpCallBack<EventInfoMBTPagedRsp> {
 
     private IMMainViewModel mViewModel;
     private boolean mHasCache;
@@ -136,15 +137,16 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     }
 
     @Override
-    public void onResult(EventInfoByPageListRsp matchListRsp) {
+    public void onResult(EventInfoMBTPagedRsp matchListRsp) {
+        CfLog.d("================= IMLeagueListCallBack onResult matchListRsp ==============="+matchListRsp);
         //CfLog.d("================= IMLeagueListCallBack onResult mSportPos =================="+mSportPos);
         //matchListRsp = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
-        List<MatchInfo> matchInfoList = matchListRsp.getSports().get(0).getEvents();
+        List<MatchInfo> matchInfoList = matchListRsp.getEvents();
         CfLog.d("================= IMLeagueListCallBack onResult matchInfoList.size before =================="+matchInfoList.size());
-        matchListRsp = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
+        //matchListRsp = EventInfoByPageListParser.getEventInfoByPageListRsp(MainActivity.getContext());
         for (MatchInfo matchInfo : matchInfoList) {
-            matchInfo.setSportId(matchListRsp.getSports().get(0).getSportId());
-            matchInfo.setSportName(matchListRsp.getSports().get(0).getSportName());
+            matchInfo.setSportId(1);
+            matchInfo.setSportName("足球");
             if(mSportPos == 0 && !matchInfo.isPopular){ //筛选出热门比赛
                 matchInfoList.remove(matchInfo);
             }
@@ -204,6 +206,7 @@ public class IMLeagueListCallBack extends HttpCallBack<EventInfoByPageListRsp> {
     @Override
     public void onError(Throwable t) {
         mViewModel.getUC().getDismissDialogEvent().call();
+        CfLog.d("================= IMLeagueListCallBack onError==================");
         if (t instanceof BusinessException) {
             BusinessException error = (BusinessException) t;
             if (error.isHttpError) {
