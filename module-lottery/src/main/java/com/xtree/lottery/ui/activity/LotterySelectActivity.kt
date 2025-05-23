@@ -86,7 +86,7 @@ class LotterySelectActivity : BaseActivity<ActivityMainLtBinding, LotteryViewMod
 
     override fun onDestroy() {
         super.onDestroy()
-        LotteryPolling.startPollingWithOkHttp()
+        LotteryPolling.stop()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

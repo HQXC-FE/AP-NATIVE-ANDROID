@@ -28,7 +28,6 @@ import com.xtree.lottery.data.source.vo.Data
 import com.xtree.lottery.data.source.vo.IssueVo
 import com.xtree.lottery.data.source.vo.MethodMenus
 import com.xtree.lottery.databinding.ActivityLotteryBinding
-import com.xtree.lottery.inter.ParentChildCommunication
 import com.xtree.lottery.ui.fragment.ChaseBetReportFragment
 import com.xtree.lottery.ui.fragment.LotteryReportFragment
 import com.xtree.lottery.ui.fragment.RecentLotteryFragment
@@ -52,8 +51,7 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * 彩票详情
  */
-class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>(),
-    ParentChildCommunication {
+class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>(){
     private var currentIssue: IssueVo? = null
     private lateinit var lotteryBetsFragment: LotteryBetsFragment
     private var methodMenus: MethodMenus? = null
@@ -341,16 +339,6 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         super.onResume()
         setCustomDensity()
 //        refreshRechargeFloatingWindows()
-    }
-
-    // Activity 提供方法供 Fragment 调用
-    override fun onFragmentSendData(data: ArrayList<IssueVo>) {
-
-    }
-
-    // Activity 主动调用 Fragment 的方法
-    override fun onActivitySendData(data: ArrayList<IssueVo>) {
-        lotteryBetsFragment.onFragmentSendData(data)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

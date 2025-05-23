@@ -21,7 +21,6 @@ import com.xtree.lottery.data.source.vo.IssueVo;
 import com.xtree.lottery.data.source.vo.MenuMethodsData;
 import com.xtree.lottery.data.source.vo.RecentLotteryVo;
 import com.xtree.lottery.databinding.FragmentLotteryBetsBinding;
-import com.xtree.lottery.inter.ParentChildCommunication;
 import com.xtree.lottery.rule.betting.data.RulesEntryData;
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 import com.xtree.lottery.ui.lotterybet.viewmodel.LotteryBetsViewModel;
@@ -44,8 +43,7 @@ import me.xtree.mvvmhabit.bus.RxBus;
  * Created by KAKA on 2024/5/1.
  * Describe: 彩种投注
  */
-public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding, LotteryBetsViewModel> implements ParentChildCommunication {
-    private ParentChildCommunication communication;
+public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding, LotteryBetsViewModel> {
     private ArrayList<IssueVo> mIssues;
 
     public static LotteryBetsFragment newInstance(Lottery lottery) {
@@ -249,37 +247,6 @@ public class LotteryBetsFragment extends BaseFragment<FragmentLotteryBetsBinding
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         viewModel.getUserBalance(null);
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        // 确保 Activity 实现了接口
-        if (context instanceof ParentChildCommunication) {
-            communication = (ParentChildCommunication) context;
-        } else {
-            throw new RuntimeException("Activity must implement ParentChildCommunication");
-        }
-    }
-
-    // Fragment 提供方法给 Activity 调用
-    @Override
-    public void onFragmentSendData(@NonNull ArrayList<IssueVo> data) {
-    }
-
-    // Fragment 主动通过接口通知 Activity
-    @Override
-    public void onActivitySendData(@NotNull ArrayList<IssueVo> data) {
-        if (communication != null) {
-            //communication.onFragmentSendData("Data from Fragment");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        communication = null;
     }
 
 }
