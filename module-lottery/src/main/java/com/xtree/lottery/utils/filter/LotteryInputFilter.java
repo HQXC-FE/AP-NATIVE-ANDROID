@@ -12,7 +12,7 @@ public class LotteryInputFilter implements InputFilter {
             char c = source.charAt(i);
 
             // 允许的字符：空格、回车、逗号、分号、中文逗号、中文分号、全角空格、数字
-            if (Character.isDigit(c) || c == ' ' || c == '\r' || c == ',' || c == ';' || c == '，' || c == '；' || c == '　') {
+            if (Character.isDigit(c) || c == ' ' || c == '\r' || c == ',' || c == ';' || c == '，' || c == '；' || c == '　' || c == '\n') {
                 // 全角数字转换为半角数字
                 if (c >= '０' && c <= '９') {
                     c = (char) (c - '０' + '0');
