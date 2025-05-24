@@ -41,13 +41,13 @@ public class K3GeneralRule {
                 int unionWorkCode = new HashSet<>(workCode).size();
                 switch (unionWorkCode) {
                     case 1:
-                        form.add(createFormItem("三同号", "classNames.c_cc8b1e"));
+                        form.add(createFormItem("三同号", "#cc8b1e"));
                         break;
                     case 2:
-                        form.add(createFormItem("二同号", "classNames.c_006dfe"));
+                        form.add(createFormItem("二同号", "#006dfe"));
                         break;
                     case 3:
-                        form.add(createFormItem("三不同", "classNames.c_229e6d"));
+                        form.add(createFormItem("三不同", "#229e6d"));
                         break;
                 }
             }
