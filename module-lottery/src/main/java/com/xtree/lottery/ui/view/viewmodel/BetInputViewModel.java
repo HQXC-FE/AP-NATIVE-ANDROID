@@ -3,6 +3,7 @@ package com.xtree.lottery.ui.view.viewmodel;
 import android.text.TextUtils;
 
 import androidx.databinding.ObservableField;
+import androidx.lifecycle.MutableLiveData;
 
 import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
 
@@ -12,7 +13,7 @@ import com.xtree.lottery.ui.lotterybet.model.LotteryBetsModel;
  */
 public class BetInputViewModel {
 
-    public final ObservableField<String> lotteryNumbs = new ObservableField<>("");
+    public final MutableLiveData<String> lotteryNumbs = new MutableLiveData<>("");
     public ObservableField<Boolean> showSeatView = new ObservableField<>(false);
 
     private LotteryBetsModel betModel;
@@ -25,7 +26,7 @@ public class BetInputViewModel {
      * 清空彩票输入框
      */
     public void clear() {
-        lotteryNumbs.set("");
+        lotteryNumbs.setValue("");
     }
 
 //    /**

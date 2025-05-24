@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Parcel
 import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,7 @@ import com.xtree.lottery.ui.viewmodel.LotteryViewModel
 import com.xtree.lottery.ui.viewmodel.factory.AppViewModelFactory
 import com.xtree.lottery.utils.LotteryEventConstant
 import com.xtree.lottery.utils.LotteryEventVo
+import io.reactivex.annotations.NonNull
 import me.xtree.mvvmhabit.base.BaseActivity
 import me.xtree.mvvmhabit.utils.KLog
 import me.xtree.mvvmhabit.utils.SPUtils
@@ -47,6 +49,7 @@ import me.xtree.mvvmhabit.utils.ToastUtils
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+
 
 /**
  * 彩票详情
@@ -113,14 +116,12 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
         if (Build.VERSION.SDK_INT >= 33) {
             lottery =
                 intent?.getParcelableExtra("Lottery", Lottery::class.java) ?: (Gson().fromJson(
-                    SPUtils.getInstance().getString("Lottery"),
-                    Lottery::class.java
+                    SPUtils.getInstance().getString("Lottery"), Lottery::class.java
                 ))
             //userMethods = intent.getParcelableArrayListExtra("userMethods", UserMethodsVo::class.java)!!
         } else {
             lottery = intent?.getParcelableExtra<Lottery>("Lottery") ?: (Gson().fromJson(
-                SPUtils.getInstance().getString("Lottery"),
-                Lottery::class.java
+                SPUtils.getInstance().getString("Lottery"), Lottery::class.java
             ))
             //userMethods = intent.getParcelableArrayListExtra("userMethods")!!
         }
@@ -306,8 +307,7 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
                 binding.tvTitle.text = issue.plus("期")
             }
 
-            val countdown =
-                viewModel.dateToStamp(saleend) - System.currentTimeMillis()
+            val countdown = viewModel.dateToStamp(saleend) - System.currentTimeMillis()
             KLog.i("countdown", countdown)
             timer?.cancel()
             timer = object : CountDownTimer(countdown, 1000L) {
@@ -366,12 +366,28 @@ class LotteryActivity : BaseActivity<ActivityLotteryBinding, LotteryViewModel>()
                 val data = event.data as Data
                 prizeNotice.showPrize(
                     PrizeInfo(
-                        bonus = data.bonus,
-                        issue = data.issue
+                        bonus = data.bonus, issue = data.issue
                     )
                 )
             }
         }
     }
+
+
+    //防止intent内容过大崩溃不做保存
+    override fun onSaveInstanceState(@NonNull outState: Bundle) {
+        super.onSaveInstanceState(Bundle())
+//        super.onSaveInstanceState(outState)
+        CfLog.d("StateSize" + "savedInstanceState size = " + bundleSizeInBytes(outState))
+    }
+
+    private fun bundleSizeInBytes(bundle: Bundle): Int {
+        val parcel = Parcel.obtain()
+        bundle.writeToParcel(parcel, 0)
+        val size = parcel.dataSize()
+        parcel.recycle()
+        return size
+    }
+
 
 }

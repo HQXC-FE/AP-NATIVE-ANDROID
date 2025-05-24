@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.Observable;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
 
 import com.lxj.xpopup.XPopup;
@@ -42,7 +42,7 @@ import me.xtree.mvvmhabit.utils.ToastUtils;
  */
 public class BetInputView extends BetBaseView {
 
-    private LayoutBetInputBinding binding;
+    private final LayoutBetInputBinding binding;
     private BasePopupView pop;
 
     public BetInputView(@NonNull Context context) {
@@ -60,14 +60,12 @@ public class BetInputView extends BetBaseView {
         binding.setModel(model);
 
         binding.betInputEdit.setFilters(new InputFilter[]{new LotteryInputFilter()});
+        Context realContext = getContext();
+        while (realContext instanceof ContextWrapper && !(realContext instanceof FragmentActivity)) {
+            realContext = ((ContextWrapper) realContext).getBaseContext();
+        }
 
-        binding.getModel().lotteryNumbs.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                setBetData();
-            }
-        });
-
+        binding.getModel().lotteryNumbs.observe((FragmentActivity) realContext, s -> setBetData());
         binding.betInputSeatview.setOnSeatListener(seats -> setBetData());
 
         binding.betInputDerepeat.setOnClickListener(view -> {
@@ -82,7 +80,7 @@ public class BetInputView extends BetBaseView {
 
                 RulesEntryData.BetDTO.DisplayDTO display = rulesResultDataLiveDataValue.getDisplay();
                 if (display != null && !TextUtils.isEmpty(display.getCodes())) {
-                    binding.betInputEdit.setText(display.getCodes());
+                    binding.getModel().lotteryNumbs.postValue(display.getCodes());
                 }
             }
         });
@@ -97,28 +95,21 @@ public class BetInputView extends BetBaseView {
         if (realContext instanceof Activity) {
             Activity activity = (Activity) realContext;
             // 继续你的逻辑
-            MsgDialog dialog = new MsgDialog(activity,
-                    getContext().getString(R.string.txt_kind_tips),
-                    msg,
-                    true,
-                    new TipDialog.ICallBack() {
-                        @Override
-                        public void onClickLeft() {
+            MsgDialog dialog = new MsgDialog(activity, getContext().getString(R.string.txt_kind_tips), msg, true, new TipDialog.ICallBack() {
+                @Override
+                public void onClickLeft() {
 
-                        }
+                }
 
-                        @Override
-                        public void onClickRight() {
-                            if (pop != null) {
-                                pop.dismiss();
-                            }
-                        }
-                    });
+                @Override
+                public void onClickRight() {
+                    if (pop != null) {
+                        pop.dismiss();
+                    }
+                }
+            });
 
-            pop = new XPopup.Builder(activity)
-                    .dismissOnTouchOutside(true)
-                    .dismissOnBackPressed(true)
-                    .asCustom(dialog).show();
+            pop = new XPopup.Builder(activity).dismissOnTouchOutside(true).dismissOnBackPressed(true).asCustom(dialog).show();
         }
     }
 
@@ -126,7 +117,7 @@ public class BetInputView extends BetBaseView {
      * 保留投注数据
      */
     private void setBetData() {
-        String s = binding.getModel().lotteryNumbs.get();
+        String s = binding.getModel().lotteryNumbs.getValue();
 
         if (TextUtils.isEmpty(s)) {
             return;
@@ -252,6 +243,6 @@ public class BetInputView extends BetBaseView {
 
     @Override
     public void clearBet() {
-        binding.getModel().lotteryNumbs.set("");
+        binding.getModel().lotteryNumbs.setValue("");
     }
 }
