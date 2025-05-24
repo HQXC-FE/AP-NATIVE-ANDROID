@@ -322,18 +322,38 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1">
 
+            <CheckedTextView
+                android:id="@+id/tvLhcMoneyUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/lt_selector_lottery_money_label"
+                android:checked="true"
+                android:text="元"
+                android:gravity="center"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:textColor="@color/lt_color_text11_white"
+                android:textSize="13sp"
+                android:visibility="@{model.moneyView?View.GONE:View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/lottery_bets_balance_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:text="余额："
                 android:textColor="@color/lt_color_text8"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/tvLhcMoneyUnit"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_goneMarginStart="0dp" />
 
             <TextView
                 android:id="@+id/lottery_bets_balance"
@@ -388,9 +408,9 @@
                     android:layout_marginStart="2dp"
                     android:onClick="@{model.showPrizeMenu}"
                     android:text="选择"
-                    android:visibility="@{model.prizeData!=null?View.VISIBLE:View.GONE}"
                     android:textColor="@color/lt_color_text10"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="@{model.prizeData!=null?View.VISIBLE:View.GONE}" />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

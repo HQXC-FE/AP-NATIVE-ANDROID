@@ -92,7 +92,7 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
     public SingleLiveData<String> clearBetEvent = new SingleLiveData<>();
     //彩票信息
     public MutableLiveData<Lottery> lotteryLiveData = new MutableLiveData<>();
-    //是否显示金额
+    //是否显示金额(六合彩默认是元)
     public MutableLiveData<Boolean> moneyView = new MutableLiveData<>();
     //奖金组和投注数据组合
     public MediatorLiveData<LotteryBetsPrizeGroup> combinedPrizeBetLiveData = new MediatorLiveData<>();
