@@ -38,12 +38,11 @@ import me.xtree.mvvmhabit.base.BaseViewModel;
 public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
 
     public final MutableLiveData<ArrayList<BindModel>> datas = new MutableLiveData<>(new ArrayList<>());
-    public final MutableLiveData<ArrayList<Integer>> itemType = new MutableLiveData<>(
-            new ArrayList<Integer>() {
-                {
-                    add(R.layout.item_lottery_order);
-                }
-            });
+    public final MutableLiveData<ArrayList<Integer>> itemType = new MutableLiveData<>(new ArrayList<Integer>() {
+        {
+            add(R.layout.item_lottery_order);
+        }
+    });
     public final ArrayList<BindModel> bindModels = new ArrayList<>();
     //中奖通知
     public MutableLiveData<Boolean> winNotifi = new MutableLiveData<>(true);
@@ -69,20 +68,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
         bindModels.clear();
         for (LotteryOrderModel orderData : lotteryOrderModels) {
             StringBuilder stringBuilder = new StringBuilder();
-            if (canChasing.getValue()) {
-                stringBuilder
-                        .append(orderData.getBetOrderData().getNums()).append("注 x ")
-                        .append(orderData.getBetOrderData().getTimes()).append("倍 x ")
-                        .append("元").append(" = ")
-                        .append(BigDecimal.valueOf(orderData.getBetOrderData().getMoney()).toPlainString()).append("元");
-            } else {
-                stringBuilder
-                        .append(orderData.getBetOrderData().getNums()).append("注 x ")
-                        .append(orderData.getBetOrderData().getTimes()).append("倍 x ")
-                        .append(orderData.getMoneyData().getMoneyModel().getName()).append(" = ")
-                        .append(BigDecimal.valueOf(orderData.getBetOrderData().getMoney()).toPlainString()).append("元");
-            }
-
+            stringBuilder.append(orderData.getBetOrderData().getNums()).append("注 x ").append(orderData.getBetOrderData().getTimes()).append("倍 x ").append(orderData.getBetOrderData().getMoneyName()).append(" = ").append(BigDecimal.valueOf(orderData.getBetOrderData().getMoney()).toPlainString()).append("元");
             orderData.betMoney.set(stringBuilder.toString());
         }
         bindModels.addAll(lotteryOrderModels);
@@ -183,10 +169,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
             }
         });
 
-        pop = new XPopup.Builder(mActivity.get())
-                .dismissOnTouchOutside(true)
-                .dismissOnBackPressed(true)
-                .asCustom(dialog).show();
+        pop = new XPopup.Builder(mActivity.get()).dismissOnTouchOutside(true).dismissOnBackPressed(true).asCustom(dialog).show();
     }
 
     public void goChasing() {
@@ -195,11 +178,7 @@ public class LotteryOrderViewModel extends BaseViewModel<LotteryRepository> {
             LotteryOrderModel model = (LotteryOrderModel) bindModel;
             model.getBetOrderData().setTimes(1);
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder
-                    .append(model.getBetOrderData().getNums()).append("注 x ")
-                    .append(model.getBetOrderData().getTimes()).append("倍 x ")
-                    .append(model.getMoneyData().getMoneyModel().getName()).append(" = ")
-                    .append(BigDecimal.valueOf(model.getBetOrderData().getMoney()).toPlainString()).append("元");
+            stringBuilder.append(model.getBetOrderData().getNums()).append("注 x ").append(model.getBetOrderData().getTimes()).append("倍 x ").append(model.getBetOrderData().getMoneyName()).append(" = ").append(BigDecimal.valueOf(model.getBetOrderData().getMoney()).toPlainString()).append("元");
             model.betMoney.set(stringBuilder.toString());
         }
         for (LotteryOrderModel lotteryOrderModel : betsViewModel.betCartOrdersLiveData.getValue()) {
