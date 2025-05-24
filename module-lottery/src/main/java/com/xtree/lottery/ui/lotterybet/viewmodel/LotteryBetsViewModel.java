@@ -124,7 +124,9 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
         combinedPrizeBetLiveData.addSource(prizeData, prizeGroup -> createLotteryBetsPrizeGroup(true));
         betTotalLiveData.addSource(betLiveData, betOrders -> calBetOrdersNums());
         moneyView.setValue(!"lhc".equals(lottery.getLinkType()));
-        canChasing.setValue(!Objects.equals("lhc", lottery.getLinkType()) && !Objects.equals("mmc", lottery.getLinkType()));
+        canChasing.setValue(!Objects.equals("lhc", lottery.getLinkType()) && !Objects.equals("mmc", lottery.getAlias())
+                && !Objects.equals("3djnd", lottery.getAlias()) && !Objects.equals("3dfc", lottery.getAlias())
+                && !Objects.equals("pl3", lottery.getAlias()));
     }
 
     private void calBetOrdersNums() {
@@ -774,7 +776,6 @@ public class LotteryBetsViewModel extends BaseViewModel<LotteryRepository> imple
                     methodsDTO.setPrizeLevel(userMethodData.getPrizeLevel());
                     methodsDTO.setPrizeGroup(userMethodData.getPrizeGroup());
                 }
-
 
                 //设置当前玩法
                 if (l2.getMenuid().equals(currentl2.getMenuid()) && l2.getMethodid().equals(currentl2.getMethodid())) {
