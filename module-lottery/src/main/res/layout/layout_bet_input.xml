@@ -100,11 +100,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
+                android:freezesText="false"
                 android:gravity="start|top"
                 android:hint="请输入投注号码"
                 android:inputType="textMultiLine"
                 android:padding="3dp"
-                android:freezesText="false"
                 android:text="@={model.lotteryNumbs}"
                 android:textSize="12sp" /> <!-- 可选，根据需求限制最大行数 -->
 
@@ -137,7 +137,6 @@
             android:layout_marginTop="8dp"
             android:background="@color/clr_black"
             android:gravity="center"
-            android:onClick="@{() -> model.clear()}"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:text="清空"

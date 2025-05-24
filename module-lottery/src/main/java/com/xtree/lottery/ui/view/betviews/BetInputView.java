@@ -64,7 +64,7 @@ public class BetInputView extends BetBaseView {
         while (realContext instanceof ContextWrapper && !(realContext instanceof FragmentActivity)) {
             realContext = ((ContextWrapper) realContext).getBaseContext();
         }
-
+        binding.setLifecycleOwner((FragmentActivity) realContext);
         binding.getModel().lotteryNumbs.observe((FragmentActivity) realContext, s -> setBetData());
         binding.betInputSeatview.setOnSeatListener(seats -> setBetData());
 
@@ -79,11 +79,13 @@ public class BetInputView extends BetBaseView {
                 }
 
                 RulesEntryData.BetDTO.DisplayDTO display = rulesResultDataLiveDataValue.getDisplay();
-                if (display != null && !TextUtils.isEmpty(display.getCodes())) {
+                if (display != null && !TextUtils.isEmpty(binding.getModel().lotteryNumbs.getValue()) && !TextUtils.isEmpty(display.getCodes())) {
                     binding.getModel().lotteryNumbs.postValue(display.getCodes());
                 }
             }
         });
+
+        binding.betInputClear.setOnClickListener(view -> clearBet());
     }
 
     private void showMsg(String msg) {
@@ -243,6 +245,7 @@ public class BetInputView extends BetBaseView {
 
     @Override
     public void clearBet() {
+        betData.set(null);
         binding.getModel().lotteryNumbs.setValue("");
     }
 }

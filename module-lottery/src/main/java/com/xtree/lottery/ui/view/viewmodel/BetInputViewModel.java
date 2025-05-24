@@ -21,13 +21,13 @@ public class BetInputViewModel {
     public void initData(LotteryBetsModel model) {
         this.betModel = model;
     }
-
-    /**
-     * 清空彩票输入框
-     */
-    public void clear() {
-        lotteryNumbs.setValue("");
-    }
+//
+//    /**
+//     * 清空彩票输入框
+//     */
+//    public void clear() {
+//
+//    }
 
 //    /**
 //     * 彩票输入框删除重复号码
